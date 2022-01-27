@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;NO_UNITY</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;NO_UNITY</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\BufferGrowingMode.cs" Link="SheetMan.Runtime\BufferGrowingMode.cs" />
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\ByteArray.cs" Link="SheetMan.Runtime\ByteArray.cs" />
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryConfig.cs" Link="SheetMan.Runtime\LiteBinaryConfig.cs" />
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryException.cs" Link="SheetMan.Runtime\LiteBinaryException.cs" />
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryExtensions.cs" Link="SheetMan.Runtime\LiteBinaryExtensions.cs" />
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryHelper.cs" Link="SheetMan.Runtime\LiteBinaryHelper.cs" />
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryReader.cs" Link="SheetMan.Runtime\LiteBinaryReader.cs" />
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryWriter.cs" Link="SheetMan.Runtime\LiteBinaryWriter.cs" />
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\PreValidations.cs" Link="SheetMan.Runtime\PreValidations.cs" />
+    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\TArray.cs" Link="SheetMan.Runtime\TArray.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.55.0.2371" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NPOI" Version="2.5.5" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SheetMan.Runtime\" />
+  </ItemGroup>
+
+</Project>

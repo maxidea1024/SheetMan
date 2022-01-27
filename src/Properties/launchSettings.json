@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "SheetMan": {
+      "commandName": "Project",
+      "commandLineArgs": "--recipe sheetman.recipe.json --debug",
+      "workingDirectory": "C:\\Users\\zigbang0\\Documents\\GitHub\\metapolis\\packages\\tools\\SheetMan\\test"
+    }
+  }
+}

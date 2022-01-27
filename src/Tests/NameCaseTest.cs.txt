@@ -1,0 +1,45 @@
+        string[] identifiers = new string[]
+        {
+            "_____hello",       // 앞/뒷쪽 언더스코어는 그대로 유지해주자.
+            "_____hello___",
+            "TextEn_array",
+            "TextEn__array",
+            "TextEn___array",
+            "TextEn____array",
+            "a_b",
+            "a__b",
+            "ABC",              // 두글자 이상이고 모두 대문자면 변환을 안하는게 좋을듯. (단 중간에 "_" 가 있다면?)
+            "@123",
+            //TODO 이건 동작을 안하네?? 왜지??
+            "__MAX_PLAYER",
+            "item_type",
+
+            // from plain English
+            "The Quick Brown Fox",
+            // from camelCase
+            "theQuickBrownFox",
+            // from kebab-case
+            "the-quick-brown-fox",
+            // from PascalCase
+            "TheQuickBrownFox",
+            // from snake_case
+            "the_quick_brown_fox",
+            // from Train-Case
+            "The-Quick-Brown-Fox"
+        };
+
+        foreach (var identifier in identifiers)
+        {
+            //Console.WriteLine($"'{identifier}'\n  => IsValidIdentifier={identifier.IsValidIdentifier()}, CamelCase='{identifier.ToCamelCase()}', PascalCase='{identifier.ToPascalCase()}'");
+            string message = "";
+            message += $"{identifier}\n";
+            message += $"    IsValidIdentifier={identifier.IsValidIdentifier()}\n";
+            message += $"    ToCamelCase ={identifier.ToCamelCase()}\n";
+            message += $"    ToPascalCase={identifier.ToPascalCase()}\n";
+            message += $"    ToKebabCase ={identifier.ToKebabCase()}\n";
+            message += $"    ToSnakeCase ={identifier.ToSnakeCase()}\n";
+            message += $"    ToTrainCase ={identifier.ToTrainCase()}\n";
+            Console.WriteLine(message);
+            Console.WriteLine();
+        }
+        return 0;
