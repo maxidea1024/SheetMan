@@ -1,0 +1,11 @@
+{
+  "//": [
+    "Pins the SDK band so every machine and CI runner builds with .NET 10.",
+    "rollForward latestFeature accepts any 10.0.x SDK without needing this file",
+    "updated for each patch release."
+  ],
+  "sdk": {
+    "version": "10.0.0",
+    "rollForward": "latestFeature"
+  }
+}

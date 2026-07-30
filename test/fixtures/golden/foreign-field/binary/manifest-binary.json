@@ -1,0 +1,19 @@
+{
+  "LastUpdatedDate": "2026-07-30T14:16:12.7194268+09:00",
+  "MasterHash": "f77b84cc70e8dca99d4964872ae4c35f",
+  "TotalSize": 110,
+  "Items": [
+    {
+      "Name": "ItemCategory.table",
+      "Size": 62,
+      "Hash": "fe8b904492a257843c7dd46241c4d5e7",
+      "LastUpdatedDate": "2026-07-30T14:16:12.7182238+09:00"
+    },
+    {
+      "Name": "Item.table",
+      "Size": 48,
+      "Hash": "0595eba011d66b9cc8c2ecb5162f5d09",
+      "LastUpdatedDate": "2026-07-30T14:16:12.7190919+09:00"
+    }
+  ]
+}

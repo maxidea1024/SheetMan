@@ -1,4 +1,4 @@
-using SheetMan.Models;
+﻿using SheetMan.Models;
 using SheetMan.Extensions;
 using System.Linq;
 using System.IO;
@@ -25,8 +25,42 @@ namespace SheetMan.CodeGeneration
             foreach (var csharpRecipe in recipeModel.CodeGenerations.CSharp)
             {
                 _csharpReceipe = csharpRecipe;
+
+                // Narrowed to the side this entry is built for. Both (the default)
+                // returns the model unchanged.
+                _model = model.ProjectTo(RecipeTargetSide.Of(csharpRecipe.TargetSide, "CodeGenerations.CSharp"));
+
                 GenerateModel();
+                WriteBinaryReaderRuntime();
             }
+        }
+
+        /// <summary>
+        /// Writes SheetMan's binary reader beside the generated accessor.
+        ///
+        /// Emitted rather than installed. The generated code used to reference a runtime
+        /// that a Unity project had to carry as a plugin - 3,600 lines of read and write
+        /// machinery, of which the generated code called four members - so a consumer had
+        /// setup to do before the output would compile. The C++ and TypeScript outputs
+        /// already ship their own reader; this brings C# in line.
+        ///
+        /// The source is an embedded resource taken from lib/cs, so there is one copy to
+        /// maintain and it cannot drift from what is shipped.
+        /// </summary>
+        private void WriteBinaryReaderRuntime()
+        {
+            const string resourceName = "SheetMan.Runtime.Cs.LiteBinaryReader.cs";
+
+            using var stream = typeof(CsCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
+            if (stream == null)
+                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
+
+            using var reader = new StreamReader(stream);
+
+            string filename = Path.GetFullPath(
+                Path.Combine(_csharpReceipe.Path, "SheetManBinaryReader.cs"));
+
+            StagingFiles.WriteAllTextToFile(filename, reader.ReadToEnd());
         }
 
         private void GenerateModel()
@@ -294,13 +328,23 @@ namespace SheetMan.CodeGeneration
                         cs.PrintLine("public $field_type$[] $prop_name$ => $field_name$;");
                         cs.PrintLine("public const int $prop_name$_N = $N$;");
                         cs.PrintLine("private $field_type$[] $field_name$ = new $field_type$[$field_name$_N];");
-                        if (sf.FirstField.Type == Models.ValueType.ForeignRecord)
+                        if (sf.ElementType == Models.ValueType.ForeignRecord)
                             cs.PrintLine("public void SetReference_$prop_name$_INTERNAL(int index, $ref_table$Table.Record value) => $field_name$[index] = value;");
                         else
                             cs.PrintLine("public void SetReference_$prop_name$_INTERNAL(int index, $field_type$ value) => $field_name$[index] = value;");
 
                         cs.PrintLine("public int[] $field_name$_$ref_table$_index = new int[$prop_name$_N];");
                         cs.PrintLine("public bool[] $field_name$_F = new bool[$field_name$_N];");
+                    }
+                    else if (sf.IsVariableLengthArray)
+                    {
+                        // No _N constant: the length differs per row, so there is no
+                        // element count to expose, and the array is allocated by the
+                        // read path once it knows how long this row's is. Starting
+                        // empty rather than null keeps consumers from having to
+                        // null-check a record that was never read.
+                        cs.PrintLine("public $field_type$[] $prop_name$ => $field_name$;");
+                        cs.PrintLine("private $field_type$[] $field_name$ = System.Array.Empty<$field_type$>();");
                     }
                     else
                     {
@@ -316,7 +360,7 @@ namespace SheetMan.CodeGeneration
 
                     if (sf.IsRef)
                     {
-                        if (sf.FirstField.Type == Models.ValueType.ForeignRecord)
+                        if (sf.ElementType == Models.ValueType.ForeignRecord)
                             cs.PrintLine("public void SetReference_$prop_name$_INTERNAL($ref_table$Table.Record value) => $field_name$ = value;");
                         else
                             cs.PrintLine("public void SetReference_$prop_name$_INTERNAL($field_type$ value) => $field_name$ = value;");
@@ -342,7 +386,7 @@ namespace SheetMan.CodeGeneration
             cs.ScopeIn("public Task ReadAsync(LiteBinaryReader reader)\n{");
 
             // field 중에 enum 타입이 하나라도 있으면, 캐스팅이 필요하므로, 임시로 변수 선언해주어야함.
-            bool needTempIntergerVarForEnumCasting = table.SerialFields.Where(x => x.Type == Models.ValueType.Enum).Count() > 0;
+            bool needTempIntergerVarForEnumCasting = table.SerialFields.Any(x => x.ElementType == Models.ValueType.Enum);
             if (needTempIntergerVarForEnumCasting)
                 cs.PrintLine("int tempEnumInt = 0;");
 
@@ -363,8 +407,21 @@ namespace SheetMan.CodeGeneration
 
                 if (sf.IsArray)
                 {
-                    cs.ScopeIn("for (int i = 0; i < $prop_name$_N; ++i)\n{");
-                    if (sf.Type == Models.ValueType.Enum)
+                    if (sf.IsVariableLengthArray)
+                    {
+                        // Length varies per row, so it comes off the stream and the
+                        // array is allocated here. A serial field instead has a fixed
+                        // element count baked in as $prop_name$_N.
+                        cs.PrintLine("reader.TryReadCounter32(out int $prop_name$_count);");
+                        cs.PrintLine("$field_name$ = new $field_type$[$prop_name$_count];");
+                        cs.ScopeIn("for (int i = 0; i < $prop_name$_count; ++i)\n{");
+                    }
+                    else
+                    {
+                        cs.ScopeIn("for (int i = 0; i < $prop_name$_N; ++i)\n{");
+                    }
+
+                    if (sf.ElementType == Models.ValueType.Enum)
                     {
                         cs.PrintLine("reader.ReadOptimalInt32(out tempEnumInt);");
                         cs.PrintLine("$field_name$[i] = ($field_type$)tempEnumInt;");
@@ -386,7 +443,7 @@ namespace SheetMan.CodeGeneration
                 }
                 else
                 {
-                    if (sf.Type == Models.ValueType.Enum)
+                    if (sf.ElementType == Models.ValueType.Enum)
                     {
                         cs.PrintLine("reader.ReadOptimalInt32(out tempEnumInt);");
                         cs.PrintLine("$field_name$ = ($field_type$)tempEnumInt;");
@@ -450,7 +507,10 @@ namespace SheetMan.CodeGeneration
             cs.PrintLine("/// Field names.");
             cs.PrintLine("/// </summary>");
 
-            var fieldNameLiterals = table.SerialFields.Select(x => "\"" + x.Name.ToPascalCase() + "\"").ToArray(); //TODO 어레이일 경우에는 이름이 이상하다. 일단 ToPascalCase로 했...
+            // Pascal-casing a folded group's name gives the property it is exposed under -
+            // `TextEn_array` becomes `TextEnArray` - so these literals name the very
+            // members BuildObjectValueMap reads below.
+            var fieldNameLiterals = table.SerialFields.Select(x => "\"" + x.Name.ToPascalCase() + "\"").ToArray();
             cs.PrintLine($"public static readonly string[] FieldNames = {{ {string.Join(", ", fieldNameLiterals)} }};");
 
 
@@ -463,7 +523,7 @@ namespace SheetMan.CodeGeneration
             cs.ScopeIn("public List<object[]> BuildObjectValueMap()\n{");
             cs.PrintLine($"var result = new List<object[]>();");
             cs.PrintLine("foreach (var r in _records)");
-            var fieldValues = table.SerialFields.Select(x => "r." + x.Name.ToPascalCase()).ToArray(); //TODO 어레이일 경우에는 이름이 이상하다. 일단 ToPascalCase로 했...
+            var fieldValues = table.SerialFields.Select(x => "r." + x.Name.ToPascalCase()).ToArray();
             cs.PrintLine($"    result.Add(new object[] {{ {string.Join(", ", fieldValues)} }});");
             cs.PrintLine();
             cs.PrintLine("return result;");
@@ -546,6 +606,7 @@ namespace SheetMan.CodeGeneration
             cs.PrintLine("/// Read a table from specified reader.");
             cs.PrintLine("/// </summary>");
             cs.ScopeIn("public async Task ReadAsync(LiteBinaryReader reader)\n{");
+            cs.PrintLine("// Version and reserved flags are checked by the reader.");
             cs.PrintLine("uint version = 0;");
             cs.PrintLine("reader.Read(out version);"); //TODO version checking
             cs.PrintLine();
@@ -704,7 +765,9 @@ namespace SheetMan.CodeGeneration
 
         private string ToCSharpTypeName(Field field, bool asArray = false)
         {
-            return ToCSharpTypeName(field.Type, field.EnumOrNull, field.RefTableName, asArray); //TODO field.RefTableName으로 하면 안되고 resolve된 이름으로 해야할텐데...
+            // ElementType, not Type: an array field is rendered by naming its element
+            // and letting the caller add the brackets, exactly as a serial field is.
+            return ToCSharpTypeName(field.ElementType, field.EnumOrNull, field.RefTableName, asArray); //TODO field.RefTableName으로 하면 안되고 resolve된 이름으로 해야할텐데...
         }
 
         private string ToCSharpTypeName(Models.ValueType type, Models.Enum enumm, string refTableName, bool asArray = false)

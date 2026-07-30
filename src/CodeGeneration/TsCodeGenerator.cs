@@ -1,4 +1,4 @@
-using CommandLine;
+﻿using CommandLine;
 using SheetMan.Recipe;
 using SheetMan.Models;
 using System.IO;
@@ -7,6 +7,13 @@ using SheetMan.Extensions;
 using SheetMan.Helpers;
 using System.Linq;
 using System.Collections.Generic;
+using System;
+using System.Globalization;
+using System.Text;
+
+// `using System` brings System.ValueType into scope, which collides with the
+// model's own ValueType that this file refers to unqualified throughout.
+using ValueType = SheetMan.Models.ValueType;
 
 namespace SheetMan.CodeGeneration
 {
@@ -24,6 +31,11 @@ namespace SheetMan.CodeGeneration
             foreach (var typescriptRecipe in recipeModel.CodeGenerations.Typescript)
             {
                 _typescriptRecipe = typescriptRecipe;
+
+                // Narrowed to the side this entry is built for. Both (the default)
+                // returns the model unchanged.
+                _model = model.ProjectTo(RecipeTargetSide.Of(typescriptRecipe.TargetSide, "CodeGenerations.Typescript"));
+
                 GenerateModel();
             }
         }
@@ -44,6 +56,13 @@ namespace SheetMan.CodeGeneration
             // Tables
             if (_model.Tables.Count > 0)
                 GenerateTables();
+
+            // Constant sets
+            if (_model.ConstantSets.Count > 0)
+                GenerateConstantSets();
+
+            // The runtime the generated tables import.
+            WriteBinaryReaderRuntime();
         }
 
 
@@ -83,7 +102,13 @@ namespace SheetMan.CodeGeneration
                 ts.PrintLine();
                 ts.PrintLine("// Constants");
                 foreach (var constantSet in _model.ConstantSets)
-                    ts.PrintLine($"export { constantSet.Name } from './constants/{constantSet.Name}'");
+                {
+                    // `{{` / `}}` because this is an interpolated string: the literal
+                    // braces of the named export used to be read as an interpolation
+                    // hole, emitting `export GameConfig from ...`, which is a syntax
+                    // error. The enum and table lines above always had it right.
+                    ts.PrintLine($"export {{ {constantSet.Name} }} from './constants/{constantSet.Name}'");
+                }
             }
 
             ts.PrintLine();
@@ -179,7 +204,6 @@ namespace SheetMan.CodeGeneration
         {
             string tsFilename = GetTsFilename($"Updater.ts");
             Printer ts = new Printer();
-            int count = 0;
 
             GenerateCommonHeadLines(ts);
 
@@ -210,6 +234,11 @@ namespace SheetMan.CodeGeneration
             //ts.PrintLine("import { promises as fs } from 'fs'");
             ts.PrintLine("import * as fs from 'fs'");
 
+            // The binary read path needs the LiteBinary reader. Imported by a relative
+            // path from the generated tables/ directory, so a consumer only has to place
+            // lib/ts/sheetman alongside the generated output.
+            ts.PrintLine("import * as sheetman from '../sheetman/lite_binary_reader'");
+
             GenerateImportsForTable(ts, table);
 
             // interface IDataRow
@@ -228,16 +257,18 @@ namespace SheetMan.CodeGeneration
                     "ref_field", sf.FirstField.RefFieldName.ToPascalCase()
                 };
                 ts.PushScopedVars(vars);
-                //TODO Array type일 경우에는 어떻게??
-                //TODO 참조 타입일 경우에는??
+
+                // The JSON wire type, which is not always the member type: a 64-bit
+                // integer is exported as a string so JSON's single numeric type cannot
+                // round it. A reference carries the target's index, which is a number
+                // either way.
+                string wireType = JsonWireTypeOf(sf);
+
                 if (sf.IsArray)
-                {
-                    ts.PrintLine("$prop_name$: $field_type$[]");
-                }
+                    ts.PrintLine($"$prop_name$: {wireType}[]");
                 else
-                {
-                    ts.PrintLine("$prop_name$: $field_type$");
-                }
+                    ts.PrintLine($"$prop_name$: {wireType}");
+
                 ts.PopScopedVars();
             }
 
@@ -280,15 +311,21 @@ namespace SheetMan.CodeGeneration
                         //어짜피 값으로 어싸인될것이므로 객체를 할당할 필요없음.
                         //ts.PrintLine($"private $field_name$: $field_type$[] = new Array<$field_type$>({recordClassName}.$prop_name$_N)");
                         ts.PrintLine($"private $field_name$: $field_type$[]");
-                        if (sf.FirstField.Type == Models.ValueType.ForeignRecord)
-                            ts.PrintLine("public setReference_$prop_name$_INTERNAL(index: number, value: $ref_table$Record): void { $field_name$[index] = value; }");
+                        if (sf.ElementType == Models.ValueType.ForeignRecord)
+                            ts.PrintLine("public setReference_$prop_name$_INTERNAL(index: number, value: $ref_table$Record): void { this.$field_name$[index] = value; }");
                         else
-                            ts.PrintLine("public setReference_$prop_name$_INTERNAL(index: number, value: $field_type$): void { $field_name$[index] = value; }");
+                            ts.PrintLine("public setReference_$prop_name$_INTERNAL(index: number, value: $field_type$): void { this.$field_name$[index] = value; }");
 
                         //TODO 나중에 하자.
                         //ts.PrintLine("public get $prop_name$(): $field_type$[] { return this.$field_name$; }");
                         //ts.PrintLine("public static readonly $prop_name$_N: number = $N$;");
                         //ts.PrintLine("private $field_name$: $field_type$[] = new Array<$field_type$>(
+                    }
+                    else if (sf.IsVariableLengthArray)
+                    {
+                        // No _N: a delimited cell's length differs from row to row.
+                        ts.PrintLine($"public get $prop_name$(): $field_type$[] {{ return this.$field_name$ }}");
+                        ts.PrintLine($"private $field_name$: $field_type$[] = []");
                     }
                     else
                     {
@@ -306,10 +343,10 @@ namespace SheetMan.CodeGeneration
 
                     if (sf.IsRef)
                     {
-                        if (sf.FirstField.Type == Models.ValueType.ForeignRecord)
-                            ts.PrintLine("public setReference_$prop_name$_INTERNAL(value: $ref_table$Record) { $field_name$ = value; }");
+                        if (sf.ElementType == Models.ValueType.ForeignRecord)
+                            ts.PrintLine("public setReference_$prop_name$_INTERNAL(value: $ref_table$Record) { this.$field_name$ = value; }");
                         else
-                            ts.PrintLine("public setReference_$prop_name$_INTERNAL(value: $field_type$) { $field_name$ = value }");
+                            ts.PrintLine("public setReference_$prop_name$_INTERNAL(value: $field_type$) { this.$field_name$ = value }");
 
                         ts.PrintLine("public $field_name$_$ref_table$_index: number");
                         ts.PrintLine("public $field_name$_F: boolean = false");
@@ -338,14 +375,19 @@ namespace SheetMan.CodeGeneration
                 };
                 ts.PushScopedVars(vars);
 
-                // 실상 배열이던 아니던 상환 없음.
-                if (sf.IsArray)
+                if (!NeedsJsonConversion(sf))
                 {
+                    // Array or scalar alike: a value the JSON carries as-is is assigned
+                    // straight through.
                     ts.PrintLine("this.$field_name$ = dataRow.$prop_name$");
+                }
+                else if (sf.IsArray)
+                {
+                    ts.PrintLine($"this.$field_name$ = dataRow.$prop_name$.map(v => {FromJsonExpression(sf, "v")})");
                 }
                 else
                 {
-                    ts.PrintLine("this.$field_name$ = dataRow.$prop_name$");
+                    ts.PrintLine($"this.$field_name$ = {FromJsonExpression(sf, "dataRow.$prop_name$")}");
                 }
             }
 
@@ -370,10 +412,26 @@ namespace SheetMan.CodeGeneration
                 };
                 ts.PushScopedVars(vars);
 
-                // 실상 배열이던 아니던 상환 없음.
-                if (sf.IsArray)
+                // The compact row is flat: a serial field contributes one entry per
+                // column, matching how the binary exporter writes them. Reading a
+                // single entry for the whole group took only its first column and
+                // left every later field reading someone else's value.
+                string convert = NeedsJsonConversion(sf) ? $".map(v => {FromJsonExpression(sf, "v")})" : "";
+
+                if (sf.IsVariableLengthArray)
                 {
-                    ts.PrintLine("this.$field_name$ = dataRow[offset++]");
+                    // One entry that already is an array, so it is taken whole. A
+                    // serial field is flattened across N entries and sliced below.
+                    ts.PrintLine($"this.$field_name$ = dataRow[offset++]{convert}");
+                }
+                else if (sf.IsArray)
+                {
+                    ts.PrintLine($"this.$field_name$ = dataRow.slice(offset, offset + $N$){convert}");
+                    ts.PrintLine("offset += $N$");
+                }
+                else if (NeedsJsonConversion(sf))
+                {
+                    ts.PrintLine($"this.$field_name$ = {FromJsonExpression(sf, "dataRow[offset++]")}");
                 }
                 else
                 {
@@ -383,7 +441,7 @@ namespace SheetMan.CodeGeneration
 
             ts.ScopeOut("}"); // end of populateFieldValues
 
-
+            GenerateRecordBinaryRead(ts, table);
 
             ts.ScopeOut("}"); // end of class Record
 
@@ -518,27 +576,45 @@ namespace SheetMan.CodeGeneration
             ts.PrintLine("}");
 
 
+            // Binary read path, beside the JSON one.
+            //
+            // Both are generated so a consumer picks per deployment rather than per build:
+            // JSON where the data is inspected by hand or served as text, binary where
+            // size and parse time matter. The two produce identical values, which is why
+            // the reader formats dates and durations as the strings the JSON export writes
+            // rather than surfacing raw ticks.
+
+            GenerateBinaryRead(ts, table, recordClassName);
+
+
             // mapping(): void
 
             ts.PrintLine();
             ts.PrintLine("/** Index mapping. */");
             ts.ScopeIn("private mapping(): void {");
-            foreach (var sf in table.SerialFields)
+
+            var indexers = table.SerialFields.Where(sf => sf.IsIndexer).ToList();
+
+            if (indexers.Count > 0)
             {
-                if (!sf.IsIndexer)
-                    continue;
+                // One pass over the records filling every index, rather than a pass per
+                // index. A table with a primary and two secondary indexes walked its rows
+                // three times where once will do.
+                ts.ScopeIn("for (const record of this._records)\n{");
 
-                string[] vars = new string[] {
-                    "prop_name_pascal", sf.Name.ToPascalCase(),
-                    "prop_name", sf.Name.ToCamelCase()
-                };
+                foreach (var sf in indexers)
+                {
+                    ts.PushScopedVars(new string[] {
+                        "prop_name_pascal", sf.Name.ToPascalCase(),
+                        "prop_name", sf.Name.ToCamelCase()
+                    });
+                    ts.PrintLine("this._recordsBy$prop_name_pascal$.set(record.$prop_name$, record)");
+                    ts.PopScopedVars();
+                }
 
-                //TODO 루프를 한번만 도는게 좋을듯..
-                ts.PushScopedVars(vars);
-                ts.PrintLine("for (const record of this._records)");
-                ts.PrintLine("    this._recordsBy$prop_name_pascal$.set(record.$prop_name$, record);");
-                ts.PopScopedVars();
+                ts.ScopeOut("}");
             }
+
             ts.ScopeOut("}");
 
             ts.ScopeOut("}"); // end of class Table
@@ -548,19 +624,190 @@ namespace SheetMan.CodeGeneration
             StagingFiles.WriteAllTextToFile(tsFilename, ts.ToString());
         }
 
+        /// <summary>
+        /// Emits the binary read path: a reader over the .table file the binary exporter
+        /// writes, in the exact field order it writes them.
+        /// </summary>
+        private void GenerateBinaryRead(Printer ts, Models.Table table, string recordClassName)
+        {
+            ts.PrintLine();
+            ts.PrintLine("/** Read a table from a binary .table file. */");
+            ts.ScopeIn("public readBinarySync(filename: string): void\n{");
+            ts.PrintLine("this.readBinaryFrom(sheetman.readAllBytes(filename))");
+            ts.ScopeOut("}");
+
+            ts.PrintLine();
+            ts.PrintLine("/** Read a table from binary data already in memory. */");
+            ts.ScopeIn("public readBinaryFrom(data: Uint8Array): void\n{");
+            ts.PrintLine("const reader = new sheetman.LiteBinaryReader(data)");
+            ts.PrintLine("const rowCount = sheetman.readTableHeader(reader)");
+            ts.PrintLine();
+            ts.ScopeIn("for (let i = 0; i < rowCount; ++i)\n{");
+            ts.PrintLine($"const record = new {recordClassName}()");
+            ts.PrintLine("record.readBinary(reader)");
+            ts.PrintLine("this._records.push(record)");
+            ts.ScopeOut("}");
+            ts.PrintLine();
+            ts.PrintLine("this.mapping()");
+            ts.ScopeOut("}");
+        }
+
+        /// <summary>
+        /// Emits a record's binary read, matching the exporter's field order.
+        /// </summary>
+        private void GenerateRecordBinaryRead(Printer ts, Models.Table table)
+        {
+            ts.PrintLine();
+            ts.PrintLine("/** Read one record. Field order must match the exporter's. */");
+            ts.ScopeIn("public readBinary(reader: sheetman.LiteBinaryReader): void\n{");
+
+            foreach (var sf in table.SerialFields)
+            {
+                string field = "_" + sf.Name.ToCamelCase();
+
+                if (sf.IsVariableLengthArray)
+                {
+                    // Length varies per row, so it precedes the elements on the wire.
+                    ts.ScopeIn("{");
+                    ts.PrintLine("const count = reader.readCounter32()");
+                    ts.PrintLine($"this.{field} = []");
+                    ts.ScopeIn("for (let i = 0; i < count; ++i)\n{");
+                    ts.PrintLine($"this.{field}.push({BinaryReadExpression(sf)})");
+                    ts.ScopeOut("}");
+                    ts.ScopeOut("}");
+                    continue;
+                }
+
+                if (sf.IsArray)
+                {
+                    // A serial field has one element per column, a count this generator
+                    // knows, so nothing precedes the elements on the wire.
+                    ts.PrintLine($"this.{field} = []");
+                    ts.ScopeIn($"for (let i = 0; i < {sf.Fields.Count}; ++i)\n{{");
+
+                    if (sf.IsRef)
+                        ts.PrintLine($"this.{field}_{sf.FirstField.RefTableName.ToPascalCase()}_index.push(reader.readInt32())");
+                    else
+                        ts.PrintLine($"this.{field}.push({BinaryReadExpression(sf)})");
+
+                    ts.ScopeOut("}");
+                    continue;
+                }
+
+                if (sf.IsRef)
+                {
+                    // A reference stores the target's index; the value itself is filled in
+                    // once every table is loaded.
+                    ts.PrintLine($"this.{field}_{sf.FirstField.RefTableName.ToPascalCase()}_index = reader.readInt32()");
+                    continue;
+                }
+
+                ts.PrintLine($"this.{field} = {BinaryReadExpression(sf)}");
+            }
+
+            if (table.SerialFields.Count == 0)
+                ts.PrintLine("// No fields to read.");
+
+            ts.ScopeOut("}");
+        }
+
+        /// <summary>
+        /// The call reading one value of a column's element type.
+        /// </summary>
+        private string BinaryReadExpression(SerialField sf)
+        {
+            switch (sf.ElementType)
+            {
+                case ValueType.String: return "reader.readString()";
+                case ValueType.Bool: return "reader.readBool()";
+                case ValueType.Int32: return "reader.readInt32()";
+                case ValueType.Int64: return "reader.readInt64()";
+                case ValueType.Float: return "reader.readFloat()";
+                case ValueType.Double: return "reader.readDouble()";
+                case ValueType.DateTime: return "reader.readDateTime()";
+                case ValueType.TimeSpan: return "reader.readTimeSpan()";
+                case ValueType.Uuid: return "reader.readUuid()";
+
+                // Enum values travel zig-zag encoded rather than fixed width.
+                case ValueType.Enum: return $"reader.readEnum() as {ToTypescriptTypename(sf.FirstField)}";
+
+                case ValueType.ForeignRecord: return "reader.readInt32()";
+
+                default:
+                    throw new SheetManException(
+                        $"TypeScript generator cannot read type `{sf.Type}` from binary.");
+            }
+        }
+
+        /// <summary>
+        /// The type a value has in the JSON export, which is not always the type the
+        /// generated member exposes.
+        /// </summary>
+        private string JsonWireTypeOf(SerialField sf)
+        {
+            // A 64-bit integer is exported as a string, because JSON's single numeric
+            // type is a double and would round it.
+            if (sf.ElementType == ValueType.Int64)
+                return "string";
+
+            return ToTypescriptTypename(sf.FirstField);
+        }
+
+        /// <summary>
+        /// Wraps a value read from JSON so it becomes the member's type.
+        ///
+        /// Two types need it. A 64-bit integer arrives as a string and is reconstructed
+        /// exactly. A float arrives as the shortest decimal that round-trips it, which in
+        /// JavaScript widens to a double a hair away from the stored 32-bit value - so it
+        /// is rounded back to float precision, and both read paths then agree.
+        /// </summary>
+        private string FromJsonExpression(SerialField sf, string source)
+        {
+            switch (sf.ElementType)
+            {
+                case ValueType.Int64: return $"BigInt({source})";
+                case ValueType.Float: return $"Math.fround({source})";
+                default: return source;
+            }
+        }
+
+        /// <summary>
+        /// Whether values of this column need converting on the way in from JSON.
+        /// </summary>
+        private bool NeedsJsonConversion(SerialField sf)
+            => sf.ElementType == ValueType.Int64 || sf.ElementType == ValueType.Float;
+
         private void GenerateImportsForTable(Printer ts, Models.Table table)
         {
             var imports = new List<string>();
 
             foreach (var sf in table.SerialFields)
             {
-                //TODO 참조일 경우에 외부 테이블 import추가해야함.
-
-                if (sf.FirstField.Type == ValueType.Enum)
+                if (sf.ElementType == ValueType.Enum)
                 {
                     string importStatement = $"import {{ {sf.FirstField.Enum.Name} }} from '../enums/{sf.FirstField.Enum.Name}'";
                     if (!imports.Contains(importStatement))
                         imports.Add(importStatement);
+                }
+
+                // A record-level reference names the target's Record class in this
+                // file's signatures, so that class has to be imported. Without this
+                // the emitted module referred to a type it never pulled in and did
+                // not compile - the enum branch above had always been the only one.
+                //
+                // Resolved rather than declared table name: the declared one is the
+                // raw detail-type text, while resolution has already followed the
+                // reference chain to the table actually being pointed at.
+                if (sf.ElementType == ValueType.ForeignRecord)
+                {
+                    var refTable = sf.FirstField.ResolvedRefTable;
+                    if (refTable != null && refTable.Name != table.Name)
+                    {
+                        string recordName = refTable.Name.ToPascalCase() + "Record";
+                        string importStatement = $"import {{ {recordName} }} from './{refTable.Name}'";
+                        if (!imports.Contains(importStatement))
+                            imports.Add(importStatement);
+                    }
                 }
             }
 
@@ -620,6 +867,192 @@ namespace SheetMan.CodeGeneration
             StagingFiles.WriteAllTextToFile(tsFilename, ts.ToString());
         }
 
+        /// <summary>
+        /// Writes the LiteBinary reader into the output, beside the generated modules.
+        ///
+        /// Emitted rather than left for the consumer to copy: the generated tables import
+        /// it by a relative path, and TypeScript has no include-path setting that would
+        /// let a project point somewhere else. Shipping it makes the output directory
+        /// self-contained.
+        ///
+        /// The source is an embedded resource taken from lib/ts, so there is one copy to
+        /// maintain and it cannot drift from what is shipped.
+        /// </summary>
+        private void WriteBinaryReaderRuntime()
+        {
+            const string resourceName = "SheetMan.Runtime.Ts.lite_binary_reader.ts";
+
+            using var stream = typeof(TsCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
+            if (stream == null)
+                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
+
+            using var reader = new StreamReader(stream);
+
+            StagingFiles.WriteAllTextToFile(
+                GetTsFilename("sheetman/lite_binary_reader.ts"), reader.ReadToEnd());
+        }
+
+        private void GenerateConstantSets()
+        {
+            foreach (var constantSet in _model.ConstantSets)
+                GenerateConstantSet(constantSet);
+        }
+
+        /// <summary>
+        /// Emits one module per constant set, mirroring what the C# generator produces
+        /// as a static class.
+        ///
+        /// index.ts has always re-exported these modules, but nothing ever wrote them,
+        /// so any sheet defining a `const` entity produced TypeScript that could not
+        /// resolve its own imports.
+        ///
+        /// Members are camelCase to match the rest of the generated TypeScript, where
+        /// table fields use the same convention.
+        /// </summary>
+        private void GenerateConstantSet(ConstantSet constantSet)
+        {
+            string tsFilename = GetTsFilename($"constants/{constantSet.Name}.ts");
+            Printer ts = new Printer();
+
+            Log.Information($"Generate typescript code for constant-set `{constantSet.Name}` into `{tsFilename}`");
+
+            GenerateCommonHeadLines(ts);
+
+            GenerateImportsForConstantSet(ts, constantSet);
+
+            ts.PrintLine();
+            ts.PrintLine($"// Generated from {constantSet.Location}");
+            GenerateComment(ts, constantSet.Comment);
+
+            ts.ScopeIn($"export class {constantSet.Name.ToPascalCase()} {{");
+
+            int count = 0;
+            foreach (var constant in constantSet.Constants)
+            {
+                if (++count != 1) ts.PrintLine();
+
+                GenerateComment(ts, constant.Comment);
+
+                string typeName = ToTypescriptTypename(constant.Type, constant.Enum, null);
+                string value = RenderConstantValue(constant);
+
+                ts.PrintLine($"public static readonly {constant.Name.ToCamelCase()}: {typeName} = {value}");
+            }
+
+            ts.ScopeOut("}");
+
+            StagingFiles.WriteAllTextToFile(tsFilename, ts.ToString());
+        }
+
+        private void GenerateImportsForConstantSet(Printer ts, ConstantSet constantSet)
+        {
+            var imports = new List<string>();
+
+            foreach (var constant in constantSet.Constants)
+            {
+                if (constant.Type != ValueType.Enum)
+                    continue;
+
+                string importStatement = $"import {{ {constant.Enum.Name} }} from '../enums/{constant.Enum.Name}'";
+                if (!imports.Contains(importStatement))
+                    imports.Add(importStatement);
+            }
+
+            if (imports.Count > 0)
+            {
+                ts.PrintLine();
+                ts.PrintLine("// Automatically import to handle external type references.");
+                foreach (var import in imports)
+                    ts.PrintLine(import);
+            }
+        }
+
+        /// <summary>
+        /// Renders a cooked constant value as a TypeScript literal.
+        ///
+        /// Types that TypeScript has no native equivalent for - datetime, timespan and
+        /// uuid - are surfaced as strings, matching ToTypescriptTypename.
+        /// </summary>
+        private string RenderConstantValue(ConstantSet.Constant constant)
+        {
+            switch (constant.Type)
+            {
+                case ValueType.String:
+                    return $"'{EscapeTypescriptString((string)constant.Value)}'";
+
+                case ValueType.Bool:
+                    return (bool)constant.Value ? "true" : "false";
+
+                case ValueType.Int32:
+                    return ((int)constant.Value).ToString(CultureInfo.InvariantCulture);
+
+                case ValueType.Int64:
+                    // `n` suffix: a bigint-typed member cannot be initialized from a
+                    // number literal, and TypeScript rejects it outright.
+                    return ((long)constant.Value).ToString(CultureInfo.InvariantCulture) + "n";
+
+                case ValueType.Float:
+                    return ((float)constant.Value).ToString("R", CultureInfo.InvariantCulture);
+
+                case ValueType.Double:
+                    return ((double)constant.Value).ToString("R", CultureInfo.InvariantCulture);
+
+                case ValueType.DateTime:
+                    return $"'{((DateTime)constant.Value).ToString("o", CultureInfo.InvariantCulture)}'";
+
+                case ValueType.TimeSpan:
+                    return $"'{((TimeSpan)constant.Value).ToString(null, CultureInfo.InvariantCulture)}'";
+
+                case ValueType.Uuid:
+                    return $"'{(Guid)constant.Value}'";
+
+                case ValueType.Enum:
+                {
+                    var label = constant.Enum.GetLabel((int)constant.Value, constant.Location);
+                    return $"{constant.Enum.Name.ToPascalCase()}.{label.Name}";
+                }
+
+                default:
+                    throw new SheetManException(constant.Location,
+                        $"Constant `{constant.Name}` has type `{constant.Type}`, which the TypeScript generator cannot render.");
+            }
+        }
+
+        /// <summary>
+        /// Escapes a string for a single-quoted TypeScript literal.
+        ///
+        /// Non-ASCII characters are left alone: the generated files are UTF-8, and
+        /// localized text is far more readable unescaped.
+        /// </summary>
+        private string EscapeTypescriptString(string input)
+        {
+            var literal = new StringBuilder(input.Length + 2);
+
+            foreach (var c in input)
+            {
+                switch (c)
+                {
+                    case '\'': literal.Append("\\'"); break;
+                    case '\\': literal.Append(@"\\"); break;
+                    case '\0': literal.Append(@"\0"); break;
+                    case '\b': literal.Append(@"\b"); break;
+                    case '\f': literal.Append(@"\f"); break;
+                    case '\n': literal.Append(@"\n"); break;
+                    case '\r': literal.Append(@"\r"); break;
+                    case '\t': literal.Append(@"\t"); break;
+                    case '\v': literal.Append(@"\v"); break;
+                    default:
+                        if (c < 0x20)
+                            literal.Append(@"\u").Append(((int)c).ToString("x4"));
+                        else
+                            literal.Append(c);
+                        break;
+                }
+            }
+
+            return literal.ToString();
+        }
+
         private void GenerateComment(Printer ts, string comment)
         {
             if (string.IsNullOrEmpty(comment))
@@ -629,7 +1062,15 @@ namespace SheetMan.CodeGeneration
             GenerateDocStringComment(ts, "/** ", "", comment, " */\n", singleLineComment); // single line comment
         }
 
-        //TODO 공용으로 빼줘도 좋을듯..
+        /// <summary>
+        /// Emits a doc comment, wrapping the sheet's description text in the target
+        /// language's comment syntax.
+        ///
+        /// Each generator carries its own copy of this. Worth sharing one day - the shape
+        /// is identical and only the delimiters differ - but the three have diverged
+        /// slightly in how they treat blank lines, so unifying them would change output
+        /// rather than merely deduplicate code.
+        /// </summary>
         private void GenerateDocStringComment(Printer ts, string commentStart, string linePrefix, string contents, string commentEnd, bool singleLineComment = false)
         {
             if (!string.IsNullOrEmpty(commentStart))
@@ -663,7 +1104,9 @@ namespace SheetMan.CodeGeneration
 
         private string ToTypescriptTypename(Field field, bool asArray = false)
         {
-            return ToTypescriptTypename(field.Type, field.EnumOrNull, field.RefTableName, asArray); //TODO field.RefTableName으로 하면 안되고 resolve된 이름으로 해야할텐데...
+            // ElementType, not Type: an array field is rendered by naming its element
+            // and letting the caller add the brackets, exactly as a serial field is.
+            return ToTypescriptTypename(field.ElementType, field.EnumOrNull, field.RefTableName, asArray); //TODO field.RefTableName으로 하면 안되고 resolve된 이름으로 해야할텐데...
         }
 
         private string ToTypescriptTypename(Models.ValueType type, Models.Enum enumm, string refTableName, bool asArray = false)
@@ -681,7 +1124,10 @@ namespace SheetMan.CodeGeneration
                     result = "number";
                     break;
                 case Models.ValueType.Int64:
-                    result = "number";
+                    // BigInt, not number. A double carries 53 bits of mantissa, so a
+                    // 64-bit value past 2^53 comes back quietly wrong - the same class of
+                    // corruption the binary writer itself once had, and just as invisible.
+                    result = "bigint";
                     break;
                 case Models.ValueType.Float:
                     result = "number";
@@ -690,13 +1136,21 @@ namespace SheetMan.CodeGeneration
                     result = "number";
                     break;
                 case Models.ValueType.TimeSpan:
-                    result = "string"; //TODO 어떻게 하는게 좋을까?
+                // These three surface as strings rather than richer types.
+                //
+                // TypeScript reads the JSON export, and JSON has no date, duration or
+                // uuid: each arrives as text. Declaring `Date` would oblige the generated
+                // reader to parse on load - work a consumer may not want, on a value it
+                // may only pass through - and there is nothing to parse a duration or a
+                // uuid into at all. The text is exactly what was exported, so a consumer
+                // that needs a richer type can construct one where it needs it.
+                    result = "string";
                     break;
                 case Models.ValueType.DateTime:
-                    result = "string"; //TODO 어떻게 하는게 좋을까?
+                    result = "string";
                     break;
                 case Models.ValueType.Uuid:
-                    result = "string"; //TODO 어떻게 하는게 좋을까?
+                    result = "string";
                     break;
                 case Models.ValueType.Enum:
                     result = QualifiedNamespacePrefix + enumm.Name.ToPascalCase();

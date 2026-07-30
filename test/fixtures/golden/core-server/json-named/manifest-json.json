@@ -1,0 +1,43 @@
+{
+  "LastUpdatedDate": "2026-07-30T14:16:21.324058+09:00",
+  "MasterHash": "7e989af7c114529201e7e024deaa5a75",
+  "TotalSize": 3310,
+  "Items": [
+    {
+      "Name": "TestFieldTypes.json",
+      "Size": 980,
+      "Hash": "9a21c887dfd4f775dfcb0416ddbb4803",
+      "LastUpdatedDate": "2026-07-30T14:16:21.3215433+09:00"
+    },
+    {
+      "Name": "ItemCategory.json",
+      "Size": 273,
+      "Hash": "dd5611b6c49f240340c3e20982ccbf68",
+      "LastUpdatedDate": "2026-07-30T14:16:21.3219518+09:00"
+    },
+    {
+      "Name": "Item.json",
+      "Size": 591,
+      "Hash": "f6a6837c168ef4dd14784ff6c87e5a3c",
+      "LastUpdatedDate": "2026-07-30T14:16:21.3224109+09:00"
+    },
+    {
+      "Name": "Localization.json",
+      "Size": 371,
+      "Hash": "f123a78d66d0dd9a88c8afa4a2cc9981",
+      "LastUpdatedDate": "2026-07-30T14:16:21.3230918+09:00"
+    },
+    {
+      "Name": "ArrayTypes.json",
+      "Size": 949,
+      "Hash": "47951d505eb7f0b0ebb4e48482fed92e",
+      "LastUpdatedDate": "2026-07-30T14:16:21.3236765+09:00"
+    },
+    {
+      "Name": "ServerTuning.json",
+      "Size": 146,
+      "Hash": "74913010e9bab6e26584a3a170e67d21",
+      "LastUpdatedDate": "2026-07-30T14:16:21.3240568+09:00"
+    }
+  ]
+}

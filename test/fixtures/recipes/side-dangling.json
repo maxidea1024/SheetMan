@@ -1,0 +1,70 @@
+{
+  // Regression recipe for the `core.xlsx` fixture.
+  //
+  // Every path is relative to the repository root, which is where the test
+  // harness invokes SheetMan from. Output lands in test/fixtures/output/side-dangling
+  // (transient, gitignored) and is compared against test/fixtures/golden/core.
+  //
+  // Both JSON row formats are exported because they take different code paths
+  // in JsonExporter and only the compact one is currently correct.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/side-dangling",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ],
+    "GoogleSheets": []
+  },
+
+  "Exports": {
+    "Binary": [
+      {
+        "Path": "test/fixtures/output/side-dangling/binary",
+        "FileExtension": ".table",
+        "TargetSide": "c"
+      }
+    ],
+    "Json": [
+      {
+        "Path": "test/fixtures/output/side-dangling/json-compact",
+        "UseCompactRowFormat": true,
+        "Indented": true,
+        "TargetSide": "c"
+      },
+      {
+        "Path": "test/fixtures/output/side-dangling/json-named",
+        "UseCompactRowFormat": false,
+        "Indented": true,
+        "TargetSide": "c"
+      }
+    ],
+    "MongoDb": [],
+    "MySql": []
+  },
+
+  "CodeGenerations": {
+    "Cpp": [],
+    "CSharp": [
+      {
+        "Path": "test/fixtures/output/side-dangling/csharp",
+        "Namespace": "SheetMan.Fixtures.X",
+        "AccessorName": "XAccessor",
+        "TargetSide": "c"
+      }
+    ],
+    "Typescript": [
+      {
+        "Path": "test/fixtures/output/side-dangling/typescript",
+        "TargetSide": "c"
+      }
+    ],
+    "Html": [
+      {
+        "Path": "test/fixtures/output/side-dangling/html",
+        "TargetSide": "c"
+      }
+    ]
+  }
+}

@@ -4,15 +4,16 @@ using Newtonsoft.Json;
 namespace SheetMan.Models
 {
     /// <summary>
-    ///
+    /// Unused. A table's rows are plain `List&lt;Cell&gt;` instead, because nothing needed
+    /// a row to carry anything beyond its cells and the cells already know where they are.
     /// </summary>
     public class Row
     {
-        /// <summary>로우가 정의된 위치</summary>
+        /// <summary>Where the row starts.</summary>
         [JsonIgnore]
         public Location Location { get; set; }
 
-        /// <summary>로우안에 위치한 셀 목록</summary>
+        /// <summary>Cells of the row.</summary>
         public List<Cell> Cells { get; set; }
     }
 }

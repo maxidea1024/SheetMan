@@ -1,20 +1,4 @@
-/*
-
-    1. 첫번째 필드는 무조건 index 필드여야함.
-       이름은 index 여야하고, 타입은 int32여야한다. (이름은 상관 없나?)
-
-    2. 필드 이름 중복 체크
-
-    3. 각 엔티티 이름 중복 체크 (엔티티 종류가 다를 경우에는 중복을 허용해도 되려나?)
-
-    4. 각 셀 값들이 정상적인지 체크.(모호한 값일 경우에는 에러내지 경고, 옵션에 따라 달리 동작)
-
-    5. target-side 마스킹 대응.
-
-    6. 기타 오류 사항 꼼꼼히 체크. (케이스별 확인)
-*/
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SheetMan.Models.Raw;
 using SheetMan.Models;
 using System;
@@ -23,34 +7,42 @@ using SheetMan.Recipe;
 using Serilog;
 using SheetMan.Extensions;
 using System.Linq;
+using System.Globalization;
 
 namespace SheetMan.Cooking
 {
     public partial class ModelCooker
     {
         /*
+            Row layout of each entity, top to bottom. The first two rows are the same for
+            all three; what follows differs.
 
-        table: 3x7
-           marker
-           table-comment
-           field names
-           field comments
-           field types
-           field detail types (foreign/enum only)
-           target side
+            table  (at least 3 columns wide)
+               ~~table:Name[:side]~~
+               table description
+               field names          <- a `*` prefix marks a secondary index
+               field descriptions
+               field types
+               field detail types   <- enum name, or reference target. Blank otherwise.
+               target sides
+               data rows...
 
-        enum: 3x3
-           marker
-           comment
-           header
-           row=> 0=definition, 1=value, 2=label-comment
+            enum  (3 columns)
+               ~~enum:Name[:side]~~
+               enum description
+               column captions      <- for human readers only; skipped when parsing
+               label | value | description ...
 
-        const: 5x3
-           marker
-           comment
-           header
-           row=> 0=definition, 1=type, 2=detail-type, 3=value, 4=cosntant-comment
+            const  (5 columns)
+               ~~const:Name[:side]~~
+               set description
+               column captions      <- for human readers only; skipped when parsing
+               name | type | detail type | value | description ...
 
+            A definition extends downward while the cell in its first column is non-empty,
+            and rightward while cells are non-empty, so an entity is bounded by blank cells
+            rather than by a declared size. The minimum heights in _possibleEntities are
+            the body only - hence the `- 2`, which drops the marker and description rows.
         */
 
         public class Size
@@ -87,26 +79,58 @@ namespace SheetMan.Cooking
 
         private Model _model;
 
+        /// <summary>Separator for array cells, taken from the recipe.</summary>
+        private char _arrayDelimiter = ';';
+
+        /// <summary>Whether to give an enum a zero label it did not declare.</summary>
+        private bool _autoInsertEnumNoneLabel = true;
+
+        /// <summary>Number formats accepted in an integer cell.</summary>
+        private const NumberStyles IntegerStyles = NumberStyles.Integer | NumberStyles.AllowThousands;
+
+        /// <summary>Number formats accepted in a float or double cell.</summary>
+        private const NumberStyles DecimalStyles = NumberStyles.Float | NumberStyles.AllowThousands;
+
         public Model Cook(Options options, RecipeModel recipeModel, RawModel rawModel)
         {
-            //foreach (var rawSheet in rawModel.Sheets)
-            //{
-            //    Log.Information($"RawSheet: Name={rawSheet.Location.Sheet}, Width={rawSheet.ColumnCount}, Height={rawSheet.Rows.Count}");
-            //    Log.Information($"   LastRowCell: {rawSheet.Rows[^1][0].Value}");
-            //
-            //    foreach (var row in rawSheet.Rows)
-            //        Log.Information($"...{row[0].Value} {row[0].Location}");
-            //}
-
             var result = new Model();
 
             _model = result;
+            _arrayDelimiter = ResolveArrayDelimiter(recipeModel);
+            _autoInsertEnumNoneLabel = recipeModel.AutoInsertEnumNoneLabel;
 
             ParseRawModel(rawModel, result);
 
-            result.SolveTableCrossReferencings();
+            // Resolution and validation share one collector, so a workbook comes back
+            // with everything wrong with it rather than one problem per run.
+            var diagnostics = new Diagnostics();
+
+            result.SolveTableCrossReferencings(diagnostics);
+
+            // Runs after resolution: validation follows references to check that what
+            // they point at exists.
+            ValidateModel(result, recipeModel, diagnostics);
+
+            diagnostics.ThrowIfAny("The workbook did not pass validation.");
 
             return result;
+        }
+
+        /// <summary>
+        /// Reads the array delimiter from the recipe, rejecting anything that is not
+        /// exactly one character.
+        /// </summary>
+        private static char ResolveArrayDelimiter(RecipeModel recipeModel)
+        {
+            string delimiter = recipeModel.ArrayDelimiter;
+
+            if (string.IsNullOrEmpty(delimiter) || delimiter.Length != 1)
+            {
+                throw new SheetManException(
+                    $"Recipe setting `ArrayDelimiter` is `{delimiter}`, but it must be exactly one character.");
+            }
+
+            return delimiter[0];
         }
 
         private void ParseRawModel(RawModel rawModel, Model targetModel)
@@ -162,12 +186,6 @@ namespace SheetMan.Cooking
 
             Log.Information($"Parsing enum `{result.Name}`. ({result.Location})");
 
-            //헤더 로우로 placeholder에 해당하므로 무시(단순 표기 용도임)
-            //var headerRow = def.rawSheet.Rows[def.rect.y];
-            //string headerNameCol = headerRow[def.rect.x + 0];
-            //string headerValueCol = headerRow[def.rect.x + 1];
-            //string headerDescCol = headerRow[def.rect.x + 2];
-
             int dataRowStart = def.rect.y + 1; // skip header row
             int dataRowEnd = def.rect.y + def.rect.height;
             int dataColStart = def.rect.x;
@@ -197,23 +215,30 @@ namespace SheetMan.Cooking
                 if (result.Contains(name))
                     throw new SheetManException(nameCol.Location, $"Label '{name}' is already defined in enum '{result.Name}'.");
 
+                if (!int.TryParse(valueCol.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int labelValue))
+                {
+                    throw new SheetManException(valueCol.Location,
+                        $"Label '{name}' in enum '{result.Name}' has value `{valueCol.Value}`, which is not an integer.");
+                }
+
                 // Add a label.
                 var label = new Models.Enum.Label
                 {
                     Location = nameCol.Location,
                     RawName = rawName,
                     Name = name,
-                    Value = int.Parse(valueCol.Value),
+                    Value = labelValue,
                     Comment = descCol.Value
                 };
                 result.Labels.Add(label);
             }
 
-            // If the label "None" is not defined and there is no entry corresponding to the number 0,
-            // Automatically add "None" or number 0 entry.
-
-            //TODO 옵션으로 처리하는게 어떠려나?
-            if (!result.Contains("None") && !result.Contains(0))
+            // An enum with no zero entry gives every unassigned field of that type a
+            // value with no name, so one is supplied unless the recipe says otherwise.
+            //
+            // Only when the sheet declares neither the name nor the value: an enum that
+            // already has something at zero is left exactly as written.
+            if (_autoInsertEnumNoneLabel && !result.Contains("None") && !result.Contains(0))
             {
                 var noneLabel = new Models.Enum.Label
                 {
@@ -241,13 +266,6 @@ namespace SheetMan.Cooking
                 Name = def.name,
                 Comment = def.comment
             };
-
-            //헤더 로우로 placeholder에 해당하므로 무시(단순 표기 용도임)
-            //var headerRow = def.rawSheet.Rows[def.rect.y];
-            //string headerNameCol = headerRow[def.rect.x + 0];
-            //string headerTypeCol = headerRow[def.rect.x + 1];
-            //string headerValueCol = headerRow[def.rect.x + 2];
-            //string headerDescCol = headerRow[def.rect.x + 3];
 
             //TODO detail type이 따로 있으므로 따로 처리해야함.
 
@@ -290,7 +308,7 @@ namespace SheetMan.Cooking
                         $"Constant '{name}' is already defined in constant-set '{result.Name}'.");
                 }
 
-                string typeName = typeCol.Value.ToLower(); // normalize
+                string typeName = typeCol.Value.ToLowerInvariant(); // normalize
 
                 RequiresValidTypeName(typeName, typeCol.Location);
 
@@ -370,7 +388,11 @@ namespace SheetMan.Cooking
 
                 // Names that can be used as variable or class names are normalized to Pascal case at the time of calling.
                 var rawFieldName = fieldNameCell.Value;
-                var fieldName = rawFieldName.ToPascalCase(); //이렇게 되면 serial field naming 규칙에 문제가 없나?
+                // Pascal-casing before the serial-field rules see the name is fine: the
+                // rules look at where the digits are, and casing moves neither the digits
+                // nor their order. `text_en_1` becomes `TextEn1`, which still reads as
+                // stem `TextEn` and number 1.
+                var fieldName = rawFieldName.ToPascalCase();
 
                 if (IsIgnorantName(fieldName))
                 {
@@ -390,18 +412,28 @@ namespace SheetMan.Cooking
                     TypeLocation = fieldTypeCell.Location,
                     DetailTypeLocation = fieldDetailTypeCell.Location,
                     TargetSideLocation = fieldTargetSideCell.Location,
-                    TargetSide = ParseTargetSide(fieldTargetSideCell.Value.ToLower(), fieldTargetSideCell.Location),
+                    TargetSide = ParseTargetSide(fieldTargetSideCell.Value.ToLowerInvariant(), fieldTargetSideCell.Location),
                     Index = table.Fields.Count,
                     Comment = fieldCommentCell.Value
                 };
 
+                // A single leading `*` marks a secondary index.
                 bool indexing = false;
                 if (fieldName.StartsWith("*"))
                 {
-                    //연이어 있는것들도 제거하는게 좋을까?
-                    //아니면 한개만 지정하라고 하는게 좋을까? (까탈스럽나?)
                     fieldName = fieldName[1..].Trim();
                     indexing = true;
+
+                    // Exactly one, not "one or more". Stripping every `*` would quietly
+                    // accept `**Name` as a typo for `*Name`, and leaving the extras in
+                    // place produced `` `*Name` is not a valid identifier `` - a message
+                    // that names the symptom rather than the mistake.
+                    if (fieldName.StartsWith("*"))
+                    {
+                        throw new SheetManException(fieldNameCell.Location,
+                            $"Field name `{rawFieldName}` has more than one leading `*`. " +
+                            $"Use a single `*` to mark a secondary index field.");
+                    }
                 }
                 field.Indexing = (colIdx == def.rect.x) || indexing;
 
@@ -415,8 +447,16 @@ namespace SheetMan.Cooking
                 field.RawName = rawFieldName;
                 field.Name = fieldName;
 
-                var fieldType = fieldTypeCell.Value.ToLower();
+                var fieldType = fieldTypeCell.Value.ToLowerInvariant();
                 RequiresValidTypeName(fieldType, fieldTypeCell.Location);
+
+                // `int[]`, `string[]`, `enum[]`: one cell holding a delimited list.
+                // The bracket suffix is peeled off here so the element name goes
+                // through exactly the same handling as a scalar, and put back when the
+                // type is finally resolved.
+                bool isArrayField = fieldType.EndsWith("[]");
+                if (isArrayField)
+                    fieldType = fieldType.Substring(0, fieldType.Length - 2).Trim();
 
                 if (fieldType == "enum")
                 {
@@ -424,6 +464,17 @@ namespace SheetMan.Cooking
                         throw new SheetManException(fieldDetailTypeCell.Location, $"In case of enum type, enum name must be specified in detail-type.");
 
                     fieldType = fieldDetailTypeCell.Value;
+                }
+
+                if (isArrayField && fieldType == "foreign")
+                {
+                    // Deliberately unsupported rather than half-supported. An array of
+                    // references means resolving a variable number of targets per row,
+                    // which the generated readers have no shape for; letting it parse
+                    // would produce code that silently never resolves.
+                    throw new SheetManException(fieldTypeCell.Location,
+                        "`foreign[]` is not supported. Use a serial field (Ref1, Ref2, ...) for a fixed " +
+                        "number of references, or a plain `foreign` for a single one.");
                 }
 
                 if (fieldType == "foreign")
@@ -435,7 +486,15 @@ namespace SheetMan.Cooking
                         throw new SheetManException(fieldDetailTypeCell.Location, $"In case of foreign type, `RefTable[.RefFieldName]` must be specified in detail-type.");
 
                     field.TypeName = "$Unresolved$";
-                    field.Type = Models.ValueType.Unresolved;
+
+                    // Whichever form the reference takes, the cell itself holds the
+                    // referenced table's index, so that is what the data pass must
+                    // parse. SolveTableCrossReferencings overwrites Type afterwards
+                    // with the type the generated code should expose, and
+                    // BinaryExporter forces Int32 back for any IsRef field when it
+                    // writes. Leaving it Unresolved here made the dotted form die in
+                    // ParseValue before resolution ever ran.
+                    field.Type = Models.ValueType.Int32;
 
                     int dot = detailTypeName.IndexOf(".");
                     if (dot < 0)
@@ -443,26 +502,44 @@ namespace SheetMan.Cooking
                         // Names that can be used as variable or class names are normalized to Pascal case at the time of calling.
                         field.RefTableName = detailTypeName.ToPascalCase();
                         field.RefFieldName = null;
-
-                        field.Type = Models.ValueType.Int32;
                     }
                     else
                     {
                         // Names that can be used as variable or class names are normalized to Pascal case at the time of calling.
-                        field.RefTableName = detailTypeName.Substring(0, dot - 1).ToPascalCase();
+                        field.RefTableName = detailTypeName.Substring(0, dot).ToPascalCase();
                         field.RefFieldName = detailTypeName.Substring(dot + 1).ToPascalCase();
 
                         //TODO
                         // .index는 레코드를 의미하므로 레코드 자체를 가리키도록 무효화시킴.
                         // 하지만, 좀더 생각해볼 필요가 있음.
-                        if (field.RefFieldName.ToLower() == "index")
+                        if (field.RefFieldName.ToLowerInvariant() == "index")
                             field.RefFieldName = "";
                     }
                 }
                 else
                 {
+                    // TypeName stays the element's name - for an enum array that is the
+                    // enum declaration to look up, and the generators append the
+                    // brackets themselves.
                     field.TypeName = fieldType;
-                    field.Type = ParseValueType(fieldType, fieldTypeCell.Location);
+
+                    var elementType = ParseValueType(fieldType, fieldTypeCell.Location);
+
+                    if (isArrayField)
+                    {
+                        var arrayType = Models.ValueTypes.ArrayOf(elementType);
+                        if (arrayType == Models.ValueType.None)
+                        {
+                            throw new SheetManException(fieldTypeCell.Location,
+                                $"type `{fieldType}` cannot be used as an array element.");
+                        }
+
+                        field.Type = arrayType;
+                    }
+                    else
+                    {
+                        field.Type = elementType;
+                    }
                 }
 
                 table.Fields.Add(field);
@@ -489,16 +566,10 @@ namespace SheetMan.Cooking
                     var rawCell = def.rawSheet.Rows[rowIdx][dataColumnOffsets[i]];
                     var value = ParseValue(field.Type, field.EnumOrNull, rawCell.Value, rawCell.Location);
 
-                    if (field.Indexing)
-                    {
-                        //TODO optimization
-                        //여러개의 오류를 한번에 트래킹 하는게 좋을듯 하다.
-                        for (int yy = 0; yy < table.Data.Count; yy++)
-                        {
-                            if (value.Equals(table.Data[yy][i].Value)) //object끼리 비교시에는 object.Equals 메소드를 통해야만함!
-                                throw new SheetManException(rawCell.Location, $"Value `{value}` is duplicated. The data in the field specified by the index must be unique.");
-                        }
-                    }
+                    // Index uniqueness is checked in ValidateModel rather than here.
+                    // Doing it inline compared each new value against every row read
+                    // so far - quadratic - and threw on the first duplicate, so a sheet
+                    // with several had to be fixed one error per run.
 
                     row.Add(new Cell
                     {
@@ -662,7 +733,7 @@ namespace SheetMan.Cooking
                 tokens[i] = tokens[i].Trim();
 
             // Type
-            outType = tokens[0].ToLower();
+            outType = tokens[0].ToLowerInvariant();
 
             // Check if it is a recognizable entity type.
             if (!_possibleEntities.TryGetValue(outType, out outMinSize))
@@ -674,7 +745,7 @@ namespace SheetMan.Cooking
 
             // TargetSide
             if (tokens.Length > 2)
-                outTargetSide = tokens[2].ToLower();
+                outTargetSide = tokens[2].ToLowerInvariant();
 
             return true;
         }
@@ -699,6 +770,18 @@ namespace SheetMan.Cooking
 
         private Models.ValueType ParseValueType(string typeName, Location location)
         {
+            if (typeName.EndsWith("[]"))
+            {
+                string elementName = typeName.Substring(0, typeName.Length - 2).Trim();
+                var elementType = ParseValueType(elementName, location);
+
+                var arrayType = Models.ValueTypes.ArrayOf(elementType);
+                if (arrayType == Models.ValueType.None)
+                    throw new SheetManException(location, $"type `{elementName}` cannot be used as an array element.");
+
+                return arrayType;
+            }
+
             // Primitive types.
             switch (typeName)
             {
@@ -722,6 +805,9 @@ namespace SheetMan.Cooking
 
         private object ParseValue(Models.ValueType type, Models.Enum enumm, string rawValue, Location location)
         {
+            if (Models.ValueTypes.IsArray(type))
+                return ParseArrayValue(type, enumm, rawValue, location);
+
             try
             {
                 switch (type)
@@ -730,27 +816,29 @@ namespace SheetMan.Cooking
                         return rawValue;
 
                     case Models.ValueType.Bool:
-                        //return bool.Parse(rawValue);
-                        return ParseBool(rawValue);
+                        return ParseBool(rawValue, location);
 
+                    // Thousands separators are accepted on the numeric types, because a
+                    // designer reading a column of large numbers writes `1,000,000`. This
+                    // is only unambiguous under an invariant culture, where a comma can
+                    // never be the decimal point.
                     case Models.ValueType.Int32:
-                        return int.Parse(rawValue);
+                        return int.Parse(rawValue, IntegerStyles, CultureInfo.InvariantCulture);
 
                     case Models.ValueType.Int64:
-                        return long.Parse(rawValue);
+                        return long.Parse(rawValue, IntegerStyles, CultureInfo.InvariantCulture);
 
                     case Models.ValueType.Float:
-                        return float.Parse(rawValue);
+                        return float.Parse(rawValue, DecimalStyles, CultureInfo.InvariantCulture);
 
                     case Models.ValueType.Double:
-                        return double.Parse(rawValue);
+                        return double.Parse(rawValue, DecimalStyles, CultureInfo.InvariantCulture);
 
                     case Models.ValueType.TimeSpan:
-                        return TimeSpan.Parse(rawValue);
+                        return TimeSpan.Parse(rawValue, CultureInfo.InvariantCulture);
 
                     case Models.ValueType.DateTime:
-                        return DateTime.Parse(rawValue);
-                        //return ParseDateTime(rawValue);
+                        return DateTime.Parse(rawValue, CultureInfo.InvariantCulture);
 
                     case Models.ValueType.Uuid:
                         return Guid.Parse(rawValue);
@@ -759,67 +847,117 @@ namespace SheetMan.Cooking
                         return enumm.GetLabel(rawValue, location).Value;
 
                     case Models.ValueType.ForeignRecord:
-                        return int.Parse(rawValue);
+                        return int.Parse(rawValue, IntegerStyles, CultureInfo.InvariantCulture);
 
                     default:
                         throw new Exception($"not implemented value type {type}");
                 }
             }
+            catch (SheetManException)
+            {
+                // Already carries its own message and location - an enum label that does
+                // not exist, or a boolean spelling that is not recognized. Wrapping it
+                // would restate the obvious around a better explanation.
+                throw;
+            }
             catch (Exception ex)
             {
+                // Whatever the framework parsers throw: FormatException, OverflowException
+                // and friends, whose messages name the problem but not the cell.
                 throw new SheetManException(location, $"Cannot parse `{rawValue}` as a value of type `{type}`. ({ex.Message})");
             }
         }
 
-        private bool ParseBool(string value)
+        /// <summary>
+        /// Splits a delimited cell and parses each element.
+        ///
+        /// An empty cell is an empty array rather than an error: a row that simply has
+        /// no values for the column is the common case, and rejecting it would force
+        /// designers to invent a placeholder.
+        ///
+        /// Elements are trimmed, so `1; 2 ;3` reads the same as `1;2;3`.
+        /// </summary>
+        private object ParseArrayValue(Models.ValueType arrayType, Models.Enum enumm, string rawValue, Location location)
         {
-            if (value.Length == 0) // 비워두면 false로 인식함.
-            {
-                //strict 모드에서는 오류로 간주하는게 좋을듯..
-                return false;
-            }
+            var elementType = Models.ValueTypes.ElementOf(arrayType);
 
-            value = value.ToUpper();
-            if (value == "N" || value == "NO" || value == "FALSE" || value == "0")
-                return false;
+            if (string.IsNullOrWhiteSpace(rawValue))
+                return System.Array.CreateInstance(ElementClrType(elementType, enumm), 0);
 
-            if (value == "Y" || value == "YES" || value == "TRUE" || value == "1")
-                return true;
+            var parts = rawValue.Split(_arrayDelimiter);
+            var result = System.Array.CreateInstance(ElementClrType(elementType, enumm), parts.Length);
 
-            //TODO 좀 모호한 상태가 아닐런지? 걍 오류 처리하는게 좋을듯도? 아니면 strict 모드에서만??
-            if (double.TryParse(value, out double i))
-                return i != 0.0;
+            for (int i = 0; i < parts.Length; i++)
+                result.SetValue(ParseValue(elementType, enumm, parts[i].Trim(), location), i);
 
-            return false;
+            return result;
         }
 
-        private System.DateTime ParseDateTime(string value)
+        /// <summary>
+        /// The CLR element type to allocate an array of.
+        ///
+        /// Typed rather than object[]: the exporters cast each element to its concrete
+        /// type, and JSON serialization of an object[] would render enums as bare
+        /// integers inconsistently with the scalar path.
+        /// </summary>
+        private static System.Type ElementClrType(Models.ValueType elementType, Models.Enum enumm)
         {
-            // Seconds part is omittable.
-            if (value.Length != 15 || value.Length != 13)
-                throw new SheetManException("datetime format must be like 'YYYYmmdd_HHMMSS' or 'YYYYmmdd_HHMM'");
+            switch (elementType)
+            {
+                case Models.ValueType.String: return typeof(string);
+                case Models.ValueType.Bool: return typeof(bool);
+                case Models.ValueType.Int32: return typeof(int);
+                case Models.ValueType.Int64: return typeof(long);
+                case Models.ValueType.Float: return typeof(float);
+                case Models.ValueType.Double: return typeof(double);
+                case Models.ValueType.TimeSpan: return typeof(System.TimeSpan);
+                case Models.ValueType.DateTime: return typeof(System.DateTime);
+                case Models.ValueType.Uuid: return typeof(System.Guid);
+                // Enum labels and record references are both stored as their integer.
+                case Models.ValueType.Enum: return typeof(int);
+                case Models.ValueType.ForeignRecord: return typeof(int);
+                default: return typeof(object);
+            }
+        }
 
-            var year = value.Substring(0, 4);
-            var month = value.Substring(4, 2);
-            var day = value.Substring(6, 2);
-            var hour = value.Substring(9, 2);
-            var min = value.Substring(11, 2);
+        /// <summary>
+        /// Reads a boolean cell.
+        ///
+        /// Several spellings are accepted because designers reach for whichever reads
+        /// best in the sheet: Y/N, YES/NO, TRUE/FALSE, 1/0. Case does not matter.
+        ///
+        /// An empty cell is false. That is deliberate - a blank means "not set" and
+        /// false is the useful reading of that - and it is the one lenient case here.
+        ///
+        /// Anything else is an error. It used to fall through to false, so `Yes please`
+        /// or a misspelled `Ture` became false silently: exactly the human mistake this
+        /// tool exists to catch, turned into wrong data instead of a message.
+        /// </summary>
+        private bool ParseBool(string value, Location location)
+        {
+            if (value.Length == 0)
+                return false;
 
-            string sec;
-            if (value.Length == 15)
-                sec = value.Substring(13, 2);
-            else
-                sec = "0"; // Seconds part is omitted.
+            switch (value.ToUpperInvariant())
+            {
+                case "N":
+                case "NO":
+                case "FALSE":
+                    return false;
 
-            //TODO 이 값이 유효한지를 체크하는 기능을 넣어주는게 좋을듯..
+                case "Y":
+                case "YES":
+                case "TRUE":
+                    return true;
+            }
 
-            return new System.DateTime(
-                int.Parse(year),
-                int.Parse(month),
-                int.Parse(day),
-                int.Parse(hour),
-                int.Parse(min),
-                int.Parse(sec));
+            // Numeric spellings, so a column of counts can be read as flags: zero is
+            // false and anything else is true, as in C.
+            if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out double number))
+                return number != 0.0;
+
+            throw new SheetManException(location,
+                $"`{value}` is not a boolean. Use Y/N, YES/NO, TRUE/FALSE, 1/0, or leave the cell empty for false.");
         }
 
         private void CheckPrimaryIndexValidity(Models.Field field)
@@ -841,6 +979,12 @@ namespace SheetMan.Cooking
 
         private void RequiresValidTypeName(string typeName, Location location)
         {
+            // `int[]`, `string[]` and so on: one cell holding several delimited
+            // values. Validity of the element name is the same question as for a
+            // scalar, so strip the brackets and ask that.
+            if (typeName.EndsWith("[]"))
+                typeName = typeName.Substring(0, typeName.Length - 2).Trim();
+
             switch (typeName)
             {
                 case "string":

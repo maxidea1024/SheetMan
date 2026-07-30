@@ -203,28 +203,14 @@ namespace SheetMan.Extensions
 
         private static readonly char[] Delimeters = { ' ', '-', '_' };
 
-        private static bool IsFullyUppercasedOrUnderscoresOnly(string source)
-        {
-            //TODO 알파벳이 두글자 이상 연속으로 있는 경우에만..?
-            //이거 판단하기가 좀 애매한데?
-            foreach (var c in source)
-            {
-                if (!(c == '_' || char.IsUpper(c)))
-                    return false;
-            }
-
-            return true;
-        }
-
         private static string SymbolsPipe(string source, char mainDelimeter, Func<char, bool, char[]> newWordSymbolHandler)
         {
             if (string.IsNullOrEmpty(source))
                 return source;
 
-            // 모두 대문자이거나 "_"인 경우에는 변환을 거치지 않고 그냥 반환함.
-            // 모든 케이스 타입에 해당하는지는 생각을 해봐야..
-            //if (IsFullyUppercasedOrUnderscoresOnly(source))
-            //    return source;
+            // No special case for an all-caps name. Pascal-casing already preserves a
+            // run of capitals - `HP` stays `HP` - because every uppercase character is
+            // treated as starting a word.
 
             // 앞쪽, 뒷쪽 "_" 문자들은 유지해주자.
             string headUnderscores = "";

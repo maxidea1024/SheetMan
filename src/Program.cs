@@ -42,13 +42,31 @@ namespace SheetMan
             }
 
             Options options = null;
-            var result = parser.ParseArguments<Options>(args)
+            parser.ParseArguments<Options>(args)
                 .WithParsed(r => { options = r; });
 
+            // WithParsed only fires on success, so a rejected argument leaves `options`
+            // null. Every path below dereferences it, so bail out here instead.
+            // CommandLineParser has already written the error and the help text.
+            if (options == null)
+                return 1;
 
             SetupLogging(options.Verbose, options.Silent);
 
+            // Serilog's file sink buffers, so the last writes are lost unless the
+            // logger is closed. Every exit below runs through this.
+            try
+            {
+                return Run(parser, options);
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+        }
 
+        private static int Run(Parser parser, Options options)
+        {
             if (!string.IsNullOrEmpty(options.NewRecipeFilename))
             {
                 var newEmptyRecipe = new RecipeModel();
@@ -76,7 +94,6 @@ namespace SheetMan
                 return 1;
             }
 
-            if (options != null)
             {
                 if (!options.Silent)
                 {
@@ -116,10 +133,6 @@ namespace SheetMan
                 }
 
                 return rc;
-            }
-            else
-            {
-                return 1;
             }
         }
 
@@ -163,6 +176,36 @@ namespace SheetMan
                 if (recipeModel.Exports.Json.Count > 0)
                 {
                     var exporter = new JsonExporter();
+                    exporter.Export(options, recipeModel, model);
+                }
+
+                // Database targets. Unlike the file exporters these publish as they go,
+                // each loading into shadow storage and swapping it in atomically, so a
+                // failure leaves the previous generation of data in place. Atomicity is
+                // per store: files and four databases cannot share one transaction
+                // without a distributed coordinator.
+
+                if (recipeModel.Exports.MySql.Count > 0)
+                {
+                    var exporter = new MySqlExporter();
+                    exporter.Export(options, recipeModel, model);
+                }
+
+                if (recipeModel.Exports.PostgreSql.Count > 0)
+                {
+                    var exporter = new PostgreSqlExporter();
+                    exporter.Export(options, recipeModel, model);
+                }
+
+                if (recipeModel.Exports.MongoDb.Count > 0)
+                {
+                    var exporter = new MongoDbExporter();
+                    exporter.Export(options, recipeModel, model);
+                }
+
+                if (recipeModel.Exports.Redis.Count > 0)
+                {
+                    var exporter = new RedisExporter();
                     exporter.Export(options, recipeModel, model);
                 }
 
@@ -245,13 +288,18 @@ namespace SheetMan
 
                 if (sheetManEx.Details != null && sheetManEx.Details.Count > 0)
                 {
+                    // Header printed once, ahead of the list. It used to be inside the
+                    // loop, so it was repeated before every single entry.
+                    Log.Fatal("");
+                    Log.Fatal("Details:");
+
                     for (int detailIndex = 0; detailIndex < sheetManEx.Details.Count; detailIndex++)
                     {
                         var detail = sheetManEx.Details[detailIndex];
 
-                        Log.Fatal("");
-                        Log.Fatal("Details:");
-                        Log.Fatal($"  [{detailIndex + 1,3}] {detail.Message} at {detail.Location}");
+                        Log.Fatal($"  [{detailIndex + 1,3}] {detail.Message}");
+                        if (detail.Location != null)
+                            Log.Fatal($"        at {detail.Location}");
                     }
                 }
             }

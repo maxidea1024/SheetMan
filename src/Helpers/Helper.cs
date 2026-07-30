@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,11 +9,19 @@ using System.Text;
 namespace SheetMan.Helpers
 {
     /// <summary>
-    ///
+    /// Small shared utilities: name-splitting for serial fields, and content hashing for
+    /// the manifest.
     /// </summary>
     public static class Helper
     {
-        //TODO 아주 제한적으로만 동작하는 함수. 차후에 고칠까?
+        /// <summary>
+        /// The name with every digit removed, which is the stem serial-field columns are
+        /// grouped by: `Text1` and `Text2` both reduce to `Text`.
+        ///
+        /// Digits are dropped wherever they appear rather than only at the end, so a name
+        /// carrying two separate runs of them reduces to something ambiguous. That is
+        /// tolerable because GetSerialFieldPattern has already rejected such names.
+        /// </summary>
         public static string StripNumber(string str)
         {
             string result = "";
@@ -26,7 +34,12 @@ namespace SheetMan.Helpers
             return result;
         }
 
-        //TODO 아주 제한적으로만 동작하는 함수. 차후에 고칠까?
+        /// <summary>
+        /// The digits of a name, joined, which is a serial-field column's sequence number.
+        ///
+        /// The counterpart to <see cref="StripNumber"/>, and subject to the same
+        /// restriction: only meaningful for a name with exactly one run of digits.
+        /// </summary>
         public static string ExtractNumber(string str)
         {
             string result = "";
@@ -40,32 +53,32 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
+        /// MD5 of a byte array, as lower-case hex.
         ///
+        /// MD5 throughout this file, and deliberately: these hashes tell a patcher whether
+        /// a file changed, which is a content-identity question rather than a security
+        /// one. Nothing here defends against a chosen-prefix attack.
         /// </summary>
         public static string CalculateMD5HashFromBytes(byte[] data)
         {
-            using var md5Provider = new MD5CryptoServiceProvider();
+            using var md5Provider = MD5.Create();
             var hash = md5Provider.ComputeHash(data);
             if (hash == null)
                 return "";
-            return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <summary>MD5 of a string's UTF-8 bytes, as lower-case hex.</summary>
         public static string CalculateMD5HashFromString(string str)
         {
-            using var md5Provider = new MD5CryptoServiceProvider();
+            using var md5Provider = MD5.Create();
             var hash = md5Provider.ComputeHash(Encoding.UTF8.GetBytes(str));
             if (hash == null)
                 return "";
-            return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <summary>MD5 of a file's contents, as lower-case hex.</summary>
         public static string CalculateMD5HashFromFile(string filename)
         {
             byte[] data = File.ReadAllBytes(filename);
@@ -73,42 +86,11 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
+        /// One MD5 over several files' contents, in the order given.
         ///
-        /// </summary>
-        public static string CalculateMd5HashForPath(string path, string filePattern = "*.*", bool allDirectories = true)
-        {
-            // assuming you want to include nested folders
-            var files = Directory.GetFiles(path, filePattern, SearchOption.AllDirectories)
-                                 .OrderBy(p => p).ToList();
-
-            MD5 md5 = MD5.Create();
-
-            for (int i = 0; i < files.Count; i++)
-            {
-                string file = files[i];
-
-                // hash path
-                string relativePath = file.Substring(path.Length + 1);
-                byte[] pathBytes = Encoding.UTF8.GetBytes(relativePath.ToLower());
-                md5.TransformBlock(pathBytes, 0, pathBytes.Length, pathBytes, 0);
-
-                // hash contents
-                byte[] contentBytes = File.ReadAllBytes(file);
-
-                if (i == files.Count - 1)
-                    md5.TransformFinalBlock(contentBytes, 0, contentBytes.Length);
-                else
-                    md5.TransformBlock(contentBytes, 0, contentBytes.Length, contentBytes, 0);
-            }
-
-            if (md5.Hash == null)
-                return "";
-
-            return BitConverter.ToString(md5.Hash).Replace("-", "").ToLower();
-        }
-
-        /// <summary>
-        ///
+        /// Order-sensitive, so callers that want a stable result must sort first. Used for
+        /// the manifest's master hash, which answers "did any of this change" in one
+        /// comparison.
         /// </summary>
         public static string CalculateMD5HashFromFiles(string[] filenames)
         {
@@ -129,7 +111,7 @@ namespace SheetMan.Helpers
             if (md5.Hash == null)
                 return "";
 
-            return BitConverter.ToString(md5.Hash).Replace("-", "").ToLower();
+            return BitConverter.ToString(md5.Hash).Replace("-", "").ToLowerInvariant();
         }
     }
 }

@@ -8,18 +8,51 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          # The SDK band is pinned in global.json; this keeps the runner in step
+          # with local builds instead of hardcoding a version in two places.
+          global-json-file: global.json
+
+      # The regression suite type-checks the generated TypeScript with the real
+      # compiler, which is how several long-standing codegen defects surfaced. That
+      # test fails rather than skips when no toolchain is present, so Node is not
+      # optional here.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # The suite compiles the generated C++ and C# and runs both against the
+      # exported binary tables, which is what checks that each reader still agrees
+      # with the writer about the byte format. ubuntu-latest ships g++.
+      - name: Verify C++ toolchain
+        run: g++ --version
+
+      - name: Restore
+        run: dotnet restore SheetMan.slnx
+
+      - name: Build
+        run: dotnet build SheetMan.slnx --no-restore -c Release
+
+      # No "fixtures are up to date" check here on purpose. .xlsx files are zip
+      # archives that embed per-entry timestamps, so regenerating them produces
+      # different bytes every time and any such check would fail on every run.
+      #
+      # What matters is covered anyway: the suite converts the committed workbooks
+      # and compares every artifact against the golden tree, so a fixture that no
+      # longer produces the expected output fails here regardless.
+
+      # The database exporters are tested against real engines, which the test fixture
+      # starts itself with docker compose. ubuntu-latest ships a working Docker.
+      - name: Verify Docker
+        run: docker version --format '{{.Server.Version}}'
+
+      - name: Test
+        run: dotnet test SheetMan.slnx --no-build -c Release --verbosity normal

@@ -1,47 +1,67 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-  </PropertyGroup>
+    <AssemblyName>SheetMan</AssemblyName>
+    <RootNamespace>SheetMan</RootNamespace>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>TRACE;NO_UNITY</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DefineConstants>TRACE;NO_UNITY</DefineConstants>
+    <!--
+      NPOI 2.7+ warns on every build unless the OSMF licence is accepted explicitly.
+    -->
+    <AcceptNPOIOSMFLicense>true</AcceptNPOIOSMFLicense>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\BufferGrowingMode.cs" Link="SheetMan.Runtime\BufferGrowingMode.cs" />
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\ByteArray.cs" Link="SheetMan.Runtime\ByteArray.cs" />
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryConfig.cs" Link="SheetMan.Runtime\LiteBinaryConfig.cs" />
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryException.cs" Link="SheetMan.Runtime\LiteBinaryException.cs" />
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryExtensions.cs" Link="SheetMan.Runtime\LiteBinaryExtensions.cs" />
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryHelper.cs" Link="SheetMan.Runtime\LiteBinaryHelper.cs" />
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryReader.cs" Link="SheetMan.Runtime\LiteBinaryReader.cs" />
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\LiteBinaryWriter.cs" Link="SheetMan.Runtime\LiteBinaryWriter.cs" />
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\PreValidations.cs" Link="SheetMan.Runtime\PreValidations.cs" />
-    <Compile Include="..\lib\Unity\SheetManForUnity\Assets\Plugins\SheetMan.Runtime\TArray.cs" Link="SheetMan.Runtime\TArray.cs" />
+    <!--
+      The LiteBinary readers, embedded so the generators can write them into their
+      output. Each generated target is then self-contained: nothing to install, no
+      include path to configure, and no chance of a consumer pairing generated code
+      with a reader of a different vintage.
+
+      One copy of each source, living under lib/ for anyone reading or editing it
+      directly, so what ships cannot drift from what is committed.
+    -->
+    <EmbeddedResource Include="..\lib\ts\sheetman\lite_binary_reader.ts"
+                      LogicalName="SheetMan.Runtime.Ts.lite_binary_reader.ts" />
+    <EmbeddedResource Include="..\lib\cs\sheetman\LiteBinaryReader.cs"
+                      LogicalName="SheetMan.Runtime.Cs.LiteBinaryReader.cs" />
+    <EmbeddedResource Include="..\lib\cpp\sheetman\lite_binary_reader.h"
+                      LogicalName="SheetMan.Runtime.Cpp.lite_binary_reader.h" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.55.0.2371" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NPOI" Version="2.5.5" />
-    <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
-    <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.75.0.4178" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="NPOI" Version="2.8.0" />
+    <PackageReference Include="Serilog" Version="4.4.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SheetMan.Runtime\" />
+    <!-- Database export targets. MySqlConnector rather than MySql.Data: it is fully
+         async and MIT licensed. -->
+    <PackageReference Include="MySqlConnector" Version="2.6.1" />
+    <PackageReference Include="Npgsql" Version="10.0.3" />
+    <PackageReference Include="MongoDB.Driver" Version="3.10.0" />
+    <PackageReference Include="StackExchange.Redis" Version="3.0.17" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Transitive pull-up, not something this project calls.
+
+      NPOI drags in System.Security.Cryptography.Xml 8.0.2, which carries seven known
+      high-severity advisories. A direct reference is the supported way to lift a
+      transitive dependency onto a patched version; drop it once NPOI ships against
+      a fixed one.
+    -->
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
   </ItemGroup>
 
 </Project>

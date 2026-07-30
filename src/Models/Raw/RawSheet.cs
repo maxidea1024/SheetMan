@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -6,23 +6,36 @@ using System.Collections.Generic;
 namespace SheetMan.Models.Raw
 {
     /// <summary>
-    ///
+    /// One sheet of cells, as read and then squared off by <see cref="Optimize"/>.
     /// </summary>
     public class RawSheet
     {
-        /// <summary></summary>
+        /// <summary>Where the sheet starts, once blank leading rows and columns are trimmed.</summary>
         [JsonIgnore]
         public Location Location { get; set; }
 
-        /// <summary></summary>
+        /// <summary>Width after trimming and padding. Every row has exactly this many cells.</summary>
         public int ColumnCount { get; set; }
 
-        /// <summary></summary>
+        /// <summary>
+        /// Rows of cells.
+        ///
+        /// Rectangular after <see cref="Optimize"/>: the entity scanner indexes rows and
+        /// columns freely, so a ragged grid would have it reading past the end of a short
+        /// row.
+        /// </summary>
         public List<List<RawCell>> Rows { get; set; } = new List<List<RawCell>>();
 
         /// <summary>
+        /// Trims the blank margins off a sheet and squares off what is left.
         ///
+        /// Sheets arrive with whatever shape the author left behind: blank rows above the
+        /// data, blank columns to its left, rows of differing length, and - from Google
+        /// Sheets - interior rows omitted entirely rather than sent as blanks. All of the
+        /// scanning that follows indexes rows and columns directly, so it is squared off
+        /// here once instead of every reader guarding against the shape.
         /// </summary>
+        /// <returns>False when nothing usable is left, so the caller can drop the sheet.</returns>
         public bool Optimize()
         {
             // Remove top empty rows
@@ -49,12 +62,51 @@ namespace SheetMan.Models.Raw
             if (bottomEmptyRowCount > 0)
                 this.Rows.RemoveRange(this.Rows.Count - bottomEmptyRowCount, bottomEmptyRowCount);
 
+            // A row with no cells at all carries no position information, which the
+            // padding below would have to invent. Such a row is indistinguishable from
+            // an absent one - both importers skip rows the source never materialized -
+            // and the gap-filling pass at the end reconstructs interior gaps anyway.
+            this.Rows.RemoveAll(row => row.Count == 0);
+
             // Expand max columns.
             int maxColumnCount = 0;
             foreach (var row in this.Rows)
             {
                 if (row.Count > maxColumnCount)
                     maxColumnCount = row.Count;
+            }
+
+            // Padding runs before the column scans, not after.
+            //
+            // Sheets arrive ragged: each importer emits cells only up to the last one
+            // present in that row. IsWholeEmptyColumn indexes every row at the same
+            // column, so scanning first threw IndexOutOfRange as soon as a row was
+            // shorter than the run of leading blank columns. Squaring the sheet off
+            // first also lets the leading-column removal below apply uniformly -
+            // previously it skipped short rows, which shifted the remaining rows out
+            // of alignment with them.
+            foreach (var row in this.Rows)
+            {
+                int fill = maxColumnCount - row.Count;
+                if (fill <= 0)
+                    continue;
+
+                // Anchored on the row's own last cell, which already carries the right
+                // row index. The previous version tracked a separate counter that was
+                // only advanced for rows it padded, so it drifted out of step with the
+                // sheet as soon as one row was already full width.
+                var anchor = row[row.Count - 1].Location;
+
+                for (int i = 0; i < fill; i++)
+                {
+                    RawCell rawCell = new RawCell
+                    {
+                        Location = anchor.CloneWithXY(anchor.Column + 1 + i, anchor.Row),
+                        Value = "",
+                        Note = ""
+                    };
+                    row.Add(rawCell);
+                }
             }
 
             int leftEmptyColumnCount = 0;
@@ -69,38 +121,7 @@ namespace SheetMan.Models.Raw
             {
                 maxColumnCount -= leftEmptyColumnCount;
                 foreach (var row in this.Rows)
-                {
-                    if (row.Count >= leftEmptyColumnCount)
-                        row.RemoveRange(0, leftEmptyColumnCount);
-                }
-            }
-
-            int rowIndex = this.Location.Row + topEmptyRowCount;
-            foreach (var row in this.Rows)
-            {
-                int fill = maxColumnCount - row.Count;
-                if (fill == 0)
-                    continue;
-
-                int colIndex = row.Count > 0 ? row[^1].Location.Column + 1 : this.Location.Column;
-
-                for (int i = 0; i < fill; i++)
-                {
-                    RawCell rawCell = new RawCell
-                    {
-                        Location = new Location
-                        {
-                            Filename = this.Location.Filename,
-                            Sheet = this.Location.Sheet,
-                            Column = colIndex + i + leftEmptyColumnCount,
-                            Row = rowIndex
-                        },
-                        Value = "",
-                        Note = ""
-                    };
-                    row.Add(rawCell);
-                }
-                rowIndex++;
+                    row.RemoveRange(0, leftEmptyColumnCount);
             }
 
             int rightEmptyColumnCount = 0;
@@ -144,11 +165,17 @@ namespace SheetMan.Models.Raw
                         for (int insertion = 0; insertion < distance - 1; insertion++)
                         {
                             var row = new List<RawCell>(maxColumnCount);
+                            var origin = currentRow[0].Location;
 
                             for (int colIdx = 0; colIdx < maxColumnCount; colIdx++)
                             {
                                 var cell = new RawCell {
-                                    Location = currentRow[0].Location.CloneWithXY(currentRow[0].Location.Column + colIdx, currentRow[0].Location.Row + rowIdx + 1),
+                                    // `insertion`, not `rowIdx`: these rows sit one
+                                    // after another below the current row. Using the
+                                    // outer loop index numbered them by their position
+                                    // in the sheet instead, so any diagnostic landing
+                                    // on a filled row pointed at an unrelated cell.
+                                    Location = origin.CloneWithXY(origin.Column + colIdx, origin.Row + insertion + 1),
                                     Value = "",
                                     Note = ""
                                 };
@@ -170,6 +197,7 @@ namespace SheetMan.Models.Raw
             return this.Rows.Count > 0 && maxColumnCount > 0;
         }
 
+        /// <summary>Whether every cell in a row is empty.</summary>
         private bool IsWholeEmptyRow(List<RawCell> row)
         {
             foreach (var cell in row)
@@ -181,6 +209,12 @@ namespace SheetMan.Models.Raw
             return true;
         }
 
+        /// <summary>
+        /// Whether a column is empty in every row.
+        ///
+        /// Requires the rows to be padded to a common width first - it indexes every row
+        /// at the same position.
+        /// </summary>
         private bool IsWholeEmptyColumn(List<List<RawCell>> rows, int column)
         {
             foreach (var row in rows)

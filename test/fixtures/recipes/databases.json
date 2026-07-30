@@ -1,0 +1,64 @@
+{
+  // Loads the `core.xlsx` fixture into all four database targets at once.
+  //
+  // Every connection string uses a `${...}` placeholder for its password, which the
+  // converter resolves from the environment. That is the whole point of the mechanism:
+  // this file is committed, and a password written here would be in history forever.
+  //
+  // Ports come from the environment too. The compose file lets Docker assign a free
+  // host port for each service rather than fixing one, because a fixed port collides
+  // with whatever else on the machine picked the same number - so the test fixture asks
+  // Docker what it assigned and passes it in here.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/core",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ],
+    "GoogleSheets": []
+  },
+
+  "Exports": {
+    "Binary": [],
+    "Json": [],
+
+    "MySql": [
+      {
+        "ConnectionString": "Server=127.0.0.1;Port=${SHEETMAN_TEST_MYSQL_PORT};Database=sheetman_test;Uid=root;Pwd=${SHEETMAN_TEST_DB_PASSWORD}",
+        "NamePrefix": "sm_"
+      }
+    ],
+
+    "PostgreSql": [
+      {
+        "ConnectionString": "Host=127.0.0.1;Port=${SHEETMAN_TEST_POSTGRES_PORT};Database=sheetman_test;Username=postgres;Password=${SHEETMAN_TEST_DB_PASSWORD}",
+        "Schema": "sheetman",
+        "NamePrefix": "sm_"
+      }
+    ],
+
+    "MongoDb": [
+      {
+        "ConnectionString": "mongodb://127.0.0.1:${SHEETMAN_TEST_MONGO_PORT}/sheetman_test",
+        "NamePrefix": "sm_"
+      }
+    ],
+
+    "Redis": [
+      {
+        "ConnectionString": "127.0.0.1:${SHEETMAN_TEST_REDIS_PORT}",
+        "Database": 0,
+        "NamePrefix": "sm_"
+      }
+    ]
+  },
+
+  "CodeGenerations": {
+    "Cpp": [],
+    "CSharp": [],
+    "Typescript": [],
+    "Html": []
+  }
+}

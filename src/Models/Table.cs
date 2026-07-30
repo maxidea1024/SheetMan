@@ -3,36 +3,54 @@ using System.Collections.Generic;
 using SheetMan.Models.Raw;
 using SheetMan.Helpers;
 using Serilog;
+using System.Globalization;
 
 namespace SheetMan.Models
 {
     /// <summary>
-    /// Table model
+    /// A table declared with a `~~table:Name~~` marker: a field list and its rows.
     /// </summary>
     public class Table
     {
-        /// <summary>Where the table is defined.</summary>
+        /// <summary>Cell holding the entity marker that declared this table.</summary>
         [JsonIgnore]
         public Location Location { get; set; }
 
         /// <summary>Target side filtering option</summary>
         public TargetSide TargetSide { get; set; }
 
-        /// <summary></summary>
+        /// <summary>Name exactly as written in the sheet.</summary>
         public string RawName { get; set; }
-        /// <summary>Table name</summary>
+
+        /// <summary>Name normalized to Pascal case, which is what generated code uses.</summary>
         public string Name { get; set; }
 
-        /// <summary>Field list</summary>
+        /// <summary>
+        /// Columns of the table, excluding any commented out with `#`.
+        ///
+        /// Narrowed by target-side filtering without the rows being touched, so a field's
+        /// Index still addresses the right cell of every row.
+        /// </summary>
         public List<Field> Fields { get; set; } = new List<Field>();
 
-        /// <summary>Data row list</summary>
+        /// <summary>
+        /// Rows, each a flat list of cells addressed by <see cref="Field.Index"/>.
+        ///
+        /// Always holds every column the sheet declared, even where the field list has
+        /// been narrowed - which is why readers must go through a field's Index rather
+        /// than walking a row positionally.
+        /// </summary>
         public List<List<Cell>> Data { get; set; } = new List<List<Cell>>();
 
-        /// <summary>Comment</summary>
+        /// <summary>Description from the sheet, emitted as a doc comment.</summary>
         public string Comment { get; set; }
 
-        /// <summary>Serial column list</summary>
+        /// <summary>
+        /// The fields as the exporters and generators see them, with consecutively
+        /// numbered columns folded into single array-valued entries.
+        ///
+        /// Computed once and cached, since the folding walks every field pair.
+        /// </summary>
         [JsonIgnore]
         public List<SerialField> SerialFields
         {
@@ -75,7 +93,7 @@ namespace SheetMan.Models
         }
 
         /// <summary>
-        /// Checks whether the specified field has the specified data in the row.
+        /// Whether any row holds this value in the given column.
         /// </summary>
         public bool ContainsValueAt(int fieldIndex, object value)
         {
@@ -93,6 +111,14 @@ namespace SheetMan.Models
 
 
         #region Serial Fields
+
+        /// <summary>
+        /// Folds consecutively numbered columns into array-valued groups.
+        ///
+        /// Each unclaimed field opens a group, and every later field that shares its stem
+        /// and numbering pattern joins it - so the columns of a group need not be adjacent
+        /// in the sheet.
+        /// </summary>
         private List<SerialField> BuildSerialFieldsFromPlainFields(List<Field> fields)
         {
             var result = new List<SerialField>();
@@ -122,6 +148,10 @@ namespace SheetMan.Models
             return result;
         }
 
+        /// <summary>
+        /// Opens a group around one field, which is also the answer for a column that
+        /// turns out to have no siblings.
+        /// </summary>
         private SerialField BeginSerialField(List<Field> fields, int index)
         {
             var field = fields[index];
@@ -139,6 +169,10 @@ namespace SheetMan.Models
             return result;
         }
 
+        /// <summary>
+        /// Adds a field to a group if it belongs there.
+        /// </summary>
+        /// <returns>True when the field was taken, so the caller can mark it claimed.</returns>
         private bool NextSerialField(SerialField output, List<Field> fields, int index)
         {
             if (output.Pattern == SerialFieldPattern.None)
@@ -150,6 +184,12 @@ namespace SheetMan.Models
             var field = fields[index];
             var fieldName = field.Name;
 
+            // Two delimited-array columns must not fold into one serial field: the
+            // result would be an array of arrays, which no exporter or generator has
+            // a shape for.
+            if (field.IsArray || output.FirstField.IsArray)
+                return false;
+
             string namePart = Helper.StripNumber(fieldName);
             if (namePart != output.NamePart)
                 return false;
@@ -159,29 +199,25 @@ namespace SheetMan.Models
                 return false;
 
             string numberPart = Helper.ExtractNumber(fieldName);
-            int number = int.Parse(numberPart);
+            int number = int.Parse(numberPart, CultureInfo.InvariantCulture);
             string prevNumberPart = Helper.ExtractNumber(output.Fields[^1].Name);
-            int prevNumber = int.Parse(prevNumberPart);
-            //if (number <= prevNumber) // 같은 경우는 있을 수 없음.  컬럼명 유니크 체크가 먼저 일어나므로, 이전에 오류처리 되었을것이므로..
+            int prevNumber = int.Parse(prevNumberPart, CultureInfo.InvariantCulture);
+            // Strictly less than, not less than or equal: two columns cannot carry the
+            // same number, because duplicate field names are rejected before this runs.
             if (number < prevNumber)
             {
-                //TODO 경고 핸들링..
-                //string text = "";
-                //text += "\n";
-                //text += "연속된 컬럼 배열로 취급하기 모호점이 발견되었습니다.";
-                //text += "\n뒤이은 컬럼의 번호가 앞에 있는 컬럼의 번호보다 작습니다.";
-                //text += "\n아래 위치의 내용을 확안하세요.";
-                //text += $"\n이전 컬럼명: `{output.Fields[output.Fields.Count - 1].Name}`, 현재 컬럼명: `{field.Name}`";
-                //text += $"\n- {field.NameLocation}";
-                //Utils.Logging.LogWarning(text);
-
-                string message = "";
-                message += "An ambiguity was found in treating as a contiguous array of columns.\n";
-                message += "The number of the subsequent column is less than the number of the preceding column.\n";
-                message += "Please confirm the contents of the location below.\n";
-                message += $"PreviousField: `{output.Fields[^1].Name}`, CurrentField: `field.Name`\n";
-                message += $"    at {field.NameLocation}";
-                Log.Warning(message);
+                // A warning rather than an error: the columns still fold into an array,
+                // just in an order the sheet does not read in. Whether that is a mistake
+                // depends on intent, so it is reported and left to the author.
+                //
+                // `{field.Name}`, not `field.Name` - the placeholder used to be written
+                // without braces, so every one of these warnings named the literal text
+                // "field.Name" instead of the column it was about.
+                Log.Warning(
+                    $"Columns folded into an array are numbered out of order in table `{Name}`.\n" +
+                    $"`{field.Name}` follows `{output.Fields[^1].Name}` but carries a lower number, " +
+                    $"so the array elements will not be in sheet order.\n" +
+                    $"    at {field.NameLocation}");
             }
 
             var expectedType = output.Fields[0].Type;
@@ -200,6 +236,10 @@ namespace SheetMan.Models
             return true;
         }
 
+        /// <summary>
+        /// Classifies where a column name's sequence number sits, or reports that it has
+        /// no usable one.
+        /// </summary>
         private SerialFieldPattern GetSerialFieldPattern(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -226,17 +266,18 @@ namespace SheetMan.Models
             if (toggles == 0 || toggles > 1)
                 return SerialFieldPattern.None;
 
-            // Check if the sequence number is the last type.
-            for (int i = name.Length - 1; i >= 0; --i)
-            {
-                if (char.IsDigit(name[i]))
-                    return SerialFieldPattern.TrailingNumber;
-            }
+            // Trailing when the name ends in the digit run, as in `Text1`.
+            //
+            // Only the last character is examined. This used to scan backwards over the
+            // whole name and report TrailingNumber on finding a digit anywhere, which -
+            // since reaching here means there is exactly one digit run - was always. So
+            // `Item1Bonus` was classified as trailing and MiddleNumber was unreachable.
+            if (char.IsDigit(name[name.Length - 1]))
+                return SerialFieldPattern.TrailingNumber;
 
-            // Check if the sequence number is the middle type.
-            // Due to the nature of the column name, a number cannot appear at the beginning.
-            // Separately here because it is verified in the process of reading the table layout
-            // Does not check, only the first character is excluded from the check target.
+            // Otherwise the digits sit in the middle, as in `Item1Bonus`. A column name
+            // cannot begin with a digit - the identifier check upstream rejects that -
+            // so anything left is a middle run.
             for (int i = 1; i < name.Length; i++)
             {
                 if (char.IsDigit(name[i]))

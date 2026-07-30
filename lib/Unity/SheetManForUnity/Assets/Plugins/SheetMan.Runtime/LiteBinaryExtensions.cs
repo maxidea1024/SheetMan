@@ -101,7 +101,12 @@ namespace SheetMan.Runtime
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Write(this LiteBinaryWriter writer, long value)
         {
-            writer.WriteFixed64((uint)value);
+            // (ulong), not (uint). Casting through uint truncated every 64-bit value
+            // to its low 32 bits before widening again, so anything outside
+            // [0, uint.MaxValue] was silently corrupted on write - negative values
+            // came back as large positives, and large positives lost their high half.
+            // The reader was always reading a full Fixed64, so only the writer was wrong.
+            writer.WriteFixed64((ulong)value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

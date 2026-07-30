@@ -1,7 +1,6 @@
-using CommandLine;
+﻿using CommandLine;
 using SheetMan.Recipe;
 using SheetMan.Models;
-using SheetMan.Runtime;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -37,7 +36,11 @@ namespace SheetMan.Exporters
 
                 _manifest = Manifest.Load(manifestFilename);
 
-                foreach (var table in _model.Tables)
+                // Narrowed to the side this entry is built for. Both (the default)
+                // returns the model unchanged.
+                var sided = model.ProjectTo(RecipeTargetSide.Of(binaryRecipe.TargetSide, "Exports.Binary"));
+
+                foreach (var table in sided.Tables)
                     ExportTable(binaryRecipe, table);
 
                 _manifest.BuildAndWriteToFile(manifestFilename);
@@ -56,6 +59,17 @@ namespace SheetMan.Exporters
             {
                 foreach (var sf in table.SerialFields)
                 {
+                    // A serial field's length is its column count, which the reader
+                    // already knows from the generated code, so nothing is written for
+                    // it. A delimited array varies per row and has to carry its own
+                    // length. Only the latter gets a counter, which keeps the format
+                    // of existing tables unchanged.
+                    if (sf.IsVariableLengthArray)
+                    {
+                        ExportArrayValue(writer, row[sf.FirstField.Index].Value, sf.FirstField);
+                        continue;
+                    }
+
                     foreach (var field in sf.Fields)
                         ExportValue(writer, row[field.Index].Value, field);
                 }
@@ -64,28 +78,40 @@ namespace SheetMan.Exporters
             var filename = Path.Combine(recipe.Path, table.Name + recipe.FileExtension);
             filename = Path.GetFullPath(filename);
 
-            var data = writer.ToArray();
-
-            Log.Information($"Exporting binary file '{filename}' ({data.Length} bytes)");
-            string stagingFilename = StagingFiles.WriteAllBytesToFile(filename, data);
+            // A view over the writer's buffer, not a copy: this is the biggest allocation
+            // in the export and there is no reason to make it twice.
+            Log.Information($"Exporting binary file '{filename}' ({writer.Length} bytes)");
+            string stagingFilename = StagingFiles.WriteAllBytesToFile(filename, writer.WrittenSpan);
 
             _manifest.Add(table.Name + recipe.FileExtension, stagingFilename);
         }
 
+        /// <summary>
+        /// Writes a delimited array cell: element count first, then the elements.
+        /// </summary>
+        private void ExportArrayValue(LiteBinaryWriter writer, object value, Field field)
+        {
+            var elements = (System.Array)value;
+            int length = elements?.Length ?? 0;
+
+            writer.WriteCounter32(length);
+
+            for (int i = 0; i < length; i++)
+                ExportValue(writer, elements.GetValue(i), field);
+        }
+
         private void ExportValue(LiteBinaryWriter writer, object value, Field field)
         {
-            Models.ValueType valueType = field.Type;
+            // Element type, so the same switch serves a scalar field and one element
+            // of an array field.
+            Models.ValueType valueType = field.ElementType;
 
-            //TODO 만약 index 타입이 int32가 아니라면 대략 낭패. 이부분은 좀 정리가 필요해보임.
-            //첫번째 컬럼 정보를 넘겨 받아서 타입 대응을 해주는게 좋을듯!
-            //윗단에서 정리하는게 바람직해보이는데..
-            if (field.IsRef/* || cell.IsIndividualRef*/)
+            // A reference is stored as the target's primary index, which is always an
+            // int32: the cooker rejects a table whose index column is any other type, so
+            // there is no case here for the index being something else.
+            if (field.IsRef)
                 valueType = Models.ValueType.Int32;
 
-            //TODO 개별 셀 참조를 구현할때 필요함. 일단은 보류하자.
-            //TODO 임포트된 데이터를 사용해서 기록하도록 하자.
-            //var resolvedValue = ResolveValue(value, field);
-            var resolvedValue = value;
             switch (valueType)
             {
                 case Models.ValueType.String:
@@ -127,47 +153,5 @@ namespace SheetMan.Exporters
         }
 
 
-        //TODO 셀 참조를 구현할때 필요함. 일단은 보류.
-        /*
-        private static string ResolveCellValue(Models.Cell cell, Models.Column column)
-        {
-            string cellValue = cell?.value;
-
-            if (cell != null && cell.IsIndividualRef)
-            {
-                // 참조일 경우에는 가리키는 것을 찾아서 저장해야함.  링크로 간주하면 될듯??
-                var refTable = GetTable(cell.refTable, column.location);
-                var refColumn = refTable.GetColumn(cell.refColumn);
-                if (refColumn.type != column.type)
-                {
-                    //TODO
-                    throw new SheetManException("");
-                }
-
-                //var refCell = refTable.rows[cell.location.
-                Models.Cell refCell = null;
-                foreach (var row in refTable.rows)
-                {
-                    if (cell.refIndex.ToString() == row.cells[0].value)
-                    {
-                        refCell = row.cells[refColumn.index];
-                        break;
-                    }
-                }
-
-                if (refCell == null)
-                {
-                    //TODO
-                    throw new SheetManException("");
-                }
-
-                cellValue = refCell.value;
-
-                //TODO recursive chain...
-            }
-
-            return cellValue;
-        }
-        */
     }
 }

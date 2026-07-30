@@ -1,4 +1,4 @@
-using SheetMan.Models.Raw;
+﻿using SheetMan.Models.Raw;
 using System.IO;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -7,6 +7,7 @@ using SheetMan.Models;
 using System;
 using SheetMan.Recipe;
 using System.Linq;
+using System.Globalization;
 
 namespace SheetMan.Importers
 {
@@ -15,6 +16,9 @@ namespace SheetMan.Importers
         private Options _options;
         private RecipeModel _recipe;
         private RawModel _model;
+
+        private string _currentFilename = "";
+        private string _currentSheetName = "";
 
         //TODO
         //엔트리는 선언되었지만 recipe.json 파일에서 주석 처리되어 있을 경우 경로가 null일수 있으므로,
@@ -42,7 +46,7 @@ namespace SheetMan.Importers
                 else
                 {
                     for (int i = 0; i < fileExtensionPatterns.Length; i++)
-                        fileExtensionPatterns[i] = fileExtensionPatterns[i].Trim().ToLower();
+                        fileExtensionPatterns[i] = fileExtensionPatterns[i].Trim().ToLowerInvariant();
                 }
 
                 var files = Directory.GetFiles(xlsx.Path, "*.*", SearchOption.AllDirectories);
@@ -51,7 +55,7 @@ namespace SheetMan.Importers
                     if (filename.Contains("/#") || filename.Contains("\\#"))
                         continue;
 
-                    string fileExtensions = Path.GetExtension(filename).ToLower();
+                    string fileExtensions = Path.GetExtension(filename).ToLowerInvariant();
                     if (!fileExtensionPatterns.Contains(fileExtensions))
                         continue;
 
@@ -89,6 +93,11 @@ namespace SheetMan.Importers
 
         private void ImportSheet(ISheet sheet, string filename, string sheetName)
         {
+            // Remembered so cell-level diagnostics can name where they came from; the
+            // NPOI cell itself knows its row and column but not its workbook or sheet.
+            _currentFilename = filename;
+            _currentSheetName = sheetName;
+
             RawSheet rawSheet = new RawSheet
             {
                 Location = new Location
@@ -169,31 +178,41 @@ namespace SheetMan.Importers
 
             switch (cell.CellType)
             {
-                case CellType.Unknown:
-                    return "$unknown$";
+                // NPOI 2.8 removed CellType.Unknown, so no cell can report it any
+                // more. The arm used to yield the sentinel "$unknown$", which would
+                // have failed to parse as any type anyway.
 
                 case CellType.Numeric:
-                    return cell.NumericCellValue.ToString().Trim();
+                    return NumericCellText(cell);
 
                 case CellType.String:
                     return cell.StringCellValue.Trim();
 
                 case CellType.Formula:
-                    if (cell.CachedFormulaResultType == CellType.Numeric)
+                    // The cached result, which is what the file carries; SheetMan does
+                    // not evaluate formulas itself.
+                    switch (cell.CachedFormulaResultType)
                     {
-                        return cell.NumericCellValue.ToString().Trim();
-                    }
-                    else if (cell.CachedFormulaResultType == CellType.String)
-                    {
-                        return cell.StringCellValue.ToString().Trim();
-                    }
-                    else if (cell.CachedFormulaResultType == CellType.Boolean)
-                    {
-                        return cell.BooleanCellValue.ToString().Trim();
-                    }
-                    else
-                    {
-                        return cell.StringCellValue.Trim();
+                        case CellType.Numeric:
+                            return NumericCellText(cell);
+
+                        case CellType.String:
+                            return cell.StringCellValue.Trim();
+
+                        case CellType.Boolean:
+                            return cell.BooleanCellValue.ToString().Trim();
+
+                        case CellType.Error:
+                            // Reported here as well as below. A formula that evaluated
+                            // to an error has CellType.Formula, not CellType.Error, so
+                            // it would otherwise fall through to StringCellValue and be
+                            // stored as whatever text that returned.
+                            throw new SheetManException(CellLocation(cell),
+                                $"Formula evaluated to `{FormulaErrorText(cell)}`. " +
+                                $"Fix the formula, or replace it with a literal value.");
+
+                        default:
+                            return cell.StringCellValue.Trim();
                     }
 
                 case CellType.Blank:
@@ -203,11 +222,79 @@ namespace SheetMan.Importers
                     return cell.BooleanCellValue.ToString().Trim();
 
                 case CellType.Error:
-                    //TODO 예외를 던지는 형태로 처리하는게 좋을듯..
-                    return "$error$";
+                    // A formula that evaluated to #REF!, #DIV/0! and so on.
+                    //
+                    // Reported rather than passed through. It used to yield the literal
+                    // text "$error$", which a typed column would at least fail to parse
+                    // but a string column would happily store - so a broken formula
+                    // reached the game as the text "$error$".
+                    throw new SheetManException(CellLocation(cell),
+                        $"Cell contains the formula error `{FormulaErrorText(cell)}`. " +
+                        $"Fix the formula, or replace it with a literal value.");
             }
 
             return "";
+        }
+
+        /// <summary>
+        /// Describes an error cell the way Excel shows it, so the message names what the
+        /// author sees in the sheet.
+        /// </summary>
+        private static string FormulaErrorText(ICell cell)
+        {
+            try
+            {
+                return FormulaError.ForInt(cell.ErrorCellValue).String;
+            }
+            catch (Exception)
+            {
+                // Unknown error codes are possible; the code itself is still a clue.
+                return $"error code {cell.ErrorCellValue}";
+            }
+        }
+
+        /// <summary>
+        /// Location of a cell, for diagnostics raised while importing it.
+        /// </summary>
+        private Location CellLocation(ICell cell)
+        {
+            return new Location
+            {
+                Filename = _currentFilename,
+                Sheet = _currentSheetName,
+                Column = cell.ColumnIndex,
+                Row = cell.RowIndex,
+            };
+        }
+
+        /// <summary>
+        /// Renders a numeric cell as the text the cooker will parse.
+        ///
+        /// Excel has no date type: a date is a number carrying a date format, so a
+        /// cell showing 2022-01-24 10:30:00 reads back as 44585.4375. Feeding that
+        /// straight through meant `datetime` columns could never be authored in Excel
+        /// as actual dates - only as text.
+        ///
+        /// Plain numbers are formatted round-trip and invariant. The default
+        /// ToString() both follows the machine's locale, so a comma decimal separator
+        /// would reach an int/float parse that expects a dot, and drops to scientific
+        /// notation for large magnitudes, which no integer parse accepts.
+        /// </summary>
+        private string NumericCellText(ICell cell)
+        {
+            if (DateUtil.IsCellDateFormatted(cell))
+            {
+                // Nullable in NPOI 2.8; fall through to the raw serial number if the
+                // cell is formatted as a date but holds no usable value.
+                DateTime? date = cell.DateCellValue;
+                if (date.HasValue)
+                {
+                    // Round-trippable and unambiguous to DateTime.Parse on any locale.
+                    return date.Value.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                }
+            }
+
+            return cell.NumericCellValue.ToString("R", CultureInfo.InvariantCulture).Trim();
         }
     }
 }

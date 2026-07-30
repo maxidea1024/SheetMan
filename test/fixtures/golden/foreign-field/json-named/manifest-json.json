@@ -1,0 +1,19 @@
+{
+  "LastUpdatedDate": "2026-07-30T14:16:12.7383555+09:00",
+  "MasterHash": "81dc70238d15367d365264a15afba37a",
+  "TotalSize": 346,
+  "Items": [
+    {
+      "Name": "ItemCategory.json",
+      "Size": 183,
+      "Hash": "c00b75d0874d2bd3417ab1f52cb9e068",
+      "LastUpdatedDate": "2026-07-30T14:16:12.7377941+09:00"
+    },
+    {
+      "Name": "Item.json",
+      "Size": 163,
+      "Hash": "d1a5c3cb7020ca16841b562ed0a9f4b7",
+      "LastUpdatedDate": "2026-07-30T14:16:12.7383544+09:00"
+    }
+  ]
+}

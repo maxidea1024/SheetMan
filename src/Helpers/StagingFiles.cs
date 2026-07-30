@@ -102,10 +102,15 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
-        /// Creates a new file, writes the specified byte array to the file, and then closes the file.
-        /// If the target file already exists, it is overwritten.
+        /// Creates a new file, writes the specified bytes to the file, and then closes the
+        /// file. If the target file already exists, it is overwritten.
         /// </summary>
-        public static string WriteAllBytesToFile(string filename, byte[] data)
+        /// <remarks>
+        /// Takes a span rather than an array so a caller can hand over a view of a buffer
+        /// it already has. A table's bytes are the largest allocation the export makes,
+        /// and copying them to pass them here would double it.
+        /// </remarks>
+        public static string WriteAllBytesToFile(string filename, ReadOnlySpan<byte> data)
         {
             string stagingFilename = RegisterStagingFile(filename);
             File.WriteAllBytes(stagingFilename, data);

@@ -10,11 +10,15 @@
 - 데이터의 기본 유효성을 검증합니다. 정적으로 체크할 수 있는 부분은 최대한 변환 과정에서 체크하여 휴먼오류를 줄여줍니다.
 - 데이터 정규화를 위해서 테이블간 참조를 지원합니다.
 - 자동 패치 기능을 지원하므로 CDN등의 서비스에 파일을 올려두기만 하면 사용하는 프로그램에서는 항상 최신데이터로 유지할 수 있습니다.
-- 다양한 언어를 지원합니다. 현재는 C#, Typescript를 지원하지만 향후 다양한 언어 지원을 늘려갈 예정입니다.
+- 다양한 언어를 지원합니다. 현재 C#, TypeScript, C++ 코드를 생성합니다.
 - 실제 프로그램에 로드된 데이터를 눈으로 확인할 수 있어 잘못된 데이터로 인한 불안감을 줄여줄수 있습니다.
-- 다양한 파일 형식 및 데이터베이스등으로 익스포트가 가능합니다.
+- 파일(바이너리 / JSON)뿐 아니라 MySQL / PostgreSQL / MongoDB / Redis로 직접 적재할 수 있습니다.
+- 서버/클라이언트 중 한쪽만 필요한 엔티티와 필드를 출력 대상별로 걸러낼 수 있습니다. (`TargetSide`)
 - 데이터에 문제가 있을 경우 데이터 원본이 위치한 곳으로 바로 이동하여 확인할 수 있도록 해줍니다.
-- 변환 도중 오류 발생시 원자적으로 동작합니다. 빌드 실패시에 기존에 생성되었던 결과물에 어떠한 영향도 미치지 않도록 설계되어 있습니다. (All or Nothing)
+- 시트의 문제를 한 번에 모아서 보고합니다. 오류 하나당 한 번씩 재실행할 필요가 없습니다.
+- 변환 도중 오류 발생시 원자적으로 동작합니다. 파일은 스테이징 영역을 거쳐 마지막에 일괄 커밋되고, 데이터베이스는 섀도 테이블에 적재한 뒤 원자적으로 교체합니다. (All or Nothing)
+
+> 원자성은 **스토어 단위**입니다. 파일과 데이터베이스 여러 개를 하나의 트랜잭션으로 묶는 것은 분산 트랜잭션 없이는 불가능하므로, 각 스토어가 개별적으로 원자적이 되도록 설계되어 있습니다.
 
 __정의된 엔티티를 사용하기 위해서 단 한줄의 코드도 작성할 필요가 없습니다!__
 
@@ -24,9 +28,21 @@ __정의된 엔티티를 사용하기 위해서 단 한줄의 코드도 작성�
 
 ### Prerequisites
 
-`SheetMan`은 `.NET Core 3.x` 기반으로 만들어졌습니다. 먼저 아래 링크를 참고하셔서 각 운영체제에 맞는 `.NET Core`를 설치하셔야합니다.
+`SheetMan`은 `.NET 10` 기반으로 만들어졌습니다. 먼저 아래 링크를 참고하셔서 각 운영체제에 맞는 `.NET SDK`를 설치하셔야합니다.
 
-[각 운영체제에 맞는 .NET Core 설치](https://docs.microsoft.com/en-us/dotnet/core/install/)
+[각 운영체제에 맞는 .NET 설치](https://dotnet.microsoft.com/download)
+
+SDK 버전은 리포지토리 루트의 `global.json`에 고정되어 있습니다.
+
+생성된 코드를 사용하는 쪽의 요구사항은 다음과 같습니다.
+
+|대상|요구사항|
+|--|--|
+|C# / Unity|Unity 2020.3 이상 (C# 8 / netstandard2.1)|
+|TypeScript|TypeScript 4.5 이상. 바이너리 리더가 `BigInt`를 사용하므로 컴파일 타겟은 `ES2020` 이상|
+|C++|C++17 이상|
+
+**생성된 코드는 자립적입니다.** 세 언어 모두 바이너리 리더가 출력 폴더에 함께 생성되므로, 플러그인 설치나 include 경로 설정 같은 준비 작업이 없습니다. 생성물을 프로젝트에 넣으면 그대로 컴파일됩니다.
 
 
 
@@ -193,19 +209,39 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 
 ### Parsing Rules
 
-기본적으로 C#의 Parsing Rules를 따르지만, 일부 타입은 자체적으로 파싱합니다.
+기본적으로 .NET의 파싱 규칙을 따르지만, 일부 타입은 자체적으로 파싱합니다.
 
-|타입|코드|비고|
+**모든 파싱은 `InvariantCulture`로 수행됩니다.** 변환 결과가 빌드를 돌리는 PC의 지역 설정에 따라 달라지면 안 되기 때문입니다. 소수점은 항상 `.`이고 쉼표는 항상 천단위 구분자입니다.
+
+|타입|파싱|비고|
 |---|---|--|
-|string|그대로 읽어옴|Trimming을 한 후 읽어옵니다.|
-|int|int.Parse(value)|`,` 문자들은 제거하고 파싱을 합니다.|
-|bigint|long.Parse(value)|`,` 문자들은 제거하고 파싱을 합니다.|
-|float|float.Parse(value)|`,` 문자들은 제거하고 파싱을 합니다.|
-|double|double.Parse(value)|`,` 문자들은 제거하고 파싱을 합니다.|
-|bool|ParseBool(value)|bool.Parse() 대신 자체적으로 파싱합니다.|
-|datetime|DateTime.Parse(value)|[MSDN 참고](https://docs.microsoft.com/en-us/dotnet/api/system.datetime.parse?view=net-6.0)|
-|timespan|TimeSpan.Parse(value)|[MSDN 참고](https://docs.microsoft.com/en-us/dotnet/api/system.timespan.parse?view=net-6.0#system-timespan-parse(system-string))|
-|uuid|Guid.Parse(value)|[MSDN 참고](https://docs.microsoft.com/en-us/dotnet/api/system.guid.parse?view=net-6.0#system-guid-parse(system-string))|
+|string|그대로|앞뒤 공백을 제거한 후 읽어옵니다.|
+|int|`int.Parse`|천단위 구분자 허용. `1,000,000` 가능|
+|bigint|`long.Parse`|천단위 구분자 허용|
+|float|`float.Parse`|천단위 구분자 허용|
+|double|`double.Parse`|천단위 구분자 허용|
+|bool|자체 파싱|아래 참고|
+|datetime|`DateTime.Parse`|엑셀의 날짜 셀은 자동으로 인식됩니다. 텍스트로 적을 경우 `2022-01-24 10:30:00` 형식을 권합니다.|
+|timespan|`TimeSpan.Parse`|`1.02:03:04` (일.시:분:초) 형식. [MSDN 참고](https://learn.microsoft.com/dotnet/api/system.timespan.parse)|
+|uuid|`Guid.Parse`|[MSDN 참고](https://learn.microsoft.com/dotnet/api/system.guid.parse)|
+|enum|라벨 이름 또는 값|선언된 표기(`fire_ball`), Pascal 표기(`FireBall`), 숫자(`1`) 모두 허용|
+|`T[]`|구분자로 분리 후 각 요소 파싱|빈 셀은 빈 배열|
+
+#### bool 파싱
+
+|값|결과|
+|--|--|
+|`Y` `YES` `TRUE` `1`|참|
+|`N` `NO` `FALSE` `0`|거짓|
+|빈 셀|거짓|
+|그 외 숫자|0이 아니면 참|
+|그 외 텍스트|**오류**|
+
+대소문자는 구분하지 않습니다. 빈 셀이 거짓인 것은 의도된 것이지만, 알 수 없는 텍스트는 오류입니다 — `Ture` 같은 오타가 조용히 거짓이 되면 이 도구가 잡아야 할 휴먼 오류가 그대로 데이터에 들어갑니다.
+
+#### 엑셀 수식 오류
+
+수식이 `#DIV/0!`, `#REF!` 등으로 평가된 셀은 오류로 보고됩니다. SheetMan은 수식을 직접 평가하지 않고 파일에 캐시된 결과를 읽으므로, 엑셀에서 오류가 보이는 상태로 저장된 셀이 그대로 걸립니다.
 
 
 
@@ -281,19 +317,38 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 |uuid|Represents a globally unique identifier (GUID).|[MSDN 참고](https://docs.microsoft.com/en-us/dotnet/api/system.guid?view=net-6.0)|
 |enum|자체적으로 선언된 엔티티 enum| |
 |foreign|외부 테이블 참조| |
+|`T[]`|구분자로 구분된 배열. 예: `int[]`, `string[]`, `enum[]`|로우마다 길이가 다를 수 있음|
 
-현재 배열타입의 자료형은 지원하지 않고 있습니다. 대신에 `SerialField`라는것을 지원합니다. 하지만, `SerialField`는 각 로우별 배열의 갯수가 고정이라는 문제점이 있어서 향후 배열 타입의 자료형을 추가할 생각입니다. 자세한건 `SerialField` 설명 부분의 내용을 참고하세요.
+#### 배열 타입
+
+타입 칸에 `int[]`, `string[]`, `enum[]` 처럼 적으면 셀 하나에 여러 값을 넣을 수 있습니다.
+
+|index|Tags|Costs|
+|--|--|--|
+|`int`|`string[]`|`int[]`|
+|1|`red;green;blue`|`10;20;30`|
+|2|`solo`|`5`|
+|3| | |
+
+- 구분자는 기본 `;`이며 recipe의 `ArrayDelimiter`로 바꿀 수 있습니다. 쉼표가 기본이 아닌 이유는 일반 문장과 숫자 표기에 너무 흔하기 때문입니다.
+- 각 요소의 앞뒤 공백은 제거됩니다. `1; 2 ;3`은 `1;2;3`과 같습니다.
+- 빈 셀은 오류가 아니라 **빈 배열**입니다. 해당 컬럼에 값이 없는 행은 흔한 경우이기 때문입니다.
+- `foreign[]`은 지원하지 않습니다. 로우마다 가변 개수의 참조를 해석해야 하는데 생성되는 리더에 그런 형태가 없어서, 조용히 해석되지 않는 코드를 만드는 대신 명시적으로 거부합니다. 고정 개수라면 `SerialField`를 사용하세요.
 
 
 
 ### Serial Field
 
-`SheetMan`은 기본적으로 `배열(Array)` 타입의 자료형을 지원하지 않습니다. `배열`은 흔히 사용되는 자료형일 텐데 지원하지 않는 이유가 궁금할것입니다. 원래는 지원을 했었는데, 셀 편집시에 불편한점 때문에 제거하였습니다. 이에 대한 대안으로 `SerialField`라는 요소를 추가하였습니다. 하지만, 막상 `SerialField`를 적용해보니 각 로우마다 배열의 길이를 달리 가져갈수가 없는 단점이 있었습니다. 이에, 다시 `배열` 지원을 추가할 예정입니다.
+`SheetMan`에는 배열을 표현하는 두 가지 방법이 있고, 둘 다 사용할 수 있습니다.
+
+`SerialField`는 `Text1`, `Text2` 처럼 **연번이 붙은 컬럼들을 하나의 배열로 접는** 방식입니다. 컬럼 수가 곧 배열 길이이므로 모든 로우의 길이가 같습니다.
 
 |종류|장점|단점|
 |--|--|--|
-|SerialField|배열의 요소를 각 셀단위로 편집이 용이하다.|로우마다 배열의 길이를 다르게 가져갈 수 없다.|
-|구분자를 통한 배열|각 로우마다 배열의 길이를 다르게 가져갈수 있다.|셀 단위의 편집이 용이하지 못하다. 엑셀의 편리한 편집 도구등을 활용하지 못한다.|
+|SerialField|배열의 요소를 각 셀단위로 편집이 용이하다. 엑셀의 편집 도구를 그대로 활용할 수 있다.|로우마다 배열의 길이를 다르게 가져갈 수 없다.|
+|구분자를 통한 배열 (`T[]`)|각 로우마다 배열의 길이를 다르게 가져갈수 있다.|셀 단위의 편집이 용이하지 못하다.|
+
+두 방식은 **와이어 포맷이 다릅니다**. `SerialField`는 길이가 생성 시점에 알려져 있으므로 바이너리에 길이를 기록하지 않고, 구분자 배열은 로우마다 길이를 기록합니다. 생성되는 리더가 이를 구분해서 처리합니다.
 
 
 
@@ -302,13 +357,72 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 
 작성중
 
+
+
+### Target Side (서버/클라 분리)
+
+같은 시트로 서버용과 클라이언트용 산출물을 따로 뽑을 수 있습니다. 지정하는 곳이 두 군데입니다.
+
+**엔티티 단위** — 마커의 세 번째 항목:
+
+|마커|의미|
+|--|--|
+|`~~table:ServerTuning:s~~`|서버 빌드에만 포함|
+|`~~table:ClientStrings:c~~`|클라이언트 빌드에만 포함|
+|`~~table:Item~~` 또는 `~~table:Item:cs~~`|양쪽 모두|
+
+**필드 단위** — 테이블 정의의 `target-side` 행:
+
+|index|Name|Price|
+|--|--|--|
+|`int`|`string`|`int`|
+|`cs`|`cs`|`s`|
+
+위 예에서 `Price`는 서버 빌드에만 들어갑니다. 기본 인덱스 필드는 모든 행을 식별하는 키이므로 항상 포함되며, `cs`가 아니면 오류입니다.
+
+그리고 recipe의 각 출력 항목에 `TargetSide`를 지정하면 그쪽에 맞는 것만 출력됩니다.
+
+```json
+"CodeGenerations": {
+  "CSharp": [
+    { "Path": "./server/generated", "TargetSide": "s" },
+    { "Path": "./client/generated", "TargetSide": "c" }
+  ]
+}
+```
+
+기본값이 `cs`(전체)이므로, `TargetSide`를 지정하지 않은 기존 recipe의 출력은 달라지지 않습니다.
+
+> 클라이언트 빌드에 남은 테이블이 서버 전용 테이블을 참조하면 변환 단계에서 오류로 보고됩니다. 그대로 두면 생성된 코드가 존재하지 않는 타입을 가리키게 되고, 그 문제는 게임 프로젝트의 컴파일러에서야 드러나기 때문입니다.
+
+
+
+### 정적 검증
+
+변환 과정에서 아래를 검사하고, **문제를 모두 모아 한 번에 보고**합니다. 첫 오류에서 멈추면 시트를 고치는 일이 "하나 고치고 다시 돌리기"의 반복이 되기 때문입니다.
+
+- 인덱스 필드(기본 / 보조)의 값이 유니크한지
+- 참조 대상 테이블과 필드가 존재하는지
+- 참조하는 행이 실제로 존재하는지 (`0`은 "참조 없음"으로 취급)
+- 순환 참조
+- `TargetSide` 필터링으로 참조가 끊기지 않는지
+
+```
+The workbook did not pass validation. (5 problems)
+
+Details:
+  [  1] Field `Shipments.Warehouse` references table `NoSuchTable`, which does not exist.
+        at sheets/data.xlsx : Bad : M7
+  [  2] Index field `Catalog.Index` repeats the value `1`, first used at sheets/data.xlsx : Bad : B9.
+        at sheets/data.xlsx : Bad : B10
+  ...
+```
+
 ---
 
 
 
 ### Build
-
-작성중
 
 `build/` 폴더에 빌드용 스크립트들이 있습니다. 각 플랫폼별로 빌드하려면 아래 표를 참고하세요.
 
@@ -318,73 +432,162 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 |Linux|build-linux64.sh|
 |Mac|build-osx64.sh|
 
-빌드 전에 [.NET Core 3.x](https://docs.microsoft.com/en-us/dotnet/core/install/)를 설치해 주셔야합니다.
+빌드 전에 [.NET 10 SDK](https://dotnet.microsoft.com/download)를 설치해 주셔야합니다.
+
+생성되는 실행 파일은 self-contained 단일 파일입니다. `PublishTrimmed`는 의도적으로 사용하지 않습니다 — NPOI, Newtonsoft.Json, Google.Apis가 모두 리플렉션으로 타입을 찾기 때문에 트리밍이 런타임에 필요한 멤버를 제거합니다.
 
 
 
 
 ### Run
 
-작성중
+```
+sheetman --recipe recipe.json
+```
+
+|옵션|설명|
+|--|--|
+|`-r`, `--recipe`|사용할 recipe 파일|
+|`--new-recipe <파일>`|모든 섹션이 빈 상태로 나열된 recipe 골격을 만들고 종료. 섹션 이름을 찾아볼 필요 없이 필요한 곳만 채우면 됩니다.|
+|`--verbose`|디버그 로그까지 출력|
+|`--silent`|ERROR/FATAL 외에는 출력하지 않음|
+|`--debug`|오류 발생 시 콜스택까지 출력|
+
+인자가 많아지면 파일로 빼서 `@`로 넘길 수 있습니다. 한 줄에 인자 하나씩 적습니다.
+
+```
+sheetman @args.txt
+```
+
+성공하면 `0`, 실패하면 `0`이 아닌 값을 반환하므로 빌드 파이프라인에서 그대로 사용할 수 있습니다.
 
 
 
 ### Recipe 파일 작성
 
-샘플 파일 작성 예제
+`recipe` 파일은 입력 소스와 출력 대상을 지정하는 `.json` 파일입니다. `//` 주석을 사용할 수 있습니다.
+
+`sheetman --new-recipe myrecipe.json` 으로 기본값이 채워진 빈 recipe를 만들 수 있습니다.
+
+#### 공통 설정
+
+|키|기본값|설명|
+|--|--|--|
+|`ArrayDelimiter`|`";"`|배열 셀의 요소 구분자. 정확히 한 글자여야 합니다.|
+
+#### 출력 항목 공통 설정
+
+모든 출력 항목(`Exports`, `CodeGenerations`)은 아래를 지원합니다.
+
+|키|기본값|설명|
+|--|--|--|
+|`TargetSide`|`"cs"`|이 출력이 어느 쪽을 위한 것인지. `"c"`(클라), `"s"`(서버), `"cs"`(양쪽). 반대쪽으로 지정된 엔티티와 필드가 제외됩니다.|
+
+> 익스포터와 그 파일을 읽는 코드 제너레이터는 **같은 `TargetSide`로 맞춰야** 합니다. 컬럼 집합이 어긋나면 생성된 리더가 데이터와 맞지 않습니다.
+
+서버/클라 각각을 뽑으려면 항목을 두 개 두고 각기 다른 `TargetSide`와 경로를 지정하면 됩니다.
+
+#### 전체 예제
 
 <details>
+<summary>펼쳐보기</summary>
 
 ```json
 {
-  "CodeGenerations": {
-    "Cpp": [],
-    "CSharp": [
-        {
-           // 출력 타겟 폴더입니다. 만약 해당 폴더가 존재하지 않는다면 자동으로 폴더를 만들게 됩니다.
-           // 이로인해서 지저분하게 생성되는 문제가 있을수도 있으므로, 한번더 확인할 필요가 있습니다.
-           "Path": "./generated/cs",
+  // 배열 셀의 구분자. 쉼표가 기본이 아닌 이유는 문장과 숫자 표기에 너무 흔하기 때문입니다.
+  "ArrayDelimiter": ";",
 
-           // 
-           "Namespace": "StaticData",
-           "AccessorName": "SheetAccessor"
-        }
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "./sheets",
+        "FileExtensionPatterns": ".xls;.xlsx"
+      }
+    ],
+    "GoogleSheets": [
+      {
+        // 이 파일은 커밋하지 마세요. .gitignore에 등록되어 있습니다.
+        "ClientSecretFilename": "./googlesheets-client-secret.json",
+        "SheetsId": "10NXZAeyFaxRFsC8BPVTS9A6DzsM57Z1tizpJMCokJwU"
+      }
+    ]
+  },
+
+  "Exports": {
+    "Binary": [
+      {
+        "Path": "./generated/binary",
+        "FileExtension": ".table"
+      }
+    ],
+    "Json": [
+      {
+        "Path": "./generated/json",
+        // true면 이름 없이 값만 배열로 담습니다. 파일이 작아집니다.
+        "UseCompactRowFormat": false,
+        "Indented": false
+      }
+    ],
+
+    // 데이터베이스 적재. 비밀값은 ${환경변수}로 빼세요.
+    "MySql": [
+      {
+        "ConnectionString": "Server=db;Database=game;Uid=sheetman;Pwd=${DB_PASSWORD}",
+        "NamePrefix": "sm_"
+      }
+    ],
+    "PostgreSql": [
+      {
+        "ConnectionString": "Host=db;Database=game;Username=sheetman;Password=${DB_PASSWORD}",
+        "Schema": "public",
+        "NamePrefix": "sm_"
+      }
+    ],
+    "MongoDb": [
+      {
+        // 데이터베이스 이름을 반드시 포함해야 합니다.
+        "ConnectionString": "mongodb://db:27017/game",
+        "NamePrefix": "sm_"
+      }
+    ],
+    "Redis": [
+      {
+        "ConnectionString": "db:6379,password=${REDIS_PASSWORD}",
+        "Database": 0,
+        "NamePrefix": "sm_"
+      }
+    ]
+  },
+
+  "CodeGenerations": {
+    "CSharp": [
+      {
+        // 출력 타겟 폴더입니다. 없으면 자동으로 만듭니다.
+        "Path": "./generated/cs",
+        "Namespace": "StaticData",
+        "AccessorName": "SheetAccessor"
+      }
     ],
     "Typescript": [
-        {
-           "Path": "./generated/ts",
-           //"Namespace": "",
-           //"AccessorName": "SheetAccessor"
-        }
+      {
+        "Path": "./generated/ts",
+        // true면 enum을 숫자 대신 문자열로 생성합니다.
+        "UseStringEnum": false
+      }
+    ],
+    "Cpp": [
+      {
+        "Path": "./generated/cpp",
+        // `.`이나 `::`로 중첩 네임스페이스를 지정할 수 있습니다.
+        "Namespace": "game::data",
+        "AccessorName": "SheetAccessor"
+      }
     ],
     "Html": [
       {
         "Path": "./generated/html"
       }
     ]
-  },
-  "Sources": {
-    "Xlsx": [],
-    "GoogleSheets": [
-      {
-        "ClientSecretFilename": "./googlesheets-client-secret.json",
-        "SheetsId": "10NXZAeyFaxRFsC8BPVTS9A6DzsM57Z1tizpJMCokJwU"
-      }
-    ]
-  },
-  "Exports": {
-    "Binary": [
-        {
-            "Path": "./generated/binary"
-        }
-    ],
-    "Json": [
-        {
-            "Path": "./generated/json"
-        }
-    ],
-    "MongoDb": [],
-    "MySql": []
   }
 }
 ```
@@ -396,24 +599,115 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 
 임포트되고 가공된 데이터를 다양한 익스포터를 통해서 익스포트가 가능합니다.
 
-|대상|설명|지원여부|
-|--|--|--|
-|Binary|자체 포맷 바이너리 파일|지원함|
-|Json|.json 파일|지원함|
-|MongoDB|MongoDB로 데이터를 적재합니다.|지원 예정|
-|MySql|MySql로 데이터를 적재합니다.|지원 예정|
-|Redis|Redis로 데이터를 적재합니다.|지원 예정|
+|대상|설명|
+|--|--|
+|Binary|자체 포맷(LiteBinary) 바이너리 파일|
+|Json|`.json` 파일. 이름 있는 형식과 배열만 담는 compact 형식을 선택할 수 있습니다.|
+|MySql|MySQL로 직접 적재합니다.|
+|PostgreSql|PostgreSQL로 직접 적재합니다.|
+|MongoDB|MongoDB로 직접 적재합니다. 테이블당 컬렉션 하나, 로우당 도큐먼트 하나.|
+|Redis|Redis로 직접 적재합니다. 로우당 해시 하나에 테이블당 인덱스 셋 하나.|
+
+#### JSON의 64비트 정수
+
+`bigint` 값은 **문자열로** 기록됩니다.
+
+```json
+{ "index": 1, "startGold": "9007199254740993" }
+```
+
+JSON에는 숫자 타입이 하나뿐이고 대부분의 리더가 그것을 double로 다룹니다. `9007199254740993`을 그대로 쓰면 JavaScript는 `JSON.parse` 시점에 `9007199254740992`로 조용히 바꿔놓습니다. 더 나쁜 건 이 오류가 잘 드러나지 않는다는 점입니다 — 리터럴과 비교해봐도 그 리터럴 역시 같은 값으로 파싱되므로 양쪽이 "일치"합니다.
+
+문자열로 기록하면 정확히 복원할 수 있고, 생성된 TypeScript는 이를 `BigInt`로 되살립니다. Protocol Buffers의 JSON 매핑이 int64에 대해 같은 선택을 하는 것과 같은 이유입니다.
+
+`float` 값은 JSON에 왕복 가능한 최단 십진수로 기록되지만, JavaScript에는 32비트 부동소수점 타입이 없어 double로 넓어집니다. 생성된 TypeScript는 `Math.fround`로 다시 32비트 정밀도로 맞추므로, JSON 경로와 바이너리 경로가 같은 값을 냅니다.
+
+#### 데이터베이스 적재
+
+네 대상 모두 **섀도 테이블에 적재한 뒤 원자적으로 교체**합니다. 적재 중 실패하면 기존 데이터가 그대로 남습니다.
+
+|대상|교체 방식|
+|--|--|
+|MySQL|DDL 롤백이 불가하므로 다중 페어 `RENAME TABLE`(원자적)|
+|PostgreSQL|DDL이 트랜잭션이므로 적재와 교체 전체를 단일 트랜잭션으로|
+|MongoDB|`renameCollection(dropTarget)`|
+|Redis|`MULTI`/`EXEC` 안에서 키 단위 `RENAME`|
+
+타입 매핑에서 배열은 관계형 DB에서 `JSON`/`jsonb`가 되고, `timespan`은 정확도 유실을 피하기 위해 tick 값을 `BIGINT`로 저장합니다. 기본 인덱스 필드는 primary key(MongoDB는 `_id`)가 됩니다.
+
+##### 자격증명
+
+연결 문자열은 `${환경변수}` 형태의 치환을 지원합니다.
+
+```json
+"MySql": [
+  {
+    "ConnectionString": "Server=db;Database=game;Uid=sheetman;Pwd=${DB_PASSWORD}",
+    "NamePrefix": "sm_"
+  }
+]
+```
+
+**비밀값을 recipe 파일에 직접 적지 마세요.** recipe는 버전관리에 커밋되므로 히스토리에 영구히 남습니다. 지정한 환경변수가 설정되어 있지 않으면 빈 문자열로 치환하지 않고 오류로 처리합니다.
 
 
 
 
 ### Code Generation
 
-작성중
+|대상|산출물|읽는 형식|
+|--|--|--|
+|CSharp|`<AccessorName>.cs` + `SheetManBinaryReader.cs`|바이너리|
+|Typescript|엔티티별 모듈 + `index.ts` + `sheetman/lite_binary_reader.ts`|JSON, 바이너리 둘 다|
+|Cpp|`<AccessorName>.h` + `sheetman/lite_binary_reader.h`|바이너리|
+|Html|사람이 읽는 데이터 문서. 원본 시트로 이동하는 링크를 포함합니다.|—|
+
+리더는 각 언어마다 **별도 구현**입니다. 포맷을 정의하는 건 익스포터의 writer 하나이고, 세 리더는 그 정의의 서로 다른 구현이라 어긋날 수 있습니다. 그래서 회귀 스위트가 **C#으로 쓰고 각 언어로 읽어 대조**합니다 — 실제로 이 방식이 `long`을 32비트로 잘라내던 writer 버그를 찾아냈습니다.
+
+#### TypeScript 코드생성
+
+두 읽기 경로가 모두 생성되므로 배포 상황에 따라 골라 쓸 수 있습니다. 두 경로는 **동일한 값**을 반환합니다.
+
+```typescript
+import { Tables } from './generated'
+
+const tables = new Tables()
+
+// JSON에서 읽기 — 사람이 들여다보거나 텍스트로 서빙할 때
+tables.readAllSync('./data/json')
+
+// 바이너리에서 읽기 — 크기와 파싱 시간이 중요할 때
+tables.item.readBinarySync('./data/binary/Item.table')
+
+// 브라우저처럼 파일 시스템이 없는 환경에서는 바이트를 직접 넘깁니다
+tables.item.readBinaryFrom(new Uint8Array(await (await fetch(url)).arrayBuffer()))
+```
+
+바이너리 리더(`sheetman/lite_binary_reader.ts`)는 **생성 출력에 자동으로 포함됩니다.** 생성된 테이블이 상대 경로로 import하는데 TypeScript에는 include 경로 개념이 없어 소비자가 다른 곳을 가리킬 방법이 없기 때문입니다. 소스는 `lib/ts`와 공유되는 하나뿐이라 어긋날 수 없습니다.
+
+리더 자체는 `Uint8Array` 위에서 동작하고 외부 의존성이 없어 Node와 브라우저 양쪽에서 씁니다. 파일에서 읽는 편의 함수만 Node를 필요로 합니다.
 
 #### C# 코드생성
 
 [예제](csharp.md)를 참고하세요.
+
+#### C++ 코드생성
+
+`Cpp` 항목을 지정하면 `<AccessorName>.h` 하나가 생성됩니다. 바이너리를 읽기 위해 `lib/cpp/sheetman/lite_binary_reader.h`가 필요하므로 include 경로에 `lib/cpp`를 추가하세요.
+
+```cpp
+#include "CoreAccessor.h"
+
+sheetman_fixtures::core::Tables tables;
+tables.read_all("path/to/binary");
+
+const auto* item = tables.item().find(1);
+if (item != nullptr) {
+    // 참조는 전체 로드 후 포인터로 연결됩니다.
+    std::cout << item->name << " / " << item->category_id->name << "
+";
+}
+```
 
 
 
@@ -422,6 +716,65 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 ### Unity3D Integration
 
 작성중
+
+
+
+### 아키텍처 메모
+
+바이너리 포맷을 다루는 코드가 네 곳에 있고, 역할이 갈립니다.
+
+|위치|역할|
+|--|--|
+|`src/Exporters/LiteBinaryWriter.cs`|**포맷을 정의하는 writer.** 익스포터 내부에 있고 외부 의존이 없습니다.|
+|`lib/cs/sheetman/LiteBinaryReader.cs`|C# 리더. 임베디드 리소스로 들어가 생성 시 출력에 기록됩니다.|
+|`lib/cpp/sheetman/lite_binary_reader.h`|C++ 리더. 같은 방식으로 출력에 기록됩니다.|
+|`lib/ts/sheetman/lite_binary_reader.ts`|TypeScript 리더. 같은 방식.|
+
+리더가 `lib/` 아래에 실제 파일로 존재하는 이유는 편집과 리뷰가 가능해야 하기 때문이고, 임베디드 리소스로 읽어 쓰는 이유는 배포본과 커밋된 소스가 어긋날 수 없게 하기 위함입니다.
+
+예전에는 writer와 C# 리더가 Unity 플러그인으로 설치해야 하는 하나의 공유 런타임(3,600줄)이었습니다. 생성 코드가 쓰는 건 그중 네 개 멤버뿐이었고, 그 결합 때문에 변환기 자체가 Unity가 받아들이는 C# 수준에 묶여 있었습니다. 더 나쁜 건 writer와 리더가 한 몸이어서 **와이어 포맷 오류가 드러나지 않았다는 점**입니다 — C# 안에서 왕복하면 무엇을 잘못 쓰든 제대로 읽혔습니다.
+
+`test/EmittedCodeLanguageCheck`는 아무것도 배포하지 않는 프로젝트입니다. C# 리더를 `netstandard2.1`로 컴파일해 Unity 2020.3이 받아들이는 C# 8을 넘지 않도록 컴파일러가 강제하게 하는 용도입니다.
+
+성능 면에서 writer와 C# 리더는 모두 `Span` 기반이고 값마다 임시 할당을 하지 않습니다. 문자열은 버퍼로 직접 인코딩되고(중간 배열 없음), uuid는 제자리에 기록되며, 테이블 바이트는 파일 쓰기로 복사 없이 넘어갑니다. 리더 쪽도 레코드가 실제로 보유하는 문자열·배열 외에는 할당이 없습니다.
+
+### 개발 / 테스트
+
+```
+dotnet test            # 전체 회귀 스위트
+```
+
+스위트는 실제 산출물을 만들어 검증합니다.
+
+|검증|방식|
+|--|--|
+|골든 비교|`test/fixtures/xlsx/`의 워크북을 변환하고 모든 산출물을 `test/fixtures/golden/`과 비교합니다. 타임스탬프만 정규화합니다.|
+|TypeScript|생성된 코드를 실제 `tsc`로 타입 체크합니다.|
+|C++|생성된 헤더를 컴파일하고, 익스포터가 쓴 `.table`을 읽어 JSON 익스포터 결과와 대조합니다.|
+|C#|생성된 접근자를 **아무것도 설치하지 않은 상태로** 컴파일하고, 익스포터가 쓴 `.table`을 읽어 대조합니다.|
+|TypeScript 왕복|같은 테이블을 JSON과 바이너리에서 각각 읽어 필드 단위로 비교합니다. 두 경로가 어긋나면 실패합니다.|
+|방출 코드 언어 수준|C# 리더를 `netstandard2.1`로 컴파일해 Unity 2020.3이 받아들이는 C# 8을 넘지 않는지 확인합니다.|
+|데이터베이스|`docker compose`로 MySQL / PostgreSQL / MongoDB / Redis를 띄우고 실제로 적재한 뒤 서버에 직접 질의합니다.|
+
+의도한 출력 변경이 있을 때는 골든을 갱신하고 git diff로 리뷰합니다.
+
+```
+SHEETMAN_UPDATE_GOLDEN=1 dotnet test
+```
+
+픽스처 `.xlsx`는 [test/fixtures/tools/FixtureGen](../test/fixtures/tools/FixtureGen)이 생성합니다. 불투명한 바이너리가 아니라 코드로 리뷰할 수 있게 하기 위함입니다. 생성기를 수정했다면 다시 돌려서 커밋하세요.
+
+```
+dotnet run --project test/fixtures/tools/FixtureGen
+```
+
+테스트 컨테이너는 실행 후에도 남습니다(4개 엔진을 매번 내리고 올리는 비용이 테스트 자체보다 큽니다). 정리는 아래와 같이 합니다.
+
+```
+cd test/fixtures/databases && docker compose down -v
+```
+
+C++와 데이터베이스 검증은 툴체인이 없으면 **건너뛰지 않고 실패**합니다. 조용히 꺼지는 게이트는 없는 게이트보다 나쁘기 때문입니다. 로컬에서 C++ 검증에는 MSVC 또는 g++가, 데이터베이스 검증에는 Docker가 필요합니다.
 
 
 
@@ -450,13 +803,27 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 
 - ~~필드를 주석처리하면 오류 발생.~~
 
-- TargetSide 적용
+- ~~TargetSide 적용~~
 
-- 배열 타입을 지원하자. 구분자는 무엇으로해야하나?
+- ~~배열 타입을 지원하자. 구분자는 무엇으로해야하나?~~ (기본 `;`, recipe의 `ArrayDelimiter`로 변경 가능)
 
-- typescript 코드 생성
+- ~~typescript 코드 생성~~
 
-- typescript serializer 작성
+- ~~C++ 코드 생성 및 바이너리 리더~~
+
+- ~~MySQL / PostgreSQL / MongoDB / Redis 적재~~
+
+- ~~정적 검증 복구 및 다중 오류 보고~~
+
+- ~~참조 대상 테이블이 없는 경우도 다중 오류 보고에 합류시키기~~ (참조 해석을 비throw 방식으로 전환하여 합류 완료)
+
+- ~~`foreign[]`(가변 개수 참조) 지원 검토~~ — **지원하지 않기로 결정.** 로우마다 가변 개수의 참조를 해석하려면 생성되는 리더가 로드 후 참조 연결 단계에서 길이가 다른 배열을 다뤄야 하는데, 세 언어 모두 그런 형태가 없습니다. 조용히 해석되지 않는 코드를 뱉는 대신 명시적으로 거부하고, 고정 개수가 필요하면 `SerialField`를 쓰도록 안내합니다.
+
+- ~~typescript 바이너리 리더~~ (`lib/ts/sheetman/lite_binary_reader.ts` 구현. 생성 출력에 자동 포함됩니다.)
+
+- `var` / `formula` 엔티티 (모델 타입은 있으나 파서가 없습니다)
+
+- 개별 셀 단위 참조 (`Table.Field#Index` 형태로 특정 셀을 가리키는 기능)
 
 
 

@@ -1,6 +1,8 @@
-using CommandLine;
+﻿using CommandLine;
 using SheetMan.Recipe;
 using SheetMan.Models;
+using System.Net;
+using System.Globalization;
 using System.Linq;
 using System.IO;
 using SheetMan.Helpers;
@@ -22,6 +24,11 @@ namespace SheetMan.CodeGeneration
             foreach (var htmlRecipe in recipeModel.CodeGenerations.Html)
             {
                 _htmlRecipe = htmlRecipe;
+
+                // Narrowed to the side this entry is built for. Both (the default)
+                // returns the model unchanged.
+                _model = model.ProjectTo(RecipeTargetSide.Of(htmlRecipe.TargetSide, "CodeGenerations.Html"));
+
                 GenerateHtml();
             }
         }
@@ -51,7 +58,7 @@ namespace SheetMan.CodeGeneration
             foreach (var enumm in _model.Enums.OrderBy(x => x.Name))
             {
                 if (!string.IsNullOrEmpty(enumm.Comment))
-                    html.PrintLine($"<li><a href=\"enums.html#enum_{enumm.Name}\">{enumm.Name}</a> - {enumm.Comment}</li>");
+                    html.PrintLine($"<li><a href=\"enums.html#enum_{enumm.Name}\">{enumm.Name}</a> - {Esc(enumm.Comment)}</li>");
                 else
                     html.PrintLine($"<li><a href=\"enums.html#enum_{enumm.Name}\">{enumm.Name}</a></li>");
             }
@@ -64,7 +71,7 @@ namespace SheetMan.CodeGeneration
             foreach (var table in _model.Tables.OrderBy(x => x.Name))
             {
                 if (!string.IsNullOrEmpty(table.Comment))
-                    html.PrintLine($"<li><a href=\"tables.html#table_{table.Name}\">{table.Name}</a> - {table.Comment}</li>");
+                    html.PrintLine($"<li><a href=\"tables.html#table_{table.Name}\">{table.Name}</a> - {Esc(table.Comment)}</li>");
                 else
                     html.PrintLine($"<li><a href=\"tables.html#table_{table.Name}\">{table.Name}</a></li>");
             }
@@ -78,7 +85,7 @@ namespace SheetMan.CodeGeneration
             foreach (var constantSet in _model.ConstantSets.OrderBy(x => x.Name))
             {
                 if (!string.IsNullOrEmpty(constantSet.Comment))
-                    html.PrintLine($"<li><a href=\"constantsets.html#constantset_{constantSet.Name}\">{constantSet.Name}</a> - {constantSet.Comment}</li>");
+                    html.PrintLine($"<li><a href=\"constantsets.html#constantset_{constantSet.Name}\">{constantSet.Name}</a> - {Esc(constantSet.Comment)}</li>");
                 else
                     html.PrintLine($"<li><a href=\"constantsets.html#constantset_{constantSet.Name}\">{constantSet.Name}</a></li>");
             }
@@ -155,7 +162,7 @@ namespace SheetMan.CodeGeneration
             html.PrintLine($"<h3 id=\"enum_{enumm.Name}\"><i>Enumeration: {GetSourceSheetLink(enumm.Location, enumm.Name)}</i></h3>");
 
             if (!string.IsNullOrEmpty(enumm.Comment))
-                html.PrintLine($"<div class=\"comment\">{enumm.Comment}</div>");
+                html.PrintLine($"<div class=\"comment\">{Esc(enumm.Comment)}</div>");
 
             html.PrintLine("<table class=\"table-bordered table-striped table-condensed\">");
             html.PrintLine("<thead><th>No</th><th>Name</th><th>Value</th><th>Description</th></thead>");
@@ -167,7 +174,7 @@ namespace SheetMan.CodeGeneration
                 html.PrintLine($"<td>{no}</td>");
                 html.PrintLine($"<td id=\"const_{enumm.Name}.{label.Name}\">{GetSourceSheetLink(label.Location, label.Name)}</td>");
                 html.PrintLine($"<td><code>{label.Value}</code></td>");
-                html.PrintLine($"<td>{label.Comment}</td>");
+                html.PrintLine($"<td>{Esc(label.Comment)}</td>");
                 html.PrintLine("</tr>");
                 no++;
             }
@@ -202,7 +209,7 @@ namespace SheetMan.CodeGeneration
             html.PrintLine($"<h3 id=\"constantset_{constantSet.Name}\"><i>ConstantSet: {GetSourceSheetLink(constantSet.Location, constantSet.Name)}</i></h3>");
 
             if (!string.IsNullOrEmpty(constantSet.Comment))
-                html.PrintLine($"<div class=\"comment\">{constantSet.Comment}</div>");
+                html.PrintLine($"<div class=\"comment\">{Esc(constantSet.Comment)}</div>");
 
             html.PrintLine("<table class=\"table-bordered table-striped table-condensed\">");
             html.PrintLine("<thead><th>No</th><th>Name</th><th>Type</th><th>Value</th><th>Description</th></thead>");
@@ -222,11 +229,11 @@ namespace SheetMan.CodeGeneration
                 }
                 else
                 {
-                    html.PrintLine($"<td>{constant.TypeName}</td>");
+                    html.PrintLine($"<td>{Esc(constant.TypeName)}</td>");
                     //html.PrintLine($"<td><code>{constant.Value}</code></td>");
-                    html.PrintLine($"<td>{constant.Value}</td>");
+                    html.PrintLine($"<td>{Esc(constant.Value?.ToString())}</td>");
                 }
-                html.PrintLine($"<td>{constant.Comment}</td>");
+                html.PrintLine($"<td>{Esc(constant.Comment)}</td>");
                 html.PrintLine("</tr>");
                 no++;
             }
@@ -272,20 +279,23 @@ namespace SheetMan.CodeGeneration
             html.PrintLine($"<h3 id=\"table_{table.Name}\"><i>Table: {GetSourceSheetLink(table.Location, table.Name)} - {table.Data.Count} Record(s)</i></h3>");
 
             if (!string.IsNullOrEmpty(table.Comment))
-                html.PrintLine($"<div class=\"comment\">{table.Comment}</div>");
+                html.PrintLine($"<div class=\"comment\">{Esc(table.Comment)}</div>");
 
             html.PrintLine("<table class=\"table-bordered table-striped table-condensed header-fixed  table-hover\">");
 
-            // Field names.
-            // SerialFields 대신에 plain fields 목록을 사용한다.
-            // SerialFields를 고려해서 처리해도 좋을듯 하다.. 어떻게 묶였는지 알수 있을테니 좋을듯..
+            // Header shows the sheet's own columns rather than the folded groups, so the
+            // page reads like the workbook it documents. Which columns folded together is
+            // still worth knowing, so a grouped column names its group in a tooltip.
             html.PrintLine("<thead>");
             foreach (var field in table.Fields)
             {
-                if (field.IsRef)
-                    html.PrintLine($"<th>*{field.Name}*</th>");
+                string caption = field.IsRef ? $"*{Esc(field.Name)}*" : Esc(field.Name);
+                string group = GroupNameOf(table, field);
+
+                if (group != null)
+                    html.PrintLine($"<th title=\"exposed as {Esc(group)}\">{caption}</th>");
                 else
-                    html.PrintLine($"<th>{field.Name}</th>");
+                    html.PrintLine($"<th>{caption}</th>");
             }
             html.PrintLine("</thead>");
 
@@ -294,7 +304,7 @@ namespace SheetMan.CodeGeneration
             html.PrintLine("<thead>");
             foreach (var field in table.Fields)
             {
-                html.PrintLine($"<th>{field.Comment}</th>");
+                html.PrintLine($"<th>{Esc(field.Comment)}</th>");
             }
             html.PrintLine("</thead>");
 
@@ -377,26 +387,31 @@ namespace SheetMan.CodeGeneration
             {
                 html.PrintLine("<tr>");
 
-                int fieldIndex = 0;
-                foreach (var cell in row)
+                // Driven by the field list, not by walking the row. A row holds every
+                // column the sheet declared, whereas the field list is what this page
+                // is meant to show; pairing them positionally only worked while the
+                // two were guaranteed identical.
+                for (int fieldIndex = 0; fieldIndex < table.Fields.Count; fieldIndex++)
                 {
+                    var field = table.Fields[fieldIndex];
+                    var cell = row[field.Index];
+
                     string bgcolor = "";
                     //if (cell.Value == "")
                     //    bgcolor = " style='background-color: #FFEFEF;'";
 
                     if (fieldIndex == 0)
                     {
-                        html.Print($"<td id=\"table_{table.Name}.{cell.Value}\" align=right{bgcolor}><code><font color=green>");
-                        PrintDataValue(html, table.Fields[fieldIndex], cell.Value);
+                        html.Print($"<td id=\"table_{table.Name}.{Esc(cell.Value?.ToString())}\" align=right{bgcolor}><code><font color=green>");
+                        PrintDataValue(html, field, cell.Value);
                         html.Print("</font></code></td>");
                     }
                     else
                     {
                         html.Print($"<td{bgcolor}>");
-                        PrintDataValue(html, table.Fields[fieldIndex], cell.Value);
+                        PrintDataValue(html, field, cell.Value);
                         html.Print("</td>");
                     }
-                    fieldIndex++;
                 }
 
                 html.PrintLine("</tr>");
@@ -446,27 +461,38 @@ namespace SheetMan.CodeGeneration
             html.Print("</html>");
         }
 
+        /// <summary>
+        /// The array this column is exposed as, when it folded into a group with others.
+        /// Null for a column that stands alone.
+        /// </summary>
+        private static string GroupNameOf(Models.Table table, Models.Field field)
+        {
+            foreach (var sf in table.SerialFields)
+            {
+                if (sf.Fields.Count > 1 && sf.Fields.Contains(field))
+                    return sf.Name;
+            }
+
+            return null;
+        }
+
         static void PrintType(Printer html, Models.Field field)
         {
             //html.Print("<code>");
 
-            if (field.Type == Models.ValueType.String ||
-                field.Type == Models.ValueType.Bool ||
-                field.Type == Models.ValueType.Int32 ||
-                field.Type == Models.ValueType.Int64 ||
-                field.Type == Models.ValueType.Float ||
-                field.Type == Models.ValueType.Double ||
-                field.Type == Models.ValueType.DateTime ||
-                field.Type == Models.ValueType.TimeSpan ||
-                field.Type == Models.ValueType.Uuid ||
-                field.Type == Models.ValueType.ForeignRecord)
+            // Element type drives the choice; the brackets are appended after, so an
+            // array of enums still links to its declaration.
+            string suffix = field.IsArray ? "[]" : "";
+
+            switch (field.ElementType)
             {
-                html.Print($"<font color=blue>{field.TypeName}</font>");
-                //html.Print($"{field.TypeName}");
-            }
-            else
-            {
-                html.Print($"<a href=\"enums.html#enum_{field.Enum.Name}\">enum.{field.Enum.Name}</a>");
+                case Models.ValueType.Enum:
+                    html.Print($"<a href=\"enums.html#enum_{field.Enum.Name}\">enum.{Esc(field.Enum.Name)}</a>{suffix}");
+                    break;
+
+                default:
+                    html.Print($"<font color=blue>{Esc(field.TypeName)}{suffix}</font>");
+                    break;
             }
 
             //html.Print("</code>");
@@ -483,27 +509,15 @@ namespace SheetMan.CodeGeneration
 
             if (field.IsRef)
             {
-                html.Print($"<code><font color=green>{value}</font></code> : ");
-
-                //TODO
-                //이제 도구는 다 마련해뒀으니 다른거 정리하고 적용해보자.
-                /*
-                if (_model.GetRefField(field, value, out Models.Table refTable, out Models.Field refField, out string refValue))
-                {
-                    //wrokaround
-                    //이거를 어찌한다??
-                    if (refField == null)
-                        refField = field;
-
-                    //fixme 여기서 스택오버플로우 발생함.
-                    PrintDataValue(html, refField, refValue, refTable, field, value);
-                }
-                else
-                {
-                    html.Print("<font color=ref><b>ref?</b></font>");
-                }
-                */
-
+                // The stored index, not the value it points at.
+                //
+                // Following the reference and rendering the target's value was attempted
+                // and abandoned: a chain that leads back on itself recursed without
+                // bound. The cooker now rejects cyclic references outright, so it could
+                // be revisited - but showing the key is also the honest thing for a page
+                // documenting what is stored, and the table it points into is one link
+                // away on the same page.
+                html.Print($"<code><font color=green>{Esc(value?.ToString())}</font></code> : ");
                 return;
             }
 
@@ -512,10 +526,39 @@ namespace SheetMan.CodeGeneration
                 html.Print(string.Format("<a href=\"tables.html#table_{0}.{1}\" title=\"{2}\">", redirectedTable.Name, originalIndex, string.Format("ref:{0}.{1}#{2}", redirectedTable.Name, field.Name, originalIndex)));
             }
 
-            switch (field.Type)
+            // A delimited cell holds an array, so print its elements. Falling into the
+            // scalar switch below would try to cast the array to the element type.
+            if (field.IsArray && value is System.Array elements)
+            {
+                for (int i = 0; i < elements.Length; i++)
+                {
+                    if (i > 0)
+                        html.Print("<font color=#BBBBBB>, </font>");
+
+                    PrintScalarValue(html, field, elements.GetValue(i));
+                }
+
+                if (redirectedTable != null)
+                    html.Print("</a>");
+
+                return;
+            }
+
+            PrintScalarValue(html, field, value);
+
+            if (redirectedTable != null)
+                html.Print("</a>");
+        }
+
+        /// <summary>
+        /// Renders one value of a field's element type.
+        /// </summary>
+        private void PrintScalarValue(Printer html, Models.Field field, object value)
+        {
+            switch (field.ElementType)
             {
                 case Models.ValueType.String:
-                    html.Print((string)value);
+                    html.Print(Esc((string)value));
                     break;
 
                 case Models.ValueType.Bool:
@@ -533,27 +576,27 @@ namespace SheetMan.CodeGeneration
                     }
 
                 case Models.ValueType.Int32:
-                    html.Print(((int)value).ToString());
+                    html.Print(((int)value).ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case Models.ValueType.Int64:
-                    html.Print(((long)value).ToString());
+                    html.Print(((long)value).ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case Models.ValueType.Float:
-                    html.Print(((float)value).ToString());
+                    html.Print(((float)value).ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case Models.ValueType.Double:
-                    html.Print(((double)value).ToString());
+                    html.Print(((double)value).ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case Models.ValueType.DateTime:
-                    html.Print(((System.DateTime)value).ToString());
+                    html.Print(((System.DateTime)value).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
                     break;
 
                 case Models.ValueType.TimeSpan:
-                    html.Print(((System.TimeSpan)value).ToString());
+                    html.Print(((System.TimeSpan)value).ToString(null, CultureInfo.InvariantCulture));
                     break;
 
                 case Models.ValueType.Uuid:
@@ -574,15 +617,23 @@ namespace SheetMan.CodeGeneration
                 default:
                     throw new SheetManException($"unsupported type `{field.Type}`");
             }
-
-            if (redirectedTable != null)
-                html.Print("</a>");
         }
 
         private string GetEnumLink(Models.Enum enumm)
         {
             return $"<a href=\"enums.html#enum_{enumm.Name}\">{enumm.Name}</a>";
         }
+
+
+        /// <summary>
+        /// Escapes text that came from the spreadsheet before it reaches the page.
+        ///
+        /// Comments and string cells are written by designers, so an ampersand or an
+        /// angle bracket in a perfectly ordinary description used to break the
+        /// generated documentation - the text was interpolated into the markup raw.
+        /// </summary>
+        private static string Esc(string text)
+            => string.IsNullOrEmpty(text) ? "" : WebUtility.HtmlEncode(text);
 
         private string GetSourceSheetLink(Models.Location location, string caption = "")
         {

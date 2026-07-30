@@ -1,0 +1,71 @@
+{
+  // Regression recipe for the `core.xlsx` fixture.
+  //
+  // Every path is relative to the repository root, which is where the test
+  // harness invokes SheetMan from. Output lands in test/fixtures/output/core
+  // (transient, gitignored) and is compared against test/fixtures/golden/core.
+  //
+  // Both JSON row formats are exported because they take different code paths
+  // in JsonExporter and only the compact one is currently correct.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/core",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ],
+    "GoogleSheets": []
+  },
+
+  "Exports": {
+    "Binary": [
+      {
+        "Path": "test/fixtures/output/core/binary",
+        "FileExtension": ".table"
+      }
+    ],
+    "Json": [
+      {
+        "Path": "test/fixtures/output/core/json-compact",
+        "UseCompactRowFormat": true,
+        "Indented": true
+      },
+      {
+        "Path": "test/fixtures/output/core/json-named",
+        "UseCompactRowFormat": false,
+        "Indented": true
+      }
+    ],
+    "MongoDb": [],
+    "MySql": []
+  },
+
+  "CodeGenerations": {
+    "Cpp": [
+      {
+        "Path": "test/fixtures/output/core/cpp",
+        "Namespace": "sheetman_fixtures::core",
+        "AccessorName": "CoreAccessor",
+        "BinaryTableFileExtension": ".table"
+      }
+    ],
+    "CSharp": [
+      {
+        "Path": "test/fixtures/output/core/csharp",
+        "Namespace": "SheetMan.Fixtures.Core",
+        "AccessorName": "CoreAccessor"
+      }
+    ],
+    "Typescript": [
+      {
+        "Path": "test/fixtures/output/core/typescript"
+      }
+    ],
+    "Html": [
+      {
+        "Path": "test/fixtures/output/core/html"
+      }
+    ]
+  }
+}

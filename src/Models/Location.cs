@@ -41,23 +41,28 @@ namespace SheetMan.Models
             return $"{Filename} : {Sheet} : {CellRange}";
         }
 
-        public string CellRange
-        {
-            get
-            {
-                string c = "";
-                if (Column >= 24)
-                {
-                    c += "A";
-                    c += char.ToString((char)('A' + (Column % 24)));
-                }
-                else
-                {
-                    c = char.ToString((char)('A' + Column));
-                }
+        public string CellRange => $"{ColumnName(Column)}{Row + 1}";
 
-                return $"{c}{Row + 1}";
-            }
+        /// <summary>
+        /// Spreadsheet column label for a zero-based column index:
+        /// 0 -> A, 25 -> Z, 26 -> AA, 701 -> ZZ, 702 -> AAA.
+        ///
+        /// This is bijective base-26, not plain base-26: there is no zero digit, so
+        /// each carry subtracts one. Getting it wrong is what made every reference
+        /// past column X point at the wrong cell, including the `&range=` fragment in
+        /// the Google Sheets deep links.
+        /// </summary>
+        public static string ColumnName(int column)
+        {
+            if (column < 0)
+                return "?";
+
+            var name = new System.Text.StringBuilder();
+
+            for (int n = column; n >= 0; n = n / 26 - 1)
+                name.Insert(0, (char)('A' + n % 26));
+
+            return name.ToString();
         }
     }
 }

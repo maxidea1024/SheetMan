@@ -1,204 +1,202 @@
 using System.Collections.Generic;
-using SheetMan.Models.Raw;
+using System.Linq;
 using SheetMan.Models;
+using SheetMan.Recipe;
 
 namespace SheetMan.Cooking
 {
-    // 셀 데이터를 임포트한 형태로 불러들이는게 좋을듯..
-    // 단순히 검증만 하는것보다는..
-
     public partial class ModelCooker
     {
-        private void ValidateModel(Model model)
+        /// <summary>
+        /// Checks a cooked model and reports everything wrong with it in one go.
+        ///
+        /// This ran nowhere at all until now - the method existed but nothing called
+        /// it, and its uniqueness loop skipped precisely the fields it was meant to
+        /// check. Catching this class of mistake statically is the point of the tool,
+        /// so the checks are back, corrected, and wired into Cook.
+        /// </summary>
+        private void ValidateModel(Model model, RecipeModel recipeModel, Diagnostics diagnostics)
         {
-            /*
-            // Validate values.
             foreach (var table in model.Tables)
             {
-                foreach (var field in table.Fields)
-                {
-                    var fieldType = field.Type;
-                    if (fieldType == ValueType.Enum)
-                    {
-                        foreach (var row in table.Data)
-                        {
-                            var cell = row[field.Index];
-                            ValidateEnumValue(cell.Value, field.Enum, cell.Location);
-                        }
-                    }
-                    else if (fieldType == ValueType.DateTime)
-                    {
-                        foreach (var row in table.Data)
-                        {
-                            var cell = row[field.Index];
-                            ValidateDateTimeValue(cell.Value, cell.Location);
-                        }
-                    }
-                    else if (fieldType == ValueType.Bool)
-                    {
-                        foreach (var row in table.Data)
-                        {
-                            var cell = row[field.Index];
-                            ValidateBoolValue(cell.Value, cell.Location);
-                        }
-                    }
-                    //todo integer나 float/double도 유효한 값인지 체크하자.
-                    //overflow도 체크하자.
-                    //경고로 해야하나? 에러로 해야하나? struct모드로 설정할수 있게 하자.
-                }
-            }
-            */
-
-            // Validate unique
-            foreach (var table in model.Tables)
-            {
-                foreach (var field in table.Fields)
-                {
-                    if (field.Indexing)
-                        continue;
-
-                    foreach (var row in table.Data)
-                    {
-                        var cell = row[field.Index];
-                        var locations = new List<Location>();
-                        CollectConflitedIndices(table, field.Index, cell.Value, ref locations);
-                        //todo 이걸 최종적으로 모아서 하는게 좋을까?
-                        if (locations.Count > 1)
-                        {
-                            foreach (var location in locations)
-                            {
-                                //todo 예외 타입을 하나더 만들어서 처리할까?
-                                //details에 넣어주어야하나..?
-                                //Utils.Logging.LogError($"duplicated index `{cell.Value}` at {location}");
-                            }
-                        }
-                    }
-                }
+                ValidateIndexUniqueness(table, diagnostics);
+                ValidateReferences(model, table, diagnostics);
             }
 
-            // Validate references
-            List<string> errors = new List<string>();
-            foreach (var table in model.Tables)
-            {
-                for (int fieldIndex = 0; fieldIndex < table.Fields.Count; fieldIndex++)
-                {
-                    var field = table.Fields[fieldIndex];
-
-                    if (!field.IsRef)
-                        continue;
-
-                    // 우선 참조하는 테이블이 유효한지 체크.
-                    var foreignTable = model.FindTable(field.RefTableName);
-                    if (foreignTable == null)
-                    {
-                        //참조하는 대상의 테이블이 존재하지 않습니다.
-                        errors.Add($"참조의 대상이 되는 테이블이 존재하지 않습니다.\n참조하는곳:{field.TypeLocation}, 피참조테이블: {field.RefTableName}");
-                        continue;
-                    }
-
-                    // 참조하고 있는 테이블에 해당 컬럼이 존재하는지 체크.
-                    string foreignFieldName = "index";
-                    if (!string.IsNullOrEmpty(field.RefFieldName))
-                        foreignFieldName = field.RefFieldName;
-
-                    var foreignField = foreignTable.FindField(foreignFieldName);
-                    if (foreignField == null)
-                    {
-                        //TODO 오류 메시지 적용
-                        //error += "참조의 대상이되는 테이블 컬럼이 존재하지 않습니다.\n";
-                        //error += string.Format("  선언된곳: {0}, 참조테이블: {1}, 참조컬럼: {2}\n\n", field.Location, field.refTable, foreignFieldName);
-                        continue;
-                    }
-
-                    // 참조하고 있는 테이블에 레코드가 존재하는지 체크.
-                    for (int rowIndex = 0; rowIndex < table.Data.Count; rowIndex++)
-                    {
-                        var cell = table.Data[rowIndex][fieldIndex];
-                        var key = cell.Value;
-                        if (!foreignTable.ContainsValueAt(0, key))
-                        {
-                            //TODO
-                            //if (key != "0") // 임시로 "0" 재낌.. 이건 참조 무효를 나타내는 상황인가? null ref?
-                            {
-                                //TODO 오류 메시지 적용
-                                //error += "참조의 대상이되는 테이블 데이터가 존재하지 않습니다.\n";
-                                //error += string.Format("  선언된곳: {0}, 참조테이블: {1}, 참조컬럼: {2}, 참조키: {3}\n\n", cell.Location, field.refTable, foreignFieldName, key);
-                            }
-                        }
-                    }
-                }
-            }
+            ValidateTargetSideReachability(model, recipeModel, diagnostics);
         }
 
-        private void CollectConflitedIndices(Table table, int fieldIndex, object value, ref List<Location> locations)
+        /// <summary>
+        /// Every field acting as an index must hold distinct values.
+        ///
+        /// The first column is always an index; further ones opt in with a `*` prefix
+        /// on the field name. The previous version skipped a field when
+        /// `field.Indexing` was set, the exact inverse of what it wanted, so it only
+        /// ever examined the columns where duplicates are perfectly legal.
+        /// </summary>
+        private void ValidateIndexUniqueness(Table table, Diagnostics diagnostics)
         {
-            foreach (var row in table.Data)
+            foreach (var field in table.Fields)
             {
-                var cell = row[fieldIndex];
-                if (cell.Value != value)
+                if (!field.Indexing)
                     continue;
 
-                bool alreadyConflicted = false;
-                foreach (var l in locations)
+                // Keyed lookup rather than comparing every row against every other.
+                // The original shape was quadratic, which on a table of any size is
+                // the slowest thing the converter does.
+                var seen = new Dictionary<object, Location>();
+
+                foreach (var row in table.Data)
                 {
-                    if (l == cell.RawCell.Location)
+                    var cell = row[field.Index];
+
+                    // Values are boxed, so equality has to go through Equals. A
+                    // reference comparison reports every boxed int as distinct and
+                    // therefore never finds a duplicate at all.
+                    if (seen.TryGetValue(cell.Value, out var firstLocation))
                     {
-                        alreadyConflicted = true;
-                        break;
+                        diagnostics.Error(cell.RawCell.Location,
+                            $"Index field `{table.Name}.{field.Name}` repeats the value `{cell.Value}`, " +
+                            $"first used at {firstLocation}. Values in an index field must be unique.");
+                        continue;
+                    }
+
+                    seen.Add(cell.Value, cell.RawCell.Location);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks that every foreign reference points at something that exists: the
+        /// table, the field within it, and a row carrying the referenced key.
+        /// </summary>
+        private void ValidateReferences(Model model, Table table, Diagnostics diagnostics)
+        {
+            foreach (var field in table.Fields)
+            {
+                if (!field.IsRef)
+                    continue;
+
+                // A reference that failed to resolve has already been reported by
+                // SolveTableCrossReferencings, which knows exactly which link in the
+                // chain broke. Repeating it here would just say the same thing twice.
+                if (field.ResolvedRefTable == null)
+                    continue;
+
+                ValidateReferencedKeysExist(table, field, field.ResolvedRefTable, diagnostics);
+            }
+        }
+
+        /// <summary>
+        /// Checks the referencing cells themselves: whatever a reference column holds
+        /// has to match a row in the target table.
+        /// </summary>
+        private void ValidateReferencedKeysExist(Table table, Field field, Table foreignTable, Diagnostics diagnostics)
+        {
+            if (foreignTable.Fields.Count == 0)
+                return;
+
+            // Whichever form a reference takes, the cell stores the target's primary
+            // index, so the keys to match against all live in its first column.
+            var foreignKeys = new HashSet<object>();
+            foreach (var foreignRow in foreignTable.Data)
+                foreignKeys.Add(foreignRow[foreignTable.Fields[0].Index].Value);
+
+            foreach (var row in table.Data)
+            {
+                var cell = row[field.Index];
+
+                // Zero is the conventional "points at nothing". Index values start at
+                // one, so it can never collide with a real row.
+                if (cell.Value is int key && key == 0)
+                    continue;
+
+                if (foreignKeys.Contains(cell.Value))
+                    continue;
+
+                diagnostics.Error(cell.RawCell.Location,
+                    $"Field `{table.Name}.{field.Name}` references `{foreignTable.Name}` row `{cell.Value}`, " +
+                    $"which does not exist.");
+            }
+        }
+
+        /// <summary>
+        /// Checks that no build leaves a reference dangling.
+        ///
+        /// Target-side filtering removes whole entities from an output. If a table that
+        /// survives references one that does not, the generated code names a type that
+        /// was never emitted, and the failure surfaces in the consuming project's
+        /// compiler instead of here.
+        ///
+        /// Only the sides the recipe actually asks for are checked, so a workbook is
+        /// never rejected over a combination nobody builds.
+        /// </summary>
+        private void ValidateTargetSideReachability(Model model, RecipeModel recipeModel, Diagnostics diagnostics)
+        {
+            foreach (var side in RequestedTargetSides(recipeModel))
+            {
+                if (side == TargetSide.Both)
+                    continue;
+
+                var visibleTables = new HashSet<string>(
+                    model.Tables.Where(t => TargetSides.Includes(side, t.TargetSide)).Select(t => t.Name));
+
+                foreach (var table in model.Tables)
+                {
+                    if (!TargetSides.Includes(side, table.TargetSide))
+                        continue;
+
+                    foreach (var field in table.Fields)
+                    {
+                        if (!field.IsRef)
+                            continue;
+
+                        // Already reported as unresolvable; whether it would also be
+                        // filtered out is beside the point.
+                        if (field.ResolvedRefTable == null)
+                            continue;
+
+                        if (!TargetSides.Includes(side, field.TargetSide))
+                            continue;
+
+                        if (visibleTables.Contains(field.RefTableName))
+                            continue;
+
+                        diagnostics.Error(field.DetailTypeLocation,
+                            $"In a `{Describe(side)}` build, field `{table.Name}.{field.Name}` references table " +
+                            $"`{field.RefTableName}`, which that build excludes by target side.");
                     }
                 }
-
-                if (!alreadyConflicted)
-                    locations.Add(cell.RawCell.Location);
             }
         }
 
-        private void ValidateValueType(string typeName, Location location)
+        /// <summary>
+        /// The distinct target sides any output entry in the recipe asks for.
+        /// </summary>
+        private static IEnumerable<TargetSide> RequestedTargetSides(RecipeModel recipeModel)
         {
-            if (!IsAcceptableValueType(typeName))
-                throw new SheetManException(location, $"'{typeName}' type is undefined.");
+            var sides = new HashSet<TargetSide>();
+
+            void Add(string text, string section) => sides.Add(RecipeTargetSide.Of(text, section));
+
+            foreach (var r in recipeModel.Exports.Binary) Add(r.TargetSide, "Exports.Binary");
+            foreach (var r in recipeModel.Exports.Json) Add(r.TargetSide, "Exports.Json");
+            foreach (var r in recipeModel.CodeGenerations.Cpp) Add(r.TargetSide, "CodeGenerations.Cpp");
+            foreach (var r in recipeModel.CodeGenerations.CSharp) Add(r.TargetSide, "CodeGenerations.CSharp");
+            foreach (var r in recipeModel.CodeGenerations.Typescript) Add(r.TargetSide, "CodeGenerations.Typescript");
+            foreach (var r in recipeModel.CodeGenerations.Html) Add(r.TargetSide, "CodeGenerations.Html");
+
+            return sides;
         }
 
-        private bool IsAcceptableValueType(string typeName)
+        private static string Describe(TargetSide side)
         {
-            switch (typeName)
+            switch (side)
             {
-                case "string": return true;
-                case "bool": return true;
-                case "int": return true;
-                case "bigint": return true;
-                case "float": return true;
-                case "double": return true;
-                case "datetime": return true;
-                case "timespan": return true;
-                case "uuid": return true;
+                case TargetSide.ClientOnly: return "client";
+                case TargetSide.ServerOnly: return "server";
+                default: return "client and server";
             }
-
-            // Also enum
-            if (Model.Current.ContainsEnum(typeName))
-                return true;
-
-            return false;
-        }
-
-        private void ValidateEnumValue(string labelOrValue, Enum enumm, Location location)
-        {
-            if (!enumm.Contains(labelOrValue))
-                throw new SheetManException(location, $"'{labelOrValue}' is not a label that exists in enum '{enumm.Name}'.");
-        }
-
-        private void ValidateDateTimeValue(string value, Location location)
-        {
-            //TODO 살짝 완화하도록 하자.
-            //15자리 혹은 13자리를 지원하고
-            //구분자 문자를 '_' 뿐만 아니라 공백 문자 ' '도 지원하는게 좋을듯.
-            if (value.Length != 15 || value[8] != '_')
-                throw new SheetManException(location, $"'{value}' is not legal date-time format. you should take the following format: 'YYYYMMDD_hhmmss'");
-        }
-
-        private static void ValidateBoolValue(string value, Location location)
-        {
-            //How to?
         }
     }
 }

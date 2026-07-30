@@ -1,3 +1,10 @@
 @echo off
-rem dotnet publish ..\src\SheetMan.csproj --output ..\bin --self-contained true --runtime win-x64 -p:PublishSingleFile=true -p:PublishTrimmed=true -r -c Release
-dotnet publish ..\src\SheetMan.csproj --output ..\bin --self-contained true --runtime win-x64 -p:PublishSingleFile=true -r -c Release
+rem Publishes a self-contained single-file SheetMan for win-x64 into ..\bin.
+rem
+rem PublishTrimmed is deliberately off: NPOI, Newtonsoft.Json and Google.Apis all
+rem resolve types by reflection, and trimming strips members they need at runtime.
+pushd "%~dp0"
+
+dotnet publish ..\src\SheetMan.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true --output ..\bin
+
+popd

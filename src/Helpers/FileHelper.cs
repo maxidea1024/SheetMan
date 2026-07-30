@@ -1,10 +1,15 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.IO;
 
 namespace SheetMan.Helpers
 {
     /// <summary>
+    /// Direct file operations.
     ///
+    /// Note the difference from <see cref="StagingFiles"/>: these write immediately,
+    /// whereas the exporters and generators go through the staging area so a failed run
+    /// leaves the previous output intact. Anything producing a build artifact should use
+    /// StagingFiles; this is for the rest.
     /// </summary>
     public static class FileHelper
     {
@@ -13,7 +18,7 @@ namespace SheetMan.Helpers
         //https://stackoverflow.com/questions/58744/copy-the-entire-contents-of-a-directory-in-c-sharp
 
         /// <summary>
-        /// Copy directory recursively.
+        /// Copies a directory tree, overwriting files already at the destination.
         /// </summary>
         public static void CopyDirectory(string sourceDirectory, string targetDirectory)
         {
@@ -24,7 +29,7 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
-        /// Copy directory recursively.
+        /// Copies a directory tree, overwriting files already at the destination.
         /// </summary>
         public static void CopyDirectory(DirectoryInfo source, DirectoryInfo target)
         {
@@ -46,7 +51,10 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
+        /// Creates the directory a file is about to be written into.
         ///
+        /// Takes the file name rather than the directory, since that is what every caller
+        /// has in hand.
         /// </summary>
         public static void EnsurePathExists(string filename)
         {
@@ -58,7 +66,10 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
+        /// Size of a file, or -1 when it cannot be read.
         ///
+        /// Used while building the manifest, where a file that has gone missing should not
+        /// abort the run.
         /// </summary>
         public static long GetFileSize(string filename)
         {
@@ -74,7 +85,8 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
-        ///
+        /// Writes text to a file, optionally creating the directory and a sidecar
+        /// `.md5` holding the content's hash.
         /// </summary>
         public static void WriteAllTextToFile(string filename, string text, bool ensurePathExists = false, bool withMd5Hash = false)
         {
@@ -88,7 +100,8 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
-        ///
+        /// Writes bytes to a file, optionally creating the directory and a sidecar
+        /// `.md5` holding the content's hash.
         /// </summary>
         public static void WriteAllBytesToFile(string filename, byte[] data, bool ensurePathExists = false, bool withMd5Hash = false)
         {
@@ -102,23 +115,7 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        public static string ReadAllTextFromFile(string filename)
-        {
-            return File.ReadAllText(filename);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public static byte[] ReadAllBytesFromFile(string filename)
-        {
-            return File.ReadAllBytes(filename);
-        }
-
-        /// <summary>
-        ///
+        /// Serializes an object to a .json file.
         /// </summary>
         public static void WriteToJsonFile(string filename, object obj, bool ensurePathExists = false, bool indented = true, bool withMd5Hash = false)
         {
@@ -130,72 +127,19 @@ namespace SheetMan.Helpers
         }
 
         /// <summary>
-        ///
+        /// Reads a .json file and deserializes it. Throws on a missing or malformed file, which
+        /// Manifest.Load relies on to treat an absent or corrupt manifest as simply
+        /// absent.
         /// </summary>
         public static T ReadFromJsonFile<T>(string filename)
         {
-            string json = ReadAllTextFromFile(filename);
-            return JsonConvert.DeserializeObject<T>(json);
+            return JsonConvert.DeserializeObject<T>(File.ReadAllText(filename));
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public static void MakesEmptyPath(string path)
-        {
-            DeletePathRecursively(path, false);
-        }
+        // The recursive-delete family that used to live here is gone: nothing called it.
+        // An unused recursive delete is a liability rather than an asset, and whoever
+        // next needs one is better off writing exactly what they need.
 
-        /// <summary>
-        ///
-        /// </summary>
-        public static void DeletePathRecursively(string path, bool deleteSelf = true)
-        {
-            DeletePathRecursively(new DirectoryInfo(path), deleteSelf);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private static void DeletePathRecursively(DirectoryInfo baseDir, bool deleteSelf)
-        {
-            if (!baseDir.Exists)
-                return;
-
-            foreach (var dir in baseDir.EnumerateDirectories())
-                DeleteSubPathRecursively(dir);
-
-            var files = baseDir.GetFiles();
-            foreach (var file in files)
-            {
-                file.IsReadOnly = false;
-                file.Delete();
-            }
-
-            if (deleteSelf)
-                baseDir.Delete();
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private static void DeleteSubPathRecursively(DirectoryInfo baseDir)
-        {
-            if (!baseDir.Exists)
-                return;
-
-            foreach (var dir in baseDir.EnumerateDirectories())
-                DeleteSubPathRecursively(dir);
-
-            var files = baseDir.GetFiles();
-            foreach (var file in files)
-            {
-                file.IsReadOnly = false;
-                file.Delete();
-            }
-
-            baseDir.Delete();
-        }
         #endregion
     }
 }

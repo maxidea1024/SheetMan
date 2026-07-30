@@ -1,0 +1,19 @@
+{
+  "LastUpdatedDate": "2026-07-30T14:16:14.3403003+09:00",
+  "MasterHash": "f823a2873eb0f469e3312d5efa9e4018",
+  "TotalSize": 208,
+  "Items": [
+    {
+      "Name": "OffsetTable.json",
+      "Size": 136,
+      "Hash": "19cc0742a84b761982d0e2fce67ae5af",
+      "LastUpdatedDate": "2026-07-30T14:16:14.3398669+09:00"
+    },
+    {
+      "Name": "SecondTable.json",
+      "Size": 72,
+      "Hash": "54204508ac66168cd8cd83725c17bb5d",
+      "LastUpdatedDate": "2026-07-30T14:16:14.3402992+09:00"
+    }
+  ]
+}

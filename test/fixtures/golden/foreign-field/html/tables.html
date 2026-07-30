@@ -1,0 +1,64 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<title>Tables</title></head><body><div class="container-fluid">
+<h1>Tables</h1>
+<br>
+<div class="definition">
+<h3 id="table_ItemCategory"><i>Table:  - 2 Record(s)</i></h3>
+<div class="comment">Target of the field-level reference below.</div>
+<table class="table-bordered table-striped table-condensed header-fixed  table-hover">
+<thead>
+<th>Index</th>
+<th>Name</th>
+<th>Description</th>
+</thead>
+<thead>
+<th>primary index</th>
+<th>category name</th>
+<th>description</th>
+</thead>
+<thead>
+<th><font color=blue>int</font></th><th><font color=blue>string</font></th><th><font color=blue>string</font></th></thead>
+<thead>
+<th>Both</th>
+<th>Both</th>
+<th>Both</th>
+</thead>
+<tr>
+<td id="table_ItemCategory.1" align=right><code><font color=green>1</font></code></td><td>Weapon</td><td>things that hit</td></tr>
+<tr>
+<td id="table_ItemCategory.2" align=right><code><font color=green>2</font></code></td><td>Armor</td><td>things that absorb</td></tr>
+</table>
+</div>
+<br>
+<div class="definition">
+<h3 id="table_Item"><i>Table:  - 2 Record(s)</i></h3>
+<div class="comment">References a specific field rather than the whole record.</div>
+<table class="table-bordered table-striped table-condensed header-fixed  table-hover">
+<thead>
+<th>Index</th>
+<th>Name</th>
+<th>*CategoryName*</th>
+</thead>
+<thead>
+<th>primary index</th>
+<th>item name</th>
+<th>category name by reference</th>
+</thead>
+<thead>
+<th><font color=blue>int</font></th><th><font color=blue>string</font></th><th><font color=red><b>ref?</b></font></th></thead>
+<thead>
+<th>Both</th>
+<th>Both</th>
+<th>Both</th>
+</thead>
+<tr>
+<td id="table_Item.1" align=right><code><font color=green>1</font></code></td><td>Short Sword</td><td><code><font color=green>1</font></code> : </td></tr>
+<tr>
+<td id="table_Item.2" align=right><code><font color=green>2</font></code></td><td>Leather Armor</td><td><code><font color=green>2</font></code> : </td></tr>
+</table>
+</div>
+<br>
+</div>
+<br><h4>This file was created at 2026-07-30 14:16:12 by jhseo</h4></body></html>

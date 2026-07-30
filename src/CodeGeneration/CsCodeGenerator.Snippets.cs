@@ -1,4 +1,4 @@
-using CommandLine;
+﻿using CommandLine;
 using SheetMan.Models;
 
 namespace SheetMan.CodeGeneration
@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-using SheetMan.Runtime;
+// SheetMan's binary reader, written into this directory beside the accessor.
+// Nothing has to be installed for the generated code to compile.
+using SheetMan.Binary;
 
 #if !NO_UNITY
 using Cysharp.Threading.Tasks;
