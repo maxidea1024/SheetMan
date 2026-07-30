@@ -20,15 +20,13 @@ namespace SheetMan.Exporters
     /// and renameCollection works on a standalone server too - so the atomic swap does
     /// not depend on how the deployment is configured.
     /// </summary>
-    [SheetManTarget("mongodb", TargetKind.Export, "Exports.MongoDb", Order = 50)]
+    [SheetManTarget("mongodb", TargetKind.Export, Section = "Exports.MongoDb", Order = 50)]
     public class MongoDbExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.MongoDbRecipe>
     {
         protected override string TargetName => "MongoDB";
 
         private const int InsertBatchRows = 1000;
 
-        protected override IEnumerable<RecipeModel.ExportRecipeGroup.MongoDbRecipe> Select(RecipeModel recipe)
-            => recipe.Exports.MongoDb;
 
         protected override void ExportTo(RecipeModel.ExportRecipeGroup.DatabaseRecipe recipe, Model model)
         {

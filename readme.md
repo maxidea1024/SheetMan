@@ -506,6 +506,30 @@ sheetman @args.txt
 
 서버/클라 각각을 뽑으려면 항목을 두 개 두고 각기 다른 `TargetSide`와 경로를 지정하면 됩니다.
 
+#### `Targets` — 이름으로 지정하는 출력 항목
+
+출력 항목을 섹션에 넣는 대신 `Type`으로 타깃을 지목할 수도 있습니다.
+
+```json
+"Targets": [
+  { "Type": "binary", "Path": "./out/data", "FileExtension": ".table" },
+  { "Type": "csharp", "Path": "./out/cs", "Namespace": "MyGame.Data", "AccessorName": "GameData" }
+]
+```
+
+`Type` 외의 필드는 그 타깃의 설정이며, 전용 섹션에 쓰는 것과 동일합니다. 등록된 타깃은 모두 여기서 쓸 수 있으니 두 방식을 섞어도 됩니다.
+
+|`Type`|종류|
+|--|--|
+|`binary`, `json`|파일 내보내기|
+|`mysql`, `postgresql`, `mongodb`, `redis`|데이터베이스 내보내기|
+|`cpp`, `csharp`, `typescript`, `html`|코드 생성|
+
+두 방식이 있는 이유는 타깃을 추가할 때 recipe 스키마를 고치지 않아도 되게 하기 위함입니다. 위 섹션들은 `Targets`보다 먼저 있었고 기존 recipe를 위해 남아 있습니다.
+
+- 없는 `Type`은 **오류**입니다. 출력을 요청했는데 조용히 아무것도 안 나오면, 있어야 할 파일이 빠진 채 빌드가 나갑니다.
+- 그 타깃에 없는 필드도 **오류**입니다. `FileExtention`처럼 오타를 내면 기본값으로 조용히 넘어가고, 증상은 "설정이 안 먹는다"로만 보입니다.
+
 #### 전체 예제
 
 <details>

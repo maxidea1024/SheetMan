@@ -21,15 +21,13 @@ namespace SheetMan.Exporters
     /// transaction. Either the database ends up with every table updated or with none
     /// of them touched, which is a stronger guarantee than the other targets can offer.
     /// </summary>
-    [SheetManTarget("postgresql", TargetKind.Export, "Exports.PostgreSql", Order = 40)]
+    [SheetManTarget("postgresql", TargetKind.Export, Section = "Exports.PostgreSql", Order = 40)]
     public class PostgreSqlExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.PostgreSqlRecipe>
     {
         protected override string TargetName => "PostgreSQL";
 
         private string _schema = "public";
 
-        protected override IEnumerable<RecipeModel.ExportRecipeGroup.PostgreSqlRecipe> Select(RecipeModel recipe)
-            => recipe.Exports.PostgreSql;
 
         protected override void ExportTo(RecipeModel.ExportRecipeGroup.DatabaseRecipe recipe, Model model)
         {

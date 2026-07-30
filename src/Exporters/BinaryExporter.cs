@@ -12,15 +12,13 @@ using SheetMan.Targets;
 
 namespace SheetMan.Exporters
 {
-    [SheetManTarget("binary", TargetKind.Export, "Exports.Binary", Order = 10)]
+    [SheetManTarget("binary", TargetKind.Export, Section = "Exports.Binary", Order = 10)]
     public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     {
         const uint BinaryFileFormatVersion = 100;
 
         private Manifest _manifest;
 
-        protected override IEnumerable<RecipeModel.ExportRecipeGroup.BinaryRecipe> Select(RecipeModel recipe)
-            => recipe.Exports.Binary;
 
         protected override void Run(TargetContext context, RecipeModel.ExportRecipeGroup.BinaryRecipe binaryRecipe)
         {
@@ -143,7 +141,5 @@ namespace SheetMan.Exporters
                     throw new SheetManException($"unsupported type  `{valueType}`");
             }
         }
-
-
     }
 }

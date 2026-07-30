@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using SheetMan.Models;
 using SheetMan.Recipe;
@@ -11,13 +14,20 @@ namespace SheetMan.Targets
     /// <summary>One registered target and the metadata its attribute declared.</summary>
     public sealed class TargetDescriptor
     {
-        internal TargetDescriptor(string id, TargetKind kind, string section, int order, ITarget target)
+        internal TargetDescriptor(
+            string id,
+            TargetKind kind,
+            string section,
+            int order,
+            ITarget target,
+            Func<RecipeModel, IEnumerable> sectionEntries)
         {
             Id = id;
             Kind = kind;
             Section = section;
             Order = order;
             Target = target;
+            SectionEntries = sectionEntries;
         }
 
         /// <summary>Stable short name, such as `binary` or `csharp`.</summary>
@@ -26,7 +36,10 @@ namespace SheetMan.Targets
         /// <summary>What the target produces.</summary>
         public TargetKind Kind { get; }
 
-        /// <summary>Dotted recipe path this target reads, such as `Exports.Binary`.</summary>
+        /// <summary>
+        /// Dotted recipe path of this target's own section, or null when it has none and is
+        /// reached only through the recipe's `Targets` list.
+        /// </summary>
         public string Section { get; }
 
         /// <summary>Sort key within a kind.</summary>
@@ -35,7 +48,19 @@ namespace SheetMan.Targets
         /// <summary>The target itself.</summary>
         public ITarget Target { get; }
 
-        public override string ToString() => $"{Id} ({Section})";
+        /// <summary>The entry type this target's settings deserialize into.</summary>
+        public Type EntryType => Target.EntryType;
+
+        /// <summary>
+        /// Reads <see cref="Section"/> out of a recipe. Null when there is no section.
+        ///
+        /// Resolved once at startup so the reflection is not repeated per run, and so a
+        /// section that does not exist or holds the wrong element type is a startup failure
+        /// rather than a surprise later.
+        /// </summary>
+        internal Func<RecipeModel, IEnumerable> SectionEntries { get; }
+
+        public override string ToString() => Section == null ? Id : $"{Id} ({Section})";
     }
 
     /// <summary>
@@ -43,16 +68,24 @@ namespace SheetMan.Targets
     /// </summary>
     public readonly struct PlannedTarget
     {
-        internal PlannedTarget(TargetDescriptor descriptor, IOutputRecipe entry, TargetSide side)
+        internal PlannedTarget(TargetDescriptor descriptor, IOutputRecipe entry, string section, TargetSide side)
         {
             Descriptor = descriptor;
             Entry = entry;
+            Section = section;
             Side = side;
         }
 
         public TargetDescriptor Descriptor { get; }
 
         public IOutputRecipe Entry { get; }
+
+        /// <summary>
+        /// Where in the recipe this entry came from, including its index - `Exports.Json[1]`
+        /// or `Targets[0]`. Quoted in diagnostics, so a message points at one entry rather
+        /// than at a section that may hold several.
+        /// </summary>
+        public string Section { get; }
 
         /// <summary>
         /// The side this entry will actually be built for: what it declares, narrowed by
@@ -70,9 +103,31 @@ namespace SheetMan.Targets
     /// sections were missing from the validation one, so a recipe whose only server-side
     /// output was a database export had its cross-side references left unchecked. Deriving
     /// both from one registry is what stops that from recurring.
+    ///
+    /// A target's entries come from two places, and it reads neither itself:
+    ///
+    ///   - its own recipe section, for the targets that have one
+    ///   - the recipe's `Targets` list, for entries naming it by id
+    ///
+    /// The second is what lets a target be added without extending
+    /// <see cref="RecipeModel"/>.
     /// </summary>
     public static class TargetRegistry
     {
+        /// <summary>Field of a `Targets` entry that names the target. Matched case-insensitively.</summary>
+        private const string TypeField = "Type";
+
+        /// <summary>
+        /// Deserializes a `Targets` entry into its target's entry type.
+        ///
+        /// <see cref="MissingMemberHandling.Error"/> on purpose: without it a misspelled
+        /// setting is dropped and the target runs on the default, which looks like the
+        /// option having no effect. There is no case where silently ignoring a field
+        /// somebody wrote in a recipe is the helpful answer.
+        /// </summary>
+        private static readonly JsonSerializer DynamicEntryReader = JsonSerializer.Create(
+            new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Error });
+
         private static readonly Lazy<IReadOnlyList<TargetDescriptor>> LazyAll =
             new Lazy<IReadOnlyList<TargetDescriptor>>(Discover);
 
@@ -94,11 +149,15 @@ namespace SheetMan.Targets
         /// </param>
         public static IEnumerable<PlannedTarget> Plan(RecipeModel recipe, TargetSide requested)
         {
+            // Ahead of any work, so an unknown target id is reported even if no other
+            // entry would have produced output.
+            VerifyDynamicEntries(recipe);
+
             foreach (var descriptor in All)
             {
-                foreach (var entry in descriptor.Target.Entries(recipe))
+                foreach (var (entry, section) in EntriesOf(descriptor, recipe))
                 {
-                    var declared = RecipeTargetSide.Of(entry.TargetSide, descriptor.Section);
+                    var declared = RecipeTargetSide.Of(entry.TargetSide, section);
 
                     // Overlap rather than equality: an entry declared for both sides
                     // belongs in a client run and in a server run alike, while a
@@ -109,7 +168,7 @@ namespace SheetMan.Targets
                     // The intersection, so a `cs` entry in a server run produces the
                     // server cut rather than everything, and a `c` entry is unaffected by
                     // a client run because it is already that narrow.
-                    yield return new PlannedTarget(descriptor, entry, declared & requested);
+                    yield return new PlannedTarget(descriptor, entry, section, declared & requested);
                 }
             }
         }
@@ -132,9 +191,129 @@ namespace SheetMan.Targets
                 var sided = model.ProjectTo(planned.Side);
 
                 planned.Descriptor.Target.Run(
-                    new TargetContext(options, recipe, sided, planned.Entry, planned.Descriptor.Section));
+                    new TargetContext(options, recipe, sided, planned.Entry, planned.Section));
             }
         }
+
+        /// <summary>Ids of every registered target, for help text and error messages.</summary>
+        public static string KnownIds => string.Join(", ", All.Select(d => d.Id));
+
+        // ------------------------------------------------------------ entries
+
+        /// <summary>
+        /// One target's entries: its own section first, then the ones the `Targets` list
+        /// names, each paired with where in the recipe it came from.
+        /// </summary>
+        private static IEnumerable<(IOutputRecipe Entry, string Section)> EntriesOf(
+            TargetDescriptor descriptor, RecipeModel recipe)
+        {
+            if (descriptor.SectionEntries != null)
+            {
+                int index = 0;
+                foreach (var entry in descriptor.SectionEntries(recipe))
+                {
+                    // A null in the list means the recipe had a stray comma or a bare
+                    // `null`; skipping it beats a NullReferenceException from the target.
+                    if (entry is IOutputRecipe typed)
+                        yield return (typed, $"{descriptor.Section}[{index}]");
+
+                    index++;
+                }
+            }
+
+            var dynamicEntries = recipe.Targets;
+            if (dynamicEntries == null)
+                yield break;
+
+            for (int index = 0; index < dynamicEntries.Count; index++)
+            {
+                var json = dynamicEntries[index];
+                if (json == null)
+                    continue;
+
+                string id = TypeOf(json);
+                if (!string.Equals(id, descriptor.Id, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                string section = $"Targets[{index}]";
+
+                yield return (Materialize(json, descriptor, section), section);
+            }
+        }
+
+        /// <summary>The `Type` field of a `Targets` entry, or null when it has none.</summary>
+        private static string TypeOf(JObject json)
+        {
+            var property = json.Properties()
+                               .FirstOrDefault(p => string.Equals(p.Name, TypeField, StringComparison.OrdinalIgnoreCase));
+
+            return property?.Value?.Type == JTokenType.String ? (string)property.Value : null;
+        }
+
+        /// <summary>
+        /// Reads a `Targets` entry into its target's entry type.
+        /// </summary>
+        private static IOutputRecipe Materialize(JObject json, TargetDescriptor descriptor, string section)
+        {
+            // `Type` selected the target and is not one of its settings, so it would trip
+            // the missing-member check that catches the settings that really are misspelled.
+            var settings = (JObject)json.DeepClone();
+
+            foreach (var property in settings.Properties()
+                                             .Where(p => string.Equals(p.Name, TypeField, StringComparison.OrdinalIgnoreCase))
+                                             .ToList())
+            {
+                property.Remove();
+            }
+
+            try
+            {
+                return (IOutputRecipe)settings.ToObject(descriptor.EntryType, DynamicEntryReader);
+            }
+            catch (JsonException ex)
+            {
+                throw new SheetManException(
+                    $"Recipe `{section}` sets up target `{descriptor.Id}`, but could not be read: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Checks that every `Targets` entry names a target that exists.
+        ///
+        /// Separate from <see cref="EntriesOf"/> because that one is asked about a single
+        /// target at a time and so cannot tell "not mine" from "nobody's".
+        /// </summary>
+        private static void VerifyDynamicEntries(RecipeModel recipe)
+        {
+            var dynamicEntries = recipe.Targets;
+            if (dynamicEntries == null)
+                return;
+
+            for (int index = 0; index < dynamicEntries.Count; index++)
+            {
+                var json = dynamicEntries[index];
+                if (json == null)
+                    continue;
+
+                string id = TypeOf(json);
+
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                    throw new SheetManException(
+                        $"Recipe `Targets[{index}]` has no `Type`, so there is nothing to say which " +
+                        $"target it configures. Use one of: {KnownIds}.");
+                }
+
+                if (!All.Any(d => string.Equals(d.Id, id, StringComparison.OrdinalIgnoreCase)))
+                {
+                    throw new SheetManException(
+                        $"Recipe `Targets[{index}]` names target `{id}`, which does not exist. " +
+                        $"Use one of: {KnownIds}.");
+                }
+            }
+        }
+
+        // ----------------------------------------------------------- discovery
 
         private static IReadOnlyList<TargetDescriptor> Discover()
         {
@@ -152,17 +331,17 @@ namespace SheetMan.Targets
                         $"`{type.Name}` is marked [SheetManTarget] but is not a concrete {nameof(ITarget)}.");
                 }
 
-                // A recipe section that does not exist would surface much later, as a
-                // section name quoted in an error message that no one can find in their
-                // recipe. Cheaper to refuse to start.
-                VerifySectionExists(attribute.Section);
+                var target = (ITarget)Activator.CreateInstance(type);
 
                 descriptors.Add(new TargetDescriptor(
                     attribute.Id,
                     attribute.Kind,
                     attribute.Section,
                     attribute.Order,
-                    (ITarget)Activator.CreateInstance(type)));
+                    target,
+                    attribute.Section == null
+                        ? null
+                        : BuildSectionReader(attribute.Section, target.EntryType, type)));
             }
 
             var duplicate = descriptors.GroupBy(d => d.Id, StringComparer.OrdinalIgnoreCase)
@@ -189,15 +368,22 @@ namespace SheetMan.Targets
         }
 
         /// <summary>
-        /// Walks a dotted path such as `Exports.Binary` down <see cref="RecipeModel"/>'s
-        /// properties, throwing if any step is not there.
+        /// Turns a dotted path such as `Exports.Binary` into a reader for that section,
+        /// checking as it goes that every step exists and that the end of it is a list of
+        /// the target's entry type.
+        ///
+        /// Done here rather than by asking the target for its entries, so that a target
+        /// cannot name one section in its attribute and read a different one - which
+        /// compiled fine before and showed up only as an error message pointing somewhere
+        /// the reader would not find the entry.
         /// </summary>
-        private static void VerifySectionExists(string section)
+        private static Func<RecipeModel, IEnumerable> BuildSectionReader(string section, Type entryType, Type targetType)
         {
-            var current = typeof(RecipeModel);
-
             const BindingFlags flags =
                 BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
+
+            var chain = new List<MemberInfo>();
+            var current = typeof(RecipeModel);
 
             foreach (var part in section.Split('.'))
             {
@@ -205,20 +391,50 @@ namespace SheetMan.Targets
                 // `CodeGenerations` was a public field while every other group was a
                 // property, and Newtonsoft serializes either, so nothing had ever forced
                 // the two into agreement.
-                var property = current.GetProperty(part, flags);
+                MemberInfo member = current.GetProperty(part, flags);
+                Type next = (member as PropertyInfo)?.PropertyType;
 
-                Type next = property != null
-                    ? property.PropertyType
-                    : current.GetField(part, flags)?.FieldType;
-
-                if (next == null)
+                if (member == null)
                 {
-                    throw new SheetManException(
-                        $"Target declares recipe section `{section}`, but `{current.Name}` has no `{part}`.");
+                    member = current.GetField(part, flags);
+                    next = (member as FieldInfo)?.FieldType;
                 }
 
+                if (member == null)
+                {
+                    throw new SheetManException(
+                        $"`{targetType.Name}` declares recipe section `{section}`, " +
+                        $"but `{current.Name}` has no `{part}`.");
+                }
+
+                chain.Add(member);
                 current = next;
             }
+
+            if (!typeof(IEnumerable<>).MakeGenericType(entryType).IsAssignableFrom(current))
+            {
+                throw new SheetManException(
+                    $"`{targetType.Name}` declares recipe section `{section}`, but that is " +
+                    $"`{current.Name}` rather than a list of `{entryType.Name}`.");
+            }
+
+            return recipe =>
+            {
+                object value = recipe;
+
+                foreach (var member in chain)
+                {
+                    value = member is PropertyInfo property
+                        ? property.GetValue(value)
+                        : ((FieldInfo)member).GetValue(value);
+
+                    // A recipe that omits a whole group leaves it null rather than empty.
+                    if (value == null)
+                        return Array.Empty<object>();
+                }
+
+                return (IEnumerable)value;
+            };
         }
     }
 }

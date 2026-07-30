@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using SheetMan.Models;
 using SheetMan.Recipe;
 
@@ -63,32 +63,41 @@ namespace SheetMan.Targets
     /// </summary>
     public interface ITarget
     {
-        /// <summary>This target's entries, in the order the recipe lists them.</summary>
-        IEnumerable<IOutputRecipe> Entries(RecipeModel recipe);
+        /// <summary>
+        /// The recipe entry type this target takes its settings from.
+        ///
+        /// The registry needs it for both entry sources: to check that the target's own
+        /// recipe section is a list of this type, and to deserialize a `Targets` entry into
+        /// it.
+        /// </summary>
+        Type EntryType { get; }
 
         /// <summary>Runs one entry.</summary>
         void Run(TargetContext context);
     }
 
     /// <summary>
-    /// Base for a target that reads one strongly typed recipe section.
+    /// Base for a target driven by one recipe entry type.
     ///
-    /// The generic parameter keeps the cast to the entry type in one place here instead of
-    /// at the top of every target.
+    /// A target implements <see cref="Run(TargetContext, TEntry)"/> and nothing else. It
+    /// does not read the recipe: the registry collects its entries, from its own section
+    /// and from the `Targets` list, and narrows the model for each one. So a target has no
+    /// way to disagree with the registry about which section it belongs to, and a target
+    /// for a new language needs no recipe section at all.
+    ///
+    /// The generic parameter keeps the cast to the entry type here instead of at the top of
+    /// every target.
     /// </summary>
     public abstract class Target<TEntry> : ITarget
         where TEntry : class, IOutputRecipe
     {
-        /// <summary>The recipe section this target reads.</summary>
-        protected abstract IEnumerable<TEntry> Select(RecipeModel recipe);
-
         /// <summary>
         /// Runs one entry against <see cref="TargetContext.Model"/>, which is already
         /// narrowed to the entry's target side.
         /// </summary>
         protected abstract void Run(TargetContext context, TEntry entry);
 
-        IEnumerable<IOutputRecipe> ITarget.Entries(RecipeModel recipe) => Select(recipe);
+        Type ITarget.EntryType => typeof(TEntry);
 
         void ITarget.Run(TargetContext context) => Run(context, (TEntry)context.Entry);
     }

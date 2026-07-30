@@ -1,0 +1,18 @@
+{
+  // A `Targets` entry with no `Type`, so nothing says which target it configures.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/core",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ]
+  },
+
+  "Targets": [
+    {
+      "Path": "test/fixtures/output/targets-missing-type/data"
+    }
+  ]
+}

@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SheetMan.Targets;
 
 namespace SheetMan.Recipe
@@ -427,6 +428,36 @@ namespace SheetMan.Recipe
 
         /// <summary>What source code to emit for reading the exported data.</summary>
         public CodeGenerationRecipeGroup CodeGenerations { get; set; } = new CodeGenerationRecipeGroup();
+        #endregion
+
+
+        #region Target group
+
+        /// <summary>
+        /// Output entries named by target id rather than by recipe section.
+        ///
+        /// <code>
+        /// "Targets": [
+        ///   { "Type": "python", "Path": "./out/py", "PackageName": "gamedata" },
+        ///   { "Type": "binary", "Path": "./out/data" }
+        /// ]
+        /// </code>
+        ///
+        /// `Type` picks the target; everything beside it is that target's own settings, the
+        /// same fields its dedicated section would take. Any registered target can be used
+        /// here, including the ones that have a section of their own, so a recipe may use
+        /// either form or both.
+        ///
+        /// This exists so that adding a target does not mean extending this class. The
+        /// sections above are the targets that predate it and stay for the recipes that
+        /// already use them; a target added since is reached only through here.
+        ///
+        /// Held as raw JSON because the entry type is not known until `Type` is read. The
+        /// registry deserializes each one into its target's entry type, rejecting an
+        /// unrecognized `Type` and any field the target does not have - a misspelled
+        /// setting is a mistake worth reporting, not a default worth taking silently.
+        /// </summary>
+        public List<JObject> Targets { get; set; } = new List<JObject>();
         #endregion
 
 

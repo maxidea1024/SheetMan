@@ -27,14 +27,12 @@ namespace SheetMan.CodeGeneration
     /// header includes. That reader is the C++ half of the format the binary exporter
     /// writes, so the two have to change together.
     /// </summary>
-    [SheetManTarget("cpp", TargetKind.CodeGeneration, "CodeGenerations.Cpp", Order = 10)]
+    [SheetManTarget("cpp", TargetKind.CodeGeneration, Section = "CodeGenerations.Cpp", Order = 10)]
     public class CppCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.CppRecipe>
     {
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.CppRecipe _cppRecipe;
 
-        protected override IEnumerable<RecipeModel.CodeGenerationRecipeGroup.CppRecipe> Select(RecipeModel recipe)
-            => recipe.CodeGenerations.Cpp;
 
         protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.CppRecipe cppRecipe)
         {

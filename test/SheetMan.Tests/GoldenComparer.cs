@@ -24,13 +24,33 @@ namespace SheetMan.Tests
         public static bool UpdateRequested
             => Environment.GetEnvironmentVariable("SHEETMAN_UPDATE_GOLDEN") == "1";
 
-        public static void Verify(string scenario)
+        public static void Verify(string scenario) => Verify(scenario, scenario);
+
+        /// <summary>
+        /// Compares one scenario's output against another scenario's golden tree.
+        ///
+        /// For the cases where two recipes are meant to produce the same thing by
+        /// different means - the same outputs written once through the named recipe
+        /// sections and once through the `Targets` list. Byte equality across every
+        /// artifact is a stronger statement than any assertion about a few field names.
+        /// </summary>
+        public static void Verify(string scenario, string goldenScenario)
         {
             string outputDir = RepoLayout.OutputDir(scenario);
-            string goldenDir = RepoLayout.GoldenDir(scenario);
+            string goldenDir = RepoLayout.GoldenDir(goldenScenario);
 
             if (UpdateRequested)
             {
+                // Recording would overwrite the other scenario's golden tree with this
+                // one's output, which is how an equivalence check quietly stops checking
+                // anything. The scenario that owns the tree is the one that records it.
+                if (scenario != goldenScenario)
+                {
+                    throw new InvalidOperationException(
+                        $"Scenario `{scenario}` is compared against `{goldenScenario}`'s golden tree and " +
+                        $"cannot record it. Update `{goldenScenario}` instead.");
+                }
+
                 Update(outputDir, goldenDir);
                 return;
             }
@@ -38,7 +58,7 @@ namespace SheetMan.Tests
             if (!Directory.Exists(goldenDir))
             {
                 throw new InvalidOperationException(
-                    $"No golden tree for scenario `{scenario}` at {goldenDir}. " +
+                    $"No golden tree for scenario `{goldenScenario}` at {goldenDir}. " +
                     $"Run the suite once with SHEETMAN_UPDATE_GOLDEN=1 to record one.");
             }
 

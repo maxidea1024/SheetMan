@@ -1,0 +1,23 @@
+{
+  // A `Targets` entry naming a target that does not exist.
+  //
+  // Has to be reported rather than skipped: a recipe asking for `pyton` output and
+  // getting none, silently, is a build that ships without the file it was supposed
+  // to produce.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/core",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ]
+  },
+
+  "Targets": [
+    {
+      "Type": "pyton",
+      "Path": "test/fixtures/output/targets-unknown-type/py"
+    }
+  ]
+}

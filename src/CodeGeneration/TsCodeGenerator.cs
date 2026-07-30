@@ -18,14 +18,12 @@ using SheetMan.Targets;
 
 namespace SheetMan.CodeGeneration
 {
-    [SheetManTarget("typescript", TargetKind.CodeGeneration, "CodeGenerations.Typescript", Order = 30)]
+    [SheetManTarget("typescript", TargetKind.CodeGeneration, Section = "CodeGenerations.Typescript", Order = 30)]
     public partial class TsCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe>
     {
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe _typescriptRecipe;
 
-        protected override IEnumerable<RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe> Select(RecipeModel recipe)
-            => recipe.CodeGenerations.Typescript;
 
         protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe typescriptRecipe)
         {

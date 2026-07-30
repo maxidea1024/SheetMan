@@ -11,7 +11,7 @@ using SheetMan.Targets;
 
 namespace SheetMan.CodeGeneration
 {
-    [SheetManTarget("csharp", TargetKind.CodeGeneration, "CodeGenerations.CSharp", Order = 20)]
+    [SheetManTarget("csharp", TargetKind.CodeGeneration, Section = "CodeGenerations.CSharp", Order = 20)]
     public partial class CsCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe>
     {
         private Model _model;
@@ -19,8 +19,6 @@ namespace SheetMan.CodeGeneration
         private RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe _csharpReceipe;
         private string _csFilename;
 
-        protected override IEnumerable<RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe> Select(RecipeModel recipe)
-            => recipe.CodeGenerations.CSharp;
 
         protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe csharpRecipe)
         {

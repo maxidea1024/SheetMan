@@ -23,7 +23,7 @@ namespace SheetMan.Exporters
     /// whole new one. Redis has no notion of a table to swap, so the swap is done key
     /// by key within that one atomic block.
     /// </summary>
-    [SheetManTarget("redis", TargetKind.Export, "Exports.Redis", Order = 60)]
+    [SheetManTarget("redis", TargetKind.Export, Section = "Exports.Redis", Order = 60)]
     public class RedisExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.RedisRecipe>
     {
         protected override string TargetName => "Redis";
@@ -31,8 +31,6 @@ namespace SheetMan.Exporters
         /// <summary>Suffix of the set listing a table's primary index values.</summary>
         private const string IndexKeySuffix = ":index";
 
-        protected override IEnumerable<RecipeModel.ExportRecipeGroup.RedisRecipe> Select(RecipeModel recipe)
-            => recipe.Exports.Redis;
 
         protected override void ExportTo(RecipeModel.ExportRecipeGroup.DatabaseRecipe recipe, Model model)
         {

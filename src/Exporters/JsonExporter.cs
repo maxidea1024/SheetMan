@@ -12,13 +12,11 @@ using SheetMan.Targets;
 
 namespace SheetMan.Exporters
 {
-    [SheetManTarget("json", TargetKind.Export, "Exports.Json", Order = 20)]
+    [SheetManTarget("json", TargetKind.Export, Section = "Exports.Json", Order = 20)]
     public class JsonExporter : Target<RecipeModel.ExportRecipeGroup.JsonRecipe>
     {
         private Manifest _manifest;
 
-        protected override IEnumerable<RecipeModel.ExportRecipeGroup.JsonRecipe> Select(RecipeModel recipe)
-            => recipe.Exports.Json;
 
         protected override void Run(TargetContext context, RecipeModel.ExportRecipeGroup.JsonRecipe recipe)
         {

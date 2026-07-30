@@ -12,14 +12,12 @@ using SheetMan.Targets;
 
 namespace SheetMan.CodeGeneration
 {
-    [SheetManTarget("html", TargetKind.CodeGeneration, "CodeGenerations.Html", Order = 40)]
+    [SheetManTarget("html", TargetKind.CodeGeneration, Section = "CodeGenerations.Html", Order = 40)]
     public partial class HtmlCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe>
     {
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe _htmlRecipe;
 
-        protected override IEnumerable<RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe> Select(RecipeModel recipe)
-            => recipe.CodeGenerations.Html;
 
         protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe htmlRecipe)
         {

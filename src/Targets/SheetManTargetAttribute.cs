@@ -35,16 +35,15 @@ namespace SheetMan.Targets
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public sealed class SheetManTargetAttribute : Attribute
     {
-        public SheetManTargetAttribute(string id, TargetKind kind, string section)
+        public SheetManTargetAttribute(string id, TargetKind kind)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             Kind = kind;
-            Section = section ?? throw new ArgumentNullException(nameof(section));
         }
 
         /// <summary>
-        /// Stable short name, lower case. This is what a recipe writes in a dynamic
-        /// target entry and what `--help` lists, so changing one is a breaking change.
+        /// Stable short name, lower case. This is what a recipe's `Targets` entry names in
+        /// its `Type` field, so changing one is a breaking change to every recipe using it.
         /// </summary>
         public string Id { get; }
 
@@ -52,13 +51,18 @@ namespace SheetMan.Targets
         public TargetKind Kind { get; }
 
         /// <summary>
-        /// Dotted path of the recipe section this target reads, such as `Exports.Binary`.
+        /// Dotted path of the target's own recipe section, such as `Exports.Binary`.
         ///
-        /// Quoted verbatim in error messages, so it has to match the property name in
-        /// <see cref="Recipe.RecipeModel"/> exactly - which the registry checks at startup
-        /// rather than trusting.
+        /// Optional. The targets that predate the `Targets` list have one; a target added
+        /// since is reached only through `Targets` and leaves this unset, which is what
+        /// keeps a new language from having to extend
+        /// <see cref="Recipe.RecipeModel"/>.
+        ///
+        /// The registry reads the section through this rather than asking the target for
+        /// its entries, so a target cannot name one section here and read another. It is
+        /// resolved and type-checked against the target's entry type at startup.
         /// </summary>
-        public string Section { get; }
+        public string Section { get; set; }
 
         /// <summary>
         /// Sort key within a kind; lower runs first. Ties break on <see cref="Id"/> so the
