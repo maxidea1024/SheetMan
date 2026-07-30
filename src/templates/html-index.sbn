@@ -1,0 +1,52 @@
+{{~##
+   The summary page: one column per kind of entity, each linking into its own page.
+##~}}
+{{~ include 'html-head.sbn' ~}}
+<br>
+<table class="table-bordered table-striped table-condensed"><tr>
+<td valign=top>
+<h2 id="enums">Enumerations</h2>
+<ul>
+{{~ for item in enums ~}}
+{{~ if item.comment != '' ~}}
+<li><a href="enums.html#enum_{{ item.name }}">{{ item.name }}</a> - {{ item.comment }}</li>
+{{~ else ~}}
+<li><a href="enums.html#enum_{{ item.name }}">{{ item.name }}</a></li>
+{{~ end ~}}
+{{~ end ~}}
+</ul>
+</td>
+<td valign=top>
+<h2 id="tables">Tables</h2>
+<ul>
+{{~ for item in tables ~}}
+{{~ if item.comment != '' ~}}
+<li><a href="tables.html#table_{{ item.name }}">{{ item.name }}</a> - {{ item.comment }}</li>
+{{~ else ~}}
+<li><a href="tables.html#table_{{ item.name }}">{{ item.name }}</a></li>
+{{~ end ~}}
+{{~ end ~}}
+</ul>
+</td>
+<td valign=top>
+<h2 id="constantsets">ConstantSets</h2>
+<ul>
+{{~ for item in constant_sets ~}}
+{{~ if item.comment != '' ~}}
+<li><a href="constantsets.html#constantset_{{ item.name }}">{{ item.name }}</a> - {{ item.comment }}</li>
+{{~ else ~}}
+<li><a href="constantsets.html#constantset_{{ item.name }}">{{ item.name }}</a></li>
+{{~ end ~}}
+{{~ end ~}}
+</ul>
+</td>
+<td valign=top>
+<h2 id="source-sheets">Source sheets</h2>
+<ul>
+{{~ for sheet in source_sheets ~}}
+<li><a href="{{ sheet.url }}">{{ sheet.filename }}</a></li>
+{{~ end ~}}
+</ul>
+</td>
+</tr></table>
+{{ include 'html-foot.sbn' }}

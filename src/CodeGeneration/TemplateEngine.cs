@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Scriban;
+using Scriban.Parsing;
 using Scriban.Runtime;
 
 namespace SheetMan.CodeGeneration
@@ -28,7 +31,15 @@ namespace SheetMan.CodeGeneration
         /// the languages being generated are themselves snake_case or camelCase.
         /// </summary>
         /// <param name="templateName">File name under templates/, such as `cpp.sbn`.</param>
-        public static string Render(string templateName, object model)
+        /// <param name="model">The view the template reads.</param>
+        /// <param name="trailingBlankLine">
+        /// Whether the file ends with a blank line. Not a matter of taste: the printer this
+        /// replaced left one behind wherever a generator's last call was PrintLine and none
+        /// where it was Print, so the generated C++ has one and the generated HTML does not.
+        /// Stated here rather than left to whether a template file happens to end with a
+        /// newline, which an editor may add or remove without anyone noticing.
+        /// </param>
+        public static string Render(string templateName, object model, bool trailingBlankLine = true)
         {
             var template = Template.Parse(Load(templateName), templateName);
 
@@ -48,13 +59,32 @@ namespace SheetMan.CodeGeneration
                 // Templates are written for a fixed model, so there is no reason to allow
                 // the recursion that a runaway `include` would need.
                 LoopLimit = 100_000,
+
+                // So a template can `include` the pieces several pages share - a page head,
+                // a footer - instead of each carrying its own copy.
+                TemplateLoader = new EmbeddedTemplateLoader(),
             };
 
             var globals = new ScriptObject();
             globals.Import(model, renamer: member => StandardMemberRenamer.Default(member));
             context.PushGlobal(globals);
 
-            return Normalize(template.Render(context));
+            return Normalize(template.Render(context), trailingBlankLine);
+        }
+
+        /// <summary>
+        /// Resolves `include` against the embedded templates, by file name.
+        /// </summary>
+        private sealed class EmbeddedTemplateLoader : ITemplateLoader
+        {
+            public string GetPath(TemplateContext context, SourceSpan callerSpan, string templateName)
+                => templateName;
+
+            public string Load(TemplateContext context, SourceSpan callerSpan, string templatePath)
+                => TemplateEngine.Load(templatePath);
+
+            public ValueTask<string> LoadAsync(TemplateContext context, SourceSpan callerSpan, string templatePath)
+                => new ValueTask<string>(Load(context, callerSpan, templatePath));
         }
 
         /// <summary>
@@ -75,15 +105,28 @@ namespace SheetMan.CodeGeneration
         ///     segment including that one. An accident, but a harmless one, and preserving
         ///     it is what keeps this change reviewable.
         /// </summary>
-        private static string Normalize(string text)
+        private static string Normalize(string text, bool trailingBlankLine)
         {
+            var lines = new List<string>(text.Replace("\r\n", "\n").Split('\n'));
+
+            for (int i = 0; i < lines.Count; i++)
+                lines[i] = lines[i].TrimEnd();
+
+            // Whatever the template file happened to end with is discarded, so the ending
+            // is decided by the caller rather than by an editor's trailing-newline habit.
+            while (lines.Count > 0 && lines[lines.Count - 1].Length == 0)
+                lines.RemoveAt(lines.Count - 1);
+
             var result = new StringBuilder(text.Length + 16);
 
-            foreach (var line in text.Replace("\r\n", "\n").Split('\n'))
+            foreach (var line in lines)
             {
-                result.Append(line.TrimEnd());
+                result.Append(line);
                 result.Append('\n');
             }
+
+            if (trailingBlankLine)
+                result.Append('\n');
 
             return result.ToString();
         }
