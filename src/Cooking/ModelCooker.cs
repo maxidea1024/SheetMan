@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SheetMan.Models.Raw;
 using SheetMan.Models;
 using System;
@@ -8,6 +8,7 @@ using Serilog;
 using SheetMan.Extensions;
 using System.Linq;
 using System.Globalization;
+using SheetMan.Targets;
 
 namespace SheetMan.Cooking
 {
@@ -109,7 +110,11 @@ namespace SheetMan.Cooking
 
             // Runs after resolution: validation follows references to check that what
             // they point at exists.
-            ValidateModel(result, recipeModel, diagnostics);
+            //
+            // The requested side is passed in so a narrowed run is checked against what it
+            // will actually build. Without it, `--target-side client` could fail on a
+            // problem that only exists in the server cut it is not producing.
+            ValidateModel(result, recipeModel, CommandLineTargetSide.Of(options), diagnostics);
 
             diagnostics.ThrowIfAny("The workbook did not pass validation.");
 

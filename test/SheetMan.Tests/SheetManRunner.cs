@@ -29,8 +29,13 @@ namespace SheetMan.Tests
     /// </summary>
     internal static class SheetManRunner
     {
+        /// <param name="extraArgs">
+        /// Further command line arguments, for the options whose whole purpose is to change
+        /// what a run produces from an unchanged recipe.
+        /// </param>
         public static RunResult Convert(string scenario,
-                                        IReadOnlyDictionary<string, string> environment = null)
+                                        IReadOnlyDictionary<string, string> environment = null,
+                                        params string[] extraArgs)
         {
             // Each scenario owns its output tree, and it is rebuilt from scratch so a
             // file that stops being generated shows up as a deletion rather than
@@ -46,9 +51,15 @@ namespace SheetMan.Tests
             // --debug: makes SheetMan print the call stack when it throws. Successful
             // runs are unaffected, and it lets the defect tests assert on stack frames
             // instead of framework exception text, which the runtime localizes.
-            return Run(environment,
-                       "run", "--project", RepoLayout.CliProject, "--no-launch-profile", "--",
-                       "--recipe", RepoLayout.Recipe(scenario), "--debug");
+            var args = new List<string>
+            {
+                "run", "--project", RepoLayout.CliProject, "--no-launch-profile", "--",
+                "--recipe", RepoLayout.Recipe(scenario), "--debug",
+            };
+
+            args.AddRange(extraArgs ?? Array.Empty<string>());
+
+            return Run(environment, args.ToArray());
         }
 
         private static RunResult Run(IReadOnlyDictionary<string, string> environment, params string[] args)

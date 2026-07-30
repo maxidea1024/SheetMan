@@ -43,18 +43,22 @@ namespace SheetMan.Targets
     /// </summary>
     public readonly struct PlannedTarget
     {
-        internal PlannedTarget(TargetDescriptor descriptor, IOutputRecipe entry)
+        internal PlannedTarget(TargetDescriptor descriptor, IOutputRecipe entry, TargetSide side)
         {
             Descriptor = descriptor;
             Entry = entry;
+            Side = side;
         }
 
         public TargetDescriptor Descriptor { get; }
 
         public IOutputRecipe Entry { get; }
 
-        /// <summary>The entry's target side, resolved and reported against its section.</summary>
-        public TargetSide Side => RecipeTargetSide.Of(Entry.TargetSide, Descriptor.Section);
+        /// <summary>
+        /// The side this entry will actually be built for: what it declares, narrowed by
+        /// `--target-side` if that was given.
+        /// </summary>
+        public TargetSide Side { get; }
     }
 
     /// <summary>
@@ -79,29 +83,51 @@ namespace SheetMan.Targets
         public static IReadOnlyList<TargetDescriptor> All => LazyAll.Value;
 
         /// <summary>
-        /// Every entry the recipe asks for, in the order they will run.
+        /// Every entry this run will build, in the order they will run.
         ///
         /// Both the run and the validation pass read this, so they cannot disagree about
-        /// what the recipe requested.
+        /// what the recipe requested - and, since <paramref name="requested"/> is applied
+        /// here, a narrowed run is not validated against the side it is not building.
         /// </summary>
-        public static IEnumerable<PlannedTarget> Plan(RecipeModel recipe)
+        /// <param name="requested">
+        /// The side the run is narrowed to. <see cref="TargetSide.Both"/> narrows nothing.
+        /// </param>
+        public static IEnumerable<PlannedTarget> Plan(RecipeModel recipe, TargetSide requested)
         {
             foreach (var descriptor in All)
             {
                 foreach (var entry in descriptor.Target.Entries(recipe))
-                    yield return new PlannedTarget(descriptor, entry);
+                {
+                    var declared = RecipeTargetSide.Of(entry.TargetSide, descriptor.Section);
+
+                    // Overlap rather than equality: an entry declared for both sides
+                    // belongs in a client run and in a server run alike, while a
+                    // server-only entry belongs in neither a client run nor its output.
+                    if (!TargetSides.Includes(requested, declared))
+                        continue;
+
+                    // The intersection, so a `cs` entry in a server run produces the
+                    // server cut rather than everything, and a `c` entry is unaffected by
+                    // a client run because it is already that narrow.
+                    yield return new PlannedTarget(descriptor, entry, declared & requested);
+                }
             }
         }
 
         /// <summary>
-        /// Runs every entry the recipe asks for.
+        /// Runs every entry this run builds.
         ///
         /// The model is narrowed here rather than inside each target, so a target reads
         /// only what its entry is entitled to and none of them can forget to project.
         /// </summary>
         public static void RunAll(Options options, RecipeModel recipe, Model model)
         {
-            foreach (var planned in Plan(recipe))
+            var requested = CommandLineTargetSide.Of(options);
+
+            if (requested != TargetSide.Both)
+                Log.Information($"Narrowed to the {TargetSides.Describe(requested)} side by --target-side.");
+
+            foreach (var planned in Plan(recipe, requested))
             {
                 var sided = model.ProjectTo(planned.Side);
 

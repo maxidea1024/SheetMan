@@ -55,5 +55,19 @@ namespace SheetMan.Models
         /// </summary>
         public static bool Includes(TargetSide requested, TargetSide declared)
             => (requested & declared) != TargetSide.None;
+
+        /// <summary>
+        /// The side in words, for log lines and error messages.
+        /// </summary>
+        public static string Describe(TargetSide side)
+        {
+            switch (side)
+            {
+                case TargetSide.ClientOnly: return "client";
+                case TargetSide.ServerOnly: return "server";
+                case TargetSide.Both: return "client and server";
+                default: return "no";
+            }
+        }
     }
 }

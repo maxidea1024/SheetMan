@@ -103,5 +103,65 @@ namespace SheetMan.Tests
             Assert.Contains("Exports.Json", ex.Message);
             Assert.Contains("both", ex.Message);
         }
+
+        /// <summary>
+        /// `--target-side` narrows a recipe that asks for no side in particular.
+        ///
+        /// Every entry in `core-cli-side` defaults to both sides, so nothing but the
+        /// option can account for a difference in what comes out.
+        /// </summary>
+        [Fact]
+        public void Command_line_target_side_narrows_a_recipe_that_declares_no_side()
+        {
+            var result = SheetManRunner.Convert("core-cli-side", null, "--target-side", "server");
+            Assert.True(result.Succeeded, $"Conversion failed.{Environment.NewLine}{result.Describe()}");
+
+            var tables = TableNames("core-cli-side");
+            Assert.Contains("ServerTuning", tables);
+            Assert.DoesNotContain("ClientStrings", tables);
+
+            var fields = FieldNames("core-cli-side", "TestFieldTypes");
+            Assert.Contains("intField", fields);        // marked s
+            Assert.DoesNotContain("boolField", fields); // marked c
+
+            // The same recipe, unnarrowed, has to produce both - otherwise the assertions
+            // above would pass for a recipe that was never building the client side.
+            Assert.True(SheetManRunner.Convert("core-cli-side").Succeeded);
+
+            var unfiltered = TableNames("core-cli-side");
+            Assert.Contains("ServerTuning", unfiltered);
+            Assert.Contains("ClientStrings", unfiltered);
+        }
+
+        /// <summary>
+        /// An entry built for one side is skipped entirely by a run narrowed to the other,
+        /// rather than being built with an empty model.
+        /// </summary>
+        [Fact]
+        public void Command_line_target_side_skips_entries_built_for_the_other_side()
+        {
+            var result = SheetManRunner.Convert("core-server", null, "--target-side", "client");
+            Assert.True(result.Succeeded, $"Conversion failed.{Environment.NewLine}{result.Describe()}");
+
+            // Every entry in core-server declares "s", so a client run has no work at all
+            // and must not leave a half-written output tree behind.
+            string json = Path.Combine(RepoLayout.OutputDir("core-server"), "json-named");
+
+            Assert.False(Directory.Exists(json) && Directory.GetFiles(json, "*.json").Length > 0,
+                "A client-narrowed run produced output from server-only recipe entries.");
+        }
+
+        /// <summary>
+        /// A misspelled side has to fail rather than quietly falling back to both, which
+        /// would hand a build server the wrong artifacts without saying so.
+        /// </summary>
+        [Fact]
+        public void Command_line_target_side_rejects_an_unknown_value()
+        {
+            var result = SheetManRunner.Convert("core-cli-side", null, "--target-side", "sever");
+
+            Assert.False(result.Succeeded, "A misspelled --target-side value was accepted.");
+            Assert.Contains("--target-side", result.StdOut);
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace SheetMan.Cooking
         /// check. Catching this class of mistake statically is the point of the tool,
         /// so the checks are back, corrected, and wired into Cook.
         /// </summary>
-        private void ValidateModel(Model model, RecipeModel recipeModel, Diagnostics diagnostics)
+        private void ValidateModel(Model model, RecipeModel recipeModel, TargetSide requested, Diagnostics diagnostics)
         {
             foreach (var table in model.Tables)
             {
@@ -24,7 +24,7 @@ namespace SheetMan.Cooking
                 ValidateReferences(model, table, diagnostics);
             }
 
-            ValidateTargetSideReachability(model, recipeModel, diagnostics);
+            ValidateTargetSideReachability(model, recipeModel, requested, diagnostics);
         }
 
         /// <summary>
@@ -132,9 +132,10 @@ namespace SheetMan.Cooking
         /// Only the sides the recipe actually asks for are checked, so a workbook is
         /// never rejected over a combination nobody builds.
         /// </summary>
-        private void ValidateTargetSideReachability(Model model, RecipeModel recipeModel, Diagnostics diagnostics)
+        private void ValidateTargetSideReachability(
+            Model model, RecipeModel recipeModel, TargetSide requested, Diagnostics diagnostics)
         {
-            foreach (var side in RequestedTargetSides(recipeModel))
+            foreach (var side in RequestedTargetSides(recipeModel, requested))
             {
                 if (side == TargetSide.Both)
                     continue;
@@ -164,7 +165,7 @@ namespace SheetMan.Cooking
                             continue;
 
                         diagnostics.Error(field.DetailTypeLocation,
-                            $"In a `{Describe(side)}` build, field `{table.Name}.{field.Name}` references table " +
+                            $"In a `{TargetSides.Describe(side)}` build, field `{table.Name}.{field.Name}` references table " +
                             $"`{field.RefTableName}`, which that build excludes by target side.");
                     }
                 }
@@ -183,24 +184,15 @@ namespace SheetMan.Cooking
         /// had its server side left unvalidated, and a table referencing a client-only
         /// table would reach the exporter unreported.
         /// </summary>
-        private static IEnumerable<TargetSide> RequestedTargetSides(RecipeModel recipeModel)
+        private static IEnumerable<TargetSide> RequestedTargetSides(RecipeModel recipeModel, TargetSide requested)
         {
             var sides = new HashSet<TargetSide>();
 
-            foreach (var planned in TargetRegistry.Plan(recipeModel))
+            foreach (var planned in TargetRegistry.Plan(recipeModel, requested))
                 sides.Add(planned.Side);
 
             return sides;
         }
 
-        private static string Describe(TargetSide side)
-        {
-            switch (side)
-            {
-                case TargetSide.ClientOnly: return "client";
-                case TargetSide.ServerOnly: return "server";
-                default: return "client and server";
-            }
-        }
     }
 }

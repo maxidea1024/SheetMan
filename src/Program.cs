@@ -142,6 +142,13 @@ namespace SheetMan
         {
             try
             {
+                // Read before any work starts, and discarded: the consumers below take it
+                // from the options themselves. Parsing it here is what turns a misspelled
+                // --target-side into an immediate error rather than one reported after
+                // every workbook has been read.
+                CommandLineTargetSide.Of(options);
+
+
                 // Imports
 
                 RawModel rawModel = new RawModel();

@@ -13,6 +13,21 @@ namespace SheetMan
         [Option("new-recipe", HelpText = "Create empty recipe file.")]
         public string NewRecipeFilename { get; set; }
 
+        /// <summary>
+        /// Narrows the whole run to one side of the data.
+        ///
+        /// Two things follow from it. Output entries built for the other side are skipped,
+        /// and the entries that do run see only the tables, columns and rows that belong to
+        /// the requested side - so `--target-side server` on a recipe whose entries are
+        /// marked `cs` produces the server cut of that output rather than everything.
+        ///
+        /// Left out, the run is not narrowed at all and each entry is built for whatever
+        /// side it declares, which is what happened before this option existed.
+        /// </summary>
+        [Option("target-side",
+            HelpText = "Narrow the run to one side: `client`, `server`, or `both` (the default).")]
+        public string TargetSide { get; set; }
+
         [Option("verbose", HelpText = "Sets whether to output debugging log messages.")]
         public bool Verbose { get; set; }
 
