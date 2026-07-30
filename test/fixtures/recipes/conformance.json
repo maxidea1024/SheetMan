@@ -1,0 +1,58 @@
+{
+  // The conformance corpus.
+  //
+  // One table holding every type at the values that break a reader, exported both ways.
+  // The binary file is what a reader under test consumes; the named JSON is what it has
+  // to agree with, field for field.
+  //
+  // Every language whose reader is checked also gets its accessor generated here, so a
+  // harness is a few lines over the generated code rather than a parser of its own.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/conformance",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ]
+  },
+
+  "Exports": {
+    "Binary": [
+      {
+        "Path": "test/fixtures/output/conformance/binary",
+        "FileExtension": ".table"
+      }
+    ],
+    "Json": [
+      {
+        "Path": "test/fixtures/output/conformance/json-named",
+        "UseCompactRowFormat": false,
+        "Indented": true
+      }
+    ]
+  },
+
+  "CodeGenerations": {
+    "Cpp": [
+      {
+        "Path": "test/fixtures/output/conformance/cpp",
+        "Namespace": "sheetman_conformance",
+        "AccessorName": "ConformanceAccessor",
+        "BinaryTableFileExtension": ".table"
+      }
+    ],
+    "CSharp": [
+      {
+        "Path": "test/fixtures/output/conformance/csharp",
+        "Namespace": "SheetMan.Conformance",
+        "AccessorName": "ConformanceAccessor"
+      }
+    ],
+    "Typescript": [
+      {
+        "Path": "test/fixtures/output/conformance/typescript"
+      }
+    ]
+  }
+}

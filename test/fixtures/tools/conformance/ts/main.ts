@@ -1,0 +1,73 @@
+// Conformance harness for the generated TypeScript reader.
+//
+// Reads Vectors.table through the generated table class and prints each row in the
+// canonical form described in ../README.md. No parsing here: the generated reader does
+// that.
+
+declare function require(moduleName: string): any
+declare const process: any
+
+const path = require('path')
+
+import { VectorsTable } from './tables/Vectors'
+
+const binaryDir: string = process.argv[2]
+if (!binaryDir) {
+    process.stderr.write('usage: main.ts <binary-directory>\n')
+    process.exit(1)
+}
+
+const table = new VectorsTable()
+table.readBinarySync(path.join(binaryDir, 'Vectors.table'))
+
+// Ticks rather than the reader's formatted strings: the contract asks for the exact
+// value, and a tick count has no formatting to disagree about.
+const TICKS_PER_SECOND = 10000000n
+const EPOCH_TICKS = 621355968000000000n
+
+function dateTimeTicks(text: string): string {
+    // The reader hands back the same string the JSON export writes, so this is the one
+    // place the harness has to undo a formatting step.
+    const millis = BigInt(Date.parse(text + 'Z'))
+    const fraction = text.includes('.') ? text.split('.')[1].padEnd(7, '0').slice(0, 7) : '0'
+    return (EPOCH_TICKS + millis / 1000n * TICKS_PER_SECOND + BigInt(fraction)).toString()
+}
+
+function timeSpanTicks(text: string): string {
+    const negative = text.startsWith('-')
+    const body = negative ? text.slice(1) : text
+
+    const [dayPart, timePart] = body.includes('.') && body.indexOf('.') < body.indexOf(':')
+        ? [body.split('.')[0], body.slice(body.indexOf('.') + 1)]
+        : ['0', body]
+
+    const [h, m, rest] = timePart.split(':')
+    const [s, frac] = rest.includes('.') ? rest.split('.') : [rest, '0']
+
+    const total =
+        BigInt(dayPart) * 864000000000n +
+        BigInt(h) * 36000000000n +
+        BigInt(m) * 600000000n +
+        BigInt(s) * TICKS_PER_SECOND +
+        BigInt(frac.padEnd(7, '0').slice(0, 7))
+
+    return (negative ? -total : total).toString()
+}
+
+const rows = table.records.map(r => ({
+    index: r.index,
+    intVal: r.intVal,
+    bigVal: r.bigVal.toString(),
+    floatVal: r.floatVal,
+    doubleVal: r.doubleVal,
+    text: r.text,
+    flag: r.flag,
+    when: dateTimeTicks(r.when),
+    span: timeSpanTicks(r.span),
+    uid: r.uid.toLowerCase(),
+    label: r.label as unknown as number,
+    ints: r.ints,
+    strs: r.strs,
+}))
+
+process.stdout.write(JSON.stringify(rows))

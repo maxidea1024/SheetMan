@@ -110,6 +110,23 @@ namespace SheetMan.Tests
                 : BuildWithGcc(workDir, includeDir, runtimeDir, source, exe, accessorName);
         }
 
+        /// <summary>
+        /// Builds an arbitrary harness against a scenario's generated header.
+        ///
+        /// The conformance harnesses use this rather than BuildAndRun, which names the
+        /// output executable and the source for the one round-trip program.
+        /// </summary>
+        public static ToolResult CompileHarness(
+            string workDir, string includeDir, string source, string accessorName, string exeName)
+        {
+            string runtimeDir = Path.Combine(RepoLayout.Root, "lib", "cpp");
+            string exe = Path.Combine(workDir, OnWindows ? exeName + ".exe" : exeName);
+
+            return OnWindows
+                ? BuildWithMsvc(workDir, includeDir, runtimeDir, source, exe, accessorName)
+                : BuildWithGcc(workDir, includeDir, runtimeDir, source, exe, accessorName);
+        }
+
         private static ToolResult BuildWithMsvc(string workDir, string includeDir, string runtimeDir,
                                                 string source, string exe, string accessorName)
         {

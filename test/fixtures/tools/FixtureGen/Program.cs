@@ -46,6 +46,7 @@ namespace SheetMan.FixtureGen
             WriteFormulaError(Prepare(outputDir, "formula-error", "formula-error.xlsx"));
             WriteEnumByValue(Prepare(outputDir, "enum-by-value", "enum-by-value.xlsx"));
             WriteReservedWords(Prepare(outputDir, "reserved-words", "reserved-words.xlsx"));
+            WriteConformance(Prepare(outputDir, "conformance", "conformance.xlsx"));
 
             Console.WriteLine($"Fixtures written to {outputDir}");
             return 0;
@@ -714,6 +715,101 @@ namespace SheetMan.FixtureGen
                 .Row("2", "second", "20", "N", "minus", "beta", "ctor-b", "fn-b");
 
             b.Table(1, 1, spec);
+
+            Save(workbook, path);
+        }
+
+        /// <summary>
+        /// The conformance corpus: every type, at the values that break a reader.
+        ///
+        /// This exists so that adding an output language costs a small harness rather than a
+        /// gate of its own. A reader in any language reads this one table and prints what it
+        /// found; the suite compares that against what the JSON exporter wrote from the same
+        /// cells. Nothing about the comparison is language-specific.
+        ///
+        /// The values are chosen from where readers have actually gone wrong:
+        ///
+        ///   2^53 + 1 and its negative, because a language that carries a 64-bit integer in
+        ///   a double returns them changed rather than failing - which is how the binary
+        ///   writer's truncation of `long` survived for years, and how a JSON reader that
+        ///   parses int64 as a number still loses them.
+        ///
+        ///   0.1 as a float, because the shortest decimal that round-trips a 32-bit value
+        ///   widens to a different double, so a reader without a narrowing step disagrees
+        ///   with the binary by a hair.
+        ///
+        ///   varint lengths one through five, and negative values either side of zero, since
+        ///   the encoding is zig-zag and a reader that shifts instead of dividing gets the
+        ///   sign wrong only for some magnitudes.
+        ///
+        ///   an empty string, an empty array and non-ASCII text, because a length-prefixed
+        ///   format makes each of those a separate path.
+        /// </summary>
+        private static void WriteConformance(string path)
+        {
+            var workbook = new XSSFWorkbook();
+            var b = new SheetBuilder(workbook.CreateSheet("Vectors"));
+
+            b.Enum(1, 1, new EnumSpec { Name = "Flag", Comment = "Enum values travel zig-zag encoded." }
+                .Label("None", "0", "zero")
+                .Label("One", "1", "one byte")
+                .Label("Large", "1048576", "three bytes")
+                .Label("Negative", "-7", "negative, so the sign is folded into the low bit"));
+
+            var spec = new TableSpec { Name = "Vectors", Comment = "Every type at the values that break a reader." };
+            spec
+                .Field(FieldSpec.Of("index", "int", "primary index"))
+                // None of these may end in a digit: a numbered name is folded into a
+                // serial field, so `i32` and `i64` became one array called `i`.
+                .Field(FieldSpec.Of("intVal", "int", "varint boundaries and both extremes"))
+                .Field(FieldSpec.Of("bigVal", "bigint", "past what a double carries exactly"))
+                .Field(FieldSpec.Of("floatVal", "float", "single precision"))
+                .Field(FieldSpec.Of("doubleVal", "double", "double precision"))
+                .Field(FieldSpec.Of("text", "string", "empty, ascii and beyond"))
+                .Field(FieldSpec.Of("flag", "bool", "both values"))
+                .Field(FieldSpec.Of("when", "datetime", "as ticks on the wire"))
+                .Field(FieldSpec.Of("span", "timespan", "as ticks on the wire"))
+                .Field(FieldSpec.Of("uid", "uuid", "sixteen bytes in .NET order"))
+                .Field(FieldSpec.Of("label", "enum", "zig-zag encoded", detailType: "Flag"))
+                .Field(FieldSpec.Of("ints", "int[]", "length-prefixed, including empty"))
+                .Field(FieldSpec.Of("strs", "string[]", "length-prefixed strings"));
+
+            spec
+                // Zero and empty everywhere: one varint byte, and the length-prefixed
+                // paths at length zero.
+                .Row("1", "0", "0", "0", "0", "", "N",
+                     "0001-01-01 00:00:00", "00:00:00", "00000000-0000-0000-0000-000000000000",
+                     "None", "", "")
+
+                // The value a double cannot hold, and one varint byte short of two.
+                .Row("2", "63", "9007199254740993", "0.1", "0.1", "ascii", "Y",
+                     "2022-03-01 09:00:00", "0.00:05:00", "6f9619ff-8b86-d011-b42d-00c04fc964ff",
+                     "One", "0;1;-1", "a;b")
+
+                // Its negative, and the zig-zag boundary either side of zero.
+                .Row("3", "-64", "-9007199254740993", "-0.1", "-0.1", "é한Ａ", "N",
+                     "9999-12-31 23:59:59", "-0.00:05:00", "ffffffff-ffff-ffff-ffff-ffffffffffff",
+                     "Negative", "-2147483648;2147483647", "")
+
+                // Three varint bytes, and both 32-bit extremes.
+                .Row("4", "1048576", "-1", "3.4028235E+38", "1.7976931348623157E+308", "  spaced  ", "Y",
+                     "1970-01-01 00:00:00", "10675199.02:48:05", "01020304-0506-0708-090a-0b0c0d0e0f10",
+                     "Large", "1048576", "one;;three")
+
+                // Five varint bytes each way.
+                .Row("5", "2147483647", "9223372036854775807", "1.4E-45", "5E-324", "tail", "N",
+                     "2038-01-19 03:14:07", "00:00:00.0000001", "ffffffff-0000-ffff-0000-ffffffffffff",
+                     "None", "134217728;-134217729", "z")
+
+                // Negative zero is deliberately not here: JSON has no such value, so the
+                // harness contract cannot carry it and a disagreement would say nothing
+                // about the reader. A negative denormal exercises the same code path and
+                // does survive the round trip.
+                .Row("6", "-2147483648", "-9223372036854775808", "-1.4E-45", "-5E-324", "", "Y",
+                     "2000-02-29 12:00:00", "1.00:00:00", "80000000-0000-0000-0000-000000000001",
+                     "One", "", "é");
+
+            b.Table(8, 1, spec);
 
             Save(workbook, path);
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -53,6 +53,11 @@ namespace SheetMan.Tests
     internal sealed class TypeCheckResult
     {
         public bool Succeeded;
+
+        /// <summary>Standard output on its own, which is what a harness's result is.</summary>
+        public string StdOut;
+
+        /// <summary>Both streams together, for reporting a failure.</summary>
         public string Output;
     }
 
@@ -124,6 +129,69 @@ declare module 'axios'
         /// directory, which reads like a missing toolchain rather than a launch
         /// problem.
         /// </summary>
+        /// <summary>
+        /// Compiles a generated tree together with a harness entry point and runs it.
+        ///
+        /// Compiled to JavaScript and run with node rather than through ts-node, so the run
+        /// needs nothing installed that the type-check gate does not already need.
+        ///
+        /// The tsconfig and the ambient declarations are written into the generated
+        /// directory, which is safe here because the conformance scenario has no golden tree
+        /// to compare against - the type-check gate writes its scaffolding outside for
+        /// exactly that reason.
+        /// </summary>
+        public static ToolResult RunScript(string entryFile, params string[] scriptArgs)
+        {
+            string generatedDir = Path.GetDirectoryName(entryFile);
+            string outDir = Path.Combine(RepoLayout.OutputDir("_conformance"), "ts-build");
+
+            if (Directory.Exists(outDir))
+                Directory.Delete(outDir, recursive: true);
+
+            Directory.CreateDirectory(outDir);
+
+            File.WriteAllText(Path.Combine(generatedDir, "sheetman-ambient.d.ts"), @"declare module 'fs'
+declare module 'path'
+declare module 'axios'
+");
+
+            string config = Path.Combine(generatedDir, "tsconfig.conformance.json");
+
+            File.WriteAllText(config, $@"{{
+  ""compilerOptions"": {{
+    ""target"": ""es2020"",
+    ""module"": ""commonjs"",
+    ""moduleResolution"": ""node"",
+    ""strict"": false,
+    ""skipLibCheck"": true,
+    ""types"": [],
+    ""rootDir"": ""."",
+    ""outDir"": ""{outDir.Replace(Path.DirectorySeparatorChar, '/')}""
+  }},
+  ""include"": [""**/*.ts""]
+}}");
+
+            var build = RunTsc(generatedDir, "--project", "tsconfig.conformance.json");
+
+            if (!build.Succeeded)
+                return new ToolResult { Succeeded = false, StdOut = "", Output = build.Output };
+
+            string script = Path.Combine(
+                outDir, Path.GetFileNameWithoutExtension(entryFile) + ".js");
+
+            var run = Execute("node", outDir, Prepend(script, scriptArgs));
+
+            return new ToolResult { Succeeded = run.Succeeded, StdOut = run.StdOut, Output = run.Output };
+        }
+
+        private static string[] Prepend(string first, string[] rest)
+        {
+            var all = new string[rest.Length + 1];
+            all[0] = first;
+            Array.Copy(rest, 0, all, 1, rest.Length);
+            return all;
+        }
+
         private static TypeCheckResult RunTsc(string workingDirectory, params string[] args)
         {
             if (OnWindows)
@@ -147,16 +215,27 @@ declare module 'axios'
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
+
+                // The harness prints UTF-8. Without this the stream is decoded as the
+                // system codepage, and every non-ASCII value in the corpus comes back
+                // mangled - which reads exactly like a reader bug.
+                StandardOutputEncoding = new UTF8Encoding(false),
             };
 
             foreach (var arg in args)
                 psi.ArgumentList.Add(arg);
 
+            var stdout = new StringBuilder();
             var output = new StringBuilder();
 
             using (var process = new Process { StartInfo = psi })
             {
-                process.OutputDataReceived += (_, e) => { if (e.Data != null) output.AppendLine(e.Data); };
+                process.OutputDataReceived += (_, e) =>
+                {
+                    if (e.Data == null) return;
+                    stdout.AppendLine(e.Data);
+                    output.AppendLine(e.Data);
+                };
                 process.ErrorDataReceived += (_, e) => { if (e.Data != null) output.AppendLine(e.Data); };
 
                 process.Start();
@@ -174,6 +253,7 @@ declare module 'axios'
                 return new TypeCheckResult
                 {
                     Succeeded = process.ExitCode == 0,
+                    StdOut = stdout.ToString(),
                     Output = output.ToString(),
                 };
             }
