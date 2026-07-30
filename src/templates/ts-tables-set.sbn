@@ -1,0 +1,37 @@
+{{~## The accessor holding every table, and the calls that load them all. ##~}}
+{{ include 'ts-head.sbn' ~}}
+import * as path from 'path'
+
+{{~ for table in tables ~}}
+import { {{ table.name }}Table } from './tables/{{ table.name }}'
+{{~ end ~}}
+
+/** Tables */
+export class Tables {
+{{~ for table in tables ~}}
+{{~ if !for.first }}
+{{ end ~}}
+    /** Peroperty for table {{ table.name }} */
+    public get {{ table.member }}(): {{ table.name }}Table { return this._{{ table.member }} }
+    private _{{ table.member }}: {{ table.name }}Table = new {{ table.name }}Table()
+{{~ end ~}}
+
+    /** Read all tables asynchronously. */
+    public async readAll(basePath: string): Promise<void> {
+{{~ for table in tables ~}}
+        await this._{{ table.member }}.read(path.join(basePath, '{{ table.name }}.json'))
+{{~ end ~}}
+    }
+
+    /** Read all tables synchronously. */
+    public readAllSync(basePath: string): void {
+{{~ for table in tables ~}}
+        this._{{ table.member }}.readSync(path.join(basePath, '{{ table.name }}.json'))
+{{~ end ~}}
+
+        this.solveCrossReferences()
+    }
+
+    private solveCrossReferences(): void {
+    }
+}

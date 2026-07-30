@@ -1,0 +1,233 @@
+{{~##
+   One module per table: the row interface the JSON is parsed into, the record class, and
+   the table class with both read paths.
+
+   Both a JSON and a binary path are generated so a consumer picks per deployment rather
+   than per build - JSON where the data is inspected by hand or served as text, binary
+   where size and parse time matter. The two produce identical values, which is why the
+   reader formats dates and durations as the strings the JSON export writes.
+
+   Anything needing the model arrives already rendered from TsView.
+##~}}
+{{ include 'ts-head.sbn' ~}}
+import * as fs from 'fs'
+import * as sheetman from '../sheetman/lite_binary_reader'
+{{~ if imports | array.size > 0 ~}}
+
+// Automatically import to handle external type references.
+{{~ for line in imports ~}}
+{{ line }}
+{{~ end ~}}
+{{~ end ~}}
+
+/** A type for handling rows when parsing .json. */
+interface IDataRow {
+{{~ for field in fields ~}}
+{{~ if field.is_array ~}}
+    {{ field.prop_name }}: {{ field.json_wire_type }}[]
+{{~ else ~}}
+    {{ field.prop_name }}: {{ field.json_wire_type }}
+{{~ end ~}}
+{{~ end ~}}
+}
+
+// Generated from {{ location }}
+{{~ for line in comment ~}}
+{{ line }}
+{{~ end ~}}
+export class {{ name }}Record {
+    /** Default constructor */
+    constructor() {
+    }
+{{~ for field in fields }}
+{{~ for line in field.comment ~}}
+    {{ line }}
+{{~ end ~}}
+{{~ if field.kind == 'array_ref' ~}}
+    public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
+    public static readonly {{ field.prop_name }}_N: number = {{ field.element_count }}
+    private {{ field.field_name }}: {{ field.field_type }}[]
+    public setReference_{{ field.prop_name }}_INTERNAL(index: number, value: {{ field.reference_setter_type }}): void { this.{{ field.field_name }}[index] = value; }
+{{~ else if field.kind == 'var_array' ~}}
+    public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
+    private {{ field.field_name }}: {{ field.field_type }}[] = []
+{{~ else if field.kind == 'array' ~}}
+    public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
+    public static readonly {{ field.prop_name }}_N = {{ field.element_count }}
+    private {{ field.field_name }}: {{ field.field_type }}[]
+{{~ else if field.kind == 'scalar_ref' ~}}
+    public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
+    private {{ field.field_name }}: {{ field.field_type }}
+{{~ if field.reference_is_record ~}}
+    public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value; }
+{{~ else ~}}
+    public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value }
+{{~ end ~}}
+    public {{ field.field_name }}_{{ field.ref_table }}_index: number
+    public {{ field.field_name }}_F: boolean = false
+{{~ else ~}}
+    public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
+    private {{ field.field_name }}: {{ field.field_type }}
+{{~ end ~}}
+{{~ end ~}}
+
+    /** Populate field values. */
+    public populateFieldValues(dataRow: IDataRow): void {
+{{~ for field in fields ~}}
+        {{ field.from_named_row }}
+{{~ end ~}}
+    }
+
+    /** Populate field values. */
+    public populateFieldValuesCompact(dataRow: any[]): void {
+        let offset = 0
+{{~ for field in fields ~}}
+{{~ for line in field.from_compact_row ~}}
+        {{ line }}
+{{~ end ~}}
+{{~ end ~}}
+    }
+
+    /** Read one record. Field order must match the exporter's. */
+    public readBinary(reader: sheetman.LiteBinaryReader): void
+    {
+{{~ if fields | array.size == 0 ~}}
+        // No fields to read.
+{{~ end ~}}
+{{~ for field in fields ~}}
+{{~ if field.kind == 'var_array' ~}}
+        {
+            const count = reader.readCounter32()
+            this.{{ field.field_name }} = []
+            for (let i = 0; i < count; ++i)
+            {
+                this.{{ field.field_name }}.push({{ field.binary_read }})
+            }
+        }
+{{~ else if field.kind == 'array_ref' ~}}
+        this.{{ field.field_name }} = []
+        for (let i = 0; i < {{ field.element_count }}; ++i)
+        {
+            this.{{ field.field_name }}_{{ field.ref_table }}_index.push(reader.readInt32())
+        }
+{{~ else if field.kind == 'array' ~}}
+        this.{{ field.field_name }} = []
+        for (let i = 0; i < {{ field.element_count }}; ++i)
+        {
+            this.{{ field.field_name }}.push({{ field.binary_read }})
+        }
+{{~ else if field.kind == 'scalar_ref' ~}}
+        this.{{ field.field_name }}_{{ field.ref_table }}_index = reader.readInt32()
+{{~ else ~}}
+        this.{{ field.field_name }} = {{ field.binary_read }}
+{{~ end ~}}
+{{~ end ~}}
+    }
+}
+
+// Generated from {{ location }}
+{{~ for line in comment ~}}
+{{ line }}
+{{~ end ~}}
+export class {{ name }}Table {
+    /** Default constructor. */
+    constructor() {
+    }
+
+    /** All records. */
+    public get records(): {{ name }}Record[] { return this._records }
+    private _records: {{ name }}Record[] = []
+{{~ for field in indexed_fields }}
+    // Indexing by '{{ field.prop_name }}'
+    public get recordsBy{{ field.pascal_name }}(): Map<{{ field.field_type }}, {{ name }}Record> { return this._recordsBy{{ field.pascal_name }} }
+    private _recordsBy{{ field.pascal_name }}: Map<{{ field.field_type }}, {{ name }}Record> = new Map<{{ field.field_type }}, {{ name }}Record>()
+
+    /** Gets the value associated with the specified key. throw Error if not found. */
+    public getBy{{ field.pascal_name }}(key: {{ field.field_type }}): {{ name }}Record {
+        const found = this._recordsBy{{ field.pascal_name }}.get(key)
+        if (!found)
+            throw new Error(`There is no record in table "{{ name }}" that corresponds to field "{{ field.prop_name }}" value ${key}`)
+
+        return found
+    }
+
+    /** Gets the value associated with the specified key. */
+    public tryGetBy{{ field.pascal_name }}(key: {{ field.field_type }}): {{ name }}Record | undefined {
+        return this._recordsBy{{ field.pascal_name }}.get(key)
+    }
+
+    /** Determines whether the table contains the specified key. */
+    public contains{{ field.pascal_name }}(key: {{ field.field_type }}): boolean {
+        return !!this._recordsBy{{ field.pascal_name }}.has(key)
+    }
+{{~ end ~}}
+
+    /** Read a table from specified file. */
+    public async read(filename: string): Promise<void> {
+        const json = await fs.promises.readFile(filename, "utf8")
+        this.readFromJson(json)
+    }
+
+    /** Read a table from specified file synchronously. */
+    public readSync(filename: string): void {
+        const json = fs.readFileSync(filename, "utf8")
+        this.readFromJson(json)
+    }
+
+    private readFromJson(json: string): void {
+        const dataRows: any[] = JSON.parse(json)
+        if (this.isCompactRowFormatted(dataRows)) {
+            for (const dataRow of dataRows) {
+                const record = new {{ name }}Record()
+                record.populateFieldValuesCompact(dataRow)
+                this._records.push(record)
+            }
+        } else {
+            for (const dataRow of dataRows as IDataRow[]) {
+                const record = new {{ name }}Record()
+                record.populateFieldValues(dataRow)
+                this._records.push(record)
+            }
+        }
+
+        this.mapping()
+    }
+
+    private isCompactRowFormatted(rows: any[]): boolean {
+        return rows.length > 0 && Array.isArray(rows[0])
+    }
+
+    /** Read a table from a binary .table file. */
+    public readBinarySync(filename: string): void
+    {
+        this.readBinaryFrom(sheetman.readAllBytes(filename))
+    }
+
+    /** Read a table from binary data already in memory. */
+    public readBinaryFrom(data: Uint8Array): void
+    {
+        const reader = new sheetman.LiteBinaryReader(data)
+        const rowCount = sheetman.readTableHeader(reader)
+
+        for (let i = 0; i < rowCount; ++i)
+        {
+            const record = new {{ name }}Record()
+            record.readBinary(reader)
+            this._records.push(record)
+        }
+
+        this.mapping()
+    }
+
+    /** Index mapping. */
+    private mapping(): void {
+{{~ if indexed_fields | array.size > 0 ~}}
+        for (const record of this._records)
+        {
+{{~ for field in indexed_fields ~}}
+            this._recordsBy{{ field.pascal_name }}.set(record.{{ field.prop_name }}, record)
+{{~ end ~}}
+        }
+{{~ end ~}}
+    }
+}
