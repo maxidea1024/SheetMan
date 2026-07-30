@@ -2,6 +2,7 @@ using SheetMan.Models;
 using SheetMan.Extensions;
 using SheetMan.Helpers;
 using SheetMan.Recipe;
+using SheetMan.Targets;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ using System.Linq;
 using System.Text;
 
 using ValueType = SheetMan.Models.ValueType;
-using SheetMan.Targets;
 
 namespace SheetMan.CodeGeneration
 {
@@ -23,6 +23,12 @@ namespace SheetMan.CodeGeneration
     /// management for the references between tables onto the reader. The C# generator
     /// makes the same choice for the same reason.
     ///
+    /// The shape of the header lives in templates/cpp.sbn. This file works out the values
+    /// that shape needs - read calls, defaults, escaped names, rendered literals - and
+    /// nothing else. Everything here used to be printer calls with the header's structure
+    /// spread through string literals across several hundred lines, which made the part a
+    /// reviewer cares about the part hardest to see.
+    ///
     /// Reading is done by lib/cpp/sheetman/lite_binary_reader.h, which the emitted
     /// header includes. That reader is the C++ half of the format the binary exporter
     /// writes, so the two have to change together.
@@ -32,7 +38,6 @@ namespace SheetMan.CodeGeneration
     {
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.CppRecipe _cppRecipe;
-
 
         protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.CppRecipe cppRecipe)
         {
@@ -83,222 +88,175 @@ namespace SheetMan.CodeGeneration
 
             Log.Information($"Generating codes for C++ into `{filename}`");
 
-            var cpp = new Printer();
-
-            GenerateHeadLines(cpp);
-
-            string guard = IncludeGuard(_cppRecipe.AccessorName);
-            cpp.PrintLine($"#ifndef {guard}");
-            cpp.PrintLine($"#define {guard}");
-            cpp.PrintLine();
-            cpp.PrintLine("#include <cstdint>");
-            cpp.PrintLine("#include <string>");
-            cpp.PrintLine("#include <unordered_map>");
-            cpp.PrintLine("#include <vector>");
-            cpp.PrintLine();
-            cpp.PrintLine("#include \"sheetman/lite_binary_reader.h\"");
-
-            BeginNamespace(cpp);
-
-            GenerateEnums(cpp);
-            GenerateConstantSets(cpp);
-            GenerateTables(cpp);
-            GenerateAccessor(cpp);
-
-            EndNamespace(cpp);
-
-            cpp.PrintLine();
-            cpp.PrintLine($"#endif  // {guard}");
-
-            StagingFiles.WriteAllTextToFile(filename, cpp.ToString());
+            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("cpp.sbn", BuildView()));
         }
 
-        // ------------------------------------------------------------- enums
+        // --------------------------------------------------------------- view
 
-        private void GenerateEnums(Printer cpp)
+        private CppFileView BuildView()
         {
-            foreach (var enumm in _model.Enums)
+            var parts = NamespaceParts().ToList();
+
+            return new CppFileView
             {
-                cpp.PrintLine();
-                cpp.PrintLine($"// Generated from {enumm.Location}");
-                GenerateComment(cpp, enumm.Comment);
+                IncludeGuard = IncludeGuard(_cppRecipe.AccessorName),
 
-                // Fixed underlying type because values travel as int32, and scoped so
-                // label names cannot collide across declarations.
-                cpp.ScopeIn($"enum class {enumm.Name.ToPascalCase()} : std::int32_t\n{{");
+                NamespaceOpen = parts.Select(part => $"namespace {part} {{").ToList(),
 
-                foreach (var label in enumm.Labels)
-                {
-                    GenerateComment(cpp, label.Comment);
-                    cpp.PrintLine($"{label.Name.ToPascalCase()} = {label.Value.ToString(CultureInfo.InvariantCulture)},");
-                }
+                // Innermost first, and each closer names its namespace, because a header
+                // that ends in a run of bare braces is unreadable.
+                NamespaceClose = Enumerable.Reverse(parts).Select(part => $"}}  // namespace {part}").ToList(),
 
-                cpp.ScopeOut("};");
-            }
+                Enums = _model.Enums.Select(BuildEnum).ToList(),
+                ConstantSets = _model.ConstantSets.Select(BuildConstantSet).ToList(),
+                Tables = _model.Tables.Select(BuildTable).ToList(),
+                Accessor = BuildAccessor(),
+            };
         }
 
-        // --------------------------------------------------------- constants
-
-        private void GenerateConstantSets(Printer cpp)
+        private CppEnumView BuildEnum(Models.Enum enumm) => new CppEnumView
         {
-            foreach (var constantSet in _model.ConstantSets)
+            // Fixed underlying type because values travel as int32, and scoped so label
+            // names cannot collide across declarations - both decided in the template.
+            Name = enumm.Name.ToPascalCase(),
+            Location = enumm.Location.ToString(),
+            Comment = CommentLines(enumm.Comment),
+            Labels = enumm.Labels.Select(label => new CppEnumLabelView
             {
-                cpp.PrintLine();
-                cpp.PrintLine($"// Generated from {constantSet.Location}");
-                GenerateComment(cpp, constantSet.Comment);
+                Name = label.Name.ToPascalCase(),
+                Value = label.Value.ToString(CultureInfo.InvariantCulture),
+                Comment = CommentLines(label.Comment),
+            }).ToList(),
+        };
 
-                cpp.ScopeIn($"struct {constantSet.Name.ToPascalCase()}\n{{");
-
-                foreach (var constant in constantSet.Constants)
-                {
-                    GenerateComment(cpp, constant.Comment);
-
-                    string type = ToCppTypeName(constant.Type, constant.Enum);
-                    string value = RenderConstantValue(constant);
-
-                    // `static inline` so the header can be included from several
-                    // translation units without a duplicate definition at link time.
-                    // C++17 is the first standard allowing the definition in-class.
-                    cpp.PrintLine($"static inline const {type} {constant.Name.ToPascalCase()} = {value};");
-                }
-
-                cpp.ScopeOut("};");
-            }
-        }
-
-        // ------------------------------------------------------------ tables
-
-        private void GenerateTables(Printer cpp)
+        private CppConstantSetView BuildConstantSet(ConstantSet constantSet) => new CppConstantSetView
         {
-            // Records point at the records they reference and any two tables may point
-            // at each other, so every record type is declared before any is defined.
-            if (_model.Tables.Count > 0)
+            Name = constantSet.Name.ToPascalCase(),
+            Location = constantSet.Location.ToString(),
+            Comment = CommentLines(constantSet.Comment),
+            Constants = constantSet.Constants.Select(constant => new CppConstantView
             {
-                cpp.PrintLine();
-                cpp.PrintLine("// Forward declarations, so records may reference each other in any order.");
-                foreach (var table in _model.Tables)
-                    cpp.PrintLine($"struct {RecordName(table)};");
-            }
+                Name = constant.Name.ToPascalCase(),
+                Type = ToCppTypeName(constant.Type, constant.Enum),
+                Value = RenderConstantValue(constant),
+                Comment = CommentLines(constant.Comment),
+            }).ToList(),
+        };
 
-            foreach (var table in _model.Tables)
-                GenerateTable(cpp, table);
-        }
-
-        private void GenerateTable(Printer cpp, Table table)
+        private CppTableView BuildTable(Table table) => new CppTableView
         {
-            cpp.PrintLine();
-            cpp.PrintLine($"// Generated from {table.Location}");
-            GenerateComment(cpp, table.Comment);
+            RecordName = RecordName(table),
+            TableName = TableName(table),
+            Location = table.Location.ToString(),
+            Comment = CommentLines(table.Comment),
+            IndexField = CppName(table.Fields[0].Name),
+            Fields = table.SerialFields.Select(BuildField).ToList(),
+        };
 
-            cpp.ScopeIn($"struct {RecordName(table)}\n{{");
+        private CppFieldView BuildField(SerialField sf)
+        {
+            string name = CppName(sf.Name);
 
-            foreach (var sf in table.SerialFields)
+            return new CppFieldView
             {
-                GenerateComment(cpp, sf.FirstField.Comment);
-
-                string name = CppName(sf.Name);
-
-                if (sf.IsRef)
-                {
-                    // The target is resolved only once every table is loaded, so the
-                    // field starts empty and the raw index is kept beside it.
-                    string resolved = ResolvedRefTypeName(sf);
-
-                    if (sf.IsArray)
-                    {
-                        cpp.PrintLine($"std::vector<{resolved}> {name};");
-                        cpp.PrintLine($"std::vector<std::int32_t> {name}_index;");
-                    }
-                    else
-                    {
-                        cpp.PrintLine($"{resolved} {name} = {RefDefault(sf)};");
-                        cpp.PrintLine($"std::int32_t {name}_index = 0;");
-                    }
-
-                    continue;
-                }
-
-                string type = ToCppTypeName(sf.FirstField);
-
-                if (sf.IsArray)
-                    cpp.PrintLine($"std::vector<{type}> {name};");
-                else
-                    cpp.PrintLine($"{type} {name}{DefaultInitializer(sf.FirstField)};");
-            }
-
-            GenerateRecordRead(cpp, table);
-
-            cpp.ScopeOut("};");
-
-            GenerateTableClass(cpp, table);
+                Comment = CommentLines(sf.FirstField.Comment),
+                Declarations = Declarations(sf, name),
+                Kind = ReadKind(sf),
+                Name = name,
+                ElementCount = sf.Fields.Count,
+                RefDefault = RefDefault(sf),
+                ReadScalar = ReadElementExpression(sf, name),
+                ReadElement = ReadElementExpression(sf, name + "[i]"),
+                ReadVarElement = ReadElementExpression(sf, name + "[static_cast<std::size_t>(i)]"),
+            };
         }
 
         /// <summary>
-        /// Emits the per-record read, in the exact field order the binary exporter
-        /// writes them.
+        /// The member declarations for a field.
+        ///
+        /// A reference gets two: the resolved value, and the raw index it was read as. The
+        /// target is not known until every table is loaded, so the first starts empty.
         /// </summary>
-        private void GenerateRecordRead(Printer cpp, Table table)
+        private IReadOnlyList<string> Declarations(SerialField sf, string name)
         {
-            cpp.PrintLine();
-            cpp.PrintLine("/// Reads one record. Field order must match the exporter's.");
-            cpp.ScopeIn("void read(sheetman::LiteBinaryReader& reader)\n{");
-
-            if (table.SerialFields.Count == 0)
-                cpp.PrintLine("(void)reader;");
-
-            foreach (var sf in table.SerialFields)
+            if (sf.IsRef)
             {
-                string name = CppName(sf.Name);
+                string resolved = ResolvedRefTypeName(sf);
 
-                if (sf.IsVariableLengthArray)
-                {
-                    // Length varies per row, so it precedes the elements on the wire.
-                    cpp.ScopeIn("{");
-                    cpp.PrintLine("const std::int32_t count = reader.read_counter32();");
-                    cpp.PrintLine($"{name}.resize(static_cast<std::size_t>(count));");
-                    cpp.ScopeIn("for (std::int32_t i = 0; i < count; ++i)\n{");
-                    cpp.PrintLine($"{ReadElementExpression(sf, name + "[static_cast<std::size_t>(i)]")};");
-                    cpp.ScopeOut("}");
-                    cpp.ScopeOut("}");
-                    continue;
-                }
-
-                if (sf.IsArray)
-                {
-                    // A serial field has one element per column, a count this generator
-                    // knows, so nothing precedes the elements on the wire.
-                    int n = sf.Fields.Count;
-
-                    if (sf.IsRef)
+                return sf.IsArray
+                    ? new[]
                     {
-                        cpp.PrintLine($"{name}.assign({n}, {RefDefault(sf)});");
-                        cpp.PrintLine($"{name}_index.resize({n});");
-                        cpp.ScopeIn($"for (std::size_t i = 0; i < {n}; ++i)\n{{");
-                        cpp.PrintLine($"reader.read({name}_index[i]);");
-                        cpp.ScopeOut("}");
+                        $"std::vector<{resolved}> {name};",
+                        $"std::vector<std::int32_t> {name}_index;",
                     }
-                    else
+                    : new[]
                     {
-                        cpp.PrintLine($"{name}.resize({n});");
-                        cpp.ScopeIn($"for (std::size_t i = 0; i < {n}; ++i)\n{{");
-                        cpp.PrintLine($"{ReadElementExpression(sf, name + "[i]")};");
-                        cpp.ScopeOut("}");
-                    }
-
-                    continue;
-                }
-
-                if (sf.IsRef)
-                {
-                    cpp.PrintLine($"reader.read({name}_index);");
-                    continue;
-                }
-
-                cpp.PrintLine($"{ReadElementExpression(sf, name)};");
+                        $"{resolved} {name} = {RefDefault(sf)};",
+                        $"std::int32_t {name}_index = 0;",
+                    };
             }
 
-            cpp.ScopeOut("}");
+            string type = ToCppTypeName(sf.FirstField);
+
+            return sf.IsArray
+                ? new[] { $"std::vector<{type}> {name};" }
+                : new[] { $"{type} {name}{DefaultInitializer(sf.FirstField)};" };
         }
+
+        /// <summary>
+        /// Which of the five read shapes a field takes.
+        ///
+        /// A variable-length array is tested first because it is also an array: its length
+        /// varies per row and so precedes the elements on the wire, where a serial field's
+        /// length is its column count and the generated code already knows it.
+        /// </summary>
+        private static string ReadKind(SerialField sf)
+        {
+            if (sf.IsVariableLengthArray)
+                return "var_array";
+
+            if (sf.IsArray)
+                return sf.IsRef ? "serial_ref" : "serial";
+
+            return sf.IsRef ? "scalar_ref" : "scalar";
+        }
+
+        private CppAccessorView BuildAccessor() => new CppAccessorView
+        {
+            FileExtension = _cppRecipe.BinaryTableFileExtension,
+
+            Tables = _model.Tables.Select(table => new CppTableSlotView
+            {
+                Name = CppName(table.Name),
+                TableName = TableName(table),
+
+                // Unescaped: this one names the file the exporter wrote, not an identifier.
+                DataFileName = table.Name,
+            }).ToList(),
+
+            CrossReferences = _model.Tables
+                .Select(table => new
+                {
+                    Table = table,
+                    Fields = table.SerialFields.Where(sf => sf.IsRef).ToList(),
+                })
+                .Where(x => x.Fields.Count > 0)
+                .Select(x => new CppCrossReferenceView
+                {
+                    Table = CppName(x.Table.Name),
+                    Fields = x.Fields.Select(sf => new CppReferenceFieldView
+                    {
+                        Name = CppName(sf.Name),
+                        RefTable = CppName(sf.FirstField.ResolvedRefTable.Name),
+                        Value = ReferenceValueExpression(sf, "target"),
+                        RefDefault = RefDefault(sf),
+                        IsArray = sf.IsArray,
+                    }).ToList(),
+                })
+                .ToList(),
+        };
+
+        // ----------------------------------------------------------- rendering
 
         /// <summary>
         /// The call reading one value of a field's element type into
@@ -312,159 +270,6 @@ namespace SheetMan.CodeGeneration
                 return $"reader.read_enum({target})";
 
             return $"reader.read({target})";
-        }
-
-        private void GenerateTableClass(Printer cpp, Table table)
-        {
-            string recordName = RecordName(table);
-            string tableName = TableName(table);
-            string indexField = CppName(table.Fields[0].Name);
-
-            cpp.PrintLine();
-            GenerateComment(cpp, table.Comment);
-            cpp.ScopeIn($"class {tableName}\n{{");
-
-            cpp.PrintLine("public:");
-            cpp.PrintLine($"const std::vector<{recordName}>& records() const {{ return records_; }}");
-
-            cpp.PrintLine();
-            cpp.PrintLine("/// Record with the given primary index, or nullptr when there is none.");
-            cpp.ScopeIn($"const {recordName}* find(std::int32_t index) const\n{{");
-            cpp.PrintLine("const auto it = by_index_.find(index);");
-            cpp.PrintLine("return it == by_index_.end() ? nullptr : &records_[it->second];");
-            cpp.ScopeOut("}");
-
-            cpp.PrintLine();
-            cpp.PrintLine("/// Loads the table from a .table file written by SheetMan.");
-            cpp.ScopeIn("void read(const std::string& filename)\n{");
-            cpp.PrintLine("const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);");
-            cpp.PrintLine("sheetman::LiteBinaryReader reader(buffer);");
-            cpp.PrintLine();
-            cpp.PrintLine("const std::int32_t row_count = sheetman::read_table_header(reader);");
-            cpp.PrintLine();
-            cpp.PrintLine("records_.clear();");
-            cpp.PrintLine("records_.resize(static_cast<std::size_t>(row_count));");
-            cpp.ScopeIn("for (std::int32_t i = 0; i < row_count; ++i)\n{");
-            cpp.PrintLine("records_[static_cast<std::size_t>(i)].read(reader);");
-            cpp.ScopeOut("}");
-            cpp.PrintLine();
-            cpp.PrintLine("build_index();");
-            cpp.ScopeOut("}");
-
-            cpp.PrintLine();
-            cpp.PrintLine("private:");
-            cpp.PrintLine("friend class Tables;");
-            cpp.PrintLine();
-            cpp.ScopeIn("void build_index()\n{");
-            cpp.PrintLine("by_index_.clear();");
-            cpp.PrintLine("by_index_.reserve(records_.size());");
-            cpp.ScopeIn("for (std::size_t i = 0; i < records_.size(); ++i)\n{");
-            cpp.PrintLine($"by_index_.emplace(records_[i].{indexField}, i);");
-            cpp.ScopeOut("}");
-            cpp.ScopeOut("}");
-
-            cpp.PrintLine();
-            cpp.PrintLine($"std::vector<{recordName}> records_;");
-            cpp.PrintLine("std::unordered_map<std::int32_t, std::size_t> by_index_;");
-
-            cpp.ScopeOut("};");
-        }
-
-        // ---------------------------------------------------------- accessor
-
-        private void GenerateAccessor(Printer cpp)
-        {
-            cpp.PrintLine();
-            cpp.PrintLine("/// Every table, loaded together so cross-table references can be resolved.");
-            cpp.ScopeIn("class Tables\n{");
-
-            cpp.PrintLine("public:");
-
-            foreach (var table in _model.Tables)
-            {
-                cpp.PrintLine($"const {TableName(table)}& {CppName(table.Name)}() const {{ return {CppName(table.Name)}_; }}");
-            }
-
-            cpp.PrintLine();
-            cpp.PrintLine("/// Reads every table from `base_path`, then links the references between them.");
-            cpp.ScopeIn($"void read_all(const std::string& base_path, const std::string& file_extension = \"{_cppRecipe.BinaryTableFileExtension}\")\n{{");
-
-            if (_model.Tables.Count == 0)
-            {
-                cpp.PrintLine("(void)base_path;");
-                cpp.PrintLine("(void)file_extension;");
-            }
-            else
-            {
-                foreach (var table in _model.Tables)
-                    cpp.PrintLine($"{CppName(table.Name)}_.read(base_path + \"/{table.Name}\" + file_extension);");
-
-                cpp.PrintLine();
-                cpp.PrintLine("solve_cross_references();");
-            }
-
-            cpp.ScopeOut("}");
-
-            cpp.PrintLine();
-            cpp.PrintLine("private:");
-            GenerateSolveCrossReferences(cpp);
-
-            cpp.PrintLine();
-            foreach (var table in _model.Tables)
-                cpp.PrintLine($"{TableName(table)} {CppName(table.Name)}_;");
-
-            cpp.ScopeOut("};");
-        }
-
-        /// <summary>
-        /// Turns the stored indices into usable values, once every table is in memory.
-        /// </summary>
-        private void GenerateSolveCrossReferences(Printer cpp)
-        {
-            cpp.ScopeIn("void solve_cross_references()\n{");
-
-            bool wroteAny = false;
-
-            foreach (var table in _model.Tables)
-            {
-                var refFields = table.SerialFields.Where(sf => sf.IsRef).ToList();
-                if (refFields.Count == 0)
-                    continue;
-
-                wroteAny = true;
-
-                cpp.ScopeIn($"for (auto& record : {CppName(table.Name)}_.records_)\n{{");
-
-                foreach (var sf in refFields)
-                {
-                    string name = CppName(sf.Name);
-                    string refTable = CppName(sf.FirstField.ResolvedRefTable.Name);
-                    string value = ReferenceValueExpression(sf, "target");
-
-                    if (sf.IsArray)
-                    {
-                        cpp.PrintLine($"record.{name}.resize(record.{name}_index.size(), {RefDefault(sf)});");
-                        cpp.ScopeIn($"for (std::size_t i = 0; i < record.{name}_index.size(); ++i)\n{{");
-                        cpp.PrintLine($"const auto* target = {refTable}_.find(record.{name}_index[i]);");
-                        cpp.PrintLine($"if (target != nullptr) record.{name}[i] = {value};");
-                        cpp.ScopeOut("}");
-                    }
-                    else
-                    {
-                        cpp.ScopeIn("{");
-                        cpp.PrintLine($"const auto* target = {refTable}_.find(record.{name}_index);");
-                        cpp.PrintLine($"if (target != nullptr) record.{name} = {value};");
-                        cpp.ScopeOut("}");
-                    }
-                }
-
-                cpp.ScopeOut("}");
-            }
-
-            if (!wroteAny)
-                cpp.PrintLine("// No table references another.");
-
-            cpp.ScopeOut("}");
         }
 
         /// <summary>
@@ -505,7 +310,6 @@ namespace SheetMan.CodeGeneration
         /// because nothing compiled the result.
         /// </summary>
         private static string CppName(string name) => LanguageProfile.Cpp.MemberName(name.ToSnakeCase());
-
 
         private string ToCppTypeName(Field field) => ToCppTypeName(field.ElementType, field.EnumOrNull);
 
@@ -656,49 +460,19 @@ namespace SheetMan.CodeGeneration
             return guard.ToString();
         }
 
-        private void GenerateComment(Printer cpp, string comment)
+        /// <summary>
+        /// A comment split into the lines the template will prefix with `///`. Empty when
+        /// there is no comment, so the template needs no test of its own.
+        /// </summary>
+        private static IReadOnlyList<string> CommentLines(string comment)
         {
             if (string.IsNullOrWhiteSpace(comment))
-                return;
+                return Array.Empty<string>();
 
-            foreach (var line in comment.Replace("\r\n", "\n").Split('\n'))
-                cpp.PrintLine($"/// {line}");
-        }
-
-        private void BeginNamespace(Printer cpp)
-        {
-            if (string.IsNullOrEmpty(_cppRecipe.Namespace))
-                return;
-
-            cpp.PrintLine();
-            foreach (var part in NamespaceParts())
-                cpp.PrintLine($"namespace {part} {{");
-        }
-
-        private void EndNamespace(Printer cpp)
-        {
-            if (string.IsNullOrEmpty(_cppRecipe.Namespace))
-                return;
-
-            cpp.PrintLine();
-            foreach (var part in NamespaceParts().Reverse())
-                cpp.PrintLine($"}}  // namespace {part}");
+            return comment.Replace("\r\n", "\n").Split('\n');
         }
 
         private IEnumerable<string> NamespaceParts()
             => _cppRecipe.Namespace.Split(new[] { '.', ':' }, StringSplitOptions.RemoveEmptyEntries);
-
-        private void GenerateHeadLines(Printer cpp)
-        {
-            cpp.PrintLine("// ------------------------------------------------------------------------------");
-            cpp.PrintLine("// <auto-generated>");
-            cpp.PrintLine("//     THIS CODE WAS GENERATED BY SheetMan.");
-            cpp.PrintLine("//");
-            cpp.PrintLine("//     CHANGES TO THIS FILE MAY CAUSE INCORRECT BEHAVIOR AND WILL BE LOST IF");
-            cpp.PrintLine("//     THE CODE IS REGENERATED.");
-            cpp.PrintLine("// </auto-generated>");
-            cpp.PrintLine("// ------------------------------------------------------------------------------");
-            cpp.PrintLine();
-        }
     }
 }

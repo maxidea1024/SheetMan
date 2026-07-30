@@ -34,7 +34,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!--
+      Code generation templates, embedded for the same reason as the readers: what ships
+      cannot drift from what is committed, and a target cannot be pointed at a template of
+      a different vintage.
+
+      One file per generated language, flat, so a resource name has no directory
+      separator in it.
+    -->
+    <EmbeddedResource Include="templates\*.sbn"
+                      LogicalName="SheetMan.Templates.%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <!--
+      Scriban rather than Handlebars or Fluid: no dependencies of its own, and its `{{ }}`
+      syntax does not collide with anything in the languages being generated - which
+      matters, because a template for C++ is full of braces.
+    -->
+    <PackageReference Include="Scriban" Version="7.2.6" />
     <PackageReference Include="Google.Apis.Sheets.v4" Version="1.75.0.4178" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="NPOI" Version="2.8.0" />
