@@ -85,6 +85,26 @@ namespace SheetMan.Tests
             Compare("TypeScript", expected, Parse(harness.StdOut));
         }
 
+        /// <summary>
+        /// Go, the first language added on top of the corpus rather than before it.
+        ///
+        /// It cost a reader, a template, a view and this harness, and nothing was added to
+        /// the comparison above - which is what the corpus was for.
+        /// </summary>
+        [Fact]
+        public void Generated_go_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.GoIsAvailable(out string why),
+                $"A Go toolchain is required to check the generated Go. {why}");
+
+            var harness = ConformanceHarness.RunGo(Scenario);
+            Assert.True(harness.Succeeded, $"Go harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("Go", expected, Parse(harness.StdOut));
+        }
+
         // ---------------------------------------------------------- comparison
 
         /// <summary>

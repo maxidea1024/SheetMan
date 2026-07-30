@@ -33,6 +33,20 @@
     ]
   },
 
+  // Go is reached through the dynamic target list rather than a section of its own,
+  // which is what that list is for: a language added after it costs its own files and
+  // touches nothing existing.
+  "Targets": [
+    {
+      "Type": "go",
+      "Path": "test/fixtures/output/conformance/go",
+      "PackageName": "conformance",
+      "ModulePath": "conformance",
+      "AccessorName": "conformance_data",
+      "BinaryTableFileExtension": ".table"
+    }
+  ],
+
   "CodeGenerations": {
     "Cpp": [
       {

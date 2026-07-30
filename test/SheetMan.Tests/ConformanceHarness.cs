@@ -71,6 +71,37 @@ namespace SheetMan.Tests
             return TypescriptToolchain.RunScript(entry, BinaryDir(scenario));
         }
 
+        /// <summary>Whether a Go toolchain is on the path.</summary>
+        public static bool GoIsAvailable(out string reason)
+        {
+            try
+            {
+                var probe = Execute("go", RepoLayout.Root, "version");
+                reason = probe.Succeeded ? null : $"`go version` failed.{Environment.NewLine}{probe.Output}";
+                return probe.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                reason = $"`go` could not be started: {ex.Message}";
+                return false;
+            }
+        }
+
+        public static ToolResult RunGo(string scenario)
+        {
+            // The harness goes inside the generated module, as a package of its own, because
+            // Go has no relative imports and the generated code is only importable from
+            // within the module its go.mod declares.
+            string moduleDir = Path.Combine(RepoLayout.OutputDir(scenario), "go");
+            string harnessDir = Path.Combine(moduleDir, "harness");
+
+            Directory.CreateDirectory(harnessDir);
+            File.Copy(Path.Combine(HarnessDir("go"), "main.go"),
+                      Path.Combine(harnessDir, "main.go"), overwrite: true);
+
+            return Execute("go", moduleDir, "run", "./harness", BinaryDir(scenario));
+        }
+
         private static string WorkDir(string scenario, string language)
         {
             string dir = Path.Combine(RepoLayout.OutputDir("_conformance"), scenario, language);

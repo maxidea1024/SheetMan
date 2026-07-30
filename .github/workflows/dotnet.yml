@@ -51,6 +51,14 @@ jobs:
 
       # The database exporters are tested against real engines, which the test fixture
       # starts itself with docker compose. ubuntu-latest ships a working Docker.
+      # The conformance corpus is read by every language whose reader is checked, and a
+      # missing toolchain fails rather than skips - a gate that turns itself off is worse
+      # than no gate.
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+
       - name: Verify Docker
         run: docker version --format '{{.Server.Version}}'
 

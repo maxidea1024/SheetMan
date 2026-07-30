@@ -187,6 +187,40 @@ namespace SheetMan.CodeGeneration
             );
 
         /// <summary>
+        /// Go.
+        ///
+        /// The least eventful of the profiles: int64 is int64, float32 is float32, and a
+        /// uint32 shifts the way varint decoding wants. Nothing has to be worked around.
+        ///
+        /// datetime and timespan are int64 ticks rather than time.Time and time.Duration,
+        /// and that is not a matter of taste. Both of those count nanoseconds in an int64,
+        /// which spans about 1678 to 2262 for an instant and about 292 years for a duration.
+        /// The corpus holds 0001-01-01 and TimeSpan.MaxValue, and both overflow. Ticks are
+        /// exact for everything a sheet can hold; the reader offers Time and Duration for a
+        /// caller who knows their range.
+        /// </summary>
+        public static readonly LanguageProfile Go = new LanguageProfile(
+            "go",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "string" },
+                { ValueType.Bool, "bool" },
+                { ValueType.Int32, "int32" },
+                { ValueType.Int64, "int64" },
+                { ValueType.Float, "float32" },
+                { ValueType.Double, "float64" },
+                { ValueType.DateTime, "int64" },
+                { ValueType.TimeSpan, "int64" },
+                { ValueType.Uuid, "sheetman.UUID" },
+            },
+            "[]{0}",
+
+            // Never used, as with C#: Go exports a name by capitalizing it and every Go
+            // keyword is lowercase, so none can survive into an exported member.
+            "{0}_"
+            );
+
+        /// <summary>
         /// TypeScript.
         ///
         /// Two entries here are not the obvious ones, and both are about values arriving
