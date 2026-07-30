@@ -85,8 +85,28 @@ lerna-debug.log*
 src/.vs/*
 src/bin/*
 src/obj/*
-bin/*.pdb
 lib/Unity/SheetManForUnity/Library
 lib/Unity/SheetManForUnity/Logs
 lib/Unity/SheetManForUnity/Temp
 lib/Unity/SheetManForUnity/obj
+
+# Published CLI binaries. These used to be committed (~162MB of the repo);
+# they belong on a GitHub Release, not in history.
+/bin/
+
+# Build output of the test and tooling projects.
+test/**/bin/
+test/**/obj/
+
+# Conversion output produced by the regression suite, plus the scratch areas the
+# TypeScript and C++ gates build in. Regenerated on every run and compared against
+# test/fixtures/golden, which *is* committed.
+test/fixtures/output/
+
+# Runtime log directory created by Serilog next to the working directory.
+logs/
+
+# Google OAuth client secrets. A real one was committed here previously; the
+# credential has to be revoked in the Google Cloud console, not just deleted.
+**/googlesheets-client-secret.json
+!**/googlesheets-client-secret.example.json
