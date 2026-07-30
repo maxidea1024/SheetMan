@@ -1,4 +1,4 @@
-﻿using SheetMan.Models;
+using SheetMan.Models;
 using SheetMan.Extensions;
 using System.Linq;
 using System.IO;
@@ -6,33 +6,32 @@ using SheetMan.Recipe;
 using Serilog;
 using SheetMan.Helpers;
 using System.Text;
+using System.Collections.Generic;
+using SheetMan.Targets;
 
 namespace SheetMan.CodeGeneration
 {
-    public partial class CsCodeGenerator
+    [SheetManTarget("csharp", TargetKind.CodeGeneration, "CodeGenerations.CSharp", Order = 20)]
+    public partial class CsCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe>
     {
-        private Options _options;
         private Model _model;
 
         private RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe _csharpReceipe;
         private string _csFilename;
 
-        public void Generate(Options options, RecipeModel recipeModel, Model model)
+        protected override IEnumerable<RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe> Select(RecipeModel recipe)
+            => recipe.CodeGenerations.CSharp;
+
+        protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe csharpRecipe)
         {
-            _options = options;
-            _model = model;
+            _csharpReceipe = csharpRecipe;
 
-            foreach (var csharpRecipe in recipeModel.CodeGenerations.CSharp)
-            {
-                _csharpReceipe = csharpRecipe;
+            // Already narrowed to the side this entry is built for. Both (the default)
+            // leaves the model unchanged.
+            _model = context.Model;
 
-                // Narrowed to the side this entry is built for. Both (the default)
-                // returns the model unchanged.
-                _model = model.ProjectTo(RecipeTargetSide.Of(csharpRecipe.TargetSide, "CodeGenerations.CSharp"));
-
-                GenerateModel();
-                WriteBinaryReaderRuntime();
-            }
+            GenerateModel();
+            WriteBinaryReaderRuntime();
         }
 
         /// <summary>

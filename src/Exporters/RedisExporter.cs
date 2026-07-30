@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +6,7 @@ using SheetMan.Models;
 using SheetMan.Recipe;
 using Serilog;
 using StackExchange.Redis;
+using SheetMan.Targets;
 
 namespace SheetMan.Exporters
 {
@@ -22,16 +23,16 @@ namespace SheetMan.Exporters
     /// whole new one. Redis has no notion of a table to swap, so the swap is done key
     /// by key within that one atomic block.
     /// </summary>
-    public class RedisExporter : DatabaseExporterBase
+    [SheetManTarget("redis", TargetKind.Export, "Exports.Redis", Order = 60)]
+    public class RedisExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.RedisRecipe>
     {
         protected override string TargetName => "Redis";
-        protected override string RecipeSection => "Exports.Redis";
 
         /// <summary>Suffix of the set listing a table's primary index values.</summary>
         private const string IndexKeySuffix = ":index";
 
-        public void Export(Options options, RecipeModel recipeModel, Model model)
-            => ExportEntries(recipeModel.Exports.Redis, model);
+        protected override IEnumerable<RecipeModel.ExportRecipeGroup.RedisRecipe> Select(RecipeModel recipe)
+            => recipe.Exports.Redis;
 
         protected override void ExportTo(RecipeModel.ExportRecipeGroup.DatabaseRecipe recipe, Model model)
         {

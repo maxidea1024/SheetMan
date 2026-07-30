@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using SheetMan.Targets;
 
 namespace SheetMan.Recipe
 {
@@ -107,7 +108,7 @@ namespace SheetMan.Recipe
             ///
             /// This is what the generated C# and C++ readers consume.
             /// </summary>
-            public class BinaryRecipe
+            public class BinaryRecipe : IOutputRecipe
             {
                 /// <summary>Output directory. Created if it does not exist.</summary>
                 public string Path { get; set; } = "";
@@ -141,7 +142,7 @@ namespace SheetMan.Recipe
             ///
             /// This is what the generated TypeScript reads.
             /// </summary>
-            public class JsonRecipe
+            public class JsonRecipe : IOutputRecipe
             {
                 /// <summary>Output directory. Created if it does not exist.</summary>
                 public string Path { get; set; } = "";
@@ -181,7 +182,7 @@ namespace SheetMan.Recipe
             /// without a distributed coordinator, so each is made atomic on its own
             /// rather than pretending otherwise.
             /// </summary>
-            public abstract class DatabaseRecipe
+            public abstract class DatabaseRecipe : IOutputRecipe
             {
                 /// <summary>
                 /// Connection string. Supports `${NAME}` placeholders filled from the
@@ -273,7 +274,7 @@ namespace SheetMan.Recipe
             /// <summary>
             /// C++17 header. Reads the binary export.
             /// </summary>
-            public class CppRecipe
+            public class CppRecipe : IOutputRecipe
             {
                 /// <summary>Output directory. Created if it does not exist.</summary>
                 public string Path { get; set; } = "";
@@ -310,7 +311,7 @@ namespace SheetMan.Recipe
             /// <summary>
             /// C# source. Reads the binary export, and is Unity-compatible.
             /// </summary>
-            public class CSharpRecipe
+            public class CSharpRecipe : IOutputRecipe
             {
                 /// <summary>Output directory. Created if it does not exist.</summary>
                 public string Path { get; set; } = "";
@@ -347,7 +348,7 @@ namespace SheetMan.Recipe
             /// <summary>
             /// TypeScript modules. Read the JSON export.
             /// </summary>
-            public class TypescriptRecipe
+            public class TypescriptRecipe : IOutputRecipe
             {
                 /// <summary>Output directory. Created if it does not exist.</summary>
                 public string Path { get; set; } = "";
@@ -395,7 +396,7 @@ namespace SheetMan.Recipe
             /// Not consumed by any program: it exists so the data that reached a build can
             /// be checked by eye, with links back to the cell each value came from.
             /// </summary>
-            public class HtmlRecipe
+            public class HtmlRecipe : IOutputRecipe
             {
                 /// <summary>Output directory. Created if it does not exist.</summary>
                 public string Path { get; set; } = "";
@@ -425,7 +426,7 @@ namespace SheetMan.Recipe
         }
 
         /// <summary>What source code to emit for reading the exported data.</summary>
-        public CodeGenerationRecipeGroup CodeGenerations = new CodeGenerationRecipeGroup();
+        public CodeGenerationRecipeGroup CodeGenerations { get; set; } = new CodeGenerationRecipeGroup();
         #endregion
 
 

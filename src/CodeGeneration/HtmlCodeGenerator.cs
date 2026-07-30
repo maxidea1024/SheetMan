@@ -1,4 +1,4 @@
-﻿using CommandLine;
+using CommandLine;
 using SheetMan.Recipe;
 using SheetMan.Models;
 using System.Net;
@@ -7,30 +7,29 @@ using System.Linq;
 using System.IO;
 using SheetMan.Helpers;
 using SheetMan.Extensions;
+using System.Collections.Generic;
+using SheetMan.Targets;
 
 namespace SheetMan.CodeGeneration
 {
-    public partial class HtmlCodeGenerator
+    [SheetManTarget("html", TargetKind.CodeGeneration, "CodeGenerations.Html", Order = 40)]
+    public partial class HtmlCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe>
     {
-        private Options _options;
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe _htmlRecipe;
 
-        public void Generate(Options options, RecipeModel recipeModel, Model model)
+        protected override IEnumerable<RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe> Select(RecipeModel recipe)
+            => recipe.CodeGenerations.Html;
+
+        protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe htmlRecipe)
         {
-            _options = options;
-            _model = model;
+            _htmlRecipe = htmlRecipe;
 
-            foreach (var htmlRecipe in recipeModel.CodeGenerations.Html)
-            {
-                _htmlRecipe = htmlRecipe;
+            // Already narrowed to the side this entry is built for. Both (the default)
+            // leaves the model unchanged.
+            _model = context.Model;
 
-                // Narrowed to the side this entry is built for. Both (the default)
-                // returns the model unchanged.
-                _model = model.ProjectTo(RecipeTargetSide.Of(htmlRecipe.TargetSide, "CodeGenerations.Html"));
-
-                GenerateHtml();
-            }
+            GenerateHtml();
         }
 
         private void GenerateHtml()

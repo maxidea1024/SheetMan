@@ -8,6 +8,7 @@ using SheetMan.Recipe;
 using Serilog;
 
 using ValueType = SheetMan.Models.ValueType;
+using SheetMan.Targets;
 
 namespace SheetMan.Exporters
 {
@@ -19,15 +20,15 @@ namespace SheetMan.Exporters
     /// the database with no table at all if the load failed halfway; a multi-pair
     /// `RENAME TABLE` is atomic and gives readers the same guarantee.
     /// </summary>
-    public class MySqlExporter : DatabaseExporterBase
+    [SheetManTarget("mysql", TargetKind.Export, "Exports.MySql", Order = 30)]
+    public class MySqlExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.MySqlRecipe>
     {
         protected override string TargetName => "MySQL";
-        protected override string RecipeSection => "Exports.MySql";
 
         private const int InsertBatchRows = 500;
 
-        public void Export(Options options, RecipeModel recipeModel, Model model)
-            => ExportEntries(recipeModel.Exports.MySql, model);
+        protected override IEnumerable<RecipeModel.ExportRecipeGroup.MySqlRecipe> Select(RecipeModel recipe)
+            => recipe.Exports.MySql;
 
         protected override void ExportTo(RecipeModel.ExportRecipeGroup.DatabaseRecipe recipe, Model model)
         {

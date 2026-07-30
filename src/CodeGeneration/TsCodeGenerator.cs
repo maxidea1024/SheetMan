@@ -1,4 +1,4 @@
-﻿using CommandLine;
+using CommandLine;
 using SheetMan.Recipe;
 using SheetMan.Models;
 using System.IO;
@@ -14,30 +14,28 @@ using System.Text;
 // `using System` brings System.ValueType into scope, which collides with the
 // model's own ValueType that this file refers to unqualified throughout.
 using ValueType = SheetMan.Models.ValueType;
+using SheetMan.Targets;
 
 namespace SheetMan.CodeGeneration
 {
-    public partial class TsCodeGenerator
+    [SheetManTarget("typescript", TargetKind.CodeGeneration, "CodeGenerations.Typescript", Order = 30)]
+    public partial class TsCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe>
     {
-        private Options _options;
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe _typescriptRecipe;
 
-        public void Generate(Options options, RecipeModel recipeModel, Model model)
+        protected override IEnumerable<RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe> Select(RecipeModel recipe)
+            => recipe.CodeGenerations.Typescript;
+
+        protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe typescriptRecipe)
         {
-            _options = options;
-            _model = model;
+            _typescriptRecipe = typescriptRecipe;
 
-            foreach (var typescriptRecipe in recipeModel.CodeGenerations.Typescript)
-            {
-                _typescriptRecipe = typescriptRecipe;
+            // Already narrowed to the side this entry is built for. Both (the default)
+            // leaves the model unchanged.
+            _model = context.Model;
 
-                // Narrowed to the side this entry is built for. Both (the default)
-                // returns the model unchanged.
-                _model = model.ProjectTo(RecipeTargetSide.Of(typescriptRecipe.TargetSide, "CodeGenerations.Typescript"));
-
-                GenerateModel();
-            }
+            GenerateModel();
         }
 
         private string GetTsFilename(string name)

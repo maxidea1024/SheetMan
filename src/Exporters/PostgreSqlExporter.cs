@@ -9,6 +9,7 @@ using SheetMan.Recipe;
 using Serilog;
 
 using ValueType = SheetMan.Models.ValueType;
+using SheetMan.Targets;
 
 namespace SheetMan.Exporters
 {
@@ -20,15 +21,15 @@ namespace SheetMan.Exporters
     /// transaction. Either the database ends up with every table updated or with none
     /// of them touched, which is a stronger guarantee than the other targets can offer.
     /// </summary>
-    public class PostgreSqlExporter : DatabaseExporterBase
+    [SheetManTarget("postgresql", TargetKind.Export, "Exports.PostgreSql", Order = 40)]
+    public class PostgreSqlExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.PostgreSqlRecipe>
     {
         protected override string TargetName => "PostgreSQL";
-        protected override string RecipeSection => "Exports.PostgreSql";
 
         private string _schema = "public";
 
-        public void Export(Options options, RecipeModel recipeModel, Model model)
-            => ExportEntries(recipeModel.Exports.PostgreSql, model);
+        protected override IEnumerable<RecipeModel.ExportRecipeGroup.PostgreSqlRecipe> Select(RecipeModel recipe)
+            => recipe.Exports.PostgreSql;
 
         protected override void ExportTo(RecipeModel.ExportRecipeGroup.DatabaseRecipe recipe, Model model)
         {

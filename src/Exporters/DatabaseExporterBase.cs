@@ -9,6 +9,7 @@ using SheetMan.Recipe;
 using Serilog;
 
 using ValueType = SheetMan.Models.ValueType;
+using SheetMan.Targets;
 
 namespace SheetMan.Exporters
 {
@@ -25,7 +26,8 @@ namespace SheetMan.Exporters
     /// transaction would need a distributed coordinator; making each store individually
     /// atomic is achievable and is what this does.
     /// </summary>
-    public abstract class DatabaseExporterBase
+    public abstract class DatabaseExporterBase<TEntry> : Target<TEntry>
+        where TEntry : RecipeModel.ExportRecipeGroup.DatabaseRecipe
     {
         /// <summary>
         /// Suffix of the shadow table, collection or key namespace that a run loads
@@ -36,36 +38,36 @@ namespace SheetMan.Exporters
         /// <summary>Human-readable name of the target, used in log lines.</summary>
         protected abstract string TargetName { get; }
 
-        /// <summary>Dotted recipe path of this target, used in error messages.</summary>
-        protected abstract string RecipeSection { get; }
+        /// <summary>
+        /// Dotted recipe path of this target, used in error messages.
+        ///
+        /// Read from the entry being run rather than declared again in each exporter, so a
+        /// message quotes the section the registry actually took the entry from and the
+        /// two cannot disagree.
+        /// </summary>
+        protected string RecipeSection { get; private set; }
 
         /// <summary>
         /// Runs one recipe entry: connect, load every table into shadow storage, swap.
         /// </summary>
         protected abstract void ExportTo(RecipeModel.ExportRecipeGroup.DatabaseRecipe recipe, Model model);
 
-        /// <summary>
-        /// Drives the entries of one recipe section.
-        /// </summary>
-        protected void ExportEntries<TRecipe>(IEnumerable<TRecipe> recipes, Model model)
-            where TRecipe : RecipeModel.ExportRecipeGroup.DatabaseRecipe
+        protected override void Run(TargetContext context, TEntry recipe)
         {
-            foreach (var recipe in recipes)
+            // An entry left in the recipe with no connection string is treated as
+            // switched off, matching how the file exporters skip a blank Path.
+            if (string.IsNullOrWhiteSpace(recipe.ConnectionString))
             {
-                // An entry left in the recipe with no connection string is treated as
-                // switched off, matching how the file exporters skip a blank Path.
-                if (string.IsNullOrWhiteSpace(recipe.ConnectionString))
-                {
-                    Log.Debug($"Skipping {TargetName} export: no ConnectionString configured.");
-                    continue;
-                }
-
-                var sided = model.ProjectTo(RecipeTargetSide.Of(recipe.TargetSide, RecipeSection));
-
-                Log.Information($"Exporting {sided.Tables.Count} table(s) to {TargetName}");
-
-                ExportTo(recipe, sided);
+                Log.Debug($"Skipping {TargetName} export: no ConnectionString configured.");
+                return;
             }
+
+            RecipeSection = context.Section;
+
+            Log.Information($"Exporting {context.Model.Tables.Count} table(s) to {TargetName}");
+
+            // context.Model is already narrowed to this entry's target side.
+            ExportTo(recipe, context.Model);
         }
 
         /// <summary>

@@ -8,6 +8,7 @@ using SheetMan.Recipe;
 using Serilog;
 
 using ValueType = SheetMan.Models.ValueType;
+using SheetMan.Targets;
 
 namespace SheetMan.Exporters
 {
@@ -19,15 +20,15 @@ namespace SheetMan.Exporters
     /// and renameCollection works on a standalone server too - so the atomic swap does
     /// not depend on how the deployment is configured.
     /// </summary>
-    public class MongoDbExporter : DatabaseExporterBase
+    [SheetManTarget("mongodb", TargetKind.Export, "Exports.MongoDb", Order = 50)]
+    public class MongoDbExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.MongoDbRecipe>
     {
         protected override string TargetName => "MongoDB";
-        protected override string RecipeSection => "Exports.MongoDb";
 
         private const int InsertBatchRows = 1000;
 
-        public void Export(Options options, RecipeModel recipeModel, Model model)
-            => ExportEntries(recipeModel.Exports.MongoDb, model);
+        protected override IEnumerable<RecipeModel.ExportRecipeGroup.MongoDbRecipe> Select(RecipeModel recipe)
+            => recipe.Exports.MongoDb;
 
         protected override void ExportTo(RecipeModel.ExportRecipeGroup.DatabaseRecipe recipe, Model model)
         {

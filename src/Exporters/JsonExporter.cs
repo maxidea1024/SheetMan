@@ -1,4 +1,4 @@
-﻿using SheetMan.Recipe;
+using SheetMan.Recipe;
 using SheetMan.Models;
 using System.IO;
 using Serilog;
@@ -8,40 +8,33 @@ using System.Linq;
 using SheetMan.Extensions;
 using System;
 using System.Globalization;
+using SheetMan.Targets;
 
 namespace SheetMan.Exporters
 {
-    public class JsonExporter
+    [SheetManTarget("json", TargetKind.Export, "Exports.Json", Order = 20)]
+    public class JsonExporter : Target<RecipeModel.ExportRecipeGroup.JsonRecipe>
     {
-        private Options _options;
-        private RecipeModel _recipeModel;
-        private Model _model;
         private Manifest _manifest;
 
-        public void Export(Options options, RecipeModel recipeModel, Model model)
+        protected override IEnumerable<RecipeModel.ExportRecipeGroup.JsonRecipe> Select(RecipeModel recipe)
+            => recipe.Exports.Json;
+
+        protected override void Run(TargetContext context, RecipeModel.ExportRecipeGroup.JsonRecipe recipe)
         {
-            _options = options;
-            _recipeModel = recipeModel;
-            _model = model;
+            // An entry left in the recipe with a blank path is treated as switched off.
+            if (string.IsNullOrEmpty(recipe.Path))
+                return;
 
-            foreach (var recipe in _recipeModel.Exports.Json)
-            {
-                if (string.IsNullOrEmpty(recipe.Path))
-                    continue;
+            string manifestFilename = Path.Combine(recipe.Path, "manifest-json.json");
 
-                string manifestFilename = Path.Combine(recipe.Path, "manifest-json.json");
+            _manifest = Manifest.Load(manifestFilename);
 
-                _manifest = Manifest.Load(manifestFilename);
+            // context.Model is already narrowed to this entry's target side.
+            foreach (var table in context.Model.Tables)
+                ExportTable(recipe, table);
 
-                // Narrowed to the side this entry is built for. Both (the default)
-                // returns the model unchanged.
-                var sided = model.ProjectTo(RecipeTargetSide.Of(recipe.TargetSide, "Exports.Json"));
-
-                foreach (var table in sided.Tables)
-                    ExportTable(recipe, table);
-
-                _manifest.BuildAndWriteToFile(manifestFilename);
-            }
+            _manifest.BuildAndWriteToFile(manifestFilename);
         }
 
         /// <summary>

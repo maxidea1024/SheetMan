@@ -1,4 +1,4 @@
-﻿using CommandLine;
+using CommandLine;
 using SheetMan.Recipe;
 using SheetMan.Models;
 using System;
@@ -7,44 +7,36 @@ using System.Security.Cryptography;
 using System.Text;
 using Serilog;
 using SheetMan.Helpers;
+using System.Collections.Generic;
+using SheetMan.Targets;
 
 namespace SheetMan.Exporters
 {
-    public class BinaryExporter
+    [SheetManTarget("binary", TargetKind.Export, "Exports.Binary", Order = 10)]
+    public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     {
         const uint BinaryFileFormatVersion = 100;
 
-        private Options _options;
-        private RecipeModel _recipeModel;
-        private Model _model;
         private Manifest _manifest;
 
-        public void Export(Options options, RecipeModel recipeModel, Model model)
+        protected override IEnumerable<RecipeModel.ExportRecipeGroup.BinaryRecipe> Select(RecipeModel recipe)
+            => recipe.Exports.Binary;
+
+        protected override void Run(TargetContext context, RecipeModel.ExportRecipeGroup.BinaryRecipe binaryRecipe)
         {
-            _options = options;
-            _recipeModel = recipeModel;
-            _model = model;
+            // An entry left in the recipe with a blank path is treated as switched off.
+            if (string.IsNullOrEmpty(binaryRecipe.Path))
+                return;
 
-            //TODO 수정
+            string manifestFilename = Path.Combine(binaryRecipe.Path, "manifest-binary.json");
 
-            foreach (var binaryRecipe in _recipeModel.Exports.Binary)
-            {
-                if (string.IsNullOrEmpty(binaryRecipe.Path))
-                    continue;
-                
-                string manifestFilename = Path.Combine(binaryRecipe.Path, "manifest-binary.json");
+            _manifest = Manifest.Load(manifestFilename);
 
-                _manifest = Manifest.Load(manifestFilename);
+            // context.Model is already narrowed to this entry's target side.
+            foreach (var table in context.Model.Tables)
+                ExportTable(binaryRecipe, table);
 
-                // Narrowed to the side this entry is built for. Both (the default)
-                // returns the model unchanged.
-                var sided = model.ProjectTo(RecipeTargetSide.Of(binaryRecipe.TargetSide, "Exports.Binary"));
-
-                foreach (var table in sided.Tables)
-                    ExportTable(binaryRecipe, table);
-
-                _manifest.BuildAndWriteToFile(manifestFilename);
-            }
+            _manifest.BuildAndWriteToFile(manifestFilename);
         }
 
         private void ExportTable(RecipeModel.ExportRecipeGroup.BinaryRecipe recipe, Table table)

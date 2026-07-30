@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SheetMan.Models;
 using SheetMan.Recipe;
+using SheetMan.Targets;
 
 namespace SheetMan.Cooking
 {
@@ -172,19 +173,22 @@ namespace SheetMan.Cooking
 
         /// <summary>
         /// The distinct target sides any output entry in the recipe asks for.
+        ///
+        /// Taken from the target registry, which is the same list the run itself works
+        /// through, so every target that will produce output is covered.
+        ///
+        /// It was previously a hand-written enumeration of six recipe sections, and the
+        /// four database sections were missing from it - added later, to the run but not
+        /// here. A recipe whose only server-side output was a database export therefore
+        /// had its server side left unvalidated, and a table referencing a client-only
+        /// table would reach the exporter unreported.
         /// </summary>
         private static IEnumerable<TargetSide> RequestedTargetSides(RecipeModel recipeModel)
         {
             var sides = new HashSet<TargetSide>();
 
-            void Add(string text, string section) => sides.Add(RecipeTargetSide.Of(text, section));
-
-            foreach (var r in recipeModel.Exports.Binary) Add(r.TargetSide, "Exports.Binary");
-            foreach (var r in recipeModel.Exports.Json) Add(r.TargetSide, "Exports.Json");
-            foreach (var r in recipeModel.CodeGenerations.Cpp) Add(r.TargetSide, "CodeGenerations.Cpp");
-            foreach (var r in recipeModel.CodeGenerations.CSharp) Add(r.TargetSide, "CodeGenerations.CSharp");
-            foreach (var r in recipeModel.CodeGenerations.Typescript) Add(r.TargetSide, "CodeGenerations.Typescript");
-            foreach (var r in recipeModel.CodeGenerations.Html) Add(r.TargetSide, "CodeGenerations.Html");
+            foreach (var planned in TargetRegistry.Plan(recipeModel))
+                sides.Add(planned.Side);
 
             return sides;
         }

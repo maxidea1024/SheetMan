@@ -1,4 +1,4 @@
-﻿using SheetMan.Models;
+using SheetMan.Models;
 using SheetMan.Extensions;
 using SheetMan.Helpers;
 using SheetMan.Recipe;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 
 using ValueType = SheetMan.Models.ValueType;
+using SheetMan.Targets;
 
 namespace SheetMan.CodeGeneration
 {
@@ -26,30 +27,28 @@ namespace SheetMan.CodeGeneration
     /// header includes. That reader is the C++ half of the format the binary exporter
     /// writes, so the two have to change together.
     /// </summary>
-    public class CppCodeGenerator
+    [SheetManTarget("cpp", TargetKind.CodeGeneration, "CodeGenerations.Cpp", Order = 10)]
+    public class CppCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.CppRecipe>
     {
-        private Options _options;
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.CppRecipe _cppRecipe;
 
-        public void Generate(Options options, RecipeModel recipeModel, Model model)
+        protected override IEnumerable<RecipeModel.CodeGenerationRecipeGroup.CppRecipe> Select(RecipeModel recipe)
+            => recipe.CodeGenerations.Cpp;
+
+        protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.CppRecipe cppRecipe)
         {
-            _options = options;
+            if (string.IsNullOrEmpty(cppRecipe.Path))
+                return;
 
-            foreach (var cppRecipe in recipeModel.CodeGenerations.Cpp)
-            {
-                if (string.IsNullOrEmpty(cppRecipe.Path))
-                    continue;
+            _cppRecipe = cppRecipe;
 
-                _cppRecipe = cppRecipe;
+            // Already narrowed to the side this entry is built for. Both (the default)
+            // leaves the model unchanged.
+            _model = context.Model;
 
-                // Narrowed to the side this entry is built for. Both (the default)
-                // returns the model unchanged.
-                _model = model.ProjectTo(RecipeTargetSide.Of(cppRecipe.TargetSide, "CodeGenerations.Cpp"));
-
-                GenerateModel();
-                WriteBinaryReaderRuntime();
-            }
+            GenerateModel();
+            WriteBinaryReaderRuntime();
         }
 
         /// <summary>

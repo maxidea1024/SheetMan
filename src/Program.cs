@@ -11,6 +11,8 @@ using Serilog;
 using System.Diagnostics;
 using SheetMan.Helpers;
 using SheetMan.Extensions;
+using System.Collections.Generic;
+using SheetMan.Targets;
 
 namespace SheetMan
 {
@@ -165,76 +167,21 @@ namespace SheetMan
                 var model = cooker.Cook(options, recipeModel, rawModel);
 
 
-                // Exporting
+                // Output
 
-                if (recipeModel.Exports.Binary.Count > 0)
-                {
-                    var exporter = new BinaryExporter();
-                    exporter.Export(options, recipeModel, model);
-                }
+                // Every export and code-generation target the recipe asks for, in a fixed
+                // order. Which targets exist is discovered by attribute, so adding one
+                // touches only the file that defines it - this used to be a run of ten
+                // near-identical `if (recipe.X.Y.Count > 0)` blocks, and the validation
+                // pass had to name the same sections a second time.
+                //
+                // The database targets differ from the file ones in when their output
+                // becomes visible. File targets stage their work and commit it below,
+                // while each database target loads into shadow storage and swaps it in as
+                // it goes. Atomicity is per store either way: files and four databases
+                // cannot share one transaction without a distributed coordinator.
 
-                if (recipeModel.Exports.Json.Count > 0)
-                {
-                    var exporter = new JsonExporter();
-                    exporter.Export(options, recipeModel, model);
-                }
-
-                // Database targets. Unlike the file exporters these publish as they go,
-                // each loading into shadow storage and swapping it in atomically, so a
-                // failure leaves the previous generation of data in place. Atomicity is
-                // per store: files and four databases cannot share one transaction
-                // without a distributed coordinator.
-
-                if (recipeModel.Exports.MySql.Count > 0)
-                {
-                    var exporter = new MySqlExporter();
-                    exporter.Export(options, recipeModel, model);
-                }
-
-                if (recipeModel.Exports.PostgreSql.Count > 0)
-                {
-                    var exporter = new PostgreSqlExporter();
-                    exporter.Export(options, recipeModel, model);
-                }
-
-                if (recipeModel.Exports.MongoDb.Count > 0)
-                {
-                    var exporter = new MongoDbExporter();
-                    exporter.Export(options, recipeModel, model);
-                }
-
-                if (recipeModel.Exports.Redis.Count > 0)
-                {
-                    var exporter = new RedisExporter();
-                    exporter.Export(options, recipeModel, model);
-                }
-
-
-                // Code generation
-
-                if (recipeModel.CodeGenerations.Cpp.Count > 0)
-                {
-                    var codeGenerator = new CppCodeGenerator();
-                    codeGenerator.Generate(options, recipeModel, model);
-                }
-
-                if (recipeModel.CodeGenerations.CSharp.Count > 0)
-                {
-                    var codeGenerator = new CsCodeGenerator();
-                    codeGenerator.Generate(options, recipeModel, model);
-                }
-
-                if (recipeModel.CodeGenerations.Typescript.Count > 0)
-                {
-                    var codeGenerator = new TsCodeGenerator();
-                    codeGenerator.Generate(options, recipeModel, model);
-                }
-
-                if (recipeModel.CodeGenerations.Html.Count > 0)
-                {
-                    var codeGenerator = new HtmlCodeGenerator();
-                    codeGenerator.Generate(options, recipeModel, model);
-                }
+                TargetRegistry.RunAll(options, recipeModel, model);
 
                 Log.Information("Now that we have completed all the work, we are copying the generated staging files to the destination folder.");
 
