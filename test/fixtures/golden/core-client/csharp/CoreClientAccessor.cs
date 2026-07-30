@@ -1362,6 +1362,18 @@ namespace SheetMan.Fixtures.Core.Client
         /// grade assigned when unspecified
         /// </summary>
         public static global::SheetMan.Fixtures.Core.Client.Grade DefaultGrade { get; }
+        /// <summary>
+        /// when the season opens
+        /// </summary>
+        public static System.DateTime SeasonStart { get; }
+        /// <summary>
+        /// length of one round
+        /// </summary>
+        public static System.TimeSpan RoundLength { get; }
+        /// <summary>
+        /// identifies this data build
+        /// </summary>
+        public static System.Guid BuildId { get; }
 
         /// <summary>
         /// Static constructor for initialize static variables.
@@ -1373,6 +1385,9 @@ namespace SheetMan.Fixtures.Core.Client
             DropRate = 0.25f;
             DebugMode = false;
             DefaultGrade = global::SheetMan.Fixtures.Core.Client.Grade.Rare;
+            SeasonStart = new System.DateTime(637817220000000000L);
+            RoundLength = new System.TimeSpan(3000000000L);
+            BuildId = new System.Guid("6f9619ff-8b86-d011-b42d-00c04fc964ff");
         }
     }
     #endregion

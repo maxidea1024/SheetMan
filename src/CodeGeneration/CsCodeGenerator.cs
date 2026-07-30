@@ -329,20 +329,27 @@ namespace SheetMan.CodeGeneration
                 case Models.ValueType.Int64:
                     return ((long)value).ToString(CultureInfo.InvariantCulture);
 
+                // Round-trip format, and invariant. The current culture would write a
+                // comma for the decimal separator wherever the build machine uses one,
+                // and `1,5f` is not a C# literal.
                 case Models.ValueType.Float:
-                    return ((float)value).ToString(CultureInfo.CurrentCulture) + "f";
+                    return ((float)value).ToString("R", CultureInfo.InvariantCulture) + "f";
 
                 case Models.ValueType.Double:
-                    return ((double)value).ToString(CultureInfo.CurrentCulture);
+                    return ((double)value).ToString("R", CultureInfo.InvariantCulture);
 
+                // These three used to be written as their default ToString, which is not a
+                // literal in any of the three cases - a constant of one of these types
+                // produced a file that did not compile. Ticks and a uuid string are exact
+                // and need no parsing at a culture's mercy.
                 case Models.ValueType.TimeSpan:
-                    return ((TimeSpan)value).ToString();
+                    return $"new System.TimeSpan({((TimeSpan)value).Ticks.ToString(CultureInfo.InvariantCulture)}L)";
 
                 case Models.ValueType.DateTime:
-                    return ((DateTime)value).ToString();
+                    return $"new System.DateTime({((DateTime)value).Ticks.ToString(CultureInfo.InvariantCulture)}L)";
 
                 case Models.ValueType.Uuid:
-                    return ((Guid)value).ToString();
+                    return $"new System.Guid(\"{(Guid)value}\")";
 
                 case Models.ValueType.Enum:
                 {

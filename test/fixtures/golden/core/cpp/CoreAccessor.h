@@ -74,6 +74,12 @@ struct GameConfig
     static inline const bool DebugMode = false;
     /// grade assigned when unspecified
     static inline const Grade DefaultGrade = Grade::Rare;
+    /// when the season opens
+    static inline const sheetman::DateTime SeasonStart = sheetman::DateTime{ 637817220000000000LL };
+    /// length of one round
+    static inline const sheetman::TimeSpan RoundLength = sheetman::TimeSpan{ 3000000000LL };
+    /// identifies this data build
+    static inline const sheetman::Uuid BuildId = sheetman::Uuid{ { 0xff, 0x19, 0x96, 0x6f, 0x86, 0x8b, 0x11, 0xd0, 0xb4, 0x2d, 0x00, 0xc0, 0x4f, 0xc9, 0x64, 0xff } };
 };
 
 // Forward declarations, so records may reference each other in any order.

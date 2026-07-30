@@ -28,5 +28,14 @@ export class GameConfig {
 
     /** grade assigned when unspecified */
     public static readonly defaultGrade: Grade = Grade.Rare
+
+    /** when the season opens */
+    public static readonly seasonStart: string = '2022-03-01T09:00:00.0000000'
+
+    /** length of one round */
+    public static readonly roundLength: string = '00:05:00'
+
+    /** identifies this data build */
+    public static readonly buildId: string = '6f9619ff-8b86-d011-b42d-00c04fc964ff'
 }
 

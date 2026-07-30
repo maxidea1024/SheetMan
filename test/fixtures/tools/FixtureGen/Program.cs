@@ -269,7 +269,13 @@ namespace SheetMan.FixtureGen
                 .Constant("StartGold", "bigint", "1000", "gold granted to new accounts")
                 .Constant("DropRate", "float", "0.25", "base drop rate")
                 .Constant("DebugMode", "bool", "N", "whether debug hooks are active")
-                .Constant("DefaultGrade", "enum", "Rare", "grade assigned when unspecified", detailType: "Grade"));
+                .Constant("DefaultGrade", "enum", "Rare", "grade assigned when unspecified", detailType: "Grade")
+                // The three types a constant could not previously be written in: the C#
+                // generator emitted their default ToString, which is not a literal, so a
+                // sheet declaring one of these produced a file that would not compile.
+                .Constant("SeasonStart", "datetime", "2022-03-01 09:00:00", "when the season opens")
+                .Constant("RoundLength", "timespan", "0.00:05:00", "length of one round")
+                .Constant("BuildId", "uuid", "6f9619ff-8b86-d011-b42d-00c04fc964ff", "identifies this data build"));
 
             Save(workbook, path);
         }
