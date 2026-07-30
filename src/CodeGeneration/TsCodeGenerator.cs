@@ -36,6 +36,19 @@ namespace SheetMan.CodeGeneration
             GenerateModel();
         }
 
+        /// <summary>
+        /// A member name.
+        ///
+        /// camelCase, then escaped if TypeScript will not take it. Most reserved words are
+        /// legal as member names, so only the few that genuinely are not get renamed -
+        /// `constructor` above all, which a class may not declare as an accessor.
+        ///
+        /// Private backing fields carry a leading underscore and so could not collide
+        /// anyway, but they are derived from the same escaped name so that the pair always
+        /// agrees.
+        /// </summary>
+        private static string TsName(string name) => LanguageProfile.Typescript.MemberName(name.ToCamelCase());
+
         private string GetTsFilename(string name)
         {
             return Path.Combine(_typescriptRecipe.Path, name);
@@ -155,8 +168,8 @@ namespace SheetMan.CodeGeneration
                 if (++count != 1) ts.PrintLine();
 
                 ts.PrintLine($"/** Peroperty for table {table.Name} */");
-                ts.PrintLine($"public get {table.Name.ToCamelCase()}(): {table.Name}Table {{ return this._{table.Name.ToCamelCase()} }}");
-                ts.PrintLine($"private _{table.Name.ToCamelCase()}: {table.Name}Table = new {table.Name}Table()");
+                ts.PrintLine($"public get {TsName(table.Name)}(): {table.Name}Table {{ return this._{TsName(table.Name)} }}");
+                ts.PrintLine($"private _{TsName(table.Name)}: {table.Name}Table = new {table.Name}Table()");
             }
 
 
@@ -166,7 +179,7 @@ namespace SheetMan.CodeGeneration
             ts.PrintLine("/** Read all tables asynchronously. */");
             ts.ScopeIn("public async readAll(basePath: string): Promise<void> {");
             foreach (var table in _model.Tables)
-                ts.PrintLine($"await this._{table.Name.ToCamelCase()}.read(path.join(basePath, '{table.Name}.json'))");
+                ts.PrintLine($"await this._{TsName(table.Name)}.read(path.join(basePath, '{table.Name}.json'))");
             ts.ScopeOut("}");
 
 
@@ -176,7 +189,7 @@ namespace SheetMan.CodeGeneration
             ts.PrintLine("/** Read all tables synchronously. */");
             ts.ScopeIn("public readAllSync(basePath: string): void {");
             foreach (var table in _model.Tables)
-                ts.PrintLine($"this._{table.Name.ToCamelCase()}.readSync(path.join(basePath, '{table.Name}.json'))");
+                ts.PrintLine($"this._{TsName(table.Name)}.readSync(path.join(basePath, '{table.Name}.json'))");
             ts.PrintLine();
             ts.PrintLine("this.solveCrossReferences()");
             ts.ScopeOut("}");
@@ -246,8 +259,8 @@ namespace SheetMan.CodeGeneration
             {
                 string[] vars = new string[] {
                     "field_type", ToTypescriptTypename(sf.FirstField),
-                    "prop_name", sf.Name.ToCamelCase(),
-                    "field_name", $"_{sf.Name.ToCamelCase()}",
+                    "prop_name", TsName(sf.Name),
+                    "field_name", $"_{TsName(sf.Name)}",
                     "N", sf.Fields.Count.ToString(),
                     "ref_table", sf.FirstField.RefTableName.ToPascalCase(),
                     "ref_field", sf.FirstField.RefFieldName.ToPascalCase()
@@ -286,8 +299,8 @@ namespace SheetMan.CodeGeneration
             {
                 string[] vars = new string[] {
                     "field_type", ToTypescriptTypename(sf.FirstField),
-                    "prop_name", sf.Name.ToCamelCase(),
-                    "field_name", $"_{sf.Name.ToCamelCase()}",
+                    "prop_name", TsName(sf.Name),
+                    "field_name", $"_{TsName(sf.Name)}",
                     "N", sf.Fields.Count.ToString(),
                     "ref_table", sf.FirstField.RefTableName.ToPascalCase(),
                     "ref_field", sf.FirstField.RefFieldName.ToPascalCase()
@@ -363,8 +376,8 @@ namespace SheetMan.CodeGeneration
             {
                 string[] vars = new string[] {
                     "field_type", ToTypescriptTypename(sf.FirstField),
-                    "prop_name", sf.Name.ToCamelCase(),
-                    "field_name", $"_{sf.Name.ToCamelCase()}",
+                    "prop_name", TsName(sf.Name),
+                    "field_name", $"_{TsName(sf.Name)}",
                     "N", sf.Fields.Count.ToString(),
                     "ref_table", sf.FirstField.RefTableName.ToPascalCase(),
                     "ref_field", sf.FirstField.RefFieldName.ToPascalCase()
@@ -400,8 +413,8 @@ namespace SheetMan.CodeGeneration
             {
                 string[] vars = new string[] {
                     "field_type", ToTypescriptTypename(sf.FirstField),
-                    "prop_name", sf.Name.ToCamelCase(),
-                    "field_name", $"_{sf.Name.ToCamelCase()}",
+                    "prop_name", TsName(sf.Name),
+                    "field_name", $"_{TsName(sf.Name)}",
                     "N", sf.Fields.Count.ToString(),
                     "ref_table", sf.FirstField.RefTableName.ToPascalCase(),
                     "ref_field", sf.FirstField.RefFieldName.ToPascalCase()
@@ -470,7 +483,7 @@ namespace SheetMan.CodeGeneration
                     "table_name", table.Name,
                     "record_type", recordClassName,
                     "field_type", ToTypescriptTypename(sf.FirstField),
-                    "prop_name", sf.Name.ToCamelCase(),
+                    "prop_name", TsName(sf.Name),
                     "pascal_name", sf.Name.ToPascalCase()
                 };
                 ts.PushScopedVars(vars);
@@ -602,7 +615,7 @@ namespace SheetMan.CodeGeneration
                 {
                     ts.PushScopedVars(new string[] {
                         "prop_name_pascal", sf.Name.ToPascalCase(),
-                        "prop_name", sf.Name.ToCamelCase()
+                        "prop_name", TsName(sf.Name)
                     });
                     ts.PrintLine("this._recordsBy$prop_name_pascal$.set(record.$prop_name$, record)");
                     ts.PopScopedVars();
@@ -659,7 +672,7 @@ namespace SheetMan.CodeGeneration
 
             foreach (var sf in table.SerialFields)
             {
-                string field = "_" + sf.Name.ToCamelCase();
+                string field = "_" + TsName(sf.Name);
 
                 if (sf.IsVariableLengthArray)
                 {
@@ -932,7 +945,7 @@ namespace SheetMan.CodeGeneration
                 string typeName = ToTypescriptTypename(constant.Type, constant.Enum, null);
                 string value = RenderConstantValue(constant);
 
-                ts.PrintLine($"public static readonly {constant.Name.ToCamelCase()}: {typeName} = {value}");
+                ts.PrintLine($"public static readonly {TsName(constant.Name)}: {typeName} = {value}");
             }
 
             ts.ScopeOut("}");
@@ -1110,55 +1123,23 @@ namespace SheetMan.CodeGeneration
             string result;
             switch (type)
             {
-                case Models.ValueType.String:
-                    result = "string";
-                    break;
-                case Models.ValueType.Bool:
-                    result = "boolean";
-                    break;
-                case Models.ValueType.Int32:
-                    result = "number";
-                    break;
-                case Models.ValueType.Int64:
-                    // BigInt, not number. A double carries 53 bits of mantissa, so a
-                    // 64-bit value past 2^53 comes back quietly wrong - the same class of
-                    // corruption the binary writer itself once had, and just as invisible.
-                    result = "bigint";
-                    break;
-                case Models.ValueType.Float:
-                    result = "number";
-                    break;
-                case Models.ValueType.Double:
-                    result = "number";
-                    break;
-                case Models.ValueType.TimeSpan:
-                // These three surface as strings rather than richer types.
-                //
-                // TypeScript reads the JSON export, and JSON has no date, duration or
-                // uuid: each arrives as text. Declaring `Date` would oblige the generated
-                // reader to parse on load - work a consumer may not want, on a value it
-                // may only pass through - and there is nothing to parse a duration or a
-                // uuid into at all. The text is exactly what was exported, so a consumer
-                // that needs a richer type can construct one where it needs it.
-                    result = "string";
-                    break;
-                case Models.ValueType.DateTime:
-                    result = "string";
-                    break;
-                case Models.ValueType.Uuid:
-                    result = "string";
-                    break;
+                // The two that name something from the model rather than the language.
+                // Why int64 is bigint, and why the three text-shaped types are string, is
+                // recorded on the profile itself.
                 case Models.ValueType.Enum:
                     result = QualifiedNamespacePrefix + enumm.Name.ToPascalCase();
                     break;
+
                 case Models.ValueType.ForeignRecord:
                     result = $"{refTableName.ToPascalCase()}Record";
                     break;
+
                 default:
-                    throw new SheetManException($"unsupported type: {type}");
+                    result = LanguageProfile.Typescript.ScalarTypeName(type);
+                    break;
             }
 
-            return asArray ? (result + "[]") : result;
+            return asArray ? LanguageProfile.Typescript.ArrayOf(result) : result;
         }
 
 

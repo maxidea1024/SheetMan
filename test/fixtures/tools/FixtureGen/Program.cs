@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using NPOI.XSSF.UserModel;
 
@@ -45,6 +45,7 @@ namespace SheetMan.FixtureGen
             WriteDoubleStar(Prepare(outputDir, "double-star", "double-star.xlsx"));
             WriteFormulaError(Prepare(outputDir, "formula-error", "formula-error.xlsx"));
             WriteEnumByValue(Prepare(outputDir, "enum-by-value", "enum-by-value.xlsx"));
+            WriteReservedWords(Prepare(outputDir, "reserved-words", "reserved-words.xlsx"));
 
             Console.WriteLine($"Fixtures written to {outputDir}");
             return 0;
@@ -668,6 +669,45 @@ namespace SheetMan.FixtureGen
                 .Row("2", "2", "written by number");
 
             b.Table(6, 1, spec);
+
+            Save(workbook, path);
+        }
+
+        /// <summary>
+        /// Names that collide with a keyword in one of the output languages.
+        ///
+        /// Whether this matters depends on how each generator cases an identifier, and the
+        /// three differ: C# renders members PascalCase, which lifts every all-lowercase
+        /// keyword out of the way; TypeScript renders them camelCase; C++ renders them
+        /// snake_case, so `Int` becomes `int` and `Class` becomes `class`.
+        ///
+        /// The table name matters too - the C++ accessor exposes each table through a
+        /// snake_cased method - hence a table called Template.
+        ///
+        /// The point of the fixture is that the toolchain gates answer the question rather
+        /// than anybody reasoning about it: the suite compiles the generated C++ and C# and
+        /// type-checks the generated TypeScript.
+        /// </summary>
+        private static void WriteReservedWords(string path)
+        {
+            var workbook = new XSSFWorkbook();
+            var b = new SheetBuilder(workbook.CreateSheet("Data"));
+
+            var spec = new TableSpec { Name = "Template", Comment = "Named after a C++ keyword." };
+            spec
+                .Field(FieldSpec.Of("index", "int", "primary index"))
+                .Field(FieldSpec.Of("Class", "string", "class: keyword in C++ and C#"))
+                .Field(FieldSpec.Of("Int", "int", "int: keyword in C++ and C#"))
+                .Field(FieldSpec.Of("Delete", "bool", "delete: keyword in C++"))
+                .Field(FieldSpec.Of("Operator", "string", "operator: keyword in C++"))
+                .Field(FieldSpec.Of("Namespace", "string", "namespace: keyword in C++ and C#"))
+                .Field(FieldSpec.Of("Constructor", "string", "constructor: special member in TypeScript"))
+                .Field(FieldSpec.Of("Function", "string", "function: keyword in TypeScript"));
+            spec
+                .Row("1", "first", "10", "Y", "plus", "alpha", "ctor-a", "fn-a")
+                .Row("2", "second", "20", "N", "minus", "beta", "ctor-b", "fn-b");
+
+            b.Table(1, 1, spec);
 
             Save(workbook, path);
         }

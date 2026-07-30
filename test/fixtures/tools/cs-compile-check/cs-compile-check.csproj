@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Compiles a scenario's generated C# and nothing else.
+
+    cs-check beside this one links a Program that reads the `core` fixture's tables by
+    name, so it can only be pointed at that scenario. This project has no source of its
+    own, which makes it usable for any scenario where the question is only whether the
+    emitted code is valid C#.
+  -->
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>cs-compile-check</AssemblyName>
+    <RootNamespace>SheetMan.CsCompileCheck</RootNamespace>
+
+    <!--
+      NO_UNITY selects the non-Unity branches of the generated code, the same constant a
+      non-Unity consumer would define. Without it the generated file expects UniTask.
+    -->
+    <DefineConstants>$(DefineConstants);NO_UNITY</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(GeneratedDir)\**\*.cs" />
+  </ItemGroup>
+
+</Project>

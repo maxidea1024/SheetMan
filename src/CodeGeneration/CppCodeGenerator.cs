@@ -196,7 +196,7 @@ namespace SheetMan.CodeGeneration
             {
                 GenerateComment(cpp, sf.FirstField.Comment);
 
-                string name = sf.Name.ToSnakeCase();
+                string name = CppName(sf.Name);
 
                 if (sf.IsRef)
                 {
@@ -248,7 +248,7 @@ namespace SheetMan.CodeGeneration
 
             foreach (var sf in table.SerialFields)
             {
-                string name = sf.Name.ToSnakeCase();
+                string name = CppName(sf.Name);
 
                 if (sf.IsVariableLengthArray)
                 {
@@ -318,7 +318,7 @@ namespace SheetMan.CodeGeneration
         {
             string recordName = RecordName(table);
             string tableName = TableName(table);
-            string indexField = table.Fields[0].Name.ToSnakeCase();
+            string indexField = CppName(table.Fields[0].Name);
 
             cpp.PrintLine();
             GenerateComment(cpp, table.Comment);
@@ -382,7 +382,7 @@ namespace SheetMan.CodeGeneration
 
             foreach (var table in _model.Tables)
             {
-                cpp.PrintLine($"const {TableName(table)}& {table.Name.ToSnakeCase()}() const {{ return {table.Name.ToSnakeCase()}_; }}");
+                cpp.PrintLine($"const {TableName(table)}& {CppName(table.Name)}() const {{ return {CppName(table.Name)}_; }}");
             }
 
             cpp.PrintLine();
@@ -397,7 +397,7 @@ namespace SheetMan.CodeGeneration
             else
             {
                 foreach (var table in _model.Tables)
-                    cpp.PrintLine($"{table.Name.ToSnakeCase()}_.read(base_path + \"/{table.Name}\" + file_extension);");
+                    cpp.PrintLine($"{CppName(table.Name)}_.read(base_path + \"/{table.Name}\" + file_extension);");
 
                 cpp.PrintLine();
                 cpp.PrintLine("solve_cross_references();");
@@ -411,7 +411,7 @@ namespace SheetMan.CodeGeneration
 
             cpp.PrintLine();
             foreach (var table in _model.Tables)
-                cpp.PrintLine($"{TableName(table)} {table.Name.ToSnakeCase()}_;");
+                cpp.PrintLine($"{TableName(table)} {CppName(table.Name)}_;");
 
             cpp.ScopeOut("};");
         }
@@ -433,12 +433,12 @@ namespace SheetMan.CodeGeneration
 
                 wroteAny = true;
 
-                cpp.ScopeIn($"for (auto& record : {table.Name.ToSnakeCase()}_.records_)\n{{");
+                cpp.ScopeIn($"for (auto& record : {CppName(table.Name)}_.records_)\n{{");
 
                 foreach (var sf in refFields)
                 {
-                    string name = sf.Name.ToSnakeCase();
-                    string refTable = sf.FirstField.ResolvedRefTable.Name.ToSnakeCase();
+                    string name = CppName(sf.Name);
+                    string refTable = CppName(sf.FirstField.ResolvedRefTable.Name);
                     string value = ReferenceValueExpression(sf, "target");
 
                     if (sf.IsArray)
@@ -476,7 +476,7 @@ namespace SheetMan.CodeGeneration
             if (sf.ElementType == ValueType.ForeignRecord)
                 return targetVariable;
 
-            return $"{targetVariable}->{sf.FirstField.ResolvedRefField.Name.ToSnakeCase()}";
+            return $"{targetVariable}->{CppName(sf.FirstField.ResolvedRefField.Name)}";
         }
 
         /// <summary>
@@ -496,25 +496,34 @@ namespace SheetMan.CodeGeneration
 
         // ------------------------------------------------------------- types
 
+        /// <summary>
+        /// A member or member-function name.
+        ///
+        /// snake_case, which is what makes the escape necessary here and nowhere else: every
+        /// C++ keyword is lowercase, so `Int` becomes `int` and `Class` becomes `class`. The
+        /// generator used to emit those verbatim - `std::string class;` - and report success,
+        /// because nothing compiled the result.
+        /// </summary>
+        private static string CppName(string name) => LanguageProfile.Cpp.MemberName(name.ToSnakeCase());
+
+
         private string ToCppTypeName(Field field) => ToCppTypeName(field.ElementType, field.EnumOrNull);
 
         private string ToCppTypeName(ValueType type, Models.Enum enumm)
         {
             switch (ValueTypes.ElementOf(type))
             {
-                case ValueType.String: return "std::string";
-                case ValueType.Bool: return "bool";
-                case ValueType.Int32: return "std::int32_t";
-                case ValueType.Int64: return "std::int64_t";
-                case ValueType.Float: return "float";
-                case ValueType.Double: return "double";
-                case ValueType.DateTime: return "sheetman::DateTime";
-                case ValueType.TimeSpan: return "sheetman::TimeSpan";
-                case ValueType.Uuid: return "sheetman::Uuid";
-                case ValueType.Enum: return enumm.Name.ToPascalCase();
-                case ValueType.ForeignRecord: return "std::int32_t";
+                // The two that name something from the model rather than the language.
+                case ValueType.Enum:
+                    return enumm.Name.ToPascalCase();
+
+                // A reference is carried as the target row's primary index; the generated
+                // read turns it into a pointer once every table is loaded.
+                case ValueType.ForeignRecord:
+                    return "std::int32_t";
+
                 default:
-                    throw new SheetManException($"C++ generator cannot render type `{type}`.");
+                    return LanguageProfile.Cpp.ScalarTypeName(type);
             }
         }
 

@@ -772,44 +772,21 @@ namespace SheetMan.CodeGeneration
             string result;
             switch (type)
             {
-                case Models.ValueType.String:
-                    result = "string";
-                    break;
-                case Models.ValueType.Bool:
-                    result = "bool";
-                    break;
-                case Models.ValueType.Int32:
-                    result = "int";
-                    break;
-                case Models.ValueType.Int64:
-                    result = "long";
-                    break;
-                case Models.ValueType.Float:
-                    result = "float";
-                    break;
-                case Models.ValueType.Double:
-                    result = "double";
-                    break;
-                case Models.ValueType.TimeSpan:
-                    result = "System.TimeSpan";
-                    break;
-                case Models.ValueType.DateTime:
-                    result = "System.DateTime";
-                    break;
-                case Models.ValueType.Uuid:
-                    result = "System.Guid";
-                    break;
+                // The two that name something from the model rather than the language.
                 case Models.ValueType.Enum:
                     result = QualifiedNamespacePrefix + enumm.Name.ToPascalCase();
                     break;
+
                 case Models.ValueType.ForeignRecord:
                     result = $"{refTableName.ToPascalCase()}Table.Record";
                     break;
+
                 default:
-                    throw new SheetManException($"unsupported type: {type}");
+                    result = LanguageProfile.CSharp.ScalarTypeName(type);
+                    break;
             }
 
-            return asArray ? (result + "[]") : result;
+            return asArray ? LanguageProfile.CSharp.ArrayOf(result) : result;
         }
 
         //TODO 배열도 지원하면 좋으려나?

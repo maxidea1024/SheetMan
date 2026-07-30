@@ -1,0 +1,55 @@
+{
+  // Identifiers that collide with a keyword in one of the output languages.
+  //
+  // All three code generators plus the binary export, because the question - does an
+  // identifier taken from a sheet survive into compilable code - is answered by
+  // compiling, not by reading the generators.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/reserved-words",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ]
+  },
+
+  "Exports": {
+    "Binary": [
+      {
+        "Path": "test/fixtures/output/reserved-words/binary",
+        "FileExtension": ".table"
+      }
+    ],
+    "Json": [
+      {
+        "Path": "test/fixtures/output/reserved-words/json-named",
+        "UseCompactRowFormat": false,
+        "Indented": true
+      }
+    ]
+  },
+
+  "CodeGenerations": {
+    "Cpp": [
+      {
+        "Path": "test/fixtures/output/reserved-words/cpp",
+        "Namespace": "sheetman_fixtures::reserved",
+        "AccessorName": "ReservedAccessor",
+        "BinaryTableFileExtension": ".table"
+      }
+    ],
+    "CSharp": [
+      {
+        "Path": "test/fixtures/output/reserved-words/csharp",
+        "Namespace": "SheetMan.Fixtures.Reserved",
+        "AccessorName": "ReservedAccessor"
+      }
+    ],
+    "Typescript": [
+      {
+        "Path": "test/fixtures/output/reserved-words/typescript"
+      }
+    ]
+  }
+}

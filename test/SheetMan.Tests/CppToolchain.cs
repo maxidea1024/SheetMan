@@ -75,6 +75,41 @@ namespace SheetMan.Tests
             return Execute(exe, workDir, binaryDir);
         }
 
+        /// <summary>
+        /// Compiles a scenario's generated header on its own, without running anything.
+        ///
+        /// For the scenarios where the question is only whether the emitted code is valid
+        /// C++ - identifiers taken from a sheet, say - and the round-trip program cannot be
+        /// reused because it names the tables of one particular fixture.
+        ///
+        /// The translation unit is generated here rather than committed: it is two lines,
+        /// and the accessor name differs per scenario.
+        /// </summary>
+        public static ToolResult Compile(string scenario, string accessorName)
+        {
+            string workDir = Path.Combine(RepoLayout.OutputDir("_cppcheck"), scenario + "-compile");
+            Directory.CreateDirectory(workDir);
+
+            string includeDir = Path.Combine(RepoLayout.OutputDir(scenario), "cpp");
+            string runtimeDir = Path.Combine(RepoLayout.Root, "lib", "cpp");
+
+            string source = Path.Combine(workDir, "compile-only.cpp");
+            File.WriteAllText(source, string.Join(Environment.NewLine, new[]
+            {
+                "// Written by the test suite. Includes the generated header and nothing else,",
+                "// so a failure here is the generated code and not the harness.",
+                "#include SHEETMAN_ACCESSOR_HEADER",
+                "int main() { return 0; }",
+                "",
+            }));
+
+            string exe = Path.Combine(workDir, OnWindows ? "compile-only.exe" : "compile-only");
+
+            return OnWindows
+                ? BuildWithMsvc(workDir, includeDir, runtimeDir, source, exe, accessorName)
+                : BuildWithGcc(workDir, includeDir, runtimeDir, source, exe, accessorName);
+        }
+
         private static ToolResult BuildWithMsvc(string workDir, string includeDir, string runtimeDir,
                                                 string source, string exe, string accessorName)
         {
