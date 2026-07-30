@@ -1,0 +1,17 @@
+    /// <summary>
+    /// Exception about SheetMan.
+    /// </summary>
+    public class SheetManException : System.Exception
+    {
+        public SheetManException()
+        {
+        }
+
+        public SheetManException(string message) : base(message)
+        {
+        }
+
+        public SheetManException(string message, System.Exception inner) : base(message, inner)
+        {
+        }
+    }

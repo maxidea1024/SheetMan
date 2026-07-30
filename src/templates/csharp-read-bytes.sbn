@@ -1,0 +1,18 @@
+        public delegate Task<byte[]> ReadAllBytesAsyncDelegate(string filename);
+
+        public static ReadAllBytesAsyncDelegate ReadAllBytesAsync = async (string filename) => {
+        #if !NO_UNITY
+            byte[] bytes = null;
+            await Task.Run(() => {
+                bytes = File.ReadAllBytes(filename);
+            });
+
+            return bytes;
+        #else
+            var bytes = await System.IO.File.ReadAllBytesAsync(filename);
+            if (bytes == null)
+                throw new SheetManException($"Cannot read a file '{filename}'");
+
+            return bytes;
+        #endif
+        };

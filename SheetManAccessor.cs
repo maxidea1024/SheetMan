@@ -21,7 +21,6 @@ using SheetMan.Binary;
 #if !NO_UNITY
 using Cysharp.Threading.Tasks;
 #endif
-
 #region Static tables
 public partial class Tables
 {
@@ -43,7 +42,6 @@ public partial class Tables
         return bytes;
     #endif
     };
-
 
     /// <summary>
     /// Read all tables.

@@ -1,0 +1,51 @@
+    /// <summary>
+    /// ToString helper class.
+    /// </summary>
+    public static class ToStringHelper
+    {
+        public static void ToString(object self, StringBuilder target, bool first = true)
+        {
+            if (!first)
+                target.Append(", ");
+
+            bool firstChild = true;
+            if (self is string)
+            {
+                target.Append('"');
+                target.Append(self);
+                target.Append('"');
+            }
+            else if (self is IDictionary dictionary)
+            {
+                target.Append("{");
+                foreach (DictionaryEntry pair in dictionary)
+                {
+                    if (firstChild)
+                        firstChild = false;
+                    else
+                        target.Append(", ");
+
+                    target.Append("{");
+                    ToString(pair.Key, target, true);
+                    target.Append(", ");
+                    ToString(pair.Value, target, true);
+                    target.Append("}");
+                }
+                target.Append("}");
+            }
+            else if (self is IEnumerable enumerable)
+            {
+                target.Append("[");
+                foreach (var element in enumerable)
+                {
+                    ToString(element, target, firstChild);
+                    firstChild = false;
+                }
+                target.Append("]");
+            }
+            else
+            {
+                target.Append(self);
+            }
+        }
+    }

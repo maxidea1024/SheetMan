@@ -36,7 +36,7 @@ namespace SheetMan.Importers
             var fileExtensionPatterns = xlsx.FileExtensionPatterns.Split(";");
             if (fileExtensionPatterns == null || fileExtensionPatterns.Length == 0)
             {
-                fileExtensionPatterns = new string[] { ".xlsx" };
+                fileExtensionPatterns = [".xlsx"];
             }
             else
             {
@@ -70,11 +70,9 @@ namespace SheetMan.Importers
             // 사본을 만들어서 읽어들여야 공유 이슈를 해결할 수 있음.
             // 엑셀에서 테스트를 해보자.
 
-            using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                var workbook = new XSSFWorkbook(fs);
-                ImportWorkbook(workbook, filename);
-            }
+            using var fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var workbook = new XSSFWorkbook(fs);
+            ImportWorkbook(workbook, filename);
         }
 
         private void ImportWorkbook(XSSFWorkbook workbook, string filename)
@@ -115,7 +113,7 @@ namespace SheetMan.Importers
                 if (row == null)
                     continue;
 
-                List<RawCell> rawRow = new List<RawCell>();
+                List<RawCell> rawRow = [];
                 for (int colIndex = 0/*row.FirstCellNum*/; colIndex <= row.LastCellNum; colIndex++)
                 {
                     var cell = row.GetCell(colIndex);
@@ -123,7 +121,7 @@ namespace SheetMan.Importers
                     string value = SafeCellValue(cell);
                     string note = SafeCellComment(cell);
 
-                    RawCell rawCell = new RawCell
+                    RawCell rawCell = new()
                     {
                         Location = new Location
                         {
