@@ -2,7 +2,7 @@
 
 엑셀 또는 구글스프레드시트로 작성한 테이블 데이터를 프로그램에서 사용하기 쉬운 형태로 가공하고 정적 검증을 해주는 간단한 `Command Line Interface` 형태의 도구입니다.
 
-![](2022-01-23-12-07-34.png)
+![임포트 → 검증 → 내보내기/코드생성 파이프라인](doc/pipeline-overview.png)
 
 ### Features
 
@@ -85,19 +85,19 @@ SDK 버전은 리포지토리 루트의 `global.json`에 고정되어 있습니�
 #### 2. `OAuth2` 사용자 인증 정보를 획득
 
 1. 아래 화면에서 `사용자 인증 정보 만들기`를 클릭합니다.
-![](2022-01-22-23-48-38.png)
+![GCP 콘솔의 사용자 인증 정보 페이지](doc/google-oauth-1-credentials-page.png)
 
 2. `OAuth 클라이언트 ID`를 선택합니다.
-![](2022-01-22-23-51-17.png)
+![사용자 인증 정보 만들기에서 OAuth 클라이언트 ID 선택](doc/google-oauth-2-create-client-id.png)
 
 3. `어플리케이션 유형*`은 `데스크톱 앱`으로 설정하고, `이름*`은 `SheetMan`으로 한 후 `만들기` 버튼을 클릭합니다.
-![](2022-01-22-23-52-43.png)
+![애플리케이션 유형을 데스크톱 앱으로 지정](doc/google-oauth-3-desktop-app-type.png)
 
 4. `JSON 다운로드` 버튼을 클릭해서 인증정보가 담긴 파일을 다운로드합니다.
-![](2022-01-22-23-54-08.png)
+![생성된 클라이언트의 JSON 다운로드](doc/google-oauth-4-download-json.png)
 
 5. 다운로드한 파일을 임의의 위치에 저장해둡니다.
-![](2022-01-22-23-55-39.png)
+![다운로드된 client_secret json 파일](doc/google-oauth-5-secret-downloaded.png)
 
 위에서 저장해둔 파일명을 기억해 두었다가 추후 설명할 `recipe` 파일에 기입해주어야합니다.
 
@@ -121,30 +121,30 @@ SDK 버전은 리포지토리 루트의 `global.json`에 고정되어 있습니�
 #### 시트 하나에 하나씩 배치
 일반적인 배치 방법이며, 데이터가 많을 경우 틀고정을 사용할 수 있는 장점이 있습니다.
 
-![](2022-01-24-01-04-54.png)
+![시트 하나에 테이블 하나만 배치한 예](doc/layout-one-entity-per-sheet.png)
 
 #### 한칸씩 띄워서 여러개 배치 (다소 복잡하지만 한눈에 확인 가능)
 
-![](2022-01-24-01-03-27.png)
+![한 칸씩 띄워 여러 테이블을 배치한 예](doc/layout-one-blank-cell-apart.png)
 
 #### 빈틈없이 빼곡하게 배치 (알뜰형?)
 
-![](2022-01-24-01-06-05.png)
+![빈틈없이 빼곡하게 배치한 예](doc/layout-packed-with-no-gaps.png)
 
 #### 임의 위치로 지그재그로 배치 (일단 모아놓고 보자! 정리는 나중에?)
 
-![](2022-01-24-01-08-12.png)
+![임의 위치에 지그재그로 배치한 예](doc/layout-staggered.png)
 
 #### 엔티티 영역외에 내용 적기
 엔티티 정의 영역외의 부분은 변환과정에 관여하지 않으므로 메모등을 사용해도 좋습니다.
 
 __다만, 한칸 정도 띄우고 사용해야합니다.__
 
-![](2022-01-24-01-29-09.png)
+![엔티티 영역 밖에 메모를 적은 예](doc/layout-notes-outside-entities.png)
 
 #### <font color=red>엔티티들이 맞붙은건 상관없지만, 서로 침범하면 안됨</font>
 
-![](2022-01-24-01-24-10.png)
+![엔티티끼리 침범하면 안 되는 예](doc/layout-entities-must-not-overlap.png)
 
 __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편함이 없다면, 자유롭게 사용해도 무방합니다. 단,  침범(cross-section)이 발생하면 안됩니다.__
 
@@ -257,17 +257,17 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 
 #### 시트 제외하기
 시트명 앞에 `#` 또는 `//`를 붙여줍니다.
-![](2022-01-24-01-33-50.png)
+![시트 이름 앞에 #을 붙여 제외](doc/exclude-sheet.png)
 
 #### 엔티티 제외하기
 엔티티 마커 태그 앞에 `#` 또는 `//`를 붙여줍니다.
 
-![](2022-01-24-01-35-39.png)
+![엔티티 마커 앞에 #을 붙여 제외](doc/exclude-entity.png)
 
 #### 필드 제외하기
 필드명 앞에 `#` 또는 `//`를 붙여줍니다. 단, `primary index` 필드는 제외할 수 없습니다.
 
-![](2022-01-24-01-36-36.png)
+![필드 이름 앞에 #을 붙여 제외](doc/exclude-field.png)
 
 
 
@@ -289,14 +289,14 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 - `int` 타입이어야합니다.
 - 인덱스 값들은 `unique` 해야 합니다.
 
-![](2022-01-24-09-51-37.png)
+![Primary index field 지정 예](doc/primary-index-field.png)
 
 
 ### Secondary Index Field
 
 `Primary index`외에 빠른 검색을 위해서 추가로 인덱싱을 하고 싶은 필드가 있을 수 있습니다. 예를들어, 이름으로 검색을 빠르게 혹은 편하게 하고 싶다면 아래와 같이 `Name` 필드에 `*` 문자를 앞에 붙여주면 됩니다. 보조키 필드가 되기 위해서는 필드의 값들이 `unique` 해야 합니다.
 
-![](2022-01-24-09-54-23.png)
+![Secondary index field 지정 예](doc/secondary-index-field.png)
 
 
 
@@ -689,7 +689,7 @@ tables.item.readBinaryFrom(new Uint8Array(await (await fetch(url)).arrayBuffer()
 
 #### C# 코드생성
 
-[예제](csharp.md)를 참고하세요.
+[예제](doc/csharp.md)를 참고하세요.
 
 #### C++ 코드생성
 
@@ -762,7 +762,7 @@ dotnet test            # 전체 회귀 스위트
 SHEETMAN_UPDATE_GOLDEN=1 dotnet test
 ```
 
-픽스처 `.xlsx`는 [test/fixtures/tools/FixtureGen](../test/fixtures/tools/FixtureGen)이 생성합니다. 불투명한 바이너리가 아니라 코드로 리뷰할 수 있게 하기 위함입니다. 생성기를 수정했다면 다시 돌려서 커밋하세요.
+픽스처 `.xlsx`는 [test/fixtures/tools/FixtureGen](test/fixtures/tools/FixtureGen)이 생성합니다. 불투명한 바이너리가 아니라 코드로 리뷰할 수 있게 하기 위함입니다. 생성기를 수정했다면 다시 돌려서 커밋하세요.
 
 ```
 dotnet run --project test/fixtures/tools/FixtureGen
