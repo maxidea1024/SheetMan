@@ -13,33 +13,47 @@ using SheetMan.Extensions;
 using SheetMan.Recipe;
 using Serilog;
 using System.Diagnostics;
+using SheetMan.Sources;
 
 namespace SheetMan.Importers
 {
-    public class GoogleSheetsImporter
+    [SheetManSource("googlesheets", "Sources.GoogleSheets", Order = 20)]
+    public class GoogleSheetsImporter : Source<RecipeModel.SourceRecipeGroup.GoogleSheetsRecipe>
     {
-        //TODO
-        //엔트리는 선언되었지만 recipe.json 파일에서 주석 처리되어 있을 경우 경로가 null일수 있으므로,
-        //이러한 경우에 대해서 대응해야함.
-
         static string ApplicationName = "SheetMan";
         static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
 
-        private Options _options;
-        private RecipeModel _recipe;
         private RawModel _model;
 
-        public void Import(Options options, RecipeModel recipe, RawModel model)
+        protected override void Import(
+            SourceContext context, RecipeModel.SourceRecipeGroup.GoogleSheetsRecipe googleSheets)
         {
-            _options = options;
-            _recipe = recipe;
-            _model = model;
-
-            foreach (var googleSheets in _recipe.Sources.GoogleSheets)
+            // An entry with either field left blank is switched off, matching how the Excel
+            // source treats a blank path - which is how an entry is commented out in
+            // practice: its contents are removed but the object stays in the list.
+            //
+            // This check was missing, and its absence was not harmless: a blank
+            // ClientSecretFilename went straight into a FileStream, so a recipe with an
+            // emptied-out Google Sheets entry failed with an argument exception about a path
+            // rather than being skipped.
+            if (string.IsNullOrWhiteSpace(googleSheets.ClientSecretFilename) ||
+                string.IsNullOrWhiteSpace(googleSheets.SheetsId))
             {
-                var sheetsService = AcquireSheetsService(googleSheets);
-                ImportSheets(sheetsService, googleSheets);
+                Log.Debug($"Skipping Google Sheets source `{context.Section}`: not configured.");
+                return;
             }
+
+            if (!File.Exists(googleSheets.ClientSecretFilename))
+            {
+                throw new SheetManException(
+                    $"Recipe `{context.Section}` names client secret file " +
+                    $"`{googleSheets.ClientSecretFilename}`, which does not exist.");
+            }
+
+            _model = context.Model;
+
+            var sheetsService = AcquireSheetsService(googleSheets);
+            ImportSheets(sheetsService, googleSheets);
         }
 
         private SheetsService AcquireSheetsService(RecipeModel.SourceRecipeGroup.GoogleSheetsRecipe recipe)

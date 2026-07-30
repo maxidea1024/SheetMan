@@ -466,7 +466,7 @@ sheetman --recipe recipe.json
 |옵션|설명|
 |--|--|
 |`-r`, `--recipe`|사용할 recipe 파일|
-|`--new-recipe <파일>`|모든 섹션이 빈 상태로 나열된 recipe 골격을 만들고 종료. 섹션 이름을 찾아볼 필요 없이 필요한 곳만 채우면 됩니다.|
+|`--new-recipe <파일>`|시작용 recipe를 만들고 종료. 모든 목록에 기본값이 채워진 항목 하나가 들어 있어 **어떤 설정이 있는지 파일만 보고 알 수 있습니다**. 필요 없는 항목은 지우면 되고, 경로가 빈 항목은 꺼진 것으로 취급되니 그냥 둬도 됩니다.|
 |`--target-side <side>`|실행 전체를 한쪽으로 좁힘. `client` / `server` / `both`(기본).|
 |`--verbose`|디버그 로그까지 출력|
 |`--silent`|ERROR/FATAL 외에는 출력하지 않음|
@@ -486,7 +486,7 @@ sheetman @args.txt
 
 `recipe` 파일은 입력 소스와 출력 대상을 지정하는 `.json` 파일입니다. `//` 주석을 사용할 수 있습니다.
 
-`sheetman --new-recipe myrecipe.json` 으로 기본값이 채워진 빈 recipe를 만들 수 있습니다.
+`sheetman --new-recipe myrecipe.json` 으로 시작용 recipe를 만들 수 있습니다. 모든 목록에 기본값이 채워진 항목 하나가 들어 있고, 파일 머리에 사용 가능한 소스/타깃 이름이 적혀 나옵니다. 그대로 실행해도 아무것도 만들지 않고 정상 종료합니다 — 경로가 비어 있으면 꺼진 것으로 취급되기 때문입니다.
 
 #### 공통 설정
 

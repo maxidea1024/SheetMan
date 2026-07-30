@@ -341,7 +341,7 @@ namespace SheetMan.Targets
                     target,
                     attribute.Section == null
                         ? null
-                        : BuildSectionReader(attribute.Section, target.EntryType, type)));
+                        : RecipeSectionReader.Build(attribute.Section, target.EntryType, type)));
             }
 
             var duplicate = descriptors.GroupBy(d => d.Id, StringComparer.OrdinalIgnoreCase)
@@ -367,74 +367,5 @@ namespace SheetMan.Targets
             return descriptors;
         }
 
-        /// <summary>
-        /// Turns a dotted path such as `Exports.Binary` into a reader for that section,
-        /// checking as it goes that every step exists and that the end of it is a list of
-        /// the target's entry type.
-        ///
-        /// Done here rather than by asking the target for its entries, so that a target
-        /// cannot name one section in its attribute and read a different one - which
-        /// compiled fine before and showed up only as an error message pointing somewhere
-        /// the reader would not find the entry.
-        /// </summary>
-        private static Func<RecipeModel, IEnumerable> BuildSectionReader(string section, Type entryType, Type targetType)
-        {
-            const BindingFlags flags =
-                BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
-
-            var chain = new List<MemberInfo>();
-            var current = typeof(RecipeModel);
-
-            foreach (var part in section.Split('.'))
-            {
-                // Fields as well as properties, because the recipe model has held both -
-                // `CodeGenerations` was a public field while every other group was a
-                // property, and Newtonsoft serializes either, so nothing had ever forced
-                // the two into agreement.
-                MemberInfo member = current.GetProperty(part, flags);
-                Type next = (member as PropertyInfo)?.PropertyType;
-
-                if (member == null)
-                {
-                    member = current.GetField(part, flags);
-                    next = (member as FieldInfo)?.FieldType;
-                }
-
-                if (member == null)
-                {
-                    throw new SheetManException(
-                        $"`{targetType.Name}` declares recipe section `{section}`, " +
-                        $"but `{current.Name}` has no `{part}`.");
-                }
-
-                chain.Add(member);
-                current = next;
-            }
-
-            if (!typeof(IEnumerable<>).MakeGenericType(entryType).IsAssignableFrom(current))
-            {
-                throw new SheetManException(
-                    $"`{targetType.Name}` declares recipe section `{section}`, but that is " +
-                    $"`{current.Name}` rather than a list of `{entryType.Name}`.");
-            }
-
-            return recipe =>
-            {
-                object value = recipe;
-
-                foreach (var member in chain)
-                {
-                    value = member is PropertyInfo property
-                        ? property.GetValue(value)
-                        : ((FieldInfo)member).GetValue(value);
-
-                    // A recipe that omits a whole group leaves it null rather than empty.
-                    if (value == null)
-                        return Array.Empty<object>();
-                }
-
-                return (IEnumerable)value;
-            };
-        }
     }
 }

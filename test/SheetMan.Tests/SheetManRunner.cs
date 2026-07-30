@@ -62,6 +62,24 @@ namespace SheetMan.Tests
             return Run(environment, args.ToArray());
         }
 
+        /// <summary>
+        /// Invokes the CLI with arbitrary arguments and no scenario.
+        ///
+        /// For the options that do not convert anything - `--new-recipe`, `--help` - where
+        /// there is no output tree to clear and no recipe to point at.
+        /// </summary>
+        public static RunResult Invoke(params string[] arguments)
+        {
+            var args = new List<string>
+            {
+                "run", "--project", RepoLayout.CliProject, "--no-launch-profile", "--",
+            };
+
+            args.AddRange(arguments);
+
+            return Run(null, args.ToArray());
+        }
+
         private static RunResult Run(IReadOnlyDictionary<string, string> environment, params string[] args)
         {
             var psi = new ProcessStartInfo("dotnet")

@@ -13,6 +13,7 @@ using SheetMan.Helpers;
 using SheetMan.Extensions;
 using System.Collections.Generic;
 using SheetMan.Targets;
+using SheetMan.Sources;
 
 namespace SheetMan
 {
@@ -71,8 +72,9 @@ namespace SheetMan
         {
             if (!string.IsNullOrEmpty(options.NewRecipeFilename))
             {
-                var newEmptyRecipe = new RecipeModel();
-                newEmptyRecipe.WriteToFile(options.NewRecipeFilename);
+                RecipeSkeleton.WriteToFile(options.NewRecipeFilename);
+
+                Console.WriteLine($"Wrote a starting recipe to {Path.GetFullPath(options.NewRecipeFilename)}");
                 return 0;
             }
 
@@ -151,21 +153,13 @@ namespace SheetMan
 
                 // Imports
 
+                // Every source the recipe lists, into one raw model: a project may spread
+                // its tables across workbooks and Google Sheets documents and they cook
+                // together. Which sources exist is discovered by attribute, so adding one
+                // touches only the file that defines it.
                 RawModel rawModel = new RawModel();
 
-                //todo factory 형태로 등록을 하면 좀 간단해질듯..
-
-                if (recipeModel.Sources.Xlsx.Count > 0)
-                {
-                    var importer = new XlsxImporter();
-                    importer.Import(options, recipeModel, rawModel);
-                }
-
-                if (recipeModel.Sources.GoogleSheets.Count > 0)
-                {
-                    var importer = new GoogleSheetsImporter();
-                    importer.Import(options, recipeModel, rawModel);
-                }
+                SourceRegistry.ImportAll(options, recipeModel, rawModel);
 
 
                 // Cooking

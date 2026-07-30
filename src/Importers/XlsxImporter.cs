@@ -1,4 +1,4 @@
-﻿using SheetMan.Models.Raw;
+using SheetMan.Models.Raw;
 using System.IO;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -8,59 +8,59 @@ using System;
 using SheetMan.Recipe;
 using System.Linq;
 using System.Globalization;
+using SheetMan.Sources;
 
 namespace SheetMan.Importers
 {
-    public class XlsxImporter
+    [SheetManSource("xlsx", "Sources.Xlsx", Order = 10)]
+    public class XlsxImporter : Source<RecipeModel.SourceRecipeGroup.XlsxRecipe>
     {
-        private Options _options;
-        private RecipeModel _recipe;
         private RawModel _model;
 
         private string _currentFilename = "";
         private string _currentSheetName = "";
 
-        //TODO
-        //엔트리는 선언되었지만 recipe.json 파일에서 주석 처리되어 있을 경우 경로가 null일수 있으므로,
-        //이러한 경우에 대해서 대응해야함.
-
-        public void Import(Options options, RecipeModel recipe, RawModel model)
+        protected override void Import(SourceContext context, RecipeModel.SourceRecipeGroup.XlsxRecipe xlsx)
         {
-            _options = options;
-            _recipe = recipe;
-            _model = model;
-
-            foreach (var xlsx in _recipe.Sources.Xlsx)
+            // An entry with either field left blank is treated as switched off, which is how
+            // an entry is commented out in practice: its contents are removed but the object
+            // stays in the list.
+            if (string.IsNullOrEmpty(xlsx.FileExtensionPatterns) ||
+                string.IsNullOrEmpty(xlsx.Path))
             {
-                if (string.IsNullOrEmpty(xlsx.FileExtensionPatterns) ||
-                    string.IsNullOrEmpty(xlsx.Path))
-                {
+                return;
+            }
+
+            _model = context.Model;
+
+            var fileExtensionPatterns = xlsx.FileExtensionPatterns.Split(";");
+            if (fileExtensionPatterns == null || fileExtensionPatterns.Length == 0)
+            {
+                fileExtensionPatterns = new string[] { ".xlsx" };
+            }
+            else
+            {
+                for (int i = 0; i < fileExtensionPatterns.Length; i++)
+                    fileExtensionPatterns[i] = fileExtensionPatterns[i].Trim().ToLowerInvariant();
+            }
+
+            if (!Directory.Exists(xlsx.Path))
+            {
+                throw new SheetManException(
+                    $"Recipe `{context.Section}` reads workbooks from `{xlsx.Path}`, which does not exist.");
+            }
+
+            var files = Directory.GetFiles(xlsx.Path, "*.*", SearchOption.AllDirectories);
+            foreach (var filename in files)
+            {
+                if (filename.Contains("/#") || filename.Contains("\\#"))
                     continue;
-                }
 
-                var fileExtensionPatterns = xlsx.FileExtensionPatterns.Split(";");
-                if (fileExtensionPatterns == null || fileExtensionPatterns.Length == 0)
-                {
-                    fileExtensionPatterns = new string[] { ".xlsx" };
-                }
-                else
-                {
-                    for (int i = 0; i < fileExtensionPatterns.Length; i++)
-                        fileExtensionPatterns[i] = fileExtensionPatterns[i].Trim().ToLowerInvariant();
-                }
+                string fileExtensions = Path.GetExtension(filename).ToLowerInvariant();
+                if (!fileExtensionPatterns.Contains(fileExtensions))
+                    continue;
 
-                var files = Directory.GetFiles(xlsx.Path, "*.*", SearchOption.AllDirectories);
-                foreach (var filename in files)
-                {
-                    if (filename.Contains("/#") || filename.Contains("\\#"))
-                        continue;
-
-                    string fileExtensions = Path.GetExtension(filename).ToLowerInvariant();
-                    if (!fileExtensionPatterns.Contains(fileExtensions))
-                        continue;
-
-                    ImportXlsx(filename);
-                }
+                ImportXlsx(filename);
             }
         }
 

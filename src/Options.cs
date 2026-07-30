@@ -8,9 +8,13 @@ namespace SheetMan
         [Option('r', "recipe", HelpText = "Recipe file.")]
         public string RecipeFilename { get; set; }
 
-        //todo 이게 실제 의미가 없네...
-        //빈 템플릿 오브젝트를 의미있게 만들어줘야함.
-        [Option("new-recipe", HelpText = "Create empty recipe file.")]
+        /// <summary>
+        /// Writes a starting recipe and exits.
+        ///
+        /// Every list comes out holding one entry with its defaults filled in, so the file
+        /// shows what each target takes rather than only that the section exists.
+        /// </summary>
+        [Option("new-recipe", HelpText = "Write a starting recipe file and exit.")]
         public string NewRecipeFilename { get; set; }
 
         /// <summary>

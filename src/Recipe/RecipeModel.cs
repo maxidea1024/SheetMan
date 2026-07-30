@@ -462,15 +462,6 @@ namespace SheetMan.Recipe
 
 
         /// <summary>
-        /// Writes this recipe out as JSON. Used by `--new-recipe` to produce a skeleton.
-        /// </summary>
-        public void WriteToFile(string filename)
-        {
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
-        }
-
-        /// <summary>
         /// Reads a recipe. Comments are permitted, which is why recipes can explain
         /// themselves in place.
         /// </summary>
