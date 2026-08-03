@@ -534,6 +534,8 @@ sheetman @args.txt
 |`binary`, `json`|파일 내보내기|
 |`mysql`, `postgresql`, `mongodb`, `redis`|데이터베이스 내보내기|
 |`cpp`, `csharp`, `typescript`, `html`|코드 생성|
+|`go`, `rust`, `python`, `java`|코드 생성 (전용 섹션 없음 — `Targets`로만 지정)|
+|`unreal`|Unreal 모듈 생성 (`Targets`로만 지정)|
 
 두 방식이 있는 이유는 타깃을 추가할 때 recipe 스키마를 고치지 않아도 되게 하기 위함입니다. 위 섹션들은 `Targets`보다 먼저 있었고 기존 recipe를 위해 남아 있습니다.
 
@@ -714,6 +716,15 @@ JSON에는 숫자 타입이 하나뿐이고 대부분의 리더가 그것을 dou
 |Typescript|엔티티별 모듈 + `index.ts` + `sheetman/lite_binary_reader.ts`|JSON, 바이너리 둘 다|
 |Cpp|`<AccessorName>.h` + `sheetman/lite_binary_reader.h`|바이너리|
 |Html|사람이 읽는 데이터 문서. 원본 시트로 이동하는 링크를 포함합니다.|—|
+|Go|`<AccessorName>.go` + `go.mod` + `sheetman/`|바이너리|
+|Rust|`Cargo.toml` + `src/lib.rs` + `src/sheetman.rs`|바이너리|
+|Python|패키지 하나 (`__init__.py`, `tables.py`, `sheetman.py`)|바이너리|
+|Java|`<AccessorName>.java` + `sheetman/LiteBinaryReader.java`|바이너리|
+|Unreal|모듈 하나 (`Build.cs`, `Public/`, `Private/`) — USTRUCT + UENUM + 정적 접근자|바이너리|
+
+Go·Rust·Python·Java·Unreal은 recipe의 `Targets` 목록으로 지정합니다. 아래 「`Targets`」 절을 보세요.
+
+> **적합성 코퍼스.** 리더는 언어마다 별도 구현이라 어긋날 수 있습니다. `test/fixtures/xlsx/conformance`가 경계값(2^53+1, float32의 0.1, varint 1~5바이트, 빈 문자열·빈 배열·비ASCII)을 담은 테이블 하나이고, 회귀 스위트가 **모든 언어로 읽어 익스포터 JSON과 대조**합니다. 언어를 추가하는 비용이 전용 게이트가 아니라 50줄짜리 하네스인 이유입니다.
 
 리더는 각 언어마다 **별도 구현**입니다. 포맷을 정의하는 건 익스포터의 writer 하나이고, 세 리더는 그 정의의 서로 다른 구현이라 어긋날 수 있습니다. 그래서 회귀 스위트가 **C#으로 쓰고 각 언어로 읽어 대조**합니다 — 실제로 이 방식이 `long`을 32비트로 잘라내던 writer 버그를 찾아냈습니다.
 

@@ -348,6 +348,38 @@ namespace SheetMan.CodeGeneration
             "try", "void", "volatile", "while", "true", "false", "null");
 
         /// <summary>
+        /// Unreal C++.
+        ///
+        /// The engine's own types rather than the standard library's, because a generated
+        /// row is a USTRUCT and the header tool only understands what the engine declares.
+        ///
+        /// double is here and is a trap worth naming: UE4's header tool rejects `double` as
+        /// a UPROPERTY outright, and UE5 accepts it. The generator writes the member either
+        /// way and leaves the UPROPERTY off it, which works on both - the field is read and
+        /// usable from C++, and only Blueprint cannot see it.
+        /// </summary>
+        public static readonly LanguageProfile Unreal = new LanguageProfile(
+            "unreal",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "FString" },
+                { ValueType.Bool, "bool" },
+                { ValueType.Int32, "int32" },
+                { ValueType.Int64, "int64" },
+                { ValueType.Float, "float" },
+                { ValueType.Double, "double" },
+                { ValueType.DateTime, "FDateTime" },
+                { ValueType.TimeSpan, "FTimespan" },
+                { ValueType.Uuid, "FGuid" },
+            },
+            "TArray<{0}>",
+
+            // Never used: members are PascalCase and every C++ keyword is lowercase, the
+            // same reason C# and Go escape nothing.
+            "{0}_"
+            );
+
+        /// <summary>
         /// TypeScript.
         ///
         /// Two entries here are not the obvious ones, and both are about values arriving

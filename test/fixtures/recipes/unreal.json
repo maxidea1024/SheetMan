@@ -1,0 +1,35 @@
+{
+  // The Unreal target, generated from the core fixture.
+  //
+  // The core enums run 0 to 3, which a BlueprintType enum can hold. The conformance
+  // fixture's cannot, and unreal-enum-range.json is the case that checks the generator
+  // says so rather than leaving it to the header tool.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/core",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ]
+  },
+
+  "Exports": {
+    "Binary": [
+      {
+        "Path": "test/fixtures/output/unreal/binary",
+        "FileExtension": ".table"
+      }
+    ]
+  },
+
+  "Targets": [
+    {
+      "Type": "unreal",
+      "Path": "test/fixtures/output/unreal/Source",
+      "ModuleName": "SheetManCore",
+      "AccessorName": "FSheetManCore",
+      "BinaryTableFileExtension": ".table"
+    }
+  ]
+}
