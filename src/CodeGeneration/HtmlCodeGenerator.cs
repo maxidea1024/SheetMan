@@ -31,6 +31,13 @@ namespace SheetMan.CodeGeneration
 
         protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe htmlRecipe)
         {
+            // A blank Path means the entry is switched off, as it does for every other
+            // target. This one was missing it, and Path.Combine("", "index.html") is
+            // "index.html" - so the skeleton recipe, whose entries are all blank and are
+            // meant to be inert, quietly wrote three pages into the working directory.
+            if (string.IsNullOrEmpty(htmlRecipe.Path))
+                return;
+
             _htmlRecipe = htmlRecipe;
 
             // Already narrowed to the side this entry is built for. Both (the default)

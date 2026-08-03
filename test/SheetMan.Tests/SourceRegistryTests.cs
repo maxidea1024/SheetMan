@@ -83,6 +83,12 @@ namespace SheetMan.Tests
                 var ran = SheetManRunner.Invoke("--recipe", filename, "--debug");
                 Assert.True(ran.Succeeded,
                     $"The generated recipe did not run.{Environment.NewLine}{ran.Describe()}");
+
+                // Inert means it wrote nothing, not merely that it exited zero. The HTML
+                // target had no blank-path guard, so `Path.Combine("", "index.html")` put
+                // three pages in the working directory - and because the run succeeded,
+                // they went unnoticed long enough to be committed.
+                Assert.Empty(Directory.GetFiles(RepoLayout.Root, "*.html"));
             }
             finally
             {
