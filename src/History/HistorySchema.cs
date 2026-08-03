@@ -30,11 +30,54 @@ namespace SheetMan.History
         /// What this build expects. A database at a higher version was written by a newer
         /// SheetMan and is left alone rather than downgraded.
         /// </summary>
-        public const int Version = 2;
+        public const int Version = 4;
 
         private const string LockName = "sheetman_history_migrate";
 
         private const int LockTimeoutSeconds = 60;
+
+        /// <summary>
+        /// The lock a snapshot write and a prune both take, named per branch.
+        ///
+        /// Two conversions of one branch at once - two CI jobs, or a rerun overlapping a
+        /// build - each read the branch's head and each write the next sequence number
+        /// after it. They are different commits, so the unique key does not stop them, and
+        /// the chain ends up with two snapshots claiming the same position: the order they
+        /// are read back in is then whatever the storage engine feels like, and every diff
+        /// past that point is measured from an arbitrary one of the two.
+        ///
+        /// It is also what lets the value pool be collected. Without it, a prune can delete
+        /// a value between a conversion finding it and referencing it.
+        /// </summary>
+        public static string WriteLockFor(int projectId, string branch)
+            => $"sheetman_history_write:{projectId}:{branch}";
+
+        /// <summary>
+        /// Takes a named lock, or throws saying who is likely holding it.
+        /// </summary>
+        public static void Lock(MySqlConnection connection, string name, int seconds = LockTimeoutSeconds)
+        {
+            using var command = new MySqlCommand("SELECT GET_LOCK(@name, @timeout)", connection);
+
+            command.Parameters.AddWithValue("@name", name);
+            command.Parameters.AddWithValue("@timeout", seconds);
+
+            if (Convert.ToInt32(command.ExecuteScalar() ?? 0) != 1)
+            {
+                throw new SheetManException(
+                    $"Another process has held `{name}` for more than {seconds} seconds. That is " +
+                    $"another conversion of the same branch, or a prune. Wait for it and try again.");
+            }
+        }
+
+        /// <summary>Releases a named lock. Safe to call when it was never taken.</summary>
+        public static void Unlock(MySqlConnection connection, string name)
+        {
+            using var command = new MySqlCommand("SELECT RELEASE_LOCK(@name)", connection);
+
+            command.Parameters.AddWithValue("@name", name);
+            command.ExecuteScalar();
+        }
 
         /// <summary>
         /// Brings the database up to <see cref="Version"/>, or throws saying why it cannot.
@@ -316,6 +359,24 @@ namespace SheetMan.History
                     KEY ix_snapshot (snapshot_id, table_name),
                     KEY ix_cell (table_name, row_key_hash, field_name)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+            },
+
+            [4] = new[]
+            {
+                // Set when a snapshot's change detail has been removed to reclaim space.
+                // The snapshot, its statistics and its stored summary stay - what goes is
+                // the cell-by-cell log. A query over a range holding one of these says so
+                // rather than reporting an empty changeset as "nothing changed".
+                @"ALTER TABLE snapshot
+                    ADD COLUMN pruned TINYINT(1) NOT NULL DEFAULT 0 AFTER attributable",
+            },
+
+            [3] = new[]
+            {
+                // Set when a dropped column and an added one turn out to hold the same
+                // values in the same rows - which is what a rename looks like from here.
+                @"ALTER TABLE schema_change
+                    ADD COLUMN renamed_from VARCHAR(128) NULL AFTER member_name",
             },
 
             [2] = new[]

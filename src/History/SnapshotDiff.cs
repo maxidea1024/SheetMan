@@ -45,7 +45,112 @@ namespace SheetMan.History
             DiffTables(fingerprint, state, schema, rows, cells);
             DiffEntities(fingerprint, state, schema);
 
+            RecogniseRenames(schema, cells);
+
             return new SnapshotChanges(schema, rows, cells);
+        }
+
+        /// <summary>
+        /// Turns a dropped column and an added one holding the same values into one rename.
+        ///
+        /// To the data a rename is a drop and an add: every cell of the old column goes and
+        /// every cell of the new one arrives. A five thousand row table therefore produces
+        /// ten thousand cell changes for an edit that changed no value at all, and the edits
+        /// that did change something are somewhere in the middle of them.
+        ///
+        /// The cell changes stay. They are what moves the stored state from the old column
+        /// to the new one, and dropping them would leave the old name in the store for ever.
+        /// What changes is that the schema log says "renamed", so a report can say so too
+        /// and fold the carry-over away.
+        ///
+        /// Only an exact match counts: same rows, same values, every one of them. A column
+        /// renamed and edited in the same commit is left as a drop and an add, which is
+        /// less tidy and cannot mislead.
+        /// </summary>
+        private static void RecogniseRenames(List<SchemaChange> schema, List<CellChange> cells)
+        {
+            var dropped = schema.Where(s => s.EntityKind == EntityKind.Field
+                                            && s.Kind == ChangeKind.Removed).ToList();
+
+            if (dropped.Count == 0)
+                return;
+
+            var added = schema.Where(s => s.EntityKind == EntityKind.Field
+                                          && s.Kind == ChangeKind.Added).ToList();
+
+            if (added.Count == 0)
+                return;
+
+            // Indexed once: a table with several columns dropped and added at once would
+            // otherwise walk the whole cell list for every pair.
+            var byColumn = new Dictionary<(string Table, string Field), Dictionary<string, string>>();
+
+            foreach (var cell in cells)
+            {
+                if (cell.Kind == ChangeKind.Modified)
+                    continue;
+
+                var key = (cell.Table, cell.Field);
+
+                if (!byColumn.TryGetValue(key, out var values))
+                    byColumn[key] = values = new Dictionary<string, string>(StringComparer.Ordinal);
+
+                values[cell.RowKey] = cell.Kind == ChangeKind.Removed ? cell.OldValue : cell.NewValue;
+            }
+
+            var claimed = new HashSet<SchemaChange>();
+
+            foreach (var arrival in added)
+            {
+                foreach (var departure in dropped)
+                {
+                    if (claimed.Contains(departure)
+                        || !string.Equals(arrival.EntityName, departure.EntityName, StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+
+                    if (!SameValues(byColumn, arrival.EntityName, departure.MemberName, arrival.MemberName))
+                        continue;
+
+                    arrival.Kind = ChangeKind.Modified;
+                    arrival.RenamedFrom = departure.MemberName;
+                    arrival.Before = departure.Before;
+
+                    claimed.Add(departure);
+                    break;
+                }
+            }
+
+            schema.RemoveAll(claimed.Contains);
+        }
+
+        private static bool SameValues(
+            IReadOnlyDictionary<(string, string), Dictionary<string, string>> byColumn,
+            string table,
+            string before,
+            string after)
+        {
+            // A column with no cells either side says nothing - an empty table renames
+            // nothing detectably, and calling that a match would pair columns at random.
+            if (!byColumn.TryGetValue((table, before), out var was)
+                || !byColumn.TryGetValue((table, after), out var now)
+                || was.Count == 0
+                || was.Count != now.Count)
+            {
+                return false;
+            }
+
+            foreach (var pair in was)
+            {
+                if (!now.TryGetValue(pair.Key, out string value)
+                    || !string.Equals(pair.Value, value, StringComparison.Ordinal))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         // --------------------------------------------------------------- tables

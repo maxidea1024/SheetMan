@@ -148,6 +148,37 @@ namespace SheetMan
         [Option("limit", HelpText = "Most changes to report. Anything cut is reported as cut.")]
         public int Limit { get; set; }
 
+        /// <summary>
+        /// Removes the change detail of old snapshots, and collects the values that then
+        /// refer to nothing.
+        ///
+        /// The change log is what grows without bound - one row per edited cell per commit,
+        /// for ever. A pruned snapshot keeps its row, its statistics and its stored summary;
+        /// only the cell-by-cell detail goes, and a query over a range holding one says so.
+        /// </summary>
+        [Option("prune", HelpText = "Remove the change detail of old snapshots, and exit.")]
+        public bool Prune { get; set; }
+
+        /// <summary>
+        /// What counts as old: an ISO 8601 date, or an age such as `90d`.
+        ///
+        /// An age is what a scheduled job wants. A date would have to be recomputed by
+        /// whatever runs it, and one that is not is a job that prunes nothing after the
+        /// first time.
+        /// </summary>
+        [Option("before", HelpText = "Prune snapshots older than this: a date, or an age like `90d`.")]
+        public string Before { get; set; }
+
+        /// <summary>
+        /// How many of the branch's most recent snapshots to leave alone whatever their age.
+        ///
+        /// A floor under `--before` rather than an alternative to it: a branch nobody has
+        /// touched for a year would otherwise lose every snapshot's detail and become a
+        /// history with no history in it.
+        /// </summary>
+        [Option("keep", Default = 100, HelpText = "Most recent snapshots to leave alone. 100 by default.")]
+        public int Keep { get; set; }
+
         // -------------------------------------------------------------- serving
 
         /// <summary>

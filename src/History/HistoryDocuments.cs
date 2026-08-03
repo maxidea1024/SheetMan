@@ -93,6 +93,15 @@ namespace SheetMan.History
         /// <summary>The commit these changes are measured from. Null for a branch's first.</summary>
         public string PreviousCommit { get; set; }
 
+        /// <summary>
+        /// Whether this snapshot's change detail has been removed to reclaim space.
+        ///
+        /// Its statistics and its stored summary are still here; the cell-by-cell log is
+        /// not. Reported, because an empty changeset that does not say why reads as
+        /// "nothing changed in this commit" - which is a different and wrong answer.
+        /// </summary>
+        public bool Pruned { get; set; }
+
         public HistoryChangeCounts Counts { get; set; }
 
         public IReadOnlyList<SchemaChangeView> Schema { get; set; }
@@ -116,6 +125,9 @@ namespace SheetMan.History
 
         /// <summary>How many snapshots in the range cover more than their own commit.</summary>
         public int Gaps { get; set; }
+
+        /// <summary>How many have had their change detail removed.</summary>
+        public int Pruned { get; set; }
     }
 
     public sealed class SchemaChangeView
@@ -127,6 +139,9 @@ namespace SheetMan.History
         public string Before { get; set; }
         public string After { get; set; }
         public SummaryLocation Location { get; set; }
+
+        /// <summary>The name this column had before, when it was renamed rather than replaced.</summary>
+        public string RenamedFrom { get; set; }
     }
 
     public sealed class RowChangeView
@@ -164,6 +179,7 @@ namespace SheetMan.History
         public string ConvertedAt { get; set; }
         public bool Dirty { get; set; }
         public bool Attributable { get; set; }
+        public bool Pruned { get; set; }
 
         public HistoryChangeCounts Counts { get; set; }
     }

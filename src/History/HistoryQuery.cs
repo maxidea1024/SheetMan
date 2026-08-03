@@ -85,7 +85,7 @@ namespace SheetMan.History
         {
             return Read($@"
                 SELECT s.id, s.seq, s.commit_hash, s.branch, s.author_name, s.author_email,
-                       s.committed_at, s.subject, s.converted_at, s.dirty, s.attributable,
+                       s.committed_at, s.subject, s.converted_at, s.dirty, s.attributable, s.pruned,
                        (SELECT COUNT(*) FROM schema_change c WHERE c.snapshot_id = s.id),
                        (SELECT COUNT(*) FROM row_change c WHERE c.snapshot_id = s.id),
                        (SELECT COUNT(*) FROM cell_change c WHERE c.snapshot_id = s.id)
@@ -107,11 +107,12 @@ namespace SheetMan.History
                     ConvertedAt = Time(r, 8),
                     Dirty = r.GetBoolean(9),
                     Attributable = r.GetBoolean(10),
+                    Pruned = r.GetBoolean(11),
                     Counts = new HistoryChangeCounts
                     {
-                        Schema = r.GetInt32(11),
-                        Rows = r.GetInt32(12),
-                        Cells = r.GetInt32(13),
+                        Schema = r.GetInt32(12),
+                        Rows = r.GetInt32(13),
+                        Cells = r.GetInt32(14),
                     },
                 },
                 ("@project", project), ("@branch", branch ?? ""));
@@ -380,6 +381,7 @@ namespace SheetMan.History
                 Rows = snapshots.Sum(s => (long)s.Rows.Count),
                 Cells = snapshots.Sum(s => (long)s.Cells.Count),
                 Gaps = snapshots.Count(s => !s.FollowsParent),
+                Pruned = snapshots.Count(s => s.Pruned),
             };
 
             return document;
@@ -406,7 +408,7 @@ namespace SheetMan.History
             var snapshots = Read($@"
                 SELECT s.id, s.seq, s.commit_hash, s.branch, s.author_name, s.author_email,
                        s.committed_at, s.subject, s.converted_at, s.converted_by, s.dirty, s.attributable,
-                       s.follows_parent,
+                       s.follows_parent, s.pruned,
                        (SELECT x.commit_hash FROM snapshot x WHERE x.id = s.parent_id)
                 FROM snapshot s JOIN project p ON p.id = s.project_id
                 WHERE p.project_key = @project AND s.branch = @branch
@@ -428,7 +430,8 @@ namespace SheetMan.History
                     Dirty = r.GetBoolean(10),
                     Attributable = r.GetBoolean(11),
                     FollowsParent = r.GetBoolean(12),
-                    PreviousCommit = Text(r, 13),
+                    Pruned = r.GetBoolean(13),
+                    PreviousCommit = Text(r, 14),
                 },
                 args.ToArray());
 
@@ -452,7 +455,7 @@ namespace SheetMan.History
 
             return Read($@"
                 SELECT entity_kind, entity_name, member_name, change_kind, before_value, after_value,
-                       file, sheet, cell, url
+                       file, sheet, cell, url, renamed_from
                 FROM schema_change
                 WHERE snapshot_id = @id{filter}
                 ORDER BY id
@@ -466,6 +469,7 @@ namespace SheetMan.History
                     Before = Text(r, 4),
                     After = Text(r, 5),
                     Location = LocationOf(r, 6),
+                    RenamedFrom = Text(r, 10),
                 },
                 args);
         }

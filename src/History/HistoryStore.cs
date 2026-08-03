@@ -318,6 +318,36 @@ namespace SheetMan.History
         /// </summary>
         public long Write(SnapshotWrite write)
         {
+            // Around the whole write, including the head this snapshot's sequence number
+            // was worked out from. Two conversions of one branch at once would otherwise
+            // both read the same head and both claim the position after it.
+            string lockName = HistorySchema.WriteLockFor(_projectId, _branch);
+
+            HistorySchema.Lock(_connection, lockName);
+
+            try
+            {
+                return Locked(write);
+            }
+            finally
+            {
+                HistorySchema.Unlock(_connection, lockName);
+            }
+        }
+
+        private long Locked(SnapshotWrite write)
+        {
+            // The head is read again under the lock. What was read before it is what
+            // decided the sequence number, and between then and now another conversion may
+            // have moved the branch on.
+            var head = ReadHead();
+
+            if (head != null && write.Seq <= head.Seq)
+            {
+                write.Seq = head.Seq + 1;
+                write.ParentId = head.Id;
+            }
+
             using var transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
 
             try
@@ -454,15 +484,16 @@ namespace SheetMan.History
         {
             Batched(transaction, changes, WriteBatch,
                 @"INSERT INTO schema_change
-                     (snapshot_id, entity_kind, entity_name, member_name, change_kind,
-                      before_value, after_value, file, sheet, cell, url) VALUES ",
-                "(@s{0}, @k{0}, @e{0}, @m{0}, @c{0}, @b{0}, @a{0}, @f{0}, @sh{0}, @cl{0}, @u{0})",
+                     (snapshot_id, entity_kind, entity_name, member_name, renamed_from,
+                      change_kind, before_value, after_value, file, sheet, cell, url) VALUES ",
+                "(@s{0}, @k{0}, @e{0}, @m{0}, @rf{0}, @c{0}, @b{0}, @a{0}, @f{0}, @sh{0}, @cl{0}, @u{0})",
                 (command, change, i) =>
                 {
                     command.Parameters.AddWithValue("@s" + i, snapshotId);
                     command.Parameters.AddWithValue("@k" + i, change.EntityKind.ToString());
                     command.Parameters.AddWithValue("@e" + i, change.EntityName);
                     command.Parameters.AddWithValue("@m" + i, (object)change.MemberName ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@rf" + i, (object)change.RenamedFrom ?? DBNull.Value);
                     command.Parameters.AddWithValue("@c" + i, change.Kind.ToString());
                     command.Parameters.AddWithValue("@b" + i, (object)change.Before ?? DBNull.Value);
                     command.Parameters.AddWithValue("@a" + i, (object)change.After ?? DBNull.Value);
@@ -934,6 +965,7 @@ namespace SheetMan.History
 
         public SnapshotChanges Changes { get; set; }
 
+        /// <summary>Position in the branch's chain. Re-checked under the write lock.</summary>
         public long Seq { get; set; }
 
         public long? ParentId { get; set; }

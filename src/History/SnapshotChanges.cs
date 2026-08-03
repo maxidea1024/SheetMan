@@ -75,6 +75,16 @@ namespace SheetMan.History
 
         /// <summary>Where in the sheets it is now, so a report can link to it.</summary>
         public SummaryLocation Location { get; set; }
+
+        /// <summary>
+        /// The name this column used to have, when it was renamed rather than replaced.
+        ///
+        /// A rename is a drop and an add as far as the data is concerned - every cell of
+        /// the old column goes and every cell of the new one arrives - so a 5000-row table
+        /// produces ten thousand cell changes for an edit that changed no value at all.
+        /// Recognising it is what stops that burying the edits that did.
+        /// </summary>
+        public string RenamedFrom { get; set; }
     }
 
     /// <summary>A row that appeared, changed or went.</summary>

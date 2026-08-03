@@ -360,6 +360,113 @@ namespace SheetMan.Tests
             Assert.Equal(new[] { "20", "10", null }, entries.Select(e => e.Before));
         }
 
+        // ------------------------------------------------------------- pruning
+
+        private PruneResult Prune(string before, int keep)
+        {
+            using var connection = new MySqlConnector.MySqlConnection(_connectionString);
+            connection.Open();
+
+            return HistoryMaintenance.Prune(
+                connection, _project, "main", HistoryMaintenance.ParseCutoff(before), keep);
+        }
+
+        /// <summary>
+        /// What grows without bound is the change log. A pruned snapshot keeps everything
+        /// that describes the data and loses only the cell-by-cell record of getting there.
+        /// </summary>
+        [Fact]
+        public void Pruning_removes_the_detail_and_keeps_the_statistics()
+        {
+            ThreeCommits();
+
+            var pruned = Prune(before: null, keep: 1);
+
+            Assert.Equal(2, pruned.Snapshots);
+            Assert.True(pruned.CellChanges > 0);
+
+            using var query = Query();
+
+            var document = query.Diff(_project, "main");
+
+            Assert.Equal(3, document.Snapshots.Count);
+            Assert.Equal(2, document.Totals.Pruned);
+
+            // The oldest two say what happened to them rather than showing nothing.
+            Assert.True(document.Snapshots[0].Pruned);
+            Assert.Empty(document.Snapshots[0].Cells);
+
+            Assert.False(document.Snapshots[2].Pruned);
+            Assert.Single(document.Snapshots[2].Cells);
+
+            // And the statistics of a pruned snapshot are still there.
+            Assert.Equal(1, query.Stats(_project, "main", "aaaaaaaa1111").Data.Totals.Rows);
+        }
+
+        /// <summary>
+        /// `--keep` is a floor rather than an alternative to the cutoff: a branch nobody has
+        /// touched for a year would otherwise lose everything and become a history with no
+        /// history in it.
+        /// </summary>
+        [Fact]
+        public void The_most_recent_snapshots_survive_any_cutoff()
+        {
+            ThreeCommits();
+
+            // "older than now", so the cutoff excludes nothing and `keep` is the only thing
+            // deciding. The fixture's commits are dated today, so a cutoff of a day ago
+            // would spare all three and say nothing about the floor.
+            var pruned = Prune(before: "0d", keep: 2);
+
+            Assert.Equal(1, pruned.Snapshots);
+
+            using var query = Query();
+
+            Assert.Equal(1, query.Diff(_project, "main").Totals.Pruned);
+        }
+
+        [Fact]
+        public void A_cutoff_nothing_is_older_than_prunes_nothing()
+        {
+            ThreeCommits();
+
+            Assert.Equal(0, Prune(before: "3650d", keep: 0).Snapshots);
+        }
+
+        [Fact]
+        public void Pruning_twice_finds_nothing_the_second_time()
+        {
+            ThreeCommits();
+
+            Assert.Equal(2, Prune(before: null, keep: 1).Snapshots);
+            Assert.Equal(0, Prune(before: null, keep: 1).Snapshots);
+        }
+
+        [Fact]
+        public void An_age_that_is_not_an_age_is_refused()
+        {
+            Assert.Throws<SheetManException>(() => HistoryMaintenance.ParseCutoff("a while"));
+        }
+
+        /// <summary>
+        /// A value still referenced by the surviving snapshot's state must not be collected,
+        /// or the history would show blanks where it holds values.
+        /// </summary>
+        [Fact]
+        public void Collecting_the_value_pool_keeps_what_the_current_state_uses()
+        {
+            ThreeCommits();
+
+            Prune(before: null, keep: 1);
+
+            using var store = HistoryStore.Open(_connectionString, _project, "main");
+
+            var cells = store.ReadCells("Item", new[] { "1" });
+
+            Assert.Equal("Sword", cells[new CellAddress("1", "name")]);
+            Assert.Equal("30", cells[new CellAddress("1", "power")]);
+        }
+
         [Fact]
         public void Branches_and_tables_can_be_listed()
         {

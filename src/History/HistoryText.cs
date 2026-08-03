@@ -52,6 +52,13 @@ namespace SheetMan.History
                     $"finally recorded them.");
             }
 
+            if (totals.Pruned > 0)
+            {
+                text.AppendLine(
+                    $"{totals.Pruned} of them have had their change detail pruned, so what they " +
+                    $"changed is no longer recorded. Their statistics are.");
+            }
+
             if (query.Truncated)
             {
                 text.AppendLine(
@@ -87,6 +94,12 @@ namespace SheetMan.History
                     : "    ! not attributable");
             }
 
+            if (snapshot.Pruned)
+            {
+                text.AppendLine(
+                    "    ! this snapshot's change detail was pruned; its statistics are still here");
+            }
+
             if (!snapshot.FollowsParent && snapshot.PreviousCommit != null)
             {
                 text.AppendLine(
@@ -94,8 +107,30 @@ namespace SheetMan.History
                     $"parent - the commits in between were never converted");
             }
 
+            // A renamed column moves every one of its cells, and none of that is an edit
+            // anybody made. Counted on the rename's own line rather than listed.
+            var renamed = new HashSet<(string, string)>();
+
+            foreach (var change in snapshot.Schema.Where(c => c.RenamedFrom != null))
+            {
+                renamed.Add((change.Entity, change.RenamedFrom));
+                renamed.Add((change.Entity, change.Member));
+            }
+
             foreach (var change in snapshot.Schema)
             {
+                if (change.RenamedFrom != null)
+                {
+                    int carried = snapshot.Cells.Count(
+                        c => c.Table == change.Entity && c.Field == change.Member);
+
+                    text.AppendLine(
+                        $"    ~ field      {change.Entity}.{change.RenamedFrom} -> {change.Member}" +
+                        $"  (renamed, {carried} row(s) carried over)");
+
+                    continue;
+                }
+
                 string what = change.Member == null
                     ? $"{change.Entity}"
                     : $"{change.Entity}.{change.Member}";
@@ -106,6 +141,9 @@ namespace SheetMan.History
 
             foreach (var change in snapshot.Cells)
             {
+                if (renamed.Contains((change.Table, change.Field)))
+                    continue;
+
                 text.AppendLine(
                     $"    {Mark(change.Kind)} {change.Table}[{change.RowKey}].{change.Field}"
                     + Transition(change.Before, change.After)

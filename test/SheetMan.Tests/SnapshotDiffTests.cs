@@ -353,6 +353,99 @@ namespace SheetMan.Tests
         /// A comment is emitted into every generated language as documentation, so changing
         /// one changes the output - and it moves no cell, so no row is reported.
         /// </summary>
+        // ---------------------------------------------------------------- renames
+
+        private static Model Renamed(string third, params object[][] rows)
+            => ModelFactory.Of(ModelFactory.Table("Item",
+                new[] { ("id", ValueType.Int32), ("name", ValueType.String), (third, ValueType.Int32) },
+                rows));
+
+        /// <summary>
+        /// To the data a rename is a drop and an add - every cell of the old column goes
+        /// and every cell of the new one arrives. A five thousand row table would report
+        /// ten thousand cell changes for an edit that changed no value, with the edits that
+        /// did change something somewhere in the middle.
+        /// </summary>
+        [Fact]
+        public void A_renamed_column_is_reported_as_a_rename()
+        {
+            var changes = Between(Default(), Renamed("attack",
+                new object[] { 1, "Sword", 10 },
+                new object[] { 2, "Shield", 20 }));
+
+            var rename = Assert.Single(changes.Schema);
+
+            Assert.Equal(EntityKind.Field, rename.EntityKind);
+            Assert.Equal(ChangeKind.Modified, rename.Kind);
+            Assert.Equal("power", rename.RenamedFrom);
+            Assert.Equal("attack", rename.MemberName);
+
+            // The drop is gone from the log: nothing was dropped.
+            Assert.DoesNotContain(changes.Schema, s => s.Kind == ChangeKind.Removed);
+        }
+
+        /// <summary>
+        /// The cell changes stay. They are what moves the stored state from the old column
+        /// to the new one, and dropping them would leave the old name in the store for ever.
+        /// The report folds them away; the data keeps them.
+        /// </summary>
+        [Fact]
+        public void A_rename_still_carries_the_cells_that_move()
+        {
+            var changes = Between(Default(), Renamed("attack",
+                new object[] { 1, "Sword", 10 },
+                new object[] { 2, "Shield", 20 }));
+
+            Assert.Equal(2, changes.Cells.Count(c => c.Field == "attack" && c.Kind == ChangeKind.Added));
+            Assert.Equal(2, changes.Cells.Count(c => c.Field == "power" && c.Kind == ChangeKind.Removed));
+        }
+
+        /// <summary>
+        /// A column renamed and edited at once is left as a drop and an add. Less tidy, and
+        /// it cannot claim a value moved when it did not.
+        /// </summary>
+        [Fact]
+        public void A_column_renamed_and_edited_at_once_is_not_called_a_rename()
+        {
+            var changes = Between(Default(), Renamed("attack",
+                new object[] { 1, "Sword", 11 },
+                new object[] { 2, "Shield", 20 }));
+
+            Assert.DoesNotContain(changes.Schema, s => s.RenamedFrom != null);
+            Assert.Contains(changes.Schema, s => s.MemberName == "power" && s.Kind == ChangeKind.Removed);
+            Assert.Contains(changes.Schema, s => s.MemberName == "attack" && s.Kind == ChangeKind.Added);
+        }
+
+        /// <summary>
+        /// Two columns dropped and two added, with values that do not line up, must not be
+        /// paired off just because the counts match.
+        /// </summary>
+        [Fact]
+        public void Columns_that_hold_different_values_are_not_paired()
+        {
+            var before = ModelFactory.Of(ModelFactory.Table("Item",
+                new[] { ("id", ValueType.Int32), ("a", ValueType.Int32), ("b", ValueType.Int32) },
+                new object[] { 1, 10, 20 }));
+
+            var after = ModelFactory.Of(ModelFactory.Table("Item",
+                new[] { ("id", ValueType.Int32), ("c", ValueType.Int32), ("d", ValueType.Int32) },
+                new object[] { 1, 30, 40 }));
+
+            Assert.DoesNotContain(Between(before, after).Schema, s => s.RenamedFrom != null);
+        }
+
+        /// <summary>
+        /// An empty table renames nothing detectably, and pairing on no evidence would pair
+        /// at random.
+        /// </summary>
+        [Fact]
+        public void A_rename_in_an_empty_table_is_left_as_a_drop_and_an_add()
+        {
+            var changes = Between(Items(), Renamed("attack"));
+
+            Assert.DoesNotContain(changes.Schema, s => s.RenamedFrom != null);
+        }
+
         [Fact]
         public void Editing_a_columns_comment_is_a_schema_change_and_nothing_else()
         {

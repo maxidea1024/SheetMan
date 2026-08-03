@@ -429,6 +429,14 @@
       }));
     }
 
+    if (snapshot.pruned) {
+      node.appendChild(el('div', {
+        class: 'warn',
+        text: 'This snapshot’s change detail was pruned to reclaim space. Its statistics are '
+              + 'still here; what it changed is no longer recorded.',
+      }));
+    }
+
     if (!snapshot.followsParent && snapshot.previousCommit) {
       node.appendChild(el('div', {
         class: 'warn',
@@ -438,8 +446,33 @@
       }));
     }
 
+    // A renamed column moves every one of its cells, which is not an edit anybody made.
+    // Those are folded into the rename's own line rather than listed.
+    const renamed = new Set();
+
+    for (const item of snapshot.schema) {
+      if (!item.renamedFrom) continue;
+
+      renamed.add(JSON.stringify([item.entity, item.renamedFrom]));
+      renamed.add(JSON.stringify([item.entity, item.member]));
+    }
+
     for (const item of snapshot.schema) {
       const what = item.member ? `${item.entity}.${item.member}` : item.entity;
+
+      if (item.renamedFrom) {
+        const carried = snapshot.cells.filter(
+          c => c.table === item.entity && c.field === item.member).length;
+
+        node.appendChild(change('Modified',
+          `field ${item.entity}.${item.renamedFrom} -> ${item.member}`,
+          el('span', {},
+            el('span', { class: 'kind', text: 'renamed' }),
+            carried ? el('span', { class: 'kind', text: `  ${num(carried)} rows carried over` }) : null),
+          item.location));
+
+        continue;
+      }
 
       const shape = item.entityKind === 'Field'
         ? schemaTransition(item.before, item.after, item.kind)
@@ -450,6 +483,8 @@
     }
 
     for (const item of snapshot.cells) {
+      if (renamed.has(JSON.stringify([item.table, item.field]))) continue;
+
       node.appendChild(change(item.kind, `${item.table}[${item.rowKey}].${item.field}`,
         transition(item.before, item.after, item.kind), item.location));
     }
@@ -467,8 +502,10 @@
     // Said rather than left blank. A commit that touched something other than the sheets
     // still gets a snapshot, and an entry with an empty space under it reads as a page
     // that failed to draw.
-    if (snapshot.counts.schema + snapshot.counts.rows + snapshot.counts.cells === 0)
+    if (!snapshot.pruned
+        && snapshot.counts.schema + snapshot.counts.rows + snapshot.counts.cells === 0) {
       node.appendChild(el('div', { class: 'empty', text: 'No change to the sheets.' }));
+    }
 
     return node;
   }

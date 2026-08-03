@@ -102,12 +102,15 @@ namespace SheetMan
             // Reading the history is not a conversion: no sources are imported, nothing is
             // written to the output tree, and the answer goes to standard output. The recipe
             // is still needed, because that is where the history's address is.
-            if (options.History || options.Stats || options.Serve)
+            if (options.History || options.Stats || options.Serve || options.Prune)
             {
                 try
                 {
                     if (options.Serve)
                         return HistoryServer.Run(options, recipe);
+
+                    if (options.Prune)
+                        return HistoryCommand.RunPrune(options, recipe);
 
                     return options.History
                         ? HistoryCommand.RunHistory(options, recipe)

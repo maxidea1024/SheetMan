@@ -132,6 +132,44 @@ namespace SheetMan.History
             return 0;
         }
 
+        /// <summary>Removes the change detail of old snapshots.</summary>
+        public static int RunPrune(Options options, RecipeModel recipe)
+        {
+            // Before the connection: an age that does not parse should be reported now
+            // rather than after a database has been opened and locked.
+            var before = HistoryMaintenance.ParseCutoff(options.Before);
+
+            if (before == null && options.Keep <= 0)
+            {
+                throw new SheetManException(
+                    "--prune with neither --before nor --keep would remove every snapshot's " +
+                    "detail. Say how far back to go.");
+            }
+
+            var (connectionString, projectKey) = Connection(options, recipe);
+
+            using var connection = new MySqlConnector.MySqlConnection(connectionString);
+            connection.Open();
+
+            string branch = options.Branch;
+
+            if (branch == null)
+            {
+                using var query = HistoryQuery.Open(connectionString);
+                branch = query.DefaultBranch(projectKey);
+            }
+
+            if (branch == null)
+            {
+                Log.Error($"The history holds nothing for project `{projectKey}`.");
+                return 1;
+            }
+
+            HistoryMaintenance.Prune(connection, projectKey, branch, before, options.Keep);
+
+            return 0;
+        }
+
         /// <summary>The document, exactly as the API serves it.</summary>
         public static string Serialize(object document)
             => JsonConvert.SerializeObject(document, Format).Replace("\r\n", "\n") + "\n";
