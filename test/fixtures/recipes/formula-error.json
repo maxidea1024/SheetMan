@@ -5,8 +5,10 @@
   // harness invokes SheetMan from. Output lands in test/fixtures/output/formula-error
   // (transient, gitignored) and is compared against test/fixtures/golden/core.
   //
-  // Both JSON row formats are exported because they take different code paths
-  // in JsonExporter and only the compact one is currently correct.
+  // Both JSON row formats are exported because they take different code paths in
+  // JsonExporter, so both need covering. The named form is the one generated readers
+  // consume - it is what the conformance corpus compares against and what the
+  // TypeScript round trip reads.
 
   "Sources": {
     "Xlsx": [
