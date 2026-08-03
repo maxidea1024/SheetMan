@@ -8,11 +8,16 @@ using System.Text;
 namespace SheetMan.Tests
 {
     /// <summary>
-    /// Builds and runs the per-language conformance harnesses.
+    /// Drives the language toolchains: the conformance harnesses, and the compile-only
+    /// checks that ask whether generated code is even valid.
     ///
     /// One method per language, each about as long as the harness it drives. Adding a
     /// language means adding one of each, which is the whole point of the corpus: the
     /// comparison in ConformanceTests is language-agnostic and does not grow.
+    ///
+    /// The Compile* methods below exist for the reserved-word fixture, where the question
+    /// is not what a value reads back as but whether the file compiles at all. Finding a
+    /// toolchain is the same problem for both, and it lives here once.
     /// </summary>
     internal static class ConformanceHarness
     {
@@ -318,6 +323,97 @@ namespace SheetMan.Tests
 
             return Execute(DartExecutable, root, "run", "harness.dart", BinaryDir(scenario));
         }
+
+        // -------------------------------------------------- compile-only checks
+
+        /// <summary>
+        /// Compiles a scenario's generated Go. Nothing is run: the question is whether the
+        /// names the generator chose are legal.
+        /// </summary>
+        public static ToolResult CompileGo(string scenario)
+            => Execute("go", Generated(scenario, "go"), "build", "./...");
+
+        public static ToolResult CompileRust(string scenario)
+            => Execute("cargo", Generated(scenario, "rust"), "build", "--quiet");
+
+        /// <summary>
+        /// Byte-compiles the generated Python.
+        ///
+        /// A name that collides with a keyword is a syntax error there - `self.class = x`
+        /// does not parse - so compiling is the whole check.
+        /// </summary>
+        public static ToolResult CompilePython(string scenario)
+            => Execute(PythonExecutable, Generated(scenario, "python"), "-m", "compileall", "-q", ".");
+
+        public static ToolResult CompileJava(string scenario)
+        {
+            string root = Generated(scenario, "java");
+
+            var arguments = new List<string> { "-encoding", "UTF-8", "-d", Path.Combine(root, "classes") };
+            arguments.AddRange(Directory.EnumerateFiles(root, "*.java", SearchOption.AllDirectories));
+
+            return Execute("javac", root, arguments.ToArray());
+        }
+
+        public static ToolResult CompileKotlin(string scenario)
+        {
+            string root = Generated(scenario, "kotlin");
+
+            var arguments = new List<string>
+            {
+                "-jar", KotlinCompilerJar(), "-nowarn", "-d", Path.Combine(root, "classes"),
+            };
+
+            arguments.AddRange(Directory.EnumerateFiles(root, "*.kt", SearchOption.AllDirectories));
+
+            return Execute("java", root, arguments.ToArray());
+        }
+
+        /// <summary>
+        /// Syntax-checks every generated Ruby file.
+        ///
+        /// Ruby compiles nothing ahead of time, so `-c` is as far as a static check goes -
+        /// which is far enough: a keyword where a method name belongs does not parse.
+        /// </summary>
+        public static ToolResult CompileRuby(string scenario)
+        {
+            string root = Generated(scenario, "ruby");
+
+            foreach (var file in Directory.EnumerateFiles(root, "*.rb", SearchOption.AllDirectories))
+            {
+                var result = Execute(RubyExecutable, root, "-c", file);
+
+                if (!result.Succeeded)
+                    return result;
+            }
+
+            return new ToolResult { Succeeded = true, StdOut = "", Output = "" };
+        }
+
+        /// <summary>
+        /// Compiles the generated Dart, by running a program that imports it.
+        ///
+        /// `dart analyze` on a directory with no package config cannot resolve the core
+        /// library and reports every `int` as undefined, so it answers a different question.
+        /// A program that imports the library is resolved properly, and a name that does not
+        /// compile fails.
+        /// </summary>
+        public static ToolResult CompileDart(string scenario)
+        {
+            string root = Generated(scenario, "dart");
+
+            File.Copy(Path.Combine(HarnessDir("..", "compile", "dart"), "check.dart"),
+                      Path.Combine(root, "check.dart"), overwrite: true);
+
+            return Execute(DartExecutable, root, "run", "check.dart");
+        }
+
+        private static string Generated(string scenario, string language)
+            => Path.Combine(RepoLayout.OutputDir(scenario), language);
+
+        private static string HarnessDir(params string[] parts)
+            => Path.GetFullPath(Path.Combine(
+                new[] { RepoLayout.Root, "test", "fixtures", "tools", "conformance" }.Concat(parts).ToArray()));
 
         // ------------------------------------------------------- finding a tool
 

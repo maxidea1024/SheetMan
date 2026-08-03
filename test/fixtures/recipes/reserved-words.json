@@ -30,6 +30,27 @@
     ]
   },
 
+  // The seven languages that have no section of their own. Every one of them is
+  // compiled from this fixture: what a generator does with a name that collides with a
+  // keyword is a question only a compiler can answer, and the three that were checked
+  // here before were the three whose answer somebody had already guessed at.
+  "Targets": [
+    { "Type": "go", "Path": "test/fixtures/output/reserved-words/go",
+      "PackageName": "reserved", "ModulePath": "reserved" },
+    { "Type": "rust", "Path": "test/fixtures/output/reserved-words/rust",
+      "CrateName": "reserved" },
+    { "Type": "python", "Path": "test/fixtures/output/reserved-words/python",
+      "PackageName": "reserved" },
+    { "Type": "java", "Path": "test/fixtures/output/reserved-words/java",
+      "PackageName": "reserved", "AccessorName": "ReservedAccessor" },
+    { "Type": "kotlin", "Path": "test/fixtures/output/reserved-words/kotlin",
+      "PackageName": "reserved", "AccessorName": "ReservedAccessor" },
+    { "Type": "ruby", "Path": "test/fixtures/output/reserved-words/ruby",
+      "ModuleName": "Reserved", "AccessorName": "sheetman_data" },
+    { "Type": "dart", "Path": "test/fixtures/output/reserved-words/dart",
+      "AccessorName": "sheetman_data" }
+  ],
+
   "CodeGenerations": {
     "Cpp": [
       {

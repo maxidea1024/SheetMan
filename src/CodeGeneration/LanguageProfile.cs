@@ -479,7 +479,15 @@ namespace SheetMan.CodeGeneration
             "assert", "break", "case", "catch", "class", "const", "continue", "default",
             "do", "else", "enum", "extends", "false", "final", "finally", "for", "if", "in",
             "is", "new", "null", "rethrow", "return", "super", "switch", "this", "throw",
-            "true", "try", "var", "void", "while", "with");
+            "true", "try", "var", "void", "while", "with",
+
+            // And the built-in type names, which are not keywords at all - they are
+            // ordinary identifiers, which is exactly the problem. A field named `int`
+            // shadows the type inside its own class, so `int int = 0;` does not compile
+            // and neither does any `int` declaration after it. Only the lower-case ones
+            // can be reached: a member name is camelCase, so `String` arrives as `string`
+            // and collides with nothing.
+            "bool", "double", "dynamic", "int", "num");
 
         /// <summary>
         /// TypeScript.
