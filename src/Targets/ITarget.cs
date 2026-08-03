@@ -1,4 +1,5 @@
 using System;
+using SheetMan.History;
 using SheetMan.Models;
 using SheetMan.Recipe;
 
@@ -27,13 +28,25 @@ namespace SheetMan.Targets
     /// </summary>
     public sealed class TargetContext
     {
-        public TargetContext(Options options, RecipeModel recipe, Model model, IOutputRecipe entry, string section)
+        private readonly Lazy<CommitInfo> _commit;
+
+        public TargetContext(
+            Options options,
+            RecipeModel recipe,
+            Model model,
+            Model fullModel,
+            Lazy<CommitInfo> commit,
+            IOutputRecipe entry,
+            string section)
         {
             Options = options;
             Recipe = recipe;
             Model = model;
+            FullModel = fullModel;
             Entry = entry;
             Section = section;
+
+            _commit = commit;
         }
 
         /// <summary>Command line options for the run.</summary>
@@ -49,6 +62,29 @@ namespace SheetMan.Targets
         /// line copied into each one.
         /// </summary>
         public Model Model { get; }
+
+        /// <summary>
+        /// Everything the sheets declared, before any target-side narrowing.
+        ///
+        /// Almost every target wants <see cref="Model"/>: output is built for one side and
+        /// must not carry the other's fields. This exists for the targets that describe the
+        /// data rather than emit it, where narrowing is not a filter but a falsehood - a
+        /// history recorded from a client build would report every server-only table as
+        /// deleted, and the next server build would report them all as added again.
+        ///
+        /// The same instance for every entry of a run, and the same one
+        /// <see cref="Model.Current"/> points at.
+        /// </summary>
+        public Model FullModel { get; }
+
+        /// <summary>
+        /// Which commit this conversion is of, and who made it.
+        ///
+        /// Resolved on first use and shared by every entry of the run. Deferred because
+        /// resolving it spawns git, and the targets that care are the ones describing the
+        /// data rather than the ones emitting it.
+        /// </summary>
+        public CommitInfo Commit => _commit.Value;
 
         /// <summary>The recipe entry being run.</summary>
         public IOutputRecipe Entry { get; }

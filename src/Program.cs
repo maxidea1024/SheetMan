@@ -4,6 +4,7 @@ using CommandLine;
 using SheetMan.Models.Raw;
 using SheetMan.Importers;
 using SheetMan.Cooking;
+using SheetMan.History;
 using SheetMan.Exporters;
 using SheetMan.CodeGeneration;
 using SheetMan.Recipe;
@@ -99,17 +100,6 @@ namespace SheetMan
             }
 
             {
-                if (!options.Silent)
-                {
-                    Console.WriteLine(@"  _________.__                   __     _____                 ");
-                    Console.WriteLine(@" /   _____/|  |__   ____   _____/  |_  /     \ _____    ____  ");
-                    Console.WriteLine(@" \_____  \ |  |  \_/ __ \_/ __ \   __\/  \ /  \\__  \  /    \ ");
-                    Console.WriteLine(@" /        \|   Y  \  ___/\  ___/|  | /    Y    \/ __ \|   |  \");
-                    Console.WriteLine(@"/_______  /|___|  /\___  >\___  >__| \____|__  (____  /___|  /");
-                    Console.WriteLine(@"        \/      \/     \/     \/             \/     \/     \/ ");
-                    Console.WriteLine(@"");
-                }
-
                 Log.Information($"Start working with recipe `{Path.GetFullPath(options.RecipeFilename)}`");
 
                 var stopWatch = new Stopwatch();
@@ -122,15 +112,6 @@ namespace SheetMan
                 {
                     if (!options.Silent)
                     {
-                        Console.WriteLine(@" ______   _______  __    _  _______  __  ");
-                        Console.WriteLine(@"|      | |       ||  |  | ||       ||  | ");
-                        Console.WriteLine(@"|  _    ||   _   ||   |_| ||    ___||  | ");
-                        Console.WriteLine(@"| | |   ||  | |  ||       ||   |___ |  | ");
-                        Console.WriteLine(@"| |_|   ||  |_|  ||  _    ||    ___||__| ");
-                        Console.WriteLine(@"|       ||       || | |   ||   |___  __  ");
-                        Console.WriteLine(@"|______| |_______||_|  |__||_______||__| ");
-                        Console.WriteLine();
-
                         Log.Information($"All work is done successfuly. Total time spent is {stopWatch.ElapsedMilliseconds} ms.");
                         //Log.Information($"  Take a look at the `{summaryFilename}` for details on the results.");
                     }
@@ -149,6 +130,11 @@ namespace SheetMan
                 // --target-side into an immediate error rather than one reported after
                 // every workbook has been read.
                 CommandLineTargetSide.Of(options);
+
+                // Same reason: a misspelled --commit-date should be reported now rather
+                // than after every workbook has been read. Working out which commit this
+                // is spawns git, so that part waits until a target asks for it.
+                CommitInfo.ValidateOptions(options);
 
 
                 // Imports
@@ -219,14 +205,6 @@ namespace SheetMan
 
         private static void LogException(Options options, Exception ex, string subject = "")
         {
-            Log.Fatal(@" ______ _____  _____   ____  _____  _ _ _");
-            Log.Fatal(@"|  ____|  __ \|  __ \ / __ \|  __ \| | | |");
-            Log.Fatal(@"| |__  | |__) | |__) | |  | | |__) | | | |");
-            Log.Fatal(@"|  __| |  _  /|  _  /| |  | |  _  /| | | |");
-            Log.Fatal(@"| |____| | \ \| | \ \| |__| | | \ \|_|_|_|");
-            Log.Fatal(@"|______|_|  \_\_|  \_\\____/|_|  \_(_|_|_)");
-            Log.Fatal(@"");
-
             Log.Fatal(ex.Message);
 
             if (ex is SheetManException sheetManEx)

@@ -6,6 +6,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
+using SheetMan.History;
 using SheetMan.Models;
 using SheetMan.Recipe;
 
@@ -186,12 +187,16 @@ namespace SheetMan.Targets
             if (requested != TargetSide.Both)
                 Log.Information($"Narrowed to the {TargetSides.Describe(requested)} side by --target-side.");
 
+            // Once for the run, and only if something asks: resolving it spawns git, and
+            // most conversions have no target that records anything.
+            var commit = new Lazy<CommitInfo>(() => CommitInfo.Resolve(options, recipe));
+
             foreach (var planned in Plan(recipe, requested))
             {
                 var sided = model.ProjectTo(planned.Side);
 
                 planned.Descriptor.Target.Run(
-                    new TargetContext(options, recipe, sided, planned.Entry, planned.Section));
+                    new TargetContext(options, recipe, sided, model, commit, planned.Entry, planned.Section));
             }
         }
 
