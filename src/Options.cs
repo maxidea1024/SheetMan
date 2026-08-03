@@ -148,6 +148,31 @@ namespace SheetMan
         [Option("limit", HelpText = "Most changes to report. Anything cut is reported as cut.")]
         public int Limit { get; set; }
 
+        // -------------------------------------------------------------- serving
+
+        /// <summary>
+        /// Puts the history behind an HTTP API and a page, and stays running.
+        ///
+        /// Read-only: the server never writes, and the account in the recipe need not be
+        /// able to.
+        /// </summary>
+        [Option("serve", HelpText = "Serve the history over HTTP and stay running.")]
+        public bool Serve { get; set; }
+
+        /// <summary>Port to listen on. 8080 when left out.</summary>
+        [Option("port", HelpText = "Port to serve on. 8080 when left out.")]
+        public int Port { get; set; }
+
+        /// <summary>
+        /// Address to listen on. Loopback when left out.
+        ///
+        /// Anything else needs a token in SHEETMAN_SERVE_TOKEN, and is refused without one:
+        /// what an open port exposes here is every value in the project's design data and
+        /// the name of everyone who touched it.
+        /// </summary>
+        [Option("bind", HelpText = "Address to serve on. 127.0.0.1 when left out.")]
+        public string Bind { get; set; }
+
         [Option("verbose", HelpText = "Sets whether to output debugging log messages.")]
         public bool Verbose { get; set; }
 

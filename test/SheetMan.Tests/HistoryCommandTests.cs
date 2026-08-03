@@ -55,6 +55,22 @@ namespace SheetMan.Tests
             Assert.True(result.Succeeded, $"Conversion failed.{System.Environment.NewLine}{result.Describe()}");
         }
 
+        /// <summary>
+        /// The JSON out of a report, past whatever `dotnet run` printed first.
+        ///
+        /// The runner drives the CLI through `dotnet run`, which puts its own notices on
+        /// standard output ahead of the program's - a NuGet warning did exactly that and
+        /// broke these tests. A real caller invokes the executable and sees none of it.
+        /// </summary>
+        private static string Json(RunResult result)
+        {
+            int start = result.StdOut.IndexOf('{');
+
+            Assert.True(start >= 0, $"The report printed no JSON.{System.Environment.NewLine}{result.StdOut}");
+
+            return result.StdOut.Substring(start);
+        }
+
         private RunResult Report(params string[] args)
         {
             var full = new List<string> { "--recipe", "test/fixtures/recipes/history.json" };
@@ -77,13 +93,13 @@ namespace SheetMan.Tests
             var report = Report("--history", "--branch", "endtoend", "--from", _commit, "--to", _commit);
 
             // An empty range - from and to are the same snapshot, and from is exclusive.
-            using var empty = JsonDocument.Parse(report.StdOut);
+            using var empty = JsonDocument.Parse(Json(report));
             Assert.Empty(empty.RootElement.GetProperty("snapshots").EnumerateArray());
 
             // The snapshot itself is in the range that ends at it.
             var whole = Report("--history", "--branch", "endtoend", "--to", _commit);
 
-            using var document = JsonDocument.Parse(whole.StdOut);
+            using var document = JsonDocument.Parse(Json(whole));
 
             var snapshot = document.RootElement.GetProperty("snapshots").EnumerateArray()
                                    .Single(s => s.GetProperty("commit").GetString() == _commit);
@@ -108,7 +124,7 @@ namespace SheetMan.Tests
 
             var report = Report("--stats", "--branch", "endtoend", "--at", _commit);
 
-            using var stored = JsonDocument.Parse(report.StdOut);
+            using var stored = JsonDocument.Parse(Json(report));
 
             Assert.Equal(
                 written.RootElement.GetProperty("data").GetProperty("hash").GetString(),

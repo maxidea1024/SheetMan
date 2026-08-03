@@ -82,6 +82,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!--
+      The serve mode puts the history behind an HTTP API and a page. Kestrel rather than
+      HttpListener: on Windows, binding HttpListener to anything but localhost needs a URL
+      reservation or an elevated process, and a team tool that has to run as administrator
+      to be reachable is a team tool nobody reaches.
+
+      A framework reference rather than a package, so nothing new is restored. It does mean
+      a framework-dependent deployment now needs the ASP.NET Core runtime rather than the
+      base one; publish self-contained where that is not wanted.
+    -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <!--
       Scriban rather than Handlebars or Fluid: no dependencies of its own, and its `{{ }}`
@@ -106,16 +120,14 @@
     <PackageReference Include="StackExchange.Redis" Version="3.0.17" />
   </ItemGroup>
 
-  <ItemGroup>
-    <!--
-      Transitive pull-up, not something this project calls.
+  <!--
+    The System.Security.Cryptography.Xml pull-up that used to be here is gone. It existed
+    to lift NPOI's transitive 8.0.2, which carries seven high-severity advisories, onto a
+    patched version. The ASP.NET Core framework reference above now supplies that assembly
+    from the shared framework, so the package reference is redundant - and NuGet says so,
+    on standard output, in front of every `dotnet run`.
 
-      NPOI drags in System.Security.Cryptography.Xml 8.0.2, which carries seven known
-      high-severity advisories. A direct reference is the supported way to lift a
-      transitive dependency onto a patched version; drop it once NPOI ships against
-      a fixed one.
-    -->
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
-  </ItemGroup>
+    If that framework reference is ever removed, put this back.
+  -->
 
 </Project>

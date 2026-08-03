@@ -194,7 +194,7 @@ namespace SheetMan.History
         /// Where the history is, and which project to read - from the recipe's history
         /// entry.
         /// </summary>
-        private static (string ConnectionString, string ProjectKey) Connection(
+        internal static (string ConnectionString, string ProjectKey) Connection(
             Options options, RecipeModel recipe)
         {
             var planned = TargetRegistry.Plan(recipe, TargetSide.Both)
