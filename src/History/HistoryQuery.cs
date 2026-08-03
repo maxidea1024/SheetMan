@@ -586,6 +586,39 @@ namespace SheetMan.History
             return Convert.ToInt64(command.ExecuteScalar());
         }
 
+        /// <summary>
+        /// Everything one view of the history needs, in one round of queries.
+        ///
+        /// Assembled here rather than by whoever is drawing the page, so the file written
+        /// by `--history --format html` and the object the server sends are the same shape
+        /// and are filled in the same way.
+        /// </summary>
+        public DashboardDocument Dashboard(
+            string project,
+            string branch = null,
+            string from = null,
+            string to = null,
+            string table = null,
+            string field = null,
+            string author = null,
+            int limit = DefaultLimit)
+        {
+            branch ??= DefaultBranch(project) ?? "";
+
+            return new DashboardDocument
+            {
+                Project = project,
+                Branch = branch,
+                Branches = Branches(project),
+                Stats = Stats(project, branch, to),
+                History = Diff(project, branch, from, to, table, field, author, limit),
+                Snapshots = Snapshots(project, branch),
+                Rows = Trend(project, branch, "rows", table),
+                Churn = Trend(project, branch, "changes"),
+                Authors = Authors(project, branch, from, to),
+            };
+        }
+
         // ------------------------------------------------------------ resolution
 
         /// <summary>

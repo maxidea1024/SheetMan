@@ -62,6 +62,16 @@
 
   <ItemGroup>
     <!--
+      The history page. Embedded for the same reason as everything else here, plus one of
+      its own: the tool is expected to run on closed networks, so a page that fetches a
+      stylesheet or a charting library from anywhere is a page that does not load.
+    -->
+    <EmbeddedResource Include="History\web\*"
+                      LogicalName="SheetMan.Web.%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
       The history's store is internal: it is infrastructure for the targets and the query
       layer in this assembly, not an API. The suite drives it directly all the same,
       because what has to be checked is how it behaves against a real MySQL - the

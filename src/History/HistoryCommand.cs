@@ -39,7 +39,7 @@ namespace SheetMan.History
         {
             // Before the connection, so a misspelled --format is reported immediately
             // rather than after a query has run.
-            bool text = IsText(options);
+            var format = FormatOf(options);
 
             var (connectionString, projectKey) = Connection(options, recipe);
 
@@ -54,13 +54,32 @@ namespace SheetMan.History
                 return 1;
             }
 
+            int limit = options.Limit <= 0 ? HistoryQuery.DefaultLimit : options.Limit;
+
+            // The page needs the statistics and the trends beside the changes, so the whole
+            // dashboard is assembled for it - and the same object is what the server sends.
+            // json and text want only the changes, and asking for the rest would be several
+            // queries whose answers are thrown away.
+            if (format == ReportFormat.Html)
+            {
+                var dashboard = query.Dashboard(
+                    projectKey, branch, options.From, options.To,
+                    options.Table, options.Field, options.Author, limit);
+
+                Write(options, HistoryView.SelfContained(dashboard));
+
+                return 0;
+            }
+
             var document = query.Diff(
                 projectKey, branch,
                 options.From, options.To,
                 options.Table, options.Field, options.Author,
-                options.Limit <= 0 ? HistoryQuery.DefaultLimit : options.Limit);
+                limit);
 
-            Write(options, text ? HistoryText.Render(document) : Serialize(document));
+            Write(options, format == ReportFormat.Text
+                ? HistoryText.Render(document)
+                : Serialize(document));
 
             return 0;
         }
@@ -68,7 +87,7 @@ namespace SheetMan.History
         /// <summary>Reports the statistics of one commit.</summary>
         public static int RunStats(Options options, RecipeModel recipe)
         {
-            bool text = IsText(options);
+            var format = FormatOf(options);
 
             var (connectionString, projectKey) = Connection(options, recipe);
 
@@ -94,7 +113,21 @@ namespace SheetMan.History
                 return 1;
             }
 
-            Write(options, text ? HistoryText.Render(summary, branch) : Serialize(summary));
+            if (format == ReportFormat.Html)
+            {
+                // The same page as `--history --format html --to <at>`. There is one page,
+                // and it already leads with the statistics; a second layout of the same
+                // numbers is a second thing to keep in step.
+                Write(options, HistoryView.SelfContained(
+                    query.Dashboard(projectKey, branch, to: options.At,
+                                    limit: options.Limit <= 0 ? HistoryQuery.DefaultLimit : options.Limit)));
+
+                return 0;
+            }
+
+            Write(options, format == ReportFormat.Text
+                ? HistoryText.Render(summary, branch)
+                : Serialize(summary));
 
             return 0;
         }
@@ -103,18 +136,25 @@ namespace SheetMan.History
         public static string Serialize(object document)
             => JsonConvert.SerializeObject(document, Format).Replace("\r\n", "\n") + "\n";
 
-        private static bool IsText(Options options)
+        /// <summary>How a report is to be rendered.</summary>
+        private enum ReportFormat
         {
-            string format = (options.Format ?? "json").Trim().ToLowerInvariant();
+            Json,
+            Text,
+            Html,
+        }
 
-            switch (format)
+        private static ReportFormat FormatOf(Options options)
+        {
+            switch ((options.Format ?? "json").Trim().ToLowerInvariant())
             {
-                case "json": return false;
-                case "text": return true;
+                case "json": return ReportFormat.Json;
+                case "text": return ReportFormat.Text;
+                case "html": return ReportFormat.Html;
 
                 default:
                     throw new SheetManException(
-                        $"`--format {options.Format}` is not a format. Use `json` or `text`.");
+                        $"`--format {options.Format}` is not a format. Use `json`, `text` or `html`.");
             }
         }
 
