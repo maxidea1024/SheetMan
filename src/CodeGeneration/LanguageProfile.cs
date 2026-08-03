@@ -221,6 +221,48 @@ namespace SheetMan.CodeGeneration
             );
 
         /// <summary>
+        /// Rust.
+        ///
+        /// As uneventful as Go on the numbers: i64 is i64, f32 is f32, and the shifts
+        /// behave. datetime and timespan are i64 ticks for a different reason than Go's -
+        /// std has no date type at all, and the values a sheet can hold reach 0001-01-01
+        /// and 9999-12-31, which most crates' types cannot express either.
+        ///
+        /// Unlike Go and C#, Rust does need escaping: members are snake_case and every Rust
+        /// keyword is lowercase, so a field called `Type` becomes `type` and stops the
+        /// compiler.
+        /// </summary>
+        public static readonly LanguageProfile Rust = new LanguageProfile(
+            "rust",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "String" },
+                { ValueType.Bool, "bool" },
+                { ValueType.Int32, "i32" },
+                { ValueType.Int64, "i64" },
+                { ValueType.Float, "f32" },
+                { ValueType.Double, "f64" },
+                { ValueType.DateTime, "i64" },
+                { ValueType.TimeSpan, "i64" },
+                { ValueType.Uuid, "sheetman::Uuid" },
+            },
+            "Vec<{0}>",
+
+            // A trailing underscore rather than a raw identifier. `r#type` is the idiomatic
+            // escape but does not work for all of them - `crate`, `self`, `super` and `Self`
+            // cannot be raw - and one rule that always holds beats two that nearly do.
+            "{0}_",
+
+            // https://doc.rust-lang.org/reference/keywords.html - strict, reserved and the
+            // weak ones, because a member name is snake_case and every keyword is lowercase.
+            "as", "break", "const", "continue", "crate", "dyn", "else", "enum", "extern",
+            "false", "fn", "for", "if", "impl", "in", "let", "loop", "match", "mod", "move",
+            "mut", "pub", "ref", "return", "self", "static", "struct", "super", "trait",
+            "true", "type", "unsafe", "use", "where", "while", "async", "await", "abstract",
+            "become", "box", "do", "final", "macro", "override", "priv", "try", "typeof",
+            "unsized", "virtual", "yield", "gen", "union");
+
+        /// <summary>
         /// TypeScript.
         ///
         /// Two entries here are not the obvious ones, and both are about values arriving

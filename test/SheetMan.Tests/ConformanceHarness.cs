@@ -102,6 +102,38 @@ namespace SheetMan.Tests
             return Execute("go", moduleDir, "run", "./harness", BinaryDir(scenario));
         }
 
+        /// <summary>Whether a Rust toolchain is on the path.</summary>
+        public static bool RustIsAvailable(out string reason)
+        {
+            try
+            {
+                var probe = Execute("cargo", RepoLayout.Root, "--version");
+                reason = probe.Succeeded ? null : $"`cargo --version` failed.{Environment.NewLine}{probe.Output}";
+                return probe.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                reason = $"`cargo` could not be started: {ex.Message}";
+                return false;
+            }
+        }
+
+        public static ToolResult RunRust(string scenario)
+        {
+            // As a binary inside the generated crate, for the same reason the Go harness is
+            // a package inside the generated module: that is the only place the generated
+            // types are importable from.
+            string crateDir = Path.Combine(RepoLayout.OutputDir(scenario), "rust");
+            string binDir = Path.Combine(crateDir, "src", "bin");
+
+            Directory.CreateDirectory(binDir);
+            File.Copy(Path.Combine(HarnessDir("rust"), "harness.rs"),
+                      Path.Combine(binDir, "harness.rs"), overwrite: true);
+
+            return Execute("cargo", crateDir,
+                           "run", "--quiet", "--bin", "harness", "--", BinaryDir(scenario));
+        }
+
         private static string WorkDir(string scenario, string language)
         {
             string dir = Path.Combine(RepoLayout.OutputDir("_conformance"), scenario, language);

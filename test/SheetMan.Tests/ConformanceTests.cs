@@ -105,6 +105,27 @@ namespace SheetMan.Tests
             Compare("Go", expected, Parse(harness.StdOut));
         }
 
+        /// <summary>
+        /// Rust, which keeps references as indices rather than resolving them into borrows.
+        ///
+        /// A record holding a reference to another record is a graph, and Rust will not let
+        /// one own its neighbours. The corpus does not exercise a reference, so this checks
+        /// the value types - which is where the format's traps are.
+        /// </summary>
+        [Fact]
+        public void Generated_rust_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.RustIsAvailable(out string why),
+                $"A Rust toolchain is required to check the generated Rust. {why}");
+
+            var harness = ConformanceHarness.RunRust(Scenario);
+            Assert.True(harness.Succeeded, $"Rust harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("Rust", expected, Parse(harness.StdOut));
+        }
+
         // ---------------------------------------------------------- comparison
 
         /// <summary>

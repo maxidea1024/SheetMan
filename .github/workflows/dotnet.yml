@@ -59,6 +59,9 @@ jobs:
         with:
           go-version: '1.23'
 
+      - name: Verify Rust toolchain
+        run: cargo --version
+
       - name: Verify Docker
         run: docker version --format '{{.Server.Version}}'
 

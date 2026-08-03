@@ -44,6 +44,12 @@
       "ModulePath": "conformance",
       "AccessorName": "conformance_data",
       "BinaryTableFileExtension": ".table"
+    },
+    {
+      "Type": "rust",
+      "Path": "test/fixtures/output/conformance/rust",
+      "CrateName": "conformance",
+      "BinaryTableFileExtension": ".table"
     }
   ],
 

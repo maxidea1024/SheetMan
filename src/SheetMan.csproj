@@ -33,6 +33,8 @@
                       LogicalName="SheetMan.Runtime.Cpp.lite_binary_reader.h" />
     <EmbeddedResource Include="..\lib\go\sheetman\lite_binary_reader.go"
                       LogicalName="SheetMan.Runtime.Go.lite_binary_reader.go" />
+    <EmbeddedResource Include="..\lib\rust\sheetman\lite_binary_reader.rs"
+                      LogicalName="SheetMan.Runtime.Rust.lite_binary_reader.rs" />
   </ItemGroup>
 
   <ItemGroup>

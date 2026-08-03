@@ -110,3 +110,8 @@ logs/
 # credential has to be revoked in the Google Cloud console, not just deleted.
 **/googlesheets-client-secret.json
 !**/googlesheets-client-secret.example.json
+
+# Cargo's build directory, which the Rust conformance harness creates inside the
+# generated crate. test/fixtures/output is already ignored; this covers a crate
+# generated anywhere else.
+target/
