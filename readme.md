@@ -37,13 +37,23 @@ SDK 버전은 리포지토리 루트의 `global.json`에 고정되어 있습니�
 
 생성된 코드를 사용하는 쪽의 요구사항은 다음과 같습니다.
 
-|대상|요구사항|
-|--|--|
-|C# / Unity|Unity 2020.3 이상 (C# 8 / netstandard2.1)|
-|TypeScript|TypeScript 4.5 이상. 바이너리 리더가 `BigInt`를 사용하므로 컴파일 타겟은 `ES2020` 이상|
-|C++|C++17 이상|
+|대상|요구사항|비고|
+|--|--|--|
+|C# / Unity|Unity 2020.3 이상 (C# 8 / netstandard2.1)||
+|TypeScript|4.5 이상, 컴파일 타겟 `ES2020` 이상|리더가 `BigInt`를 씁니다|
+|C++|C++17 이상||
+|Go|1.21 이상|생성되는 `go.mod`가 `go 1.21`을 선언합니다. CI는 1.23으로 검증|
+|Rust|edition 2021|생성되는 `Cargo.toml`이 선언합니다|
+|Python|3.12로 검증|그 아래 버전은 확인하지 않았습니다|
+|Java|21로 검증|리더에 특별한 문법은 없지만 그 아래는 확인하지 않았습니다|
+|Kotlin|2.1로 검증||
+|Ruby|3.2로 검증||
+|Dart|3.6 이상|null safety 필요|
+|Unreal|**4.x ~ 5.x**|UE 4.27.2의 실제 UnrealHeaderTool로 검증|
 
-**생성된 코드는 자립적입니다.** 세 언어 모두 바이너리 리더가 출력 폴더에 함께 생성되므로, 플러그인 설치나 include 경로 설정 같은 준비 작업이 없습니다. 생성물을 프로젝트에 넣으면 그대로 컴파일됩니다.
+> "검증"은 **CI가 매 실행마다 그 버전으로 생성물을 컴파일하거나 실행해서 값을 대조한다**는 뜻입니다. 추측이 아니며, 표에 없는 하위 버전은 될 수도 있지만 확인된 바 없습니다.
+
+**생성된 코드는 자립적입니다.** 모든 언어에서 바이너리 리더가 출력 폴더에 함께 생성되므로, 플러그인 설치나 include 경로 설정 같은 준비 작업이 없습니다. 생성물을 프로젝트에 넣으면 그대로 컴파일됩니다. Go는 `go.mod`, Rust는 `Cargo.toml`까지 함께 나옵니다.
 
 
 
@@ -195,15 +205,21 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 2. 이름은 길지 않은 선에서 최대한 의미있게 지어야합니다. 프로그램 코드에 대부분 직접 반영되는 요소이기 때문에 명확한 함의가 있을수록 좋습니다.
 3. 예약어와 겹치는 이름은 **자동으로 회피**되므로 컴파일이 깨지지 않습니다. 다만 생성된 이름이 시트에 적은 것과 달라지므로 알아두는 게 좋습니다.
 
-|언어|멤버 표기|`Class`라는 필드가 되는 이름|
-|--|--|--|
-|C#|`PascalCase`|`Class` — 모든 C# 예약어가 소문자라 겹칠 일이 없습니다|
-|TypeScript|`camelCase`|`class` — TypeScript는 예약어를 멤버 이름으로 허용합니다|
-|C++|`snake_case`|`sm_class` — `class`가 그대로 나가면 컴파일이 깨집니다|
+|언어|멤버 표기|회피 방식|예|
+|--|--|--|--|
+|C#|`PascalCase`|(거의 불필요)|`Class` — C# 예약어는 전부 소문자라 겹치지 않습니다|
+|TypeScript|`camelCase`|`{이름}_`|`class` — TS는 예약어를 멤버로 허용합니다. 문제는 `Constructor` → `constructor_`|
+|C++|`snake_case`|`sm_{이름}`|`Class` → `sm_class`|
+|Go|`PascalCase`|`{이름}_`|`Class` — Go 예약어는 소문자이고 export하려면 대문자여야 하므로 겹치지 않습니다|
+|Rust|`snake_case`|`{이름}_`|`Type` → `type_` (`Class`는 Rust 키워드가 아니라 `class` 그대로)|
+|Python|`snake_case`|`{이름}_`|`Class` → `class_`|
+|Java|`camelCase`|`{이름}_`|`Class` → `class_`|
+|Kotlin|`camelCase`|`` `{이름}` ``|`Class` → `` `class` `` — Kotlin은 백틱 이스케이프를 허용합니다|
+|Ruby|`snake_case`|`{이름}_`|`Class` → `class_`|
+|Dart|`camelCase`|`{이름}_`|`Class` → `class_` (앞이 아니라 뒤에 붙입니다 — 앞에 `_`를 붙이면 라이브러리 private이 됩니다)|
+|Unreal|`PascalCase`|(불필요)|`Class` — UPROPERTY 이름은 C++ 키워드와 겹치지 않습니다|
 
-TypeScript에서 실제로 문제가 되는 것은 예약어가 아니라 클래스가 선언할 수 없는 이름입니다. `Constructor` 필드는 `constructor_`가 됩니다.
-
-> 이 표는 추측이 아닙니다. `reserved-words` 픽스처가 예약어로 이름 지은 필드를 담고 있고, 회귀 스위트가 그 산출물을 **세 언어 모두 실제로 컴파일**합니다.
+> 이 표는 추측이 아닙니다. `reserved-words` 픽스처가 예약어로 이름 지은 필드를 담고 있고, 위 이름들은 그 픽스처를 전 언어로 생성해서 읽은 실제 결과입니다. 그중 **C++ · C# · TypeScript 세 언어는 회귀 스위트가 산출물을 실제로 컴파일**합니다 — 나머지는 생성까지만 확인되어 있습니다.
 
 ### Supported Entities
 
@@ -758,6 +774,89 @@ Go·Rust·Python·Java·Kotlin·Ruby·Dart·Unreal은 recipe의 `Targets` 목록
 
 리더는 각 언어마다 **별도 구현**입니다. 포맷을 정의하는 건 익스포터의 writer 하나이고, 세 리더는 그 정의의 서로 다른 구현이라 어긋날 수 있습니다. 그래서 회귀 스위트가 **C#으로 쓰고 각 언어로 읽어 대조**합니다 — 실제로 이 방식이 `long`을 32비트로 잘라내던 writer 버그를 찾아냈습니다.
 
+#### 생성된 코드 쓰는 법
+
+테이블이 `Item` 하나이고 바이너리를 `./data`에 내보냈다고 할 때, 언어별로 이렇게 읽습니다. 접근자 이름(`Tables`, `GameData` 등)은 recipe의 `AccessorName`으로 정해집니다.
+
+```csharp
+// C#
+var tables = new GameData();
+tables.ReadAll("./data");
+var sword = tables.Item.Find(1);
+```
+
+```typescript
+// TypeScript
+const tables = new Tables()
+tables.readAllSync('./data')          // 바이너리
+const sword = tables.item.find(1)
+```
+
+```cpp
+// C++
+sheetman_game::GameData tables;
+tables.read_all("./data");
+const auto* sword = tables.item.find(1);
+```
+
+```go
+// Go
+tables := &gamedata.Tables{}
+if err := tables.ReadAll("./data"); err != nil { panic(err) }
+sword := tables.Item.Find(1)
+```
+
+```rust
+// Rust
+let mut tables = gamedata::Tables::default();
+tables.read_all(Path::new("./data"))?;
+let sword = tables.item.find(1);
+```
+
+```python
+# Python
+tables = Tables()
+tables.read_all("./data")
+sword = tables.item.find(1)
+```
+
+```java
+// Java
+GameData tables = new GameData();
+tables.readAll("./data");
+ItemRecord sword = tables.item.find(1);
+```
+
+```kotlin
+// Kotlin — 접근자는 object 이므로 인스턴스를 만들지 않습니다
+GameData.readAll("./data")
+val sword = GameData.item.find(1)
+```
+
+```ruby
+# Ruby
+tables = GameData::Tables.new
+tables.read_all("./data")
+sword = tables.item.find(1)
+```
+
+```dart
+// Dart
+final tables = Tables();
+tables.readAll('./data');
+final sword = tables.item.find(1);
+```
+
+```cpp
+// Unreal — 정적 클래스, 모듈이 통째로 생성됩니다
+UGameData::ReadAll(TEXT("./data"));
+const FItemRow* Sword = UGameData::Item().Find(1);
+```
+
+**참조는 로드 후 자동으로 연결됩니다.** `foreign` 필드는 파일에 인덱스로 저장되고, `readAll`이 모든 테이블을 읽은 뒤 실제 레코드 참조로 바꿔줍니다. 테이블 하나만 따로 읽으면 그 단계가 없으니 참조는 비어 있습니다.
+
+Rust만 예외로 **참조를 인덱스 그대로 둡니다.** 레코드가 서로를 참조하면 그래프가 되는데 Rust는 그런 소유 구조를 허용하지 않기 때문입니다. `find`로 직접 찾아 쓰면 됩니다.
+
 #### TypeScript 코드생성
 
 두 읽기 경로가 모두 생성되므로 배포 상황에 따라 골라 쓸 수 있습니다. 두 경로는 **동일한 값**을 반환합니다.
@@ -836,6 +935,34 @@ if (item != nullptr) {
 |`RecordDirty`|`false`|커밋되지 않은 변경이 있는 워킹카피의 변환도 기록할지.|
 |`AllowOutOfOrder`|`false`|브랜치 head보다 뒤진 커밋도 기록할지.|
 |`OnFailure`|`warn`|DB에 닿지 못할 때. `warn`이면 빌드는 성공하고 ERROR 로그가 남습니다. `fail`이면 빌드가 멈춥니다.|
+
+#### CI에 붙이기
+
+귀속을 정확하게 만드는 건 **워크북이 바뀐 커밋마다 변환을 한 번씩 돌리는 것**입니다. 그렇지 않으면 건너뛴 커밋들의 변경이 다음 스냅샷에 뭉쳐서 그 커밋 작성자에게 귀속됩니다.
+
+```yaml
+# .github/workflows/data.yml
+on:
+  push:
+    paths: [ 'design-data/**' ]      # 워크북이 바뀐 커밋에서만
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2             # 부모 커밋이 있어야 "구멍"을 판정할 수 있습니다
+
+      - run: |
+          sheetman --recipe recipe.json             --commit "$GITHUB_SHA"             --branch "${GITHUB_REF_NAME}"
+        env:
+          SHEETMAN_HISTORY_PASSWORD: ${{ secrets.SHEETMAN_HISTORY_PASSWORD }}
+```
+
+`--commit`과 `--branch`를 명시하는 이유는 CI 체크아웃이 대개 detached HEAD이기 때문입니다. 그 상태에서는 브랜치를 알 수 없고, 안 주면 스냅샷이 브랜치 없이 기록됩니다.
+
+작성자는 커밋에서 자동으로 읽습니다. git이 없는 빌드 시스템이라면 `--commit-author "이름 <메일>"`로 넘기면 됩니다.
 
 #### 기록되지 않는 세 가지
 
@@ -930,16 +1057,18 @@ sheetman --recipe recipe.json --prune --before 90d --keep 200
 
 ### 아키텍처 메모
 
-바이너리 포맷을 다루는 코드가 네 곳에 있고, 역할이 갈립니다.
+포맷을 **정의하는 코드는 하나**, 그것을 **구현하는 리더는 열 개**입니다.
 
 |위치|역할|
 |--|--|
 |`src/Exporters/LiteBinaryWriter.cs`|**포맷을 정의하는 writer.** 익스포터 내부에 있고 외부 의존이 없습니다.|
-|`lib/cs/sheetman/LiteBinaryReader.cs`|C# 리더. 임베디드 리소스로 들어가 생성 시 출력에 기록됩니다.|
-|`lib/cpp/sheetman/lite_binary_reader.h`|C++ 리더. 같은 방식으로 출력에 기록됩니다.|
-|`lib/ts/sheetman/lite_binary_reader.ts`|TypeScript 리더. 같은 방식.|
+|`lib/<언어>/sheetman/...`|언어별 리더. `cs` `cpp` `ts` `go` `rust` `python` `java` `kotlin` `ruby` `dart` 열 개|
 
 리더가 `lib/` 아래에 실제 파일로 존재하는 이유는 편집과 리뷰가 가능해야 하기 때문이고, 임베디드 리소스로 읽어 쓰는 이유는 배포본과 커밋된 소스가 어긋날 수 없게 하기 위함입니다.
+
+열 개가 하나의 정의를 각자 구현하므로 어긋날 수 있고, 어긋나면 **실패하는 게 아니라 값이 달라집니다**. 그래서 적합성 코퍼스가 있습니다 — 경계값 한 테이블을 전 언어로 읽어 익스포터 JSON과 대조합니다. 실제로 이 방식이 Go의 틱 오버플로, Java의 부호 없는 시프트, Dart의 웹 32비트 비트연산, 여러 언어의 비ASCII 인코딩 문제를 출시 전에 잡았습니다.
+
+**코드 생성기와 타깃 추가.** 타깃은 `[SheetManTarget]` 어트리뷰트로 등록되고 실행 어셈블리 스캔으로 발견됩니다. 언어 하나를 추가하는 비용은 리더 · 템플릿(`src/templates/*.sbn`) · 뷰 · 제너레이터 · 50줄짜리 적합성 하네스이며, `RecipeModel`이나 `Program`은 건드리지 않습니다.
 
 예전에는 writer와 C# 리더가 Unity 플러그인으로 설치해야 하는 하나의 공유 런타임(3,600줄)이었습니다. 생성 코드가 쓰는 건 그중 네 개 멤버뿐이었고, 그 결합 때문에 변환기 자체가 Unity가 받아들이는 C# 수준에 묶여 있었습니다. 더 나쁜 건 writer와 리더가 한 몸이어서 **와이어 포맷 오류가 드러나지 않았다는 점**입니다 — C# 안에서 왕복하면 무엇을 잘못 쓰든 제대로 읽혔습니다.
 
@@ -964,6 +1093,11 @@ dotnet test            # 전체 회귀 스위트
 |TypeScript 왕복|같은 테이블을 JSON과 바이너리에서 각각 읽어 필드 단위로 비교합니다. 두 경로가 어긋나면 실패합니다.|
 |방출 코드 언어 수준|C# 리더를 `netstandard2.1`로 컴파일해 Unity 2020.3이 받아들이는 C# 8을 넘지 않는지 확인합니다.|
 |데이터베이스|`docker compose`로 MySQL / PostgreSQL / MongoDB / Redis를 띄우고 실제로 적재한 뒤 서버에 직접 질의합니다.|
+|적합성 코퍼스|경계값 테이블 하나를 **열 개 언어로 각각 컴파일·실행해서 읽고** 익스포터 JSON과 대조합니다.|
+|Unreal|생성된 헤더를 **실제 UnrealHeaderTool**에 통과시킵니다 (`SHEETMAN_UE_ROOT` 지정 시).|
+|히스토리|실제 MySQL에 스냅샷을 기록하고 읽어옵니다. 같은 커밋 재기록, 삭제된 행 정리, 브랜치 분리, 정리(prune)까지 서버에 직접 질의해 확인합니다.|
+|웹서버|실제 포트에 서버를 띄우고, **API 응답과 CLI 출력을 바이트 단위로 비교**합니다. 토큰 없는 외부 바인딩 거부도 확인합니다.|
+|셀프컨테인드 배포|CI가 매 실행마다 linux-x64로 퍼블리시하고 그 산출물로 변환을 돌립니다.|
 
 의도한 출력 변경이 있을 때는 골든을 갱신하고 git diff로 리뷰합니다.
 
@@ -983,59 +1117,55 @@ dotnet run --project test/fixtures/tools/FixtureGen
 cd test/fixtures/databases && docker compose down -v
 ```
 
-C++와 데이터베이스 검증은 툴체인이 없으면 **건너뛰지 않고 실패**합니다. 조용히 꺼지는 게이트는 없는 게이트보다 나쁘기 때문입니다. 로컬에서 C++ 검증에는 MSVC 또는 g++가, 데이터베이스 검증에는 Docker가 필요합니다.
+언어별 검증과 데이터베이스 검증은 툴체인이 없으면 **건너뛰지 않고 실패**합니다. 조용히 꺼지는 게이트는 없는 게이트보다 나쁘기 때문입니다. 로컬에서 전부 돌리려면 g++ 또는 MSVC, Node, Go, Rust, Python, JDK, Kotlin, Ruby, Dart, 그리고 Docker가 필요합니다. CI가 그 전부를 설치하므로, 로컬에서는 건드린 부분만 골라 돌리고 나머지는 CI에 맡겨도 됩니다.
+
+```
+dotnet test --filter "FullyQualifiedName~Conformance"    # 언어별 리더
+dotnet test --filter "FullyQualifiedName~History"        # 히스토리와 웹서버
+```
 
 
 
 
 ### TODO
 
-- ~~참조 기능 강화 및 필드 참조 기능 구현~~
+아직 안 한 것, 그리고 **하지 않기로 한 것**입니다. 후자에는 이유를 적어둡니다 — 이유 없이 비어 있는 항목은 다음 사람이 같은 판단을 다시 해야 합니다.
 
-- ~~디테일한 오류처리~~
-
-- ~~엔티티 레이아웃 확장~~
-
-- ~~상수 테이블 관련 코드 생성~~
-
-- ~~소스파일에 구글 시트인 경우 정의 위치를 url로 출력하는게 좋을듯. 바로 확인할 수 있으니..~~
-
-- ~~건너뛴 시트들과 처리된 시트들을 확인할 수 있는 수단을 제공하자.~~
-
-- ~~`manifest` 파일생성~~
-
-- ~~Summary 파일을 별도로 기록해서 남겨두면 좋을듯..~~
-
-- ~~키 컬럼의 데이터가 유니크한지 체크~~
-
-- ~~키 컬럼의 데이터에 빈값이 있는것을 허용해야하나?~~
-
-- ~~필드를 주석처리하면 오류 발생.~~
-
-- ~~TargetSide 적용~~
-
-- ~~배열 타입을 지원하자. 구분자는 무엇으로해야하나?~~ (기본 `;`, recipe의 `ArrayDelimiter`로 변경 가능)
-
-- ~~typescript 코드 생성~~
-
-- ~~C++ 코드 생성 및 바이너리 리더~~
-
-- ~~MySQL / PostgreSQL / MongoDB / Redis 적재~~
-
-- ~~정적 검증 복구 및 다중 오류 보고~~
-
-- ~~참조 대상 테이블이 없는 경우도 다중 오류 보고에 합류시키기~~ (참조 해석을 비throw 방식으로 전환하여 합류 완료)
-
-- ~~`foreign[]`(가변 개수 참조) 지원 검토~~ — **지원하지 않기로 결정.** 로우마다 가변 개수의 참조를 해석하려면 생성되는 리더가 로드 후 참조 연결 단계에서 길이가 다른 배열을 다뤄야 하는데, 세 언어 모두 그런 형태가 없습니다. 조용히 해석되지 않는 코드를 뱉는 대신 명시적으로 거부하고, 고정 개수가 필요하면 `SerialField`를 쓰도록 안내합니다.
-
-- ~~typescript 바이너리 리더~~ (`lib/ts/sheetman/lite_binary_reader.ts` 구현. 생성 출력에 자동 포함됩니다.)
+#### 아직 안 함
 
 - `var` / `formula` 엔티티 (모델 타입은 있으나 파서가 없습니다)
-
 - 개별 셀 단위 참조 (`Table.Field#Index` 형태로 특정 셀을 가리키는 기능)
+- 예약어 픽스처의 컴파일 검증이 C++ · C# · TypeScript 세 언어뿐입니다. 나머지 일곱 언어는 생성까지만 확인됩니다.
+- 히스토리 **백필**. 기능이 생기기 전 커밋들은 채우지 않습니다 — 그 구간의 변경은 다음 스냅샷에 뭉치고, 뭉쳤다는 사실은 리포트에 표시됩니다.
 
+#### 하지 않기로 함
 
+- **`foreign[]` (가변 개수 참조).** 로우마다 개수가 다른 참조를 해석하려면 생성되는 리더가 로드 후 연결 단계에서 길이가 다른 배열을 다뤄야 하는데, 지원 언어들에 그런 형태가 없습니다. 조용히 해석되지 않는 코드를 뱉는 대신 명시적으로 거부하고, 고정 개수가 필요하면 `SerialField`를 쓰도록 안내합니다.
+- **타깃을 외부 어셈블리에서 로드하는 플러그인 구조.** 버전 간 안정적인 계약을 유지해야 하는데, 타깃이 전부 이 저장소 안에 있는 도구에는 값이 없습니다. 타깃 등록은 실행 어셈블리 스캔으로 합니다.
 
+#### 지난 작업
+
+<details>
+<summary>완료된 항목 펼쳐보기</summary>
+
+- 참조 기능 강화 및 필드 참조 구현
+- 디테일한 오류처리 / 정적 검증 복구 / 다중 오류 보고
+- 엔티티 레이아웃 확장, 상수 테이블 코드 생성
+- 구글 시트 정의 위치를 URL로 출력
+- 건너뛴 시트와 처리된 시트 확인 수단
+- `manifest` 파일 생성
+- 키 컬럼 유니크 검사
+- 주석 처리된 필드 처리
+- `TargetSide` 적용 및 커맨드라인 `--target-side`
+- 배열 타입 (기본 구분자 `;`, recipe의 `ArrayDelimiter`로 변경)
+- MySQL / PostgreSQL / MongoDB / Redis 적재
+- 코드 생성: C# · TypeScript · C++ · Go · Rust · Python · Java · Kotlin · Ruby · Dart · Unreal
+- 템플릿 엔진(Scriban) 전면 도입, 직접 만든 printer 제거
+- 타깃/소스 등록을 어트리뷰트 스캔으로 전환
+- 적합성 코퍼스 — 전 언어 리더를 실제로 컴파일·실행해 익스포터 JSON과 대조
+- Summary 문서 및 변경 히스토리 (MySQL, 조회 CLI, 웹서버)
+
+</details>
 
 ### References
 
