@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -134,6 +135,44 @@ namespace SheetMan.Tests
                            "run", "--quiet", "--bin", "harness", "--", BinaryDir(scenario));
         }
 
+        /// <summary>Whether a Python interpreter is on the path.</summary>
+        public static bool PythonIsAvailable(out string reason)
+        {
+            try
+            {
+                var probe = Execute(PythonExecutable, RepoLayout.Root, "--version");
+                reason = probe.Succeeded ? null : $"`python --version` failed.{Environment.NewLine}{probe.Output}";
+                return probe.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                reason = $"`{PythonExecutable}` could not be started: {ex.Message}";
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// `python` on Windows, `python3` elsewhere - the name that exists on each.
+        /// </summary>
+        private static string PythonExecutable => OnWindows ? "python" : "python3";
+
+        public static ToolResult RunPython(string scenario)
+        {
+            // Beside the generated package rather than inside it, so the package's own
+            // directory holds only generated files and the import reads as a consumer's
+            // would.
+            string root = Path.Combine(RepoLayout.OutputDir(scenario), "python");
+            string harness = Path.Combine(root, "harness.py");
+
+            File.Copy(Path.Combine(HarnessDir("python"), "harness.py"), harness, overwrite: true);
+
+            // Python writes its own standard output through an encoding of its choosing,
+            // which on Windows is the console codepage and mangles anything non-ASCII.
+            var environment = new Dictionary<string, string> { { "PYTHONIOENCODING", "utf-8" } };
+
+            return Execute(PythonExecutable, root, environment, "harness.py", BinaryDir(scenario));
+        }
+
         private static string WorkDir(string scenario, string language)
         {
             string dir = Path.Combine(RepoLayout.OutputDir("_conformance"), scenario, language);
@@ -146,6 +185,13 @@ namespace SheetMan.Tests
         }
 
         private static ToolResult Execute(string fileName, string workingDirectory, params string[] args)
+            => Execute(fileName, workingDirectory, null, args);
+
+        private static ToolResult Execute(
+            string fileName,
+            string workingDirectory,
+            IReadOnlyDictionary<string, string> environment,
+            params string[] args)
         {
             var psi = new ProcessStartInfo(fileName)
             {
@@ -159,6 +205,12 @@ namespace SheetMan.Tests
 
             foreach (var arg in args)
                 psi.ArgumentList.Add(arg);
+
+            if (environment != null)
+            {
+                foreach (var pair in environment)
+                    psi.Environment[pair.Key] = pair.Value;
+            }
 
             var stdout = new StringBuilder();
             var combined = new StringBuilder();

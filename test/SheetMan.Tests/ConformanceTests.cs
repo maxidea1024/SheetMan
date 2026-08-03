@@ -126,6 +126,27 @@ namespace SheetMan.Tests
             Compare("Rust", expected, Parse(harness.StdOut));
         }
 
+        /// <summary>
+        /// Python, the first language without a single-precision float.
+        ///
+        /// A float32 read widens to a double holding the stored value, so the harness
+        /// narrows it back before printing - the same step the TypeScript reader makes with
+        /// Math.fround, for the same reason.
+        /// </summary>
+        [Fact]
+        public void Generated_python_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.PythonIsAvailable(out string why),
+                $"A Python interpreter is required to check the generated Python. {why}");
+
+            var harness = ConformanceHarness.RunPython(Scenario);
+            Assert.True(harness.Succeeded, $"Python harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("Python", expected, Parse(harness.StdOut));
+        }
+
         // ---------------------------------------------------------- comparison
 
         /// <summary>

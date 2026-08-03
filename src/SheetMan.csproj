@@ -35,6 +35,8 @@
                       LogicalName="SheetMan.Runtime.Go.lite_binary_reader.go" />
     <EmbeddedResource Include="..\lib\rust\sheetman\lite_binary_reader.rs"
                       LogicalName="SheetMan.Runtime.Rust.lite_binary_reader.rs" />
+    <EmbeddedResource Include="..\lib\python\sheetman\lite_binary_reader.py"
+                      LogicalName="SheetMan.Runtime.Python.lite_binary_reader.py" />
   </ItemGroup>
 
   <ItemGroup>

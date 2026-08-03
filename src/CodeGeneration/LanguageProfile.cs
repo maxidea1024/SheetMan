@@ -263,6 +263,48 @@ namespace SheetMan.CodeGeneration
             "unsized", "virtual", "yield", "gen", "union");
 
         /// <summary>
+        /// Python.
+        ///
+        /// The scalar names are only used for documentation - Python is not annotated here -
+        /// but the entries record what a value becomes, and two are worth stating.
+        ///
+        /// float is `float`, which is a double: Python has no single-precision type, so a
+        /// float32 read widens. The value is exactly the one stored, held in a wider type,
+        /// and printing it shows digits the original 32 bits never carried - which is why
+        /// the conformance comparison narrows before comparing.
+        ///
+        /// datetime and timespan are ticks. `datetime` cannot hold a tick, only a
+        /// microsecond, and `timedelta` tops out near 2,700,000 days where TimeSpan reaches
+        /// about 29,000 years.
+        /// </summary>
+        public static readonly LanguageProfile Python = new LanguageProfile(
+            "python",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "str" },
+                { ValueType.Bool, "bool" },
+                { ValueType.Int32, "int" },
+                { ValueType.Int64, "int" },
+                { ValueType.Float, "float" },
+                { ValueType.Double, "float" },
+                { ValueType.DateTime, "int" },
+                { ValueType.TimeSpan, "int" },
+                { ValueType.Uuid, "sheetman.Uuid" },
+            },
+            "list[{0}]",
+
+            // A trailing underscore, which is what PEP 8 prescribes for exactly this.
+            "{0}_",
+
+            // https://docs.python.org/3/reference/lexical_analysis.html#keywords, plus the
+            // soft keywords. Members are snake_case and nearly every keyword is lowercase.
+            "False", "None", "True", "and", "as", "assert", "async", "await", "break",
+            "class", "continue", "def", "del", "elif", "else", "except", "finally", "for",
+            "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or",
+            "pass", "raise", "return", "try", "while", "with", "yield", "match", "case",
+            "type");
+
+        /// <summary>
         /// TypeScript.
         ///
         /// Two entries here are not the obvious ones, and both are about values arriving
