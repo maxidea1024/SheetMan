@@ -13,6 +13,31 @@
       NPOI 2.7+ warns on every build unless the OSMF licence is accepted explicitly.
     -->
     <AcceptNPOIOSMFLicense>true</AcceptNPOIOSMFLicense>
+
+    <!--
+      Debug information goes inside the assembly rather than beside it, so a published
+      directory is the program and nothing else.
+    -->
+    <DebugType>embedded</DebugType>
+
+    <!--
+      Stops the .pdb and .xml files that ship inside packages from being copied out. One
+      of them - SkiaSharp's, which arrives through NPOI - is 83 MB, more than the rest of
+      a self-contained publish put together.
+    -->
+    <AllowedReferenceRelatedFileExtensions>none</AllowedReferenceRelatedFileExtensions>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(SelfContained)' == 'true'">
+    <!--
+      A self-contained publish is one file that runs on a machine with no .NET at all.
+      That is what makes the ASP.NET Core framework reference below free: the serve mode
+      needs that runtime, and a build machine that only has the base one would otherwise
+      be unable to run SheetMan for any purpose.
+    -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
@@ -129,5 +154,19 @@
 
     If that framework reference is ever removed, put this back.
   -->
+
+  <!--
+    Native assets arrive with their own debug files, and those are neither reference-
+    related nor ours - AllowedReferenceRelatedFileExtensions does not reach them. SkiaSharp's
+    is 83 MB, which is more than everything else in a self-contained publish together.
+
+    Safe to drop all of them: this project's own debug information is embedded in the
+    assembly.
+  -->
+  <Target Name="DropNativeDebugFiles" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.pdb'" />
+    </ItemGroup>
+  </Target>
 
 </Project>

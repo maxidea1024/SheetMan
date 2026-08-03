@@ -468,6 +468,20 @@ Details:
 
 
 
+#### 배포 (Publish)
+
+```
+dotnet publish src/SheetMan.csproj -c Release -r win-x64 --self-contained true -o out
+```
+
+`-r`는 `win-x64` / `linux-x64` / `osx-arm64` 등으로 바꿉니다. 결과는 실행파일 하나(약 60MB)와 네이티브 의존 두 개뿐이며, **.NET이 설치되지 않은 머신에서 그대로 동작합니다.**
+
+프레임워크 의존(`--self-contained false`)으로 배포한다면 대상 머신에 **ASP.NET Core 런타임**이 필요합니다. 기본 .NET 런타임만으로는 `--serve`뿐 아니라 변환도 시작되지 않습니다 — 웹서버가 프레임워크 참조로 들어가 있기 때문입니다. 빌드 머신에 무엇이 깔려 있을지 확신할 수 없다면 self-contained가 안전합니다.
+
+> CI가 매 실행마다 linux-x64로 self-contained 퍼블리시를 만들고 그 결과물로 변환 하나를 돌립니다. 위 문장은 주장이 아니라 검증된 사실입니다.
+
+
+
 ### Run
 
 ```

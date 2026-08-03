@@ -104,3 +104,22 @@ jobs:
 
       - name: Test
         run: dotnet test SheetMan.slnx --no-build -c Release --verbosity normal
+
+      # The serve mode brings in an ASP.NET Core framework reference, which means a
+      # framework-dependent deployment needs that runtime rather than the base one. The
+      # answer offered in the README is a self-contained publish, so it is built and run
+      # here - an answer nothing exercises is a guess.
+      - name: Publish self-contained
+        run: >
+          dotnet publish src/SheetMan.csproj -c Release -r linux-x64
+          --self-contained true -o published
+
+      - name: Run the published binary
+        run: |
+          ./published/SheetMan --recipe test/fixtures/recipes/core.json --silent
+          ./published/SheetMan --new-recipe "$RUNNER_TEMP/recipe.json"
+
+          # Nothing beside the executable but its native dependencies: a stray .pdb here
+          # was 83 MB, more than everything else together.
+          echo "published files:"
+          ls -la published
