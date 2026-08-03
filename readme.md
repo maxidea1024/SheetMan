@@ -225,15 +225,13 @@ __위의 배치 방법중 데이터를 작성하거나 보는 사람이 불편�
 
 ### Supported Entities
 
-현재는 다음의 엔티티들을 지원하며, 차후 `VariableSet`, `Formula`등을 추가할 계획입니다.
+지원하는 엔티티는 다음 셋입니다.
 
-|종류|설명|비고|
+|종류|마커|설명|
 |--|--|--|
-|Enum|열거형 정의|지원|
-|ConstantSet|상수 정의 묶음|지원|
-|~~VariableSet~~|Mutation이 가능한 변수들 묶음|개발예정|
-|~~Formula~~|런타이중 평가가능한 수식|개발예정|
-|Table|데이터 테이블 정의 및 데이터|지원|
+|Enum|`~~enum:이름~~`|열거형 정의|
+|ConstantSet|`~~const:이름~~`|상수 정의 묶음|
+|Table|`~~table:이름~~`|데이터 테이블 정의 및 데이터|
 
 
 ### Parsing Rules
@@ -1135,7 +1133,6 @@ dotnet test --filter "FullyQualifiedName~History"        # 히스토리와 웹�
 
 #### 아직 안 함
 
-- `var` / `formula` 엔티티 (모델 타입은 있으나 파서가 없습니다)
 - 개별 셀 단위 참조 (`Table.Field#Index` 형태로 특정 셀을 가리키는 기능)
 - 히스토리 **백필**. 기능이 생기기 전 커밋들은 채우지 않습니다 — 그 구간의 변경은 다음 스냅샷에 뭉치고, 뭉쳤다는 사실은 리포트에 표시됩니다.
 

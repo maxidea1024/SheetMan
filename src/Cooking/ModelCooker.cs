@@ -158,14 +158,6 @@ namespace SheetMan.Cooking
                     var constantSet = ParseConstantSet(def);
                     targetModel.ConstantSets.Add(constantSet);
                 }
-                // Future feature
-                //else if (def.type == "var")
-                //{
-                //    //Log.Debug("Parsed VAR:");
-                //    //Log.Debug("  => " + JsonConvert.SerializeObject(ParseVariableSet(def)));
-                //    var variableSet = ParseVariableSet(def);
-                //    targetModel.VariableSets.Add(variableSet);
-                //}
             }
 
             foreach (var def in entityDefinitions)

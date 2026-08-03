@@ -22,12 +22,6 @@ namespace SheetMan.Models
         /// <summary>Constant sets. Parsed before tables, for the same reason.</summary>
         public List<ConstantSet> ConstantSets { get; set; } = new List<ConstantSet>();
 
-        /// <summary>Reserved for a future `var` entity. Never populated.</summary>
-        public List<VariableSet> VariableSets { get; set; } = new List<VariableSet>();
-
-        /// <summary>Reserved for a future `formula` entity. Never populated.</summary>
-        public List<FormulaSet> FormulaSets { get; set; } = new List<FormulaSet>();
-
         /// <summary>
         /// The model being worked on, for the few places that cannot reach one directly.
         ///
@@ -58,8 +52,6 @@ namespace SheetMan.Models
             Tables.Clear();
             Enums.Clear();
             ConstantSets.Clear();
-            VariableSets.Clear();
-            FormulaSets.Clear();
         }
 
 
