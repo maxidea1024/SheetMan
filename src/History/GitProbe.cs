@@ -182,6 +182,44 @@ namespace SheetMan.History
             return true;
         }
 
+        /// <summary>
+        /// Turns anything git understands into the commit it names.
+        ///
+        /// A tag, a branch, `HEAD~3`, a short hash - all of them, because there is no
+        /// reason to accept one spelling of "that commit" and not the others. `^{commit}`
+        /// is what makes an annotated tag resolve to the commit it points at rather than to
+        /// the tag object, which is a different hash and matches nothing.
+        /// </summary>
+        /// <returns>False when git could not be run, or the name is not a revision.</returns>
+        public static bool TryResolveCommit(string directory, string name, out string hash)
+        {
+            hash = null;
+
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            if (!TryRun(directory, out string resolved, "rev-parse", "--verify", "--quiet", name + "^{commit}"))
+                return false;
+
+            if (string.IsNullOrWhiteSpace(resolved))
+                return false;
+
+            hash = resolved;
+            return true;
+        }
+
+        /// <summary>When a commit was made, as an ISO 8601 timestamp.</summary>
+        public static bool TryCommittedAt(string directory, string commit, out DateTimeOffset at)
+        {
+            at = default;
+
+            if (!TryRun(directory, out string text, "show", "--no-patch", "--format=%cI", commit))
+                return false;
+
+            return DateTimeOffset.TryParse(text, System.Globalization.CultureInfo.InvariantCulture,
+                                           System.Globalization.DateTimeStyles.RoundtripKind, out at);
+        }
+
         /// <summary>The blob hash git has for a file, which identifies its exact contents.</summary>
         public static bool TryBlobHash(string directory, string path, out string hash)
             => TryRun(directory, out hash, "rev-parse", "HEAD:" + path.Replace('\\', '/'));

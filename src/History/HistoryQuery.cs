@@ -34,7 +34,19 @@ namespace SheetMan.History
 
         private readonly MySqlConnection _connection;
 
+        private readonly List<string> _notes = new List<string>();
+
         private HistoryQuery(MySqlConnection connection) => _connection = connection;
+
+        /// <summary>
+        /// A working copy to resolve revision names against, or null.
+        ///
+        /// A range asked for as a tag has to become a commit before the history can be
+        /// asked about it, and only git knows what a tag points at. Without one, a name
+        /// that is not already a stored commit cannot be resolved - which the error says
+        /// plainly rather than reporting it as a missing snapshot.
+        /// </summary>
+        public string RepositoryPath { get; set; }
 
         public static HistoryQuery Open(string connectionString)
         {
@@ -333,6 +345,8 @@ namespace SheetMan.History
             branch ??= DefaultBranch(project) ?? "";
             limit = Bounded(limit, MaximumLimit);
 
+            _notes.Clear();
+
             var (fromSeq, toSeq) = ResolveRange(project, branch, from, to);
 
             var snapshots = ReadSnapshotsInRange(project, branch, fromSeq, toSeq, author);
@@ -350,6 +364,7 @@ namespace SheetMan.History
                     Author = author,
                     Limit = limit,
                     GeneratedAt = DateTimeOffset.Now.ToString("o", CultureInfo.InvariantCulture),
+                    Notes = _notes.ToList(),
                 },
                 Snapshots = snapshots,
             };
@@ -628,6 +643,20 @@ namespace SheetMan.History
         /// <summary>
         /// Turns a commit - or a prefix of one - into the snapshot that holds it.
         /// </summary>
+        /// <summary>
+        /// Finds the snapshot a name refers to.
+        ///
+        /// A stored commit hash, or a prefix of one, is matched directly. Anything else is
+        /// put to git - a tag, a branch, HEAD~3 - and the commit it names is looked up
+        /// instead. Release tags are the reason: nobody remembers the hash a version was
+        /// cut at, and the tag is the name the question gets asked in.
+        ///
+        /// A tag usually points at a commit no conversion ever ran on, because bumping a
+        /// version touches no sheets. The last snapshot at or before it is used instead,
+        /// and the substitution is recorded in the answer's notes. Erroring would send
+        /// somebody hunting for a hash by hand; substituting quietly would answer a
+        /// different question from the one asked.
+        /// </summary>
         public long? ResolveSnapshot(string project, string branch, string commit)
         {
             if (string.IsNullOrEmpty(commit))
@@ -652,7 +681,7 @@ namespace SheetMan.History
                 ("@project", project), ("@branch", branch ?? ""), ("@commit", commit));
 
             if (matches.Count == 0)
-                return null;
+                return ResolveThroughGit(project, branch, commit);
 
             // An exact match wins over a prefix, so a short identifier that happens to
             // prefix a longer one still resolves to itself.
@@ -668,6 +697,67 @@ namespace SheetMan.History
             }
 
             return matches[0].Id;
+        }
+
+        /// <summary>
+        /// Asks git what the name means, then looks that commit up.
+        /// </summary>
+        private long? ResolveThroughGit(string project, string branch, string name)
+        {
+            if (RepositoryPath == null
+                || !GitProbe.TryResolveCommit(RepositoryPath, name, out string hash))
+            {
+                return null;
+            }
+
+            var direct = Read(@"
+                SELECT s.id FROM snapshot s JOIN project p ON p.id = s.project_id
+                WHERE p.project_key = @project AND s.branch = @branch AND s.commit_hash = @commit",
+                r => r.GetInt64(0),
+                ("@project", project), ("@branch", branch ?? ""), ("@commit", hash));
+
+            if (direct.Count > 0)
+            {
+                Note($"`{name}` is {Short(hash)}.");
+                return direct[0];
+            }
+
+            // The commit the name points at was never converted, which is the ordinary case
+            // for a release tag. The nearest snapshot behind it answers what was meant.
+            if (!GitProbe.TryCommittedAt(RepositoryPath, hash, out var at))
+                return null;
+
+            var nearest = Read(@"
+                SELECT s.id, s.commit_hash
+                FROM snapshot s JOIN project p ON p.id = s.project_id
+                WHERE p.project_key = @project AND s.branch = @branch
+                  AND s.committed_at IS NOT NULL AND s.committed_at <= @at
+                ORDER BY s.committed_at DESC, s.seq DESC
+                LIMIT 1",
+                r => (Id: r.GetInt64(0), Hash: r.GetString(1)),
+                ("@project", project), ("@branch", branch ?? ""), ("@at", at.UtcDateTime));
+
+            if (nearest.Count == 0)
+            {
+                Note($"`{name}` is {Short(hash)}, which is older than every snapshot on " +
+                     $"`{branch}` - there is nothing behind it to stand in for it.");
+
+                return null;
+            }
+
+            Note($"`{name}` is {Short(hash)}, which no conversion ever ran on. Using " +
+                 $"{Short(nearest[0].Hash)}, the last snapshot before it.");
+
+            return nearest[0].Id;
+        }
+
+        /// <summary>
+        /// Something the answer did that was not asked for, and that changes what it means.
+        /// </summary>
+        private void Note(string note)
+        {
+            if (!_notes.Contains(note))
+                _notes.Add(note);
         }
 
         /// <summary>
@@ -707,8 +797,10 @@ namespace SheetMan.History
 
         private static SheetManException NotFound(string commit, string project, string branch)
             => new SheetManException(
-                $"The history has no snapshot for `{commit}` on branch `{branch}` of `{project}`. " +
-                $"Either nothing converted that commit, or it is on another branch.");
+                $"The history has no snapshot for `{commit}` on branch `{branch}` of `{project}`, " +
+                $"and no working copy here could resolve it as a tag or a revision. Either " +
+                $"nothing converted that commit, or it is on another branch, or there is no " +
+                $"checkout to look the name up in.");
 
         private long SeqOf(long snapshotId)
         {

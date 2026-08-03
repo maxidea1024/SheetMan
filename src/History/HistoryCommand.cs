@@ -45,6 +45,8 @@ namespace SheetMan.History
 
             using var query = HistoryQuery.Open(connectionString);
 
+            query.RepositoryPath = RepositoryFor(options, recipe);
+
             string branch = options.Branch ?? query.DefaultBranch(projectKey);
 
             if (branch == null)
@@ -92,6 +94,8 @@ namespace SheetMan.History
             var (connectionString, projectKey) = Connection(options, recipe);
 
             using var query = HistoryQuery.Open(connectionString);
+
+            query.RepositoryPath = RepositoryFor(options, recipe);
 
             string branch = options.Branch ?? query.DefaultBranch(projectKey);
 
@@ -169,6 +173,17 @@ namespace SheetMan.History
 
             return 0;
         }
+
+        /// <summary>
+        /// The working copy a query resolves tag names against.
+        ///
+        /// The same places a conversion looks: whatever `--repository` names, then the
+        /// sheets' own source directories, then the working directory. Reading it from one
+        /// place means `--from v1.2.0` means the same thing whether it is being recorded or
+        /// asked about.
+        /// </summary>
+        private static string RepositoryFor(Options options, RecipeModel recipe)
+            => CommitInfo.Resolve(options, recipe).RepositoryPath;
 
         /// <summary>The document, exactly as the API serves it.</summary>
         public static string Serialize(object document)

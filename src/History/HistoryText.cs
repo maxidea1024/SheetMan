@@ -59,6 +59,9 @@ namespace SheetMan.History
                     $"changed is no longer recorded. Their statistics are.");
             }
 
+            foreach (var note in query.Notes ?? System.Array.Empty<string>())
+                text.AppendLine(note);
+
             if (query.Truncated)
             {
                 text.AppendLine(

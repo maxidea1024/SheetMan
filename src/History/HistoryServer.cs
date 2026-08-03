@@ -40,6 +40,11 @@ namespace SheetMan.History
         {
             var (connectionString, projectKey) = HistoryCommand.Connection(options, recipe);
 
+            // Worked out once, at start-up: a tag can only be resolved by a working copy,
+            // and asking git on every request would spawn a process per query. A server on
+            // a machine with no checkout simply cannot resolve tags, and says so.
+            string repository = CommitInfo.Resolve(options, recipe).RepositoryPath;
+
             string bind = string.IsNullOrWhiteSpace(options.Bind) ? "127.0.0.1" : options.Bind.Trim();
             int port = options.Port <= 0 ? 8080 : options.Port;
 
@@ -60,12 +65,16 @@ namespace SheetMan.History
 
             var app = builder.Build();
 
-            Map(app, connectionString, projectKey, token);
+            Map(app, connectionString, projectKey, token, repository);
 
             Log.Information($"Serving the history of `{projectKey}` on http://{bind}:{port}/");
 
             if (token != null)
                 Log.Information($"A bearer token is required; it comes from ${TokenVariable}.");
+
+            Log.Information(repository == null
+                ? "No working copy was found, so a range can only be asked for by commit hash."
+                : $"Tags and revisions will be resolved against `{repository}`.");
 
             app.Run();
 
@@ -121,7 +130,8 @@ namespace SheetMan.History
 
         // ----------------------------------------------------------------- routes
 
-        private static void Map(WebApplication app, string connectionString, string project, string token)
+        private static void Map(
+            WebApplication app, string connectionString, string project, string token, string repository)
         {
             if (token != null)
                 app.Use((context, next) => Authorize(context, token, next));
@@ -170,6 +180,8 @@ namespace SheetMan.History
                     // A connection per request. HistoryQuery holds one and MySQL connections
                     // are not concurrent; the pool makes this cheap.
                     using var query = HistoryQuery.Open(connectionString);
+
+                    query.RepositoryPath = repository;
 
                     string asked = Str(context.Request, "project") ?? project;
 

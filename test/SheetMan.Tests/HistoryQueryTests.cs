@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SheetMan.History;
 using SheetMan.Models;
@@ -17,7 +18,7 @@ namespace SheetMan.Tests
     /// presented as one person's work.
     /// </summary>
     [Collection("databases")]
-    public class HistoryQueryTests
+    public class HistoryQueryTests : IDisposable
     {
         private readonly string _project = "q" + Guid.NewGuid().ToString("N").Substring(0, 12);
         private readonly string _connectionString;
@@ -29,7 +30,32 @@ namespace SheetMan.Tests
             ("power", ValueType.Int32),
         };
 
+        private readonly List<string> _cleanup = new List<string>();
+
         public HistoryQueryTests() => _connectionString = HistoryTestBed.EnsureDatabase();
+
+        public void Dispose()
+        {
+            foreach (var directory in _cleanup)
+            {
+                try
+                {
+                    // git marks its object files read-only, which a plain recursive delete
+                    // refuses on Windows.
+                    foreach (var file in System.IO.Directory.EnumerateFiles(
+                                 directory, "*", System.IO.SearchOption.AllDirectories))
+                    {
+                        System.IO.File.SetAttributes(file, System.IO.FileAttributes.Normal);
+                    }
+
+                    System.IO.Directory.Delete(directory, recursive: true);
+                }
+                catch (System.IO.IOException)
+                {
+                    // A leftover temp directory is not worth failing a passing test over.
+                }
+            }
+        }
 
         // ------------------------------------------------------------- fixtures
 
@@ -358,6 +384,180 @@ namespace SheetMan.Tests
             Assert.Equal(new[] { "Lee", "Park", "Kim" }, entries.Select(e => e.AuthorName));
             Assert.Equal(new[] { "30", "20", "10" }, entries.Select(e => e.After));
             Assert.Equal(new[] { "20", "10", null }, entries.Select(e => e.Before));
+        }
+
+        // ------------------------------------------------------- tags and revisions
+
+        /// <summary>
+        /// A repository whose commits are the ones the history holds, with a tag on one.
+        ///
+        /// Real git rather than a stub: what is being checked is that a name a person would
+        /// type resolves the way git resolves it, and only git knows that. An annotated tag
+        /// in particular is its own object with its own hash, and looking that hash up in
+        /// the history would find nothing.
+        /// </summary>
+        private string RepositoryWithTags(out string[] commits)
+        {
+            string directory = System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), "sheetman-tags-" + Guid.NewGuid().ToString("N"));
+
+            System.IO.Directory.CreateDirectory(directory);
+            _cleanup.Add(directory);
+
+            Git(directory, "init", "--initial-branch=main");
+            Git(directory, "config", "user.name", "T");
+            Git(directory, "config", "user.email", "t@example.com");
+            Git(directory, "config", "commit.gpgsign", "false");
+
+            var made = new List<string>();
+
+            for (int i = 1; i <= 4; i++)
+            {
+                System.IO.File.WriteAllText(System.IO.Path.Combine(directory, "sheet.txt"), i.ToString());
+
+                Git(directory, "add", "sheet.txt");
+                Git(directory, "commit", "-m", "change " + i);
+
+                made.Add(Git(directory, "rev-parse", "HEAD").Trim());
+            }
+
+            // Annotated, on the second commit. A lightweight tag would resolve to the
+            // commit directly and would not exercise the part that can go wrong.
+            Git(directory, "tag", "-a", "v1.0.0", "-m", "release 1.0", made[1]);
+
+            // And one on a commit no conversion will have run on - the ordinary shape of a
+            // release tag, since bumping a version touches no sheets.
+            Git(directory, "tag", "-a", "v2.0.0", "-m", "release 2.0", made[3]);
+
+            commits = made.ToArray();
+            return directory;
+        }
+
+        private static string Git(string directory, params string[] args)
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo("git")
+            {
+                WorkingDirectory = directory,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                StandardOutputEncoding = new System.Text.UTF8Encoding(false),
+            };
+
+            foreach (var arg in args)
+                psi.ArgumentList.Add(arg);
+
+            using var process = System.Diagnostics.Process.Start(psi);
+
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+
+            process.WaitForExit(30_000);
+
+            Assert.True(process.ExitCode == 0, $"git {string.Join(" ", args)} failed: {error}");
+
+            return output;
+        }
+
+        /// <summary>
+        /// The question a release actually gets asked in. Nobody remembers the hash a
+        /// version was cut at.
+        /// </summary>
+        [Fact]
+        public void A_range_can_be_asked_for_by_tag()
+        {
+            string repository = RepositoryWithTags(out var commits);
+
+            // The first three commits are converted; the fourth is not, which is what makes
+            // v2.0.0 the interesting case.
+            for (int i = 0; i < 3; i++)
+                Record(Items(new object[] { 1, "Sword", (i + 1) * 10 }), Commit(commits[i], "Kim", i * 5));
+
+            using var query = Query();
+            query.RepositoryPath = repository;
+
+            var document = query.Diff(_project, "main", from: "v1.0.0");
+
+            // v1.0.0 is the second commit, so the range is the third alone.
+            var only = Assert.Single(document.Snapshots);
+
+            Assert.Equal(commits[2], only.Commit);
+        }
+
+        /// <summary>
+        /// A tag on a commit nobody converted - a version bump touches no sheets - falls
+        /// back to the snapshot behind it, and says so. Erroring would send somebody hunting
+        /// for a hash; substituting quietly would answer a different question.
+        /// </summary>
+        [Fact]
+        public void A_tag_on_an_unconverted_commit_falls_back_and_says_so()
+        {
+            string repository = RepositoryWithTags(out var commits);
+
+            for (int i = 0; i < 3; i++)
+                Record(Items(new object[] { 1, "Sword", (i + 1) * 10 }), Commit(commits[i], "Kim", i * 5));
+
+            using var query = Query();
+            query.RepositoryPath = repository;
+
+            var document = query.Diff(_project, "main", to: "v2.0.0");
+
+            // The fourth commit has no snapshot, so the third stands in and the range ends
+            // there - all three snapshots.
+            Assert.Equal(3, document.Snapshots.Count);
+
+            Assert.Contains(document.Query.Notes,
+                note => note.Contains("v2.0.0") && note.Contains("no conversion ever ran on"));
+        }
+
+        [Fact]
+        public void A_revision_expression_works_too()
+        {
+            string repository = RepositoryWithTags(out var commits);
+
+            for (int i = 0; i < 3; i++)
+                Record(Items(new object[] { 1, "Sword", (i + 1) * 10 }), Commit(commits[i], "Kim", i * 5));
+
+            using var query = Query();
+            query.RepositoryPath = repository;
+
+            // The commit before the third one, which is the second.
+            var document = query.Diff(_project, "main", from: commits[2] + "^");
+
+            Assert.Single(document.Snapshots);
+            Assert.Equal(commits[2], document.Snapshots[0].Commit);
+        }
+
+        /// <summary>
+        /// A commit hash that is already in the history must not be sent to git - it works
+        /// with no checkout at all, which is what the server usually has.
+        /// </summary>
+        [Fact]
+        public void A_stored_hash_needs_no_repository()
+        {
+            ThreeCommits();
+
+            using var query = Query();
+
+            Assert.Null(query.RepositoryPath);
+            Assert.Single(query.Diff(_project, "main", from: "bbbbbbbb2222").Snapshots);
+        }
+
+        /// <summary>
+        /// Without a working copy a tag cannot be resolved, and the error says that rather
+        /// than blaming the history for not holding a snapshot it was never asked about.
+        /// </summary>
+        [Fact]
+        public void A_tag_with_no_repository_is_refused_with_the_reason()
+        {
+            ThreeCommits();
+
+            using var query = Query();
+
+            var ex = Assert.Throws<SheetManException>(() => query.Diff(_project, "main", from: "v1.0.0"));
+
+            Assert.Contains("no working copy", ex.Message);
         }
 
         // ------------------------------------------------------------- pruning

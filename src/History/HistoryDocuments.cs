@@ -58,6 +58,15 @@ namespace SheetMan.History
 
         /// <summary>How many changes were left out by the limit.</summary>
         public long Omitted { get; set; }
+
+        /// <summary>
+        /// Things the answer did that were not asked for.
+        ///
+        /// A tag resolved to a commit; a commit with no snapshot stood in for by the one
+        /// behind it. Each is a reasonable thing to do and each changes what the numbers
+        /// describe, so each is said rather than assumed to be fine.
+        /// </summary>
+        public IReadOnlyList<string> Notes { get; set; }
     }
 
     /// <summary>One snapshot, and what changed to reach it.</summary>

@@ -386,6 +386,12 @@
               + ` ${num(history.totals.cells)} cell`,
       }));
 
+    // Anything the answer did that was not asked for - a tag resolved, a commit with no
+    // snapshot stood in for. It changes what the numbers describe, so it is on the page.
+    for (const note of history.query.notes || []) {
+      card.appendChild(el('div', { class: 'warn', text: note.replace(/`/g, '') }));
+    }
+
     if (history.query.truncated) {
       // Said on the page, not only in the JSON. A cut list that does not admit it reads
       // as a complete one.
