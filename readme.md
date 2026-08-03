@@ -975,18 +975,21 @@ jobs:
 #### 조회
 
 ```
-# 두 커밋 사이에 누가 무엇을 바꿨나
-sheetman --recipe recipe.json --history --from <sha> --to <sha>
+# 두 릴리스 사이에 누가 무엇을 바꿨나
+sheetman --recipe recipe.json --history --from v1.2.0 --to v1.3.0
+
+# 커밋 해시로도 (앞부분만 써도 됩니다)
+sheetman --recipe recipe.json --history --from 4f2a9c1 --to HEAD
 
 # 한 테이블만, 한 사람만
-sheetman --recipe recipe.json --history --from <sha> --table Item --author kim
+sheetman --recipe recipe.json --history --from v1.2.0 --table Item --author kim
 
 # 터미널에서 읽기 / 자족적 HTML 한 장으로
-sheetman --recipe recipe.json --history --from <sha> --format text
-sheetman --recipe recipe.json --history --from <sha> --format html --out report.html
+sheetman --recipe recipe.json --history --from v1.2.0 --format text
+sheetman --recipe recipe.json --history --from v1.2.0 --format html --out report.html
 
 # 한 커밋의 통계
-sheetman --recipe recipe.json --stats --at <sha>
+sheetman --recipe recipe.json --stats --at v1.2.0
 ```
 
 `--from`은 **제외**, `--to`는 **포함**입니다. `--from`은 비교의 기준 상태이고, 그 커밋 자신의 변경은 그 앞 구간에 속합니다.
@@ -1018,6 +1021,83 @@ v1.2.0 is 4f2a9c1b8e33, which no conversion ever ran on. Using 8b1d7e40a2f5, the
 |`--out <파일>`|파일로. 생략하면 표준출력|
 |`--limit <n>`|최대 변경 건수. **잘린 만큼은 잘렸다고 보고합니다.**|
 
+##### `--format text` 출력
+
+```
+demo-uwo / main
+  c001 .. (head)
+
+c002  2026-07-22 14:03  박밸런스 <park@motifgames.com>
+    ~ Item[1].Price  100 -> 120    sheets/core.xlsx : Refs : O9
+
+c003  2026-07-24 09:41  박밸런스 <park@motifgames.com>
+    ~ Item[2].Price  250 -> 230    sheets/core.xlsx : Refs : O10
+    ~ Item[3].Description  Restores 10 HP <or> 5 MP -> HP 10 또는 MP 5 회복    sheets/core.xlsx : Refs : N11
+    ~ Item[3].Price  50 -> 40    sheets/core.xlsx : Refs : O11
+
+c004  2026-07-28 16:20  이시스템 <lee@motifgames.com>
+    ~ field      Item.Price -> ShopPrice  (renamed, 3 row(s) carried over)
+
+c005  2026-07-30 11:05  김기획 <kim@motifgames.com>
+    - Item[3].Name  Small Potion -> (blank)
+    - Item[3].ShopPrice  40 -> (blank)
+    ...
+
+4 snapshot(s), 1 schema, 8 row and 20 cell change(s).
+```
+
+`~`는 수정, `+`는 추가, `-`는 삭제입니다. 오른쪽은 **원본 셀 위치**이고, 구글 시트라면 그 셀로 가는 URL이 나옵니다.
+
+`c004`가 컬럼 이름 변경입니다. 셀 6건이 아니라 한 줄로 접히고, 값이 그대로 옮겨간 행 수를 적습니다. 값까지 같이 고쳤다면 접지 않고 삭제+추가로 남습니다 — 옮겨지지 않은 값을 옮겨졌다고 말하지 않기 위해서입니다.
+
+##### `--format json` 출력
+
+CLI와 API가 **같은 문서를 같은 직렬화기로** 내보냅니다. 아래는 위 `c004` 구간이고, 셀 변경은 지면상 생략했습니다.
+
+```json
+{
+  "schemaVersion": 1,
+  "query": {
+    "project": "demo-uwo", "branch": "main", "from": "c003", "to": "c004",
+    "table": null, "field": null, "author": null,
+    "limit": 5000, "truncated": false, "omitted": 0,
+    "notes": []
+  },
+  "snapshots": [
+    {
+      "commit": "c004", "shortCommit": "c004",
+      "authorName": "이시스템", "authorEmail": "lee@motifgames.com",
+      "committedAt": "2026-07-28T07:20:00.0000000Z", "subject": null,
+      "followsParent": true, "previousCommit": "c003",
+      "attributable": true, "pruned": false,
+      "counts": { "schema": 1, "rows": 3, "cells": 6 },
+      "schema": [
+        {
+          "entityKind": "Field", "entity": "Item", "member": "ShopPrice",
+          "kind": "Modified", "renamedFrom": "Price",
+          "before": "{\"comment\":\"shop price\",\"side\":\"s\",\"type\":\"int\"}",
+          "after": "{\"comment\":\"shop price\",\"side\":\"s\",\"type\":\"int\"}",
+          "location": { "file": "sheets/core.xlsx", "sheet": "Refs", "cell": "O4", "url": null }
+        }
+      ]
+    }
+  ],
+  "totals": { "snapshots": 1, "schema": 1, "rows": 3, "cells": 6, "gaps": 0, "pruned": 0 }
+}
+```
+
+읽을 때 놓치기 쉬운 필드들입니다.
+
+|필드|의미|
+|--|--|
+|`query.notes`|**답이 요청받지 않고 한 일.** 태그를 커밋으로 해석했거나, 스냅샷 없는 커밋을 뒤의 것으로 대체했을 때 여기에 문장이 들어옵니다. 숫자가 무엇을 뜻하는지가 달라지므로 비어 있지 않으면 읽어야 합니다.|
+|`query.truncated` / `omitted`|`--limit`에 걸려 잘렸는지, 몇 건이 빠졌는지. **잘렸는데 말하지 않으면 "더 이상 변경 없음"으로 읽힙니다.**|
+|`attributable`|이 변경을 이 커밋 작성자에게 돌려도 되는지. dirty 워킹카피에서 기록된 스냅샷은 `false`입니다.|
+|`followsParent` / `previousCommit`|직전 스냅샷의 커밋이 이 커밋의 부모인지. `false`면 **그 사이 커밋들이 변환되지 않아 이 변경이 한 사람의 것이 아닙니다.**|
+|`pruned`|`--prune`으로 상세가 정리된 스냅샷. 변경 목록이 비어 있는 게 "안 바뀜"이 아니라 "기록이 지워짐"입니다.|
+|`renamedFrom`|컬럼 이름 변경. 있으면 그 컬럼의 셀 변경은 값이 옮겨간 것뿐입니다.|
+|`location.url`|구글 시트일 때 그 셀로 가는 링크. 엑셀이면 `null`이고 `file`/`sheet`/`cell`로 찾습니다.|
+
 #### 웹서버
 
 ```
@@ -1034,6 +1114,17 @@ API는 `/api/v1` 아래에 있고 전부 GET, 전부 읽기 전용입니다.
 /api/v1/diff                /api/v1/authors       /api/v1/cell
 /api/v1/dashboard           /api/v1/healthz
 ```
+
+쿼리 파라미터는 CLI 옵션과 이름이 같습니다 — `project` `branch` `from` `to` `at` `table` `field` `author` `limit` `metric` `row`. `from`·`to`·`at`은 **CLI와 똑같이 태그와 리비전 표현식을 받습니다.**
+
+```
+/api/v1/diff?project=uwo&from=v1.2.0&to=v1.3.0&table=Item
+/api/v1/dashboard?project=uwo&from=v1.2.0
+```
+
+응답은 `--format json`과 **같은 문서를 같은 직렬화기로** 내보냅니다. `/diff`는 회귀 스위트가 API 응답과 CLI 출력을 **바이트 단위로 비교**합니다(답변 생성 시각만 제외) — 웹 페이지의 숫자와 터미널의 숫자가 어긋날 수 없는 이유입니다.
+
+`query.notes`는 웹 페이지에도 그대로 뜹니다. 태그를 대체했다는 안내를 터미널에서만 보고 페이지에서는 못 보는 상황이 생기지 않습니다.
 
 - **읽기 전용입니다.** 쓰는 것은 변환뿐이므로, 접속 계정도 읽기 전용을 권장합니다.
 - **기본은 127.0.0.1입니다.** `--bind`로 밖에 열려면 `SHEETMAN_SERVE_TOKEN`이 반드시 있어야 하고, 없으면 **시작을 거부합니다**. 열어놓고 인증을 잊는 것이 이런 도구가 새는 흔한 경로이고, 새면 기획 데이터 전부와 손댄 사람 전원의 이름이 함께 나갑니다. 요청은 `Authorization: Bearer <token>`.
