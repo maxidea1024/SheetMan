@@ -1,5 +1,5 @@
 {
-  "LastUpdatedDate": "2026-07-30T17:28:26.8475689+09:00",
+  "LastUpdatedDate": "<TIMESTAMP>",
   "MasterHash": "abe1612f0d8c2f812820841ff948b4e9",
   "TotalSize": 354,
   "Items": [
@@ -7,7 +7,7 @@
       "Name": "ExcelTyped.json",
       "Size": 354,
       "Hash": "abe1612f0d8c2f812820841ff948b4e9",
-      "LastUpdatedDate": "2026-07-30T17:28:26.8475676+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]
 }

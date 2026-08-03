@@ -47,6 +47,16 @@
     "MySql": []
   },
 
+  // As in core-client, and for the same reason: narrowed output, unnarrowed
+  // description.
+  "Targets": [
+    {
+      "Type": "summary",
+      "Path": "test/fixtures/output/core-server/summary",
+      "TargetSide": "s"
+    }
+  ],
+
   "CodeGenerations": {
     "Cpp": [],
     "CSharp": [

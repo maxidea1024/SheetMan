@@ -1,5 +1,5 @@
 {
-  "LastUpdatedDate": "2026-07-30T17:28:30.7278754+09:00",
+  "LastUpdatedDate": "<TIMESTAMP>",
   "MasterHash": "7202b387010beb49e88aef8288bbff6f",
   "TotalSize": 1982,
   "Items": [
@@ -7,37 +7,37 @@
       "Name": "TestFieldTypes.json",
       "Size": 551,
       "Hash": "dfa2ad6cbd1f6746ee7700f0aab73050",
-      "LastUpdatedDate": "2026-07-30T17:28:30.7209074+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ItemCategory.json",
       "Size": 177,
       "Hash": "ad9f7f59d25ce201e30fe7485e8680aa",
-      "LastUpdatedDate": "2026-07-30T17:28:30.7213449+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Item.json",
       "Size": 313,
       "Hash": "a424fee55dc1a8fcd1e41f1a23f506ce",
-      "LastUpdatedDate": "2026-07-30T17:28:30.7223382+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Localization.json",
       "Size": 207,
       "Hash": "f1766aa82da27a2d8f903aa252b99f07",
-      "LastUpdatedDate": "2026-07-30T17:28:30.7261438+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ArrayTypes.json",
       "Size": 637,
       "Hash": "78dcee7b29fadb81d95c0d7a6d64a08c",
-      "LastUpdatedDate": "2026-07-30T17:28:30.7271849+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ClientStrings.json",
       "Size": 97,
       "Hash": "b205b1ce03063112fde17f6a149dfe96",
-      "LastUpdatedDate": "2026-07-30T17:28:30.7278741+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]
 }

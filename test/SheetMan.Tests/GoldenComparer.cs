@@ -136,8 +136,20 @@ namespace SheetMan.Tests
             foreach (var relative in Enumerate(outputDir))
             {
                 string target = Path.Combine(goldenDir, relative);
+                string source = Path.Combine(outputDir, relative);
+
                 Directory.CreateDirectory(Path.GetDirectoryName(target));
-                File.Copy(Path.Combine(outputDir, relative), target, overwrite: true);
+
+                if (OutputNormalizer.IsBinary(relative))
+                {
+                    File.Copy(source, target, overwrite: true);
+                    continue;
+                }
+
+                // Recorded masked, so what is committed is what is actually compared. The
+                // alternative freezes one machine's clock, user name and checked-out commit
+                // into the repository, where they read as if they mattered.
+                File.WriteAllText(target, OutputNormalizer.Normalize(relative, File.ReadAllText(source)));
             }
         }
 

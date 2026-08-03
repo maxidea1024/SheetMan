@@ -47,6 +47,19 @@
     "MySql": []
   },
 
+  // Declared for the client, like every other entry here - but a summary describes
+  // what the sheets declared, not the cut this entry is built for. The golden tree
+  // therefore lists the server-only tables that the binary and code outputs beside
+  // it correctly leave out. That is the point: a history taken from a client build
+  // must not read as the server's tables having been deleted.
+  "Targets": [
+    {
+      "Type": "summary",
+      "Path": "test/fixtures/output/core-client/summary",
+      "TargetSide": "c"
+    }
+  ],
+
   "CodeGenerations": {
     "Cpp": [],
     "CSharp": [

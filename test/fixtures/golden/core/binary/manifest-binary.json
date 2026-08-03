@@ -1,5 +1,5 @@
 {
-  "LastUpdatedDate": "2026-07-30T17:28:28.7330322+09:00",
+  "LastUpdatedDate": "<TIMESTAMP>",
   "MasterHash": "4fa3d446554883500b77fb946210ba60",
   "TotalSize": 816,
   "Items": [
@@ -7,43 +7,43 @@
       "Name": "TestFieldTypes.table",
       "Size": 206,
       "Hash": "12e88a745e6e33a2f0f42f7f48a9ad6e",
-      "LastUpdatedDate": "2026-07-30T17:28:28.7289207+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ItemCategory.table",
       "Size": 90,
       "Hash": "c52f60ed743899b4d96ca8b1f88a54c4",
-      "LastUpdatedDate": "2026-07-30T17:28:28.7297178+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Item.table",
       "Size": 182,
       "Hash": "674e47b7ce76120de2d9a109deec43cd",
-      "LastUpdatedDate": "2026-07-30T17:28:28.730279+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Localization.table",
       "Size": 102,
       "Hash": "82faad36e3b7498c217ab37ab42bdf0c",
-      "LastUpdatedDate": "2026-07-30T17:28:28.7310178+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ArrayTypes.table",
       "Size": 153,
       "Hash": "b344d394a5204b44fb85d017d90282f5",
-      "LastUpdatedDate": "2026-07-30T17:28:28.7316731+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ServerTuning.table",
       "Size": 43,
       "Hash": "10e743ba9ae72bae9b3510eff5a1b609",
-      "LastUpdatedDate": "2026-07-30T17:28:28.7321837+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ClientStrings.table",
       "Size": 40,
       "Hash": "0c42319c24fa6620f4c5ded15e986a19",
-      "LastUpdatedDate": "2026-07-30T17:28:28.7326504+09:00"
+      "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]
 }

@@ -57,6 +57,10 @@
     {
       "Type": "html",
       "Path": "test/fixtures/output/core-dynamic/html"
+    },
+    {
+      "Type": "summary",
+      "Path": "test/fixtures/output/core-dynamic/summary"
     }
   ]
 }

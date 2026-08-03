@@ -41,6 +41,16 @@
     "MySql": []
   },
 
+  // The summary describes the whole model rather than producing anything a build
+  // consumes, so it is the one target that reads the unnarrowed model.
+  "Targets": [
+    {
+      "Type": "summary",
+      "Path": "test/fixtures/output/core/summary",
+      "TargetSide": "cs"
+    }
+  ],
+
   "CodeGenerations": {
     "Cpp": [
       {

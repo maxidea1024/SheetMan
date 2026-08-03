@@ -16,6 +16,17 @@ namespace SheetMan.Targets
 
         /// <summary>Writes source code, or documentation about the data.</summary>
         CodeGeneration,
+
+        /// <summary>
+        /// Describes the conversion rather than producing something a build consumes:
+        /// statistics, and the change history.
+        ///
+        /// Last, so it can describe a run that has already happened. It is also the only
+        /// kind that reads <see cref="ITarget"/>'s unnarrowed model, because a description
+        /// of one side of the data presented as a description of all of it is not a
+        /// narrower answer but a wrong one.
+        /// </summary>
+        Description,
     }
 
     /// <summary>
