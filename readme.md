@@ -10,10 +10,11 @@
 - 데이터의 기본 유효성을 검증합니다. 정적으로 체크할 수 있는 부분은 최대한 변환 과정에서 체크하여 휴먼오류를 줄여줍니다.
 - 데이터 정규화를 위해서 테이블간 참조를 지원합니다.
 - 자동 패치 기능을 지원하므로 CDN등의 서비스에 파일을 올려두기만 하면 사용하는 프로그램에서는 항상 최신데이터로 유지할 수 있습니다.
-- 다양한 언어를 지원합니다. 현재 C#, TypeScript, C++ 코드를 생성합니다.
+- 다양한 언어를 지원합니다. 현재 C#, TypeScript, C++, Go, Rust, Python, Java, Kotlin, Ruby, Dart 코드와 Unreal 모듈을 생성합니다.
 - 실제 프로그램에 로드된 데이터를 눈으로 확인할 수 있어 잘못된 데이터로 인한 불안감을 줄여줄수 있습니다.
 - 파일(바이너리 / JSON)뿐 아니라 MySQL / PostgreSQL / MongoDB / Redis로 직접 적재할 수 있습니다.
 - 서버/클라이언트 중 한쪽만 필요한 엔티티와 필드를 출력 대상별로 걸러낼 수 있습니다. (`TargetSide`)
+- **누가 언제 무엇을 바꿨는지 셀 단위로 추적**하고, 웹 브라우저에서 확인할 수 있습니다. (`--serve`)
 - 데이터에 문제가 있을 경우 데이터 원본이 위치한 곳으로 바로 이동하여 확인할 수 있도록 해줍니다.
 - 시트의 문제를 한 번에 모아서 보고합니다. 오류 하나당 한 번씩 재실행할 필요가 없습니다.
 - 변환 도중 오류 발생시 원자적으로 동작합니다. 파일은 스테이징 영역을 거쳐 마지막에 일괄 커밋되고, 데이터베이스는 섀도 테이블에 적재한 뒤 원자적으로 교체합니다. (All or Nothing)
@@ -478,6 +479,14 @@ sheetman --recipe recipe.json
 |`-r`, `--recipe`|사용할 recipe 파일|
 |`--new-recipe <파일>`|시작용 recipe를 만들고 종료. 모든 목록에 기본값이 채워진 항목 하나가 들어 있어 **어떤 설정이 있는지 파일만 보고 알 수 있습니다**. 필요 없는 항목은 지우면 되고, 경로가 빈 항목은 꺼진 것으로 취급되니 그냥 둬도 됩니다.|
 |`--target-side <side>`|실행 전체를 한쪽으로 좁힘. `client` / `server` / `both`(기본).|
+|`--commit <id>`|이 변환이 어느 커밋의 것인지. 생략하면 시트가 있는 워킹카피에서 git으로 읽습니다. 「[Summary와 History](#summary와-history)」 참고.|
+|`--branch <name>`|스냅샷이 속할 브랜치. 생략하면 git에서 읽습니다.|
+|`--commit-author "Name <email>"`|작성자를 직접 지정. git 값을 덮어씁니다.|
+|`--commit-date <ISO8601>`|변경 시각을 직접 지정. git 값을 덮어씁니다.|
+|`--repository <경로>`|커밋 정보를 읽을 워킹카피. 생략하면 시트의 소스 디렉터리, 그다음 현재 디렉터리를 봅니다.|
+|`--history`|변환 대신 **변경 내역을 조회**하고 종료|
+|`--stats`|변환 대신 **한 커밋의 통계를 조회**하고 종료|
+|`--serve`|변환 대신 **HTTP로 히스토리를 서비스**하고 계속 실행|
 |`--verbose`|디버그 로그까지 출력|
 |`--silent`|ERROR/FATAL 외에는 출력하지 않음|
 |`--debug`|오류 발생 시 콜스택까지 출력|
@@ -536,6 +545,7 @@ sheetman @args.txt
 |`cpp`, `csharp`, `typescript`, `html`|코드 생성|
 |`go`, `rust`, `python`, `java`, `kotlin`, `ruby`, `dart`|코드 생성 (전용 섹션 없음 — `Targets`로만 지정)|
 |`unreal`|Unreal 모듈 생성 (`Targets`로만 지정)|
+|`summary`, `history`|변환 자체를 기록 (`Targets`로만 지정) — 「[Summary와 History](#summary와-history)」|
 
 두 방식이 있는 이유는 타깃을 추가할 때 recipe 스키마를 고치지 않아도 되게 하기 위함입니다. 위 섹션들은 `Targets`보다 먼저 있었고 기존 recipe를 위해 남아 있습니다.
 
@@ -779,6 +789,104 @@ if (item != nullptr) {
 ```
 
 
+
+
+
+### Summary와 History
+
+두 가지를 답합니다.
+
+- **통계** — 지금 이 커밋의 데이터가 어떻게 생겼나.
+- **히스토리** — A와 B 커밋 사이에 **누가 언제 무엇을** 바꿨나. 셀 단위로.
+
+#### 레시피
+
+```json
+"Targets": [
+  { "Type": "summary", "Path": "./out/summary" },
+
+  { "Type": "history",
+    "ConnectionString": "Server=db;Database=sheetman_history;Uid=sheetman;Pwd=${SHEETMAN_HISTORY_PASSWORD}",
+    "ProjectKey": "uwo" }
+]
+```
+
+`summary`는 변환마다 `summary.json`을 씁니다 — 테이블·행·컬럼·셀 수, 타입 분포, 테이블별·컬럼별 통계. **모든 화면이 이 문서에서 그려집니다.**
+
+`history`는 MySQL에 스냅샷 하나와 거기 이르기까지의 셀 단위 변경을 기록합니다. 비밀번호는 `${NAME}`으로 환경변수에서 받습니다 — recipe는 커밋되므로 직접 적으면 히스토리에 영구히 남습니다.
+
+|설정|기본값|의미|
+|--|--|--|
+|`ProjectKey`|—|필수. 한 DB가 여러 프로젝트를 담을 수 있고, 이 값으로 구분합니다. 바꾸면 새 히스토리가 시작됩니다.|
+|`RecordDirty`|`false`|커밋되지 않은 변경이 있는 워킹카피의 변환도 기록할지.|
+|`AllowOutOfOrder`|`false`|브랜치 head보다 뒤진 커밋도 기록할지.|
+|`OnFailure`|`warn`|DB에 닿지 못할 때. `warn`이면 빌드는 성공하고 ERROR 로그가 남습니다. `fail`이면 빌드가 멈춥니다.|
+
+#### 기록되지 않는 세 가지
+
+기록하면 **그럴듯하지만 틀린 답**이 히스토리에 남기 때문에 거부합니다. 각각 로그로 이유를 말합니다.
+
+1. **식별되지 않은 변환.** `--commit`도 없고 git 워킹카피도 아니면 어디에 기록할 대상이 없습니다.
+2. **dirty 워킹카피의 변환.** 커밋이 설명하지 않는 작업이라, 마지막 커밋 작성자에게 잘못 귀속됩니다. 게다가 한 번 넣으면 그 커밋의 깨끗한 빌드는 영영 기록할 수 없습니다.
+3. **head보다 뒤진 커밋.** 스냅샷은 사슬이고 각각 직전 것과 비교되므로, 새 커밋 뒤에 옛 커밋을 넣으면 **새 커밋의 작업이 되돌려진 것으로** 기록됩니다. 조상 관계는 타임스탬프가 아니라 git에게 묻습니다.
+
+#### 조회
+
+```
+# 두 커밋 사이에 누가 무엇을 바꿨나
+sheetman --recipe recipe.json --history --from <sha> --to <sha>
+
+# 한 테이블만, 한 사람만
+sheetman --recipe recipe.json --history --from <sha> --table Item --author kim
+
+# 터미널에서 읽기 / 자족적 HTML 한 장으로
+sheetman --recipe recipe.json --history --from <sha> --format text
+sheetman --recipe recipe.json --history --from <sha> --format html --out report.html
+
+# 한 커밋의 통계
+sheetman --recipe recipe.json --stats --at <sha>
+```
+
+`--from`은 **제외**, `--to`는 **포함**입니다. `--from`은 비교의 기준 상태이고, 그 커밋 자신의 변경은 그 앞 구간에 속합니다.
+
+커밋은 앞부분만 써도 됩니다. 애매하면 추측하지 않고 거부합니다.
+
+|옵션|의미|
+|--|--|
+|`--from` / `--to`|범위. 생략하면 브랜치 처음 / head|
+|`--at`|`--stats`가 볼 커밋. 생략하면 head|
+|`--table` / `--field` / `--author`|좁히기|
+|`--format`|`json`(기본) / `text` / `html`|
+|`--out <파일>`|파일로. 생략하면 표준출력|
+|`--limit <n>`|최대 변경 건수. **잘린 만큼은 잘렸다고 보고합니다.**|
+
+#### 웹서버
+
+```
+sheetman --recipe recipe.json --serve --port 8080
+```
+
+`http://127.0.0.1:8080/` 에 대시보드가 뜹니다 — 통계 타일, 행 수 추이, 스냅샷별 변경량, 커밋별 변경 목록(원본 셀 딥링크 포함), 작성자별 집계.
+
+API는 `/api/v1` 아래에 있고 전부 GET, 전부 읽기 전용입니다.
+
+```
+/api/v1/projects            /api/v1/branches      /api/v1/tables
+/api/v1/snapshots           /api/v1/stats         /api/v1/trend
+/api/v1/diff                /api/v1/authors       /api/v1/cell
+/api/v1/dashboard           /api/v1/healthz
+```
+
+- **읽기 전용입니다.** 쓰는 것은 변환뿐이므로, 접속 계정도 읽기 전용을 권장합니다.
+- **기본은 127.0.0.1입니다.** `--bind`로 밖에 열려면 `SHEETMAN_SERVE_TOKEN`이 반드시 있어야 하고, 없으면 **시작을 거부합니다**. 열어놓고 인증을 잊는 것이 이런 도구가 새는 흔한 경로이고, 새면 기획 데이터 전부와 손댄 사람 전원의 이름이 함께 나갑니다. 요청은 `Authorization: Bearer <token>`.
+- 스냅샷은 불변이라 모든 응답에 ETag가 붙고 재요청은 304입니다.
+- `--serve`는 ASP.NET Core 런타임을 필요로 합니다. 기본 .NET 런타임만 있는 머신에 배포한다면 self-contained로 퍼블리시하세요.
+
+#### 정직하게 남는 한계
+
+- **백필하지 않습니다.** 변환을 돌리지 않은 커밋 구간의 변경은 다음에 성공한 스냅샷에 뭉쳐서 그 커밋 작성자에게 귀속됩니다. 다만 **그 구간은 표시됩니다** — 스냅샷은 자기 커밋이 직전 스냅샷 커밋의 직계 자식인지를 기록하고, 아니면 리포트와 웹 페이지가 "이 변경은 이 커밋 것만이 아니다"라고 말합니다. 정확한 귀속을 원하면 워크북이 바뀐 커밋마다 CI가 변환을 돌리면 됩니다.
+- 한 커밋에 두 사람의 수정이 섞이면 커밋 작성자 한 명으로 기록됩니다. xlsx는 바이너리라 git blame이 안 되므로 커밋 단위가 천장입니다.
+- 행은 primary index 값으로 추적하므로, 키가 바뀐 수정은 삭제+추가로 보입니다.
 
 
 
