@@ -348,11 +348,11 @@ namespace SheetMan.History
         {
             using var command = Command(transaction, @"
                 INSERT INTO snapshot
-                    (project_id, branch, commit_hash, seq, parent_id, model_hash,
+                    (project_id, branch, commit_hash, seq, parent_id, follows_parent, model_hash,
                      author_name, author_email, committed_at, subject, dirty, attributable,
                      converted_at, converted_by, tool_version, recipe, summary)
                 VALUES
-                    (@project, @branch, @commit, @seq, @parent, @modelHash,
+                    (@project, @branch, @commit, @seq, @parent, @followsParent, @modelHash,
                      @authorName, @authorEmail, @committedAt, @subject, @dirty, @attributable,
                      UTC_TIMESTAMP(3), @convertedBy, @toolVersion, @recipe, @summary)");
 
@@ -363,6 +363,7 @@ namespace SheetMan.History
             command.Parameters.AddWithValue("@commit", commit.Hash);
             command.Parameters.AddWithValue("@seq", write.Seq);
             command.Parameters.AddWithValue("@parent", (object)write.ParentId ?? DBNull.Value);
+            command.Parameters.AddWithValue("@followsParent", write.FollowsParent);
             command.Parameters.AddWithValue("@modelHash", write.Summary.Data.Hash);
             command.Parameters.AddWithValue("@authorName", (object)commit.AuthorName ?? DBNull.Value);
             command.Parameters.AddWithValue("@authorEmail", (object)commit.AuthorEmail ?? DBNull.Value);
@@ -936,6 +937,16 @@ namespace SheetMan.History
         public long Seq { get; set; }
 
         public long? ParentId { get; set; }
+
+        /// <summary>
+        /// Whether the parent snapshot's commit is this commit's parent in the repository.
+        ///
+        /// Recorded here rather than worked out when the history is read, because only a
+        /// conversion has the repository to ask. False means nothing converted the commits
+        /// in between, so these changes cover more than this commit made - which a report
+        /// has to say, or it credits one person with several people's work.
+        /// </summary>
+        public bool FollowsParent { get; set; } = true;
 
         /// <summary>Tables whose columns need rewriting, which is those whose schema moved.</summary>
         public HashSet<string> ChangedTables { get; set; }

@@ -79,6 +79,75 @@ namespace SheetMan
         [Option("repository", HelpText = "Working copy to read commit information from.")]
         public string Repository { get; set; }
 
+        // ------------------------------------------------------------- querying
+
+        /// <summary>
+        /// Reads the history back instead of converting: who changed what, between two
+        /// commits.
+        ///
+        /// The recipe is still needed, because that is where the history's address and
+        /// project name are - reading them from a second place is how the two come to
+        /// disagree.
+        /// </summary>
+        [Option("history", HelpText = "Report what changed between two commits, and exit.")]
+        public bool History { get; set; }
+
+        /// <summary>Reports the statistics of one commit instead of converting.</summary>
+        [Option("stats", HelpText = "Report the statistics of a commit, and exit.")]
+        public bool Stats { get; set; }
+
+        /// <summary>
+        /// The commit a range starts after.
+        ///
+        /// Exclusive: it is the state being compared from, so its own changes belong to the
+        /// range before this one. Left out, the range starts at the branch's first snapshot.
+        /// </summary>
+        [Option("from", HelpText = "Commit the range starts after. Exclusive.")]
+        public string From { get; set; }
+
+        /// <summary>The commit a range ends at, inclusive. Left out, the branch's head.</summary>
+        [Option("to", HelpText = "Commit the range ends at. Inclusive.")]
+        public string To { get; set; }
+
+        /// <summary>Which commit `--stats` describes. Left out, the branch's head.</summary>
+        [Option("at", HelpText = "Commit to report statistics for. The head when left out.")]
+        public string At { get; set; }
+
+        /// <summary>Narrows a report to one table.</summary>
+        [Option("table", HelpText = "Only report changes to this table.")]
+        public string Table { get; set; }
+
+        /// <summary>Narrows a report to one column.</summary>
+        [Option("field", HelpText = "Only report changes to this column.")]
+        public string Field { get; set; }
+
+        /// <summary>Narrows a report to one person, by name or address.</summary>
+        [Option("author", HelpText = "Only report changes by this person.")]
+        public string Author { get; set; }
+
+        /// <summary>
+        /// Which project's history to read, when the recipe's entry is not the one wanted.
+        /// </summary>
+        [Option("project", HelpText = "Project whose history to read. From the recipe when left out.")]
+        public string Project { get; set; }
+
+        /// <summary>How to render a report: `json` or `text`.</summary>
+        [Option("format", HelpText = "Report format: `json` or `text`.")]
+        public string Format { get; set; }
+
+        /// <summary>Where to write a report. Standard output when left out.</summary>
+        [Option("out", HelpText = "File to write the report to. Standard output when left out.")]
+        public string Out { get; set; }
+
+        /// <summary>
+        /// The most changes a report will carry.
+        ///
+        /// A range over a busy month is hundreds of thousands of cells. What is cut is
+        /// reported as cut rather than left to be noticed.
+        /// </summary>
+        [Option("limit", HelpText = "Most changes to report. Anything cut is reported as cut.")]
+        public int Limit { get; set; }
+
         [Option("verbose", HelpText = "Sets whether to output debugging log messages.")]
         public bool Verbose { get; set; }
 

@@ -118,6 +118,7 @@ namespace SheetMan.History
                 Changes = changes,
                 Seq = (head?.Seq ?? 0) + 1,
                 ParentId = head?.Id,
+                FollowsParent = FollowsParent(head, commit),
                 ChangedTables = ChangedTables(changes),
                 RowHashes = RowHashes(fingerprint, changes),
             });
@@ -169,6 +170,30 @@ namespace SheetMan.History
             return head.CommittedAt.HasValue
                    && commit.CommittedAt.HasValue
                    && commit.CommittedAt.Value.UtcDateTime < head.CommittedAt.Value;
+        }
+
+        /// <summary>
+        /// Whether these changes cover only this commit, or the commits behind it too.
+        ///
+        /// A build that skipped some commits - a database that was down, or simply nobody
+        /// converting every commit - produces a snapshot whose changes span the gap. Saying
+        /// so is what stops a report crediting one person with several people's work.
+        ///
+        /// True when it cannot be told: claiming a gap that may not exist would put a
+        /// warning on a report that has nothing wrong with it.
+        /// </summary>
+        private static bool FollowsParent(SnapshotRow head, CommitInfo commit)
+        {
+            if (head == null)
+                return true;
+
+            if (commit.RepositoryPath != null
+                && GitProbe.TryIsDirectParent(commit.RepositoryPath, head.CommitHash, commit.Hash, out bool direct))
+            {
+                return direct;
+            }
+
+            return true;
         }
 
         // -------------------------------------------------------------- helpers

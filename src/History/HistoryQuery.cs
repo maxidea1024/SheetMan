@@ -1,0 +1,736 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using MySqlConnector;
+
+namespace SheetMan.History
+{
+    /// <summary>
+    /// Reads the history back.
+    ///
+    /// Read-only, always. Nothing here writes, and the account it connects with need not be
+    /// able to: only a conversion adds to the history, and a query that could modify it is
+    /// a query that can corrupt it.
+    ///
+    /// One class behind both the command line and the HTTP API. The two entry points differ
+    /// in how they are called and in nothing else, so that a number reported by one cannot
+    /// disagree with the same number reported by the other.
+    /// </summary>
+    public sealed class HistoryQuery : IDisposable
+    {
+        /// <summary>
+        /// The most changes any one answer will carry.
+        ///
+        /// A range over a busy month is hundreds of thousands of cells, which is neither
+        /// readable nor sendable. What is cut is said out loud - see
+        /// <see cref="HistoryQueryInfo.Truncated"/> - because a truncated answer that does
+        /// not admit it reads as a complete one.
+        /// </summary>
+        public const int DefaultLimit = 5_000;
+
+        /// <summary>The most any caller may ask for, however large a number they pass.</summary>
+        public const int MaximumLimit = 50_000;
+
+        private readonly MySqlConnection _connection;
+
+        private HistoryQuery(MySqlConnection connection) => _connection = connection;
+
+        public static HistoryQuery Open(string connectionString)
+        {
+            var connection = new MySqlConnection(connectionString);
+
+            try
+            {
+                connection.Open();
+                return new HistoryQuery(connection);
+            }
+            catch
+            {
+                connection.Dispose();
+                throw;
+            }
+        }
+
+        public void Dispose() => _connection.Dispose();
+
+        // ------------------------------------------------------------- listings
+
+        /// <summary>Every project the database holds, in name order.</summary>
+        public IReadOnlyList<string> Projects()
+            => Read("SELECT project_key FROM project ORDER BY project_key", r => r.GetString(0));
+
+        /// <summary>
+        /// Every branch of a project, most recently written first.
+        /// </summary>
+        public IReadOnlyList<string> Branches(string project)
+            => Read(@"
+                SELECT s.branch
+                FROM snapshot s JOIN project p ON p.id = s.project_id
+                WHERE p.project_key = @project
+                GROUP BY s.branch
+                ORDER BY MAX(s.converted_at) DESC",
+                r => r.GetString(0),
+                ("@project", project));
+
+        /// <summary>
+        /// The branch a query means when it does not say: the one written to most recently.
+        /// </summary>
+        public string DefaultBranch(string project) => Branches(project).FirstOrDefault();
+
+        /// <summary>
+        /// Snapshots of a branch, newest first.
+        /// </summary>
+        public IReadOnlyList<SnapshotListing> Snapshots(string project, string branch, int limit = 100)
+        {
+            return Read($@"
+                SELECT s.id, s.seq, s.commit_hash, s.branch, s.author_name, s.author_email,
+                       s.committed_at, s.subject, s.converted_at, s.dirty, s.attributable,
+                       (SELECT COUNT(*) FROM schema_change c WHERE c.snapshot_id = s.id),
+                       (SELECT COUNT(*) FROM row_change c WHERE c.snapshot_id = s.id),
+                       (SELECT COUNT(*) FROM cell_change c WHERE c.snapshot_id = s.id)
+                FROM snapshot s JOIN project p ON p.id = s.project_id
+                WHERE p.project_key = @project AND s.branch = @branch
+                ORDER BY s.seq DESC
+                LIMIT {Bounded(limit, 1000)}",
+                r => new SnapshotListing
+                {
+                    Id = r.GetInt64(0),
+                    Seq = r.GetInt64(1),
+                    Commit = r.GetString(2),
+                    ShortCommit = Short(r.GetString(2)),
+                    Branch = r.GetString(3),
+                    AuthorName = Text(r, 4),
+                    AuthorEmail = Text(r, 5),
+                    CommittedAt = Time(r, 6),
+                    Subject = Text(r, 7),
+                    ConvertedAt = Time(r, 8),
+                    Dirty = r.GetBoolean(9),
+                    Attributable = r.GetBoolean(10),
+                    Counts = new HistoryChangeCounts
+                    {
+                        Schema = r.GetInt32(11),
+                        Rows = r.GetInt32(12),
+                        Cells = r.GetInt32(13),
+                    },
+                },
+                ("@project", project), ("@branch", branch ?? ""));
+        }
+
+        /// <summary>Every table the branch's newest snapshot holds.</summary>
+        public IReadOnlyList<string> Tables(string project, string branch)
+            => Read(@"
+                SELECT t.table_name
+                FROM table_current t JOIN project p ON p.id = t.project_id
+                WHERE p.project_key = @project AND t.branch = @branch
+                ORDER BY t.table_name",
+                r => r.GetString(0),
+                ("@project", project), ("@branch", branch ?? ""));
+
+        // ------------------------------------------------------------ statistics
+
+        /// <summary>
+        /// The whole summary as it was at a commit, or at the branch's head.
+        ///
+        /// Read back from what the conversion stored rather than recomputed. The workbook
+        /// has moved on, so recomputing would describe today's sheets and file the answer
+        /// under an old commit.
+        /// </summary>
+        public SummaryDocument Stats(string project, string branch, string commit = null)
+        {
+            long? id = ResolveSnapshot(project, branch, commit);
+
+            if (id == null)
+                return null;
+
+            using var command = Command(
+                "SELECT summary FROM snapshot WHERE id = @id", ("@id", id.Value));
+
+            var blob = command.ExecuteScalar();
+
+            if (blob == null || blob == DBNull.Value)
+                return null;
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SummaryDocument>(
+                HistoryStore.Decompress((byte[])blob));
+        }
+
+        /// <summary>
+        /// One number per snapshot, oldest first, for drawing a line.
+        /// </summary>
+        /// <param name="metric">
+        /// `rows`, `cells`, `contentBytes`, `tables`, `fields`, or `changes` for how much
+        /// each snapshot changed.
+        /// </param>
+        /// <param name="table">Narrows to one table. Only `rows`, `cells` and `contentBytes` support it.</param>
+        public IReadOnlyList<TrendPoint> Trend(
+            string project, string branch, string metric, string table = null, int limit = 500)
+        {
+            string column = TrendColumn(metric, table != null);
+
+            string sql = table == null
+                ? $@"SELECT s.commit_hash, s.committed_at, {column}
+                     FROM snapshot s
+                     JOIN project p ON p.id = s.project_id
+                     JOIN snapshot_stat st ON st.snapshot_id = s.id
+                     WHERE p.project_key = @project AND s.branch = @branch
+                     ORDER BY s.seq DESC
+                     LIMIT {Bounded(limit, 5000)}"
+                : $@"SELECT s.commit_hash, s.committed_at, {column}
+                     FROM snapshot s
+                     JOIN project p ON p.id = s.project_id
+                     JOIN table_stat st ON st.snapshot_id = s.id AND st.table_name = @table
+                     WHERE p.project_key = @project AND s.branch = @branch
+                     ORDER BY s.seq DESC
+                     LIMIT {Bounded(limit, 5000)}";
+
+            var points = Read(sql, r => new TrendPoint
+            {
+                Commit = r.GetString(0),
+                ShortCommit = Short(r.GetString(0)),
+                CommittedAt = Time(r, 1),
+                Value = r.GetInt64(2),
+            },
+            table == null
+                ? new[] { ("@project", (object)project), ("@branch", branch ?? "") }
+                : new[] { ("@project", (object)project), ("@branch", branch ?? ""), ("@table", table) });
+
+            // Newest first out of the database so the LIMIT keeps the recent end; oldest
+            // first out of here, because that is the direction a line is read.
+            return Enumerable.Reverse(points).ToList();
+        }
+
+        private static string TrendColumn(string metric, bool perTable)
+        {
+            switch ((metric ?? "rows").ToLowerInvariant())
+            {
+                case "rows": return perTable ? "st.row_count" : "st.rows_count";
+                case "cells": return perTable ? "st.cell_count" : "st.cells";
+                case "contentbytes": return "st.content_bytes";
+                case "tables" when !perTable: return "st.tables";
+                case "fields": return perTable ? "st.field_count" : "st.fields";
+
+                case "changes" when !perTable:
+                    return "(SELECT COUNT(*) FROM cell_change c WHERE c.snapshot_id = s.id)";
+
+                default:
+                    throw new SheetManException(
+                        $"`{metric}` is not a metric. Use rows, cells, contentBytes, tables, fields" +
+                        (perTable ? "." : ", or changes."));
+            }
+        }
+
+        /// <summary>
+        /// Who changed how much, over a range. Busiest first.
+        /// </summary>
+        public IReadOnlyList<AuthorSummary> Authors(
+            string project, string branch, string from = null, string to = null)
+        {
+            var (fromSeq, toSeq) = ResolveRange(project, branch, from, to);
+
+            return Read(@"
+                SELECT COALESCE(s.author_name, '(unknown)'), COALESCE(s.author_email, ''),
+                       COUNT(*),
+                       COALESCE(SUM((SELECT COUNT(*) FROM cell_change c WHERE c.snapshot_id = s.id)), 0),
+                       COALESCE(SUM((SELECT COUNT(*) FROM row_change c WHERE c.snapshot_id = s.id)), 0),
+                       COALESCE(SUM((SELECT COUNT(*) FROM schema_change c WHERE c.snapshot_id = s.id)), 0),
+                       MIN(s.committed_at), MAX(s.committed_at)
+                FROM snapshot s JOIN project p ON p.id = s.project_id
+                WHERE p.project_key = @project AND s.branch = @branch
+                  AND s.seq > @from AND s.seq <= @to
+                GROUP BY s.author_name, s.author_email
+                ORDER BY 4 DESC, 1",
+                r => new AuthorSummary
+                {
+                    Name = r.GetString(0),
+                    Email = Text(r, 1),
+                    Snapshots = r.GetInt32(2),
+                    Cells = r.GetInt64(3),
+                    Rows = r.GetInt64(4),
+                    Schema = r.GetInt64(5),
+                    FirstAt = Time(r, 6),
+                    LastAt = Time(r, 7),
+                },
+                ("@project", project), ("@branch", branch ?? ""), ("@from", fromSeq), ("@to", toSeq));
+        }
+
+        /// <summary>
+        /// Every value one cell has held, newest first.
+        ///
+        /// The question a designer actually asks: this number is wrong, when did it become
+        /// this, and who made it so.
+        /// </summary>
+        public IReadOnlyList<CellHistoryEntry> CellHistory(
+            string project, string branch, string table, string rowKey = null, string field = null, int limit = 200)
+        {
+            var conditions = new List<string> { "p.project_key = @project", "s.branch = @branch",
+                                                "c.table_name = @table" };
+
+            var args = new List<(string, object)>
+            {
+                ("@project", project), ("@branch", branch ?? ""), ("@table", table),
+            };
+
+            if (rowKey != null)
+            {
+                conditions.Add("c.row_key_hash = @rowKey");
+                args.Add(("@rowKey", HistoryStore.KeyHash(rowKey)));
+            }
+
+            if (field != null)
+            {
+                conditions.Add("c.field_name = @field");
+                args.Add(("@field", field));
+            }
+
+            return Read($@"
+                SELECT s.commit_hash, s.author_name, s.committed_at,
+                       c.table_name, c.row_key, c.field_name, c.change_kind, o.text, n.text
+                FROM cell_change c
+                JOIN snapshot s ON s.id = c.snapshot_id
+                JOIN project p ON p.id = s.project_id
+                LEFT JOIN value o ON o.id = c.old_value_id
+                LEFT JOIN value n ON n.id = c.new_value_id
+                WHERE {string.Join(" AND ", conditions)}
+                ORDER BY s.seq DESC, c.id DESC
+                LIMIT {Bounded(limit, 2000)}",
+                r => new CellHistoryEntry
+                {
+                    Commit = r.GetString(0),
+                    ShortCommit = Short(r.GetString(0)),
+                    AuthorName = Text(r, 1),
+                    CommittedAt = Time(r, 2),
+                    Table = r.GetString(3),
+                    RowKey = r.GetString(4),
+                    Field = r.GetString(5),
+                    Kind = r.GetString(6),
+                    Before = Text(r, 7),
+                    After = Text(r, 8),
+                },
+                args.ToArray());
+        }
+
+        // ----------------------------------------------------------------- range
+
+        /// <summary>
+        /// What changed between two commits.
+        ///
+        /// <paramref name="from"/> is exclusive and <paramref name="to"/> inclusive, which
+        /// is what "between A and B" means for a difference: A is the state compared from,
+        /// so A's own changes belong to the range before this one.
+        /// </summary>
+        public HistoryDocument Diff(
+            string project,
+            string branch,
+            string from = null,
+            string to = null,
+            string table = null,
+            string field = null,
+            string author = null,
+            int limit = DefaultLimit)
+        {
+            branch ??= DefaultBranch(project) ?? "";
+            limit = Bounded(limit, MaximumLimit);
+
+            var (fromSeq, toSeq) = ResolveRange(project, branch, from, to);
+
+            var snapshots = ReadSnapshotsInRange(project, branch, fromSeq, toSeq, author);
+
+            var document = new HistoryDocument
+            {
+                Query = new HistoryQueryInfo
+                {
+                    Project = project,
+                    Branch = branch,
+                    From = from,
+                    To = to,
+                    Table = table,
+                    Field = field,
+                    Author = author,
+                    Limit = limit,
+                    GeneratedAt = DateTimeOffset.Now.ToString("o", CultureInfo.InvariantCulture),
+                },
+                Snapshots = snapshots,
+            };
+
+            long budget = limit;
+            long omitted = 0;
+
+            foreach (var snapshot in snapshots)
+            {
+                snapshot.Schema = ReadSchemaChanges(snapshot.Id, table, ref budget, ref omitted);
+                snapshot.Rows = ReadRowChanges(snapshot.Id, table, ref budget, ref omitted);
+                snapshot.Cells = ReadCellChanges(snapshot.Id, table, field, ref budget, ref omitted);
+
+                snapshot.Counts = new HistoryChangeCounts
+                {
+                    Schema = snapshot.Schema.Count,
+                    Rows = snapshot.Rows.Count,
+                    Cells = snapshot.Cells.Count,
+                };
+            }
+
+            document.Query.Truncated = omitted > 0;
+            document.Query.Omitted = omitted;
+
+            document.Totals = new HistoryTotals
+            {
+                Snapshots = snapshots.Count,
+                Schema = snapshots.Sum(s => (long)s.Schema.Count),
+                Rows = snapshots.Sum(s => (long)s.Rows.Count),
+                Cells = snapshots.Sum(s => (long)s.Cells.Count),
+                Gaps = snapshots.Count(s => !s.FollowsParent),
+            };
+
+            return document;
+        }
+
+        private List<HistorySnapshotView> ReadSnapshotsInRange(
+            string project, string branch, long fromSeq, long toSeq, string author)
+        {
+            var args = new List<(string, object)>
+            {
+                ("@project", project), ("@branch", branch), ("@from", fromSeq), ("@to", toSeq),
+            };
+
+            string filter = "";
+
+            if (!string.IsNullOrEmpty(author))
+            {
+                // Matched on either name or address, because a person is asked about by
+                // whichever of the two the asker happens to know.
+                filter = " AND (s.author_name LIKE @author OR s.author_email LIKE @author)";
+                args.Add(("@author", "%" + author + "%"));
+            }
+
+            var snapshots = Read($@"
+                SELECT s.id, s.seq, s.commit_hash, s.branch, s.author_name, s.author_email,
+                       s.committed_at, s.subject, s.converted_at, s.converted_by, s.dirty, s.attributable,
+                       s.follows_parent,
+                       (SELECT x.commit_hash FROM snapshot x WHERE x.id = s.parent_id)
+                FROM snapshot s JOIN project p ON p.id = s.project_id
+                WHERE p.project_key = @project AND s.branch = @branch
+                  AND s.seq > @from AND s.seq <= @to{filter}
+                ORDER BY s.seq",
+                r => new HistorySnapshotView
+                {
+                    Id = r.GetInt64(0),
+                    Seq = r.GetInt64(1),
+                    Commit = r.GetString(2),
+                    ShortCommit = Short(r.GetString(2)),
+                    Branch = r.GetString(3),
+                    AuthorName = Text(r, 4),
+                    AuthorEmail = Text(r, 5),
+                    CommittedAt = Time(r, 6),
+                    Subject = Text(r, 7),
+                    ConvertedAt = Time(r, 8),
+                    ConvertedBy = Text(r, 9),
+                    Dirty = r.GetBoolean(10),
+                    Attributable = r.GetBoolean(11),
+                    FollowsParent = r.GetBoolean(12),
+                    PreviousCommit = Text(r, 13),
+                },
+                args.ToArray());
+
+            return snapshots.ToList();
+        }
+
+        private IReadOnlyList<SchemaChangeView> ReadSchemaChanges(
+            long snapshotId, string table, ref long budget, ref long omitted)
+        {
+            string filter = table == null ? "" : " AND entity_name = @table";
+
+            long total = Count("schema_change", snapshotId, filter, table);
+            int take = Take(total, ref budget, ref omitted);
+
+            if (take == 0)
+                return Array.Empty<SchemaChangeView>();
+
+            var args = table == null
+                ? new[] { ("@id", (object)snapshotId) }
+                : new[] { ("@id", (object)snapshotId), ("@table", table) };
+
+            return Read($@"
+                SELECT entity_kind, entity_name, member_name, change_kind, before_value, after_value,
+                       file, sheet, cell, url
+                FROM schema_change
+                WHERE snapshot_id = @id{filter}
+                ORDER BY id
+                LIMIT {take}",
+                r => new SchemaChangeView
+                {
+                    EntityKind = r.GetString(0),
+                    Entity = r.GetString(1),
+                    Member = Text(r, 2),
+                    Kind = r.GetString(3),
+                    Before = Text(r, 4),
+                    After = Text(r, 5),
+                    Location = LocationOf(r, 6),
+                },
+                args);
+        }
+
+        private IReadOnlyList<RowChangeView> ReadRowChanges(
+            long snapshotId, string table, ref long budget, ref long omitted)
+        {
+            string filter = table == null ? "" : " AND table_name = @table";
+
+            long total = Count("row_change", snapshotId, filter, table);
+            int take = Take(total, ref budget, ref omitted);
+
+            if (take == 0)
+                return Array.Empty<RowChangeView>();
+
+            var args = table == null
+                ? new[] { ("@id", (object)snapshotId) }
+                : new[] { ("@id", (object)snapshotId), ("@table", table) };
+
+            return Read($@"
+                SELECT table_name, row_key, change_kind
+                FROM row_change
+                WHERE snapshot_id = @id{filter}
+                ORDER BY id
+                LIMIT {take}",
+                r => new RowChangeView
+                {
+                    Table = r.GetString(0),
+                    RowKey = r.GetString(1),
+                    Kind = r.GetString(2),
+                },
+                args);
+        }
+
+        private IReadOnlyList<CellChangeView> ReadCellChanges(
+            long snapshotId, string table, string field, ref long budget, ref long omitted)
+        {
+            var conditions = new List<string>();
+            var args = new List<(string, object)> { ("@id", snapshotId) };
+
+            if (table != null)
+            {
+                conditions.Add(" AND c.table_name = @table");
+                args.Add(("@table", table));
+            }
+
+            if (field != null)
+            {
+                conditions.Add(" AND c.field_name = @field");
+                args.Add(("@field", field));
+            }
+
+            string filter = string.Concat(conditions);
+
+            long total = CountCells(snapshotId, filter, table, field);
+            int take = Take(total, ref budget, ref omitted);
+
+            if (take == 0)
+                return Array.Empty<CellChangeView>();
+
+            return Read($@"
+                SELECT c.table_name, c.row_key, c.field_name, c.change_kind, o.text, n.text,
+                       c.file, c.sheet, c.cell, c.url
+                FROM cell_change c
+                LEFT JOIN value o ON o.id = c.old_value_id
+                LEFT JOIN value n ON n.id = c.new_value_id
+                WHERE c.snapshot_id = @id{filter}
+                ORDER BY c.id
+                LIMIT {take}",
+                r => new CellChangeView
+                {
+                    Table = r.GetString(0),
+                    RowKey = r.GetString(1),
+                    Field = r.GetString(2),
+                    Kind = r.GetString(3),
+                    Before = Text(r, 4),
+                    After = Text(r, 5),
+                    Location = LocationOf(r, 6),
+                },
+                args.ToArray());
+        }
+
+        /// <summary>
+        /// How many of a total the budget allows, adding the rest to what was left out.
+        /// </summary>
+        private static int Take(long total, ref long budget, ref long omitted)
+        {
+            long take = Math.Min(total, Math.Max(budget, 0));
+
+            budget -= take;
+            omitted += total - take;
+
+            return (int)take;
+        }
+
+        private long Count(string table, long snapshotId, string filter, string tableName)
+        {
+            var args = tableName == null
+                ? new[] { ("@id", (object)snapshotId) }
+                : new[] { ("@id", (object)snapshotId), ("@table", tableName) };
+
+            using var command = Command(
+                $"SELECT COUNT(*) FROM {table} WHERE snapshot_id = @id{filter}", args);
+
+            return Convert.ToInt64(command.ExecuteScalar());
+        }
+
+        private long CountCells(long snapshotId, string filter, string table, string field)
+        {
+            var args = new List<(string, object)> { ("@id", snapshotId) };
+
+            if (table != null) args.Add(("@table", table));
+            if (field != null) args.Add(("@field", field));
+
+            using var command = Command(
+                $"SELECT COUNT(*) FROM cell_change c WHERE c.snapshot_id = @id{filter}", args.ToArray());
+
+            return Convert.ToInt64(command.ExecuteScalar());
+        }
+
+        // ------------------------------------------------------------ resolution
+
+        /// <summary>
+        /// Turns a commit - or a prefix of one - into the snapshot that holds it.
+        /// </summary>
+        public long? ResolveSnapshot(string project, string branch, string commit)
+        {
+            if (string.IsNullOrEmpty(commit))
+            {
+                using var head = Command(@"
+                    SELECT s.id FROM snapshot s JOIN project p ON p.id = s.project_id
+                    WHERE p.project_key = @project AND s.branch = @branch
+                    ORDER BY s.seq DESC LIMIT 1",
+                    ("@project", project), ("@branch", branch ?? ""));
+
+                var id = head.ExecuteScalar();
+                return id == null || id == DBNull.Value ? (long?)null : Convert.ToInt64(id);
+            }
+
+            var matches = Read(@"
+                SELECT s.id, s.commit_hash
+                FROM snapshot s JOIN project p ON p.id = s.project_id
+                WHERE p.project_key = @project AND s.branch = @branch
+                  AND (s.commit_hash = @commit OR s.commit_hash LIKE CONCAT(@commit, '%'))
+                LIMIT 5",
+                r => (Id: r.GetInt64(0), Hash: r.GetString(1)),
+                ("@project", project), ("@branch", branch ?? ""), ("@commit", commit));
+
+            if (matches.Count == 0)
+                return null;
+
+            // An exact match wins over a prefix, so a short identifier that happens to
+            // prefix a longer one still resolves to itself.
+            var exact = matches.FirstOrDefault(m => string.Equals(m.Hash, commit, StringComparison.Ordinal));
+            if (exact.Id != 0)
+                return exact.Id;
+
+            if (matches.Count > 1)
+            {
+                throw new SheetManException(
+                    $"`{commit}` matches {matches.Count} commits on branch `{branch}`: " +
+                    $"{string.Join(", ", matches.Select(m => Short(m.Hash)))}. Use more of the hash.");
+            }
+
+            return matches[0].Id;
+        }
+
+        /// <summary>
+        /// The sequence numbers a range covers: after <paramref name="from"/>, up to and
+        /// including <paramref name="to"/>.
+        /// </summary>
+        private (long From, long To) ResolveRange(string project, string branch, string from, string to)
+        {
+            long fromSeq = 0;
+            long toSeq = long.MaxValue;
+
+            if (!string.IsNullOrEmpty(from))
+            {
+                long? id = ResolveSnapshot(project, branch, from)
+                           ?? throw NotFound(from, project, branch);
+
+                fromSeq = SeqOf(id.Value);
+            }
+
+            if (!string.IsNullOrEmpty(to))
+            {
+                long? id = ResolveSnapshot(project, branch, to)
+                           ?? throw NotFound(to, project, branch);
+
+                toSeq = SeqOf(id.Value);
+            }
+
+            if (fromSeq > toSeq)
+            {
+                throw new SheetManException(
+                    $"`{from}` comes after `{to}` on branch `{branch}`, so there is no range between " +
+                    $"them. Swap them, or leave one out.");
+            }
+
+            return (fromSeq, toSeq);
+        }
+
+        private static SheetManException NotFound(string commit, string project, string branch)
+            => new SheetManException(
+                $"The history has no snapshot for `{commit}` on branch `{branch}` of `{project}`. " +
+                $"Either nothing converted that commit, or it is on another branch.");
+
+        private long SeqOf(long snapshotId)
+        {
+            using var command = Command("SELECT seq FROM snapshot WHERE id = @id", ("@id", snapshotId));
+            return Convert.ToInt64(command.ExecuteScalar());
+        }
+
+        // -------------------------------------------------------------- plumbing
+
+        private MySqlCommand Command(string sql, params (string Name, object Value)[] args)
+        {
+            var command = new MySqlCommand(sql, _connection);
+
+            foreach (var (name, value) in args)
+                command.Parameters.AddWithValue(name, value);
+
+            return command;
+        }
+
+        private List<T> Read<T>(string sql, Func<MySqlDataReader, T> map, params (string Name, object Value)[] args)
+        {
+            using var command = Command(sql, args);
+            using var reader = command.ExecuteReader();
+
+            var results = new List<T>();
+
+            while (reader.Read())
+                results.Add(map(reader));
+
+            return results;
+        }
+
+        private static string Text(MySqlDataReader reader, int column)
+            => reader.IsDBNull(column) ? null : reader.GetString(column);
+
+        private static string Time(MySqlDataReader reader, int column)
+            => reader.IsDBNull(column)
+                ? null
+                : DateTime.SpecifyKind(reader.GetDateTime(column), DateTimeKind.Utc)
+                          .ToString("o", CultureInfo.InvariantCulture);
+
+        private static SummaryLocation LocationOf(MySqlDataReader reader, int first)
+        {
+            if (reader.IsDBNull(first) && reader.IsDBNull(first + 1))
+                return null;
+
+            return new SummaryLocation
+            {
+                File = Text(reader, first),
+                Sheet = Text(reader, first + 1),
+                Cell = Text(reader, first + 2),
+                Url = Text(reader, first + 3),
+            };
+        }
+
+        private static string Short(string hash)
+            => hash == null ? null : hash.Substring(0, Math.Min(12, hash.Length));
+
+        private static int Bounded(int requested, int maximum)
+            => requested <= 0 ? maximum : Math.Min(requested, maximum);
+    }
+}

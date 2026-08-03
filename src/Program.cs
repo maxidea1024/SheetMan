@@ -99,6 +99,24 @@ namespace SheetMan
                 return 1;
             }
 
+            // Reading the history is not a conversion: no sources are imported, nothing is
+            // written to the output tree, and the answer goes to standard output. The recipe
+            // is still needed, because that is where the history's address is.
+            if (options.History || options.Stats)
+            {
+                try
+                {
+                    return options.History
+                        ? HistoryCommand.RunHistory(options, recipe)
+                        : HistoryCommand.RunStats(options, recipe);
+                }
+                catch (Exception ex)
+                {
+                    LogException(options, ex);
+                    return 1;
+                }
+            }
+
             {
                 Log.Information($"Start working with recipe `{Path.GetFullPath(options.RecipeFilename)}`");
 

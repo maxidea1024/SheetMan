@@ -13,10 +13,16 @@ namespace SheetMan.History
     /// with an instruction to run something else, and the alternative - a migration tool
     /// somebody has to remember - is how a schema and the code that reads it drift.
     ///
-    /// Every migration is additive and idempotent, and the applied versions are recorded.
-    /// Two build machines connecting at once is normal, so the whole migration runs inside
-    /// a named lock: without one, both would run `CREATE TABLE` and one would fail on a
-    /// race rather than on anything real.
+    /// Migrations are additive and run once, guarded by the versions recorded in
+    /// `schema_version` rather than by each statement being safe to repeat. Two build
+    /// machines connecting at once is normal, so the whole thing runs inside a named lock:
+    /// without one, both would read the same version and both would run the same
+    /// statements, and one would fail on a race rather than on anything real.
+    ///
+    /// An applied migration is never edited. It is tempting while a schema is still new -
+    /// nothing has shipped, so why not - but every database created during that development
+    /// is already at that version and will never see the change. The column below is
+    /// migration 2 rather than a line added to migration 1 for exactly that reason.
     /// </summary>
     internal static class HistorySchema
     {
@@ -24,7 +30,7 @@ namespace SheetMan.History
         /// What this build expects. A database at a higher version was written by a newer
         /// SheetMan and is left alone rather than downgraded.
         /// </summary>
-        public const int Version = 1;
+        public const int Version = 2;
 
         private const string LockName = "sheetman_history_migrate";
 
@@ -310,6 +316,19 @@ namespace SheetMan.History
                     KEY ix_snapshot (snapshot_id, table_name),
                     KEY ix_cell (table_name, row_key_hash, field_name)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+            },
+
+            [2] = new[]
+            {
+                // Whether a snapshot's commit directly follows its parent snapshot's.
+                // Recorded when the snapshot is written, because only a conversion has the
+                // repository to ask - and false means the changes cover more than one
+                // commit's work, which a report has to say rather than let a reader assume.
+                //
+                // Existing rows default to following: claiming a gap that cannot be checked
+                // would put a warning on every snapshot recorded before this column existed.
+                @"ALTER TABLE snapshot
+                    ADD COLUMN follows_parent TINYINT(1) NOT NULL DEFAULT 1 AFTER parent_id",
             },
         };
     }

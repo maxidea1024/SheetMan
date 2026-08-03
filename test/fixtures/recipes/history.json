@@ -1,0 +1,30 @@
+{
+  // Records a conversion into the history database, and is also what the reading side
+  // of the command line is pointed at - `--history` and `--stats` take the address from
+  // the recipe rather than from options of their own.
+  //
+  // The password arrives through the environment, as it does for every database target
+  // here. A recipe is committed, so a secret written into one is committed with it.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/core",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ]
+  },
+
+  "Targets": [
+    {
+      "Type": "summary",
+      "Path": "test/fixtures/output/history/summary"
+    },
+    {
+      "Type": "history",
+      "ConnectionString": "Server=127.0.0.1;Port=${SHEETMAN_TEST_MYSQL_PORT};Database=sheetman_history_test;Uid=root;Pwd=${SHEETMAN_TEST_DB_PASSWORD}",
+      "ProjectKey": "sheetman-endtoend",
+      "OnFailure": "fail"
+    }
+  ]
+}

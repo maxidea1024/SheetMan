@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Serilog;
 
@@ -144,6 +145,40 @@ namespace SheetMan.History
             }
 
             descends = TryRun(directory, out _, "merge-base", "--is-ancestor", ancestor, descendant);
+            return true;
+        }
+
+        /// <summary>
+        /// Whether <paramref name="parent"/> is a direct parent of <paramref name="commit"/>.
+        ///
+        /// Not the same question as ancestry. Two snapshots whose commits are ten commits
+        /// apart are still in order, but the changes between them cover ten commits' work
+        /// and belong to more than one person - which a report has to say.
+        /// </summary>
+        /// <returns>False when git could not answer, leaving <paramref name="direct"/> unset.</returns>
+        public static bool TryIsDirectParent(string directory, string parent, string commit, out bool direct)
+        {
+            direct = false;
+
+            if (string.IsNullOrEmpty(parent) || string.IsNullOrEmpty(commit))
+                return false;
+
+            // Every parent, not just the first: a merge has two, and a snapshot recorded on
+            // either side of one still follows directly from it.
+            if (!TryRun(directory, out string parents, "rev-list", "--parents", "-n", "1", commit))
+                return false;
+
+            var hashes = parents.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (hashes.Length == 0)
+                return false;
+
+            if (!TryRun(directory, out string resolved, "rev-parse", "--verify", "--quiet", parent + "^{commit}"))
+                return false;
+
+            // The first entry is the commit itself; the rest are its parents.
+            direct = hashes.Skip(1).Any(h => string.Equals(h, resolved, StringComparison.OrdinalIgnoreCase));
+
             return true;
         }
 

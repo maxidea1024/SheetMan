@@ -68,7 +68,15 @@ namespace SheetMan.Tests
         /// For the options that do not convert anything - `--new-recipe`, `--help` - where
         /// there is no output tree to clear and no recipe to point at.
         /// </summary>
-        public static RunResult Invoke(params string[] arguments)
+        public static RunResult Invoke(params string[] arguments) => Invoke(null, arguments);
+
+        /// <summary>
+        /// The same, with an environment.
+        ///
+        /// The reading side of the history takes its connection from a recipe whose
+        /// `${...}` placeholders come from the environment, exactly as a conversion's does.
+        /// </summary>
+        public static RunResult Invoke(IReadOnlyDictionary<string, string> environment, params string[] arguments)
         {
             var args = new List<string>
             {
@@ -77,7 +85,7 @@ namespace SheetMan.Tests
 
             args.AddRange(arguments);
 
-            return Run(null, args.ToArray());
+            return Run(environment, args.ToArray());
         }
 
         private static RunResult Run(IReadOnlyDictionary<string, string> environment, params string[] args)
@@ -89,6 +97,12 @@ namespace SheetMan.Tests
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
+
+                // UTF-8 explicitly. Without it the subprocess's output is decoded as the
+                // system codepage, which on Windows turns every non-ASCII author name and
+                // cell value in a report into question marks.
+                StandardOutputEncoding = new UTF8Encoding(false),
+                StandardErrorEncoding = new UTF8Encoding(false),
             };
 
             foreach (var arg in args)
