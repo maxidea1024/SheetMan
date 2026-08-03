@@ -214,6 +214,223 @@ namespace SheetMan.Tests
             return Execute("java", root, "-cp", classes, "Harness", BinaryDir(scenario));
         }
 
+        /// <summary>Whether a Kotlin compiler and a JVM to run it on are both here.</summary>
+        public static bool KotlinIsAvailable(out string reason)
+        {
+            if (!JavaIsAvailable(out string why))
+            {
+                reason = $"The Kotlin compiler runs on a JVM. {why}";
+                return false;
+            }
+
+            if (KotlinCompilerJar() == null)
+            {
+                reason = "`kotlin-compiler.jar` was not found on the path or in a known install.";
+                return false;
+            }
+
+            reason = null;
+            return true;
+        }
+
+        public static ToolResult RunKotlin(string scenario)
+        {
+            // Beside the generated package, in the default package, for the same reason the
+            // Java harness is: a JVM source tree is rooted at the package directories.
+            string root = Path.Combine(RepoLayout.OutputDir(scenario), "kotlin");
+            string jar = Path.Combine(root, "harness.jar");
+
+            File.Copy(Path.Combine(HarnessDir("kotlin"), "Harness.kt"),
+                      Path.Combine(root, "Harness.kt"), overwrite: true);
+
+            // Through the compiler jar rather than the `kotlinc` launcher, which on Windows
+            // is a batch file and cannot be started as a process at all.
+            var arguments = new List<string>
+            {
+                "-jar", KotlinCompilerJar(),
+                "-nowarn",
+
+                // A fat jar, so running it needs nothing but a JVM.
+                "-include-runtime",
+                "-d", jar,
+            };
+
+            arguments.AddRange(Directory.EnumerateFiles(root, "*.kt", SearchOption.AllDirectories));
+
+            var build = Execute("java", root, arguments.ToArray());
+            if (!build.Succeeded)
+                return build;
+
+            return Execute("java", root, "-jar", jar, BinaryDir(scenario));
+        }
+
+        /// <summary>Whether a Ruby interpreter is here.</summary>
+        public static bool RubyIsAvailable(out string reason)
+        {
+            try
+            {
+                var probe = Execute(RubyExecutable, RepoLayout.Root, "--version");
+                reason = probe.Succeeded ? null : $"`ruby --version` failed.{Environment.NewLine}{probe.Output}";
+                return probe.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                reason = $"`{RubyExecutable}` could not be started: {ex.Message}";
+                return false;
+            }
+        }
+
+        public static ToolResult RunRuby(string scenario)
+        {
+            // Beside the generated file, because `require_relative` resolves against the
+            // requiring file and that is the import a consumer would write.
+            string root = Path.Combine(RepoLayout.OutputDir(scenario), "ruby");
+
+            File.Copy(Path.Combine(HarnessDir("ruby"), "harness.rb"),
+                      Path.Combine(root, "harness.rb"), overwrite: true);
+
+            return Execute(RubyExecutable, root, "harness.rb", BinaryDir(scenario));
+        }
+
+        /// <summary>Whether a Dart SDK is here.</summary>
+        public static bool DartIsAvailable(out string reason)
+        {
+            try
+            {
+                var probe = Execute(DartExecutable, RepoLayout.Root, "--version");
+                reason = probe.Succeeded ? null : $"`dart --version` failed.{Environment.NewLine}{probe.Output}";
+                return probe.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                reason = $"`{DartExecutable}` could not be started: {ex.Message}";
+                return false;
+            }
+        }
+
+        public static ToolResult RunDart(string scenario)
+        {
+            // Beside the generated library, whose import of the reader is relative.
+            string root = Path.Combine(RepoLayout.OutputDir(scenario), "dart");
+
+            File.Copy(Path.Combine(HarnessDir("dart"), "harness.dart"),
+                      Path.Combine(root, "harness.dart"), overwrite: true);
+
+            return Execute(DartExecutable, root, "run", "harness.dart", BinaryDir(scenario));
+        }
+
+        // ------------------------------------------------------- finding a tool
+
+        /// <summary>
+        /// Where a toolchain lives: the bare command when the path has it, and otherwise the
+        /// first well-known install location that exists.
+        ///
+        /// The fallback is not convenience. An installer appends to the user's path, and a
+        /// shell that was already open - which is the one running these tests - keeps the
+        /// path it started with. A probe that asked only the path would then report the
+        /// language missing and skip its check, which is the one answer a conformance suite
+        /// must not give quietly.
+        /// </summary>
+        private static string Resolve(string command, params string[] candidates)
+            => FindOnPath(command) ?? candidates.FirstOrDefault(File.Exists) ?? command;
+
+        private static string FindOnPath(string command)
+        {
+            var extensions = OnWindows
+                ? (Environment.GetEnvironmentVariable("PATHEXT") ?? ".EXE;.BAT;.CMD").Split(';')
+                : new[] { "" };
+
+            foreach (var directory in (Environment.GetEnvironmentVariable("PATH") ?? "")
+                                      .Split(Path.PathSeparator))
+            {
+                if (directory.Length == 0)
+                    continue;
+
+                foreach (var extension in extensions)
+                {
+                    string candidate;
+
+                    try
+                    {
+                        candidate = Path.Combine(directory, command + extension);
+                    }
+                    catch (ArgumentException)
+                    {
+                        // A malformed PATH entry, which is common enough on Windows.
+                        break;
+                    }
+
+                    if (File.Exists(candidate))
+                        return candidate;
+                }
+            }
+
+            return null;
+        }
+
+        private static string HomeDir => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        private static string RubyExecutable => Resolve("ruby", RubyInstalls().ToArray());
+
+        /// <summary>Where RubyInstaller puts an interpreter, newest first.</summary>
+        private static IEnumerable<string> RubyInstalls()
+        {
+            if (!OnWindows)
+                yield break;
+
+            string[] roots;
+
+            try
+            {
+                roots = Directory.GetDirectories(@"C:\", "Ruby*");
+            }
+            catch (IOException)
+            {
+                yield break;
+            }
+
+            Array.Sort(roots, StringComparer.OrdinalIgnoreCase);
+
+            for (int i = roots.Length - 1; i >= 0; i--)
+                yield return Path.Combine(roots[i], "bin", "ruby.exe");
+        }
+
+        private static string DartExecutable => Resolve("dart",
+            Path.Combine(HomeDir, "tools", "dart-sdk", "bin", "dart.exe"),
+            Path.Combine(HomeDir, "tools", "dart-sdk", "bin", "dart"),
+            @"C:\tools\dart-sdk\bin\dart.exe");
+
+        /// <summary>
+        /// The Kotlin compiler jar, found beside whichever launcher is here.
+        /// </summary>
+        private static string KotlinCompilerJar()
+        {
+            foreach (string home in KotlinHomes())
+            {
+                if (home == null)
+                    continue;
+
+                string jar = Path.Combine(home, "lib", "kotlin-compiler.jar");
+
+                if (File.Exists(jar))
+                    return jar;
+            }
+
+            return null;
+        }
+
+        private static IEnumerable<string> KotlinHomes()
+        {
+            // The launcher sits in <home>/bin, so its grandparent is the install.
+            string launcher = FindOnPath("kotlinc");
+
+            if (launcher != null)
+                yield return Path.GetDirectoryName(Path.GetDirectoryName(launcher));
+
+            yield return Path.Combine(HomeDir, "tools", "kotlinc");
+            yield return @"C:\tools\kotlinc";
+        }
+
         private static string WorkDir(string scenario, string language)
         {
             string dir = Path.Combine(RepoLayout.OutputDir("_conformance"), scenario, language);

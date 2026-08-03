@@ -534,7 +534,7 @@ sheetman @args.txt
 |`binary`, `json`|파일 내보내기|
 |`mysql`, `postgresql`, `mongodb`, `redis`|데이터베이스 내보내기|
 |`cpp`, `csharp`, `typescript`, `html`|코드 생성|
-|`go`, `rust`, `python`, `java`|코드 생성 (전용 섹션 없음 — `Targets`로만 지정)|
+|`go`, `rust`, `python`, `java`, `kotlin`, `ruby`, `dart`|코드 생성 (전용 섹션 없음 — `Targets`로만 지정)|
 |`unreal`|Unreal 모듈 생성 (`Targets`로만 지정)|
 
 두 방식이 있는 이유는 타깃을 추가할 때 recipe 스키마를 고치지 않아도 되게 하기 위함입니다. 위 섹션들은 `Targets`보다 먼저 있었고 기존 recipe를 위해 남아 있습니다.
@@ -720,9 +720,14 @@ JSON에는 숫자 타입이 하나뿐이고 대부분의 리더가 그것을 dou
 |Rust|`Cargo.toml` + `src/lib.rs` + `src/sheetman.rs`|바이너리|
 |Python|패키지 하나 (`__init__.py`, `tables.py`, `sheetman.py`)|바이너리|
 |Java|`<AccessorName>.java` + `sheetman/LiteBinaryReader.java`|바이너리|
+|Kotlin|`<AccessorName>.kt` + `sheetman/LiteBinaryReader.kt`|바이너리|
+|Ruby|`<AccessorName>.rb` + `sheetman/lite_binary_reader.rb`|바이너리|
+|Dart|`<AccessorName>.dart` + `sheetman/lite_binary_reader.dart`|바이너리|
 |Unreal|모듈 하나 (`Build.cs`, `Public/`, `Private/`) — USTRUCT + UENUM + 정적 접근자|바이너리|
 
-Go·Rust·Python·Java·Unreal은 recipe의 `Targets` 목록으로 지정합니다. 아래 「`Targets`」 절을 보세요.
+Go·Rust·Python·Java·Kotlin·Ruby·Dart·Unreal은 recipe의 `Targets` 목록으로 지정합니다. 아래 「`Targets`」 절을 보세요.
+
+> Dart는 int64와 datetime·timespan의 틱을 `int`가 아니라 `BigInt`로 냅니다. Dart의 `int`는 VM에서는 64비트지만 웹에서는 double이라 53비트만 담습니다 — 그 범위를 넘는 값은 실패하는 게 아니라 **바뀐 채로** 돌아옵니다. TypeScript가 `bigint`를 쓰는 것과 같은 이유입니다.
 
 > **적합성 코퍼스.** 리더는 언어마다 별도 구현이라 어긋날 수 있습니다. `test/fixtures/xlsx/conformance`가 경계값(2^53+1, float32의 0.1, varint 1~5바이트, 빈 문자열·빈 배열·비ASCII)을 담은 테이블 하나이고, 회귀 스위트가 **모든 언어로 읽어 익스포터 JSON과 대조**합니다. 언어를 추가하는 비용이 전용 게이트가 아니라 50줄짜리 하네스인 이유입니다.
 

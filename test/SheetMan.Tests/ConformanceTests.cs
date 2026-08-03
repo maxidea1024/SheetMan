@@ -170,6 +170,70 @@ namespace SheetMan.Tests
             Compare("Java", expected, Parse(harness.StdOut));
         }
 
+        /// <summary>
+        /// Kotlin, which reads on the same JVM as Java but through a reader of its own.
+        ///
+        /// kotlinc resolves Java sources without compiling them, so sharing the Java reader
+        /// would oblige a pure Kotlin project to keep javac in its build purely to get one.
+        /// A second reader is a second thing that can drift, which is what this checks.
+        /// </summary>
+        [Fact]
+        public void Generated_kotlin_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.KotlinIsAvailable(out string why),
+                $"A Kotlin compiler is required to check the generated Kotlin. {why}");
+
+            var harness = ConformanceHarness.RunKotlin(Scenario);
+            Assert.True(harness.Succeeded, $"Kotlin harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("Kotlin", expected, Parse(harness.StdOut));
+        }
+
+        /// <summary>
+        /// Ruby, whose Integer is arbitrary precision.
+        ///
+        /// That removes the 64-bit trap the other dynamic languages have and leaves the
+        /// encoding one: a Ruby string carries its encoding, and standard output transcodes
+        /// to the default external unless it is told otherwise.
+        /// </summary>
+        [Fact]
+        public void Generated_ruby_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.RubyIsAvailable(out string why),
+                $"A Ruby interpreter is required to check the generated Ruby. {why}");
+
+            var harness = ConformanceHarness.RunRuby(Scenario);
+            Assert.True(harness.Succeeded, $"Ruby harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("Ruby", expected, Parse(harness.StdOut));
+        }
+
+        /// <summary>
+        /// Dart, the second language after TypeScript whose integer is not always 64 bits.
+        ///
+        /// On the web an int is a double, so int64 and both tick counts are read as BigInt
+        /// and the varint is decoded with arithmetic rather than bit operations - those are
+        /// 32-bit there. The corpus holds values past 2^53 and five-byte varints either side
+        /// of zero, so a reader that took the obvious route disagrees here.
+        /// </summary>
+        [Fact]
+        public void Generated_dart_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.DartIsAvailable(out string why),
+                $"A Dart SDK is required to check the generated Dart. {why}");
+
+            var harness = ConformanceHarness.RunDart(Scenario);
+            Assert.True(harness.Succeeded, $"Dart harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("Dart", expected, Parse(harness.StdOut));
+        }
+
         // ---------------------------------------------------------- comparison
 
         /// <summary>

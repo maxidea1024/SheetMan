@@ -380,6 +380,108 @@ namespace SheetMan.CodeGeneration
             );
 
         /// <summary>
+        /// Kotlin.
+        ///
+        /// Same JVM traps as Java in the reader - a signed byte to mask, an unsigned shift
+        /// to undo the zig-zag - and one thing Java does not have: backticks, which escape
+        /// an identifier that lands on a keyword instead of forcing the name to change.
+        /// </summary>
+        public static readonly LanguageProfile Kotlin = new LanguageProfile(
+            "kotlin",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "String" },
+                { ValueType.Bool, "Boolean" },
+                { ValueType.Int32, "Int" },
+                { ValueType.Int64, "Long" },
+                { ValueType.Float, "Float" },
+                { ValueType.Double, "Double" },
+                { ValueType.DateTime, "Long" },
+                { ValueType.TimeSpan, "Long" },
+                { ValueType.Uuid, "Uuid" },
+            },
+            "MutableList<{0}>",
+
+            // Backticks, which is what Kotlin provides for exactly this.
+            "`{0}`",
+
+            // https://kotlinlang.org/docs/keyword-reference.html - the hard keywords, which
+            // are the ones an identifier cannot be without them.
+            "as", "break", "class", "continue", "do", "else", "false", "for", "fun", "if",
+            "in", "interface", "is", "null", "object", "package", "return", "super", "this",
+            "throw", "true", "try", "typealias", "typeof", "val", "var", "when", "while");
+
+        /// <summary>
+        /// Ruby.
+        ///
+        /// The names are documentation only - Ruby is not annotated here - but they record
+        /// what a value becomes. Integer is arbitrary precision, so the 2^53 boundary costs
+        /// nothing; Float is a double, so a float32 read widens as it does in Python.
+        /// </summary>
+        public static readonly LanguageProfile Ruby = new LanguageProfile(
+            "ruby",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "String" },
+                { ValueType.Bool, "Boolean" },
+                { ValueType.Int32, "Integer" },
+                { ValueType.Int64, "Integer" },
+                { ValueType.Float, "Float" },
+                { ValueType.Double, "Float" },
+                { ValueType.DateTime, "Integer" },
+                { ValueType.TimeSpan, "Integer" },
+                { ValueType.Uuid, "Sheetman::Uuid" },
+            },
+            "Array",
+
+            // A trailing underscore. Ruby has no escape for an identifier that lands on a
+            // keyword, so the name has to change.
+            "{0}_",
+
+            // https://docs.ruby-lang.org/en/master/keywords_rdoc.html
+            "BEGIN", "END", "alias", "and", "begin", "break", "case", "class", "def",
+            "defined?", "do", "else", "elsif", "end", "ensure", "false", "for", "if", "in",
+            "module", "next", "nil", "not", "or", "redo", "rescue", "retry", "return",
+            "self", "super", "then", "true", "undef", "unless", "until", "when", "while",
+            "yield", "__FILE__", "__LINE__", "__ENCODING__");
+
+        /// <summary>
+        /// Dart.
+        ///
+        /// int64 and both tick counts are BigInt, not int. Dart's int is 64 bits on the VM
+        /// and a double on the web, where it carries 53 - and a value past that does not
+        /// fail there, it comes back changed. The same call the TypeScript profile makes.
+        ///
+        /// float is double, as in Python and Ruby: Dart has no single-precision type.
+        /// </summary>
+        public static readonly LanguageProfile Dart = new LanguageProfile(
+            "dart",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "String" },
+                { ValueType.Bool, "bool" },
+                { ValueType.Int32, "int" },
+                { ValueType.Int64, "BigInt" },
+                { ValueType.Float, "double" },
+                { ValueType.Double, "double" },
+                { ValueType.DateTime, "BigInt" },
+                { ValueType.TimeSpan, "BigInt" },
+                { ValueType.Uuid, "Uuid" },
+            },
+            "List<{0}>",
+
+            // A trailing underscore. Dart has no escape either, and a leading one would
+            // make the member private to its library.
+            "{0}_",
+
+            // https://dart.dev/language/keywords - the reserved words, which are the ones
+            // an identifier cannot be. The built-in and contextual ones are legal.
+            "assert", "break", "case", "catch", "class", "const", "continue", "default",
+            "do", "else", "enum", "extends", "false", "final", "finally", "for", "if", "in",
+            "is", "new", "null", "rethrow", "return", "super", "switch", "this", "throw",
+            "true", "try", "var", "void", "while", "with");
+
+        /// <summary>
         /// TypeScript.
         ///
         /// Two entries here are not the obvious ones, and both are about values arriving

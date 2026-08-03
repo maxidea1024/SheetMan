@@ -73,6 +73,29 @@ jobs:
       - name: Verify Rust toolchain
         run: cargo --version
 
+      # Ruby ships on ubuntu-latest, so this only records which one the run used.
+      - name: Verify Ruby toolchain
+        run: ruby --version
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: '3.6'
+
+      # Kotlin has no first-party action. The harness compiles through
+      # lib/kotlin-compiler.jar rather than the launcher script, so unpacking the
+      # release and putting its bin directory on the path is all that is needed - the
+      # runner finds the jar beside whichever launcher it sees.
+      - name: Setup Kotlin
+        run: |
+          curl -sSLo kotlin-compiler.zip \
+            https://github.com/JetBrains/kotlin/releases/download/v2.1.0/kotlin-compiler-2.1.0.zip
+          unzip -q kotlin-compiler.zip -d "$HOME/tools"
+          echo "$HOME/tools/kotlinc/bin" >> "$GITHUB_PATH"
+
+      - name: Verify Kotlin toolchain
+        run: kotlinc -version
+
       - name: Verify Docker
         run: docker version --format '{{.Server.Version}}'
 

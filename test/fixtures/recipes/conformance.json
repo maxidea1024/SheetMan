@@ -63,6 +63,26 @@
       "PackageName": "conformance",
       "AccessorName": "ConformanceData",
       "BinaryTableFileExtension": ".table"
+    },
+    {
+      "Type": "kotlin",
+      "Path": "test/fixtures/output/conformance/kotlin",
+      "PackageName": "conformance",
+      "AccessorName": "ConformanceData",
+      "BinaryTableFileExtension": ".table"
+    },
+    {
+      "Type": "ruby",
+      "Path": "test/fixtures/output/conformance/ruby",
+      "ModuleName": "Conformance",
+      "AccessorName": "conformance_data",
+      "BinaryTableFileExtension": ".table"
+    },
+    {
+      "Type": "dart",
+      "Path": "test/fixtures/output/conformance/dart",
+      "AccessorName": "conformance_data",
+      "BinaryTableFileExtension": ".table"
     }
   ],
 
