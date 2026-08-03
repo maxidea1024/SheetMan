@@ -118,6 +118,35 @@ namespace SheetMan.History
             return true;
         }
 
+        /// <summary>
+        /// Whether <paramref name="descendant"/> has <paramref name="ancestor"/> in its
+        /// history.
+        ///
+        /// Asked instead of comparing timestamps, because ancestry is the actual question:
+        /// two commits made a second apart on different machines can be dated in either
+        /// order, and a clock is not what decides which came first in a branch.
+        /// </summary>
+        /// <returns>False when git could not answer, leaving <paramref name="descends"/> unset.</returns>
+        public static bool TryIsAncestor(string directory, string ancestor, string descendant, out bool descends)
+        {
+            descends = false;
+
+            if (string.IsNullOrEmpty(ancestor) || string.IsNullOrEmpty(descendant))
+                return false;
+
+            // Exit 0 means yes and exit 1 means no, so the two cannot be told apart by
+            // TryRun's success alone - and an unknown revision also exits non-zero. The
+            // rev-parse pair is what separates "no" from "cannot say".
+            if (!TryRun(directory, out _, "rev-parse", "--verify", "--quiet", ancestor + "^{commit}")
+                || !TryRun(directory, out _, "rev-parse", "--verify", "--quiet", descendant + "^{commit}"))
+            {
+                return false;
+            }
+
+            descends = TryRun(directory, out _, "merge-base", "--is-ancestor", ancestor, descendant);
+            return true;
+        }
+
         /// <summary>The blob hash git has for a file, which identifies its exact contents.</summary>
         public static bool TryBlobHash(string directory, string path, out string hash)
             => TryRun(directory, out hash, "rev-parse", "HEAD:" + path.Replace('\\', '/'));

@@ -61,6 +61,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!--
+      The history's store is internal: it is infrastructure for the targets and the query
+      layer in this assembly, not an API. The suite drives it directly all the same,
+      because what has to be checked is how it behaves against a real MySQL - the
+      migration, the upserts, the concurrent write - and reaching that only through a
+      conversion would make each of those cases a workbook.
+    -->
+    <InternalsVisibleTo Include="SheetMan.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <!--
       Scriban rather than Handlebars or Fluid: no dependencies of its own, and its `{{ }}`
