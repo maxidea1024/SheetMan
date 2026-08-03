@@ -56,6 +56,13 @@
       "Path": "test/fixtures/output/conformance/python",
       "PackageName": "conformance",
       "BinaryTableFileExtension": ".table"
+    },
+    {
+      "Type": "java",
+      "Path": "test/fixtures/output/conformance/java",
+      "PackageName": "conformance",
+      "AccessorName": "ConformanceData",
+      "BinaryTableFileExtension": ".table"
     }
   ],
 

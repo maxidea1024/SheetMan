@@ -37,6 +37,8 @@
                       LogicalName="SheetMan.Runtime.Rust.lite_binary_reader.rs" />
     <EmbeddedResource Include="..\lib\python\sheetman\lite_binary_reader.py"
                       LogicalName="SheetMan.Runtime.Python.lite_binary_reader.py" />
+    <EmbeddedResource Include="..\lib\java\sheetman\LiteBinaryReader.java"
+                      LogicalName="SheetMan.Runtime.Java.LiteBinaryReader.java" />
   </ItemGroup>
 
   <ItemGroup>

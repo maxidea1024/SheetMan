@@ -147,6 +147,29 @@ namespace SheetMan.Tests
             Compare("Python", expected, Parse(harness.StdOut));
         }
 
+        /// <summary>
+        /// Java, the first language with no unsigned types.
+        ///
+        /// That is exactly where the format's varint decoding goes wrong when nobody is
+        /// watching: a byte with its high bit set is negative and has to be masked before
+        /// it is shifted, and undoing the zig-zag fold needs the unsigned shift rather than
+        /// the arithmetic one. The corpus holds five-byte varints either side of zero, so a
+        /// reader that got either wrong fails here.
+        /// </summary>
+        [Fact]
+        public void Generated_java_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.JavaIsAvailable(out string why),
+                $"A JDK is required to check the generated Java. {why}");
+
+            var harness = ConformanceHarness.RunJava(Scenario);
+            Assert.True(harness.Succeeded, $"Java harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("Java", expected, Parse(harness.StdOut));
+        }
+
         // ---------------------------------------------------------- comparison
 
         /// <summary>

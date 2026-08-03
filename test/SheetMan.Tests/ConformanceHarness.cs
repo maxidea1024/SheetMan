@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SheetMan.Tests
@@ -171,6 +172,46 @@ namespace SheetMan.Tests
             var environment = new Dictionary<string, string> { { "PYTHONIOENCODING", "utf-8" } };
 
             return Execute(PythonExecutable, root, environment, "harness.py", BinaryDir(scenario));
+        }
+
+        /// <summary>Whether a JDK is on the path.</summary>
+        public static bool JavaIsAvailable(out string reason)
+        {
+            try
+            {
+                var probe = Execute("javac", RepoLayout.Root, "-version");
+                reason = probe.Succeeded ? null : $"`javac -version` failed.{Environment.NewLine}{probe.Output}";
+                return probe.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                reason = $"`javac` could not be started: {ex.Message}";
+                return false;
+            }
+        }
+
+        public static ToolResult RunJava(string scenario)
+        {
+            // Beside the generated packages, because a Java source tree is rooted at the
+            // package directories and the harness is in the default package.
+            string root = Path.Combine(RepoLayout.OutputDir(scenario), "java");
+            string classes = Path.Combine(root, "classes");
+
+            File.Copy(Path.Combine(HarnessDir("java"), "Harness.java"),
+                      Path.Combine(root, "Harness.java"), overwrite: true);
+
+            Directory.CreateDirectory(classes);
+
+            var sources = Directory.EnumerateFiles(root, "*.java", SearchOption.AllDirectories).ToList();
+
+            var arguments = new List<string> { "-encoding", "UTF-8", "-d", classes };
+            arguments.AddRange(sources);
+
+            var build = Execute("javac", root, arguments.ToArray());
+            if (!build.Succeeded)
+                return build;
+
+            return Execute("java", root, "-cp", classes, "Harness", BinaryDir(scenario));
         }
 
         private static string WorkDir(string scenario, string language)

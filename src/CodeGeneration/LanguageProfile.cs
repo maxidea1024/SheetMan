@@ -305,6 +305,49 @@ namespace SheetMan.CodeGeneration
             "type");
 
         /// <summary>
+        /// Java.
+        ///
+        /// The first language with no unsigned types, which is where the format's varint
+        /// decoding goes wrong if nobody is watching: a byte with its high bit set is
+        /// negative and must be masked before it is shifted, and undoing the zig-zag fold
+        /// needs the unsigned shift rather than the arithmetic one. Both live in the
+        /// reader; nothing about the type table shows it.
+        ///
+        /// datetime and timespan are ticks, as everywhere but C# and C++. Instant and
+        /// Duration could hold these values, but the conversion is lossy coming back and a
+        /// caller passing the value through should not pay for it.
+        /// </summary>
+        public static readonly LanguageProfile Java = new LanguageProfile(
+            "java",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "String" },
+                { ValueType.Bool, "boolean" },
+                { ValueType.Int32, "int" },
+                { ValueType.Int64, "long" },
+                { ValueType.Float, "float" },
+                { ValueType.Double, "double" },
+                { ValueType.DateTime, "long" },
+                { ValueType.TimeSpan, "long" },
+                { ValueType.Uuid, "LiteBinaryReader.Uuid" },
+            },
+            "{0}[]",
+
+            // A trailing underscore. Java has no escape for an identifier that lands on a
+            // keyword, so the name has to change.
+            "{0}_",
+
+            // https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.9 - the
+            // keywords and the three literals, all reserved as identifiers.
+            "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char",
+            "class", "const", "continue", "default", "do", "double", "else", "enum",
+            "extends", "final", "finally", "float", "for", "goto", "if", "implements",
+            "import", "instanceof", "int", "interface", "long", "native", "new", "package",
+            "private", "protected", "public", "return", "short", "static", "strictfp",
+            "super", "switch", "synchronized", "this", "throw", "throws", "transient",
+            "try", "void", "volatile", "while", "true", "false", "null");
+
+        /// <summary>
         /// TypeScript.
         ///
         /// Two entries here are not the obvious ones, and both are about values arriving
