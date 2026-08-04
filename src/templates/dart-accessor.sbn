@@ -1,0 +1,49 @@
+{{~##
+   The library file: the imports, the part directives and the accessor. Holds no table's own
+   code, so a deleted table is a deleted part rather than a hunk to notice.
+##~}}
+{{ include 'dart-file-head.sbn' ~}}
+/// Every table, loaded together so cross-table references can be resolved.
+class Tables {
+{{~ for slot in accessor.tables ~}}
+  final {{ slot.table_name }} {{ slot.name }} = {{ slot.table_name }}();
+{{~ end ~}}
+
+  /// Reads every table from basePath, then links the references between them.
+  void readAll(String basePath) {
+{{~ if accessor.tables | array.size == 0 ~}}
+    // No tables to read.
+{{~ else ~}}
+{{~ for slot in accessor.tables ~}}
+    {{ slot.name }}.read('$basePath${Platform.pathSeparator}{{ slot.data_file_name }}{{ accessor.file_extension }}');
+{{~ end ~}}
+
+    _solveCrossReferences();
+{{~ end ~}}
+  }
+
+  /// Turns the stored indices into usable values, once every table is in memory.
+  void _solveCrossReferences() {
+{{~ if accessor.cross_references | array.size == 0 ~}}
+    // No table references another.
+{{~ else ~}}
+{{~ for reference in accessor.cross_references ~}}
+    for (final record in {{ reference.table }}.records) {
+{{~ for field in reference.fields ~}}
+{{~ if field.is_array ~}}
+      for (var i = 0; i < record.{{ field.name }}Index.length; i++) {
+        final target = {{ field.ref_table }}.find(record.{{ field.name }}Index[i]);
+        if (target != null) record.{{ field.name }}[i] = {{ field.value }};
+      }
+{{~ else ~}}
+      {
+        final target = {{ field.ref_table }}.find(record.{{ field.name }}Index);
+        if (target != null) record.{{ field.name }} = {{ field.value }};
+      }
+{{~ end ~}}
+{{~ end ~}}
+    }
+{{~ end ~}}
+{{~ end ~}}
+  }
+}

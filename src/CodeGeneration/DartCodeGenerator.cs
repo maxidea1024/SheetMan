@@ -83,14 +83,69 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime();
         }
 
+        /// <summary>
+        /// Writes the library file and a part per table, per enum and per constant set.
+        /// </summary>
+        /// <remarks>
+        /// `part` rather than a library per file, which is what a Dart code generator does and
+        /// what suits this output: a part shares its library's imports, so splitting costs no
+        /// per-file import calculation - and Dart requires every file to import what it names.
+        /// A consumer still imports one file and gets the model.
+        ///
+        /// File names are lower_snake_case, as Dart writes them, while the classes inside keep
+        /// their PascalCase.
+        /// </remarks>
         private void Generate()
         {
+            var view = BuildView();
+
+            Log.Information($"Generating codes for Dart into `{System.IO.Path.GetFullPath(_recipe.Path)}`");
+
+            // Where each part sits, and how a part refers back to the library. Both spelled with
+            // forward slashes: that is what a Dart directive takes, and it keeps the generated
+            // text the same wherever the conversion ran.
+            var parts = new List<(string Directive, string File, string Template, DartPartView View)>();
+
+            string library = "../" + _recipe.AccessorName + ".dart";
+
+            foreach (var table in view.Tables)
+            {
+                string name = table.TableName.ToSnakeCase();
+
+                parts.Add(($"tables/{name}.dart", System.IO.Path.Combine("tables", name + ".dart"),
+                           "dart-table.sbn", new DartPartView { Library = library, Table = table }));
+            }
+
+            foreach (var enumm in view.Enums)
+            {
+                string name = enumm.Name.ToSnakeCase();
+
+                parts.Add(($"enums/{name}.dart", System.IO.Path.Combine("enums", name + ".dart"),
+                           "dart-enum.sbn", new DartPartView { Library = library, Enumm = enumm }));
+            }
+
+            foreach (var set in view.ConstantSets)
+            {
+                string name = set.Name.ToSnakeCase();
+
+                parts.Add(($"constants/{name}.dart", System.IO.Path.Combine("constants", name + ".dart"),
+                           "dart-constants.sbn", new DartPartView { Library = library, Set = set }));
+            }
+
+            view.Parts = parts.Select(part => part.Directive).ToList();
+
+            Write(_recipe.AccessorName + ".dart", "dart-accessor.sbn", view);
+
+            foreach (var part in parts)
+                Write(part.File, part.Template, part.View);
+        }
+
+        private void Write(string relative, string templateName, object view)
+        {
             string filename = System.IO.Path.GetFullPath(
-                System.IO.Path.Combine(_recipe.Path, _recipe.AccessorName + ".dart"));
+                System.IO.Path.Combine(_recipe.Path, relative));
 
-            Log.Information($"Generating codes for Dart into `{filename}`");
-
-            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("dart.sbn", BuildView()));
+            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render(templateName, view));
         }
 
         private void WriteBinaryReaderRuntime()

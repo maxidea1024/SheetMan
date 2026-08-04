@@ -14,6 +14,34 @@ namespace SheetMan.CodeGeneration
         public RubyAccessorView Accessor { get; set; }
     }
 
+    /// <summary>
+    /// One generated file, for the templates that render one thing.
+    /// </summary>
+    /// <remarks>
+    /// Carries its requires as paths, already relative to its own directory. Ruby has no
+    /// autoloader here, so a split file requires what it uses - worked out in the generator,
+    /// because path arithmetic in a template is arithmetic nothing can test.
+    /// </remarks>
+    internal sealed class RubyPartView
+    {
+        public string ModuleName { get; set; }
+
+        /// <summary>Paths for `require_relative`, without the extension Ruby does not want.</summary>
+        public IReadOnlyList<string> Requires { get; set; }
+
+        /// <summary>The table this file is for, when it is a table file.</summary>
+        public RubyTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum file.</summary>
+        public RubyEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants file.</summary>
+        public RubyConstantSetView Set { get; set; }
+
+        /// <summary>The accessor's own shape, for the accessor file.</summary>
+        public RubyAccessorView Accessor { get; set; }
+    }
+
     internal sealed class RubyEnumView
     {
         public string Name { get; set; }

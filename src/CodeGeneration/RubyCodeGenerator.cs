@@ -83,14 +83,81 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime();
         }
 
+        /// <summary>
+        /// Writes a file per table, per enum and per constant set, plus the accessor.
+        /// </summary>
+        /// <remarks>
+        /// The module is reopened in every file rather than nested from one place, which is how
+        /// Ruby works: `module X` opens X whether or not something else already did.
+        ///
+        /// Requiring is the part that needs care. Ruby has no autoloader here, so the accessor
+        /// requires every part - and a table requires the reader, because its `read` names it.
+        /// File names are snake_case, as Ruby writes them.
+        /// </remarks>
         private void Generate()
         {
+            var view = BuildView();
+
+            Log.Information($"Generating codes for Ruby into `{System.IO.Path.GetFullPath(_recipe.Path)}`");
+
+            // Forward slashes, which `require_relative` takes on every platform, and no
+            // extension, which is how Ruby spells it.
+            var parts = new List<string> { "sheetman/lite_binary_reader" };
+
+            parts.AddRange(view.Enums.Select(e => "enums/" + e.Name.ToSnakeCase()));
+            parts.AddRange(view.ConstantSets.Select(s => "constants/" + s.Name.ToSnakeCase()));
+            parts.AddRange(view.Tables.Select(t => "tables/" + t.TableName.ToSnakeCase()));
+
+            Write(_recipe.AccessorName + ".rb", "ruby-accessor.sbn", new RubyPartView
+            {
+                ModuleName = _recipe.ModuleName,
+                Requires = parts,
+                Accessor = view.Accessor,
+            });
+
+            foreach (var table in view.Tables)
+            {
+                Write(System.IO.Path.Combine("tables", table.TableName.ToSnakeCase() + ".rb"),
+                      "ruby-table.sbn", new RubyPartView
+                      {
+                          ModuleName = _recipe.ModuleName,
+
+                          // One directory down, and its `read` names the reader.
+                          Requires = new[] { "../sheetman/lite_binary_reader" },
+                          Table = table,
+                      });
+            }
+
+            // An enum module and a constant module name nothing outside themselves.
+            foreach (var enumm in view.Enums)
+            {
+                Write(System.IO.Path.Combine("enums", enumm.Name.ToSnakeCase() + ".rb"),
+                      "ruby-enum.sbn", new RubyPartView
+                      {
+                          ModuleName = _recipe.ModuleName,
+                          Requires = Array.Empty<string>(),
+                          Enumm = enumm,
+                      });
+            }
+
+            foreach (var set in view.ConstantSets)
+            {
+                Write(System.IO.Path.Combine("constants", set.Name.ToSnakeCase() + ".rb"),
+                      "ruby-constants.sbn", new RubyPartView
+                      {
+                          ModuleName = _recipe.ModuleName,
+                          Requires = Array.Empty<string>(),
+                          Set = set,
+                      });
+            }
+        }
+
+        private void Write(string relative, string templateName, object view)
+        {
             string filename = System.IO.Path.GetFullPath(
-                System.IO.Path.Combine(_recipe.Path, _recipe.AccessorName + ".rb"));
+                System.IO.Path.Combine(_recipe.Path, relative));
 
-            Log.Information($"Generating codes for Ruby into `{filename}`");
-
-            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("ruby.sbn", BuildView()));
+            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render(templateName, view));
         }
 
         private void WriteBinaryReaderRuntime()
