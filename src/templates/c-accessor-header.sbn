@@ -1,0 +1,21 @@
+{{~## The accessor struct and the two calls that drive it. ##~}}
+{{ include 'c-header-head.sbn' ~}}
+/* Every table, loaded together so cross-table references can be resolved. */
+typedef struct {{ accessor.type_name }} {
+{{~ if accessor.tables | array.size == 0 ~}}
+    char unused; /* No tables. */
+{{~ end ~}}
+{{~ for slot in accessor.tables ~}}
+    {{ slot.table_name }} {{ slot.name }};
+{{~ end ~}}
+} {{ accessor.type_name }};
+
+/* Reads every table from base_path, then links the references between them.
+ *
+ * Returns false if any of them could not be read, having released whatever had
+ * been loaded up to that point - a half-loaded model is not one to hand back. */
+bool {{ accessor.name }}_LoadAll({{ accessor.type_name }}* data, const char* base_path,
+                                  char* error, size_t error_size);
+
+void {{ accessor.name }}_Free({{ accessor.type_name }}* data);
+{{ include 'c-header-foot.sbn' ~}}

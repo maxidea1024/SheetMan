@@ -1,0 +1,18 @@
+{{~##
+   Every record type as an incomplete type, in one header.
+
+   This is where C's answer to the cross-reference problem lives. A record holding a whole-row
+   reference has a member of type `const OtherRecord_t*`, and a pointer needs only an
+   incomplete type - so no table header has to include another, and two tables pointing at
+   each other is not an include cycle.
+
+   In one header rather than each table header declaring what it needs, because a repeated
+   `typedef struct X X;` in one translation unit is a constraint violation in C99 - legal in
+   C11 and accepted by every compiler either way, which is exactly the kind of thing that
+   compiles for years and then does not. Declared once here, included by all of them.
+##~}}
+{{ include 'c-header-head.sbn' ~}}
+{{~ for line in records ~}}
+typedef struct {{ line }} {{ line }};
+{{~ end ~}}
+{{ include 'c-header-foot.sbn' ~}}

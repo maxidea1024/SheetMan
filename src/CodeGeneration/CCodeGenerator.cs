@@ -61,7 +61,8 @@ namespace SheetMan.CodeGeneration
     }
 
     /// <summary>
-    /// Emits a C header and source, plus the binary reader.
+    /// Emits a C header per generated type, a source beside the ones that need code, an umbrella
+    /// header a consumer includes, and the binary reader.
     ///
     /// Two questions C asks that none of the other targets do.
     ///
@@ -73,7 +74,15 @@ namespace SheetMan.CodeGeneration
     /// remembers why, and a failed load frees what it had and leaves the table empty. A
     /// caller that ignores the return value still sees no rows rather than half of them.
     ///
-    /// The shapes live in templates/c-header.sbn and templates/c-source.sbn.
+    /// A third question, which arrived with the split. What includes what. A reference between two
+    /// tables is a cycle as often as not, and a pointer member needs only an incomplete type - so
+    /// every record is forward declared in one header that every table header includes, and no
+    /// table header includes another. An enum is different: a field declared with one is a value,
+    /// so its complete type has to be there.
+    ///
+    /// The shapes live in templates/c-*.sbn, one per kind of file, over the shared heads in
+    /// c-header-head.sbn and c-source-head.sbn. What a file needs comes from
+    /// <see cref="TypeDependencies"/>.
     /// </summary>
     [SheetManTarget("c", TargetKind.CodeGeneration, Order = 86)]
     public class CCodeGenerator : CodeGenerator<CRecipe>
@@ -91,13 +100,186 @@ namespace SheetMan.CodeGeneration
             _recipe = recipe;
             _model = context.Model;
 
-            var view = BuildView();
-
-            Write(view.HeaderName, "c-header.sbn", view);
-            Write(FileBase + ".c", "c-source.sbn", view);
+            Generate();
 
             WriteBinaryReaderRuntime();
         }
+
+        private void Generate()
+        {
+            var view = BuildView();
+
+            Log.Information(
+                $"Generating codes for C into `{System.IO.Path.GetFullPath(_recipe.Path)}`");
+
+            // Every record as an incomplete type. This is C's answer to a reference between two
+            // tables: a pointer member needs no more than this, so no table header includes
+            // another and a cycle between them is not a cycle here.
+            Write(ForwardHeader, "c-forward.sbn", new CPartView
+            {
+                Guard = Guard("FORWARD"),
+                Includes = Array.Empty<string>(),
+                Forwards = Array.Empty<string>(),
+                Records = view.Tables.Select(table => table.RecordName).ToList(),
+            });
+
+            foreach (var enumm in view.Enums)
+            {
+                // An enum needs nothing: its labels are integers, and neither a typedef nor an
+                // enum has linkage, so no extern "C" either.
+                Write(EnumHeader(enumm), "c-enum.sbn", new CPartView
+                {
+                    Guard = Guard("ENUM_" + enumm.RawName.ToSnakeCase().ToUpperInvariant()),
+                    Includes = Array.Empty<string>(),
+                    Forwards = Array.Empty<string>(),
+                    Enumm = enumm,
+                });
+            }
+
+            foreach (var pair in _model.ConstantSets.Zip(view.ConstantSets, (model, rendered) => (model, rendered)))
+            {
+                bool anyExtern = pair.rendered.Constants.Any(constant => constant.IsExtern);
+
+                // A uuid constant's type is the reader's, and an enum-typed one names an enum by
+                // its complete type. extern "C" because an `extern const` has linkage.
+                Write(ConstantsHeader(pair.rendered), "c-constants-header.sbn", new CPartView
+                {
+                    Guard = Guard("CONST_" + pair.rendered.Name.ToSnakeCase().ToUpperInvariant()),
+                    Includes = Includes(
+                        reader: NamesUuid(pair.model),
+                        headers: TypeDependencies.EnumsNamedBy(pair.model).Select(EnumHeaderFor)),
+                    Forwards = Array.Empty<string>(),
+                    ExternC = anyExtern,
+                    Set = pair.rendered,
+                });
+
+                // And nothing at all when there is none to define: a translation unit holding one
+                // include is still one a build system has to be told about.
+                if (anyExtern)
+                {
+                    Write(ConstantsSource(pair.rendered), "c-constants-source.sbn", new CPartView
+                    {
+                        Includes = Includes(reader: false, headers: new[] { ConstantsHeader(pair.rendered) }),
+                        Set = pair.rendered,
+                    });
+                }
+            }
+
+            foreach (var pair in _model.Tables.Zip(view.Tables, (model, rendered) => (model, rendered)))
+            {
+                // The reader for the arena and the index, the forward header for the records it
+                // points at, and the complete type of every enum a field is declared with - an
+                // enum member is a value, not a pointer, so an incomplete type will not do.
+                Write(TableHeader(pair.rendered), "c-table-header.sbn", new CPartView
+                {
+                    Guard = Guard(pair.rendered.RawName.ToSnakeCase().ToUpperInvariant()),
+                    Includes = Includes(
+                        reader: true,
+                        headers: new[] { ForwardHeader }
+                            .Concat(TypeDependencies.EnumsNamedBy(pair.model).Select(EnumHeaderFor))),
+                    Forwards = Array.Empty<string>(),
+                    ExternC = true,
+                    Table = pair.rendered,
+                });
+
+                // Its own header first, which is what makes the header prove it compiles alone.
+                Write(TableSource(pair.rendered), "c-table-source.sbn", new CPartView
+                {
+                    Includes = Includes(reader: false, headers: new[] { TableHeader(pair.rendered) })
+                        .Append("").Append("#include <string.h>").ToList(),
+                    Table = pair.rendered,
+                });
+            }
+
+            // The umbrella. A consumer's `#include "X.h"` is unchanged: it still reaches every
+            // generated type, only now by including the headers that declare them.
+            Write(FileBase + ".h", "c-accessor-header.sbn", new CPartView
+            {
+                Guard = Guard(null),
+                Includes = Includes(
+                    reader: false,
+                    headers: view.Enums.Select(EnumHeader)
+                        .Concat(view.ConstantSets.Select(ConstantsHeader))
+                        .Concat(view.Tables.Select(TableHeader))),
+                Forwards = Array.Empty<string>(),
+                ExternC = true,
+                Accessor = view.Accessor,
+            });
+
+            // snprintf explicitly: the reader's header only reaches for stdio.h inside its
+            // implementation branch, which used to be this file and is now its own.
+            Write(FileBase + ".c", "c-accessor-source.sbn", new CPartView
+            {
+                Includes = Includes(reader: false, headers: new[] { FileBase + ".h" })
+                    .Append("").Append("#include <stdio.h>").Append("#include <string.h>").ToList(),
+                Accessor = view.Accessor,
+            });
+
+            Write(FileBase + "_Reader.c", "c-reader-source.sbn", new CPartView());
+        }
+
+        // --------------------------------------------------------- file layout
+
+        /// <summary>
+        /// Flat, one header per generated type and a source beside the ones that need code.
+        /// </summary>
+        /// <remarks>
+        /// The names carry the grouping rather than directories, as they do for Go, Python, Rust
+        /// and Java - and here there is a further reason: an include path is written into the
+        /// generated text, so a directory is a string every file has to agree on rather than
+        /// something the compiler works out.
+        /// </remarks>
+        private string ForwardHeader => FileBase + "_Forward.h";
+
+        private string EnumHeader(CEnumView enumm) => $"{FileBase}_Enum{enumm.RawName}.h";
+        private string EnumHeaderFor(Models.Enum enumm) => $"{FileBase}_Enum{enumm.Name.ToPascalCase()}.h";
+
+        private string ConstantsHeader(CConstantSetView set) => $"{FileBase}_Const{set.Name}.h";
+        private string ConstantsSource(CConstantSetView set) => $"{FileBase}_Const{set.Name}.c";
+
+        private string TableHeader(CTableView table) => $"{FileBase}_{table.RawName.ToPascalCase()}.h";
+        private string TableSource(CTableView table) => $"{FileBase}_{table.RawName.ToPascalCase()}.c";
+
+        /// <summary>
+        /// An include guard. <paramref name="suffix"/> null gives the umbrella's own, which is
+        /// what it has always been, so a consumer testing for it still can.
+        /// </summary>
+        private string Guard(string suffix)
+            => suffix == null ? UpperPrefix + "_H" : $"{UpperPrefix}_{suffix}_H";
+
+        /// <summary>
+        /// Include lines, reader first and then this tool's own, with a blank line between the
+        /// groups.
+        /// </summary>
+        /// <remarks>
+        /// The reader comes first because everything else depends on it and nothing in it depends
+        /// on anything here - which is the whole of the ordering, the graph being a DAG once the
+        /// table-to-table edges are forward declarations instead of includes.
+        /// </remarks>
+        private static IReadOnlyList<string> Includes(bool reader, IEnumerable<string> headers)
+        {
+            var lines = new List<string>();
+
+            if (reader)
+                lines.Add("#include \"sheetman/sheetman_lite_binary_reader.h\"");
+
+            var own = headers.Distinct().ToList();
+
+            if (own.Count > 0 && lines.Count > 0)
+                lines.Add("");
+
+            foreach (var header in own)
+                lines.Add($"#include \"{header}\"");
+
+            return lines;
+        }
+
+        /// <summary>
+        /// Whether a constant set has a uuid in it, which is the only way its header reaches the
+        /// reader - a uuid's type is the reader's own struct.
+        /// </summary>
+        private static bool NamesUuid(ConstantSet set)
+            => set.Constants.Any(constant => constant.Type == ValueType.Uuid);
 
         /// <summary>
         /// What every generated name starts with, PascalCase.
@@ -117,11 +299,9 @@ namespace SheetMan.CodeGeneration
         /// <summary>The include guard and the constant names.</summary>
         private string UpperPrefix => _recipe.AccessorName.ToSnakeCase().ToUpperInvariant();
 
-        private void Write(string filename, string templateName, CFileView view)
+        private void Write(string filename, string templateName, CPartView view)
         {
             string full = System.IO.Path.GetFullPath(System.IO.Path.Combine(_recipe.Path, filename));
-
-            Log.Information($"Generating codes for C into `{full}`");
 
             StagingFiles.WriteAllTextToFile(full, TemplateEngine.Render(templateName, view));
         }
@@ -142,11 +322,10 @@ namespace SheetMan.CodeGeneration
             HeaderName = FileBase + ".h",
             Enums = _model.Enums.Select(BuildEnum).ToList(),
 
-            // Flattened: C has nothing to nest a set in, so the set's name becomes part of
-            // each constant's name rather than a scope around them.
-            Constants = _model.ConstantSets
-                              .SelectMany(set => set.Constants.Select(c => BuildConstant(set, c)))
-                              .ToList(),
+            // The names are flat - C has nothing to nest a set in, so the set's name becomes part
+            // of each constant's name rather than a scope around them - but they are still
+            // grouped by set, because that is the unit a file corresponds to.
+            ConstantSets = _model.ConstantSets.Select(BuildConstantSet).ToList(),
 
             Tables = _model.Tables.Select(BuildTable).ToList(),
             Accessor = BuildAccessor(),
@@ -154,6 +333,7 @@ namespace SheetMan.CodeGeneration
 
         private CEnumView BuildEnum(Models.Enum enumm) => new CEnumView
         {
+            RawName = enumm.Name.ToPascalCase(),
             Name = EnumName(enumm),
             Location = enumm.Location.ToString(),
             Comment = CommentLines(enumm.Comment),
@@ -163,6 +343,14 @@ namespace SheetMan.CodeGeneration
                 Value = label.Value.ToString(CultureInfo.InvariantCulture),
                 Comment = CommentLines(label.Comment),
             }).ToList(),
+        };
+
+        private CConstantSetView BuildConstantSet(ConstantSet set) => new CConstantSetView
+        {
+            Name = set.Name.ToPascalCase(),
+            Location = set.Location.ToString(),
+            Comment = CommentLines(set.Comment),
+            Constants = set.Constants.Select(constant => BuildConstant(set, constant)).ToList(),
         };
 
         private CConstantView BuildConstant(ConstantSet set, ConstantSet.Constant constant)

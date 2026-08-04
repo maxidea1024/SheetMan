@@ -20,13 +20,87 @@ namespace SheetMan.CodeGeneration
         public string HeaderName { get; set; }
 
         public IReadOnlyList<CEnumView> Enums { get; set; }
-        public IReadOnlyList<CConstantView> Constants { get; set; }
+        public IReadOnlyList<CConstantSetView> ConstantSets { get; set; }
         public IReadOnlyList<CTableView> Tables { get; set; }
         public CAccessorView Accessor { get; set; }
     }
 
+    /// <summary>
+    /// One generated file: what it has to say at the top, and the single thing it declares.
+    /// </summary>
+    /// <remarks>
+    /// C is the one target where the top of the file is not bookkeeping. An include has to come
+    /// before what uses it, a struct member of struct type needs the complete type, and a header
+    /// included twice in one translation unit has to be harmless. So the three are separate
+    /// fields rather than one list of lines: they are answered differently and they go in a
+    /// particular order.
+    /// </remarks>
+    internal sealed class CPartView
+    {
+        /// <summary>The include guard macro. Empty for a source file, which needs none.</summary>
+        public string Guard { get; set; }
+
+        /// <summary>`#include` lines, in the order they have to appear.</summary>
+        public IReadOnlyList<string> Includes { get; set; }
+
+        /// <summary>
+        /// Forward declaration lines. Only the forward header itself has any; every other file
+        /// includes that instead.
+        /// </summary>
+        public IReadOnlyList<string> Forwards { get; set; }
+
+        /// <summary>
+        /// Whether to wrap the file in `extern "C"`.
+        ///
+        /// Only where it means something: a typedef, an enum and a struct have no linkage, so an
+        /// enum header does not need it. A function declaration and an `extern const` do.
+        /// </summary>
+        public bool ExternC { get; set; }
+
+        /// <summary>Record type names, for the forward header.</summary>
+        public IReadOnlyList<string> Records { get; set; }
+
+        /// <summary>The table this file is for, when it is a table header or source.</summary>
+        public CTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum header.</summary>
+        public CEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants header or source.</summary>
+        public CConstantSetView Set { get; set; }
+
+        /// <summary>The accessor's own shape, for its header and source.</summary>
+        public CAccessorView Accessor { get; set; }
+    }
+
+    /// <summary>
+    /// One constant set.
+    /// </summary>
+    /// <remarks>
+    /// C has nothing to nest a set in, so the constants themselves are flat and each carries its
+    /// set's name. They are still grouped here, because the set is the unit the sheets add and
+    /// remove and so the unit a file corresponds to.
+    /// </remarks>
+    internal sealed class CConstantSetView
+    {
+        /// <summary>The set's name, PascalCase, which names its files.</summary>
+        public string Name { get; set; }
+
+        public string Location { get; set; }
+        public IReadOnlyList<string> Comment { get; set; }
+        public IReadOnlyList<CConstantView> Constants { get; set; }
+    }
+
     internal sealed class CEnumView
     {
+        /// <summary>Enum name as the sheet spelled it, PascalCase. Names its header.</summary>
+        /// <remarks>
+        /// Separate from <see cref="Name"/> because that one already carries the accessor prefix -
+        /// it is the C type name - and a file named from it comes out as
+        /// `X_EnumX_Flag_t.h`.
+        /// </remarks>
+        public string RawName { get; set; }
+
         public string Name { get; set; }
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }

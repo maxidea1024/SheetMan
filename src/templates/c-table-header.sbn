@@ -1,0 +1,48 @@
+{{~## One table: its record struct, its table struct and its functions. ##~}}
+{{ include 'c-header-head.sbn' ~}}
+/* Generated from {{ table.location }}
+{{~ for line in table.comment ~}}
+ *
+ * {{ line }}
+{{~ end ~}}
+ */
+struct {{ table.record_name }} {
+{{~ if table.fields | array.size == 0 ~}}
+    char unused; /* C has no empty struct. */
+{{~ end ~}}
+{{~ for field in table.fields ~}}
+{{~ for line in field.comment ~}}
+    /* {{ line }} */
+{{~ end ~}}
+{{~ for line in field.declarations ~}}
+    {{ line }}
+{{~ end ~}}
+{{~ end ~}}
+};
+
+/* Every row of {{ table.raw_name }}.
+ *
+ * The arena owns every string and every array the records point into, so the
+ * whole table is released in one call and no record's pointer outlives it. */
+typedef struct {{ table.table_name }} {
+    {{ table.record_name }}* records;
+    int32_t count;
+
+    sm_index_entry* by_index;
+    sm_arena arena;
+} {{ table.table_name }};
+
+/* Loads the table from a .table file written by SheetMan.
+ *
+ * Returns false and leaves the table empty when the file is missing, truncated
+ * or malformed; the reason goes to `error` when one is passed. */
+bool {{ table.function_prefix }}Load({{ table.table_name }}* table, const char* filename,
+                                      char* error, size_t error_size);
+
+/* Releases everything the table owns. Safe on a zeroed table, and safe twice. */
+void {{ table.function_prefix }}Free({{ table.table_name }}* table);
+
+/* The row with the given primary index, or NULL when there is none. */
+const {{ table.record_name }}* {{ table.function_prefix }}Find(
+    const {{ table.table_name }}* table, int32_t index);
+{{ include 'c-header-foot.sbn' ~}}
