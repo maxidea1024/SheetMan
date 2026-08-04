@@ -35,6 +35,13 @@ namespace SheetMan.CodeGeneration
 
         protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe typescriptRecipe)
         {
+            // A blank path means the entry is inert, as it is in the skeleton recipe.
+            // Without this the index and the reader land in the working directory - the
+            // same defect the C# target had, and for the same reason: an empty first
+            // component makes Path.Combine hand back a relative path rather than nothing.
+            if (string.IsNullOrEmpty(typescriptRecipe.Path))
+                return;
+
             _typescriptRecipe = typescriptRecipe;
 
             // Already narrowed to the side this entry is built for. Both (the default)

@@ -32,6 +32,14 @@ namespace SheetMan.CodeGeneration
 
         protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe csharpRecipe)
         {
+            // A blank path means the entry is inert - which is what every list in the
+            // skeleton recipe holds. Without this, `Path.Combine("", "GameData.cs")` is a
+            // relative path, so the accessor and the reader land in the working directory:
+            // two files in the repository root that got committed before anyone noticed,
+            // because the run succeeded.
+            if (string.IsNullOrEmpty(csharpRecipe.Path))
+                return;
+
             _csharpReceipe = csharpRecipe;
 
             // Already narrowed to the side this entry is built for. Both (the default)

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace SheetMan.Tests
@@ -61,6 +63,13 @@ namespace SheetMan.Tests
         {
             string filename = Path.Combine(Path.GetTempPath(), $"sheetman-skeleton-{Guid.NewGuid():N}.json");
 
+            // The whole root, before the run. Compared afterwards rather than looking for
+            // one extension: the assertion below used to check `*.html` only, having been
+            // written when the HTML target was the one at fault, so the C# and TypeScript
+            // targets went on writing four files and a directory into the repository root
+            // for months with this test passing.
+            var before = RootEntries();
+
             try
             {
                 var written = SheetManRunner.Invoke("--new-recipe", filename);
@@ -84,11 +93,16 @@ namespace SheetMan.Tests
                 Assert.True(ran.Succeeded,
                     $"The generated recipe did not run.{Environment.NewLine}{ran.Describe()}");
 
-                // Inert means it wrote nothing, not merely that it exited zero. The HTML
-                // target had no blank-path guard, so `Path.Combine("", "index.html")` put
-                // three pages in the working directory - and because the run succeeded,
-                // they went unnoticed long enough to be committed.
-                Assert.Empty(Directory.GetFiles(RepoLayout.Root, "*.html"));
+                // Inert means it wrote nothing, not merely that it exited zero. A target
+                // without a blank-path guard turns `Path.Combine("", "index.html")` into a
+                // relative path and writes into the working directory - and because the run
+                // succeeds, the files go unnoticed long enough to be committed. Three of
+                // them were.
+                var appeared = RootEntries().Except(before, StringComparer.OrdinalIgnoreCase).ToList();
+
+                Assert.True(appeared.Count == 0,
+                    $"Running the skeleton recipe wrote into the repository root:" +
+                    $"{Environment.NewLine}  {string.Join($"{Environment.NewLine}  ", appeared)}");
             }
             finally
             {
@@ -96,5 +110,16 @@ namespace SheetMan.Tests
                     File.Delete(filename);
             }
         }
+
+        /// <summary>
+        /// The repository root's own files and directories, not its contents.
+        ///
+        /// A name is enough: what is being detected is something appearing that was not
+        /// there, and walking the whole tree would take in every build directory.
+        /// </summary>
+        private static IReadOnlyCollection<string> RootEntries()
+            => Directory.GetFileSystemEntries(RepoLayout.Root)
+                        .Select(Path.GetFileName)
+                        .ToHashSet(StringComparer.OrdinalIgnoreCase);
     }
 }
