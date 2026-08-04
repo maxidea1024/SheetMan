@@ -15,6 +15,37 @@ namespace SheetMan.CodeGeneration
     }
 
     /// <summary>
+    /// One generated file, for the templates that render one thing.
+    /// </summary>
+    /// <remarks>
+    /// Carries the requires as finished lines. PHP has no autoloader here, so a split file
+    /// has to require what it uses and how deep it sits decides the path - both worked out in
+    /// the generator, because path arithmetic in a template is arithmetic nothing can test.
+    /// </remarks>
+    internal sealed class PhpPartView
+    {
+        public string Namespace { get; set; }
+
+        /// <summary>Complete `require_once` lines, in the order they must run.</summary>
+        public IReadOnlyList<string> Requires { get; set; }
+
+        /// <summary>The table this file is for, when it is a table file.</summary>
+        public PhpTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum file.</summary>
+        public PhpEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants file.</summary>
+        public PhpConstantSetView Set { get; set; }
+
+        /// <summary>Every table, for the accessor.</summary>
+        public IReadOnlyList<PhpTableView> Tables { get; set; }
+
+        /// <summary>The accessor's own shape, for the accessor file.</summary>
+        public PhpAccessorView Accessor { get; set; }
+    }
+
+    /// <summary>
     /// A backed enum.
     ///
     /// PHP has had these since 8.1 and they carry the declared value, so nothing here has

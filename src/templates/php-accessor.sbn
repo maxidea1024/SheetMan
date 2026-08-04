@@ -1,0 +1,68 @@
+{{~##
+   The accessor: one property per table, the load, and the reference linking.
+
+   Holds no table's own code, and requires every part - so a consumer includes this one file
+   and gets the model.
+##~}}
+{{ include 'php-file-head.sbn' ~}}
+/** Every table, loaded together so cross-table references can be resolved. */
+final class {{ accessor.name }}
+{
+{{~ for slot in accessor.tables ~}}
+    public {{ slot.table_name }} ${{ slot.name }};
+{{~ end ~}}
+
+    public function __construct()
+    {
+{{~ if accessor.tables | array.size == 0 ~}}
+        // No tables.
+{{~ end ~}}
+{{~ for slot in accessor.tables ~}}
+        $this->{{ slot.name }} = new {{ slot.table_name }}();
+{{~ end ~}}
+    }
+
+    /** Reads every table from $basePath, then links the references between them. */
+    public function readAll(string $basePath): void
+    {
+{{~ if accessor.tables | array.size == 0 ~}}
+        // No tables.
+{{~ else ~}}
+{{~ for slot in accessor.tables ~}}
+        $this->{{ slot.name }}->read($basePath . \DIRECTORY_SEPARATOR . '{{ slot.data_file_name }}{{ accessor.file_extension }}');
+{{~ end ~}}
+
+        $this->solveCrossReferences();
+{{~ end ~}}
+    }
+
+    /** Turns the stored indices into usable values, once every table is in memory. */
+    private function solveCrossReferences(): void
+    {
+{{~ if accessor.cross_references | array.size == 0 ~}}
+        // No table references another.
+{{~ else ~}}
+{{~ for reference in accessor.cross_references ~}}
+        foreach ($this->{{ reference.table }}->records as $record) {
+{{~ for field in reference.fields ~}}
+{{~ if field.is_array ~}}
+            foreach ($record->{{ field.name }}Index as $position => $index) {
+                $target = $this->{{ field.ref_table }}->find($index);
+
+                if ($target !== null) {
+                    $record->{{ field.name }}[$position] = {{ field.value }};
+                }
+            }
+{{~ else ~}}
+            $target = $this->{{ field.ref_table }}->find($record->{{ field.name }}Index);
+
+            if ($target !== null) {
+                $record->{{ field.name }} = {{ field.value }};
+            }
+{{~ end ~}}
+{{~ end ~}}
+        }
+{{~ end ~}}
+{{~ end ~}}
+    }
+}
