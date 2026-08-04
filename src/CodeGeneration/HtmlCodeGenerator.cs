@@ -38,6 +38,8 @@ namespace SheetMan.CodeGeneration
             if (string.IsNullOrEmpty(htmlRecipe.Path))
                 return;
 
+            SweepStaleOutput(htmlRecipe.Path, htmlRecipe.Sweep);
+
             _htmlRecipe = htmlRecipe;
 
             // Already narrowed to the side this entry is built for. Both (the default)

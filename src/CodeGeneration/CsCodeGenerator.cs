@@ -40,6 +40,8 @@ namespace SheetMan.CodeGeneration
             if (string.IsNullOrEmpty(csharpRecipe.Path))
                 return;
 
+            SweepStaleOutput(csharpRecipe.Path, csharpRecipe.Sweep);
+
             _csharpReceipe = csharpRecipe;
 
             // Already narrowed to the side this entry is built for. Both (the default)
