@@ -57,6 +57,10 @@ tables.vectors.records.each_with_index do |r, position|
 
   json << '"ints":[' << r.ints.map(&:to_s).join(',') << '],'
   json << '"strs":[' << r.strs.map { |value| quote(value) }.join(',') << ']'
+  # The reference indices, which is what the exporter writes for a foreign field.
+  json << ',"owner":' << r.owner_index.to_s
+  json << ',"tier":' << r.tier_index.to_s
+
   json << '}'
 end
 

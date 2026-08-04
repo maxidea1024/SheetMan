@@ -46,6 +46,11 @@ void main(List<String> args) {
 
     json.write('"ints":[${r.ints.join(',')}],');
     json.write('"strs":[${r.strs.map(quote).join(',')}]');
+
+    // The reference indices, which is what the exporter writes for a foreign field.
+    json.write(',"owner":${r.ownerIndex}');
+    json.write(',"tier":${r.tierIndex}');
+
     json.write('}');
   }
 

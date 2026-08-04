@@ -48,6 +48,10 @@ func main() {
 			"label": int32(r.Label),
 			"ints":  r.Ints,
 			"strs":  r.Strs,
+
+			// The reference indices, which is what the exporter writes for a foreign field.
+			"owner": r.OwnerIndex,
+			"tier":  r.TierIndex,
 		})
 	}
 

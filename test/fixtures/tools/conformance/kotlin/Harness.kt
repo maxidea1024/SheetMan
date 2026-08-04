@@ -54,6 +54,10 @@ fun main(args: Array<String>) {
         }
         json.append(']')
 
+        // The reference indices, which is what the exporter writes for a foreign field.
+        json.append(",\"owner\":").append(r.ownerIndex)
+        json.append(",\"tier\":").append(r.tierIndex)
+
         json.append('}')
     }
 

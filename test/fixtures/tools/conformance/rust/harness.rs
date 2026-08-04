@@ -70,6 +70,10 @@ fn main() {
         }
         json.push(']');
 
+        // The reference indices, which is what the exporter writes for a foreign field.
+        json.push_str(&format!(",\"owner\":{}", record.owner_index));
+        json.push_str(&format!(",\"tier\":{}", record.tier_index));
+
         json.push('}');
     }
 

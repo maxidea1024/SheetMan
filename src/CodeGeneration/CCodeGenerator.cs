@@ -221,9 +221,9 @@ namespace SheetMan.CodeGeneration
         /// <summary>
         /// The member declarations.
         ///
-        /// A reference contributes the index that came off the wire as well as the pointer
-        /// it resolves to, and a variable length array contributes a count beside its
-        /// pointer - C has nowhere else to keep either.
+        /// A reference contributes the index that came off the wire as well as what it
+        /// resolves to, and a variable length array contributes a count beside its pointer -
+        /// C has nowhere else to keep either.
         /// </summary>
         private IReadOnlyList<string> Declarations(SerialField sf, string name)
         {
@@ -231,17 +231,31 @@ namespace SheetMan.CodeGeneration
 
             if (sf.IsRef)
             {
-                // A pointer to const: the row belongs to the table it came from, and a
-                // caller writing through this one would be editing that table's copy.
+                // What a reference resolves to depends on which kind it is, and getting this
+                // wrong compiled for a while: every scenario that reached the C target had no
+                // reference in it, so nothing crossed a table until the conformance corpus
+                // grew one.
+                //
+                // A whole-row reference resolves to the other table's row, so it is a pointer
+                // to const - the row belongs to the table it came from, and writing through
+                // this one would edit that table's copy.
+                //
+                // A field reference resolves to one of that row's values, so it is that
+                // value's own type. Declaring a pointer there gave `const int32_t* tier` and
+                // an assignment of an int32_t to it.
+                string resolved = sf.ElementType == ValueType.ForeignRecord
+                    ? $"const {elementType}*"
+                    : elementType;
+
                 return sf.IsArray
                     ? new[]
                     {
-                        $"const {elementType}* {name}[{sf.Fields.Count}];",
+                        $"{resolved} {name}[{sf.Fields.Count}];",
                         $"int32_t {name}_index[{sf.Fields.Count}];",
                     }
                     : new[]
                     {
-                        $"const {elementType}* {name};",
+                        $"{resolved} {name};",
                         $"int32_t {name}_index;",
                     };
             }
