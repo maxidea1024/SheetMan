@@ -707,4 +707,3 @@ class Tables
 }  // namespace sheetman_fixtures
 
 #endif  // SHEETMAN_GENERATED_COREACCESSOR_H
-

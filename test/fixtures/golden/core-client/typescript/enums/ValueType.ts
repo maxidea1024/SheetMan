@@ -19,4 +19,3 @@ export enum ValueType {
     /** single precision float */
     Float = 3
 }
-

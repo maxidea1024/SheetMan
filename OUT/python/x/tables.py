@@ -91,4 +91,3 @@ class Tables:
         """Turns the stored indices into usable values, once every table is in memory."""
         # No table references another.
         return
-

@@ -97,4 +97,3 @@ object A {
         // No table references another.
     }
 }
-

@@ -17,4 +17,3 @@ export enum SkillType {
     /** throws an ice shard */
     IceShard = 2
 }
-

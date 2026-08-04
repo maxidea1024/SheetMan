@@ -38,4 +38,3 @@ export class GameConfig {
     /** identifies this data build */
     public static readonly buildId: string = '6f9619ff-8b86-d011-b42d-00c04fc964ff'
 }
-

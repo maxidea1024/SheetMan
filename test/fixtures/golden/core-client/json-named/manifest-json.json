@@ -1,42 +1,42 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "aa4afe90766cba7483886110c61068c4",
-  "TotalSize": 3262,
+  "MasterHash": "a294c2d931d48c084fc401d3926678d2",
+  "TotalSize": 3072,
   "Items": [
     {
       "Name": "TestFieldTypes.json",
-      "Size": 989,
-      "Hash": "ee93f7d341e4d951fe97468295bd73df",
+      "Size": 953,
+      "Hash": "4a177b7fbe35003ab38e5348ecccf62f",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ItemCategory.json",
-      "Size": 273,
-      "Hash": "dd5611b6c49f240340c3e20982ccbf68",
+      "Size": 258,
+      "Hash": "2c710e8e662ac801858bad1d3b9653c2",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Item.json",
-      "Size": 535,
-      "Hash": "2b952950a0de22d731d04ec53a973f13",
+      "Size": 511,
+      "Hash": "1ec9996b426270851262af5797719d7a",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Localization.json",
-      "Size": 371,
-      "Hash": "f123a78d66d0dd9a88c8afa4a2cc9981",
+      "Size": 347,
+      "Hash": "e69880a7b3c05f3bac681ab632f9b490",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ArrayTypes.json",
-      "Size": 949,
-      "Hash": "47951d505eb7f0b0ebb4e48482fed92e",
+      "Size": 868,
+      "Hash": "70ab8d55dfc7135d775292560b4a4093",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ClientStrings.json",
-      "Size": 145,
-      "Hash": "31947cfb610d593867ec85fe585b6669",
+      "Size": 135,
+      "Hash": "53ab1f030d5ab1085f1a43a14c3a8123",
       "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]

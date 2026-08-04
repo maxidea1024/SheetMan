@@ -56,6 +56,10 @@ namespace SheetMan.History
 
             // Kestrel's own logging duplicates what Serilog already reports, in a different
             // shape. One log.
+            //
+            // Which is why `Report` below writes its own line for anything that fails. With
+            // the providers cleared, ASP.NET's report of an unhandled exception goes nowhere,
+            // and for a while nothing else wrote one either.
             builder.Logging.ClearProviders();
 
             // Configured on Kestrel rather than through a URL string: an address that does
@@ -64,6 +68,9 @@ namespace SheetMan.History
             builder.WebHost.ConfigureKestrel(kestrel => kestrel.Listen(Address(bind), port));
 
             var app = builder.Build();
+
+            // Before anything else, so it wraps every route below.
+            app.Use(Report);
 
             Map(app, connectionString, projectKey, token, repository);
 
@@ -190,26 +197,177 @@ namespace SheetMan.History
             }
         }
 
+        /// <summary>
+        /// Turns a failed request into an answer, and writes it down.
+        ///
+        /// Without this the server was silent in both directions. An unhandled exception -
+        /// `--from` naming a commit the history does not hold, say - became a 500 with an
+        /// empty body, and because Kestrel's logging providers are cleared so that Serilog is
+        /// the only log, ASP.NET's own report of it went nowhere either. So a caller saw a
+        /// bare 500 and the operator saw nothing at all.
+        ///
+        /// A <see cref="SheetManException"/> is the caller's mistake and says so with its
+        /// message: an unknown commit, an ambiguous prefix, a range the wrong way round. The
+        /// command line prints exactly those sentences, and there is no reason the API should
+        /// be less use than `--history` about the same input.
+        ///
+        /// Anything else is this program's own fault, and the body says only that plus an id
+        /// to find it by. What the exception actually said goes to the log, not to the
+        /// response - a stack frame or a connection string in an HTTP body is how a read-only
+        /// server starts leaking.
+        /// </summary>
+        private static async Task Report(HttpContext context, Func<Task> next)
+        {
+            try
+            {
+                await next();
+            }
+            catch (SheetManException ex)
+            {
+                Log.Warning($"{context.Request.Path}{context.Request.QueryString}: {ex.Message}");
+
+                await Fail(context, StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Enough to match a response to a log line, and nothing an attacker learns
+                // anything from.
+                string incident = Convert.ToHexString(
+                    SHA256.HashData(Encoding.UTF8.GetBytes(
+                        context.TraceIdentifier))).Substring(0, 8).ToLowerInvariant();
+
+                Log.Error($"{context.Request.Path}{context.Request.QueryString} failed " +
+                          $"[{incident}]: {ex}");
+
+                await Fail(context, StatusCodes.Status500InternalServerError,
+                    $"The server could not answer this. The log records it as {incident}.");
+            }
+        }
+
+        /// <summary>
+        /// Writes a failure as the same JSON shape every other answer uses.
+        /// </summary>
+        /// <remarks>
+        /// A page fetching these reads one shape whether the answer arrived or not, and a
+        /// person with curl gets a sentence rather than a status code on its own.
+        ///
+        /// Nothing is written when the response has already started, which is the one case
+        /// this cannot rescue: the body is part-way out and appending an error object to it
+        /// would produce something that parses as neither.
+        /// </remarks>
+        private static async Task Fail(HttpContext context, int status, string message)
+        {
+            if (context.Response.HasStarted)
+                return;
+
+            context.Response.Clear();
+            context.Response.StatusCode = status;
+            context.Response.ContentType = "application/json; charset=utf-8";
+
+            await context.Response.WriteAsync(
+                HistoryCommand.Serialize(new { error = message, status }));
+        }
+
+        /// <summary>Cookie the browser carries once a query token has been accepted.</summary>
+        private const string TokenCookie = "sheetman_token";
+
+        /// <summary>
+        /// Checks the token, three ways.
+        ///
+        /// `Authorization: Bearer` is the one to use, and the only one that leaves no trace:
+        /// a header is not written to an access log, does not reach a `Referer`, and is not in
+        /// the address bar to be copied into a chat window.
+        ///
+        /// A `?token=` is accepted because a browser cannot send a header by being pointed at
+        /// a URL, and the page has to be openable. It is the worst of the three for exactly
+        /// the reasons above, so when one arrives and is right it is moved into an HttpOnly
+        /// cookie and the reader is redirected to the same URL without it - the address bar is
+        /// clean from the second request on, and the page's own fetches carry the cookie.
+        ///
+        /// The cookie is the third. Session-scoped, HttpOnly so script cannot read it, and
+        /// SameSite=Strict so another site cannot cause a request that uses it.
+        ///
+        /// None of this is a substitute for TLS. Every one of the three is readable by
+        /// anything on the path; put the server behind a reverse proxy that terminates HTTPS
+        /// if the network between is not one you own.
+        /// </summary>
         private static async Task Authorize(HttpContext context, string token, Func<Task> next)
         {
             // The page and its assets are behind the token too. They carry no data, but a
             // reachable page invites somebody to conclude the port is open to them.
             string header = context.Request.Headers.Authorization.ToString();
 
-            string presented = header.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
-                ? header.Substring("Bearer ".Length).Trim()
-                : context.Request.Query["token"].ToString();
+            string fromQuery = context.Request.Query["token"].ToString();
+
+            string presented =
+                header.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+                    ? header.Substring("Bearer ".Length).Trim()
+                    : !string.IsNullOrEmpty(fromQuery)
+                        ? fromQuery
+                        : context.Request.Cookies[TokenCookie];
 
             if (!FixedTimeEquals(presented, token))
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 context.Response.Headers.WWWAuthenticate = "Bearer";
+                context.Response.ContentType = "application/json; charset=utf-8";
 
-                await context.Response.WriteAsync("A bearer token is required.");
+                await context.Response.WriteAsync(HistoryCommand.Serialize(new
+                {
+                    error = "A bearer token is required. Send it as `Authorization: Bearer <token>`, " +
+                            "or open the page once with `?token=<token>`.",
+                    status = StatusCodes.Status401Unauthorized,
+                }));
+
                 return;
             }
 
+            if (!string.IsNullOrEmpty(fromQuery))
+            {
+                context.Response.Cookies.Append(TokenCookie, fromQuery, new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Strict,
+
+                    // Not Secure: this listens on plain HTTP, and a Secure cookie would never
+                    // come back. A deployment behind a TLS proxy wants one, which is a reason
+                    // to be behind a proxy rather than a reason to set it here and break.
+                    Secure = false,
+                });
+
+                // Only the page is redirected. An API call with `?token=` is somebody's curl
+                // line or script, and answering it with a 302 to a URL that then needs the
+                // cookie would break it for no gain - the address bar is not the concern
+                // there. The token still reaches an access log that way, which is why the
+                // header is the documented route.
+                if (IsPage(context.Request.Path))
+                {
+                    context.Response.Redirect(WithoutToken(context.Request), permanent: false);
+                    return;
+                }
+            }
+
             await next();
+        }
+
+        /// <summary>Whether this path is something a person opened rather than a call.</summary>
+        private static bool IsPage(PathString path)
+            => !path.StartsWithSegments(ApiPrefix, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>The same request's URL with `token` removed from the query.</summary>
+        private static string WithoutToken(HttpRequest request)
+        {
+            var kept = request.Query
+                              .Where(pair => !string.Equals(pair.Key, "token", StringComparison.OrdinalIgnoreCase))
+                              .SelectMany(pair => pair.Value.Select(value => (pair.Key, Value: value)))
+                              .ToList();
+
+            string query = kept.Count == 0
+                ? ""
+                : "?" + string.Join("&", kept.Select(pair =>
+                      Uri.EscapeDataString(pair.Key) + "=" + Uri.EscapeDataString(pair.Value)));
+
+            return request.PathBase + request.Path + query;
         }
 
         /// <summary>

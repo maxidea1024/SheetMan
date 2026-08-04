@@ -116,4 +116,3 @@ func (t *Tables) ReadAll(basePath string) error {
 func (t *Tables) solveCrossReferences() {
 	// No table references another.
 }
-

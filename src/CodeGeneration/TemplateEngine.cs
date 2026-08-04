@@ -32,14 +32,7 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         /// <param name="templateName">File name under templates/, such as `cpp.sbn`.</param>
         /// <param name="model">The view the template reads.</param>
-        /// <param name="trailingBlankLine">
-        /// Whether the file ends with a blank line. Not a matter of taste: the printer this
-        /// replaced left one behind wherever a generator's last call was PrintLine and none
-        /// where it was Print, so the generated C++ has one and the generated HTML does not.
-        /// Stated here rather than left to whether a template file happens to end with a
-        /// newline, which an editor may add or remove without anyone noticing.
-        /// </param>
-        public static string Render(string templateName, object model, bool trailingBlankLine = true)
+        public static string Render(string templateName, object model)
         {
             var template = Template.Parse(Load(templateName), templateName);
 
@@ -69,7 +62,7 @@ namespace SheetMan.CodeGeneration
             globals.Import(model, renamer: member => StandardMemberRenamer.Default(member));
             context.PushGlobal(globals);
 
-            return Normalize(template.Render(context), trailingBlankLine);
+            return Normalize(template.Render(context));
         }
 
         /// <summary>
@@ -88,32 +81,38 @@ namespace SheetMan.CodeGeneration
         }
 
         /// <summary>
-        /// Puts the rendered text into the form the generated files have always taken.
+        /// Puts the rendered text into the form a text file is supposed to take.
         ///
-        /// This reproduces what Printer.ToString did, deliberately, because the golden
-        /// trees record its output and moving the generators onto templates is only
-        /// verifiable if the bytes do not move. Three things:
+        /// Three things:
         ///
-        ///   - line endings are LF. The printer declared CRLF and then normalized it away
-        ///     again on the way out, so every generated file has been LF all along.
+        ///   - line endings are LF. The printer this replaced declared CRLF and then
+        ///     normalized it away again on the way out, so every generated file has been LF
+        ///     all along.
         ///
         ///   - every line is right-trimmed, which matters for templates: an indented line
         ///     whose content turns out to be empty would otherwise leave trailing spaces.
         ///
-        ///   - the file ends with a blank line. The printer split on the final newline,
-        ///     which yields one empty segment, and then appended a newline to every
-        ///     segment including that one. An accident, but a harmless one, and preserving
-        ///     it is what keeps this change reviewable.
+        ///   - the file ends with exactly one newline. Not two.
+        ///
+        /// That last one used to be two, and the note here said so: the printer split on the
+        /// final newline, which yields one empty segment, then appended a newline to every
+        /// segment including that one. An accident, kept while the generators were moved onto
+        /// templates so that the golden trees could prove the bytes had not moved.
+        ///
+        /// That move is long done, and the accident outlived its reason. One trailing newline
+        /// is what every tool expects - it is what makes a file's last line a line at all -
+        /// and two is a blank line at the end of every generated file that a formatter, a
+        /// linter or a reviewer will want to remove.
         /// </summary>
-        private static string Normalize(string text, bool trailingBlankLine)
+        private static string Normalize(string text)
         {
             var lines = new List<string>(text.Replace("\r\n", "\n").Split('\n'));
 
             for (int i = 0; i < lines.Count; i++)
                 lines[i] = lines[i].TrimEnd();
 
-            // Whatever the template file happened to end with is discarded, so the ending
-            // is decided by the caller rather than by an editor's trailing-newline habit.
+            // Whatever the template file happened to end with is discarded, so the ending is
+            // decided here rather than by an editor's trailing-newline habit.
             while (lines.Count > 0 && lines[lines.Count - 1].Length == 0)
                 lines.RemoveAt(lines.Count - 1);
 
@@ -124,9 +123,6 @@ namespace SheetMan.CodeGeneration
                 result.Append(line);
                 result.Append('\n');
             }
-
-            if (trailingBlankLine)
-                result.Append('\n');
 
             return result.ToString();
         }

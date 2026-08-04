@@ -16,4 +16,3 @@ export { ItemTable } from './tables/Item'
 
 export { Tables } from './Tables'
 export { Updater } from './Updater'
-

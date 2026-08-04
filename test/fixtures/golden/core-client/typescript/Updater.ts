@@ -12,4 +12,3 @@ import * as axios from 'axios'
 export class Updater {
     //TODO
 }
-

@@ -51,7 +51,7 @@ namespace SheetMan.CodeGeneration
     /// The shape lives in templates/ruby.sbn.
     /// </summary>
     [SheetManTarget("ruby", TargetKind.CodeGeneration, Order = 75)]
-    public class RubyCodeGenerator : Target<RubyRecipe>
+    public class RubyCodeGenerator : CodeGenerator<RubyRecipe>
     {
         private Model _model;
         private RubyRecipe _recipe;
@@ -80,18 +80,9 @@ namespace SheetMan.CodeGeneration
 
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Ruby.lite_binary_reader.rb";
-
-            using var stream = typeof(RubyCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            StagingFiles.WriteAllTextToFile(
-                System.IO.Path.GetFullPath(
-                    System.IO.Path.Combine(_recipe.Path, "sheetman", "lite_binary_reader.rb")),
-                reader.ReadToEnd());
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Ruby.lite_binary_reader.rb",
+                System.IO.Path.Combine(_recipe.Path, "sheetman", "lite_binary_reader.rb"));
         }
 
         // --------------------------------------------------------------- view
@@ -359,12 +350,5 @@ namespace SheetMan.CodeGeneration
         /// <summary>A constant, SCREAMING_SNAKE_CASE as Ruby writes them.</summary>
         private static string ConstantName(string name) => name.ToSnakeCase().ToUpperInvariant();
 
-        private static IReadOnlyList<string> CommentLines(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
-
-            return comment.Replace("\r\n", "\n").Split('\n');
-        }
     }
 }
