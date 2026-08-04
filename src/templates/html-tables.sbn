@@ -1,4 +1,4 @@
-{{~##
+﻿{{~##
    Every table on one page: four header rows describing the columns, then the data.
 
    The header shows the sheet's own columns rather than the folded groups, so the page
@@ -18,7 +18,7 @@
 {{~ if table.comment != '' ~}}
 <div class="comment">{{ table.comment }}</div>
 {{~ end ~}}
-<table class="table-bordered table-striped table-condensed header-fixed  table-hover">
+<table>
 <thead>
 {{~ for cell in table.name_cells ~}}
 {{ cell }}
