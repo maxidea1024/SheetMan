@@ -18,10 +18,23 @@
     <RootNamespace>SheetMan.CsCompileCheck</RootNamespace>
 
     <!--
-      NO_UNITY selects the non-Unity branches of the generated code, the same constant a
-      non-Unity consumer would define. Without it the generated file expects UniTask.
+      Nothing is defined by default any more, which is the point: the generated code used
+      to need NO_UNITY set by hand or it expected UniTask, and now the plain branch is the
+      one a plain .NET project gets for free.
+
+      The caller passes UnitySymbols to compile the branches Unity would take. Those
+      branches were never compiled by anything before, so both of them could have been
+      broken for as long as they had existed.
     -->
-    <DefineConstants>$(DefineConstants);NO_UNITY</DefineConstants>
+    <DefineConstants Condition="'$(UnitySymbols)' != ''">$(DefineConstants);$(UnitySymbols)</DefineConstants>
+
+    <!--
+      Unity 2021.2's API level, so File.ReadAllBytesAsync resolves the way it does there.
+      The Unity branches are compiled against this framework rather than a Unity install:
+      what is being checked is that the code the preprocessor selects is valid and that
+      the members it names exist, and netstandard2.1 is the surface Unity offers.
+    -->
+    <LangVersion Condition="'$(UnitySymbols)' != ''">8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

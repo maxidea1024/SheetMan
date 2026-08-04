@@ -39,7 +39,7 @@ SDK 버전은 리포지토리 루트의 `global.json`에 고정되어 있습니�
 
 |대상|요구사항|비고|
 |--|--|--|
-|C# / Unity|Unity 2020.3 이상 (C# 8 / netstandard2.1)||
+|C# / Unity|Unity 2020.3 이상 (C# 8 / netstandard2.1)|**설정할 것이 없습니다.** 유니티 내장 정의(`UNITY_5_3_OR_NEWER` 등)로 스스로 판별하고, UniTask 같은 외부 패키지도 필요 없습니다|
 |TypeScript|4.5 이상, 컴파일 타겟 `ES2020` 이상|리더가 `BigInt`를 씁니다|
 |C++|C++17 이상||
 |Go|1.21 이상|생성되는 `go.mod`가 `go 1.21`을 선언합니다. CI는 1.23으로 검증|
@@ -1204,6 +1204,18 @@ sheetman --recipe recipe.json --prune --before 90d --keep 200
 예전에는 writer와 C# 리더가 Unity 플러그인으로 설치해야 하는 하나의 공유 런타임(3,600줄)이었습니다. 생성 코드가 쓰는 건 그중 네 개 멤버뿐이었고, 그 결합 때문에 변환기 자체가 Unity가 받아들이는 C# 수준에 묶여 있었습니다. 더 나쁜 건 writer와 리더가 한 몸이어서 **와이어 포맷 오류가 드러나지 않았다는 점**입니다 — C# 안에서 왕복하면 무엇을 잘못 쓰든 제대로 읽혔습니다.
 
 `test/EmittedCodeLanguageCheck`는 아무것도 배포하지 않는 프로젝트입니다. C# 리더를 `netstandard2.1`로 컴파일해 Unity 2020.3이 받아들이는 C# 8을 넘지 않도록 컴파일러가 강제하게 하는 용도입니다.
+
+**생성된 C#은 소비자가 정의할 심볼이 없습니다.** 예전에는 `NO_UNITY`로 갈랐는데, 아무도 정의하지 않으니 기본값이 유니티 경로였고 거기에 **아무 곳에서도 쓰이지 않는** `using Cysharp.Threading.Tasks;`가 붙어 있었습니다 — UniTask 없는 .NET 프로젝트는 아무 이득도 없는 줄에서 컴파일이 깨졌습니다. 지금은 유니티가 스스로 정의하는 심볼로 갈립니다.
+
+|컴파일 대상|읽기 방식|이유|
+|--|--|--|
+|일반 .NET, 유니티 2021.2 이상|`File.ReadAllBytesAsync`|2021.2에서 API 레벨이 .NET Standard 2.1로 올라가며 생긴 것. 진짜 비동기 I/O로 스레드를 잡지 않습니다|
+|유니티 2019 · 2020|`Task.Run(File.ReadAllBytes)`|.NET Standard 2.0에는 비동기 파일 API가 없어 워커 스레드가 유일한 방법|
+|**유니티 WebGL**|URL이면 `UnityWebRequest`, 아니면 동기 읽기|WebGL은 스레드가 없어 `Task.Run`이 **인라인 실행**됩니다 — 예전 코드는 프리즈를 막으려던 자리에서 프리즈를 만들었습니다. StreamingAssets는 WebGL에서 경로가 아니라 URL이고 File API로 보이지 않으며, persistentDataPath는 IndexedDB 위의 동기식 가상 FS입니다|
+
+읽기 방식을 바꾸려면 `Tables.ReadAllBytesAsync`에 직접 대입하면 됩니다 — 팩 파일, CDN, Addressables 모두 그 자리에서 갈아끼웁니다.
+
+유니티 분기 두 개는 **실제로 컴파일해서 검증**합니다(`CsGeneratorTests`). 그 전에는 셋 중 하나도 컴파일된 적이 없어, 어느 것이든 오래 깨져 있을 수 있었습니다. WebGL 분기는 `UnityEngine.Networking`을 참조하므로 엔진이 필요해 게이트 밖입니다.
 
 성능 면에서 writer와 C# 리더는 모두 `Span` 기반이고 값마다 임시 할당을 하지 않습니다. 문자열은 버퍼로 직접 인코딩되고(중간 배열 없음), uuid는 제자리에 기록되며, 테이블 바이트는 파일 쓰기로 복사 없이 넘어갑니다. 리더 쪽도 레코드가 실제로 보유하는 문자열·배열 외에는 할당이 없습니다.
 
