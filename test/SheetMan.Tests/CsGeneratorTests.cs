@@ -49,6 +49,43 @@ namespace SheetMan.Tests
         }
 
         /// <summary>
+        /// A path the File API cannot read goes through UnityWebRequest on every Unity
+        /// platform, not only WebGL.
+        ///
+        /// StreamingAssets is shipped everywhere, and on two platforms what comes back is a
+        /// URL rather than a path: Android leaves it inside the APK, so
+        /// `Application.streamingAssetsPath` is `jar:file:///...!/assets`, and WebGL serves it
+        /// over HTTP. The check for it used to sit inside the WebGL branch, which left Android
+        /// handing an APK URL to File.ReadAllBytesAsync - a runtime failure on the platform
+        /// where "it worked in the editor" helps least.
+        ///
+        /// Checked on the generated text, because the alternative is an Android device.
+        /// </summary>
+        [Fact]
+        public void A_url_is_read_through_unity_web_request_on_every_unity_platform()
+        {
+            SheetManRunner.Convert(Scenario);
+
+            string source = File.ReadAllText(
+                Path.Combine(RepoLayout.OutputDir(Scenario), "csharp", Accessor + ".cs"));
+
+            int guard = source.IndexOf("if (filename.Contains(\"://\"))", StringComparison.Ordinal);
+
+            Assert.True(guard > 0, "Nothing routes a URL away from the File API.");
+
+            // The directive above it decides which platforms get the check. It has to be the
+            // one that means "any Unity", not the WebGL one.
+            string before = source.Substring(0, guard);
+            int directive = before.LastIndexOf("#if ", StringComparison.Ordinal);
+
+            Assert.True(directive >= 0, "The URL check is not inside any #if.");
+
+            string line = before.Substring(directive).Split('\n')[0].Trim();
+
+            Assert.Equal("#if UNITY_5_3_OR_NEWER", line);
+        }
+
+        /// <summary>
         /// And it compiles for the two API levels Unity offers.
         ///
         /// `UNITY_2021_2_OR_NEWER` selects `File.ReadAllBytesAsync`, which is what .NET

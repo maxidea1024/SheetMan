@@ -253,6 +253,29 @@ namespace SheetMan.Tests
         }
 
         /// <summary>
+        /// A failed load names the packaging setting that is usually the reason.
+        ///
+        /// A `.table` is not an asset, so Unreal ignores it unless the project lists its
+        /// directory under Packaging -> "Additional Non-Asset Directories to Package". Miss
+        /// that and everything works in the editor and the file is simply absent from the
+        /// build - which reads as "the loader is broken" to whoever finds it.
+        ///
+        /// FFileHelper itself is right: it goes through IPlatformFile, which mounts the .pak
+        /// and reads out of it as though the file were loose. So the code needs no change for
+        /// a packaged build; only the project setting does, and the message says so.
+        /// </summary>
+        [Fact]
+        public void A_missing_table_names_the_packaging_setting()
+        {
+            SheetManRunner.Convert(Scenario);
+
+            string source = File.ReadAllText(Path.Combine(
+                ModuleDir(Scenario, "SheetManCore"), "Private", "FSheetManCore.cpp"));
+
+            Assert.Contains("Additional Non-Asset Directories to Package", source);
+        }
+
+        /// <summary>
         /// The generated include must be the last one.
         ///
         /// Unreal Header Tool requires it, and when it is not, the error it reports names
