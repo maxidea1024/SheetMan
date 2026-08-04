@@ -1,0 +1,59 @@
+{{~## The accessor, holding no table's own code. ##~}}
+{{ include 'cpp-file-head.sbn' ~}}
+/// Every table, loaded together so cross-table references can be resolved.
+class Tables
+{
+    public:
+{{~ for slot in accessor.tables ~}}
+    const {{ slot.table_name }}& {{ slot.name }}() const { return {{ slot.name }}_; }
+{{~ end ~}}
+
+    /// Reads every table from `base_path`, then links the references between them.
+    void read_all(const std::string& base_path, const std::string& file_extension = "{{ accessor.file_extension }}")
+    {
+{{~ if accessor.tables | array.size == 0 ~}}
+        (void)base_path;
+        (void)file_extension;
+{{~ else ~}}
+{{~ for slot in accessor.tables ~}}
+        {{ slot.name }}_.read(base_path + "/{{ slot.data_file_name }}" + file_extension);
+{{~ end ~}}
+
+        solve_cross_references();
+{{~ end ~}}
+    }
+
+    private:
+    void solve_cross_references()
+    {
+{{~ if accessor.cross_references | array.size == 0 ~}}
+        // No table references another.
+{{~ else ~}}
+{{~ for reference in accessor.cross_references ~}}
+        for (auto& record : {{ reference.table }}_.records_)
+        {
+{{~ for field in reference.fields ~}}
+{{~ if field.is_array ~}}
+            record.{{ field.name }}.resize(record.{{ field.name }}_index.size(), {{ field.ref_default }});
+            for (std::size_t i = 0; i < record.{{ field.name }}_index.size(); ++i)
+            {
+                const auto* target = {{ field.ref_table }}_.find(record.{{ field.name }}_index[i]);
+                if (target != nullptr) record.{{ field.name }}[i] = {{ field.value }};
+            }
+{{~ else ~}}
+            {
+                const auto* target = {{ field.ref_table }}_.find(record.{{ field.name }}_index);
+                if (target != nullptr) record.{{ field.name }} = {{ field.value }};
+            }
+{{~ end ~}}
+{{~ end ~}}
+        }
+{{~ end ~}}
+{{~ end ~}}
+    }
+
+{{~ for slot in accessor.tables ~}}
+    {{ slot.table_name }} {{ slot.name }}_;
+{{~ end ~}}
+};
+{{ include 'cpp-file-foot.sbn' ~}}

@@ -30,6 +30,42 @@ namespace SheetMan.CodeGeneration
         public CppAccessorView Accessor { get; set; }
     }
 
+    /// <summary>
+    /// One generated header: its guard, what it includes, the namespace, and the single thing it
+    /// declares.
+    /// </summary>
+    /// <remarks>
+    /// Header only, so an include here is a real dependency rather than something a source file
+    /// happened to pull in first - which is why they are worked out rather than handed to every
+    /// file alike. An include a file does not need is a compile the consumer pays for on every
+    /// translation unit that reaches it.
+    /// </remarks>
+    internal sealed class CppPartView
+    {
+        public string IncludeGuard { get; set; }
+
+        /// <summary>`#include` lines, standard library first and then this tool's own.</summary>
+        public IReadOnlyList<string> Includes { get; set; }
+
+        public IReadOnlyList<string> NamespaceOpen { get; set; }
+        public IReadOnlyList<string> NamespaceClose { get; set; }
+
+        /// <summary>Record type names, for the forward header.</summary>
+        public IReadOnlyList<string> Records { get; set; }
+
+        /// <summary>The table this file is for, when it is a table header.</summary>
+        public CppTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum header.</summary>
+        public CppEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants header.</summary>
+        public CppConstantSetView Set { get; set; }
+
+        /// <summary>The accessor's own shape, for the accessor header.</summary>
+        public CppAccessorView Accessor { get; set; }
+    }
+
     internal sealed class CppEnumView
     {
         public string Name { get; set; }
@@ -66,6 +102,9 @@ namespace SheetMan.CodeGeneration
 
     internal sealed class CppTableView
     {
+        /// <summary>Table name as the sheet spelled it. Names the table's header.</summary>
+        public string RawName { get; set; }
+
         public string RecordName { get; set; }
         public string TableName { get; set; }
         public string Location { get; set; }

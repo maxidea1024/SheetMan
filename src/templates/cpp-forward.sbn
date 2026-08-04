@@ -1,0 +1,18 @@
+{{~##
+   Every record type as an incomplete type, in one header.
+
+   C++'s answer to the cross-reference problem, and the same one C uses. A record holding a
+   whole-row reference has a member of type `const OtherRecord*`, and a pointer needs only an
+   incomplete type - so no table header includes another and two tables pointing at each other
+   is not an include cycle.
+
+   In one header rather than each table header declaring what it needs, because that keeps the
+   declaration in one place and one order. C++ tolerates a repeated declaration where C99 does
+   not, so this is a readability choice here rather than a correctness one - but it is the same
+   file for the same reason, and the two targets are better off answering it identically.
+##~}}
+{{ include 'cpp-file-head.sbn' ~}}
+{{~ for line in records ~}}
+struct {{ line }};
+{{~ end ~}}
+{{ include 'cpp-file-foot.sbn' ~}}
