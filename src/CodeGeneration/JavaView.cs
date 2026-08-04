@@ -2,17 +2,54 @@ using System.Collections.Generic;
 
 namespace SheetMan.CodeGeneration
 {
-    /// <summary>Everything the Java template needs, worked out in advance.</summary>
+    /// <summary>
+    /// Everything Java needs, worked out in advance.
+    ///
+    /// Built whole and then dealt out one subject at a time, so the naming is decided in one
+    /// place whether or not the file it lands in holds anything else.
+    /// </summary>
     internal sealed class JavaFileView
     {
         public string PackageName { get; set; }
 
-        /// <summary>Name of the accessor class, which every generated type nests inside.</summary>
+        /// <summary>Name of the accessor class, and so of its file.</summary>
         public string AccessorName { get; set; }
 
         public IReadOnlyList<JavaEnumView> Enums { get; set; }
         public IReadOnlyList<JavaConstantSetView> ConstantSets { get; set; }
         public IReadOnlyList<JavaTableView> Tables { get; set; }
+        public JavaAccessorView Accessor { get; set; }
+    }
+
+    /// <summary>
+    /// One generated file: the package it declares, its imports, and the single type in it.
+    /// </summary>
+    internal sealed class JavaPartView
+    {
+        public string PackageName { get; set; }
+
+        /// <summary>Set only for the accessor's file, which is the one named after it.</summary>
+        public string AccessorName { get; set; }
+
+        /// <summary>
+        /// Import lines, with a blank entry where Java convention wants a gap. Nothing here ever
+        /// imports another generated type: they are all one package.
+        /// </summary>
+        public IReadOnlyList<string> Imports { get; set; }
+
+        /// <summary>
+        /// The table this file is for, when it is a record file or a table file. Both are
+        /// rendered from the same view, since both are named from it.
+        /// </summary>
+        public JavaTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum file.</summary>
+        public JavaEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants file.</summary>
+        public JavaConstantSetView Set { get; set; }
+
+        /// <summary>The accessor's own shape, for the accessor file.</summary>
         public JavaAccessorView Accessor { get; set; }
     }
 

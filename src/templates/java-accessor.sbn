@@ -1,0 +1,50 @@
+{{~## The accessor, holding no table's own code. ##~}}
+{{ include 'java-file-head.sbn' ~}}
+/** Every table, loaded together so cross-table references can be resolved. */
+public final class {{ accessor_name }} {
+{{~ for slot in accessor.tables ~}}
+    public final {{ slot.table_name }} {{ slot.name }} = new {{ slot.table_name }}();
+{{~ end ~}}
+
+    /** Reads every table from basePath, then links the references between them. */
+    public void readAll(String basePath) {
+{{~ if accessor.tables | array.size == 0 ~}}
+        // No tables to read.
+{{~ else ~}}
+{{~ for slot in accessor.tables ~}}
+        {{ slot.name }}.read(Paths.get(basePath, "{{ slot.data_file_name }}{{ accessor.file_extension }}"));
+{{~ end ~}}
+
+        solveCrossReferences();
+{{~ end ~}}
+    }
+
+    /** Turns the stored indices into usable values, once every table is in memory. */
+    private void solveCrossReferences() {
+{{~ if accessor.cross_references | array.size == 0 ~}}
+        // No table references another.
+{{~ else ~}}
+{{~ for reference in accessor.cross_references ~}}
+        for ({{ reference.record_name }} record : {{ reference.table }}.records()) {
+{{~ for field in reference.fields ~}}
+{{~ if field.is_array ~}}
+            for (int i = 0; i < record.{{ field.name }}Index.length; i++) {
+                {{ field.ref_record_name }} target = {{ field.ref_table }}.find(record.{{ field.name }}Index[i]);
+                if (target != null) {
+                    record.{{ field.name }}[i] = {{ field.value }};
+                }
+            }
+{{~ else ~}}
+            {
+                {{ field.ref_record_name }} target = {{ field.ref_table }}.find(record.{{ field.name }}Index);
+                if (target != null) {
+                    record.{{ field.name }} = {{ field.value }};
+                }
+            }
+{{~ end ~}}
+{{~ end ~}}
+        }
+{{~ end ~}}
+{{~ end ~}}
+    }
+}

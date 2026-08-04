@@ -7,91 +7,11 @@
 
 package x;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import sheetman.LiteBinaryReader;
 
 /** Every table, loaded together so cross-table references can be resolved. */
 public final class A {
-
-
-    // Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
-    /** Named after a C++ keyword. */
-    public static final class TemplateRecord {
-        /** primary index */
-        public int index;
-        /** class: keyword in C++ and C# */
-        public String class_;
-        /** int: keyword in C++ and C# */
-        public int int_;
-        /** delete: keyword in C++ */
-        public boolean delete;
-        /** operator: keyword in C++ */
-        public String operator;
-        /** namespace: keyword in C++ and C# */
-        public String namespace;
-        /** constructor: special member in TypeScript */
-        public String constructor;
-        /** function: keyword in TypeScript */
-        public String function;
-
-        /** Reads one record, in the exact field order the exporter wrote. */
-        void read(LiteBinaryReader reader) {
-            index = reader.readInt32();
-            class_ = reader.readString();
-            int_ = reader.readInt32();
-            delete = reader.readBool();
-            operator = reader.readString();
-            namespace = reader.readString();
-            constructor = reader.readString();
-            function = reader.readString();
-        }
-    }
-
-    /** Every row of Template. */
-    public static final class TemplateTable {
-        private final List<TemplateRecord> records = new ArrayList<>();
-        private final Map<Integer, TemplateRecord> byIndex = new HashMap<>();
-
-        /** Every row, in the order the sheet declared them. */
-        public List<TemplateRecord> records() {
-            return records;
-        }
-
-        /** The row with the given primary index, or null when there is none. */
-        public TemplateRecord find(int index) {
-            return byIndex.get(index);
-        }
-
-        /** Loads the table from a .table file written by SheetMan. */
-        public void read(Path filename) {
-            LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-            int count = LiteBinaryReader.readTableHeader(reader);
-
-            records.clear();
-            byIndex.clear();
-
-            for (int i = 0; i < count; i++) {
-                TemplateRecord record = new TemplateRecord();
-                record.read(reader);
-                records.add(record);
-            }
-
-            for (TemplateRecord record : records) {
-                byIndex.put(record.index, record);
-            }
-        }
-    }
-
-
-
     public final TemplateTable template = new TemplateTable();
-
 
     /** Reads every table from basePath, then links the references between them. */
     public void readAll(String basePath) {

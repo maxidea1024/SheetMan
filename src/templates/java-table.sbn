@@ -1,0 +1,36 @@
+{{~## One table's table type. ##~}}
+{{ include 'java-file-head.sbn' ~}}
+/** Every row of {{ table.raw_name }}. */
+public final class {{ table.table_name }} {
+    private final List<{{ table.record_name }}> records = new ArrayList<>();
+    private final Map<Integer, {{ table.record_name }}> byIndex = new HashMap<>();
+
+    /** Every row, in the order the sheet declared them. */
+    public List<{{ table.record_name }}> records() {
+        return records;
+    }
+
+    /** The row with the given primary index, or null when there is none. */
+    public {{ table.record_name }} find(int index) {
+        return byIndex.get(index);
+    }
+
+    /** Loads the table from a .table file written by SheetMan. */
+    public void read(Path filename) {
+        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
+        int count = LiteBinaryReader.readTableHeader(reader);
+
+        records.clear();
+        byIndex.clear();
+
+        for (int i = 0; i < count; i++) {
+                {{ table.record_name }} record = new {{ table.record_name }}();
+            record.read(reader);
+            records.add(record);
+        }
+
+        for ({{ table.record_name }} record : records) {
+            byIndex.put(record.{{ table.index_field }}, record);
+        }
+    }
+}
