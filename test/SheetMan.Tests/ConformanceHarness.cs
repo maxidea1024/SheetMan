@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -297,6 +297,66 @@ namespace SheetMan.Tests
             return Execute(RubyExecutable, root, "harness.rb", BinaryDir(scenario));
         }
 
+        /// <summary>
+        /// Whether a C compiler is here.
+        ///
+        /// The same one the C++ gate uses - MSVC on Windows, gcc elsewhere - because a
+        /// machine with one has the other, and a second discovery routine would be a second
+        /// thing to get wrong.
+        /// </summary>
+        public static bool CIsAvailable(out string reason) => CToolchain.IsAvailable(out reason);
+
+        public static ToolResult RunC(string scenario)
+        {
+            string workDir = WorkDir(scenario, "c");
+
+            var build = CToolchain.CompileHarness(
+                workDir,
+                includeDir: Generated(scenario, "c"),
+                source: Path.Combine(HarnessDir("c"), "main.c"),
+                accessorHeader: "ConformanceData.h",
+                sources: new[] { Path.Combine(Generated(scenario, "c"), "ConformanceData.c") },
+                exeName: "conformance-c");
+
+            if (!build.Succeeded)
+                return build;
+
+            return Execute(Path.Combine(workDir, OnWindows ? "conformance-c.exe" : "conformance-c"),
+                           workDir, BinaryDir(scenario));
+        }
+
+        /// <summary>Whether a PHP interpreter is here.</summary>
+        public static bool PhpIsAvailable(out string reason)
+        {
+            try
+            {
+                var probe = Execute(PhpExecutable, RepoLayout.Root, "--version");
+                reason = probe.Succeeded ? null : $"`php --version` failed.{Environment.NewLine}{probe.Output}";
+                return probe.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                reason = $"`{PhpExecutable}` could not be started: {ex.Message}";
+                return false;
+            }
+        }
+
+        public static ToolResult RunPhp(string scenario)
+        {
+            // Beside the generated file, because `require_once __DIR__ . '/...'` resolves
+            // against the including file and that is the import a consumer would write.
+            string root = Generated(scenario, "php");
+
+            File.Copy(Path.Combine(HarnessDir("php"), "harness.php"),
+                      Path.Combine(root, "harness.php"), overwrite: true);
+
+            // serialize_precision -1 is "as many digits as the value needs and no more".
+            // The default rounds to 14 significant digits, which loses the corpus's float
+            // boundaries - and would look like a reader defect rather than a printing one.
+            return Execute(PhpExecutable, root,
+                           "-d", "serialize_precision=-1", "harness.php", BinaryDir(scenario));
+        }
+
         /// <summary>Whether a Dart SDK is here.</summary>
         public static bool DartIsAvailable(out string reason)
         {
@@ -375,6 +435,48 @@ namespace SheetMan.Tests
         /// Ruby compiles nothing ahead of time, so `-c` is as far as a static check goes -
         /// which is far enough: a keyword where a method name belongs does not parse.
         /// </summary>
+        /// <summary>
+        /// Compiles the generated C. Nothing is run: the question is whether the names the
+        /// generator chose are legal, which in C means every one of them, since a member is
+        /// snake_case and every keyword is lowercase.
+        /// </summary>
+        public static ToolResult CompileC(string scenario, string accessorName)
+        {
+            string root = Generated(scenario, "c");
+
+            return CToolchain.CompileOnly(
+                Path.Combine(WorkDir(scenario, "c"), "compile-only"),
+                includeDir: root,
+                sources: new[] { Path.Combine(root, accessorName + ".c") },
+                accessorHeader: accessorName + ".h");
+        }
+
+        /// <summary>
+        /// Compiles the generated C header as C++, which is what its `extern "C"` claims.
+        /// </summary>
+        public static ToolResult CompileCAsCpp(string scenario, string accessorName)
+            => CToolchain.CompileAsCpp(
+                Path.Combine(WorkDir(scenario, "c"), "as-cpp"), Generated(scenario, "c"), accessorName);
+
+        /// <summary>
+        /// Parses the generated PHP without running it.
+        ///
+        /// `-l` is a syntax check, which is the whole question here: a property named after
+        /// a reserved word either parses or it does not, and PHP has accepted them since
+        /// 7.0 - so this is the check that turns that claim into a fact.
+        /// </summary>
+        public static ToolResult CompilePhp(string scenario, string accessorName)
+        {
+            string root = Generated(scenario, "php");
+
+            var lintAccessor = Execute(PhpExecutable, root, "-l", accessorName + ".php");
+            if (!lintAccessor.Succeeded)
+                return lintAccessor;
+
+            // And the reader beside it, so a broken one is not blamed on the generator.
+            return Execute(PhpExecutable, root, "-l", Path.Combine("sheetman", "LiteBinaryReader.php"));
+        }
+
         public static ToolResult CompileRuby(string scenario)
         {
             string root = Generated(scenario, "ruby");
@@ -465,6 +567,39 @@ namespace SheetMan.Tests
         }
 
         private static string HomeDir => Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        /// <summary>
+        /// The PHP interpreter.
+        ///
+        /// The winget package puts it under Packages and appends a Links directory to the
+        /// path, which a shell that was already open does not see - so both are looked at.
+        /// </summary>
+        private static string PhpExecutable => Resolve("php", PhpInstalls().ToArray());
+
+        private static IEnumerable<string> PhpInstalls()
+        {
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+            if (!string.IsNullOrEmpty(localAppData))
+            {
+                yield return Path.Combine(localAppData, "Microsoft", "WinGet", "Links", "php.exe");
+
+                string packages = Path.Combine(localAppData, "Microsoft", "WinGet", "Packages");
+
+                if (Directory.Exists(packages))
+                {
+                    foreach (var directory in Directory.EnumerateDirectories(packages, "PHP.PHP*")
+                                                       .OrderByDescending(path => path))
+                    {
+                        yield return Path.Combine(directory, "php.exe");
+                    }
+                }
+            }
+
+            yield return @"C:\php\php.exe";
+            yield return "/usr/bin/php";
+            yield return "/usr/local/bin/php";
+        }
 
         private static string RubyExecutable => Resolve("ruby", RubyInstalls().ToArray());
 

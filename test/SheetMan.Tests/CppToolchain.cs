@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -163,7 +163,7 @@ namespace SheetMan.Tests
         /// Locates vcvars64.bat across the Visual Studio editions and years that might
         /// be installed, newest first.
         /// </summary>
-        private static string FindVcVars()
+        internal static string FindVcVars()
         {
             var roots = new List<string>();
 
@@ -187,7 +187,7 @@ namespace SheetMan.Tests
                 .FirstOrDefault();
         }
 
-        private static ToolResult Execute(string fileName, string workingDirectory, params string[] args)
+        internal static ToolResult Execute(string fileName, string workingDirectory, params string[] args)
         {
             var psi = new ProcessStartInfo(fileName)
             {

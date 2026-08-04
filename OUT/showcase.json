@@ -1,5 +1,5 @@
-{
-  // One workbook, every code generator, output committed next to this file.
+﻿{
+  // One workbook, all thirteen code generators, output committed next to this file.
   //
   // This is a reading aid, not a gate. The regression suite already compiles all of
   // this - what it cannot do is let somebody see, side by side and in a diff, what the
@@ -45,7 +45,9 @@
     { "Type": "kotlin", "Path": "OUT/kotlin", "PackageName": "x", "AccessorName": "A" },
     { "Type": "ruby", "Path": "OUT/ruby", "ModuleName": "X", "AccessorName": "a" },
     { "Type": "dart", "Path": "OUT/dart", "AccessorName": "a" },
-    { "Type": "unreal", "Path": "OUT/unreal", "ModuleName": "X", "AccessorName": "A" }
+    { "Type": "unreal", "Path": "OUT/unreal", "ModuleName": "X", "AccessorName": "A" },
+    { "Type": "c", "Path": "OUT/c", "AccessorName": "A" },
+    { "Type": "php", "Path": "OUT/php", "Namespace": "X", "AccessorName": "A" }
   ],
 
   "CodeGenerations": {

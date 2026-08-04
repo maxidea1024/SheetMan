@@ -70,6 +70,10 @@
                       LogicalName="SheetMan.Runtime.Ruby.lite_binary_reader.rb" />
     <EmbeddedResource Include="..\lib\dart\sheetman\lite_binary_reader.dart"
                       LogicalName="SheetMan.Runtime.Dart.lite_binary_reader.dart" />
+    <EmbeddedResource Include="..\lib\c\sheetman\sheetman_lite_binary_reader.h"
+                      LogicalName="SheetMan.Runtime.C.sheetman_lite_binary_reader.h" />
+    <EmbeddedResource Include="..\lib\php\sheetman\LiteBinaryReader.php"
+                      LogicalName="SheetMan.Runtime.Php.LiteBinaryReader.php" />
 
     <!--
       Unreal gets its own rather than the C++ one, because the engine already has every
