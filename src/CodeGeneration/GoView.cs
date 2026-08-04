@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SheetMan.CodeGeneration
 {
@@ -9,18 +9,36 @@ namespace SheetMan.CodeGeneration
     {
         public string PackageName { get; set; }
 
-        /// <summary>
-        /// The import block's lines, quoted, with an empty string standing for the blank
-        /// line between the standard library and the rest.
-        ///
-        /// Exactly the imports the file uses: Go rejects an unused import outright, so a
-        /// model with no enums must not mention strconv.
-        /// </summary>
-        public IReadOnlyList<string> Imports { get; set; }
-
         public IReadOnlyList<GoEnumView> Enums { get; set; }
         public IReadOnlyList<GoConstantSetView> ConstantSets { get; set; }
         public IReadOnlyList<GoTableView> Tables { get; set; }
+        public GoAccessorView Accessor { get; set; }
+    }
+
+    /// <summary>
+    /// One generated file, for the templates that render one thing.
+    /// </summary>
+    /// <remarks>
+    /// Carries its own imports, because an unused one does not compile in Go - every other
+    /// language here could hand each file the same list.
+    /// </remarks>
+    internal sealed class GoPartView
+    {
+        public string PackageName { get; set; }
+
+        /// <summary>Import lines, already quoted, with a blank entry where gofmt wants a gap.</summary>
+        public IReadOnlyList<string> Imports { get; set; }
+
+        /// <summary>The table this file is for, when it is a table file.</summary>
+        public GoTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum file.</summary>
+        public GoEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants file.</summary>
+        public GoConstantSetView Set { get; set; }
+
+        /// <summary>The accessor's own shape, for the accessor file.</summary>
         public GoAccessorView Accessor { get; set; }
     }
 

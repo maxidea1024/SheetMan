@@ -1,0 +1,52 @@
+{{~## The accessor, holding no table's own code. ##~}}
+{{ include 'go-file-head.sbn' ~}}
+// Tables holds every table, loaded together so cross-table references can be resolved.
+type Tables struct {
+{{~ for slot in accessor.tables ~}}
+	{{ slot.name }} {{ slot.table_name }}
+{{~ end ~}}
+}
+
+// ReadAll reads every table from basePath, then links the references between them.
+func (t *Tables) ReadAll(basePath string) error {
+{{~ if accessor.tables | array.size == 0 ~}}
+	_ = basePath
+{{~ else ~}}
+{{~ for slot in accessor.tables ~}}
+	if err := t.{{ slot.name }}.Read(filepath.Join(basePath, "{{ slot.data_file_name }}{{ accessor.file_extension }}")); err != nil {
+		return err
+	}
+{{~ end ~}}
+
+	t.solveCrossReferences()
+{{~ end ~}}
+
+	return nil
+}
+
+// solveCrossReferences turns the stored indices into usable values, once every table is
+// in memory.
+func (t *Tables) solveCrossReferences() {
+{{~ if accessor.cross_references | array.size == 0 ~}}
+	// No table references another.
+{{~ else ~}}
+{{~ for reference in accessor.cross_references ~}}
+	for i := range t.{{ reference.table }}.records {
+		record := &t.{{ reference.table }}.records[i]
+{{~ for field in reference.fields ~}}
+{{~ if field.is_array ~}}
+		for k := range record.{{ field.name }}Index {
+			if target := t.{{ field.ref_table }}.Find(record.{{ field.name }}Index[k]); target != nil {
+				record.{{ field.name }}[k] = {{ field.value }}
+			}
+		}
+{{~ else ~}}
+		if target := t.{{ field.ref_table }}.Find(record.{{ field.name }}Index); target != nil {
+			record.{{ field.name }} = {{ field.value }}
+		}
+{{~ end ~}}
+{{~ end ~}}
+	}
+{{~ end ~}}
+{{~ end ~}}
+}
