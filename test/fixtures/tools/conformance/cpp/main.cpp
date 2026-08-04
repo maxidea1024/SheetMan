@@ -99,6 +99,10 @@ int main(int argc, char** argv) {
       json << (k > 0 ? "," : "") << quote(r.strs[k]);
     json << ']';
 
+    // The reference indices, which is what the exporter writes for a foreign field.
+    json << ",\"owner\":" << r.owner_index;
+    json << ",\"tier\":" << r.tier_index;
+
     json << '}';
   }
 

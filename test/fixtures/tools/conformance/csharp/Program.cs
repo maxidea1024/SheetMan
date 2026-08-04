@@ -53,6 +53,10 @@ internal static class Program
                 json.Append(k > 0 ? "," : "").Append(Quote(r.Strs[k]));
             json.Append(']');
 
+            // The reference indices, which is what the exporter writes for a foreign field.
+            json.Append(",\"owner\":").Append(r._owner_Owners_index);
+            json.Append(",\"tier\":").Append(r._tier_Owners_index);
+
             json.Append('}');
         }
 

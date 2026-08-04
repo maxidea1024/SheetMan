@@ -54,6 +54,10 @@ def main():
             "label": int(record.label),
             "ints": list(record.ints),
             "strs": list(record.strs),
+
+            # The reference indices, which is what the exporter writes for a foreign field.
+            "owner": record.owner_index,
+            "tier": record.tier_index,
         })
 
     sys.stdout.write(json.dumps(rows, ensure_ascii=False))

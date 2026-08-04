@@ -44,6 +44,18 @@ namespace SheetMan.Tests
             { "label", "enum" },
             { "ints", "int[]" },
             { "strs", "string[]" },
+
+            // The two references, compared as the index each came in as - which is what the
+            // exporter writes for a `foreign` field, resolved value or not.
+            //
+            // What they are for is not the comparison. Splitting each target's output into a
+            // file per table gave every language a question it did not have before, which is
+            // how one table's file reaches another's, and a harness loading through the
+            // accessor runs the reference resolution whether or not the result is compared. A
+            // language whose split output cannot see the other table's file does not compile,
+            // or does not load, and never arrives here.
+            { "owner", "int" },
+            { "tier", "int" },
         };
 
         [Fact]

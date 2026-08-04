@@ -95,6 +95,9 @@ foreach ($data->vectors->records as $r) {
 
     $row .= '"ints":[' . \implode(',', \array_map('strval', $r->ints)) . '],';
     $row .= '"strs":[' . \implode(',', \array_map('quoted', $r->strs)) . ']';
+    // The reference indices, which is what the exporter writes for a foreign field.
+    $row .= ',"owner":' . $r->ownerIndex;
+    $row .= ',"tier":' . $r->tierIndex;
     $row .= '}';
 
     $parts[] = $row;

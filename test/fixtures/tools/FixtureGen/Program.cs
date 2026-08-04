@@ -744,6 +744,16 @@ namespace SheetMan.FixtureGen
         ///
         ///   an empty string, an empty array and non-ASCII text, because a length-prefixed
         ///   format makes each of those a separate path.
+        ///
+        /// And it carries two references into a second table, which is not about values at all.
+        /// Splitting each target's output into a file per table gave every language a question
+        /// it did not have before - how does one table's file reach another's - and nothing here
+        /// crossed a table, so the answer went unchecked in every language but C#. A missing
+        /// import or require does not compile or does not load, which is what this catches.
+        ///
+        /// Both kinds, because the generators treat them differently: `owner` points at a whole
+        /// row, so a table's file names the other table's record type, while `tier` points at
+        /// one of that row's fields and names only its type.
         /// </summary>
         private static void WriteConformance(string path)
         {
@@ -772,34 +782,44 @@ namespace SheetMan.FixtureGen
                 .Field(FieldSpec.Of("uid", "uuid", "sixteen bytes in .NET order"))
                 .Field(FieldSpec.Of("label", "enum", "zig-zag encoded", detailType: "Flag"))
                 .Field(FieldSpec.Of("ints", "int[]", "length-prefixed, including empty"))
-                .Field(FieldSpec.Of("strs", "string[]", "length-prefixed strings"));
+                .Field(FieldSpec.Of("strs", "string[]", "length-prefixed strings"))
+
+                // A whole-row reference, so a table's own file names the other table's record
+                // type - which is the dependency a per-table output has to carry.
+                .Field(FieldSpec.Of("owner", "foreign", "a whole row of another table",
+                                    detailType: "Owners"))
+
+                // And a field reference, which resolves to that row's value and so names only
+                // its type. The generators take a different path for each.
+                .Field(FieldSpec.Of("tier", "foreign", "one field of another table's row",
+                                    detailType: "Owners.rank"));
 
             spec
                 // Zero and empty everywhere: one varint byte, and the length-prefixed
                 // paths at length zero.
                 .Row("1", "0", "0", "0", "0", "", "N",
                      "0001-01-01 00:00:00", "00:00:00", "00000000-0000-0000-0000-000000000000",
-                     "None", "", "")
+                     "None", "", "", "0", "0")
 
                 // The value a double cannot hold, and one varint byte short of two.
                 .Row("2", "63", "9007199254740993", "0.1", "0.1", "ascii", "Y",
                      "2022-03-01 09:00:00", "0.00:05:00", "6f9619ff-8b86-d011-b42d-00c04fc964ff",
-                     "One", "0;1;-1", "a;b")
+                     "One", "0;1;-1", "a;b", "1", "1")
 
                 // Its negative, and the zig-zag boundary either side of zero.
                 .Row("3", "-64", "-9007199254740993", "-0.1", "-0.1", "é한Ａ", "N",
                      "9999-12-31 23:59:59", "-0.00:05:00", "ffffffff-ffff-ffff-ffff-ffffffffffff",
-                     "Negative", "-2147483648;2147483647", "")
+                     "Negative", "-2147483648;2147483647", "", "2", "2")
 
                 // Three varint bytes, and both 32-bit extremes.
                 .Row("4", "1048576", "-1", "3.4028235E+38", "1.7976931348623157E+308", "  spaced  ", "Y",
                      "1970-01-01 00:00:00", "10675199.02:48:05", "01020304-0506-0708-090a-0b0c0d0e0f10",
-                     "Large", "1048576", "one;;three")
+                     "Large", "1048576", "one;;three", "3", "3")
 
                 // Five varint bytes each way.
                 .Row("5", "2147483647", "9223372036854775807", "1.4E-45", "5E-324", "tail", "N",
                      "2038-01-19 03:14:07", "00:00:00.0000001", "ffffffff-0000-ffff-0000-ffffffffffff",
-                     "None", "134217728;-134217729", "z")
+                     "None", "134217728;-134217729", "z", "1", "3")
 
                 // Negative zero is deliberately not here: JSON has no such value, so the
                 // harness contract cannot carry it and a disagreement would say nothing
@@ -807,9 +827,32 @@ namespace SheetMan.FixtureGen
                 // does survive the round trip.
                 .Row("6", "-2147483648", "-9223372036854775808", "-1.4E-45", "-5E-324", "", "Y",
                      "2000-02-29 12:00:00", "1.00:00:00", "80000000-0000-0000-0000-000000000001",
-                     "One", "", "é");
+                     "One", "", "é", "3", "1");
 
             b.Table(8, 1, spec);
+
+            // The table the two references point into.
+            //
+            // Small on purpose: it is not here to test values - Vectors does that - but to give
+            // the references somewhere real to land. Row 1 of Vectors points at 0, which is how
+            // a sheet says "no reference", so the unresolved path is exercised too.
+            var owners = new TableSpec
+            {
+                Name = "Owners",
+                Comment = "Referenced by Vectors.owner and Vectors.tier.",
+            };
+
+            owners
+                .Field(FieldSpec.Of("index", "int", "primary index"))
+                .Field(FieldSpec.Of("name", "string", "what the referring row points at"))
+                .Field(FieldSpec.Of("rank", "int", "what the field reference resolves to"));
+
+            owners
+                .Row("1", "first", "10")
+                .Row("2", "second", "20")
+                .Row("3", "third", "30");
+
+            b.Table(8, 20, owners);
 
             Save(workbook, path);
         }

@@ -23,7 +23,19 @@ is not at the mercy of how a language renders a date.
 | `datetime`, `timespan` | JSON string, .NET ticks in decimal - exact, and no formatting to disagree about |
 | `uuid` | JSON string, lower case with hyphens |
 | `enum` | JSON number |
+| `foreign` | JSON number - the **stored index**, which is what the exporter writes |
 | any array | JSON array of the above |
+
+The corpus carries two references into a second table, `owner` pointing at a whole row and
+`tier` at one of that row's fields. They are compared as the index each came in as, because
+that is what the exporter has to compare against - it writes the stored index, not the value
+a reference resolves to.
+
+What they are really for is the loading. Splitting each target's output into a file per table
+gave every language a question it did not have before - how does one table's file reach
+another's - and a harness that loads through the accessor runs the reference resolution
+whether or not the answer is compared. A language whose split output cannot see the other
+table's file does not compile, or does not load, and never reaches the comparison at all.
 
 Print to standard output and nothing else. Exit non-zero on failure with a message on
 standard error.

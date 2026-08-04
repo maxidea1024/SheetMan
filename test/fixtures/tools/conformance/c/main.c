@@ -127,7 +127,9 @@ int main(int argc, char** argv)
             print_quoted(r->strs[i]);
         }
 
-        fputs("]}", stdout);
+        /* The reference indices, which is what the exporter writes for a foreign field. */
+        printf("],\"owner\":%d,\"tier\":%d}",
+               (int)r->owner_index, (int)r->tier_index);
     }
 
     putchar(']');

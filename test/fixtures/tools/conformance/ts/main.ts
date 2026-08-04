@@ -68,6 +68,10 @@ const rows = table.records.map(r => ({
     label: r.label as unknown as number,
     ints: r.ints,
     strs: r.strs,
+
+    // The reference indices, which is what the exporter writes for a foreign field.
+    owner: r._owner_Owners_index,
+    tier: r._tier_Owners_index,
 }))
 
 process.stdout.write(JSON.stringify(rows))
