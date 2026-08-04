@@ -3,7 +3,6 @@
    for, so nothing here loops over the model.
 ##~}}
 {{ include 'php-file-head.sbn' ~}}
-
 /**
  * Generated from {{ table.location }}
 {{~ for line in table.comment ~}}
