@@ -21,7 +21,7 @@ class TemplateRecord {
   /// class: keyword in C++ and C#
   String class_ = '';
   /// int: keyword in C++ and C#
-  int int = 0;
+  int int_ = 0;
   /// delete: keyword in C++
   bool delete = false;
   /// operator: keyword in C++
@@ -37,7 +37,7 @@ class TemplateRecord {
   void read(LiteBinaryReader reader) {
     index = reader.readInt32();
     class_ = reader.readString();
-    int = reader.readInt32();
+    int_ = reader.readInt32();
     delete = reader.readBool();
     operator = reader.readString();
     namespace = reader.readString();

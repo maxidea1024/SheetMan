@@ -1,9 +1,8 @@
 // ---------------------------------------------------------------------------
-// SheetMan LiteBinary reader for C++17.
+// SheetMan LiteBinary reader for Unreal Engine 4.x and 5.x.
 //
 // Reads the .table files produced by SheetMan's binary exporter. The format is
-// defined by the C# writer in
-// lib/Unity/SheetManForUnity/Assets/Plugins/SheetMan.Runtime, and this is a
+// defined by the C# writer in src/Exporters/LiteBinaryWriter.cs, and this is a
 // deliberate re-implementation of the reading half of it:
 //
 //   fixed8      one byte
@@ -22,242 +21,459 @@
 //   timespan       fixed64 of .NET ticks
 //   uuid           sixteen bytes in .NET Guid layout
 //
-// Header only, no dependencies beyond the standard library.
+// A separate reader from lib/cpp rather than that one wrapped, for two reasons.
+//
+// The engine already has every type this needs. Going through std::string and a
+// SheetMan Uuid struct meant two allocations for every string cell and a text
+// parse for every uuid - building what FString and FGuid already are, only to
+// convert back.
+//
+// And an Unreal module is built with exceptions disabled by default, so the
+// throwing reader could not report a malformed file: the throw was not a
+// recoverable failure but a termination, in a function whose signature promised
+// a bool. Failure here is a sticky flag instead.
+//
+// Nothing from the standard library appears below. Nothing outside Core is
+// needed - not even for reading the file, which the generated accessor does with
+// FFileHelper.
 // ---------------------------------------------------------------------------
 
-#ifndef SHEETMAN_LITE_BINARY_READER_H
-#define SHEETMAN_LITE_BINARY_READER_H
+#pragma once
 
-#include <array>
-#include <cstdint>
-#include <cstring>
-#include <fstream>
-#include <ios>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#include "CoreMinimal.h"
 
-namespace sheetman {
+namespace SheetMan
+{
+    /**
+     * Sequential reader over a table file's bytes.
+     *
+     * Non-owning: the buffer has to outlive the reader.
+     *
+     * Failure is sticky. The first read that runs out of data records why and every
+     * read after it does nothing, which is what lets the generated code read a
+     * record's twenty fields in a row and ask once, at the end, whether any of it
+     * worked. Values left behind by a failed read keep whatever they held, so a
+     * half-read record holds defaults rather than debris.
+     */
+    class FSheetManBinaryReader
+    {
+    public:
+        explicit FSheetManBinaryReader(TArrayView<const uint8> InData)
+            : Data(InData)
+        {
+        }
 
-/// Thrown when a table file is truncated, malformed, or not a table file.
-class LiteBinaryError : public std::runtime_error {
- public:
-  explicit LiteBinaryError(const std::string& what) : std::runtime_error(what) {}
-};
+        /** Whether any read so far has run out of data or found the file malformed. */
+        bool HasFailed() const { return bFailed; }
 
-/// A .NET DateTime, kept as ticks so no precision is lost in transit.
-///
-/// One tick is 100 nanoseconds and the epoch is 0001-01-01T00:00:00. Conversion
-/// to a std::chrono clock is left to the caller because the sensible target
-/// depends on what the value means.
-struct DateTime {
-  std::int64_t ticks = 0;
+        /** Why the first failure happened. Empty while nothing has gone wrong. */
+        const FString& GetError() const { return Error; }
 
-  /// Seconds since the Unix epoch. 621355968000000000 is the tick count of
-  /// 1970-01-01 in .NET's epoch.
-  std::int64_t unix_seconds() const { return (ticks - 621355968000000000LL) / 10000000LL; }
+        int32 Tell() const { return Position; }
+        int32 Remaining() const { return Data.Num() - Position; }
 
-  friend bool operator==(const DateTime& a, const DateTime& b) { return a.ticks == b.ticks; }
-  friend bool operator!=(const DateTime& a, const DateTime& b) { return !(a == b); }
-};
+        // ------------------------------------------------------------- primitives
 
-/// A .NET TimeSpan, kept as ticks of 100 nanoseconds.
-struct TimeSpan {
-  std::int64_t ticks = 0;
+        bool Read(bool& Out)
+        {
+            uint8 Byte = 0;
+            if (!ReadFixed8(Byte))
+            {
+                return false;
+            }
 
-  std::int64_t total_milliseconds() const { return ticks / 10000LL; }
+            Out = Byte != 0;
+            return true;
+        }
 
-  friend bool operator==(const TimeSpan& a, const TimeSpan& b) { return a.ticks == b.ticks; }
-  friend bool operator!=(const TimeSpan& a, const TimeSpan& b) { return !(a == b); }
-};
+        bool Read(int32& Out)
+        {
+            uint32 Bits = 0;
+            if (!ReadFixed32(Bits))
+            {
+                return false;
+            }
 
-/// A 128 bit identifier, stored in .NET Guid byte order.
-///
-/// That order is not plain big-endian: the first three components are little
-/// endian and the trailing eight bytes are not, which is what to_string has to
-/// account for.
-struct Uuid {
-  std::array<std::uint8_t, 16> bytes{};
+            Out = static_cast<int32>(Bits);
+            return true;
+        }
 
-  std::string to_string() const {
-    static const char* kHex = "0123456789abcdef";
+        bool Read(uint32& Out) { return ReadFixed32(Out); }
 
-    // Component order matching .NET's Guid.ToString("D").
-    static const int kOrder[16] = {3, 2, 1, 0, 5, 4, 7, 6, 8, 9, 10, 11, 12, 13, 14, 15};
+        bool Read(int64& Out)
+        {
+            uint64 Bits = 0;
+            if (!ReadFixed64(Bits))
+            {
+                return false;
+            }
 
-    std::string out;
-    out.reserve(36);
+            Out = static_cast<int64>(Bits);
+            return true;
+        }
 
-    for (int i = 0; i < 16; ++i) {
-      if (i == 4 || i == 6 || i == 8 || i == 10) out.push_back('-');
+        bool Read(float& Out)
+        {
+            uint32 Bits = 0;
+            if (!ReadFixed32(Bits))
+            {
+                return false;
+            }
 
-      const std::uint8_t b = bytes[static_cast<std::size_t>(kOrder[i])];
-      out.push_back(kHex[b >> 4]);
-      out.push_back(kHex[b & 0x0F]);
+            FMemory::Memcpy(&Out, &Bits, sizeof(Out));
+            return true;
+        }
+
+        bool Read(double& Out)
+        {
+            uint64 Bits = 0;
+            if (!ReadFixed64(Bits))
+            {
+                return false;
+            }
+
+            FMemory::Memcpy(&Out, &Bits, sizeof(Out));
+            return true;
+        }
+
+        /**
+         * UTF-8 bytes straight into an FString.
+         *
+         * FUTF8ToTCHAR with an explicit length rather than the UTF8_TO_TCHAR macro:
+         * the bytes in a table file are not null terminated, and the macro requires
+         * that they are.
+         *
+         * The cast is to UTF8CHAR rather than ANSICHAR because UE 5.3 made UTF8CHAR a
+         * distinct type; before that the two were the same, so this spelling is the one
+         * that compiles on 4.x and 5.x alike.
+         */
+        bool Read(FString& Out)
+        {
+            int32 Length = 0;
+            if (!ReadCounter32(Length))
+            {
+                return false;
+            }
+
+            if (Length < 0)
+            {
+                return Fail(TEXT("string length is negative"));
+            }
+
+            if (!Require(Length))
+            {
+                return false;
+            }
+
+            if (Length == 0)
+            {
+                Out.Reset();
+                Position += Length;
+                return true;
+            }
+
+            const FUTF8ToTCHAR Converted(
+                reinterpret_cast<const UTF8CHAR*>(Data.GetData() + Position), Length);
+
+            Out = FString(Converted.Length(), Converted.Get());
+
+            Position += Length;
+            return true;
+        }
+
+        /**
+         * Ticks into an FDateTime.
+         *
+         * Both sides count 100 nanosecond ticks from 0001-01-01, so there is nothing to
+         * convert - only to check. A tick count outside the range FDateTime accepts
+         * would assert inside the engine on some versions, which is exactly the kind of
+         * failure this reader exists to turn into a message.
+         */
+        bool Read(FDateTime& Out)
+        {
+            int64 Ticks = 0;
+            if (!Read(Ticks))
+            {
+                return false;
+            }
+
+            if (Ticks < 0 || Ticks > FDateTime::MaxValue().GetTicks())
+            {
+                return Fail(FString::Printf(
+                    TEXT("datetime tick count %lld is outside what FDateTime can hold"), Ticks));
+            }
+
+            Out = FDateTime(Ticks);
+            return true;
+        }
+
+        /** Ticks into an FTimespan. Signed, and every int64 is a valid one. */
+        bool Read(FTimespan& Out)
+        {
+            int64 Ticks = 0;
+            if (!Read(Ticks))
+            {
+                return false;
+            }
+
+            Out = FTimespan(Ticks);
+            return true;
+        }
+
+        /**
+         * Sixteen bytes in .NET's Guid layout, straight into an FGuid.
+         *
+         * That layout is not plain big-endian: the first three components are little
+         * endian and the trailing eight bytes are in order. FGuid's four integers are
+         * laid out so that A is the first component, B holds the second and third, and
+         * C and D hold the remaining eight bytes big-endian - so the same text comes
+         * out of FGuid::ToString as out of .NET's Guid.ToString("D").
+         *
+         * Assembled rather than parsed. The previous route built a 36 character string
+         * and handed it to FGuid::Parse, for sixteen bytes that were already there.
+         */
+        bool Read(FGuid& Out)
+        {
+            if (!Require(16))
+            {
+                return false;
+            }
+
+            const uint8* Bytes = Data.GetData() + Position;
+
+            const uint32 A = static_cast<uint32>(Bytes[0])
+                           | static_cast<uint32>(Bytes[1]) << 8
+                           | static_cast<uint32>(Bytes[2]) << 16
+                           | static_cast<uint32>(Bytes[3]) << 24;
+
+            const uint32 Data2 = static_cast<uint32>(Bytes[4]) | static_cast<uint32>(Bytes[5]) << 8;
+            const uint32 Data3 = static_cast<uint32>(Bytes[6]) | static_cast<uint32>(Bytes[7]) << 8;
+
+            const uint32 B = Data2 << 16 | Data3;
+
+            const uint32 C = static_cast<uint32>(Bytes[8]) << 24
+                           | static_cast<uint32>(Bytes[9]) << 16
+                           | static_cast<uint32>(Bytes[10]) << 8
+                           | static_cast<uint32>(Bytes[11]);
+
+            const uint32 D = static_cast<uint32>(Bytes[12]) << 24
+                           | static_cast<uint32>(Bytes[13]) << 16
+                           | static_cast<uint32>(Bytes[14]) << 8
+                           | static_cast<uint32>(Bytes[15]);
+
+            Out = FGuid(A, B, C, D);
+
+            Position += 16;
+            return true;
+        }
+
+        /** An enum, as the zig-zag encoded int32 the exporter writes. */
+        template <typename TEnum>
+        bool ReadEnum(TEnum& Out)
+        {
+            int32 Value = 0;
+            if (!ReadCounter32(Value))
+            {
+                return false;
+            }
+
+            Out = static_cast<TEnum>(Value);
+            return true;
+        }
+
+        /**
+         * The element count in front of a variable length array.
+         *
+         * Public because the generated code reads it directly to size the TArray, and
+         * because a caller wanting to bound that allocation needs to see the number
+         * before trusting it.
+         */
+        bool ReadCounter32(int32& Out)
+        {
+            uint32 Encoded = 0;
+            if (!ReadVarint32(Encoded))
+            {
+                return false;
+            }
+
+            Out = static_cast<int32>(Encoded >> 1) ^ -static_cast<int32>(Encoded & 1);
+            return true;
+        }
+
+    private:
+        bool Fail(const FString& Why)
+        {
+            // The first failure is the informative one; everything after it is a
+            // consequence of reading past the end.
+            if (!bFailed)
+            {
+                bFailed = true;
+                Error = Why;
+            }
+
+            return false;
+        }
+
+        bool Require(int32 Count)
+        {
+            if (bFailed)
+            {
+                return false;
+            }
+
+            if (Remaining() < Count)
+            {
+                return Fail(FString::Printf(
+                    TEXT("table data ended after %d of %d bytes while %d more were expected"),
+                    Position, Data.Num(), Count));
+            }
+
+            return true;
+        }
+
+        bool ReadFixed8(uint8& Out)
+        {
+            if (!Require(1))
+            {
+                return false;
+            }
+
+            Out = Data[Position++];
+            return true;
+        }
+
+        bool ReadFixed32(uint32& Out)
+        {
+            if (!Require(4))
+            {
+                return false;
+            }
+
+            Out = static_cast<uint32>(Data[Position + 0])
+                | static_cast<uint32>(Data[Position + 1]) << 8
+                | static_cast<uint32>(Data[Position + 2]) << 16
+                | static_cast<uint32>(Data[Position + 3]) << 24;
+
+            Position += 4;
+            return true;
+        }
+
+        bool ReadFixed64(uint64& Out)
+        {
+            if (!Require(8))
+            {
+                return false;
+            }
+
+            uint64 Value = 0;
+            for (int32 Index = 0; Index < 8; ++Index)
+            {
+                Value |= static_cast<uint64>(Data[Position + Index]) << (8 * Index);
+            }
+
+            Out = Value;
+            Position += 8;
+            return true;
+        }
+
+        bool ReadVarint32(uint32& Out)
+        {
+            uint32 Value = 0;
+
+            for (int32 Shift = 0; Shift < 35; Shift += 7)
+            {
+                uint8 Byte = 0;
+                if (!ReadFixed8(Byte))
+                {
+                    return false;
+                }
+
+                Value |= static_cast<uint32>(Byte & 0x7F) << Shift;
+
+                if ((Byte & 0x80) == 0)
+                {
+                    Out = Value;
+                    return true;
+                }
+            }
+
+            return Fail(TEXT("varint32 is longer than five bytes"));
+        }
+
+        TArrayView<const uint8> Data;
+        int32 Position = 0;
+        bool bFailed = false;
+        FString Error;
+    };
+
+    /** Version stamped at the head of every table file by the exporter. */
+    static constexpr uint32 BinaryFileFormatVersion = 100;
+
+    /**
+     * Reads and checks the file header, handing back the row count that follows it.
+     *
+     * The reserved byte is written as zero and is where compression or encryption
+     * flags would go; a non-zero value means the file needs handling this build does
+     * not have.
+     */
+    inline bool ReadTableHeader(FSheetManBinaryReader& Reader, int32& OutRowCount)
+    {
+        OutRowCount = 0;
+
+        uint32 Version = 0;
+        if (!Reader.Read(Version))
+        {
+            return false;
+        }
+
+        if (Version != BinaryFileFormatVersion)
+        {
+            UE_LOG(LogTemp, Error,
+                TEXT("SheetMan: table format version %u is not supported (expected %u)"),
+                Version, BinaryFileFormatVersion);
+
+            return false;
+        }
+
+        bool bReserved = false;
+        if (!Reader.Read(bReserved))
+        {
+            return false;
+        }
+
+        if (bReserved)
+        {
+            UE_LOG(LogTemp, Error, TEXT("SheetMan: table declares unsupported features"));
+            return false;
+        }
+
+        if (!Reader.ReadCounter32(OutRowCount))
+        {
+            return false;
+        }
+
+        if (OutRowCount < 0)
+        {
+            UE_LOG(LogTemp, Error, TEXT("SheetMan: table row count %d is negative"), OutRowCount);
+
+            OutRowCount = 0;
+            return false;
+        }
+
+        return true;
     }
 
-    return out;
-  }
+    /**
+     * How much to reserve up front for a row count that came off the wire.
+     *
+     * A corrupt count of two billion would otherwise be an immediate allocation of
+     * that many rows, which fails long before the reader gets to notice the file is
+     * short. The array grows past this if the rows really are there.
+     */
+    inline int32 ReserveBound(int32 Count)
+    {
+        constexpr int32 MaxUpFront = 65536;
 
-  friend bool operator==(const Uuid& a, const Uuid& b) { return a.bytes == b.bytes; }
-  friend bool operator!=(const Uuid& a, const Uuid& b) { return !(a == b); }
-};
-
-/// Sequential reader over a table file's bytes.
-///
-/// Non-owning: the buffer has to outlive the reader. Every read either advances
-/// the cursor or throws, so callers never have to check a return value.
-class LiteBinaryReader {
- public:
-  LiteBinaryReader(const std::uint8_t* data, std::size_t length)
-      : data_(data), length_(length), position_(0) {}
-
-  explicit LiteBinaryReader(const std::vector<std::uint8_t>& buffer)
-      : LiteBinaryReader(buffer.data(), buffer.size()) {}
-
-  std::size_t position() const { return position_; }
-  std::size_t remaining() const { return length_ - position_; }
-
-  std::uint8_t read_fixed8() {
-    require(1);
-    return data_[position_++];
-  }
-
-  std::uint32_t read_fixed32() {
-    require(4);
-
-    const std::uint32_t value = static_cast<std::uint32_t>(data_[position_ + 0]) |
-                                (static_cast<std::uint32_t>(data_[position_ + 1]) << 8) |
-                                (static_cast<std::uint32_t>(data_[position_ + 2]) << 16) |
-                                (static_cast<std::uint32_t>(data_[position_ + 3]) << 24);
-    position_ += 4;
-    return value;
-  }
-
-  std::uint64_t read_fixed64() {
-    require(8);
-
-    std::uint64_t value = 0;
-    for (int i = 0; i < 8; ++i)
-      value |= static_cast<std::uint64_t>(data_[position_ + static_cast<std::size_t>(i)]) << (8 * i);
-
-    position_ += 8;
-    return value;
-  }
-
-  std::uint32_t read_varint32() {
-    std::uint32_t value = 0;
-
-    for (int shift = 0; shift < 35; shift += 7) {
-      const std::uint8_t byte = read_fixed8();
-      value |= static_cast<std::uint32_t>(byte & 0x7F) << shift;
-
-      if ((byte & 0x80) == 0) return value;
+        return FMath::Clamp(Count, 0, MaxUpFront);
     }
-
-    throw LiteBinaryError("varint32 is longer than five bytes");
-  }
-
-  /// Zig-zag decoded int32: the encoding used for lengths and enum values, so
-  /// that small negatives cost as little as small positives.
-  std::int32_t read_counter32() {
-    const std::uint32_t encoded = read_varint32();
-    return static_cast<std::int32_t>(encoded >> 1) ^ -static_cast<std::int32_t>(encoded & 1);
-  }
-
-  void read(bool& value) { value = read_fixed8() != 0; }
-  void read(std::int32_t& value) { value = static_cast<std::int32_t>(read_fixed32()); }
-  void read(std::uint32_t& value) { value = read_fixed32(); }
-  void read(std::int64_t& value) { value = static_cast<std::int64_t>(read_fixed64()); }
-
-  void read(float& value) {
-    const std::uint32_t bits = read_fixed32();
-    std::memcpy(&value, &bits, sizeof(value));
-  }
-
-  void read(double& value) {
-    const std::uint64_t bits = read_fixed64();
-    std::memcpy(&value, &bits, sizeof(value));
-  }
-
-  void read(std::string& value) {
-    const std::int32_t length = read_counter32();
-    if (length < 0) throw LiteBinaryError("string length is negative");
-
-    require(static_cast<std::size_t>(length));
-
-    value.assign(reinterpret_cast<const char*>(data_ + position_), static_cast<std::size_t>(length));
-    position_ += static_cast<std::size_t>(length);
-  }
-
-  void read(DateTime& value) { value.ticks = static_cast<std::int64_t>(read_fixed64()); }
-  void read(TimeSpan& value) { value.ticks = static_cast<std::int64_t>(read_fixed64()); }
-
-  void read(Uuid& value) {
-    require(16);
-    std::memcpy(value.bytes.data(), data_ + position_, 16);
-    position_ += 16;
-  }
-
-  /// Reads an enum as the underlying zig-zag encoded int32 the exporter writes.
-  template <typename TEnum>
-  void read_enum(TEnum& value) {
-    value = static_cast<TEnum>(read_counter32());
-  }
-
- private:
-  void require(std::size_t count) const {
-    if (remaining() < count) {
-      throw LiteBinaryError("table data ended after " + std::to_string(position_) + " of " +
-                            std::to_string(length_) + " bytes while " + std::to_string(count) +
-                            " more were expected");
-    }
-  }
-
-  const std::uint8_t* data_;
-  std::size_t length_;
-  std::size_t position_;
-};
-
-/// Reads a whole file into memory.
-inline std::vector<std::uint8_t> read_all_bytes(const std::string& filename) {
-  std::ifstream stream(filename, std::ios::binary | std::ios::ate);
-  if (!stream) throw LiteBinaryError("cannot open `" + filename + "`");
-
-  const std::streamsize size = stream.tellg();
-  stream.seekg(0, std::ios::beg);
-
-  std::vector<std::uint8_t> buffer(static_cast<std::size_t>(size));
-  if (size > 0 && !stream.read(reinterpret_cast<char*>(buffer.data()), size))
-    throw LiteBinaryError("cannot read `" + filename + "`");
-
-  return buffer;
 }
-
-/// Version stamped at the head of every table file by the exporter.
-constexpr std::uint32_t kBinaryFileFormatVersion = 100;
-
-/// Reads and checks the file header, returning the row count that follows it.
-///
-/// The reserved byte is written as zero and is where compression or encryption
-/// flags would go; a non-zero value means the file needs handling this build
-/// does not have.
-inline std::int32_t read_table_header(LiteBinaryReader& reader) {
-  const std::uint32_t version = reader.read_fixed32();
-  if (version != kBinaryFileFormatVersion) {
-    throw LiteBinaryError("table format version " + std::to_string(version) + " is not supported (expected " +
-                          std::to_string(kBinaryFileFormatVersion) + ")");
-  }
-
-  const std::uint8_t reserved = reader.read_fixed8();
-  if (reserved != 0) throw LiteBinaryError("table declares unsupported features");
-
-  const std::int32_t row_count = reader.read_counter32();
-  if (row_count < 0) throw LiteBinaryError("table row count is negative");
-
-  return row_count;
-}
-
-}  // namespace sheetman
-
-#endif  // SHEETMAN_LITE_BINARY_READER_H

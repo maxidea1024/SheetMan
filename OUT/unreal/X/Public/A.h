@@ -16,29 +16,6 @@
 // names some other line entirely.
 #include "A.generated.h"
 
-namespace SheetManConvert
-{
-    /** The reader hands back UTF-8 bytes; FString is UTF-16. */
-    inline FString ToString(const std::string& Value)
-    {
-        return FString(UTF8_TO_TCHAR(Value.c_str()));
-    }
-
-    /**
-     * A uuid through its text form.
-     *
-     * FGuid's four-integer constructor takes them in its own order, and the reader's bytes
-     * are in .NET's - which is neither big nor little endian throughout. Parsing the text
-     * the reader already knows how to produce is shorter than restating that layout here.
-     */
-    inline FGuid ToGuid(const sheetman::Uuid& Value)
-    {
-        FGuid Result;
-        FGuid::Parse(ToString(Value.to_string()), Result);
-        return Result;
-    }
-}
-
 
 // Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
 /** Named after a C++ keyword. */
@@ -79,8 +56,14 @@ struct X_API FTemplateRow
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Template")
     FString Function;
 
-    /** Reads one record, in the exact field order the exporter wrote. */
-    void Read(sheetman::LiteBinaryReader& Reader);
+    /**
+     * Reads one record, in the exact field order the exporter wrote.
+     *
+     * Nothing is returned. The reader's failure is sticky, so a truncated file leaves
+     * this record holding defaults and the table's load reports it once at the end -
+     * which is why twenty fields in a row need no twenty checks between them.
+     */
+    void Read(SheetMan::FSheetManBinaryReader& Reader);
 };
 
 
