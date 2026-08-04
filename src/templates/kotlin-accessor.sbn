@@ -1,0 +1,49 @@
+{{~##
+   The accessor: one property per table, the load, and the reference linking. Holds no
+   table's own code, so a deleted table is a deleted file rather than a hunk to notice.
+##~}}
+{{ include 'kotlin-file-head.sbn' ~}}
+/** Every table, loaded together so cross-table references can be resolved. */
+object {{ accessor_name }} {
+{{~ for slot in accessor.tables ~}}
+    val {{ slot.name }}: {{ slot.table_name }} = {{ slot.table_name }}()
+{{~ end ~}}
+
+    /** Reads every table from basePath, then links the references between them. */
+    fun readAll(basePath: String) {
+{{~ if accessor.tables | array.size == 0 ~}}
+        // No tables to read.
+{{~ else ~}}
+{{~ for slot in accessor.tables ~}}
+        {{ slot.name }}.read(File(basePath, "{{ slot.data_file_name }}{{ accessor.file_extension }}").path)
+{{~ end ~}}
+
+        solveCrossReferences()
+{{~ end ~}}
+    }
+
+    /** Turns the stored indices into usable values, once every table is in memory. */
+    private fun solveCrossReferences() {
+{{~ if accessor.cross_references | array.size == 0 ~}}
+        // No table references another.
+{{~ else ~}}
+{{~ for reference in accessor.cross_references ~}}
+        for (record in {{ reference.table }}.records) {
+{{~ for field in reference.fields ~}}
+{{~ if field.is_array ~}}
+            record.{{ field.name }} = ArrayList(record.{{ field.name }}Index.size)
+            for (index in record.{{ field.name }}Index) {
+                val target = {{ field.ref_table }}.find(index) ?: continue
+                record.{{ field.name }}.add({{ field.value }})
+            }
+{{~ else ~}}
+            {{ field.ref_table }}.find(record.{{ field.name }}Index)?.let { target ->
+                record.{{ field.name }} = {{ field.value }}
+            }
+{{~ end ~}}
+{{~ end ~}}
+        }
+{{~ end ~}}
+{{~ end ~}}
+    }
+}
