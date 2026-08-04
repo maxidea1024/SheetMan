@@ -77,9 +77,24 @@ const {{ table.record_name }}* {{ table.table_name }}::Find(int32 Index) const
 bool {{ table.table_name }}::Read(const FString& Filename)
 {
     TArray<uint8> Buffer;
+
+    // FFileHelper rather than the platform's own file API, and that is what makes this work
+    // in a packaged build: it goes through IPlatformFile, which mounts the .pak and reads
+    // out of it as though the file were loose on disk. The same call therefore works in the
+    // editor, in a cooked build, and inside an Android .obb.
+    //
+    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // asset, so Unreal ignores it unless the project lists its directory under
+    // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
+    // Miss that and this works in the editor and reports a missing file the moment anybody
+    // runs the build - which is the failure this message exists to name.
     if (!FFileHelper::LoadFileToArray(Buffer, *Filename))
     {
-        UE_LOG(LogTemp, Error, TEXT("SheetMan: could not read %s"), *Filename);
+        UE_LOG(LogTemp, Error,
+            TEXT("SheetMan: could not read %s. In a packaged build, check that its directory is "
+                 "listed under Packaging -> Additional Non-Asset Directories to Package."),
+            *Filename);
+
         return false;
     }
 

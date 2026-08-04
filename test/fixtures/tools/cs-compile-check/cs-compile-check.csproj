@@ -41,4 +41,11 @@
     <Compile Include="$(GeneratedDir)\**\*.cs" />
   </ItemGroup>
 
+  <!--
+    UnityStubs.cs sits beside this file and the SDK picks it up on its own - listing it here
+    as well is a duplicate item and an error. It is just enough of UnityEngine to resolve
+    what the Unity branches name, and its own #if keeps it out of a plain build, so the
+    default check still compiles the generated code and nothing else.
+  -->
+
 </Project>

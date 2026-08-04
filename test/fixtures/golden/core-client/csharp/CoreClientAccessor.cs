@@ -38,24 +38,32 @@ namespace SheetMan.Fixtures.Core.Client
 
         private static async Task<byte[]> DefaultReadAllBytesAsync(string filename)
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            // WebGL has no threads, so nothing here can be moved off the main one. What it
-            // does have is two different places a file can live, and they are not read the
-            // same way:
+#if UNITY_5_3_OR_NEWER
+            // StreamingAssets is where you put a file you want shipped, and it is shipped on
+            // every platform - but on two of them what you get back is a URL rather than a
+            // path, and the File API cannot read either:
             //
-            //   StreamingAssets is served over HTTP - Application.streamingAssetsPath is a
-            //   URL here, not a path - and the File API cannot see it at all.
+            //   Android: StreamingAssets stays inside the APK, so
+            //   Application.streamingAssetsPath is `jar:file:///.../base.apk!/assets`.
             //
-            //   persistentDataPath is a synchronous virtual filesystem over IndexedDB, and
-            //   the File API does work on it.
+            //   WebGL: it is served over HTTP, so the path is a URL to the web server.
             //
-            // So the URL case goes through UnityWebRequest, which is genuinely asynchronous
-            // because the browser does the waiting, and the rest is a synchronous read. The
-            // synchronous read will block a frame; on WebGL that is the platform's answer
-            // and not something this can improve on.
+            // Both arrive here holding "://", so one test covers both - and a real path,
+            // which is what every other platform and persistentDataPath everywhere give,
+            // still goes to the File API below.
+            //
+            // This used to be inside the WebGL branch alone, which left Android reading an
+            // APK with File.ReadAllBytesAsync. That fails at runtime on the one platform
+            // where "it worked in the editor" is least helpful.
             if (filename.Contains("://"))
                 return await ReadViaWebRequestAsync(filename);
+#endif
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // No threads, so nothing can be moved off the main one. What is left here is
+            // persistentDataPath, a synchronous virtual filesystem over IndexedDB: the read
+            // blocks a frame, and on WebGL that is the platform's answer rather than
+            // something this can improve on.
             return File.ReadAllBytes(filename);
 #elif !UNITY_5_3_OR_NEWER || UNITY_2021_2_OR_NEWER
             // Outside Unity, and inside Unity from 2021.2 - which is where the API level
@@ -70,9 +78,13 @@ namespace SheetMan.Fixtures.Core.Client
 #endif
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
+#if UNITY_5_3_OR_NEWER
         /// <summary>
-        /// Fetches a file the browser has to go and get.
+        /// Reads something the File API cannot: a file inside the APK on Android, or one the
+        /// browser has to fetch on WebGL.
+        ///
+        /// UnityWebRequest rather than a platform special case, because it is the one API
+        /// that reads all of them - Unity's own documentation points at it for exactly this.
         /// </summary>
         private static async Task<byte[]> ReadViaWebRequestAsync(string url)
         {
@@ -80,9 +92,10 @@ namespace SheetMan.Fixtures.Core.Client
             {
                 var operation = request.SendWebRequest();
 
-                // Yielding rather than blocking: WebGL is single threaded, so waiting on a
-                // handle here would stop the frame that the request needs in order to
-                // finish, and nothing would ever complete.
+                // Yielding rather than blocking. On WebGL there is one thread, so waiting on
+                // a handle would stop the frame the request needs in order to finish and
+                // nothing would ever complete; elsewhere this keeps the main thread moving,
+                // which is the whole point of the method being asynchronous.
                 while (!operation.isDone)
                     await Task.Yield();
 

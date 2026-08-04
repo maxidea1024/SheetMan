@@ -1209,13 +1209,25 @@ sheetman --recipe recipe.json --prune --before 90d --keep 200
 
 |컴파일 대상|읽기 방식|이유|
 |--|--|--|
+|경로에 `://` 가 있으면 (유니티 전용)|`UnityWebRequest`|**File API로 읽을 수 없는 두 경우**를 한 조건이 덮습니다 — 아래 참조|
 |일반 .NET, 유니티 2021.2 이상|`File.ReadAllBytesAsync`|2021.2에서 API 레벨이 .NET Standard 2.1로 올라가며 생긴 것. 진짜 비동기 I/O로 스레드를 잡지 않습니다|
 |유니티 2019 · 2020|`Task.Run(File.ReadAllBytes)`|.NET Standard 2.0에는 비동기 파일 API가 없어 워커 스레드가 유일한 방법|
-|**유니티 WebGL**|URL이면 `UnityWebRequest`, 아니면 동기 읽기|WebGL은 스레드가 없어 `Task.Run`이 **인라인 실행**됩니다 — 예전 코드는 프리즈를 막으려던 자리에서 프리즈를 만들었습니다. StreamingAssets는 WebGL에서 경로가 아니라 URL이고 File API로 보이지 않으며, persistentDataPath는 IndexedDB 위의 동기식 가상 FS입니다|
+|유니티 WebGL (그 외)|동기 읽기|WebGL은 스레드가 없어 `Task.Run`이 **인라인 실행**됩니다 — 예전 코드는 프리즈를 막으려던 자리에서 프리즈를 만들었습니다. 남는 건 IndexedDB 위 동기식 FS인 persistentDataPath뿐입니다|
 
 읽기 방식을 바꾸려면 `Tables.ReadAllBytesAsync`에 직접 대입하면 됩니다 — 팩 파일, CDN, Addressables 모두 그 자리에서 갈아끼웁니다.
 
-유니티 분기 두 개는 **실제로 컴파일해서 검증**합니다(`CsGeneratorTests`). 그 전에는 셋 중 하나도 컴파일된 적이 없어, 어느 것이든 오래 깨져 있을 수 있었습니다. WebGL 분기는 `UnityEngine.Networking`을 참조하므로 엔진이 필요해 게이트 밖입니다.
+유니티 분기 두 개는 **실제로 컴파일해서 검증**합니다(`CsGeneratorTests`). 그 전에는 셋 중 하나도 컴파일된 적이 없어, 어느 것이든 오래 깨져 있을 수 있었습니다. `UnityEngine.Networking`을 참조하는 분기는 엔진이 필요해 게이트 밖입니다.
+
+### 패키징 — 배포 후에도 데이터에 닿는가
+
+엔진 애셋 포맷(`.uasset` / `.asset`)으로 바꿀 필요는 없습니다. **두 엔진 모두 원본 파일을 그대로 배포하고 읽게 해줍니다.** 다만 각자 조건이 하나씩 있고, 둘 다 "에디터에서는 되는데 패키징하면 안 되는" 형태로 나타납니다.
+
+|엔진|넣을 곳|주의|
+|--|--|--|
+|**유니티**|`Assets/StreamingAssets/`|모든 플랫폼에 배포됩니다. 그런데 **안드로이드에서는 APK 안에 남아** `Application.streamingAssetsPath`가 경로가 아니라 `jar:file:///…/base.apk!/assets` URL이고 **File API로 못 읽습니다.** WebGL도 HTTP URL입니다. 그래서 생성 코드가 `://` 를 보면 `UnityWebRequest`로 갑니다 — 두 경우를 한 조건이 덮습니다|
+|**언리얼**|아무 폴더나. `.table`은 애셋이 아니므로 `Content/`일 필요 없음|**Project Settings → Packaging → "Additional Non-Asset Directories to Package"** 에 그 폴더를 반드시 등록해야 합니다. 등록하면 `.pak`에 들어가고, 생성 코드가 쓰는 `FFileHelper`는 `IPlatformFile`을 거치므로 **pak 안을 로컬 파일처럼 읽습니다** (안드로이드 `.obb`도 동일). 등록하지 않으면 파일이 아예 빌드에 없습니다|
+
+언리얼 쪽은 이 설정이 없으면 조용히 실패하는 게 아니라, 생성된 로더가 그 설정 이름을 로그에 그대로 적습니다.
 
 성능 면에서 writer와 C# 리더는 모두 `Span` 기반이고 값마다 임시 할당을 하지 않습니다. 문자열은 버퍼로 직접 인코딩되고(중간 배열 없음), uuid는 제자리에 기록되며, 테이블 바이트는 파일 쓰기로 복사 없이 넘어갑니다. 리더 쪽도 레코드가 실제로 보유하는 문자열·배열 외에는 할당이 없습니다.
 
