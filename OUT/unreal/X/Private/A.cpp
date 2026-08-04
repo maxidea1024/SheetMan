@@ -81,6 +81,39 @@ bool FTemplateTable::Read(const FString& Filename)
 FTemplateTable A::TemplateStorage;
 
 
+
+
+FTemplateRow UALibrary::GetTemplateRow(int32 Index, bool& bFound)
+{
+    const FTemplateRow* Found = A::Template().Find(Index);
+
+    bFound = Found != nullptr;
+
+    // A copy, because Blueprint takes a struct by value and the row belongs to the table.
+    // A default one when the index is not there, which is why bFound is not decoration.
+    return Found != nullptr ? *Found : FTemplateRow();
+}
+
+int32 UALibrary::GetTemplateRowCount()
+{
+    return A::Template().Records().Num();
+}
+
+FTemplateRow UALibrary::GetTemplateRowAt(int32 Position, bool& bFound)
+{
+    const TArray<FTemplateRow>& Rows = A::Template().Records();
+
+    bFound = Rows.IsValidIndex(Position);
+
+    return bFound ? Rows[Position] : FTemplateRow();
+}
+
+
+bool UALibrary::ReadAll(const FString& BasePath)
+{
+    return A::ReadAll(BasePath);
+}
+
 bool A::ReadAll(const FString& BasePath)
 {
     if (!TemplateStorage.Read(FPaths::Combine(BasePath, TEXT("Template.table"))))

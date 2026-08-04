@@ -8,10 +8,14 @@ public class X : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        // CoreUObject for the reflection the USTRUCTs need; Core for FString,
-        // TArray, FGuid, FDateTime and the file helpers. Nothing else, and no
-        // bEnableExceptions: the reader reports a malformed file by returning
-        // false, so this module builds with the engine's defaults.
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject" });
+        // Core for FString, TArray, FGuid, FDateTime and the file helpers;
+        // CoreUObject for the reflection the USTRUCTs need; Engine for
+        // UBlueprintFunctionLibrary, which is what makes the rows reachable
+        // from a Blueprint graph at all.
+        //
+        // Nothing else, and no bEnableExceptions: the reader reports a malformed
+        // file by returning false, so this module builds with the engine's defaults.
+        PublicDependencyModuleNames.AddRange(
+            new string[] { "Core", "CoreUObject", "Engine" });
     }
 }

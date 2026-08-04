@@ -178,11 +178,15 @@ namespace SheetMan.CodeGeneration
             text.Append("    {\n");
             text.Append("        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;\n");
             text.Append('\n');
-            text.Append("        // CoreUObject for the reflection the USTRUCTs need; Core for FString,\n");
-            text.Append("        // TArray, FGuid, FDateTime and the file helpers. Nothing else, and no\n");
-            text.Append("        // bEnableExceptions: the reader reports a malformed file by returning\n");
-            text.Append("        // false, so this module builds with the engine's defaults.\n");
-            text.Append("        PublicDependencyModuleNames.AddRange(new string[] { \"Core\", \"CoreUObject\" });\n");
+            text.Append("        // Core for FString, TArray, FGuid, FDateTime and the file helpers;\n");
+            text.Append("        // CoreUObject for the reflection the USTRUCTs need; Engine for\n");
+            text.Append("        // UBlueprintFunctionLibrary, which is what makes the rows reachable\n");
+            text.Append("        // from a Blueprint graph at all.\n");
+            text.Append("        //\n");
+            text.Append("        // Nothing else, and no bEnableExceptions: the reader reports a malformed\n");
+            text.Append("        // file by returning false, so this module builds with the engine's defaults.\n");
+            text.Append("        PublicDependencyModuleNames.AddRange(\n");
+            text.Append("            new string[] { \"Core\", \"CoreUObject\", \"Engine\" });\n");
             text.Append("    }\n");
             text.Append("}\n");
 
@@ -203,10 +207,13 @@ namespace SheetMan.CodeGeneration
             Accessor = new UnrealAccessorView
             {
                 FileExtension = _recipe.BinaryTableFileExtension,
+                LibraryName = LibraryName(),
                 Tables = _model.Tables.Select(table => new UnrealTableSlotView
                 {
                     Name = table.Name.ToPascalCase(),
                     TableName = TableName(table),
+                    RecordName = RecordName(table),
+                    RawName = table.Name,
 
                     // Unescaped: this one names the file the exporter wrote.
                     DataFileName = table.Name,
@@ -403,6 +410,26 @@ namespace SheetMan.CodeGeneration
         }
 
         // ------------------------------------------------------------- helpers
+
+        /// <summary>
+        /// The Blueprint function library's name: `USheetManDataLibrary` for an accessor
+        /// called `FSheetManData`.
+        ///
+        /// Unreal's prefix says what a type is - `U` for a UObject, `F` for a plain class -
+        /// so the accessor's `F` comes off before the library's `U` goes on. Prefixing
+        /// blindly gave `UFSheetManDataLibrary`.
+        /// </summary>
+        private string LibraryName()
+        {
+            string name = _recipe.AccessorName;
+
+            // Only when it is a prefix rather than the first letter of a word: `FSheetMan`
+            // loses its F, and `Foo` does not.
+            if (name.Length > 1 && name[0] == 'F' && char.IsUpper(name[1]))
+                name = name.Substring(1);
+
+            return "U" + name + "Library";
+        }
 
         /// <summary>Unreal prefixes an enum with E.</summary>
         private static string EnumName(Models.Enum enumm) => "E" + enumm.Name.ToPascalCase();

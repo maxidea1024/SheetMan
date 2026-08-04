@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace SheetMan.Tests
@@ -160,6 +161,95 @@ namespace SheetMan.Tests
             // The row loop stops on failure too. Without it a corrupt row count spins,
             // appending a default record per turn until the allocator gives up.
             Assert.Contains("&& !Reader.HasFailed())", source);
+        }
+
+        /// <summary>
+        /// The rows are reachable from a Blueprint graph.
+        ///
+        /// Every row is a USTRUCT marked BlueprintType with BlueprintReadOnly properties,
+        /// which says they are meant to be used from Blueprint - and for a long time there
+        /// was no way to obtain one. The accessor is a plain C++ class and a static method on
+        /// one is not something a graph can call, so a designer could declare a variable of a
+        /// row type and had nothing to put in it.
+        ///
+        /// Checked on the generated text, because running it needs an engine. What is pinned
+        /// is that the library exists, that its name is not double-prefixed, and that every
+        /// table has a getter - a library with one table's worth of functions would look
+        /// perfectly fine to a compiler.
+        /// </summary>
+        [Fact]
+        public void Every_table_is_reachable_from_blueprint()
+        {
+            SheetManRunner.Convert(Scenario);
+
+            string header = File.ReadAllText(Path.Combine(
+                ModuleDir(Scenario, "SheetManCore"), "Public", "FSheetManCore.h"));
+
+            Assert.Contains(": public UBlueprintFunctionLibrary", header);
+
+            // Unreal's prefix says what a type is: `U` for a UObject, `F` for a plain class.
+            // Prefixing the accessor name blindly produced `UFSheetManCoreLibrary`.
+            Assert.Contains("class SHEETMANCORE_API USheetManCoreLibrary", header);
+            Assert.DoesNotContain("UFSheetManCore", header);
+
+            // A getter per table, by primary index and by position. The names come from the
+            // sheet, so this reads them out of the accessor's own table list rather than
+            // repeating the fixture here.
+            foreach (Match slot in Regex.Matches(
+                         header, @"static const F(?<name>\w+)Table& \k<name>\(\)"))
+            {
+                string name = slot.Groups["name"].Value;
+
+                Assert.Contains($"static F{name}Row Get{name}Row(int32 Index, bool& bFound);", header);
+                Assert.Contains($"static F{name}Row Get{name}RowAt(int32 Position, bool& bFound);", header);
+                Assert.Contains($"static int32 Get{name}RowCount();", header);
+            }
+
+            // And the module can actually link UBlueprintFunctionLibrary.
+            string build = File.ReadAllText(
+                Path.Combine(ModuleDir(Scenario, "SheetManCore"), "SheetManCore.Build.cs"));
+
+            Assert.Contains("\"Engine\"", build);
+        }
+
+        /// <summary>
+        /// Nothing hands a Blueprint a reference or a whole table.
+        ///
+        /// Unreal Header Tool does not accept a reference return on a UFUNCTION, and a
+        /// TArray return would copy every row of the table on every call - which for a
+        /// localization table is megabytes per node evaluation. A count and an indexed getter
+        /// let a graph walk the table one row at a time instead.
+        /// </summary>
+        [Fact]
+        public void No_blueprint_function_returns_a_reference_or_a_whole_table()
+        {
+            SheetManRunner.Convert(Scenario);
+
+            var lines = File.ReadAllLines(Path.Combine(
+                ModuleDir(Scenario, "SheetManCore"), "Public", "FSheetManCore.h"));
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (!lines[i].Contains("UFUNCTION", StringComparison.Ordinal))
+                    continue;
+
+                // The declaration follows its UFUNCTION, past the meta line it wraps onto.
+                string declaration = string.Join(" ", lines.Skip(i).Take(4))
+                                           .Replace("UFUNCTION", "", StringComparison.Ordinal);
+
+                int returns = declaration.IndexOf("static ", StringComparison.Ordinal);
+                if (returns < 0)
+                    continue;
+
+                string signature = declaration.Substring(returns);
+                string returnType = signature.Split(' ').Skip(1).FirstOrDefault() ?? "";
+
+                Assert.False(returnType.EndsWith("&", StringComparison.Ordinal),
+                    $"A UFUNCTION returns a reference, which UHT refuses: {signature.Trim()}");
+
+                Assert.False(returnType.StartsWith("TArray", StringComparison.Ordinal),
+                    $"A UFUNCTION returns a whole table by value: {signature.Trim()}");
+            }
         }
 
         /// <summary>

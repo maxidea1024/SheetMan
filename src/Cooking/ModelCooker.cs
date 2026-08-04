@@ -626,11 +626,21 @@ namespace SheetMan.Cooking
 
         private DefinitionRect ParseDefinitionRect(RawSheet rawSheet, Location location, string entityType, string entityName, int x, int y, Size minSize)
         {
-            // Checks bounds
+            // Checks bounds.
+            //
+            // An empty rectangle used to come back here, and an entity with one silently
+            // disappeared: the conversion succeeded, the sheet's marker was still there, and
+            // the table was simply not in the output. That is the same shape as every other
+            // defect this codebase has had to hunt - not a failure, a different answer - and
+            // the minimum-size check immediately below always threw for its own case, so the
+            // two disagreed about what an unusable rectangle deserves.
             if (y < 0 || y >= rawSheet.Rows.Count || x < 0 || x >= rawSheet.ColumnCount)
             {
-                //TODO 예외를 던져야하는거 아닐까?
-                return new DefinitionRect { x = 0, y = 0, width = 0, height = 0 };
+                throw new SheetManException(location,
+                    $"Entity `{entityType}:{entityName}` starts outside the sheet: its marker points at " +
+                    $"column {x + 1}, row {y + 1}, and the sheet holds {rawSheet.ColumnCount} column(s) " +
+                    $"and {rawSheet.Rows.Count} row(s). A marker in the last cell with nothing after it " +
+                    $"does this.");
             }
 
             // Check the minimum required size.

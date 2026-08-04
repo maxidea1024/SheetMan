@@ -101,6 +101,53 @@ namespace SheetMan.Tests
         // ---------------------------------------------------------------- tests
 
         /// <summary>
+        /// A value something still refers to cannot be deleted.
+        ///
+        /// This is the whole of what migration 5 bought. The value pool is shared by every
+        /// project and branch, and the write lock that a conversion and a prune both take is
+        /// named per branch - so a prune of `main` and a conversion of `dev` hold different
+        /// locks, and the collector could delete a value between another conversion reading
+        /// its id and writing the reference. There were no constraints, so the result was a
+        /// row pointing at nothing; and every query LEFT JOINs the pool, so the reference
+        /// came back NULL, which this schema reads as "the cell was empty".
+        ///
+        /// The delete is attempted directly here rather than through the collector, because
+        /// the collector only deletes what nothing refers to - the point is what the database
+        /// does when something does.
+        /// </summary>
+        [Fact]
+        public void A_value_something_refers_to_cannot_be_deleted()
+        {
+            using (var store = Open())
+                Record(store, Default(), Commit("aaaa1111"));
+
+            using var connection = new MySqlConnection(ConnectionString);
+            connection.Open();
+
+            long referenced;
+
+            using (var pick = new MySqlCommand(
+                       "SELECT new_value_id FROM cell_change WHERE new_value_id IS NOT NULL LIMIT 1",
+                       connection))
+            {
+                var id = pick.ExecuteScalar();
+
+                Assert.NotNull(id);
+                Assert.NotEqual(DBNull.Value, id);
+
+                referenced = Convert.ToInt64(id);
+            }
+
+            using var delete = new MySqlCommand("DELETE FROM value WHERE id = @id", connection);
+            delete.Parameters.AddWithValue("@id", referenced);
+
+            var ex = Assert.Throws<MySqlException>(() => delete.ExecuteNonQuery());
+
+            // 1451: a row cannot be deleted while a foreign key still points at it.
+            Assert.Equal(1451, ex.Number);
+        }
+
+        /// <summary>
         /// A fresh database has to be usable without anyone running anything first, and a
         /// second machine connecting must not trip over the first one's tables.
         /// </summary>

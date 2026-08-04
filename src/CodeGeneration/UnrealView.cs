@@ -104,6 +104,18 @@ namespace SheetMan.CodeGeneration
     internal sealed class UnrealAccessorView
     {
         public string FileExtension { get; set; }
+
+        /// <summary>
+        /// The Blueprint function library's class name.
+        /// </summary>
+        /// <remarks>
+        /// Built in the generator rather than the template, which produced
+        /// `UFSheetManCoreLibrary` by putting `U` in front of an accessor already prefixed
+        /// `F`. Unreal's prefix says what a type is - `U` for a UObject, `F` for a plain
+        /// class - so the old one comes off before the new one goes on.
+        /// </remarks>
+        public string LibraryName { get; set; }
+
         public IReadOnlyList<UnrealTableSlotView> Tables { get; set; }
     }
 
@@ -111,6 +123,13 @@ namespace SheetMan.CodeGeneration
     {
         public string Name { get; set; }
         public string TableName { get; set; }
+
+        /// <summary>The row struct, which the Blueprint library hands back by value.</summary>
+        public string RecordName { get; set; }
+
+        /// <summary>The table's name as the sheet spelled it, for the Blueprint category.</summary>
+        public string RawName { get; set; }
+
         public string DataFileName { get; set; }
     }
 }
