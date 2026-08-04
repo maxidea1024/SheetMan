@@ -29,6 +29,46 @@ namespace SheetMan.Tests
     /// </summary>
     internal static class SheetManRunner
     {
+        private static bool OnWindows => Environment.OSVersion.Platform == PlatformID.Win32NT;
+
+        /// <summary>
+        /// The CLI as an executable, built once for the whole test run.
+        /// </summary>
+        /// <remarks>
+        /// Every conversion used to go through `dotnet run --project`, which evaluates the
+        /// project and checks the build before it starts the program - two to four seconds
+        /// each, on a suite that converts more than thirty times. That was most of a minute of
+        /// MSBuild doing nothing.
+        ///
+        /// Built once into a directory of its own instead, and then invoked directly. The
+        /// subprocess is still a subprocess, which is the point of running it this way at all:
+        /// SheetMan keeps conversion state in statics, so two in-process conversions in one
+        /// test run would contaminate each other.
+        ///
+        /// Lazy rather than a fixture, because xunit runs collections in parallel and a
+        /// fixture would have to be depended on by every class that converts - including the
+        /// ones whose only interest in the CLI is that it exists.
+        /// </remarks>
+        private static readonly Lazy<string> Executable = new Lazy<string>(Build);
+
+        private static string Build()
+        {
+            string outputDir = RepoLayout.OutputDir("_cli");
+
+            var built = Run(null, "dotnet",
+                "build", RepoLayout.CliProject, "--nologo", "-v", "quiet", "-o", outputDir);
+
+            if (!built.Succeeded)
+                throw new InvalidOperationException($"Could not build the CLI.{Environment.NewLine}{built.Describe()}");
+
+            string path = Path.Combine(outputDir, OnWindows ? "SheetMan.exe" : "SheetMan");
+
+            if (!File.Exists(path))
+                throw new InvalidOperationException($"The CLI build produced no executable at {path}.");
+
+            return path;
+        }
+
         /// <param name="extraArgs">
         /// Further command line arguments, for the options whose whole purpose is to change
         /// what a run produces from an unchanged recipe.
@@ -44,22 +84,17 @@ namespace SheetMan.Tests
             if (Directory.Exists(outputDir))
                 Directory.Delete(outputDir, recursive: true);
 
-            // --no-launch-profile: src/Properties/launchSettings.json carries a
-            // hardcoded recipe path and working directory from another machine, and
-            // `dotnet run` would apply them over the arguments below.
+            // --debug: makes SheetMan print the call stack when it throws. Successful runs are
+            // unaffected, and it lets the defect tests assert on stack frames instead of
+            // framework exception text, which the runtime localizes.
             //
-            // --debug: makes SheetMan print the call stack when it throws. Successful
-            // runs are unaffected, and it lets the defect tests assert on stack frames
-            // instead of framework exception text, which the runtime localizes.
-            var args = new List<string>
-            {
-                "run", "--project", RepoLayout.CliProject, "--no-launch-profile", "--",
-                "--recipe", RepoLayout.Recipe(scenario), "--debug",
-            };
+            // No --no-launch-profile any more: launchSettings.json is `dotnet run`'s business
+            // and the executable does not read it.
+            var args = new List<string> { "--recipe", RepoLayout.Recipe(scenario), "--debug" };
 
             args.AddRange(extraArgs ?? Array.Empty<string>());
 
-            return Run(environment, args.ToArray());
+            return Run(environment, Executable.Value, args.ToArray());
         }
 
         /// <summary>
@@ -77,20 +112,12 @@ namespace SheetMan.Tests
         /// `${...}` placeholders come from the environment, exactly as a conversion's does.
         /// </summary>
         public static RunResult Invoke(IReadOnlyDictionary<string, string> environment, params string[] arguments)
+            => Run(environment, Executable.Value, arguments);
+
+        private static RunResult Run(
+            IReadOnlyDictionary<string, string> environment, string fileName, params string[] args)
         {
-            var args = new List<string>
-            {
-                "run", "--project", RepoLayout.CliProject, "--no-launch-profile", "--",
-            };
-
-            args.AddRange(arguments);
-
-            return Run(environment, args.ToArray());
-        }
-
-        private static RunResult Run(IReadOnlyDictionary<string, string> environment, params string[] args)
-        {
-            var psi = new ProcessStartInfo("dotnet")
+            var psi = new ProcessStartInfo(fileName)
             {
                 WorkingDirectory = RepoLayout.Root,
                 RedirectStandardOutput = true,
