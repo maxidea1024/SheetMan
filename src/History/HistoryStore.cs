@@ -544,8 +544,43 @@ namespace SheetMan.History
                 });
         }
 
-        private static object ValueId(IReadOnlyDictionary<string, long> values, string text)
-            => text != null && values.TryGetValue(text, out long id) ? id : (object)DBNull.Value;
+        /// <summary>
+        /// The pool id for a cell's text, or NULL when the cell held nothing.
+        ///
+        /// NULL means "the cell was empty" in this schema - it is not a stand-in for "no
+        /// id was found". So a text that has one and a text that does not cannot both come
+        /// out as NULL, which is what this used to do: it was a single expression whose
+        /// fallback covered both cases, and a lookup that missed turned "this cell changed
+        /// to X" into "this cell was emptied" in every report that read it afterwards.
+        ///
+        /// A miss is not something to render. <see cref="ResolveValues"/> inserts every text
+        /// before reading the ids back, so one can only go missing if something removed it in
+        /// between - the value pool collector, if it ever ran outside the lock that is
+        /// supposed to keep it away. Failing here is how that would be found, rather than
+        /// being read months later as a blanked cell.
+        ///
+        /// Internal so it can be tested directly. Reaching it through a conversion means
+        /// arranging for a value to vanish mid-transaction, which is not something a test
+        /// can ask for.
+        /// </summary>
+        internal static object ValueId(IReadOnlyDictionary<string, long> values, string text)
+        {
+            if (text == null)
+                return DBNull.Value;
+
+            if (values.TryGetValue(text, out long id))
+                return id;
+
+            throw new SheetManException(
+                $"The value pool has no id for a cell holding `{Ellipsis(text)}`, which was " +
+                $"put there moments ago. Something removed it between the insert and the read " +
+                $"- a prune of another branch is the only thing that does. The snapshot has " +
+                $"not been written.");
+        }
+
+        /// <summary>Enough of a value to recognise it, without putting a cell of prose in a log.</summary>
+        private static string Ellipsis(string text)
+            => text.Length <= 60 ? text : text.Substring(0, 60) + "...";
 
         private static void AddLocation(MySqlCommand command, int i, SummaryLocation location)
         {

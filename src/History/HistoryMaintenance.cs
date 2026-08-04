@@ -198,16 +198,29 @@ namespace SheetMan.History
             }
         }
 
+        /// <summary>MySQL's error for a delete a foreign key will not allow.</summary>
+        private const int RowIsStillReferenced = 1451;
+
         /// <summary>
         /// Deletes values nothing refers to.
         ///
         /// Bounded by a watermark taken first, so a value a conversion inserts while this
-        /// runs - which gets a higher id - is out of reach. The write lock covers the other
-        /// direction: a conversion cannot be between finding an existing value and
-        /// referencing it, because it does that inside the lock this holds.
+        /// runs - which gets a higher id - is out of reach.
+        ///
+        /// That leaves the values already in the pool, and the write lock does not cover
+        /// them: it is named per branch, while the pool is shared by every project and
+        /// branch. So a conversion of another branch can be between reading an existing
+        /// value's id and writing the reference, and the `NOT EXISTS` below - a consistent
+        /// read - cannot see the reference it is about to hold.
+        ///
+        /// The foreign keys added in migration 5 are what actually settle it. The delete
+        /// fails rather than succeeding into a dangling reference, and a failed batch is
+        /// skipped: the value stays, and the next prune takes it once the reference has
+        /// really gone. Nothing is lost by waiting.
         ///
         /// In batches, because the pool is the largest table here and one statement over
-        /// all of it would hold locks for as long as it took.
+        /// all of it would hold locks for as long as it took - and because a batch is the
+        /// unit that gets skipped when the constraint speaks up.
         /// </summary>
         private static long Collect(MySqlConnection connection)
         {
@@ -218,6 +231,7 @@ namespace SheetMan.History
 
             long deleted = 0;
             long from = 0;
+            int contended = 0;
 
             while (from < watermark)
             {
@@ -234,9 +248,27 @@ namespace SheetMan.History
                 command.Parameters.AddWithValue("@from", from);
                 command.Parameters.AddWithValue("@to", to);
 
-                deleted += command.ExecuteNonQuery();
+                try
+                {
+                    deleted += command.ExecuteNonQuery();
+                }
+                catch (MySqlException ex) when (ex.Number == RowIsStillReferenced)
+                {
+                    // Something started referring to one of these while the statement ran.
+                    // The constraint is doing exactly what it was added for; the batch is
+                    // left alone and the next prune will find it again.
+                    contended++;
+                }
 
                 from = to;
+            }
+
+            if (contended > 0)
+            {
+                Log.Information(
+                    $"{contended} batch(es) of values were left alone because something began " +
+                    $"referring to them while they were being collected. The next prune will " +
+                    $"take whatever is still unreferenced then.");
             }
 
             return deleted;

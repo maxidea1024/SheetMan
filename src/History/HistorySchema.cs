@@ -30,7 +30,7 @@ namespace SheetMan.History
         /// What this build expects. A database at a higher version was written by a newer
         /// SheetMan and is left alone rather than downgraded.
         /// </summary>
-        public const int Version = 4;
+        public const int Version = 5;
 
         private const string LockName = "sheetman_history_migrate";
 
@@ -46,8 +46,12 @@ namespace SheetMan.History
         /// are read back in is then whatever the storage engine feels like, and every diff
         /// past that point is measured from an arbitrary one of the two.
         ///
-        /// It is also what lets the value pool be collected. Without it, a prune can delete
-        /// a value between a conversion finding it and referencing it.
+        /// This does not protect the value pool, and used to claim it did. The pool is shared
+        /// across every project and branch while this lock is per branch, so a prune of one
+        /// branch and a conversion of another hold different locks and the collector could
+        /// delete a value between a conversion finding it and referencing it. Migration 5
+        /// gives the pool foreign keys instead, so the database refuses the delete rather
+        /// than a comment asking it not to.
         /// </summary>
         public static string WriteLockFor(int projectId, string branch)
             => $"sheetman_history_write:{projectId}:{branch}";
@@ -118,8 +122,28 @@ namespace SheetMan.History
 
                 for (int version = current + 1; version <= Version; version++)
                 {
-                    foreach (var statement in Migrations[version])
-                        Execute(connection, statement);
+                    var statements = Migrations[version];
+
+                    for (int step = 0; step < statements.Length; step++)
+                    {
+                        try
+                        {
+                            Execute(connection, statements[step]);
+                        }
+                        catch (MySqlException ex)
+                        {
+                            // Which migration, which statement, and the server's own words.
+                            // Without this the caller gets a bare MySQL error and no way to
+                            // tell an already-applied schema from data the new shape refuses
+                            // - and migration 5, which adds foreign keys, fails exactly when
+                            // the data it is constraining is already wrong.
+                            throw new SheetManException(
+                                $"Migration {version} failed at statement {step + 1} of " +
+                                $"{statements.Length}: {ex.Message}" +
+                                Environment.NewLine + Environment.NewLine +
+                                statements[step].Trim(), ex);
+                        }
+                    }
 
                     Execute(connection,
                         "INSERT INTO schema_version (version, applied_at) VALUES (@v, UTC_TIMESTAMP(3))",
@@ -359,6 +383,42 @@ namespace SheetMan.History
                     KEY ix_snapshot (snapshot_id, table_name),
                     KEY ix_cell (table_name, row_key_hash, field_name)
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+            },
+
+            [5] = new[]
+            {
+                // Foreign keys onto the value pool, so the database keeps the invariant that
+                // a comment used to.
+                //
+                // The pool is shared by every project and branch; the write lock is per
+                // branch. So a prune of `main` and a conversion of `dev` hold different
+                // locks, and the collector - which deletes values nothing refers to - could
+                // remove one between a conversion reading its id and writing the reference.
+                // There were no constraints at all, so the result was a row pointing at a
+                // value that no longer existed, and every query LEFT JOINs the pool: the
+                // reference came back NULL, which this schema reads as "the cell was empty".
+                //
+                // RESTRICT rather than CASCADE or SET NULL. The collector's delete is the
+                // thing that has to fail; the other two would carry out the corruption
+                // tidily. It fails with a foreign key error, the collector skips that value,
+                // and the next prune collects it once the reference really has gone.
+                //
+                // Added as three separate statements because a failure part-way through
+                // should say which table it was on.
+                @"ALTER TABLE cell_current
+                    ADD CONSTRAINT fk_cell_current_value
+                    FOREIGN KEY (value_id) REFERENCES value (id)
+                    ON DELETE RESTRICT ON UPDATE RESTRICT",
+
+                @"ALTER TABLE cell_change
+                    ADD CONSTRAINT fk_cell_change_old_value
+                    FOREIGN KEY (old_value_id) REFERENCES value (id)
+                    ON DELETE RESTRICT ON UPDATE RESTRICT",
+
+                @"ALTER TABLE cell_change
+                    ADD CONSTRAINT fk_cell_change_new_value
+                    FOREIGN KEY (new_value_id) REFERENCES value (id)
+                    ON DELETE RESTRICT ON UPDATE RESTRICT",
             },
 
             [4] = new[]

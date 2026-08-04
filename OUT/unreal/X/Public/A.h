@@ -9,6 +9,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/ObjectMacros.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 
 #include "SheetManLiteBinaryReader.h"
 
@@ -101,5 +102,63 @@ public:
 
 private:
     static FTemplateTable TemplateStorage;
+};
+
+/**
+ * The same data, reachable from Blueprint.
+ *
+ * Every row above is a USTRUCT marked BlueprintType with BlueprintReadOnly properties,
+ * which says the rows are meant to be used from Blueprint - and until this existed there
+ * was no way to get one. A graph could declare a variable of a row type and had nothing to
+ * obtain a value from, because the accessor is a plain C++ class and a static method on one
+ * is not something Blueprint can call.
+ *
+ * A function library rather than making the accessor a UObject. The storage stays where it
+ * is: this owns nothing, adds no garbage collection, and does not need a world. It is a
+ * few UFUNCTIONs over the C++ that was already there.
+ */
+UCLASS()
+class X_API UALibrary : public UBlueprintFunctionLibrary
+{
+    GENERATED_BODY()
+
+public:
+
+    /**
+     * The Template row with the given primary index.
+     *
+     * bFound rather than a pointer, because Blueprint has no null struct - a graph that
+     * ignored a failure would otherwise carry a default row it could not tell apart from
+     * a real one.
+     */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Template",
+              meta = (DisplayName = "Get Template Row"))
+    static FTemplateRow GetTemplateRow(int32 Index, bool& bFound);
+
+    /** How many Template rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Template",
+              meta = (DisplayName = "Get Template Row Count"))
+    static int32 GetTemplateRowCount();
+
+    /**
+     * The Template row at a position, for walking the table in order.
+     *
+     * A position and a count rather than the whole array. Blueprint takes a return value
+     * by value, so handing back a TArray would copy every row of the table on every call -
+     * and a reference return is not something Unreal Header Tool accepts. With these two a
+     * graph can loop over the table and copy one row per turn.
+     */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Template",
+              meta = (DisplayName = "Get Template Row At"))
+    static FTemplateRow GetTemplateRowAt(int32 Position, bool& bFound);
+
+    /**
+     * Reads every table from BasePath, as A::ReadAll does.
+     *
+     * BlueprintCallable rather than BlueprintPure: it does something.
+     */
+    UFUNCTION(BlueprintCallable, Category = "SheetMan",
+              meta = (DisplayName = "Load All SheetMan Tables"))
+    static bool ReadAll(const FString& BasePath);
 };
 

@@ -126,6 +126,39 @@ bool {{ table.table_name }}::Read(const FString& Filename)
 {{ slot.table_name }} {{ accessor_name }}::{{ slot.name }}Storage;
 {{~ end }}
 
+{{~ for slot in accessor.tables }}
+
+{{ slot.record_name }} {{ accessor.library_name }}::Get{{ slot.name }}Row(int32 Index, bool& bFound)
+{
+    const {{ slot.record_name }}* Found = {{ accessor_name }}::{{ slot.name }}().Find(Index);
+
+    bFound = Found != nullptr;
+
+    // A copy, because Blueprint takes a struct by value and the row belongs to the table.
+    // A default one when the index is not there, which is why bFound is not decoration.
+    return Found != nullptr ? *Found : {{ slot.record_name }}();
+}
+
+int32 {{ accessor.library_name }}::Get{{ slot.name }}RowCount()
+{
+    return {{ accessor_name }}::{{ slot.name }}().Records().Num();
+}
+
+{{ slot.record_name }} {{ accessor.library_name }}::Get{{ slot.name }}RowAt(int32 Position, bool& bFound)
+{
+    const TArray<{{ slot.record_name }}>& Rows = {{ accessor_name }}::{{ slot.name }}().Records();
+
+    bFound = Rows.IsValidIndex(Position);
+
+    return bFound ? Rows[Position] : {{ slot.record_name }}();
+}
+{{~ end }}
+
+bool {{ accessor.library_name }}::ReadAll(const FString& BasePath)
+{
+    return {{ accessor_name }}::ReadAll(BasePath);
+}
+
 bool {{ accessor_name }}::ReadAll(const FString& BasePath)
 {
 {{~ if accessor.tables | array.size == 0 ~}}
