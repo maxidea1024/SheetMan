@@ -24,6 +24,56 @@ namespace SheetMan.Tests
     public class CsGeneratorTests
     {
         private const string Scenario = "core";
+        private const string Accessor = "CoreAccessor";
+
+        /// <summary>
+        /// The generated code compiles for a plain .NET consumer with nothing defined.
+        ///
+        /// It did not use to. The read path switched on `NO_UNITY`, a symbol nobody defines
+        /// by default, so the default branch was the Unity one - and it carried a
+        /// `using Cysharp.Threading.Tasks;` that nothing in the generated code referenced.
+        /// A .NET project without UniTask installed therefore failed to compile on a line
+        /// that bought it nothing.
+        /// </summary>
+        [Fact]
+        public void Generated_code_compiles_with_nothing_defined()
+        {
+            var conversion = SheetManRunner.Convert(Scenario);
+            Assert.True(conversion.Succeeded,
+                $"Conversion failed.{Environment.NewLine}{conversion.Describe()}");
+
+            var result = CsToolchain.Compile(Scenario, Accessor);
+
+            Assert.True(result.Succeeded,
+                $"Generated C# does not compile for a plain consumer.{Environment.NewLine}{result.Output}");
+        }
+
+        /// <summary>
+        /// And it compiles for the two API levels Unity offers.
+        ///
+        /// `UNITY_2021_2_OR_NEWER` selects `File.ReadAllBytesAsync`, which is what .NET
+        /// Standard 2.1 gave Unity; without it the code falls back to a worker thread. Both
+        /// branches existed for a long time and neither was ever compiled by anything, so
+        /// either could have been broken for as long as it had been there.
+        ///
+        /// The WebGL branch is not here. It names UnityEngine.Networking, so checking it
+        /// needs an engine - the same limitation the Unreal target's header-tool gate has.
+        /// </summary>
+        [Theory]
+        [InlineData("UNITY_5_3_OR_NEWER")]
+        [InlineData("UNITY_5_3_OR_NEWER;UNITY_2021_2_OR_NEWER")]
+        public void Generated_code_compiles_for_unity(string symbols)
+        {
+            var conversion = SheetManRunner.Convert(Scenario);
+            Assert.True(conversion.Succeeded,
+                $"Conversion failed.{Environment.NewLine}{conversion.Describe()}");
+
+            var result = CsToolchain.Compile(Scenario, Accessor, symbols);
+
+            Assert.True(result.Succeeded,
+                $"Generated C# does not compile with `{symbols}` defined." +
+                $"{Environment.NewLine}{result.Output}");
+        }
 
         private static JsonElement RunGeneratedReader()
         {

@@ -18,10 +18,6 @@ using System.Threading.Tasks;
 // Nothing has to be installed for the generated code to compile.
 using SheetMan.Binary;
 
-#if !NO_UNITY
-using Cysharp.Threading.Tasks;
-#endif
-
 namespace SheetMan.Fixtures.Core.Client
 {
     #region Static tables
@@ -29,22 +25,79 @@ namespace SheetMan.Fixtures.Core.Client
     {
         public delegate Task<byte[]> ReadAllBytesAsyncDelegate(string filename);
 
-        public static ReadAllBytesAsyncDelegate ReadAllBytesAsync = async (string filename) => {
-        #if !NO_UNITY
-            byte[] bytes = null;
-            await Task.Run(() => {
-                bytes = File.ReadAllBytes(filename);
-            });
+        /// <summary>
+        /// How a table file is read.
+        /// </summary>
+        /// <remarks>
+        /// Replaceable, and that is the supported way to change it: assign your own before
+        /// calling <c>ReadAllAsync</c> to read from a pack file, a CDN, an addressable, or
+        /// anywhere else. The default below is chosen for the platform being compiled for
+        /// and is correct for reading a file from disk.
+        /// </remarks>
+        public static ReadAllBytesAsyncDelegate ReadAllBytesAsync = DefaultReadAllBytesAsync;
 
-            return bytes;
-        #else
-            var bytes = await System.IO.File.ReadAllBytesAsync(filename);
-            if (bytes == null)
-                throw new SheetManException($"Cannot read a file '{filename}'");
+        private static async Task<byte[]> DefaultReadAllBytesAsync(string filename)
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            // WebGL has no threads, so nothing here can be moved off the main one. What it
+            // does have is two different places a file can live, and they are not read the
+            // same way:
+            //
+            //   StreamingAssets is served over HTTP - Application.streamingAssetsPath is a
+            //   URL here, not a path - and the File API cannot see it at all.
+            //
+            //   persistentDataPath is a synchronous virtual filesystem over IndexedDB, and
+            //   the File API does work on it.
+            //
+            // So the URL case goes through UnityWebRequest, which is genuinely asynchronous
+            // because the browser does the waiting, and the rest is a synchronous read. The
+            // synchronous read will block a frame; on WebGL that is the platform's answer
+            // and not something this can improve on.
+            if (filename.Contains("://"))
+                return await ReadViaWebRequestAsync(filename);
 
-            return bytes;
-        #endif
-        };
+            return File.ReadAllBytes(filename);
+#elif !UNITY_5_3_OR_NEWER || UNITY_2021_2_OR_NEWER
+            // Outside Unity, and inside Unity from 2021.2 - which is where the API level
+            // moved to .NET Standard 2.1 and File.ReadAllBytesAsync arrived. Real
+            // asynchronous I/O: no thread is held while the disk works.
+            return await File.ReadAllBytesAsync(filename);
+#else
+            // Unity 2019 and 2020 on .NET Standard 2.0, which has no asynchronous file API.
+            // A worker thread is the only way to keep the main one moving, so this is the
+            // one branch that spends one.
+            return await Task.Run(() => File.ReadAllBytes(filename));
+#endif
+        }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        /// <summary>
+        /// Fetches a file the browser has to go and get.
+        /// </summary>
+        private static async Task<byte[]> ReadViaWebRequestAsync(string url)
+        {
+            using (var request = UnityEngine.Networking.UnityWebRequest.Get(url))
+            {
+                var operation = request.SendWebRequest();
+
+                // Yielding rather than blocking: WebGL is single threaded, so waiting on a
+                // handle here would stop the frame that the request needs in order to
+                // finish, and nothing would ever complete.
+                while (!operation.isDone)
+                    await Task.Yield();
+
+#if UNITY_2020_2_OR_NEWER
+                if (request.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
+                    throw new SheetManException($"Cannot read '{url}': {request.error}");
+#else
+                if (request.isNetworkError || request.isHttpError)
+                    throw new SheetManException($"Cannot read '{url}': {request.error}");
+#endif
+
+                return request.downloadHandler.data;
+            }
+        }
+#endif
 
         /// <summary>
         /// Property for TestFieldTypes table.
