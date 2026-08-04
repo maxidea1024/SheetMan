@@ -67,7 +67,9 @@ namespace SheetMan.CodeGeneration
     }
 
     /// <summary>
-    /// Emits a Rust crate: one module holding every generated type, plus the binary reader.
+    /// Emits a Rust crate: a module per table, per enum and per constant set, the accessor, the
+    /// binary reader, and a lib.rs declaring the tree and re-exporting every type at the path it
+    /// had before the output was split.
     ///
     /// References are kept as indices rather than resolved into borrows. A record holding a
     /// reference to another record is a graph, and Rust will not let one own its
@@ -75,7 +77,9 @@ namespace SheetMan.CodeGeneration
     /// a reference-counted cell around every row. The index plus a lookup reads better and
     /// costs the caller one call, which is the same trade the database exporters make.
     ///
-    /// The shape lives in templates/rust.sbn.
+    /// The shape lives in templates/rust-*.sbn, one per kind of file, over the shared header in
+    /// rust-file-head.sbn. Which siblings a file brings into scope comes from
+    /// <see cref="TypeDependencies"/>.
     /// </summary>
     [SheetManTarget("rust", TargetKind.CodeGeneration, Order = 60)]
     public class RustCodeGenerator : CodeGenerator<RustRecipe>
@@ -100,23 +104,203 @@ namespace SheetMan.CodeGeneration
                 WriteCargoToml();
         }
 
+        /// <summary>Module holding the accessor, and so the file it is written to.</summary>
+        /// <remarks>
+        /// A constant set named `Tables` would want this file too. That is caught rather than
+        /// silently resolved: <see cref="StagingFiles.WriteAllTextToFile"/> refuses to write two
+        /// different files to one path.
+        /// </remarks>
+        private const string AccessorModule = "tables";
+
         private void Generate()
         {
-            // src/lib.rs, because the generated module declares `pub mod sheetman` and the
-            // reader has to sit beside it for that to resolve.
-            string filename = System.IO.Path.GetFullPath(
-                System.IO.Path.Combine(_recipe.Path, "src", "lib.rs"));
+            var view = BuildView();
 
-            Log.Information($"Generating codes for Rust into `{filename}`");
+            Log.Information($"Generating codes for Rust into `{System.IO.Path.GetFullPath(SourceDir)}`");
 
-            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("rust.sbn", BuildView()));
+            // The accessor joins paths and delegates; the errors it returns come from the tables
+            // already wrapped.
+            Write(AccessorModule, "rust-accessor.sbn", new RustPartView
+            {
+                Uses = Uses(new[] { "std::path::Path" }, reader: true)
+                    .Concat(_model.Tables.Select(TableUse)).ToList(),
+                Accessor = view.Accessor,
+            });
+
+            foreach (var pair in _model.Tables.Zip(view.Tables, (model, rendered) => (model, rendered)))
+            {
+                // A table indexes its rows and opens its own file, and names the enums its
+                // fields are typed with. Not the tables it references: a reference is kept as an
+                // index, so a record never names another record's type.
+                Write(TableModule(pair.model), "rust-table.sbn", new RustPartView
+                {
+                    Uses = Uses(new[] { "std::collections::HashMap", "std::path::Path" }, reader: true)
+                        .Concat(TypeDependencies.EnumsNamedBy(pair.model).Select(EnumUse)).ToList(),
+                    Table = pair.rendered,
+                });
+            }
+
+            foreach (var pair in _model.Enums.Zip(view.Enums, (model, rendered) => (model, rendered)))
+            {
+                // An enum is a leaf: it names nothing but the integers it is built from.
+                Write(EnumModule(pair.model), "rust-enum.sbn", new RustPartView
+                {
+                    Uses = Array.Empty<string>(),
+                    Enumm = pair.rendered,
+                });
+            }
+
+            foreach (var pair in _model.ConstantSets.Zip(view.ConstantSets, (model, rendered) => (model, rendered)))
+            {
+                // A constant set names no standard library type, reaches the reader only for a
+                // uuid - whose value is rendered as a `sheetman::Uuid` literal - and names an
+                // enum when one of its constants is typed with one.
+                Write(pair.rendered.ModuleName, "rust-constants.sbn", new RustPartView
+                {
+                    Uses = Uses(Array.Empty<string>(), reader: NamesUuid(pair.model))
+                        .Concat(TypeDependencies.EnumsNamedBy(pair.model).Select(EnumUse)).ToList(),
+                    ModuleDoc = pair.rendered.Comment,
+                    Set = pair.rendered,
+                });
+            }
+
+            WriteLib(view);
         }
+
+        /// <summary>
+        /// Where the crate's source goes: src/, because the reader sits beside the generated
+        /// files and `mod sheetman;` only resolves if it does.
+        /// </summary>
+        private string SourceDir => System.IO.Path.Combine(_recipe.Path, "src");
+
+        /// <summary>
+        /// Flat inside src/ rather than in submodule directories.
+        ///
+        /// A Rust module can be a directory, but only with a mod.rs or a same-named file beside
+        /// it, and every path a consumer writes would gain a level for nothing. The names carry
+        /// the grouping instead, as they do for Go and Python.
+        /// </summary>
+        private void Write(string module, string templateName, RustPartView view)
+        {
+            string full = System.IO.Path.GetFullPath(
+                System.IO.Path.Combine(SourceDir, module + ".rs"));
+
+            StagingFiles.WriteAllTextToFile(full, TemplateEngine.Render(templateName, view));
+        }
+
+        /// <summary>
+        /// Writes lib.rs: the crate lints, the module tree, and the re-exports.
+        /// </summary>
+        /// <remarks>
+        /// The re-exports are why this is worth doing rather than declaring the modules and
+        /// leaving it there. Before the split every generated type was declared in lib.rs, so a
+        /// consumer wrote `gamedata::VectorsRecord`. `pub use` keeps that path exactly, and the
+        /// module a type lives in becomes an implementation detail nobody has to follow.
+        ///
+        /// A constant set is the exception: it was already a module of its own, so it stays one
+        /// and its path is unchanged without any re-export.
+        /// </remarks>
+        private void WriteLib(RustFileView view)
+        {
+            var text = new StringBuilder();
+
+            text.Append("// ------------------------------------------------------------------------------\n");
+            text.Append("// Generated by SheetMan. DO NOT EDIT.\n");
+            text.Append("//\n");
+            text.Append("// Changes to this file may cause incorrect behavior and will be lost if the code is\n");
+            text.Append("// regenerated.\n");
+            text.Append("// ------------------------------------------------------------------------------\n");
+            text.Append('\n');
+
+            // Crate scope, so no generated file repeats them. Generated code is allowed to
+            // declare more than a given consumer uses, and clippy's opinions are not this
+            // tool's to answer for.
+            text.Append("#![allow(dead_code)]\n");
+            text.Append("#![allow(clippy::all)]\n");
+            text.Append('\n');
+
+            text.Append("pub mod sheetman;\n");
+
+            Section(text, "The enums.", view.Enums.Count > 0);
+
+            foreach (var pair in _model.Enums.Zip(view.Enums, (model, rendered) => (model, rendered)))
+            {
+                text.Append("mod ").Append(EnumModule(pair.model)).Append(";\n");
+                text.Append("pub use ").Append(EnumModule(pair.model))
+                    .Append("::").Append(pair.rendered.Name).Append(";\n");
+            }
+
+            Section(text, "The constant sets, each keeping the module path it always had.",
+                    view.ConstantSets.Count > 0);
+
+            foreach (var set in view.ConstantSets)
+                text.Append("pub mod ").Append(set.ModuleName).Append(";\n");
+
+            Section(text, "A record and a table type per table.", view.Tables.Count > 0);
+
+            foreach (var pair in _model.Tables.Zip(view.Tables, (model, rendered) => (model, rendered)))
+            {
+                text.Append("mod ").Append(TableModule(pair.model)).Append(";\n");
+                text.Append("pub use ").Append(TableModule(pair.model))
+                    .Append("::{").Append(pair.rendered.RecordName)
+                    .Append(", ").Append(pair.rendered.TableName).Append("};\n");
+            }
+
+            Section(text, "The accessor.", true);
+
+            text.Append("mod ").Append(AccessorModule).Append(";\n");
+            text.Append("pub use ").Append(AccessorModule).Append("::Tables;\n");
+
+            StagingFiles.WriteAllTextToFile(
+                System.IO.Path.GetFullPath(System.IO.Path.Combine(SourceDir, "lib.rs")),
+                text.ToString());
+        }
+
+        private static void Section(StringBuilder text, string heading, bool any)
+        {
+            if (!any)
+                return;
+
+            text.Append('\n');
+            text.Append("// ").Append(heading).Append('\n');
+        }
+
+        // ------------------------------------------------------- module layout
+
+        private static string TableModule(Table table) => table.Name.ToSnakeCase() + "_table";
+        private static string EnumModule(Models.Enum enumm) => "enum_" + enumm.Name.ToSnakeCase();
+
+        private static string TableUse(Table table)
+            => $"use crate::{TableModule(table)}::{table.Name.ToPascalCase()}Table;";
+
+        private static string EnumUse(Models.Enum enumm)
+            => $"use crate::{EnumModule(enumm)}::{enumm.Name.ToPascalCase()};";
+
+        /// <summary>
+        /// The standard library and reader uses a file needs, in the order rustfmt groups them:
+        /// std first, then the crate's own.
+        /// </summary>
+        private static IEnumerable<string> Uses(IReadOnlyList<string> standard, bool reader)
+        {
+            foreach (var path in standard)
+                yield return $"use {path};";
+
+            if (reader)
+                yield return "use crate::sheetman;";
+        }
+
+        /// <summary>
+        /// Whether a constant set has a uuid in it, which is the only way its file reaches the
+        /// reader - the value renders as a `sheetman::Uuid` literal.
+        /// </summary>
+        private static bool NamesUuid(ConstantSet set)
+            => set.Constants.Any(constant => constant.Type == ValueType.Uuid);
 
         private void WriteBinaryReaderRuntime()
         {
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Rust.lite_binary_reader.rs",
-                System.IO.Path.Combine(_recipe.Path, "src", "sheetman.rs"));
+                System.IO.Path.Combine(SourceDir, "sheetman.rs"));
         }
 
         private void WriteCargoToml()

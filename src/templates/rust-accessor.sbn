@@ -1,0 +1,24 @@
+{{~## The accessor, holding no table's own code. ##~}}
+{{ include 'rust-file-head.sbn' ~}}
+/// Every table, loaded together.
+#[derive(Clone, Debug, Default)]
+pub struct Tables {
+{{~ for slot in accessor.tables ~}}
+    pub {{ slot.name }}: {{ slot.table_name }},
+{{~ end ~}}
+}
+
+impl Tables {
+    /// Reads every table from `base_path`.
+    pub fn read_all(&mut self, base_path: &Path) -> sheetman::Result<()> {
+{{~ if accessor.tables | array.size == 0 ~}}
+        let _ = base_path;
+{{~ else ~}}
+{{~ for slot in accessor.tables ~}}
+        self.{{ slot.name }}.read(&base_path.join("{{ slot.data_file_name }}{{ accessor.file_extension }}"))?;
+{{~ end ~}}
+{{~ end ~}}
+
+        Ok(())
+    }
+}

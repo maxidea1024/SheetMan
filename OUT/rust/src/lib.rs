@@ -10,101 +10,10 @@
 
 pub mod sheetman;
 
-use std::collections::HashMap;
-use std::path::Path;
+// A record and a table type per table.
+mod template_table;
+pub use template_table::{TemplateRecord, TemplateTable};
 
-
-// Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
-/// Named after a C++ keyword.
-#[derive(Clone, Debug, Default)]
-pub struct TemplateRecord {
-    /// primary index
-    pub index: i32,
-    /// class: keyword in C++ and C#
-    pub class: String,
-    /// int: keyword in C++ and C#
-    pub int: i32,
-    /// delete: keyword in C++
-    pub delete: bool,
-    /// operator: keyword in C++
-    pub operator: String,
-    /// namespace: keyword in C++ and C#
-    pub namespace: String,
-    /// constructor: special member in TypeScript
-    pub constructor: String,
-    /// function: keyword in TypeScript
-    pub function: String,
-}
-
-impl TemplateRecord {
-    /// Reads one record, in the exact field order the exporter wrote.
-    fn read(reader: &mut sheetman::Reader<'_>) -> sheetman::Result<Self> {
-        Ok(TemplateRecord {
-            index: reader.read_i32()?,
-            class: reader.read_string()?,
-            int: reader.read_i32()?,
-            delete: reader.read_bool()?,
-            operator: reader.read_string()?,
-            namespace: reader.read_string()?,
-            constructor: reader.read_string()?,
-            function: reader.read_string()?,
-        })
-    }
-}
-
-/// Every row of Template.
-#[derive(Clone, Debug, Default)]
-pub struct TemplateTable {
-    records: Vec<TemplateRecord>,
-    by_index: HashMap<i32, usize>,
-}
-
-impl TemplateTable {
-    /// Every row, in the order the sheet declared them.
-    pub fn records(&self) -> &[TemplateRecord] {
-        &self.records
-    }
-
-    /// The row with the given primary index, or None when there is none.
-    pub fn find(&self, index: i32) -> Option<&TemplateRecord> {
-        self.by_index.get(&index).map(|position| &self.records[*position])
-    }
-
-    /// Loads the table from a .table file written by SheetMan.
-    pub fn read(&mut self, filename: &Path) -> sheetman::Result<()> {
-        let data = sheetman::read_all_bytes(filename)?;
-        let mut reader = sheetman::Reader::new(&data);
-
-        let count = sheetman::read_table_header(&mut reader)?;
-
-        self.records = Vec::with_capacity(count.max(0) as usize);
-        for _ in 0..count {
-            self.records.push(TemplateRecord::read(&mut reader)?);
-        }
-
-        self.by_index = self
-            .records
-            .iter()
-            .enumerate()
-            .map(|(position, record)| (record.index, position))
-            .collect();
-
-        Ok(())
-    }
-}
-
-
-/// Every table, loaded together.
-#[derive(Clone, Debug, Default)]
-pub struct Tables {
-    pub template: TemplateTable,
-}
-
-impl Tables {
-    /// Reads every table from `base_path`.
-    pub fn read_all(&mut self, base_path: &Path) -> sheetman::Result<()> {
-        self.template.read(&base_path.join("Template.table"))?;
-
-        Ok(())
-    }
-}
+// The accessor.
+mod tables;
+pub use tables::Tables;

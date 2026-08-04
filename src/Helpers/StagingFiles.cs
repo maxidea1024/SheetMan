@@ -81,6 +81,13 @@ namespace SheetMan.Helpers
         /// Add one staged file and return the staged file name.
         /// </summary>
         public static string RegisterStagingFile(string filename)
+            => RegisterStagingFile(filename, out _);
+
+        /// <param name="alreadyStaged">
+        /// True when this run has staged this path before, so the caller is about to overwrite
+        /// something it wrote itself.
+        /// </param>
+        public static string RegisterStagingFile(string filename, out bool alreadyStaged)
         {
             string fullPath = Path.GetFullPath(filename);
             string md5 = Helper.CalculateMD5HashFromString(fullPath);
@@ -88,7 +95,9 @@ namespace SheetMan.Helpers
             string tempPath = Path.GetTempPath();
             string stagingFilename = Path.Combine(tempPath, md5 + ".staging");
 
-            if (_stagingFiles.Where(x => x.Item2 == stagingFilename).Count() > 0)
+            alreadyStaged = _stagingFiles.Any(x => x.Item2 == stagingFilename);
+
+            if (alreadyStaged)
                 return stagingFilename;
 
             var kv = (fullPath, stagingFilename);
@@ -222,9 +231,34 @@ namespace SheetMan.Helpers
         /// Creates a new file, write the contents to the file, and then closes the file.
         /// If the target file already exists, it is overwritten.
         /// </summary>
+        /// <remarks>
+        /// Writing two different texts to one path is an error rather than the second winning.
+        ///
+        /// It became possible when the targets started writing a file per table: a file name now
+        /// comes from a table, an enum or a constant set name, and two of those can land on the
+        /// same one. `Item` the table and `Item` the enum both want item.rs; so do `ItemType` and
+        /// `Item_Type` in any target that snake-cases. The old behaviour was that whichever ran
+        /// last was the file, and the other type simply was not in the output - which shows up as
+        /// a compile error in the consumer's project naming a type this tool said it generated,
+        /// with nothing anywhere saying why.
+        ///
+        /// Identical text is allowed through, because a target legitimately re-writes a file it
+        /// has already written - the reader runtime when two targets share an output directory,
+        /// for one.
+        /// </remarks>
         public static string WriteAllTextToFile(string filename, string text)
         {
-            string stagingFilename = RegisterStagingFile(filename);
+            string stagingFilename = RegisterStagingFile(filename, out bool alreadyStaged);
+
+            if (alreadyStaged && File.ReadAllText(stagingFilename) != text)
+            {
+                throw new SheetManException(
+                    $"Two different files were generated for `{Path.GetFullPath(filename)}`. " +
+                    "A generated file is named after a table, an enum or a constant set, and two " +
+                    "of those have names that reduce to the same file name. Rename one of them " +
+                    "in the sheets.");
+            }
+
             File.WriteAllText(stagingFilename, text);
             return stagingFilename;
         }
