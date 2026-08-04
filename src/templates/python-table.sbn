@@ -1,0 +1,71 @@
+{{~## One table: its record class and its table class. ##~}}
+{{ include 'python-file-head.sbn' ~}}
+class {{ table.record_name }}:
+    """Generated from {{ table.location }}.
+{{~ for line in table.comment }}
+    {{ line }}
+{{~ end ~}}
+    """
+
+    __slots__ = ({{ table.slot_names }})
+
+    def __init__(self):
+{{~ if table.fields | array.size == 0 ~}}
+        pass
+{{~ end ~}}
+{{~ for field in table.fields ~}}
+{{~ for line in field.initializers ~}}
+        {{ line }}
+{{~ end ~}}
+{{~ end ~}}
+
+    def _read(self, reader):
+        """Reads one record, in the exact field order the exporter wrote."""
+{{~ if table.fields | array.size == 0 ~}}
+        return
+{{~ end ~}}
+{{~ for field in table.fields ~}}
+{{~ if field.kind == 'var_array' ~}}
+        count = reader.read_counter32()
+        self.{{ field.name }} = [{{ field.read_element }} for _ in range(count)]
+{{~ else if field.kind == 'serial_ref' ~}}
+        self.{{ field.name }}_index = [reader.read_int32() for _ in range({{ field.element_count }})]
+        self.{{ field.name }} = [None] * {{ field.element_count }}
+{{~ else if field.kind == 'serial' ~}}
+        self.{{ field.name }} = [{{ field.read_element }} for _ in range({{ field.element_count }})]
+{{~ else if field.kind == 'scalar_ref' ~}}
+        self.{{ field.name }}_index = reader.read_int32()
+{{~ else ~}}
+        self.{{ field.name }} = {{ field.read_scalar }}
+{{~ end ~}}
+{{~ end ~}}
+
+    def __repr__(self):
+        return "{{ table.record_name }}({{ table.repr_format }})" % ({{ table.repr_values }})
+
+
+class {{ table.table_name }}:
+    """Every row of {{ table.raw_name }}."""
+
+    __slots__ = ("records", "by_index")
+
+    def __init__(self):
+        self.records = []
+        self.by_index = {}
+
+    def find(self, index):
+        """The row with the given primary index, or None when there is none."""
+        return self.by_index.get(index)
+
+    def read(self, filename):
+        """Loads the table from a .table file written by SheetMan."""
+        reader = sheetman.Reader(sheetman.read_all_bytes(filename))
+        count = sheetman.read_table_header(reader)
+
+        self.records = []
+        for _ in range(count):
+            record = {{ table.record_name }}()
+            record._read(reader)
+            self.records.append(record)
+
+        self.by_index = {record.{{ table.index_field }}: record for record in self.records}

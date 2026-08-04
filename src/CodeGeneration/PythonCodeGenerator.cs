@@ -58,14 +58,16 @@ namespace SheetMan.CodeGeneration
     }
 
     /// <summary>
-    /// Emits a Python package: one module holding every generated type, the binary reader
-    /// beside it, and an `__init__` that re-exports them.
+    /// Emits a Python package: a module per table, per enum and per constant set, the accessor,
+    /// the binary reader, and an `__init__` that re-exports every generated name.
     ///
     /// Records use `__slots__`. A localization table is tens of thousands of rows, and a
     /// per-instance dictionary on each is the difference between tens of megabytes and a
     /// few.
     ///
-    /// The shape lives in templates/python.sbn.
+    /// The shape lives in templates/python-*.sbn, one per kind of file, over the shared header
+    /// in python-file-head.sbn. Which siblings a file imports comes from
+    /// <see cref="TypeDependencies"/>.
     /// </summary>
     [SheetManTarget("python", TargetKind.CodeGeneration, Order = 70)]
     public class PythonCodeGenerator : CodeGenerator<PythonRecipe>
@@ -93,13 +95,86 @@ namespace SheetMan.CodeGeneration
 
         private void Generate()
         {
-            string filename = System.IO.Path.GetFullPath(
-                System.IO.Path.Combine(PackageDir, _recipe.ModuleName + ".py"));
+            var view = BuildView();
 
-            Log.Information($"Generating codes for Python into `{filename}`");
+            Log.Information($"Generating codes for Python into `{System.IO.Path.GetFullPath(PackageDir)}`");
 
-            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("python.sbn", BuildView()));
+            // The accessor constructs every table and links the references between them, so it
+            // names each table class and no record type.
+            Write(_recipe.ModuleName + ".py", "python-accessor.sbn", new PythonPartView
+            {
+                Imports = _model.Tables.Select(table => TableImport(table)).ToList(),
+                Accessor = view.Accessor,
+            });
+
+            foreach (var pair in _model.Tables.Zip(view.Tables, (model, rendered) => (model, rendered)))
+            {
+                // A table names the enums its fields are typed with. Not the tables it
+                // references: resolution happens in the accessor, and importing them here
+                // would turn two tables pointing at each other into an import cycle.
+                Write(TableModule(pair.model) + ".py", "python-table.sbn", new PythonPartView
+                {
+                    Imports = TypeDependencies.EnumsNamedBy(pair.model).Select(EnumImport).ToList(),
+                    Table = pair.rendered,
+                });
+            }
+
+            foreach (var pair in _model.Enums.Zip(view.Enums, (model, rendered) => (model, rendered)))
+            {
+                // An enum is a leaf: enum.IntEnum comes from the standard library.
+                Write(EnumModule(pair.model) + ".py", "python-enum.sbn", new PythonPartView
+                {
+                    Imports = Array.Empty<string>(),
+                    Enumm = pair.rendered,
+                });
+            }
+
+            foreach (var pair in _model.ConstantSets.Zip(view.ConstantSets, (model, rendered) => (model, rendered)))
+            {
+                // A constant of an enum type renders as one of that enum's labels.
+                Write(ConstantsModule(pair.model) + ".py", "python-constants.sbn", new PythonPartView
+                {
+                    Imports = TypeDependencies.EnumsNamedBy(pair.model).Select(EnumImport).ToList(),
+                    Set = pair.rendered,
+                });
+            }
         }
+
+        /// <summary>
+        /// Flat inside the package rather than in `tables/`, `enums/` and `constants/` as most
+        /// targets do.
+        /// </summary>
+        /// <remarks>
+        /// A Python subdirectory is a subpackage, so each would need an `__init__` of its own
+        /// and every import would gain a level. Worse, `ModuleName` defaults to `tables`, and a
+        /// `tables/` package sitting beside `tables.py` is resolved in favour of the package -
+        /// the accessor would quietly stop being importable. The names carry the grouping
+        /// instead, as they do for Go.
+        /// </remarks>
+        private void Write(string filename, string templateName, PythonPartView view)
+        {
+            string full = System.IO.Path.GetFullPath(System.IO.Path.Combine(PackageDir, filename));
+
+            StagingFiles.WriteAllTextToFile(full, TemplateEngine.Render(templateName, view));
+        }
+
+        // ------------------------------------------------------- module layout
+
+        /// <remarks>
+        /// A table's own name first, as Go spells it: `template_table.py`, not
+        /// `table_template.py`. An enum and a constant set take the prefix instead, because
+        /// neither has a noun of its own to carry - `flag` alone does not say what it is, and
+        /// `flag_enum` reads like a field.
+        /// </remarks>
+        private static string TableModule(Table table) => table.Name.ToSnakeCase() + "_table";
+        private static string EnumModule(Models.Enum enumm) => "enum_" + enumm.Name.ToSnakeCase();
+        private static string ConstantsModule(ConstantSet set) => "const_" + set.Name.ToSnakeCase();
+
+        private static string TableImport(Table table)
+            => $"from .{TableModule(table)} import {table.Name.ToPascalCase()}Table";
+
+        private static string EnumImport(Models.Enum enumm)
+            => $"from .{EnumModule(enumm)} import {enumm.Name.ToPascalCase()}";
 
         private void WriteBinaryReaderRuntime()
         {
@@ -109,19 +184,65 @@ namespace SheetMan.CodeGeneration
         }
 
         /// <summary>
-        /// Writes the package's `__init__`, which re-exports the generated module so a
-        /// consumer imports the package rather than a file inside it.
+        /// Writes the package's `__init__`, which re-exports every generated name so a consumer
+        /// imports the package rather than a file inside it.
         /// </summary>
+        /// <remarks>
+        /// One `from .module import Name` per type, not `import *`. A star import would re-export
+        /// whatever else a module happens to hold - `enum`, `os`, `sheetman` - and give a
+        /// consumer no way to see what the package offers. It also means `__all__` is exact,
+        /// which is what `from gamedata import *` reads.
+        ///
+        /// The order follows the dependency graph, so an interpreter that reads this file top to
+        /// bottom loads enums before the tables that name them. Python does not require that -
+        /// each module's own imports would pull what it needs - but a file whose order says
+        /// something true is worth more than one whose order says nothing.
+        /// </remarks>
         private void WriteInit()
         {
+            var exported = new List<string>();
             var text = new StringBuilder();
+
+            text.Append("# ------------------------------------------------------------------------------\n");
             text.Append("# Generated by SheetMan. DO NOT EDIT.\n");
+            text.Append("#\n");
+            text.Append("# Changes to this file may cause incorrect behavior and will be lost if the code is\n");
+            text.Append("# regenerated.\n");
+            text.Append("# ------------------------------------------------------------------------------\n");
             text.Append('\n');
-            text.Append("from .").Append(_recipe.ModuleName).Append(" import *  # noqa: F401,F403\n");
+
+            foreach (var enumm in _model.Enums)
+                Export(text, exported, EnumModule(enumm), enumm.Name.ToPascalCase());
+
+            foreach (var set in _model.ConstantSets)
+                Export(text, exported, ConstantsModule(set), set.Name.ToPascalCase());
+
+            foreach (var table in _model.Tables)
+            {
+                Export(text, exported, TableModule(table),
+                       table.Name.ToPascalCase() + "Record", table.Name.ToPascalCase() + "Table");
+            }
+
+            Export(text, exported, _recipe.ModuleName, "Tables");
+
+            text.Append('\n');
+            text.Append("__all__ = [\n");
+
+            foreach (string name in exported)
+                text.Append("    \"").Append(name).Append("\",\n");
+
+            text.Append("]\n");
 
             StagingFiles.WriteAllTextToFile(
                 System.IO.Path.GetFullPath(System.IO.Path.Combine(PackageDir, "__init__.py")),
                 text.ToString());
+        }
+
+        private static void Export(StringBuilder text, List<string> exported, string module, params string[] names)
+        {
+            text.Append("from .").Append(module).Append(" import ").Append(string.Join(", ", names)).Append('\n');
+
+            exported.AddRange(names);
         }
 
         // --------------------------------------------------------------- view

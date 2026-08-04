@@ -18,7 +18,7 @@
 // ------------------------------------------------------------------------------
 
 package {{ package_name }}
-{{~ if imports | array.size > 0 }}
+{{~ if imports | array.size > 0 ~}}
 
 import (
 {{~ for line in imports ~}}
@@ -26,3 +26,4 @@ import (
 {{~ end ~}}
 )
 {{~ end ~}}
+

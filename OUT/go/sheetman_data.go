@@ -7,10 +7,10 @@
 
 package x
 
-
 import (
 	"path/filepath"
 )
+
 // Tables holds every table, loaded together so cross-table references can be resolved.
 type Tables struct {
 	Template TemplateTable

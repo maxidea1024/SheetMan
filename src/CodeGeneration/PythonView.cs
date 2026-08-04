@@ -2,12 +2,42 @@ using System.Collections.Generic;
 
 namespace SheetMan.CodeGeneration
 {
-    /// <summary>Everything the Python template needs, worked out in advance.</summary>
+    /// <summary>
+    /// Everything Python needs, worked out in advance.
+    ///
+    /// Built whole and then dealt out one subject at a time, so the naming is decided in one
+    /// place whether or not the file it lands in holds anything else.
+    /// </summary>
     internal sealed class PythonFileView
     {
         public IReadOnlyList<PythonEnumView> Enums { get; set; }
         public IReadOnlyList<PythonConstantSetView> ConstantSets { get; set; }
         public IReadOnlyList<PythonTableView> Tables { get; set; }
+        public PythonAccessorView Accessor { get; set; }
+    }
+
+    /// <summary>
+    /// One generated file: the imports it needs, and the single thing it declares.
+    /// </summary>
+    internal sealed class PythonPartView
+    {
+        /// <summary>
+        /// Relative imports naming the generated types this file uses, from
+        /// <see cref="TypeDependencies"/>. The standard library ones every file gets are in the
+        /// shared header.
+        /// </summary>
+        public IReadOnlyList<string> Imports { get; set; }
+
+        /// <summary>The table this file is for, when it is a table file.</summary>
+        public PythonTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum file.</summary>
+        public PythonEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants file.</summary>
+        public PythonConstantSetView Set { get; set; }
+
+        /// <summary>The accessor's own shape, for the accessor file.</summary>
         public PythonAccessorView Accessor { get; set; }
     }
 
