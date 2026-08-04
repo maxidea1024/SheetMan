@@ -125,8 +125,10 @@ namespace SheetMan.Tests
         {
             SheetManRunner.Convert("core");
 
-            string cs = File.ReadAllText(
-                Path.Combine(RepoLayout.OutputDir("core"), "csharp", "CoreAccessor.cs"));
+            // The table's own file. The C# target used to put every table in the accessor;
+            // it now writes one file per table, as the TypeScript target below always has.
+            string cs = File.ReadAllText(Path.Combine(
+                RepoLayout.OutputDir("core"), "csharp", "tables", "ArrayTypesTable.cs"));
 
             // Delimited: length read from the stream, array allocated per row.
             Assert.Contains("reader.TryReadCounter32(out int Tags_count);", cs);

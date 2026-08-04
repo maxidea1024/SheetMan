@@ -42,6 +42,8 @@ namespace SheetMan.CodeGeneration
             if (string.IsNullOrEmpty(typescriptRecipe.Path))
                 return;
 
+            SweepStaleOutput(typescriptRecipe.Path, typescriptRecipe.Sweep);
+
             _typescriptRecipe = typescriptRecipe;
 
             // Already narrowed to the side this entry is built for. Both (the default)

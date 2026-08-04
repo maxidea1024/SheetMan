@@ -72,5 +72,26 @@ namespace SheetMan.CodeGeneration
 
             StagingFiles.WriteAllTextToFile(Path.GetFullPath(path), reader.ReadToEnd());
         }
+
+        /// <summary>
+        /// Asks for the generated files this run did not write to be removed from
+        /// <paramref name="directory"/> once the run commits.
+        /// </summary>
+        /// <remarks>
+        /// Every target that writes a file per table needs this, and a target that writes one
+        /// file wants it too the day it stops: delete a table from the sheets and its file
+        /// stays behind, naming types nothing declares any more.
+        ///
+        /// Only files carrying this tool's own header are removed, so a target pointed at a
+        /// directory holding somebody's own source cannot delete any of it. Which is why this
+        /// is on by default and <c>Sweep: false</c> in a recipe entry turns it off - the option
+        /// exists for a consumer who edits the output, and editing generated files is a
+        /// decision that deserves a line in a recipe.
+        /// </remarks>
+        protected static void SweepStaleOutput(string directory, bool sweep)
+        {
+            if (sweep && !string.IsNullOrEmpty(directory))
+                StagingFiles.SweepDirectory(directory);
+        }
     }
 }

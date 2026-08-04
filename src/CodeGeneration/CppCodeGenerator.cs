@@ -44,6 +44,8 @@ namespace SheetMan.CodeGeneration
             if (string.IsNullOrEmpty(cppRecipe.Path))
                 return;
 
+            SweepStaleOutput(cppRecipe.Path, cppRecipe.Sweep);
+
             _cppRecipe = cppRecipe;
 
             // Already narrowed to the side this entry is built for. Both (the default)

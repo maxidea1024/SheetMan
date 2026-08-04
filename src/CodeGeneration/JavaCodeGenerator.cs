@@ -40,6 +40,19 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         public string BinaryTableFileExtension { get; set; } = ".table";
 
+        /// <summary>
+        /// Whether generated files this run did not write are removed from <see cref="Path"/>.
+        /// </summary>
+        /// <remarks>
+        /// On, because the output is a file per table: delete a table from the sheets and its
+        /// file stays behind naming types nothing declares any more. Only files carrying this
+        /// tool's own header are removed, so a directory holding your own source is safe.
+        ///
+        /// Turn it off if you edit the generated files, which is a decision worth a line in a
+        /// recipe.
+        /// </remarks>
+        public bool Sweep { get; set; } = true;
+
         /// <summary>Which side this output is built for: "c", "s", or "cs"/blank for both.</summary>
         public string TargetSide { get; set; } = "cs";
     }
@@ -63,6 +76,8 @@ namespace SheetMan.CodeGeneration
         {
             if (string.IsNullOrEmpty(recipe.Path))
                 return;
+
+            SweepStaleOutput(recipe.Path, recipe.Sweep);
 
             _recipe = recipe;
             _model = context.Model;

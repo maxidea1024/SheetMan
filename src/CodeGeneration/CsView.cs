@@ -30,6 +30,35 @@ namespace SheetMan.CodeGeneration
         public IReadOnlyList<CsTableView> TablesWithReferences { get; set; }
     }
 
+    /// <summary>
+    /// One generated file, for the templates that render one thing.
+    /// </summary>
+    /// <remarks>
+    /// The output is a file per table, per enum and per constant set, and each of those
+    /// templates needs the namespace as well as its own subject. Rather than hand every
+    /// template the whole model and trust it to loop over only the right part, each gets a
+    /// view holding exactly what it is for - so a template cannot reach a table it is not
+    /// writing.
+    ///
+    /// One class with one payload property rather than four near-identical ones, because the
+    /// only thing they would differ in is the name of that property and Scriban addresses it
+    /// by name from the template.
+    /// </remarks>
+    internal sealed class CsPartView
+    {
+        /// <summary>The namespace, or empty. The head template wraps the file in it when set.</summary>
+        public string Namespace { get; set; }
+
+        /// <summary>The table this file is for, when it is a table file.</summary>
+        public CsTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum file.</summary>
+        public CsEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants file.</summary>
+        public CsConstantSetView Set { get; set; }
+    }
+
     internal sealed class CsTableView
     {
         /// <summary>Table name in Pascal case; the class is this plus `Table`.</summary>
