@@ -83,17 +83,62 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime();
         }
 
+        /// <summary>
+        /// Writes a file per table, per enum and per constant set, plus the accessor.
+        /// </summary>
+        /// <remarks>
+        /// It used to be one file holding all of it, which made a deleted table a hunk of dead
+        /// code inside a file that still compiled. The layout is the one the TypeScript and C#
+        /// targets have, because a consumer working in more than one should not have to learn
+        /// a shape per language.
+        ///
+        /// Kotlin has no rule tying a file's name to what is in it, so these names are for
+        /// people rather than the compiler - which is why the table files keep the `Table`
+        /// suffix their class has.
+        /// </remarks>
         private void Generate()
         {
-            string filename = System.IO.Path.GetFullPath(System.IO.Path.Combine(
-                new[] { _recipe.Path }
-                    .Concat(_recipe.PackageName.Split('.'))
-                    .Append(_recipe.AccessorName + ".kt")
-                    .ToArray()));
+            var view = BuildView();
 
-            Log.Information($"Generating codes for Kotlin into `{filename}`");
+            Log.Information($"Generating codes for Kotlin into `{System.IO.Path.GetFullPath(PackageDir)}`");
 
-            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("kotlin.sbn", BuildView()));
+            Write(_recipe.AccessorName + ".kt", "kotlin-accessor.sbn", view);
+
+            foreach (var table in view.Tables)
+                Write(System.IO.Path.Combine("tables", table.TableName + ".kt"),
+                      "kotlin-table.sbn", Part(table: table));
+
+            foreach (var enumm in view.Enums)
+                Write(System.IO.Path.Combine("enums", enumm.Name + ".kt"),
+                      "kotlin-enum.sbn", Part(enumm: enumm));
+
+            foreach (var set in view.ConstantSets)
+                Write(System.IO.Path.Combine("constants", set.Name + ".kt"),
+                      "kotlin-constants.sbn", Part(set: set));
+        }
+
+        /// <summary>
+        /// The package's own directory, which the generated files live under.
+        /// </summary>
+        private string PackageDir => System.IO.Path.Combine(
+            new[] { _recipe.Path }.Concat(_recipe.PackageName.Split('.')).ToArray());
+
+        private KotlinPartView Part(
+            KotlinTableView table = null, KotlinEnumView enumm = null, KotlinConstantSetView set = null)
+            => new KotlinPartView
+            {
+                PackageName = _recipe.PackageName,
+                Table = table,
+                Enumm = enumm,
+                Set = set,
+            };
+
+        private void Write(string relative, string templateName, object view)
+        {
+            string filename = System.IO.Path.GetFullPath(
+                System.IO.Path.Combine(PackageDir, relative));
+
+            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render(templateName, view));
         }
 
         private void WriteBinaryReaderRuntime()

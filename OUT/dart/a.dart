@@ -8,74 +8,13 @@
 // ignore_for_file: unused_import, constant_identifier_names
 
 import 'dart:io';
+
 import 'dart:typed_data';
 
 import 'sheetman/lite_binary_reader.dart';
 
 
-// Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
-/// Named after a C++ keyword.
-class TemplateRecord {
-  /// primary index
-  int index = 0;
-  /// class: keyword in C++ and C#
-  String class_ = '';
-  /// int: keyword in C++ and C#
-  int int_ = 0;
-  /// delete: keyword in C++
-  bool delete = false;
-  /// operator: keyword in C++
-  String operator = '';
-  /// namespace: keyword in C++ and C#
-  String namespace = '';
-  /// constructor: special member in TypeScript
-  String constructor = '';
-  /// function: keyword in TypeScript
-  String function = '';
-
-  /// Reads one record, in the exact field order the exporter wrote.
-  void read(LiteBinaryReader reader) {
-    index = reader.readInt32();
-    class_ = reader.readString();
-    int_ = reader.readInt32();
-    delete = reader.readBool();
-    operator = reader.readString();
-    namespace = reader.readString();
-    constructor = reader.readString();
-    function = reader.readString();
-  }
-}
-
-/// Every row of Template.
-class TemplateTable {
-  /// Every row, in the order the sheet declared them.
-  final List<TemplateRecord> records = [];
-
-  final Map<int, TemplateRecord> _byIndex = {};
-
-  /// The row with the given primary index, or null when there is none.
-  TemplateRecord? find(int index) => _byIndex[index];
-
-  /// Loads the table from a .table file written by SheetMan.
-  void read(String filename) {
-    final reader = LiteBinaryReader(readAllBytes(filename));
-    final count = readTableHeader(reader);
-
-    records.clear();
-    _byIndex.clear();
-
-    for (var i = 0; i < count; i++) {
-      final record = TemplateRecord();
-      record.read(reader);
-      records.add(record);
-    }
-
-    for (final record in records) {
-      _byIndex[record.index] = record;
-    }
-  }
-}
-
+part 'tables/template_table.dart';
 
 /// Every table, loaded together so cross-table references can be resolved.
 class Tables {

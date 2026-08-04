@@ -1,0 +1,79 @@
+{{~##
+   One table: its record class and its table class. `table` is the single table this file
+   is for, so nothing here loops over the model.
+##~}}
+{{ include 'kotlin-file-head.sbn' ~}}
+
+// Generated from {{ table.location }}
+{{~ for line in table.comment ~}}
+/** {{ line }} */
+{{~ end ~}}
+class {{ table.record_name }} {
+{{~ for field in table.fields ~}}
+{{~ for line in field.comment ~}}
+    /** {{ line }} */
+{{~ end ~}}
+{{~ for declaration in field.declarations ~}}
+    {{ declaration }}
+{{~ end ~}}
+{{~ end ~}}
+
+    /** Reads one record, in the exact field order the exporter wrote. */
+    internal fun read(reader: LiteBinaryReader) {
+{{~ if table.fields | array.size == 0 ~}}
+        // No fields to read.
+{{~ end ~}}
+{{~ for field in table.fields ~}}
+{{~ if field.kind == 'var_array' ~}}
+        // `run` rather than a bare block: Kotlin reads one of those as a trailing lambda
+        // on whatever statement came before.
+        run {
+            val count = reader.readCounter32()
+            {{ field.name }} = ArrayList(count.coerceAtLeast(0))
+            repeat(count) { {{ field.name }}.add({{ field.read_element }}) }
+        }
+{{~ else if field.kind == 'serial_ref' ~}}
+        {{ field.name }}Index = ArrayList({{ field.element_count }})
+        repeat({{ field.element_count }}) { {{ field.name }}Index.add(reader.readInt32()) }
+{{~ else if field.kind == 'serial' ~}}
+        {{ field.name }} = ArrayList({{ field.element_count }})
+        repeat({{ field.element_count }}) { {{ field.name }}.add({{ field.read_element }}) }
+{{~ else if field.kind == 'scalar_ref' ~}}
+        {{ field.name }}Index = reader.readInt32()
+{{~ else ~}}
+        {{ field.name }} = {{ field.read_scalar }}
+{{~ end ~}}
+{{~ end ~}}
+    }
+}
+
+/** Every row of {{ table.raw_name }}. */
+class {{ table.table_name }} {
+
+    /** Every row, in the order the sheet declared them. */
+    val records: MutableList<{{ table.record_name }}> = ArrayList()
+
+    private val byIndex: HashMap<Int, {{ table.record_name }}> = HashMap()
+
+    /** The row with the given primary index, or null when there is none. */
+    fun find(index: Int): {{ table.record_name }}? = byIndex[index]
+
+    /** Loads the table from a .table file written by SheetMan. */
+    fun read(filename: String) {
+        val reader = LiteBinaryReader(readAllBytes(filename))
+        val count = readTableHeader(reader)
+
+        records.clear()
+        byIndex.clear()
+
+        repeat(count) {
+            val record = {{ table.record_name }}()
+            record.read(reader)
+            records.add(record)
+        }
+
+        for (record in records) {
+            byIndex[record.{{ table.index_field }}] = record
+        }
+    }
+}

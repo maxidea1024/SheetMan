@@ -16,6 +16,28 @@ namespace SheetMan.CodeGeneration
         public KotlinAccessorView Accessor { get; set; }
     }
 
+    /// <summary>
+    /// One generated file, for the templates that render one thing.
+    /// </summary>
+    /// <remarks>
+    /// The output is a file per table, per enum and per constant set, and each of those
+    /// templates needs the package as well as its own subject. Handing each one only what it
+    /// is for means a template cannot reach a table it is not writing.
+    /// </remarks>
+    internal sealed class KotlinPartView
+    {
+        public string PackageName { get; set; }
+
+        /// <summary>The table this file is for, when it is a table file.</summary>
+        public KotlinTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum file.</summary>
+        public KotlinEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants file.</summary>
+        public KotlinConstantSetView Set { get; set; }
+    }
+
     internal sealed class KotlinEnumView
     {
         public string Name { get; set; }

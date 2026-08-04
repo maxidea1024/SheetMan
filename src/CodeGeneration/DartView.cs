@@ -9,6 +9,42 @@ namespace SheetMan.CodeGeneration
         public IReadOnlyList<DartConstantSetView> ConstantSets { get; set; }
         public IReadOnlyList<DartTableView> Tables { get; set; }
         public DartAccessorView Accessor { get; set; }
+
+        /// <summary>
+        /// Every part this library is made of, as a `part` directive spells it: relative to the
+        /// library file, forward slashes.
+        /// </summary>
+        /// <remarks>
+        /// Built in the generator so the library and its parts cannot disagree about where each
+        /// other are - which is a compile error in Dart and a path calculation nothing in a
+        /// template could check.
+        /// </remarks>
+        public IReadOnlyList<string> Parts { get; set; }
+    }
+
+    /// <summary>
+    /// One generated file, for the templates that render one thing.
+    /// </summary>
+    /// <remarks>
+    /// A part carries no imports of its own - the library file holds them - so all a part
+    /// needs is the library to say it belongs to, and its own subject.
+    /// </remarks>
+    internal sealed class DartPartView
+    {
+        /// <summary>
+        /// The library this part belongs to, as the `part of` directive spells it: relative to
+        /// the part's own directory.
+        /// </summary>
+        public string Library { get; set; }
+
+        /// <summary>The table this file is for, when it is a table file.</summary>
+        public DartTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum file.</summary>
+        public DartEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants file.</summary>
+        public DartConstantSetView Set { get; set; }
     }
 
     internal sealed class DartEnumView

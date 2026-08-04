@@ -87,14 +87,118 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime();
         }
 
+        /// <summary>
+        /// Writes a file per table, per enum and per constant set, plus the accessor.
+        /// </summary>
+        /// <remarks>
+        /// It used to be one file holding all of it, which made a deleted table a hunk of dead
+        /// code inside a file that still parsed. The layout matches the C#, Kotlin and
+        /// TypeScript targets.
+        ///
+        /// PHP is the one that needs wiring rather than just splitting: there is no autoloader
+        /// here, so each file requires what it uses. A table requires the reader and any enum
+        /// its properties are typed as; the accessor requires every part, so a consumer still
+        /// includes one file and gets the model.
+        /// </remarks>
         private void Generate()
         {
+            var view = BuildView();
+
+            Log.Information($"Generating codes for PHP into `{System.IO.Path.GetFullPath(_recipe.Path)}`");
+
+            // Root level, so the reader is one directory down and the parts are beside it.
+            var accessorRequires = new List<string> { Require(0, "sheetman/LiteBinaryReader.php") };
+
+            accessorRequires.AddRange(view.Enums.Select(e => Require(0, $"enums/{e.Name}.php")));
+            accessorRequires.AddRange(view.ConstantSets.Select(s => Require(0, $"constants/{s.Name}.php")));
+            accessorRequires.AddRange(view.Tables.Select(t => Require(0, $"tables/{t.TableName}.php")));
+
+            Write(_recipe.AccessorName + ".php", "php-accessor.sbn", new PhpPartView
+            {
+                Namespace = _recipe.Namespace,
+                Requires = accessorRequires,
+                Tables = view.Tables,
+                Accessor = view.Accessor,
+            });
+
+            foreach (var table in view.Tables)
+            {
+                // One directory down, and it needs whatever enums its properties name.
+                var requires = new List<string> { Require(1, "sheetman/LiteBinaryReader.php") };
+
+                requires.AddRange(EnumsUsedBy(table).Select(name => Require(1, $"enums/{name}.php")));
+
+                Write(System.IO.Path.Combine("tables", table.TableName + ".php"), "php-table.sbn",
+                      new PhpPartView
+                      {
+                          Namespace = _recipe.Namespace,
+                          Requires = requires,
+                          Table = table,
+                      });
+            }
+
+            // An enum and a constant class name nothing outside themselves: a backed enum is
+            // its own declaration, and a constant renders as a literal.
+            foreach (var enumm in view.Enums)
+            {
+                Write(System.IO.Path.Combine("enums", enumm.Name + ".php"), "php-enum.sbn",
+                      new PhpPartView
+                      {
+                          Namespace = _recipe.Namespace,
+                          Requires = Array.Empty<string>(),
+                          Enumm = enumm,
+                      });
+            }
+
+            foreach (var set in view.ConstantSets)
+            {
+                Write(System.IO.Path.Combine("constants", set.Name + ".php"), "php-constants.sbn",
+                      new PhpPartView
+                      {
+                          Namespace = _recipe.Namespace,
+                          Requires = Array.Empty<string>(),
+                          Set = set,
+                      });
+            }
+        }
+
+        /// <summary>
+        /// A `require_once` line, relative to a file <paramref name="depth"/> directories below
+        /// the output root.
+        /// </summary>
+        /// <remarks>
+        /// Forward slashes, which PHP accepts on every platform - and which keep the generated
+        /// text the same wherever the conversion ran.
+        /// </remarks>
+        private static string Require(int depth, string fromRoot)
+        {
+            string up = string.Concat(Enumerable.Repeat("/..", depth));
+
+            return $"require_once __DIR__ . '{up}/{fromRoot}';";
+        }
+
+        /// <summary>
+        /// The enums a table's properties are typed as.
+        /// </summary>
+        /// <remarks>
+        /// A reference field is excluded: it resolves to the referenced record or to that
+        /// record's field, and its own file requires whatever it needs.
+        /// </remarks>
+        private IEnumerable<string> EnumsUsedBy(PhpTableView table)
+            => _model.Tables
+                     .Single(t => t.Name.ToPascalCase() + "Table" == table.TableName)
+                     .SerialFields
+                     .Where(sf => !sf.IsRef && sf.ElementType == ValueType.Enum)
+                     .Select(sf => EnumName(sf.FirstField.Enum))
+                     .Distinct(StringComparer.Ordinal)
+                     .OrderBy(name => name, StringComparer.Ordinal);
+
+        private void Write(string relative, string templateName, object view)
+        {
             string filename = System.IO.Path.GetFullPath(
-                System.IO.Path.Combine(_recipe.Path, _recipe.AccessorName + ".php"));
+                System.IO.Path.Combine(_recipe.Path, relative));
 
-            Log.Information($"Generating codes for PHP into `{filename}`");
-
-            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("php.sbn", BuildView()));
+            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render(templateName, view));
         }
 
         private void WriteBinaryReaderRuntime()

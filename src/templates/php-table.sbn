@@ -1,0 +1,89 @@
+{{~##
+   One table: its record class and its table class. `table` is the single table this file is
+   for, so nothing here loops over the model.
+##~}}
+{{ include 'php-file-head.sbn' ~}}
+
+/**
+ * Generated from {{ table.location }}
+{{~ for line in table.comment ~}}
+ *
+ * {{ line }}
+{{~ end ~}}
+ */
+final class {{ table.record_name }}
+{
+{{~ for field in table.fields ~}}
+{{~ for line in field.comment ~}}
+    /** {{ line }} */
+{{~ end ~}}
+{{~ for line in field.declarations ~}}
+    {{ line }}
+{{~ end ~}}
+{{~ end ~}}
+    /** Reads one record, in the exact field order the exporter wrote. */
+    public function read(LiteBinaryReader $reader): void
+    {
+{{~ if table.fields | array.size == 0 ~}}
+        // No fields.
+{{~ end ~}}
+{{~ for field in table.fields ~}}
+{{~ if field.kind == 'var_array' ~}}
+        $count = $reader->readCounter32();
+        $this->{{ field.name }} = [];
+        for ($i = 0; $i < $count; $i++) {
+            $this->{{ field.name }}[] = {{ field.read_element }};
+        }
+{{~ else if field.kind == 'serial_ref' ~}}
+        $this->{{ field.name }}Index = [];
+        for ($i = 0; $i < {{ field.element_count }}; $i++) {
+            $this->{{ field.name }}Index[] = $reader->readInt32();
+        }
+        $this->{{ field.name }} = \array_fill(0, {{ field.element_count }}, null);
+{{~ else if field.kind == 'serial' ~}}
+        $this->{{ field.name }} = [];
+        for ($i = 0; $i < {{ field.element_count }}; $i++) {
+            $this->{{ field.name }}[] = {{ field.read_element }};
+        }
+{{~ else if field.kind == 'scalar_ref' ~}}
+        $this->{{ field.name }}Index = $reader->readInt32();
+{{~ else ~}}
+        $this->{{ field.name }} = {{ field.read_scalar }};
+{{~ end ~}}
+{{~ end ~}}
+    }
+}
+
+/** Every row of {{ table.raw_name }}. */
+final class {{ table.table_name }}
+{
+    /** @var list<{{ table.record_name }}> */
+    public array $records = [];
+
+    /** @var array<int, {{ table.record_name }}> */
+    private array $byIndex = [];
+
+    /** The row with the given primary index, or null when there is none. */
+    public function find(int $index): ?{{ table.record_name }}
+    {
+        return $this->byIndex[$index] ?? null;
+    }
+
+    /** Loads the table from a .table file written by SheetMan. */
+    public function read(string $filename): void
+    {
+        $reader = LiteBinaryReader::fromFile($filename);
+        $count = $reader->readTableHeader();
+
+        $this->records = [];
+        $this->byIndex = [];
+
+        for ($i = 0; $i < $count; $i++) {
+            $record = new {{ table.record_name }}();
+            $record->read($reader);
+
+            $this->records[] = $record;
+            $this->byIndex[$record->{{ table.index_field }}] = $record;
+        }
+    }
+}
