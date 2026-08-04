@@ -11,48 +11,16 @@
 #include "Misc/Paths.h"
 
 
-void FTemplateRow::Read(sheetman::LiteBinaryReader& Reader)
+void FTemplateRow::Read(SheetMan::FSheetManBinaryReader& Reader)
 {
-    {
-        std::int32_t Temp{};
-        Reader.read(Temp);
-        Index = Temp;
-    }
-    {
-        std::string Temp{};
-        Reader.read(Temp);
-        Class = SheetManConvert::ToString(Temp);
-    }
-    {
-        std::int32_t Temp{};
-        Reader.read(Temp);
-        Int = Temp;
-    }
-    {
-        bool Temp{};
-        Reader.read(Temp);
-        bDelete = Temp;
-    }
-    {
-        std::string Temp{};
-        Reader.read(Temp);
-        Operator = SheetManConvert::ToString(Temp);
-    }
-    {
-        std::string Temp{};
-        Reader.read(Temp);
-        Namespace = SheetManConvert::ToString(Temp);
-    }
-    {
-        std::string Temp{};
-        Reader.read(Temp);
-        Constructor = SheetManConvert::ToString(Temp);
-    }
-    {
-        std::string Temp{};
-        Reader.read(Temp);
-        Function = SheetManConvert::ToString(Temp);
-    }
+    Reader.Read(Index);
+    Reader.Read(Class);
+    Reader.Read(Int);
+    Reader.Read(bDelete);
+    Reader.Read(Operator);
+    Reader.Read(Namespace);
+    Reader.Read(Constructor);
+    Reader.Read(Function);
 }
 
 
@@ -71,17 +39,34 @@ bool FTemplateTable::Read(const FString& Filename)
         return false;
     }
 
-    // Pointer and length, so the file is read once and not copied into a vector as
-    // well - a localization table is megabytes.
-    sheetman::LiteBinaryReader Reader(Buffer.GetData(), static_cast<std::size_t>(Buffer.Num()));
+    // A view over the bytes already in memory, so the file is read once and not copied
+    // a second time - a localization table is megabytes.
+    SheetMan::FSheetManBinaryReader Reader(TArrayView<const uint8>(Buffer.GetData(), Buffer.Num()));
 
-    const std::int32_t RowCount = sheetman::read_table_header(Reader);
-
-    RecordsStorage.Empty(RowCount);
-    for (std::int32_t Row = 0; Row < RowCount; ++Row)
+    int32 RowCount = 0;
+    if (!SheetMan::ReadTableHeader(Reader, RowCount))
     {
-        FTemplateRow& Record = RecordsStorage.AddDefaulted_GetRef();
-        Record.Read(Reader);
+        UE_LOG(LogTemp, Error, TEXT("SheetMan: %s is not a table this build can read. %s"),
+            *Filename, *Reader.GetError());
+
+        return false;
+    }
+
+    RecordsStorage.Empty(SheetMan::ReserveBound(RowCount));
+
+    while (RecordsStorage.Num() < RowCount && !Reader.HasFailed())
+    {
+        RecordsStorage.AddDefaulted_GetRef().Read(Reader);
+    }
+
+    // Asked once, for the whole table. Anything short or malformed anywhere in it has
+    // left its reason here, and a half-read table is not one this returns true for.
+    if (Reader.HasFailed())
+    {
+        UE_LOG(LogTemp, Error, TEXT("SheetMan: %s is malformed. %s"), *Filename, *Reader.GetError());
+
+        RecordsStorage.Empty();
+        return false;
     }
 
     ByIndex.Empty(RecordsStorage.Num());

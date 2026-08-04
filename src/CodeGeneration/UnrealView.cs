@@ -83,19 +83,22 @@ namespace SheetMan.CodeGeneration
         public int ElementCount { get; set; }
 
         /// <summary>
-        /// Type of the temporary a value is read into.
+        /// `Read` for everything but an enum, which has its own overload.
         ///
-        /// The shared C++ reader fills an out parameter rather than returning, so every
-        /// read is a small block: declare, read, convert. That also gives the conversions
-        /// - UTF-8 to FString, ticks to FDateTime - somewhere to happen.
+        /// There is no conversion step beside it any more. The Unreal reader fills the
+        /// member itself - an FString, an FGuid, an FDateTime - so a read is one line
+        /// rather than a block that declares a temporary, fills it and converts.
         /// </summary>
-        public string TempType { get; set; }
-
-        /// <summary>`read` for everything but an enum, which has its own overload.</summary>
         public string ReadCall { get; set; }
 
-        /// <summary>The expression turning the temporary into what the member holds.</summary>
-        public string FromTemp { get; set; }
+        /// <summary>
+        /// Name for the local holding a variable length array's element count.
+        ///
+        /// Chosen so it cannot shadow a member of the same record. The loops themselves
+        /// need no counter - they run until the array has the elements it should - but the
+        /// count off the wire has to live somewhere.
+        /// </summary>
+        public string CountLocal { get; set; }
     }
 
     internal sealed class UnrealAccessorView

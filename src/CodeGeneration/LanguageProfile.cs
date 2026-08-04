@@ -157,6 +157,112 @@ namespace SheetMan.CodeGeneration
             "xor_eq");
 
         /// <summary>
+        /// C99.
+        ///
+        /// Fixed-width names from &lt;stdint.h&gt;, as in C++ and for the same reason: `int`
+        /// and `long` have no width the language guarantees.
+        ///
+        /// A string is `const char*` and points into the arena its table owns, so it is
+        /// valid until that table is freed and no caller has anything to release. The
+        /// reader refuses a value holding an embedded NUL rather than handing back the part
+        /// before it - C cannot carry one in a `const char*`, and half a string returned as
+        /// the whole of it is exactly the failure this format's readers exist to avoid.
+        ///
+        /// datetime and timespan are int64 ticks. C has nothing that holds 0001-01-01, and
+        /// time_t is a resolution and a range decided by the platform.
+        ///
+        /// The array format is the element pointer. A variable length array carries a count
+        /// beside it, which the generator declares - there is nowhere in the type to put it.
+        /// </summary>
+        public static readonly LanguageProfile C = new LanguageProfile(
+            "c",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "const char*" },
+                { ValueType.Bool, "bool" },
+                { ValueType.Int32, "int32_t" },
+                { ValueType.Int64, "int64_t" },
+                { ValueType.Float, "float" },
+                { ValueType.Double, "double" },
+                { ValueType.DateTime, "int64_t" },
+                { ValueType.TimeSpan, "int64_t" },
+                { ValueType.Uuid, "sm_uuid" },
+            },
+            "{0}*",
+
+            // A trailing underscore. A leading one would be reserved to the implementation
+            // at file scope, and a double one is reserved everywhere.
+            "{0}_",
+
+            // C11 keywords. Members are snake_case and every keyword is lowercase, so all
+            // of them survive the casing - the same reason C++ carries the full list.
+            "alignas", "alignof", "auto", "bool", "break", "case", "char", "complex",
+            "const", "continue", "default", "do", "double", "else", "enum", "extern",
+            "false", "float", "for", "generic", "goto", "if", "imaginary", "inline", "int",
+            "long", "noreturn", "register", "restrict", "return", "short", "signed",
+            "sizeof", "static", "static_assert", "struct", "switch", "thread_local",
+            "true", "typedef", "typeof", "union", "unsigned", "void", "volatile", "while",
+            "_Alignas", "_Alignof", "_Atomic", "_Bool", "_Complex", "_Generic",
+            "_Imaginary", "_Noreturn", "_Static_assert", "_Thread_local",
+
+            // And the C++ keywords that are not C keywords, which is not fussiness. The
+            // generated header wraps itself in `extern "C"`, so it says it can be included
+            // from C++ - and a member called `class` or `delete` makes that a lie the C
+            // compiler is in no position to catch. The reserved-words fixture has exactly
+            // those two, and the C build was green while the header was unusable from the
+            // language it advertised.
+            "and", "and_eq", "asm", "bitand", "bitor", "catch", "char8_t", "char16_t",
+            "char32_t", "class", "co_await", "co_return", "co_yield", "compl", "concept",
+            "const_cast", "consteval", "constexpr", "constinit", "decltype", "delete",
+            "dynamic_cast", "explicit", "export", "friend", "mutable", "namespace", "new",
+            "noexcept", "not", "not_eq", "nullptr", "operator", "or", "or_eq", "private",
+            "protected", "public", "reinterpret_cast", "requires", "static_cast",
+            "template", "this", "throw", "try", "typeid", "typename", "using", "virtual",
+            "wchar_t", "xor", "xor_eq");
+
+        /// <summary>
+        /// PHP 8.1 and later.
+        ///
+        /// int for both int32 and int64, and that is safe where TypeScript and Dart needed
+        /// a wider type: PHP's integer is a full 64 bits on any 64 bit build, so 2^53+1
+        /// survives. What is not safe is `unpack('P')`, which hands back an unsigned
+        /// interpretation PHP cannot hold past 2^63 and turns into a float - the reader
+        /// assembles the value from two halves instead.
+        ///
+        /// float for both float and double: PHP has no single-precision type, so a float32
+        /// read widens as it does in Python, Ruby and Dart.
+        ///
+        /// datetime and timespan are ticks. DateTimeImmutable carries microseconds, not
+        /// ticks, and a sheet reaches 0001-01-01 and TimeSpan's full range.
+        ///
+        /// The array format is a bare `array`: PHP's type declarations have no element
+        /// type, so what an array holds is said in a docblock the generator writes.
+        /// </summary>
+        public static readonly LanguageProfile Php = new LanguageProfile(
+            "php",
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "string" },
+                { ValueType.Bool, "bool" },
+                { ValueType.Int32, "int" },
+                { ValueType.Int64, "int" },
+                { ValueType.Float, "float" },
+                { ValueType.Double, "float" },
+                { ValueType.DateTime, "int" },
+                { ValueType.TimeSpan, "int" },
+                { ValueType.Uuid, "Uuid" },
+            },
+            "array",
+
+            // Never used: the list below is empty. PHP has accepted a reserved word as a
+            // property or method name since 7.0, so a field called `class` needs nothing
+            // done to it - and renaming one would change the generated API for no reason.
+            // The reserved-words fixture is what turns that from an argument into a fact:
+            // the suite runs its output through the real interpreter.
+            "{0}_"
+            );
+
+        /// <summary>
         /// C#. The three framework types are fully qualified so a generated file needs no
         /// `using System` and cannot collide with a namespace the consumer already has.
         /// </summary>

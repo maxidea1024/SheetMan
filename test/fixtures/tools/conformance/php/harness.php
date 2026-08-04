@@ -1,0 +1,103 @@
+<?php
+
+/*
+ * Conformance harness for the generated PHP reader.
+ *
+ * Reads Vectors.table through the generated accessor and prints each row in the canonical
+ * form described in ../README.md. No parsing here: the generated reader does that.
+ */
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/ConformanceData.php';
+
+use Conformance\ConformanceData;
+
+/*
+ * A JSON string, escaped by hand.
+ *
+ * Not json_encode: it escapes non-ASCII to \uXXXX by default and the corpus holds
+ * characters outside the basic plane, so the comparison would be against PHP's idea of an
+ * escape rather than against the bytes the exporter wrote.
+ */
+function quoted(string $value): string
+{
+    $out = '"';
+
+    $length = \strlen($value);
+
+    for ($i = 0; $i < $length; $i++) {
+        $c = $value[$i];
+        $code = \ord($c);
+
+        if ($c === '"') {
+            $out .= '\\"';
+        } elseif ($c === '\\') {
+            $out .= '\\\\';
+        } elseif ($c === "\n") {
+            $out .= '\\n';
+        } elseif ($c === "\r") {
+            $out .= '\\r';
+        } elseif ($c === "\t") {
+            $out .= '\\t';
+        } elseif ($code < 0x20) {
+            $out .= \sprintf('\\u%04x', $code);
+        } else {
+            // UTF-8 bytes straight through, which is what the exporter wrote.
+            $out .= $c;
+        }
+    }
+
+    return $out . '"';
+}
+
+/*
+ * A double with enough digits to survive the round trip.
+ *
+ * PHP's default precision rounds to 14 significant digits, which loses the corpus's
+ * float32 boundary values. serialize_precision = -1 means "as many as it takes and no
+ * more", which is what var_export and json_encode use.
+ */
+function number(float $value): string
+{
+    return \var_export($value, true);
+}
+
+if ($argc < 2) {
+    \fwrite(\STDERR, "usage: harness.php <binary-directory>\n");
+    exit(1);
+}
+
+$data = new ConformanceData();
+$data->readAll($argv[1]);
+
+$parts = [];
+
+foreach ($data->vectors->records as $r) {
+    $row = '{';
+    $row .= '"index":' . $r->index . ',';
+    $row .= '"intVal":' . $r->intVal . ',';
+
+    // A string, because JSON's single numeric type would round anything past 2^53.
+    $row .= '"bigVal":"' . $r->bigVal . '",';
+
+    $row .= '"floatVal":' . number($r->floatVal) . ',';
+    $row .= '"doubleVal":' . number($r->doubleVal) . ',';
+    $row .= '"text":' . quoted($r->text) . ',';
+    $row .= '"flag":' . ($r->flag ? 'true' : 'false') . ',';
+
+    // Ticks, which is what the generated fields hold.
+    $row .= '"when":"' . $r->when . '",';
+    $row .= '"span":"' . $r->span . '",';
+
+    $row .= '"uid":"' . (string)$r->uid . '",';
+    $row .= '"label":' . $r->label->value . ',';
+
+    $row .= '"ints":[' . \implode(',', \array_map('strval', $r->ints)) . '],';
+    $row .= '"strs":[' . \implode(',', \array_map('quoted', $r->strs)) . ']';
+    $row .= '}';
+
+    $parts[] = $row;
+}
+
+echo '[' . \implode(',', $parts) . ']';

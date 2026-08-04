@@ -1,0 +1,72 @@
+﻿{
+  // One workbook, all thirteen code generators, output committed next to this file.
+  //
+  // This is a reading aid, not a gate. The regression suite already compiles all of
+  // this - what it cannot do is let somebody see, side by side and in a diff, what the
+  // eleven generators actually emit. That turns out to matter: the Unreal target shipped
+  // for a while with the plain C++ reader inside it, and nothing in the suite could tell,
+  // because every gate it had was still green. It was reading OUT/cpp/A.h next to
+  // OUT/unreal that made it obvious.
+  //
+  // The reserved-words fixture on purpose. Its columns are named `class`, `delete`,
+  // `operator`, `namespace`, `constructor`, `function` and `int`, so the output also
+  // shows how each language gets out of the way of its own keywords - Kotlin's
+  // backticks, Go's exported-name rewrite, Dart's renaming of a field that would shadow
+  // a built-in type.
+  //
+  // Regenerate after changing a generator, a template or a reader, and review the diff:
+  //
+  //     dotnet run --project src/SheetMan.csproj -- --recipe OUT/showcase.json --silent
+  //
+  // Paths are relative to the repository root, which is where the CLI has to be run from.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/reserved-words",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ]
+  },
+
+  // No binary export here. It is the runtime format and it is covered by the golden
+  // tree; what it is not is reviewable - a .table in a diff says nothing to anybody.
+  "Exports": {
+    "Json": [
+      { "Path": "OUT/json", "UseCompactRowFormat": false, "Indented": true }
+    ]
+  },
+
+  "Targets": [
+    { "Type": "go", "Path": "OUT/go", "PackageName": "x", "ModulePath": "x" },
+    { "Type": "rust", "Path": "OUT/rust", "CrateName": "x" },
+    { "Type": "python", "Path": "OUT/python", "PackageName": "x" },
+    { "Type": "java", "Path": "OUT/java", "PackageName": "x", "AccessorName": "A" },
+    { "Type": "kotlin", "Path": "OUT/kotlin", "PackageName": "x", "AccessorName": "A" },
+    { "Type": "ruby", "Path": "OUT/ruby", "ModuleName": "X", "AccessorName": "a" },
+    { "Type": "dart", "Path": "OUT/dart", "AccessorName": "a" },
+    { "Type": "unreal", "Path": "OUT/unreal", "ModuleName": "X", "AccessorName": "A" },
+    { "Type": "c", "Path": "OUT/c", "AccessorName": "A" },
+    { "Type": "php", "Path": "OUT/php", "Namespace": "X", "AccessorName": "A" }
+  ],
+
+  "CodeGenerations": {
+    "Cpp": [
+      {
+        "Path": "OUT/cpp",
+        "Namespace": "x",
+        "AccessorName": "A",
+        "BinaryTableFileExtension": ".table"
+      }
+    ],
+    "CSharp": [
+      { "Path": "OUT/csharp", "Namespace": "X", "AccessorName": "A" }
+    ],
+    "Typescript": [
+      { "Path": "OUT/ts" }
+    ],
+    "Html": [
+      { "Path": "OUT/html" }
+    ]
+  }
+}

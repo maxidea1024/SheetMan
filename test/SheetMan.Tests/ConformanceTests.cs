@@ -234,6 +234,51 @@ namespace SheetMan.Tests
             Compare("Dart", expected, Parse(harness.StdOut));
         }
 
+        /// <summary>
+        /// C, where the reader has to answer two questions the others do not: who owns a
+        /// string, and what happens without exceptions.
+        ///
+        /// Strings live in an arena the table owns, so what this checks along with the
+        /// values is that they are still readable after the file buffer has been released -
+        /// a reader that pointed into the buffer would pass every value test and hand back
+        /// freed memory here.
+        /// </summary>
+        [Fact]
+        public void Generated_c_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.CIsAvailable(out string why),
+                $"A C compiler is required to check the generated C. {why}");
+
+            var harness = ConformanceHarness.RunC(Scenario);
+            Assert.True(harness.Succeeded, $"C harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("C", expected, Parse(harness.StdOut));
+        }
+
+        /// <summary>
+        /// PHP, whose integer is a full 64 bits - so unlike TypeScript and Dart it needs no
+        /// wider type for the values past 2^53.
+        ///
+        /// The trap here is in how those bytes are turned into one: `unpack('P')` hands back
+        /// an unsigned interpretation that PHP cannot hold past 2^63 and silently makes a
+        /// float of, which the corpus catches.
+        /// </summary>
+        [Fact]
+        public void Generated_php_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.PhpIsAvailable(out string why),
+                $"A PHP interpreter is required to check the generated PHP. {why}");
+
+            var harness = ConformanceHarness.RunPhp(Scenario);
+            Assert.True(harness.Succeeded, $"PHP harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("PHP", expected, Parse(harness.StdOut));
+        }
+
         // ---------------------------------------------------------- comparison
 
         /// <summary>

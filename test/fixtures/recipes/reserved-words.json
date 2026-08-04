@@ -1,4 +1,4 @@
-{
+﻿{
   // Identifiers that collide with a keyword in one of the output languages.
   //
   // All three code generators plus the binary export, because the question - does an
@@ -48,7 +48,11 @@
     { "Type": "ruby", "Path": "test/fixtures/output/reserved-words/ruby",
       "ModuleName": "Reserved", "AccessorName": "sheetman_data" },
     { "Type": "dart", "Path": "test/fixtures/output/reserved-words/dart",
-      "AccessorName": "sheetman_data" }
+      "AccessorName": "sheetman_data" },
+    { "Type": "c", "Path": "test/fixtures/output/reserved-words/c",
+      "AccessorName": "ReservedData" },
+    { "Type": "php", "Path": "test/fixtures/output/reserved-words/php",
+      "Namespace": "Reserved", "AccessorName": "ReservedData" }
   ],
 
   "CodeGenerations": {

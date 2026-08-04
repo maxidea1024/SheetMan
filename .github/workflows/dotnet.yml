@@ -29,11 +29,17 @@ jobs:
         with:
           node-version: '22'
 
-      # The suite compiles the generated C++ and C# and runs both against the
-      # exported binary tables, which is what checks that each reader still agrees
-      # with the writer about the byte format. ubuntu-latest ships g++.
-      - name: Verify C++ toolchain
-        run: g++ --version
+      # The suite compiles the generated C++, C and C# and runs all three against
+      # the exported binary tables, which is what checks that each reader still
+      # agrees with the writer about the byte format. ubuntu-latest ships both.
+      #
+      # The generated C header is also compiled as C++, because it declares
+      # `extern "C"` - and a member named `class` is good C and stops a C++
+      # compiler dead, which the C build cannot see.
+      - name: Verify C and C++ toolchains
+        run: |
+          g++ --version
+          gcc --version
 
       - name: Restore
         run: dotnet restore SheetMan.slnx
@@ -81,6 +87,13 @@ jobs:
         uses: dart-lang/setup-dart@v1
         with:
           sdk: '3.6'
+
+      # PHP 8.1 at least: the generated code uses backed enums and typed properties.
+      # ubuntu-latest ships one, but not a version this can rely on, so it is pinned.
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
 
       # Kotlin has no first-party action. The harness compiles through
       # lib/kotlin-compiler.jar rather than the launcher script, so unpacking the

@@ -1,6 +1,7 @@
 {{~##
-   The closing markup every generated page shares. Everything after </div> lands on
-   one line, again because the printer used Print for it.
+   The closing markup every generated page shares.
+
+   The wrapping <div class="container-fluid"> is gone with Bootstrap - the padding it
+   provided is on the body now - so there is no </div> here to close it.
 ##~}}
-</div>
-<br><h4>This file was created at {{ created_at }} by {{ user }}</h4></body></html>
+<h4>This file was created at {{ created_at }} by {{ user }}</h4></body></html>

@@ -62,17 +62,34 @@ namespace SheetMan.CodeGeneration
             var view = new HtmlIndexView
             {
                 Title = "Static Definitions Summary",
-                Enums = _model.Enums.OrderBy(x => x.Name).Select(Summarize).ToList(),
-                Tables = _model.Tables.OrderBy(x => x.Name).Select(x => Summarize(x.Name, x.Comment)).ToList(),
-                ConstantSets = _model.ConstantSets.OrderBy(x => x.Name).Select(x => Summarize(x.Name, x.Comment)).ToList(),
+                Enums = _model.Enums.OrderBy(x => x.Name)
+                                    .Select(x => Summarize(x.Name, x.Comment, EnumHref(x.Name, "enum_" + x.Name)))
+                                    .ToList(),
+
+                Tables = _model.Tables.OrderBy(x => x.Name)
+                                      .Select(x => Summarize(x.Name, x.Comment, $"tables.html#table_{x.Name}"))
+                                      .ToList(),
+
+                ConstantSets = _model.ConstantSets.OrderBy(x => x.Name)
+                                     .Select(x => Summarize(
+                                         x.Name, x.Comment, $"constantsets.html#constantset_{x.Name}"))
+                                     .ToList(),
 
                 // Only the sheets tables were found in. Listing every sheet the conversion
                 // touched would be better and there is no route to that from here.
-                SourceSheets = _model.Tables.Select(table => new HtmlSourceSheetView
-                {
-                    Url = table.Location.SheetUrl,
-                    Filename = table.Location.Filename,
-                }).ToList(),
+                //
+                // Distinct, because one workbook usually holds every table and the list was
+                // otherwise the same filename repeated once per table.
+                SourceSheets = _model.Tables
+                                     .Select(table => new HtmlSourceSheetView
+                                     {
+                                         Url = table.Location.SheetUrl,
+                                         Filename = table.Location.Filename,
+                                     })
+                                     .GroupBy(sheet => (sheet.Filename, sheet.Url))
+                                     .Select(group => group.First())
+                                     .OrderBy(sheet => sheet.Filename, StringComparer.Ordinal)
+                                     .ToList(),
             };
 
             Write("index.html", "html-index.sbn", view, trailingBlankLine: false);
@@ -253,7 +270,10 @@ namespace SheetMan.CodeGeneration
             string suffix = field.IsArray ? "[]" : "";
 
             if (field.ElementType == Models.ValueType.Enum)
-                return $"<a href=\"enums.html#enum_{field.Enum.Name}\">enum.{Esc(field.Enum.Name)}</a>{suffix}";
+            {
+                return $"<a href=\"{EnumHref(field.Enum.Name, "enum_" + field.Enum.Name)}\">" +
+                       $"enum.{Esc(field.Enum.Name)}</a>{suffix}";
+            }
 
             return $"<font color=blue>{Esc(field.TypeName)}{suffix}</font>";
         }
@@ -331,7 +351,8 @@ namespace SheetMan.CodeGeneration
                 case Models.ValueType.Enum:
                 {
                     var label = field.Enum.GetLabel((int)value, null);
-                    return $"<a href=\"enums.html#const_{field.Enum.Name}.{label.Name}\" " +
+
+                    return $"<a href=\"{EnumHref(field.Enum.Name, $"const_{field.Enum.Name}.{label.Name}")}\" " +
                            $"title=\"enum.{field.Enum.Name}.{label.Name}\">{label.Name}</a>";
                 }
 
@@ -345,13 +366,32 @@ namespace SheetMan.CodeGeneration
 
         // ----------------------------------------------------------- helpers
 
-        private static HtmlSummaryEntryView Summarize(Models.Enum enumm) => Summarize(enumm.Name, enumm.Comment);
+        private static HtmlSummaryEntryView Summarize(string name, string comment, string href)
+            => new HtmlSummaryEntryView
+            {
+                Name = name,
+                Comment = Esc(comment),
+                Href = href,
+            };
 
-        private static HtmlSummaryEntryView Summarize(string name, string comment) => new HtmlSummaryEntryView
-        {
-            Name = name,
-            Comment = Esc(comment),
-        };
+        /// <summary>
+        /// A link into an enum's own page.
+        ///
+        /// One place, because there are three callers and they used to disagree with the
+        /// generator: all of them wrote `enums.html`, and this target has never produced a
+        /// file by that name - it writes `enums/&lt;kebab-name&gt;.html`, one per enum. So
+        /// every enum link in the generated documentation was a dead one, on the index page
+        /// and in every type column and every enum-valued cell.
+        ///
+        /// A golden comparison cannot catch that. It checks that the markup has not changed,
+        /// which it had not: the link had been wrong since it was written.
+        ///
+        /// Every page that links here sits at the output root, so one relative form serves
+        /// all of them. An enum page linking to another enum page would need `../`, and
+        /// none does.
+        /// </summary>
+        private static string EnumHref(string enumName, string fragment)
+            => $"enums/{enumName.ToKebabCase()}.html#{fragment}";
 
         /// <summary>
         /// Escapes text that came from the spreadsheet before it reaches the page.
@@ -364,20 +404,26 @@ namespace SheetMan.CodeGeneration
             => string.IsNullOrEmpty(text) ? "" : WebUtility.HtmlEncode(text);
 
         /// <summary>
-        /// An anchor back to the cell something was declared in, or empty when the source
-        /// has no addressable url.
+        /// The caption for something, as an anchor back to the cell it was declared in when
+        /// the source has an addressable url, and as plain text when it does not.
         ///
-        /// Google Sheets links open where they point. A workbook on disk does not, which is
-        /// why an Excel-sourced model produces no links here.
+        /// Google Sheets links open where they point. A workbook on disk does not - and this
+        /// used to return the empty string in that case, which took the caption with it. So
+        /// an Excel-sourced model produced enum pages whose heading read `Enumeration:` with
+        /// no name after it and whose rows had an empty cell where each label's name should
+        /// be. Every model in the fixtures is Excel-sourced, and the golden pages recorded
+        /// the blanks as correct.
+        ///
+        /// The text is what matters here; the link is a convenience on top of it.
         /// </summary>
         private static string SourceSheetLink(Models.Location location, string caption = "")
         {
+            string text = Esc(string.IsNullOrEmpty(caption) ? location.ToString() : caption);
+
             if (string.IsNullOrEmpty(location.SheetUrl))
-                return "";
+                return text;
 
-            string text = string.IsNullOrEmpty(caption) ? location.ToString() : caption;
-
-            return $"<a href =\"{location.SheetUrl}\" title=\"Jump to source sheet\">{text}</a>";
+            return $"<a href=\"{location.SheetUrl}\" title=\"Jump to source sheet\">{text}</a>";
         }
 
         private void Write(string filename, string templateName, HtmlPageView view, bool trailingBlankLine)

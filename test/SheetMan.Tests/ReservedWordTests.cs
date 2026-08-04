@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using Xunit;
 
@@ -203,6 +203,65 @@ namespace SheetMan.Tests
             var result = ConformanceHarness.CompileDart(Scenario);
 
             Assert.True(result.Succeeded, $"Generated Dart does not compile.{Environment.NewLine}{result.Output}");
+        }
+
+        /// <summary>
+        /// C members are snake_case and every C keyword is lower case, so the whole keyword
+        /// list can collide - the same situation C++ is in, and C has no escape at all. The
+        /// name has to change.
+        /// </summary>
+        [Fact]
+        public void Generated_c_compiles_with_keyword_named_fields()
+        {
+            Assert.True(ConformanceHarness.CIsAvailable(out string why), why);
+
+            Convert();
+
+            var result = ConformanceHarness.CompileC(Scenario, "ReservedData");
+
+            Assert.True(result.Succeeded, $"Generated C does not compile.{Environment.NewLine}{result.Output}");
+        }
+
+        /// <summary>
+        /// And the generated C header compiles as C++, which is what its `extern "C"` says.
+        ///
+        /// This is the check that made the C profile carry the C++ keyword list as well.
+        /// `class`, `delete`, `operator` and `namespace` are all perfectly good C member
+        /// names - the C build was green with every one of them in the header - and every
+        /// one stops a C++ compiler at the declaration. A header that offers itself to C++
+        /// and cannot be included from it is worse than one that does not offer.
+        /// </summary>
+        [Fact]
+        public void Generated_c_header_can_be_included_from_cpp()
+        {
+            Assert.True(CppToolchain.IsAvailable(out string why), why);
+
+            Convert();
+
+            var result = ConformanceHarness.CompileCAsCpp(Scenario, "ReservedData");
+
+            Assert.True(result.Succeeded,
+                $"The generated C header does not compile as C++.{Environment.NewLine}{result.Output}");
+        }
+
+        /// <summary>
+        /// PHP escapes nothing, and this is what says that is right rather than hopeful.
+        ///
+        /// A property or method may be named after a reserved word in PHP 7 and later, so a
+        /// field called `class` needs nothing done to it - and renaming one would change the
+        /// generated API for no reason. The claim is only worth making because the
+        /// interpreter is asked.
+        /// </summary>
+        [Fact]
+        public void Generated_php_parses_with_keyword_named_fields()
+        {
+            Assert.True(ConformanceHarness.PhpIsAvailable(out string why), why);
+
+            Convert();
+
+            var result = ConformanceHarness.CompilePhp(Scenario, "ReservedData");
+
+            Assert.True(result.Succeeded, $"Generated PHP does not parse.{Environment.NewLine}{result.Output}");
         }
     }
 }

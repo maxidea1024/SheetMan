@@ -29,11 +29,29 @@ namespace SheetMan.CodeGeneration
 
         /// <summary>Escaped comment, or empty. The template decides whether to show a dash.</summary>
         public string Comment { get; set; }
+
+        /// <summary>
+        /// Where the entry's own page and anchor are.
+        ///
+        /// Built by the generator rather than assembled in the template, because the
+        /// template had no way to know where the generator writes an enum - and got it
+        /// wrong. Every enum link pointed at `enums.html`, which this target has never
+        /// written: the pages are `enums/&lt;name&gt;.html`, one per enum.
+        /// </summary>
+        public string Href { get; set; }
     }
 
     internal sealed class HtmlSourceSheetView
     {
+        /// <summary>
+        /// Where the sheet is, or empty for a workbook on disk.
+        ///
+        /// Only a Google Sheets source has one. The template shows the name as text when
+        /// this is empty rather than wrapping it in `href=""`, which is a link to the page
+        /// the reader is already on.
+        /// </summary>
         public string Url { get; set; }
+
         public string Filename { get; set; }
     }
 

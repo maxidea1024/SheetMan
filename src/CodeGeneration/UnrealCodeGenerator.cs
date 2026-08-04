@@ -58,12 +58,20 @@ namespace SheetMan.CodeGeneration
     }
 
     /// <summary>
-    /// Emits an Unreal module: USTRUCT rows, UENUM enums, a static accessor class, and the
-    /// C++ binary reader it shares with the plain C++ target.
+    /// Emits an Unreal module: USTRUCT rows, UENUM enums, a static accessor class, and an
+    /// Unreal binary reader.
     ///
-    /// Sharing that reader is deliberate. It is the part where the wire format lives, and
-    /// it is already checked against the conformance corpus - so what is new here is the
-    /// Unreal wrapping rather than another implementation of the format.
+    /// Its own reader rather than the plain C++ one. That one was shared here at first, on
+    /// the grounds that the wire format lives in it and the conformance corpus already
+    /// checks it - but sharing it meant an Unreal module full of std::string, std::vector
+    /// and a SheetMan Uuid struct, every one of which the engine already provides. The cost
+    /// was two allocations for each string cell and a text parse for each uuid, converting
+    /// into what FString and FGuid already were. Worse, that reader reports failure by
+    /// throwing, and an Unreal module is built with exceptions disabled: a malformed table
+    /// file terminated the process from inside a function whose signature promised a bool.
+    ///
+    /// So `lib/unreal` is a sibling of `lib/cpp`, not a wrapper around it. The format is
+    /// unchanged, so the corpus still applies.
     ///
     /// Written to work on both UE4 and UE5, which costs one thing: a double member carries
     /// no UPROPERTY, because UE4's header tool rejects the type outright. The field is read
@@ -136,7 +144,7 @@ namespace SheetMan.CodeGeneration
 
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Cpp.lite_binary_reader.h";
+            const string resourceName = "SheetMan.Runtime.Unreal.SheetManLiteBinaryReader.h";
 
             using var stream = typeof(UnrealCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
             if (stream == null)
@@ -171,7 +179,9 @@ namespace SheetMan.CodeGeneration
             text.Append("        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;\n");
             text.Append('\n');
             text.Append("        // CoreUObject for the reflection the USTRUCTs need; Core for FString,\n");
-            text.Append("        // TArray and the file helpers. Nothing else: the reader is standard C++.\n");
+            text.Append("        // TArray, FGuid, FDateTime and the file helpers. Nothing else, and no\n");
+            text.Append("        // bEnableExceptions: the reader reports a malformed file by returning\n");
+            text.Append("        // false, so this module builds with the engine's defaults.\n");
             text.Append("        PublicDependencyModuleNames.AddRange(new string[] { \"Core\", \"CoreUObject\" });\n");
             text.Append("    }\n");
             text.Append("}\n");
@@ -218,23 +228,60 @@ namespace SheetMan.CodeGeneration
             }).ToList(),
         };
 
-        private UnrealTableView BuildTable(Table table) => new UnrealTableView
+        private UnrealTableView BuildTable(Table table)
         {
-            RawName = table.Name,
-            RecordName = RecordName(table),
-            TableName = TableName(table),
-            Location = table.Location.ToString(),
-            Comment = CommentLines(table.Comment),
-            IndexField = MemberName(table.Fields[0]),
-            Fields = table.SerialFields.Select(BuildField).ToList(),
-        };
+            // Worked out before the fields, because a local the generated code declares
+            // must not land on a member name. `Index` is the usual name of a primary key
+            // here, so a loop counter called that would shadow it in every table that has
+            // one - legal, and unambiguous, but not what a generator should emit.
+            var members = new HashSet<string>(StringComparer.Ordinal);
 
-        private UnrealFieldView BuildField(SerialField sf)
+            foreach (var sf in table.SerialFields)
+            {
+                string member = MemberName(sf.FirstField, sf.Name);
+
+                members.Add(sf.IsRef ? member + "Index" : member);
+            }
+
+            return new UnrealTableView
+            {
+                RawName = table.Name,
+                RecordName = RecordName(table),
+                TableName = TableName(table),
+                Location = table.Location.ToString(),
+                Comment = CommentLines(table.Comment),
+                IndexField = MemberName(table.Fields[0]),
+                Fields = table.SerialFields.Select(sf => BuildField(sf, members)).ToList(),
+            };
+        }
+
+        /// <summary>
+        /// A name for a local the generated code declares, not taken by any member.
+        ///
+        /// Almost always the preferred one. The suffix only appears for a sheet that has a
+        /// column of that name, and then it is still a name and not a collision.
+        /// </summary>
+        private static string LocalName(string preferred, ICollection<string> members)
+        {
+            if (!members.Contains(preferred))
+                return preferred;
+
+            for (int suffix = 2; ; suffix++)
+            {
+                string candidate = preferred + suffix.ToString(CultureInfo.InvariantCulture);
+
+                if (!members.Contains(candidate))
+                    return candidate;
+            }
+        }
+
+        private UnrealFieldView BuildField(SerialField sf, ICollection<string> members)
         {
             string name = MemberName(sf.FirstField, sf.Name);
 
             return new UnrealFieldView
             {
+                CountLocal = LocalName("ElementCount", members),
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
@@ -247,10 +294,44 @@ namespace SheetMan.CodeGeneration
                 BlueprintVisible = sf.ElementType != ValueType.Double,
                 NotVisibleBecause = "UE4's header tool does not accept a double property.",
 
-                TempType = TempType(sf),
-                ReadCall = sf.ElementType == ValueType.Enum ? "read_enum" : "read",
-                FromTemp = FromTemp(sf),
+                ReadCall = ReadCall(sf),
             };
+        }
+
+        /// <summary>
+        /// Which reader method fills this field.
+        ///
+        /// Every type but an enum resolves by overload, because the Unreal reader has an
+        /// overload per engine type rather than one that fills a standard C++ value the
+        /// caller then converts. An enum cannot: its underlying type is what travels, so
+        /// it goes through the template.
+        ///
+        /// A reference contributes an int32 index, which is an ordinary overload.
+        /// </summary>
+        private static string ReadCall(SerialField sf)
+        {
+            if (sf.IsRef)
+                return "Read";
+
+            switch (sf.ElementType)
+            {
+                case ValueType.Enum:
+                    return "ReadEnum";
+
+                case ValueType.String:
+                case ValueType.Bool:
+                case ValueType.Int32:
+                case ValueType.Int64:
+                case ValueType.Float:
+                case ValueType.Double:
+                case ValueType.DateTime:
+                case ValueType.TimeSpan:
+                case ValueType.Uuid:
+                    return "Read";
+
+                default:
+                    throw new SheetManException($"The unreal generator cannot read type `{sf.Type}`.");
+            }
         }
 
         /// <summary>
@@ -304,49 +385,6 @@ namespace SheetMan.CodeGeneration
         }
 
         // ----------------------------------------------------------- rendering
-
-        /// <summary>
-        /// The type the shared C++ reader fills, which is not the type the member holds.
-        /// </summary>
-        private string TempType(SerialField sf)
-        {
-            switch (sf.ElementType)
-            {
-                case ValueType.String: return "std::string";
-                case ValueType.Bool: return "bool";
-                case ValueType.Int32: return "std::int32_t";
-                case ValueType.Int64: return "std::int64_t";
-                case ValueType.Float: return "float";
-                case ValueType.Double: return "double";
-                case ValueType.DateTime: return "sheetman::DateTime";
-                case ValueType.TimeSpan: return "sheetman::TimeSpan";
-                case ValueType.Uuid: return "sheetman::Uuid";
-                case ValueType.Enum: return EnumName(sf.FirstField.Enum);
-                case ValueType.ForeignRecord: return "std::int32_t";
-
-                default:
-                    throw new SheetManException($"The unreal generator cannot read type `{sf.Type}`.");
-            }
-        }
-
-        /// <summary>
-        /// The expression turning what the reader filled into what the member holds.
-        /// </summary>
-        private string FromTemp(SerialField sf)
-        {
-            switch (sf.ElementType)
-            {
-                case ValueType.String: return "SheetManConvert::ToString(Temp)";
-                case ValueType.Uuid: return "SheetManConvert::ToGuid(Temp)";
-
-                // Both are ticks on the wire, and both Unreal types are constructed from
-                // exactly that.
-                case ValueType.DateTime: return "FDateTime(Temp.ticks)";
-                case ValueType.TimeSpan: return "FTimespan(Temp.ticks)";
-
-                default: return "Temp";
-            }
-        }
 
         private string ToUnrealTypeName(ValueType type, Models.Enum enumm)
         {

@@ -9,7 +9,9 @@ public class X : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
         // CoreUObject for the reflection the USTRUCTs need; Core for FString,
-        // TArray and the file helpers. Nothing else: the reader is standard C++.
+        // TArray, FGuid, FDateTime and the file helpers. Nothing else, and no
+        // bEnableExceptions: the reader reports a malformed file by returning
+        // false, so this module builds with the engine's defaults.
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject" });
     }
 }

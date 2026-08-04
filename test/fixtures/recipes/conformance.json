@@ -1,4 +1,4 @@
-{
+﻿{
   // The conformance corpus.
   //
   // One table holding every type at the values that break a reader, exported both ways.
@@ -82,6 +82,19 @@
       "Type": "dart",
       "Path": "test/fixtures/output/conformance/dart",
       "AccessorName": "conformance_data",
+      "BinaryTableFileExtension": ".table"
+    },
+    {
+      "Type": "c",
+      "Path": "test/fixtures/output/conformance/c",
+      "AccessorName": "ConformanceData",
+      "BinaryTableFileExtension": ".table"
+    },
+    {
+      "Type": "php",
+      "Path": "test/fixtures/output/conformance/php",
+      "Namespace": "Conformance",
+      "AccessorName": "ConformanceData",
       "BinaryTableFileExtension": ".table"
     }
   ],

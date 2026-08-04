@@ -1,11 +1,11 @@
-{{~## One page per enum, named after it in kebab-case. ##~}}
+﻿{{~## One page per enum, named after it in kebab-case. ##~}}
 {{~ include 'html-head.sbn' ~}}
 <div class="definition">
 <h3 id="enum_{{ name }}"><i>Enumeration: {{ source_link }}</i></h3>
 {{~ if comment != '' ~}}
 <div class="comment">{{ comment }}</div>
 {{~ end ~}}
-<table class="table-bordered table-striped table-condensed">
+<table>
 <thead><th>No</th><th>Name</th><th>Value</th><th>Description</th></thead>
 {{~ for label in labels ~}}
 <tr>

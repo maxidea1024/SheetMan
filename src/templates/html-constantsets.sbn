@@ -1,4 +1,4 @@
-{{~## Every constant set on one page. ##~}}
+﻿{{~## Every constant set on one page. ##~}}
 {{~ include 'html-head.sbn' ~}}
 <br>
 {{~ for set in sets ~}}
@@ -7,7 +7,7 @@
 {{~ if set.comment != '' ~}}
 <div class="comment">{{ set.comment }}</div>
 {{~ end ~}}
-<table class="table-bordered table-striped table-condensed">
+<table>
 <thead><th>No</th><th>Name</th><th>Type</th><th>Value</th><th>Description</th></thead>
 {{~ for constant in set.constants ~}}
 <tr>
