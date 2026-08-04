@@ -97,8 +97,13 @@ namespace SheetMan.CodeGeneration
         ///
         /// PHP is the one that needs wiring rather than just splitting: there is no autoloader
         /// here, so each file requires what it uses. A table requires the reader and any enum
-        /// its properties are typed as; the accessor requires every part, so a consumer still
-        /// includes one file and gets the model.
+        /// its properties are typed as, from <see cref="TypeDependencies"/>; the accessor requires
+        /// every part, so a consumer still includes one file and gets the model.
+        ///
+        /// Not the tables a table references. A reference resolves to the other table's record or
+        /// to one of its fields, and the accessor has required both files long before it links
+        /// them - `require_once` would be harmless either way, but a require that is never the
+        /// reason a name resolves is one more line for a reader to check.
         /// </remarks>
         private void Generate()
         {
@@ -121,19 +126,20 @@ namespace SheetMan.CodeGeneration
                 Accessor = view.Accessor,
             });
 
-            foreach (var table in view.Tables)
+            foreach (var pair in _model.Tables.Zip(view.Tables, (model, rendered) => (model, rendered)))
             {
                 // One directory down, and it needs whatever enums its properties name.
                 var requires = new List<string> { Require(1, "sheetman/LiteBinaryReader.php") };
 
-                requires.AddRange(EnumsUsedBy(table).Select(name => Require(1, $"enums/{name}.php")));
+                requires.AddRange(TypeDependencies.EnumsNamedBy(pair.model)
+                    .Select(enumm => Require(1, $"enums/{EnumName(enumm)}.php")));
 
-                Write(System.IO.Path.Combine("tables", table.TableName + ".php"), "php-table.sbn",
+                Write(System.IO.Path.Combine("tables", pair.rendered.TableName + ".php"), "php-table.sbn",
                       new PhpPartView
                       {
                           Namespace = _recipe.Namespace,
                           Requires = requires,
-                          Table = table,
+                          Table = pair.rendered,
                       });
             }
 
@@ -176,22 +182,6 @@ namespace SheetMan.CodeGeneration
 
             return $"require_once __DIR__ . '{up}/{fromRoot}';";
         }
-
-        /// <summary>
-        /// The enums a table's properties are typed as.
-        /// </summary>
-        /// <remarks>
-        /// A reference field is excluded: it resolves to the referenced record or to that
-        /// record's field, and its own file requires whatever it needs.
-        /// </remarks>
-        private IEnumerable<string> EnumsUsedBy(PhpTableView table)
-            => _model.Tables
-                     .Single(t => t.Name.ToPascalCase() + "Table" == table.TableName)
-                     .SerialFields
-                     .Where(sf => !sf.IsRef && sf.ElementType == ValueType.Enum)
-                     .Select(sf => EnumName(sf.FirstField.Enum))
-                     .Distinct(StringComparer.Ordinal)
-                     .OrderBy(name => name, StringComparer.Ordinal);
 
         private void Write(string relative, string templateName, object view)
         {

@@ -1,6 +1,5 @@
 {{~## One backed enum. `enumm` is the single enum this file is for. ##~}}
 {{ include 'php-file-head.sbn' ~}}
-
 /**
  * Generated from {{ enumm.location }}
 {{~ for line in enumm.comment ~}}

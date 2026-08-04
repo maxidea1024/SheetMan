@@ -9,68 +9,7 @@ import enum
 import os
 
 from . import sheetman
-
-
-
-class TemplateRecord:
-    """Generated from test/fixtures/xlsx/reserved-words\\reserved-words.xlsx : Data : B2.
-
-    Named after a C++ keyword.
-    """
-
-    __slots__ = ("index", "class_", "int", "delete", "operator", "namespace", "constructor", "function")
-
-    def __init__(self):
-        self.index = 0
-        self.class_ = ""
-        self.int = 0
-        self.delete = False
-        self.operator = ""
-        self.namespace = ""
-        self.constructor = ""
-        self.function = ""
-
-    def _read(self, reader):
-        """Reads one record, in the exact field order the exporter wrote."""
-        self.index = reader.read_int32()
-        self.class_ = reader.read_string()
-        self.int = reader.read_int32()
-        self.delete = reader.read_bool()
-        self.operator = reader.read_string()
-        self.namespace = reader.read_string()
-        self.constructor = reader.read_string()
-        self.function = reader.read_string()
-
-    def __repr__(self):
-        return "TemplateRecord(index=%r, class_=%r, int=%r, delete=%r, operator=%r, namespace=%r, constructor=%r, function=%r)" % (self.index, self.class_, self.int, self.delete, self.operator, self.namespace, self.constructor, self.function)
-
-
-class TemplateTable:
-    """Every row of Template."""
-
-    __slots__ = ("records", "by_index")
-
-    def __init__(self):
-        self.records = []
-        self.by_index = {}
-
-    def find(self, index):
-        """The row with the given primary index, or None when there is none."""
-        return self.by_index.get(index)
-
-    def read(self, filename):
-        """Loads the table from a .table file written by SheetMan."""
-        reader = sheetman.Reader(sheetman.read_all_bytes(filename))
-        count = sheetman.read_table_header(reader)
-
-        self.records = []
-        for _ in range(count):
-            record = TemplateRecord()
-            record._read(reader)
-            self.records.append(record)
-
-        self.by_index = {record.index: record for record in self.records}
-
+from .template_table import TemplateTable
 
 
 class Tables:

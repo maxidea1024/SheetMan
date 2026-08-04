@@ -6,7 +6,10 @@
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
+// The record is its own top level type now that the target writes a file per type, so it is
+// imported rather than reached through the accessor as `ConformanceData.VectorsRecord`.
 import conformance.ConformanceData;
+import conformance.VectorsRecord;
 
 public final class Harness {
 
@@ -22,7 +25,7 @@ public final class Harness {
         StringBuilder json = new StringBuilder("[");
 
         boolean first = true;
-        for (ConformanceData.VectorsRecord r : data.vectors.records()) {
+        for (VectorsRecord r : data.vectors.records()) {
             if (!first) {
                 json.append(',');
             }

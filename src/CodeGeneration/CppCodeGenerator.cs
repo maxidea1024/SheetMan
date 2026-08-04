@@ -16,14 +16,22 @@ using ValueType = SheetMan.Models.ValueType;
 namespace SheetMan.CodeGeneration
 {
     /// <summary>
-    /// Emits a single self-contained C++17 header per recipe entry.
+    /// Emits a header per generated type, plus an umbrella header a consumer includes.
     ///
-    /// One header rather than a file per entity, unlike the TypeScript generator:
-    /// C++ has no module system to lean on, and splitting would push include-order
-    /// management for the references between tables onto the reader. The C# generator
-    /// makes the same choice for the same reason.
+    /// Splitting a C++ target used to be the thing not worth doing, on the grounds that it would
+    /// push include-order management for the references between tables onto whoever read the
+    /// output. It does not: a record holding a whole-row reference has a pointer member, a pointer
+    /// needs only an incomplete type, and so every record is forward declared in one header that
+    /// all the table headers include. No table header includes another, which is what makes two
+    /// tables pointing at each other not a cycle - and a cycle between include-guarded headers
+    /// does not fail loudly, it resolves differently depending on which translation unit got
+    /// there first.
     ///
-    /// The shape of the header lives in templates/cpp.sbn. This file works out the values
+    /// An enum is the opposite case: a field declared with one is a value, so its complete type
+    /// has to be there and its header is a real include.
+    ///
+    /// The shapes live in templates/cpp-*.sbn, one per kind of file, over the shared head and
+    /// foot in cpp-file-head.sbn and cpp-file-foot.sbn. This file works out the values
     /// that shape needs - read calls, defaults, escaped names, rendered literals - and
     /// nothing else. Everything here used to be printer calls with the header's structure
     /// spread through string literals across several hundred lines, which made the part a
@@ -76,13 +84,165 @@ namespace SheetMan.CodeGeneration
 
         private void GenerateModel()
         {
-            string filename = Path.GetFullPath(
-                Path.Combine(_cppRecipe.Path, _cppRecipe.AccessorName + ".h"));
+            var view = BuildView();
 
-            Log.Information($"Generating codes for C++ into `{filename}`");
+            Log.Information(
+                $"Generating codes for C++ into `{Path.GetFullPath(_cppRecipe.Path)}`");
 
-            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("cpp.sbn", BuildView()));
+            // Every record as an incomplete type, which is what a pointer member needs and all a
+            // reference between two tables needs - so no table header includes another.
+            Write(ForwardHeader, "cpp-forward.sbn", Part(
+                Guard("FORWARD"),
+                Array.Empty<string>(),
+                part => part.Records = view.Tables.Select(table => table.RecordName).ToList()));
+
+            foreach (var pair in _model.Enums.Zip(view.Enums, (model, rendered) => (model, rendered)))
+            {
+                // An enum names its underlying type and nothing else.
+                Write(EnumHeader(pair.rendered), "cpp-enum.sbn", Part(
+                    Guard("ENUM_" + pair.rendered.Name.ToSnakeCase()),
+                    new[] { "<cstdint>" },
+                    part => part.Enumm = pair.rendered));
+            }
+
+            foreach (var pair in _model.ConstantSets.Zip(view.ConstantSets, (model, rendered) => (model, rendered)))
+            {
+                // A constant set names the types of its own constants: an integer type, a string,
+                // one of the reader's for a datetime, timespan or uuid, and an enum where one is
+                // declared with it.
+                Write(ConstantsHeader(pair.rendered), "cpp-constants.sbn", Part(
+                    Guard("CONST_" + pair.rendered.Name.ToSnakeCase()),
+                    StandardHeadersFor(pair.model.Constants.Select(constant => constant.Type))
+                        .Concat(NeedsReader(pair.model) ? new[] { ReaderInclude } : Array.Empty<string>())
+                        .Concat(TypeDependencies.EnumsNamedBy(pair.model).Select(EnumHeaderFor)),
+                    part => part.Set = pair.rendered));
+            }
+
+            foreach (var pair in _model.Tables.Zip(view.Tables, (model, rendered) => (model, rendered)))
+            {
+                // A table always holds a vector of rows and a map from index to position, always
+                // takes a filename as a string, and always reads through the reader. On top of
+                // that: the forward header for the records it points at, and the complete type of
+                // every enum a field is declared with - an enum member is a value, not a pointer.
+                Write(TableHeader(pair.rendered), "cpp-table.sbn", Part(
+                    Guard(pair.rendered.RawName.ToSnakeCase()),
+                    new[] { "<cstddef>", "<cstdint>", "<string>", "<unordered_map>", "<vector>", ReaderInclude }
+                        .Append(ForwardHeader)
+                        .Concat(TypeDependencies.EnumsNamedBy(pair.model).Select(EnumHeaderFor)),
+                    part => part.Table = pair.rendered));
+            }
+
+            // The umbrella. A consumer's include is unchanged - same file name, same guard, same
+            // types reachable from it - only now it reaches them by including the headers that
+            // declare them.
+            Write(_cppRecipe.AccessorName + ".h", "cpp-accessor.sbn", Part(
+                IncludeGuard(_cppRecipe.AccessorName),
+                new[] { "<cstddef>", "<string>" }
+                    .Concat(view.Enums.Select(EnumHeader))
+                    .Concat(view.ConstantSets.Select(ConstantsHeader))
+                    .Concat(view.Tables.Select(TableHeader)),
+                part => part.Accessor = view.Accessor));
         }
+
+        // --------------------------------------------------------- file layout
+
+        /// <summary>
+        /// Flat, one header per generated type.
+        /// </summary>
+        /// <remarks>
+        /// The names carry the grouping rather than directories. C++ has namespaces, so
+        /// subdirectories would be possible - but an include path is written into the generated
+        /// text, so a directory is a string every file has to agree on rather than something the
+        /// compiler works out. Same reasoning as C, and the two targets are better off answering
+        /// it the same way.
+        /// </remarks>
+        private string ForwardHeader => _cppRecipe.AccessorName + "_forward.h";
+
+        private string EnumHeader(CppEnumView enumm) => $"{_cppRecipe.AccessorName}_enum_{enumm.Name.ToSnakeCase()}.h";
+        private string EnumHeaderFor(Models.Enum enumm) => $"{_cppRecipe.AccessorName}_enum_{enumm.Name.ToSnakeCase()}.h";
+
+        private string ConstantsHeader(CppConstantSetView set) => $"{_cppRecipe.AccessorName}_const_{set.Name.ToSnakeCase()}.h";
+
+        private string TableHeader(CppTableView table) => $"{_cppRecipe.AccessorName}_{table.RawName.ToSnakeCase()}.h";
+
+        private const string ReaderInclude = "\"sheetman/lite_binary_reader.h\"";
+
+        private string Guard(string suffix) => IncludeGuard($"{_cppRecipe.AccessorName}_{suffix}");
+
+        private void Write(string filename, string templateName, CppPartView view)
+        {
+            string full = Path.GetFullPath(Path.Combine(_cppRecipe.Path, filename));
+
+            StagingFiles.WriteAllTextToFile(full, TemplateEngine.Render(templateName, view));
+        }
+
+        /// <summary>
+        /// The common shape of every part: the guard, the namespace, and the includes - standard
+        /// library first, then this tool's own, with a blank line between.
+        /// </summary>
+        private CppPartView Part(string guard, IEnumerable<string> includes, Action<CppPartView> subject)
+        {
+            var parts = NamespaceParts().ToList();
+
+            var part = new CppPartView
+            {
+                IncludeGuard = guard,
+                Includes = IncludeLines(includes),
+                NamespaceOpen = parts.Select(name => $"namespace {name} {{").ToList(),
+                NamespaceClose = Enumerable.Reverse(parts).Select(name => $"}}  // namespace {name}").ToList(),
+            };
+
+            subject(part);
+
+            return part;
+        }
+
+        /// <summary>
+        /// `#include` lines, angle-bracketed ones first and quoted ones after, each group in the
+        /// order given and separated by a blank line.
+        /// </summary>
+        private static IReadOnlyList<string> IncludeLines(IEnumerable<string> includes)
+        {
+            var all = includes.Distinct().ToList();
+
+            var standard = all.Where(name => name.StartsWith("<", StringComparison.Ordinal)).ToList();
+            var own = all.Where(name => !name.StartsWith("<", StringComparison.Ordinal)).ToList();
+
+            var lines = standard.Select(name => $"#include {name}").ToList();
+
+            if (standard.Count > 0 && own.Count > 0)
+                lines.Add("");
+
+            lines.AddRange(own.Select(name => name.StartsWith("\"", StringComparison.Ordinal)
+                ? $"#include {name}"
+                : $"#include \"{name}\""));
+
+            return lines;
+        }
+
+        /// <summary>
+        /// The standard headers a set of value types names between them.
+        /// </summary>
+        private static IEnumerable<string> StandardHeadersFor(IEnumerable<ValueType> types)
+        {
+            var seen = types.Select(ValueTypes.ElementOf).ToList();
+
+            if (seen.Any(type => type == ValueType.Int32 || type == ValueType.Int64))
+                yield return "<cstdint>";
+
+            if (seen.Contains(ValueType.String))
+                yield return "<string>";
+        }
+
+        /// <summary>
+        /// Whether a constant set names one of the reader's own types: a datetime, a timespan or
+        /// a uuid. Those are the only three a constant can be that C++ has no built-in for.
+        /// </summary>
+        private static bool NeedsReader(ConstantSet set)
+            => set.Constants.Any(constant =>
+                constant.Type == ValueType.DateTime
+                || constant.Type == ValueType.TimeSpan
+                || constant.Type == ValueType.Uuid);
 
         // --------------------------------------------------------------- view
 
@@ -138,6 +298,7 @@ namespace SheetMan.CodeGeneration
 
         private CppTableView BuildTable(Table table) => new CppTableView
         {
+            RawName = table.Name,
             RecordName = RecordName(table),
             TableName = TableName(table),
             Location = table.Location.ToString(),

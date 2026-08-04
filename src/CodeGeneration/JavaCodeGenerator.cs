@@ -58,13 +58,17 @@ namespace SheetMan.CodeGeneration
     }
 
     /// <summary>
-    /// Emits one Java file holding every generated type, plus the binary reader.
+    /// Emits a Java package: a file per generated type, plus the binary reader.
     ///
-    /// Nested types rather than a file each, because Java demands a public top-level type
-    /// be alone in a file named after it: a model with forty entities would otherwise be
-    /// forty files to place in somebody's source tree.
+    /// A file each rather than nested types, which is what Java asks for - a public top-level
+    /// type has to be alone in a file named after it. Two files per table, then, one for the
+    /// record and one for the table: the alternative was nesting the record inside the table and
+    /// calling it `VectorsTable.Record`, and a worse name is not worth one fewer file.
     ///
-    /// The shape lives in templates/java.sbn.
+    /// All in one package and flat, so nothing imports another generated type. Same as Go.
+    ///
+    /// The shape lives in templates/java-*.sbn, one per kind of file, over the shared header in
+    /// java-file-head.sbn.
     /// </summary>
     [SheetManTarget("java", TargetKind.CodeGeneration, Order = 80)]
     public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
@@ -88,17 +92,126 @@ namespace SheetMan.CodeGeneration
 
         private void Generate()
         {
-            // Java expects a type's file to sit in a directory matching its package.
-            string filename = System.IO.Path.GetFullPath(System.IO.Path.Combine(
-                new[] { _recipe.Path }
-                    .Concat(_recipe.PackageName.Split('.'))
-                    .Append(_recipe.AccessorName + ".java")
-                    .ToArray()));
+            var view = BuildView();
 
-            Log.Information($"Generating codes for Java into `{filename}`");
+            Log.Information($"Generating codes for Java into `{System.IO.Path.GetFullPath(PackageDir)}`");
 
-            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("java.sbn", BuildView()));
+            // The accessor holds a field per table and links the references between them. No
+            // reader: it never touches a byte itself.
+            Write(_recipe.AccessorName, "java-accessor.sbn", new JavaPartView
+            {
+                PackageName = _recipe.PackageName,
+                AccessorName = _recipe.AccessorName,
+                Imports = Imports(new[] { "java.nio.file.Paths" }, reader: false),
+                Accessor = view.Accessor,
+            });
+
+            foreach (var pair in _model.Tables.Zip(view.Tables, (model, rendered) => (model, rendered)))
+            {
+                // A record reads itself, so it names the reader. Its enum-typed fields name
+                // enums, and its references name other records - all in this package, so
+                // neither is an import.
+                Write(pair.rendered.RecordName, "java-record.sbn", new JavaPartView
+                {
+                    PackageName = _recipe.PackageName,
+                    Imports = Imports(Array.Empty<string>(), reader: true),
+                    Table = pair.rendered,
+                });
+
+                // A table holds the rows and the index, and opens the file.
+                Write(pair.rendered.TableName, "java-table.sbn", new JavaPartView
+                {
+                    PackageName = _recipe.PackageName,
+                    Imports = Imports(
+                        new[]
+                        {
+                            "java.nio.file.Path", "java.util.ArrayList", "java.util.HashMap",
+                            "java.util.List", "java.util.Map",
+                        },
+                        reader: true),
+                    Table = pair.rendered,
+                });
+            }
+
+            foreach (var enumm in view.Enums)
+            {
+                // An enum is a leaf: it names nothing but the integers it is built from.
+                Write(enumm.Name, "java-enum.sbn", new JavaPartView
+                {
+                    PackageName = _recipe.PackageName,
+                    Imports = Array.Empty<string>(),
+                    Enumm = enumm,
+                });
+            }
+
+            foreach (var pair in _model.ConstantSets.Zip(view.ConstantSets, (model, rendered) => (model, rendered)))
+            {
+                // A constant set names an enum when one of its constants is typed with one -
+                // same package, so no import - and the reader when one is a uuid, whose type is
+                // LiteBinaryReader.Uuid.
+                Write(pair.rendered.Name, "java-constants.sbn", new JavaPartView
+                {
+                    PackageName = _recipe.PackageName,
+                    Imports = Imports(Array.Empty<string>(), reader: NamesUuid(pair.model)),
+                    Set = pair.rendered,
+                });
+            }
         }
+
+        /// <summary>
+        /// Where the files go: Java expects a type's file to sit in a directory matching its
+        /// package.
+        /// </summary>
+        private string PackageDir
+            => System.IO.Path.Combine(
+                new[] { _recipe.Path }.Concat(_recipe.PackageName.Split('.')).ToArray());
+
+        /// <summary>
+        /// Flat inside the package rather than in `tables`, `enums` and `constants`
+        /// subpackages.
+        /// </summary>
+        /// <remarks>
+        /// A Java directory is a package, so a subdirectory would be a different one and every
+        /// generated type would have to import the others. One package instead: nothing imports
+        /// anything of this tool's making, and the names carry the grouping - which is the same
+        /// answer Go, Python and Rust arrived at.
+        /// </remarks>
+        private void Write(string typeName, string templateName, JavaPartView view)
+        {
+            string full = System.IO.Path.GetFullPath(
+                System.IO.Path.Combine(PackageDir, typeName + ".java"));
+
+            StagingFiles.WriteAllTextToFile(full, TemplateEngine.Render(templateName, view));
+        }
+
+        /// <summary>
+        /// Import lines, with a blank entry where Java convention wants a gap between the
+        /// java.* group and the rest.
+        /// </summary>
+        private static IReadOnlyList<string> Imports(IReadOnlyList<string> standard, bool reader)
+        {
+            var lines = new List<string>();
+
+            foreach (var name in standard)
+                lines.Add($"import {name};");
+
+            if (reader)
+            {
+                if (lines.Count > 0)
+                    lines.Add("");
+
+                lines.Add("import sheetman.LiteBinaryReader;");
+            }
+
+            return lines;
+        }
+
+        /// <summary>
+        /// Whether a constant set has a uuid in it, which is the only way its file reaches the
+        /// reader - the constant's own type is LiteBinaryReader.Uuid.
+        /// </summary>
+        private static bool NamesUuid(ConstantSet set)
+            => set.Constants.Any(constant => constant.Type == ValueType.Uuid);
 
         private void WriteBinaryReaderRuntime()
         {

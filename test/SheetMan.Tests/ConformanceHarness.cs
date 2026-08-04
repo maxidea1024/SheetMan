@@ -309,13 +309,21 @@ namespace SheetMan.Tests
         public static ToolResult RunC(string scenario)
         {
             string workDir = WorkDir(scenario, "c");
+            string generated = Generated(scenario, "c");
 
+            // Every generated .c, not a named one.
+            //
+            // The target used to write exactly one, so naming it was the same thing as building
+            // the output. Now it writes a source per table, one per constant set that has a
+            // value a header cannot hold, and one whose only job is the reader's implementation -
+            // and a list of names here would have quietly stopped covering them, which is how a
+            // gate ends up proving less than it reads as proving.
             var build = CToolchain.CompileHarness(
                 workDir,
-                includeDir: Generated(scenario, "c"),
+                includeDir: generated,
                 source: Path.Combine(HarnessDir("c"), "main.c"),
                 accessorHeader: "ConformanceData.h",
-                sources: new[] { Path.Combine(Generated(scenario, "c"), "ConformanceData.c") },
+                sources: Directory.GetFiles(generated, "*.c").OrderBy(path => path).ToArray(),
                 exeName: "conformance-c");
 
             if (!build.Succeeded)
@@ -440,6 +448,9 @@ namespace SheetMan.Tests
         /// generator chose are legal, which in C means every one of them, since a member is
         /// snake_case and every keyword is lowercase.
         /// </summary>
+        /// <param name="accessorName">
+        /// Names the umbrella header, which is the one a consumer includes.
+        /// </param>
         public static ToolResult CompileC(string scenario, string accessorName)
         {
             string root = Generated(scenario, "c");
@@ -447,8 +458,50 @@ namespace SheetMan.Tests
             return CToolchain.CompileOnly(
                 Path.Combine(WorkDir(scenario, "c"), "compile-only"),
                 includeDir: root,
-                sources: new[] { Path.Combine(root, accessorName + ".c") },
+                sources: Directory.GetFiles(root, "*.c").OrderBy(path => path).ToArray(),
                 accessorHeader: accessorName + ".h");
+        }
+
+        /// <summary>
+        /// Compiles each generated header on its own, as the only thing a translation unit
+        /// includes.
+        /// </summary>
+        /// <remarks>
+        /// Which is the question the split created and nothing else asks. Compiling the sources
+        /// says the headers work in the order those sources include them; it says nothing about a
+        /// header a consumer reaches for directly. A table header that needed an enum's complete
+        /// type and did not include it still compiles inside a source file that included the
+        /// umbrella first.
+        ///
+        /// Returns the first failure, so the message names one header rather than all of them.
+        /// </remarks>
+        public static ToolResult CompileEachCHeaderAlone(string scenario)
+        {
+            string root = Generated(scenario, "c");
+
+            foreach (var header in Directory.GetFiles(root, "*.h").OrderBy(path => path))
+            {
+                string name = Path.GetFileName(header);
+
+                // No sources, so the translation unit is the one include and nothing else.
+                var result = CToolchain.CompileOnly(
+                    Path.Combine(WorkDir(scenario, "c"), "alone", Path.GetFileNameWithoutExtension(name)),
+                    includeDir: root,
+                    sources: Array.Empty<string>(),
+                    accessorHeader: name);
+
+                if (!result.Succeeded)
+                {
+                    return new ToolResult
+                    {
+                        Succeeded = false,
+                        StdOut = result.StdOut,
+                        Output = $"{name} does not compile on its own.{Environment.NewLine}{result.Output}",
+                    };
+                }
+            }
+
+            return new ToolResult { Succeeded = true, StdOut = "", Output = "" };
         }
 
         /// <summary>

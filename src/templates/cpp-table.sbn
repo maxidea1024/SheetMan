@@ -1,0 +1,105 @@
+{{~## One table: its record struct and its table class. ##~}}
+{{ include 'cpp-file-head.sbn' ~}}
+// Generated from {{ table.location }}
+{{~ for line in table.comment ~}}
+/// {{ line }}
+{{~ end ~}}
+struct {{ table.record_name }}
+{
+{{~ for field in table.fields ~}}
+{{~ for line in field.comment ~}}
+    /// {{ line }}
+{{~ end ~}}
+{{~ for declaration in field.declarations ~}}
+    {{ declaration }}
+{{~ end ~}}
+{{~ end ~}}
+
+    /// Reads one record. Field order must match the exporter's.
+    void read(sheetman::LiteBinaryReader& reader)
+    {
+{{~ if table.fields | array.size == 0 ~}}
+        (void)reader;
+{{~ end ~}}
+{{~ for field in table.fields ~}}
+{{~ if field.kind == "var_array" ~}}
+        {
+            const std::int32_t count = reader.read_counter32();
+            {{ field.name }}.resize(static_cast<std::size_t>(count));
+            for (std::int32_t i = 0; i < count; ++i)
+            {
+                {{ field.read_var_element }};
+            }
+        }
+{{~ else if field.kind == "serial_ref" ~}}
+        {{ field.name }}.assign({{ field.element_count }}, {{ field.ref_default }});
+        {{ field.name }}_index.resize({{ field.element_count }});
+        for (std::size_t i = 0; i < {{ field.element_count }}; ++i)
+        {
+            reader.read({{ field.name }}_index[i]);
+        }
+{{~ else if field.kind == "serial" ~}}
+        {{ field.name }}.resize({{ field.element_count }});
+        for (std::size_t i = 0; i < {{ field.element_count }}; ++i)
+        {
+            {{ field.read_element }};
+        }
+{{~ else if field.kind == "scalar_ref" ~}}
+        reader.read({{ field.name }}_index);
+{{~ else ~}}
+        {{ field.read_scalar }};
+{{~ end ~}}
+{{~ end ~}}
+    }
+};
+
+{{~ for line in table.comment ~}}
+/// {{ line }}
+{{~ end ~}}
+class {{ table.table_name }}
+{
+    public:
+    const std::vector<{{ table.record_name }}>& records() const { return records_; }
+
+    /// Record with the given primary index, or nullptr when there is none.
+    const {{ table.record_name }}* find(std::int32_t index) const
+    {
+        const auto it = by_index_.find(index);
+        return it == by_index_.end() ? nullptr : &records_[it->second];
+    }
+
+    /// Loads the table from a .table file written by SheetMan.
+    void read(const std::string& filename)
+    {
+        const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
+        sheetman::LiteBinaryReader reader(buffer);
+
+        const std::int32_t row_count = sheetman::read_table_header(reader);
+
+        records_.clear();
+        records_.resize(static_cast<std::size_t>(row_count));
+        for (std::int32_t i = 0; i < row_count; ++i)
+        {
+            records_[static_cast<std::size_t>(i)].read(reader);
+        }
+
+        build_index();
+    }
+
+    private:
+    friend class Tables;
+
+    void build_index()
+    {
+        by_index_.clear();
+        by_index_.reserve(records_.size());
+        for (std::size_t i = 0; i < records_.size(); ++i)
+        {
+            by_index_.emplace(records_[i].{{ table.index_field }}, i);
+        }
+    }
+
+    std::vector<{{ table.record_name }}> records_;
+    std::unordered_map<std::int32_t, std::size_t> by_index_;
+};
+{{ include 'cpp-file-foot.sbn' ~}}

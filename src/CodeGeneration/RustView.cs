@@ -2,12 +2,47 @@ using System.Collections.Generic;
 
 namespace SheetMan.CodeGeneration
 {
-    /// <summary>Everything the Rust template needs, worked out in advance.</summary>
+    /// <summary>
+    /// Everything Rust needs, worked out in advance.
+    ///
+    /// Built whole and then dealt out one subject at a time, so the naming is decided in one
+    /// place whether or not the file it lands in holds anything else.
+    /// </summary>
     internal sealed class RustFileView
     {
         public IReadOnlyList<RustEnumView> Enums { get; set; }
         public IReadOnlyList<RustConstantSetView> ConstantSets { get; set; }
         public IReadOnlyList<RustTableView> Tables { get; set; }
+        public RustAccessorView Accessor { get; set; }
+    }
+
+    /// <summary>
+    /// One generated file: what it brings into scope, and the single thing it declares.
+    /// </summary>
+    internal sealed class RustPartView
+    {
+        /// <summary>
+        /// `use` lines, from <see cref="TypeDependencies"/> and from what the file's own text
+        /// reaches for. Exact rather than generous, because an unused one is a warning.
+        /// </summary>
+        public IReadOnlyList<string> Uses { get; set; }
+
+        /// <summary>
+        /// Lines for an inner doc comment, for the file whose whole contents are the subject.
+        /// Empty for the files whose comment attaches to an item instead.
+        /// </summary>
+        public IReadOnlyList<string> ModuleDoc { get; set; }
+
+        /// <summary>The table this file is for, when it is a table file.</summary>
+        public RustTableView Table { get; set; }
+
+        /// <summary>The enum this file is for, when it is an enum file.</summary>
+        public RustEnumView Enumm { get; set; }
+
+        /// <summary>The constant set this file is for, when it is a constants file.</summary>
+        public RustConstantSetView Set { get; set; }
+
+        /// <summary>The accessor's own shape, for the accessor file.</summary>
         public RustAccessorView Accessor { get; set; }
     }
 

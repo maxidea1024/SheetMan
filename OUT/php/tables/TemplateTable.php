@@ -11,9 +11,7 @@ declare(strict_types=1);
 
 namespace X;
 
-
 require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
-
 
 use SheetMan\LiteBinaryReader;
 use SheetMan\Uuid;

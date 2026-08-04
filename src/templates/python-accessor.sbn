@@ -1,0 +1,49 @@
+{{~## The accessor, holding no table's own code. ##~}}
+{{ include 'python-file-head.sbn' ~}}
+class Tables:
+    """Every table, loaded together so cross-table references can be resolved."""
+
+    __slots__ = ({{ accessor.slot_names }})
+
+    def __init__(self):
+{{~ if accessor.tables | array.size == 0 ~}}
+        pass
+{{~ end ~}}
+{{~ for slot in accessor.tables ~}}
+        self.{{ slot.name }} = {{ slot.table_name }}()
+{{~ end ~}}
+
+    def read_all(self, base_path):
+        """Reads every table from base_path, then links the references between them."""
+{{~ if accessor.tables | array.size == 0 ~}}
+        return
+{{~ end ~}}
+{{~ for slot in accessor.tables ~}}
+        self.{{ slot.name }}.read(os.path.join(base_path, "{{ slot.data_file_name }}{{ accessor.file_extension }}"))
+{{~ end ~}}
+{{~ if accessor.tables | array.size > 0 }}
+        self._solve_cross_references()
+{{~ end ~}}
+
+    def _solve_cross_references(self):
+        """Turns the stored indices into usable values, once every table is in memory."""
+{{~ if accessor.cross_references | array.size == 0 ~}}
+        # No table references another.
+        return
+{{~ else ~}}
+{{~ for reference in accessor.cross_references ~}}
+        for record in self.{{ reference.table }}.records:
+{{~ for field in reference.fields ~}}
+{{~ if field.is_array ~}}
+            for position, index in enumerate(record.{{ field.name }}_index):
+                target = self.{{ field.ref_table }}.find(index)
+                if target is not None:
+                    record.{{ field.name }}[position] = {{ field.value }}
+{{~ else ~}}
+            target = self.{{ field.ref_table }}.find(record.{{ field.name }}_index)
+            if target is not None:
+                record.{{ field.name }} = {{ field.value }}
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}

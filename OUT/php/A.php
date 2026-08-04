@@ -11,14 +11,12 @@ declare(strict_types=1);
 
 namespace X;
 
-
 require_once __DIR__ . '/sheetman/LiteBinaryReader.php';
-
 require_once __DIR__ . '/tables/TemplateTable.php';
-
 
 use SheetMan\LiteBinaryReader;
 use SheetMan\Uuid;
+
 /** Every table, loaded together so cross-table references can be resolved. */
 final class A
 {

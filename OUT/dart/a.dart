@@ -8,11 +8,9 @@
 // ignore_for_file: unused_import, constant_identifier_names
 
 import 'dart:io';
-
 import 'dart:typed_data';
 
 import 'sheetman/lite_binary_reader.dart';
-
 
 part 'tables/template_table.dart';
 

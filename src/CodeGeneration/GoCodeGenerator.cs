@@ -116,14 +116,81 @@ namespace SheetMan.CodeGeneration
                 WriteGoMod();
         }
 
+        /// <summary>
+        /// Writes a file per table, per enum and per constant set, plus the accessor.
+        /// </summary>
+        /// <remarks>
+        /// It used to be one file holding all of it, which made a deleted table a hunk of dead
+        /// code inside a file that still compiled. The layout matches the other targets.
+        ///
+        /// Go's own difficulty is the imports: an unused one does not compile, so each file gets
+        /// exactly what its own text reaches for. Its easiness is the other side of the same
+        /// coin - one package, so nothing here imports another generated file and a table can
+        /// name another table's record type freely.
+        /// </remarks>
         private void Generate()
         {
-            string filename = System.IO.Path.GetFullPath(
-                System.IO.Path.Combine(_recipe.Path, _recipe.AccessorName + ".go"));
+            var view = BuildView();
 
-            Log.Information($"Generating codes for Go into `{filename}`");
+            Log.Information($"Generating codes for Go into `{System.IO.Path.GetFullPath(_recipe.Path)}`");
 
-            StagingFiles.WriteAllTextToFile(filename, TemplateEngine.Render("go.sbn", BuildView()));
+            // The accessor joins paths and nothing else; the errors it returns come from the
+            // tables already wrapped.
+            Write(_recipe.AccessorName + ".go", "go-accessor.sbn", new GoPartView
+            {
+                PackageName = _recipe.PackageName,
+                Imports = Imports(new[] { "path/filepath" }, reader: false),
+                Accessor = view.Accessor,
+            });
+
+            foreach (var pair in _model.Tables.Zip(view.Tables, (model, rendered) => (model, rendered)))
+            {
+                // A table reads through the reader and wraps its failures with fmt.Errorf.
+                Write(pair.rendered.TableName.ToSnakeCase() + ".go", "go-table.sbn", new GoPartView
+                {
+                    PackageName = _recipe.PackageName,
+                    Imports = Imports(new[] { "fmt" }, reader: true),
+                    Table = pair.rendered,
+                });
+            }
+
+            foreach (var enumm in view.Enums)
+            {
+                // An enum's String falls back to formatting the number.
+                Write("enum_" + enumm.Name.ToSnakeCase() + ".go", "go-enum.sbn", new GoPartView
+                {
+                    PackageName = _recipe.PackageName,
+                    Imports = Imports(new[] { "strconv" }, reader: false),
+                    Enumm = enumm,
+                });
+            }
+
+            foreach (var pair in _model.ConstantSets.Zip(view.ConstantSets, (model, rendered) => (model, rendered)))
+            {
+                // A constant set names no standard library type, and reaches the reader only
+                // for a uuid.
+                Write("const_" + pair.rendered.Name.ToSnakeCase() + ".go", "go-constants.sbn",
+                      new GoPartView
+                      {
+                          PackageName = _recipe.PackageName,
+                          Imports = Imports(Array.Empty<string>(), reader: NamesUuid(pair.model)),
+                          Set = pair.rendered,
+                      });
+            }
+        }
+
+        /// <summary>
+        /// Flat rather than in `tables/`, `enums/` and `constants/` as the other targets do.
+        ///
+        /// A Go directory is a package, so a subdirectory would be a different one - and the
+        /// generated types refer to each other without qualification. The names carry the
+        /// grouping instead.
+        /// </summary>
+        private void Write(string filename, string templateName, object view)
+        {
+            string full = System.IO.Path.GetFullPath(System.IO.Path.Combine(_recipe.Path, filename));
+
+            StagingFiles.WriteAllTextToFile(full, TemplateEngine.Render(templateName, view));
         }
 
         /// <summary>
@@ -159,10 +226,16 @@ namespace SheetMan.CodeGeneration
 
         // --------------------------------------------------------------- view
 
+        /// <summary>
+        /// The whole model, which <see cref="Generate"/> then splits into files.
+        /// </summary>
+        /// <remarks>
+        /// No imports here any more: they are per file, because an unused one does not compile
+        /// in Go, and a single list for the model would put an unused import in most of them.
+        /// </remarks>
         private GoFileView BuildView() => new GoFileView
         {
             PackageName = _recipe.PackageName,
-            Imports = BuildImports(),
             Enums = _model.Enums.Select(BuildEnum).ToList(),
             ConstantSets = _model.ConstantSets.Select(BuildConstantSet).ToList(),
             Tables = _model.Tables.Select(BuildTable).ToList(),
@@ -176,18 +249,26 @@ namespace SheetMan.CodeGeneration
         /// with no enums does not mention strconv, and one with no tables does not mention
         /// filepath or fmt.
         /// </summary>
-        private IReadOnlyList<string> BuildImports()
+        /// <summary>
+        /// The imports one generated file needs, and only those.
+        /// </summary>
+        /// <remarks>
+        /// Per file, because an unused import does not compile in Go. Kotlin can hand every
+        /// file the same list and suppress the warning; here each one gets exactly what its own
+        /// text reaches for, worked out from what that file is rather than by scanning what was
+        /// rendered.
+        ///
+        /// Nothing imports another generated file: they are all one package, so a table's file
+        /// names another table's record type with no import at all.
+        /// </remarks>
+        /// <param name="standard">Standard library paths, without quotes.</param>
+        /// <param name="reader">Whether the file names the emitted reader package.</param>
+        private IReadOnlyList<string> Imports(IEnumerable<string> standard, bool reader)
         {
-            var imports = new List<string>();
+            var imports = standard.Select(path => $"\"{path}\"").ToList();
 
-            if (_model.Tables.Count > 0)
-                imports.Add("\"fmt\"");
-
-            if (_model.Tables.Count > 0)
-                imports.Add("\"path/filepath\"");
-
-            if (_model.Enums.Count > 0)
-                imports.Add("\"strconv\"");
+            if (!reader)
+                return imports;
 
             // Blank line between the standard library and everything else, as gofmt would.
             if (imports.Count > 0)
@@ -197,6 +278,14 @@ namespace SheetMan.CodeGeneration
 
             return imports;
         }
+
+        /// <summary>Whether a constant set names the reader's UUID type.</summary>
+        private static bool NamesUuid(ConstantSet set)
+            => set.Constants.Any(constant => constant.Type == ValueType.Uuid);
+
+        /// <summary>Whether a table's fields name the reader's UUID type.</summary>
+        private static bool NamesUuid(Table table)
+            => table.SerialFields.Any(sf => !sf.IsRef && sf.ElementType == ValueType.Uuid);
 
         private GoEnumView BuildEnum(Models.Enum enumm) => new GoEnumView
         {

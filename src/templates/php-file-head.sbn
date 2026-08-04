@@ -18,11 +18,13 @@
 declare(strict_types=1);
 
 namespace {{ namespace }};
-{{~ if requires | array.size > 0 }}
-{{~ for line in requires }}
+{{~ if requires | array.size > 0 ~}}
+
+{{~ for line in requires ~}}
 {{ line }}
 {{~ end ~}}
-{{~ end }}
+{{~ end ~}}
 
 use SheetMan\LiteBinaryReader;
 use SheetMan\Uuid;
+

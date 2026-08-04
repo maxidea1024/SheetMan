@@ -1,0 +1,9 @@
+{{~## How every generated header ends: the `extern "C"` close and the guard. ##~}}
+{{~ if extern_c ~}}
+
+#ifdef __cplusplus
+}
+#endif
+{{~ end ~}}
+
+#endif /* {{ guard }} */
