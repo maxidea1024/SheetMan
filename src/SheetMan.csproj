@@ -70,6 +70,17 @@
                       LogicalName="SheetMan.Runtime.Ruby.lite_binary_reader.rb" />
     <EmbeddedResource Include="..\lib\dart\sheetman\lite_binary_reader.dart"
                       LogicalName="SheetMan.Runtime.Dart.lite_binary_reader.dart" />
+
+    <!--
+      Unreal gets its own rather than the C++ one, because the engine already has every
+      type that reader defines. Going through std::string and a SheetMan Uuid struct
+      cost two allocations per string cell and a text parse per uuid, to build what
+      FString and FGuid already are. And an Unreal module builds with exceptions off, so
+      the throwing reader could not report a malformed file at all - the throw was a
+      termination inside a function whose signature promised a bool.
+    -->
+    <EmbeddedResource Include="..\lib\unreal\sheetman\SheetManLiteBinaryReader.h"
+                      LogicalName="SheetMan.Runtime.Unreal.SheetManLiteBinaryReader.h" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Xunit;
@@ -9,10 +10,17 @@ namespace SheetMan.Tests
     /// The Unreal target: USTRUCT rows, UENUM enums, a static accessor and a module the
     /// project can add as it stands.
     ///
-    /// The wire format is not re-implemented here - the module ships the same C++ reader
-    /// the plain C++ target does, and that one is already checked against the conformance
-    /// corpus. What is new is the Unreal wrapping, and what can go wrong with it is what
-    /// Unreal Header Tool rejects.
+    /// The wire format is checked by the conformance corpus through the plain C++ reader,
+    /// which reads the same bytes. What is checked here is everything that makes this an
+    /// Unreal module rather than C++ in a folder: that Unreal Header Tool accepts it, and
+    /// that it is written in the engine's own types and error handling.
+    ///
+    /// The last two matter because the target shipped for a while with the plain C++
+    /// reader inside it. That built, and UHT accepted it, and the corpus passed - and it
+    /// was still wrong: std::string and a SheetMan uuid struct where FString and FGuid
+    /// belonged, costing an allocation per string cell and a text parse per uuid, and a
+    /// reader that reported a malformed file by throwing inside a module that Unreal
+    /// builds with exceptions disabled. Nothing in the suite noticed, so these do.
     /// </summary>
     public class UnrealTargetTests
     {
@@ -20,6 +28,56 @@ namespace SheetMan.Tests
 
         private static string ModuleDir(string scenario, string moduleName)
             => Path.Combine(RepoLayout.OutputDir(scenario), "Source", moduleName);
+
+        /// <summary>
+        /// Every generated line of the module that is not a comment.
+        ///
+        /// Comments are dropped because the ones explaining why the standard library is
+        /// not used here would otherwise fail the tests that check it is not used.
+        /// </summary>
+        private static IReadOnlyList<(string File, int Line, string Text)> CodeLines()
+        {
+            var lines = new List<(string, int, string)>();
+
+            string module = ModuleDir(Scenario, "SheetManCore");
+
+            foreach (var path in Directory.EnumerateFiles(module, "*.*", SearchOption.AllDirectories))
+            {
+                if (Path.GetExtension(path) != ".h" && Path.GetExtension(path) != ".cpp")
+                    continue;
+
+                var text = File.ReadAllLines(path);
+
+                for (int i = 0; i < text.Length; i++)
+                {
+                    string trimmed = text[i].TrimStart();
+
+                    if (trimmed.StartsWith("//", StringComparison.Ordinal)
+                        || trimmed.StartsWith("*", StringComparison.Ordinal)
+                        || trimmed.StartsWith("/*", StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+
+                    lines.Add((Path.GetFileName(path), i + 1, text[i]));
+                }
+            }
+
+            Assert.NotEmpty(lines);
+
+            return lines;
+        }
+
+        private static void NothingContains(string needle, string why)
+        {
+            var offenders = CodeLines()
+                .Where(line => line.Text.Contains(needle, StringComparison.Ordinal))
+                .Select(line => $"  {line.File}:{line.Line}  {line.Text.Trim()}")
+                .ToList();
+
+            Assert.True(offenders.Count == 0,
+                $"{why}{Environment.NewLine}{string.Join(Environment.NewLine, offenders)}");
+        }
 
         [Fact]
         public void Generates_a_module_that_needs_no_wiring_up()
@@ -35,6 +93,73 @@ namespace SheetMan.Tests
             Assert.True(File.Exists(Path.Combine(module, "Public", "FSheetManCore.h")));
             Assert.True(File.Exists(Path.Combine(module, "Private", "FSheetManCore.cpp")));
             Assert.True(File.Exists(Path.Combine(module, "Public", "SheetManLiteBinaryReader.h")));
+        }
+
+        /// <summary>
+        /// The module is written in the engine's types, not the standard library's.
+        ///
+        /// Unreal has an equivalent for every type a table holds, and going through the
+        /// standard library's meant building an FString from a std::string and an FGuid by
+        /// parsing text a uuid struct had just printed. Both are gone; this is what keeps
+        /// them gone, because nothing else in the suite can tell the difference.
+        /// </summary>
+        [Fact]
+        public void The_module_is_written_in_engine_types()
+        {
+            SheetManRunner.Convert(Scenario);
+
+            NothingContains("std::", "The module uses a standard library type where the engine has one:");
+
+            // A standard library header is how one gets in. Engine headers are quoted.
+            NothingContains("#include <", "The module includes a standard library header:");
+        }
+
+        /// <summary>
+        /// Nothing in the module throws.
+        ///
+        /// Unreal builds a module with exceptions disabled unless its Build.cs asks
+        /// otherwise, so a throw is not a failure a caller can handle - it is the process
+        /// ending. The reader reports a malformed file by returning false instead, which
+        /// is what `bool Read(const FString&)` has always claimed to do.
+        /// </summary>
+        [Fact]
+        public void Nothing_in_the_module_throws()
+        {
+            SheetManRunner.Convert(Scenario);
+
+            NothingContains("throw", "The module throws, and Unreal builds it with exceptions disabled:");
+
+            // And the Build.cs must not quietly turn exceptions on to make the above safe.
+            // That would work, and it would also mean every module depending on this one
+            // pays for it. The assignment rather than the word: the file says in a comment
+            // why it does not set this, and saying so is the opposite of an offence.
+            string build = File.ReadAllText(
+                Path.Combine(ModuleDir(Scenario, "SheetManCore"), "SheetManCore.Build.cs"));
+
+            Assert.DoesNotMatch(@"bEnableExceptions\s*=\s*true", build);
+        }
+
+        /// <summary>
+        /// A malformed table is refused rather than half-loaded.
+        ///
+        /// Checked on the generated text rather than by running it, because running it
+        /// needs an engine. What is pinned is that the load looks at the reader's failure
+        /// after the row loop and returns false - the loop itself cannot, since the reader
+        /// keeps going quietly by design so that twenty fields need no twenty checks.
+        /// </summary>
+        [Fact]
+        public void A_malformed_table_is_refused()
+        {
+            SheetManRunner.Convert(Scenario);
+
+            string source = File.ReadAllText(Path.Combine(
+                ModuleDir(Scenario, "SheetManCore"), "Private", "FSheetManCore.cpp"));
+
+            Assert.Contains("if (Reader.HasFailed())", source);
+
+            // The row loop stops on failure too. Without it a corrupt row count spins,
+            // appending a default record per turn until the allocator gives up.
+            Assert.Contains("&& !Reader.HasFailed())", source);
         }
 
         /// <summary>
