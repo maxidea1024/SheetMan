@@ -24,7 +24,7 @@ namespace SheetMan.CodeGeneration
     /// which is where the type-dependent decisions are.
     /// </summary>
     [SheetManTarget("html", TargetKind.CodeGeneration, Section = "CodeGenerations.Html", Order = 40)]
-    public partial class HtmlCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe>
+    public partial class HtmlCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe>
     {
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.HtmlRecipe _htmlRecipe;

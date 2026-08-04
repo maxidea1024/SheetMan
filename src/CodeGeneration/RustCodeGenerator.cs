@@ -65,7 +65,7 @@ namespace SheetMan.CodeGeneration
     /// The shape lives in templates/rust.sbn.
     /// </summary>
     [SheetManTarget("rust", TargetKind.CodeGeneration, Order = 60)]
-    public class RustCodeGenerator : Target<RustRecipe>
+    public class RustCodeGenerator : CodeGenerator<RustRecipe>
     {
         private Model _model;
         private RustRecipe _recipe;
@@ -99,18 +99,9 @@ namespace SheetMan.CodeGeneration
 
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Rust.lite_binary_reader.rs";
-
-            using var stream = typeof(RustCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            string filename = System.IO.Path.GetFullPath(
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Rust.lite_binary_reader.rs",
                 System.IO.Path.Combine(_recipe.Path, "src", "sheetman.rs"));
-
-            StagingFiles.WriteAllTextToFile(filename, reader.ReadToEnd());
         }
 
         private void WriteCargoToml()
@@ -392,12 +383,5 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private static string RustName(string name) => LanguageProfile.Rust.MemberName(name.ToSnakeCase());
 
-        private static IReadOnlyList<string> CommentLines(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
-
-            return comment.Replace("\r\n", "\n").Split('\n');
-        }
     }
 }

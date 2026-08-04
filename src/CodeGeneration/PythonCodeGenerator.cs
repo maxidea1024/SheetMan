@@ -55,7 +55,7 @@ namespace SheetMan.CodeGeneration
     /// The shape lives in templates/python.sbn.
     /// </summary>
     [SheetManTarget("python", TargetKind.CodeGeneration, Order = 70)]
-    public class PythonCodeGenerator : Target<PythonRecipe>
+    public class PythonCodeGenerator : CodeGenerator<PythonRecipe>
     {
         private Model _model;
         private PythonRecipe _recipe;
@@ -88,17 +88,9 @@ namespace SheetMan.CodeGeneration
 
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Python.lite_binary_reader.py";
-
-            using var stream = typeof(PythonCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            StagingFiles.WriteAllTextToFile(
-                System.IO.Path.GetFullPath(System.IO.Path.Combine(PackageDir, "sheetman.py")),
-                reader.ReadToEnd());
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Python.lite_binary_reader.py",
+                System.IO.Path.Combine(PackageDir, "sheetman.py"));
         }
 
         /// <summary>
@@ -408,7 +400,9 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private static string PythonName(string name) => LanguageProfile.Python.MemberName(name.ToSnakeCase());
 
-        private static IReadOnlyList<string> CommentLines(string comment)
+        // `new`, and not the base one: each line goes through this target's own doc
+        // escaping on the way out.
+        private static new IReadOnlyList<string> CommentLines(string comment)
         {
             if (string.IsNullOrWhiteSpace(comment))
                 return Array.Empty<string>();

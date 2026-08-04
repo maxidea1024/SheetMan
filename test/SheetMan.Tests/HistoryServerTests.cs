@@ -288,7 +288,114 @@ namespace SheetMan.Tests
             Assert.Equal("ok", (await _http.GetStringAsync(root + "/api/v1/healthz")).Trim());
         }
 
+        // --------------------------------------------------------------- failures
+
+        /// <summary>
+        /// A request the caller got wrong is answered with 400 and the reason.
+        ///
+        /// It used to be a 500 with an empty body, and nothing in the log either: Kestrel's
+        /// logging providers are cleared so that Serilog is the only log, so ASP.NET's report
+        /// of the unhandled exception went nowhere. A caller saw a bare 500 and the operator
+        /// saw nothing at all - for input the command line answers with a plain sentence.
+        /// </summary>
+        [Fact]
+        public async Task A_commit_the_history_does_not_hold_is_a_bad_request()
+        {
+            Recorded();
+
+            string root = await Serve();
+
+            var response = await _http.GetAsync(
+                $"{root}/api/v1/diff?branch={Branch}&to=0000000000000000000000000000000000000000");
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            using var document = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+
+            // The same sentence `--history` prints, rather than a status code on its own.
+            Assert.Contains("no snapshot", document.RootElement.GetProperty("error").GetString());
+            Assert.Equal(400, document.RootElement.GetProperty("status").GetInt32());
+        }
+
+        /// <summary>
+        /// And a parameter that is not a number, which is the other thing a caller mistypes.
+        /// </summary>
+        [Fact]
+        public async Task A_limit_that_is_not_a_number_is_a_bad_request()
+        {
+            Recorded();
+
+            string root = await Serve();
+
+            var response = await _http.GetAsync($"{root}/api/v1/snapshots?branch={Branch}&limit=lots");
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            using var document = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+
+            Assert.Contains("is not a number", document.RootElement.GetProperty("error").GetString());
+        }
+
         // ------------------------------------------------------------------ auth
+
+        /// <summary>
+        /// A token in the query string is moved into a cookie and taken out of the URL.
+        ///
+        /// A query string reaches an access log, a `Referer` and the address bar - which is
+        /// where a secret gets copied into a chat window from. It is still accepted, because a
+        /// browser cannot be pointed at a URL and send a header, but it survives exactly one
+        /// request.
+        /// </summary>
+        [Fact]
+        public async Task A_token_in_the_url_becomes_a_cookie()
+        {
+            Recorded();
+
+            string root = await Serve(token: "s3cret");
+
+            using var handler = new HttpClientHandler { AllowAutoRedirect = false };
+            using var client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(30) };
+
+            var response = await client.GetAsync($"{root}/?token=s3cret");
+
+            Assert.Equal(HttpStatusCode.Found, response.StatusCode);
+
+            // Where it is sent has no token on it any more.
+            Assert.DoesNotContain("token", response.Headers.Location.ToString());
+
+            string cookie = string.Join(" ", response.Headers.GetValues("Set-Cookie"));
+
+            Assert.Contains("sheetman_token=s3cret", cookie);
+            Assert.Contains("httponly", cookie.ToLowerInvariant());
+            Assert.Contains("samesite=strict", cookie.ToLowerInvariant());
+
+            // And the cookie alone gets the page, which is what the redirect relies on.
+            var followed = await client.GetAsync(root + "/");
+
+            Assert.Equal(HttpStatusCode.OK, followed.StatusCode);
+        }
+
+        /// <summary>
+        /// An API call with a query token is answered rather than redirected.
+        ///
+        /// That one is a script or a curl line, and a 302 to a URL needing a cookie would
+        /// break it for no gain - the address bar is not the concern there.
+        /// </summary>
+        [Fact]
+        public async Task An_api_call_with_a_query_token_is_answered_directly()
+        {
+            Recorded();
+
+            string root = await Serve(token: "s3cret");
+
+            using var handler = new HttpClientHandler { AllowAutoRedirect = false };
+            using var client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(30) };
+
+            var response = await client.GetAsync($"{root}/api/v1/projects?token=s3cret");
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Contains(Project, await response.Content.ReadAsStringAsync());
+        }
 
         [Fact]
         public async Task Without_the_token_nothing_is_served()

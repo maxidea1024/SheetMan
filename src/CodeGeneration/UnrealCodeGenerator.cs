@@ -80,7 +80,7 @@ namespace SheetMan.CodeGeneration
     /// The shapes live in templates/unreal.sbn and templates/unreal-cpp.sbn.
     /// </summary>
     [SheetManTarget("unreal", TargetKind.CodeGeneration, Order = 90)]
-    public class UnrealCodeGenerator : Target<UnrealRecipe>
+    public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
     {
         private Model _model;
         private UnrealRecipe _recipe;
@@ -144,20 +144,11 @@ namespace SheetMan.CodeGeneration
 
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Unreal.SheetManLiteBinaryReader.h";
-
-            using var stream = typeof(UnrealCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
             // Public, because the generated header includes it and anything including that
             // header needs to find it.
-            StagingFiles.WriteAllTextToFile(
-                System.IO.Path.GetFullPath(
-                    System.IO.Path.Combine(ModuleDir, "Public", "SheetManLiteBinaryReader.h")),
-                reader.ReadToEnd());
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Unreal.SheetManLiteBinaryReader.h",
+                System.IO.Path.Combine(ModuleDir, "Public", "SheetManLiteBinaryReader.h"));
         }
 
         /// <summary>
@@ -456,12 +447,5 @@ namespace SheetMan.CodeGeneration
             return field.ElementType == ValueType.Bool ? "b" + cased : cased;
         }
 
-        private static IReadOnlyList<string> CommentLines(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
-
-            return comment.Replace("\r\n", "\n").Split('\n');
-        }
     }
 }

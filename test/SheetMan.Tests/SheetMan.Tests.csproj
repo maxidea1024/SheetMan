@@ -33,4 +33,22 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!--
+      Lifts NPOI's transitive System.Security.Cryptography.Xml 8.0.2, which carries eight
+      high-severity advisories, onto a patched version.
+
+      src/SheetMan.csproj needs no such reference: its ASP.NET Core framework reference
+      supplies that assembly from the shared framework. This project has no framework
+      reference, so NuGet resolves the package instead - which is how the vulnerable version
+      came back after the pull-up was removed from src as redundant. It was redundant there
+      and load-bearing here, and nothing said so.
+
+      Not shipped either way. What it costs while it is wrong is sixteen build warnings, and
+      a build nobody reads the warnings of is a build that hides the next real one - the
+      warning noise had already pushed a test into slicing JSON out of stdout by hand.
+    -->
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
+  </ItemGroup>
+
 </Project>

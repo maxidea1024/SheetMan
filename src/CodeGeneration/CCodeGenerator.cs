@@ -63,7 +63,7 @@ namespace SheetMan.CodeGeneration
     /// The shapes live in templates/c-header.sbn and templates/c-source.sbn.
     /// </summary>
     [SheetManTarget("c", TargetKind.CodeGeneration, Order = 86)]
-    public class CCodeGenerator : Target<CRecipe>
+    public class CCodeGenerator : CodeGenerator<CRecipe>
     {
         private Model _model;
         private CRecipe _recipe;
@@ -113,18 +113,9 @@ namespace SheetMan.CodeGeneration
 
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.C.sheetman_lite_binary_reader.h";
-
-            using var stream = typeof(CCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            StagingFiles.WriteAllTextToFile(
-                System.IO.Path.GetFullPath(System.IO.Path.Combine(
-                    _recipe.Path, "sheetman", "sheetman_lite_binary_reader.h")),
-                reader.ReadToEnd());
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.C.sheetman_lite_binary_reader.h",
+                System.IO.Path.Combine(_recipe.Path, "sheetman", "sheetman_lite_binary_reader.h"));
         }
 
         // --------------------------------------------------------------- view
@@ -486,12 +477,5 @@ namespace SheetMan.CodeGeneration
         /// <summary>A member name, snake_case as Doom writes them.</summary>
         private static string CName(string name) => LanguageProfile.C.MemberName(name.ToSnakeCase());
 
-        private static IReadOnlyList<string> CommentLines(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
-
-            return comment.Replace("\r\n", "\n").Split('\n');
-        }
     }
 }

@@ -28,7 +28,7 @@ namespace SheetMan.CodeGeneration
     /// type names, read calls, the JSON conversions - and nothing else.
     /// </summary>
     [SheetManTarget("typescript", TargetKind.CodeGeneration, Section = "CodeGenerations.Typescript", Order = 30)]
-    public class TsCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe>
+    public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe>
     {
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe _typescriptRecipe;
@@ -114,16 +114,9 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Ts.lite_binary_reader.ts";
-
-            using var stream = typeof(TsCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            StagingFiles.WriteAllTextToFile(
-                GetTsFilename("sheetman/lite_binary_reader.ts"), reader.ReadToEnd());
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Ts.lite_binary_reader.ts",
+                GetTsFilename("sheetman/lite_binary_reader.ts"));
         }
 
         // --------------------------------------------------------------- view
@@ -524,7 +517,10 @@ namespace SheetMan.CodeGeneration
         /// per-line prefix: a comment of one line becomes `/** text * /` on that line, and a
         /// longer one is run together, which is what the printer did.
         /// </summary>
-        private static IReadOnlyList<string> CommentLines(string comment)
+        // `new`, and not the base one: TypeScript wraps the whole comment in `/** */`
+        // and runs its lines together, which is a different answer rather than the same
+        // one spelled differently.
+        private static new IReadOnlyList<string> CommentLines(string comment)
         {
             if (string.IsNullOrEmpty(comment))
                 return Array.Empty<string>();

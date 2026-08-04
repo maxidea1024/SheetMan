@@ -54,7 +54,7 @@ namespace SheetMan.CodeGeneration
     /// The shape lives in templates/java.sbn.
     /// </summary>
     [SheetManTarget("java", TargetKind.CodeGeneration, Order = 80)]
-    public class JavaCodeGenerator : Target<JavaRecipe>
+    public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
     {
         private Model _model;
         private JavaRecipe _recipe;
@@ -87,20 +87,11 @@ namespace SheetMan.CodeGeneration
 
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Java.LiteBinaryReader.java";
-
-            using var stream = typeof(JavaCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
             // Its own `sheetman` package, so the generated accessor's package is free to be
             // anything the consumer wants.
-            StagingFiles.WriteAllTextToFile(
-                System.IO.Path.GetFullPath(
-                    System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.java")),
-                reader.ReadToEnd());
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Java.LiteBinaryReader.java",
+                System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.java"));
         }
 
         // --------------------------------------------------------------- view
@@ -380,12 +371,5 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private static string JavaConstantName(string name) => name.ToSnakeCase().ToUpperInvariant();
 
-        private static IReadOnlyList<string> CommentLines(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
-
-            return comment.Replace("\r\n", "\n").Split('\n');
-        }
     }
 }

@@ -25,7 +25,7 @@ namespace SheetMan.CodeGeneration
     /// scope, which is why they carried their own escaping for `$` and `"`.
     /// </summary>
     [SheetManTarget("csharp", TargetKind.CodeGeneration, Section = "CodeGenerations.CSharp", Order = 20)]
-    public class CsCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe>
+    public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe>
     {
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe _csharpReceipe;
@@ -64,18 +64,9 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Cs.LiteBinaryReader.cs";
-
-            using var stream = typeof(CsCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            string filename = Path.GetFullPath(
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Cs.LiteBinaryReader.cs",
                 Path.Combine(_csharpReceipe.Path, "SheetManBinaryReader.cs"));
-
-            StagingFiles.WriteAllTextToFile(filename, reader.ReadToEnd());
         }
 
         private void GenerateModel()
@@ -415,7 +406,10 @@ namespace SheetMan.CodeGeneration
         /// A comment split into the lines the template will wrap in a doc comment. Empty
         /// when there is no comment, so the template needs no test of its own.
         /// </summary>
-        private static IReadOnlyList<string> CommentLines(string comment)
+        // `new`, and not the base one: this tests IsNullOrEmpty rather than
+        // IsNullOrWhiteSpace, so a comment of nothing but spaces reaches the template as
+        // one blank line instead of none - and the golden pages record that.
+        private static new IReadOnlyList<string> CommentLines(string comment)
         {
             if (string.IsNullOrEmpty(comment))
                 return Array.Empty<string>();

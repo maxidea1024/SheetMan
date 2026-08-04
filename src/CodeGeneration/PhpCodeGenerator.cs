@@ -55,7 +55,7 @@ namespace SheetMan.CodeGeneration
     /// The shape lives in templates/php.sbn.
     /// </summary>
     [SheetManTarget("php", TargetKind.CodeGeneration, Order = 87)]
-    public class PhpCodeGenerator : Target<PhpRecipe>
+    public class PhpCodeGenerator : CodeGenerator<PhpRecipe>
     {
         private Model _model;
         private PhpRecipe _recipe;
@@ -84,18 +84,9 @@ namespace SheetMan.CodeGeneration
 
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Php.LiteBinaryReader.php";
-
-            using var stream = typeof(PhpCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            StagingFiles.WriteAllTextToFile(
-                System.IO.Path.GetFullPath(
-                    System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.php")),
-                reader.ReadToEnd());
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Php.LiteBinaryReader.php",
+                System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.php"));
         }
 
         // --------------------------------------------------------------- view
@@ -417,12 +408,5 @@ namespace SheetMan.CodeGeneration
         /// <summary>A property name, camelCase.</summary>
         private static string PhpName(string name) => LanguageProfile.Php.MemberName(name.ToCamelCase());
 
-        private static IReadOnlyList<string> CommentLines(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
-
-            return comment.Replace("\r\n", "\n").Split('\n');
-        }
     }
 }

@@ -51,7 +51,7 @@ namespace SheetMan.CodeGeneration
     /// The shape lives in templates/kotlin.sbn.
     /// </summary>
     [SheetManTarget("kotlin", TargetKind.CodeGeneration, Order = 85)]
-    public class KotlinCodeGenerator : Target<KotlinRecipe>
+    public class KotlinCodeGenerator : CodeGenerator<KotlinRecipe>
     {
         private Model _model;
         private KotlinRecipe _recipe;
@@ -83,18 +83,9 @@ namespace SheetMan.CodeGeneration
 
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Kotlin.LiteBinaryReader.kt";
-
-            using var stream = typeof(KotlinCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            StagingFiles.WriteAllTextToFile(
-                System.IO.Path.GetFullPath(
-                    System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.kt")),
-                reader.ReadToEnd());
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Kotlin.LiteBinaryReader.kt",
+                System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.kt"));
         }
 
         // --------------------------------------------------------------- view
@@ -407,12 +398,5 @@ namespace SheetMan.CodeGeneration
         /// <summary>An enum constant, SCREAMING_SNAKE_CASE as Kotlin writes them.</summary>
         private static string ConstantName(string name) => name.ToSnakeCase().ToUpperInvariant();
 
-        private static IReadOnlyList<string> CommentLines(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
-
-            return comment.Replace("\r\n", "\n").Split('\n');
-        }
     }
 }

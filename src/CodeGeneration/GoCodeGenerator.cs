@@ -79,7 +79,7 @@ namespace SheetMan.CodeGeneration
     /// The shape lives in templates/go.sbn.
     /// </summary>
     [SheetManTarget("go", TargetKind.CodeGeneration, Order = 50)]
-    public class GoCodeGenerator : Target<GoRecipe>
+    public class GoCodeGenerator : CodeGenerator<GoRecipe>
     {
         private Model _model;
         private GoRecipe _recipe;
@@ -120,18 +120,9 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Go.lite_binary_reader.go";
-
-            using var stream = typeof(GoCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            string filename = System.IO.Path.GetFullPath(
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Go.lite_binary_reader.go",
                 System.IO.Path.Combine(_recipe.Path, "sheetman", "lite_binary_reader.go"));
-
-            StagingFiles.WriteAllTextToFile(filename, reader.ReadToEnd());
         }
 
         /// <summary>
@@ -460,12 +451,5 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private static string GoName(string name) => LanguageProfile.Go.MemberName(name.ToPascalCase());
 
-        private static IReadOnlyList<string> CommentLines(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
-
-            return comment.Replace("\r\n", "\n").Split('\n');
-        }
     }
 }

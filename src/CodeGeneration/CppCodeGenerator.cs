@@ -34,7 +34,7 @@ namespace SheetMan.CodeGeneration
     /// writes, so the two have to change together.
     /// </summary>
     [SheetManTarget("cpp", TargetKind.CodeGeneration, Section = "CodeGenerations.Cpp", Order = 10)]
-    public class CppCodeGenerator : Target<RecipeModel.CodeGenerationRecipeGroup.CppRecipe>
+    public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGroup.CppRecipe>
     {
         private Model _model;
         private RecipeModel.CodeGenerationRecipeGroup.CppRecipe _cppRecipe;
@@ -67,18 +67,9 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private void WriteBinaryReaderRuntime()
         {
-            const string resourceName = "SheetMan.Runtime.Cpp.lite_binary_reader.h";
-
-            using var stream = typeof(CppCodeGenerator).Assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            string filename = Path.GetFullPath(
+            WriteBinaryReaderRuntime(
+                "SheetMan.Runtime.Cpp.lite_binary_reader.h",
                 Path.Combine(_cppRecipe.Path, "sheetman", "lite_binary_reader.h"));
-
-            StagingFiles.WriteAllTextToFile(filename, reader.ReadToEnd());
         }
 
         private void GenerateModel()
@@ -458,18 +449,6 @@ namespace SheetMan.CodeGeneration
 
             guard.Append("_H");
             return guard.ToString();
-        }
-
-        /// <summary>
-        /// A comment split into the lines the template will prefix with `///`. Empty when
-        /// there is no comment, so the template needs no test of its own.
-        /// </summary>
-        private static IReadOnlyList<string> CommentLines(string comment)
-        {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
-
-            return comment.Replace("\r\n", "\n").Split('\n');
         }
 
         private IEnumerable<string> NamespaceParts()
