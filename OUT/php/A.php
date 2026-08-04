@@ -113,4 +113,3 @@ final class A
         // No table references another.
     }
 }
-

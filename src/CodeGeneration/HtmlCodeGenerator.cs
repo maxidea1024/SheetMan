@@ -92,7 +92,7 @@ namespace SheetMan.CodeGeneration
                                      .ToList(),
             };
 
-            Write("index.html", "html-index.sbn", view, trailingBlankLine: false);
+            Write("index.html", "html-index.sbn", view);
         }
 
         private void GenerateEnums()
@@ -121,9 +121,11 @@ namespace SheetMan.CodeGeneration
                 }).ToList(),
             };
 
-            // No footer on an enum page, so it ends on a PrintLine and carries the blank
-            // line the pages built with a footer do not.
-            Write($"enums/{enumm.Name.ToKebabCase()}.html", "html-enum.sbn", view, trailingBlankLine: true);
+            // An enum page has no footer, which used to mean it ended with a blank line the
+            // other pages did not have - the old printer left one wherever a generator's last
+            // call was PrintLine. Every generated file now ends with exactly one newline, so
+            // there is nothing left to say about it here.
+            Write($"enums/{enumm.Name.ToKebabCase()}.html", "html-enum.sbn", view);
         }
 
         private void GenerateConstantSets()
@@ -134,7 +136,7 @@ namespace SheetMan.CodeGeneration
                 Sets = _model.ConstantSets.Select(BuildConstantSet).ToList(),
             };
 
-            Write("constantsets.html", "html-constantsets.sbn", view, trailingBlankLine: false);
+            Write("constantsets.html", "html-constantsets.sbn", view);
         }
 
         private HtmlConstantSetView BuildConstantSet(ConstantSet constantSet)
@@ -186,7 +188,7 @@ namespace SheetMan.CodeGeneration
                 Tables = _model.Tables.Select(BuildTable).ToList(),
             };
 
-            Write("tables.html", "html-tables.sbn", view, trailingBlankLine: false);
+            Write("tables.html", "html-tables.sbn", view);
         }
 
         private HtmlTableView BuildTable(Models.Table table) => new HtmlTableView
@@ -426,7 +428,7 @@ namespace SheetMan.CodeGeneration
             return $"<a href=\"{location.SheetUrl}\" title=\"Jump to source sheet\">{text}</a>";
         }
 
-        private void Write(string filename, string templateName, HtmlPageView view, bool trailingBlankLine)
+        private void Write(string filename, string templateName, HtmlPageView view)
         {
             view.CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss");
             view.User = Environment.UserName;
@@ -434,7 +436,7 @@ namespace SheetMan.CodeGeneration
             string fullPath = Path.Combine(_htmlRecipe.Path, filename);
 
             StagingFiles.WriteAllTextToFile(
-                fullPath, TemplateEngine.Render(templateName, view, trailingBlankLine));
+                fullPath, TemplateEngine.Render(templateName, view));
         }
     }
 }

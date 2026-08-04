@@ -1602,4 +1602,3 @@ namespace SheetMan.Fixtures.Core.Client
     #endregion
 
 } // namespace SheetMan.Fixtures.Core.Client
-

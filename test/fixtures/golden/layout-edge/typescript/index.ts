@@ -16,4 +16,3 @@ export { SecondTableTable } from './tables/SecondTable'
 
 export { Tables } from './Tables'
 export { Updater } from './Updater'
-

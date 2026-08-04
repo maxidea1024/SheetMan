@@ -149,4 +149,3 @@ void A_Free(A_t* data)
 {
     A_TemplateFree(&data->template_);
 }
-

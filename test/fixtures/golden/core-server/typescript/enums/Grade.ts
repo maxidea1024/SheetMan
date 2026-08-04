@@ -19,4 +19,3 @@ export enum Grade {
     /** epic grade */
     Epic = 3
 }
-

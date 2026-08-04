@@ -121,10 +121,21 @@ namespace SheetMan.Helpers
         /// Creates a new file, writes the specified object to the .json file, and then closes the file.
         /// If the target file already exists, it is overwritten.
         /// </summary>
+        /// <remarks>
+        /// Line endings are LF and the file ends with exactly one newline, which is what the
+        /// generated source files do and what makes a file's last line a line.
+        ///
+        /// Newtonsoft writes the platform's line ending when indenting, so a JSON export from
+        /// Windows differed from the same export on Linux - the golden trees are recorded on
+        /// one of those and compared on the other in CI. And it wrote no trailing newline at
+        /// all, so a .json export was the one kind of file this tool produced that git, a
+        /// diff and every editor would complain about.
+        /// </remarks>
         public static string WriteToJsonFile(string filename, object obj, bool indented = true)
         {
             string json = JsonConvert.SerializeObject(obj, indented ? Formatting.Indented : Formatting.None);
-            return WriteAllTextToFile(filename, json);
+
+            return WriteAllTextToFile(filename, json.Replace("\r\n", "\n").TrimEnd('\n') + "\n");
         }
 
 

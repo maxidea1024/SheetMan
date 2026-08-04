@@ -93,4 +93,3 @@ class Tables {
     // No table references another.
   }
 }
-

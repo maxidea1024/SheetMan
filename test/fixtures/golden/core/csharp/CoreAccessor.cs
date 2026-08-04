@@ -1782,4 +1782,3 @@ namespace SheetMan.Fixtures.Core
     #endregion
 
 } // namespace SheetMan.Fixtures.Core
-

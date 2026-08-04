@@ -161,4 +161,3 @@ public:
               meta = (DisplayName = "Load All SheetMan Tables"))
     static bool ReadAll(const FString& BasePath);
 };
-

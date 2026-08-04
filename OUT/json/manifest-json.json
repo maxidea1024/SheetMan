@@ -1,13 +1,13 @@
 {
-  "LastUpdatedDate": "2026-08-04T11:40:12.9080247+09:00",
-  "MasterHash": "b3abae905ce6ff01bb86732895b14622",
-  "TotalSize": 393,
+  "LastUpdatedDate": "2026-08-04T16:09:59.2972497+09:00",
+  "MasterHash": "7f3ba50dff483ee282001555c221f697",
+  "TotalSize": 373,
   "Items": [
     {
       "Name": "Template.json",
-      "Size": 393,
-      "Hash": "b3abae905ce6ff01bb86732895b14622",
-      "LastUpdatedDate": "2026-08-04T11:40:12.9080222+09:00"
+      "Size": 373,
+      "Hash": "7f3ba50dff483ee282001555c221f697",
+      "LastUpdatedDate": "2026-08-04T16:09:59.2969797+09:00"
     }
   ]
 }
