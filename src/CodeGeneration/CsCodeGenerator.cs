@@ -71,16 +71,53 @@ namespace SheetMan.CodeGeneration
                 Path.Combine(_csharpReceipe.Path, "SheetManBinaryReader.cs"));
         }
 
+        /// <summary>
+        /// Writes a file per table, per enum and per constant set, plus the accessor and the
+        /// helpers.
+        /// </summary>
+        /// <remarks>
+        /// It used to be one file holding all of it, which made a deleted table a hunk of dead
+        /// code inside a file that still compiled - and a diff of a generated file show the
+        /// helpers as changed every time a table was added, because they moved down the page.
+        ///
+        /// The layout is the one the TypeScript target has always had, because a consumer
+        /// working in two languages should not have to learn two shapes.
+        /// </remarks>
         private void GenerateModel()
         {
-            string filename = Path.GetFullPath(
-                Path.Combine(_csharpReceipe.Path, _csharpReceipe.AccessorName + ".cs"));
+            var view = BuildView();
 
-            Log.Information($"Generating codes for CSharp into `{filename}`");
+            Log.Information($"Generating codes for CSharp into `{Path.GetFullPath(_csharpReceipe.Path)}`");
 
-            string rendered = TemplateEngine.Render("csharp.sbn", BuildView());
+            Write(_csharpReceipe.AccessorName + ".cs", "csharp-accessor.sbn", view);
+            Write("SheetManHelpers.cs", "csharp-helpers.sbn", Part());
 
-            StagingFiles.WriteAllTextToFile(filename, Outdent(rendered));
+            foreach (var table in view.Tables)
+                Write(Path.Combine("tables", table.Name + "Table.cs"), "csharp-table.sbn", Part(table: table));
+
+            foreach (var enumm in view.Enums)
+                Write(Path.Combine("enums", enumm.Name + ".cs"), "csharp-enum.sbn", Part(enumm: enumm));
+
+            foreach (var set in view.ConstantSets)
+                Write(Path.Combine("constants", set.Name + ".cs"), "csharp-constants.sbn", Part(set: set));
+        }
+
+        /// <summary>A view for one of the single-subject templates.</summary>
+        private CsPartView Part(
+            CsTableView table = null, CsEnumView enumm = null, CsConstantSetView set = null)
+            => new CsPartView
+            {
+                Namespace = _csharpReceipe.Namespace,
+                Table = table,
+                Enumm = enumm,
+                Set = set,
+            };
+
+        private void Write(string relative, string templateName, object view)
+        {
+            string filename = Path.GetFullPath(Path.Combine(_csharpReceipe.Path, relative));
+
+            StagingFiles.WriteAllTextToFile(filename, Outdent(TemplateEngine.Render(templateName, view)));
         }
 
         /// <summary>

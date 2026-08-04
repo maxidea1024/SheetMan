@@ -1,0 +1,89 @@
+{{~##
+   The accessor: one static property per table, the load, and the reference linking.
+
+   Its own file, holding no table's own code. That is what makes a deleted table a deleted
+   file rather than a hunk somebody has to notice - and it is why this had to be split at
+   the same time as the sweep landed, because a per-table file that nothing removes is worse
+   than one big file.
+
+   Anything needing the model arrives already rendered from CsView.
+
+   Note for anyone editing: a literal closing brace pair inside a comment ends the comment,
+   and a literal opening pair anywhere is read as code.
+##~}}
+{{ include 'csharp-file-head.sbn' ~}}
+    public partial class Tables
+    {
+{{ include 'csharp-read-bytes.sbn' ~}}
+{{~ for table in tables }}
+        /// <summary>
+        /// Property for {{ table.name }} table.
+        /// </summary>
+        public static {{ table.name }}Table {{ table.name }} { get; private set; }
+{{~ end ~}}
+
+        /// <summary>
+        /// Read all tables.
+        /// </summary>
+        public static async Task ReadAllAsync(string basePath, string fileExtension = ".table")
+        {
+{{~ if tables | array.size == 0 ~}}
+            return await Task.CompletedTask;
+{{~ else ~}}
+            var tasks = new List<Task>();
+{{~ for table in tables }}
+            {{ table.name }} = new {{ table.name }}Table();
+            tasks.Add({{ table.name }}.ReadAsync(System.IO.Path.Combine(basePath, $"{{ table.raw_name }}{fileExtension}")));
+{{~ end ~}}
+
+            await Task.WhenAll(tasks);
+
+            SolveCrossReferences();
+{{~ end ~}}
+        }
+
+        /// <summary>
+        /// Solve cross references.
+        /// </summary>
+        private static void SolveCrossReferences()
+        {
+{{~ for table in tables_with_references ~}}
+{{~ if !for.first }}
+{{ end ~}}
+            foreach (var record in {{ table.name }}.Records)
+            {
+{{~ for field in table.reference_fields ~}}
+{{~ if field.kind == 'array_ref' ~}}
+                for (int i = 0; i < {{ field.element_count }}; i++)
+                {
+{{~ if field.references_field ~}}
+                    if (record.{{ field.field_name }}_{{ field.ref_table }}_index[i] > 0)
+                    {
+                        record.SetReference_{{ field.prop_name }}_INTERNAL(i, {{ field.ref_table }}.GetByIndex(record._{{ field.prop_name }}_{{ field.ref_table }}_index[i]).{{ field.ref_field }});
+                        record.{{ field.field_name }}_F[i] = true;
+                    }
+{{~ else ~}}
+                    if (record._{{ field.prop_name }}_{{ field.ref_table }}_index[i] > 0)
+                    {
+                        record.SetReference_{{ field.prop_name }}_INTERNAL(i, {{ field.ref_table }}.GetByIndex(record.{{ field.field_name }}_{{ field.ref_table }}_index[i]));
+                        record.{{ field.field_name }}_F[i] = true;
+                    }
+{{~ end ~}}
+                }
+{{~ else ~}}
+                if (record.{{ field.field_name }}_{{ field.ref_table }}_index > 0)
+                {
+{{~ if field.references_field ~}}
+                    record.SetReference_{{ field.prop_name }}_INTERNAL({{ field.ref_table }}.GetByIndex(record.{{ field.field_name }}_{{ field.ref_table }}_index).{{ field.ref_field }});
+{{~ else ~}}
+                    record.SetReference_{{ field.prop_name }}_INTERNAL({{ field.ref_table }}.GetByIndex(record.{{ field.field_name }}_{{ field.ref_table }}_index));
+{{~ end ~}}
+                    record.{{ field.field_name }}_F = true;
+                }
+{{~ end ~}}
+{{~ end ~}}
+            }
+{{~ end ~}}
+        }
+    }
+{{ include 'csharp-file-foot.sbn' ~}}
