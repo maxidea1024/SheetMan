@@ -39,3 +39,20 @@ table's file does not compile, or does not load, and never reaches the compariso
 
 Print to standard output and nothing else. Exit non-zero on failure with a message on
 standard error.
+
+## The constant set
+
+The corpus also carries a constant set, `Limits`. No harness prints it and the comparison
+never looks at it - constants are not rows, so there is nothing in the exporter's JSON to
+compare against.
+
+It is there so that every language's constants file is generated and then compiled, or
+required, or imported. Nothing did that before: neither this corpus nor `reserved-words` -
+the only other scenario generating for all twelve - had a constant set, so splitting each
+target's output into a file per table produced a constants file in twelve languages that
+nothing ever built. Rust proved the cost of that: a constant typed with an enum names that
+enum, the dependency graph did not say so, and the crate did not compile.
+
+`DefaultFlag` and `BuildId` are the two that earn their place. An enum-typed constant makes
+the file depend on an enum declared elsewhere, and a uuid makes it depend on the reader.
+Every other type is self-contained and is here only so the set is not misleadingly narrow.

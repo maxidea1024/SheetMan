@@ -854,6 +854,43 @@ namespace SheetMan.FixtureGen
 
             b.Table(8, 20, owners);
 
+            // A constant set, so every language's constants file is generated, compiled and
+            // read by its harness.
+            //
+            // Nothing gated one before. The corpus had no constant set, and neither did
+            // reserved-words - the only other scenario generating for every language - so
+            // splitting the output into a file per table produced a constants file per set in
+            // twelve languages that nothing ever built. Rust proved the point: a constant typed
+            // with an enum names that enum, the dependency graph did not say so, and the crate
+            // did not compile. It took building an unrelated corpus by hand to find out.
+            //
+            // The enum-typed and uuid-typed constants are the two that make a constants file
+            // depend on something outside itself, which is what makes them worth the place here.
+            var limits = new ConstSpec
+            {
+                Name = "Limits",
+                Comment = "Constants whose types make a constants file depend on something else.",
+            };
+
+            limits
+                .Constant("MaxOwners", "int", "3", "how many rows Owners has")
+                .Constant("Huge", "bigint", "9223372036854775807", "past what a double carries exactly")
+                .Constant("Ratio", "float", "0.25", "single precision")
+                .Constant("Precise", "double", "5E-324", "the smallest denormal")
+                .Constant("Title", "string", "é한Ａ", "beyond ascii")
+                .Constant("Enabled", "bool", "Y", "logical flag")
+                .Constant("Epoch", "datetime", "1970-01-01 00:00:00", "as ticks on the wire")
+                .Constant("Round", "timespan", "0.00:05:00", "as ticks on the wire")
+
+                // The two that reach outside the file: an enum label, and a value the reader's
+                // own type carries.
+                .Constant("DefaultFlag", "enum", "Large", "names the Flag enum", detailType: "Flag")
+                .Constant("BuildId", "uuid", "6f9619ff-8b86-d011-b42d-00c04fc964ff",
+                          "names the reader's uuid type");
+
+            // Column 1, well below the Flag enum: the two tables are at column 8.
+            b.Const(1, 20, limits);
+
             Save(workbook, path);
         }
 
