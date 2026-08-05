@@ -159,10 +159,11 @@ namespace SheetMan.Tests
                 {
                     Succeeded = false,
                     Output =
-                        "No .uhtmanifest found under the engine's Intermediate directory. The gate borrows " +
-                        "CoreUObject's module entry from one, because its header list is curated - globbing " +
-                        "the directory pulls in headers the tool rejects. Build the engine editor target once, " +
-                        "or point SHEETMAN_UE_MANIFEST at a manifest.",
+                        "No .uhtmanifest naming both CoreUObject and Engine was found under the engine's " +
+                        "Intermediate directory. The gate borrows those two module entries from one, because " +
+                        "their header lists are curated - globbing the directories pulls in headers the tool " +
+                        "rejects. Build the engine editor target once, or point SHEETMAN_UE_MANIFEST at a " +
+                        "manifest that has both.",
                 };
             }
 
@@ -184,12 +185,53 @@ namespace SheetMan.Tests
         }
 
         /// <summary>
-        /// A manifest the engine or a project has already produced, whose CoreUObject entry
-        /// this borrows.
+        /// Engine, cut down to the one header the generated module needs from it.
+        /// </summary>
+        /// <remarks>
+        /// The generated Blueprint library derives from UBlueprintFunctionLibrary, so UHT has to
+        /// have parsed that declaration before it reaches ours. Borrowing Engine's whole entry
+        /// would do it and costs more than it is worth: those 1084 headers reach for
+        /// UDeveloperSettings and a long tail behind it, so the manifest grows until it is the
+        /// editor - and this gate is asking whether UHT accepts *our* module, not Engine's.
         ///
-        /// Borrowed rather than reconstructed: that entry lists a curated set of headers,
-        /// and globbing the directory instead pulls in ones the tool rejects - the first
-        /// attempt at this failed inside ObjectMacros.h, nowhere near the code under test.
+        /// One header instead. UBlueprintFunctionLibrary's own parent is UObject, which
+        /// CoreUObject has already supplied, so the chain stops there.
+        ///
+        /// The rest of the entry is Engine's own, so the paths and the module type are whatever
+        /// the real build said they were.
+        /// </remarks>
+        private static object OneHeaderOfEngine(IReadOnlyList<JsonElement> borrowed)
+        {
+            var engine = borrowed.First(module => module.GetProperty("Name").GetString() == "Engine");
+
+            string classes = Path.Combine(
+                engine.GetProperty("BaseDirectory").GetString(), "Classes",
+                "Kismet", "BlueprintFunctionLibrary.h");
+
+            return new
+            {
+                Name = "Engine",
+                ModuleType = engine.GetProperty("ModuleType").GetString(),
+                OverrideModuleType = "None",
+                BaseDirectory = engine.GetProperty("BaseDirectory").GetString(),
+                IncludeBase = engine.GetProperty("IncludeBase").GetString(),
+                OutputDirectory = engine.GetProperty("OutputDirectory").GetString(),
+                ClassesHeaders = new[] { classes },
+                PublicHeaders = Array.Empty<string>(),
+                PrivateHeaders = Array.Empty<string>(),
+                GeneratedCPPFilenameBase = engine.GetProperty("GeneratedCPPFilenameBase").GetString(),
+                SaveExportedHeaders = false,
+                UHTGeneratedCodeVersion = "None",
+            };
+        }
+
+        /// <summary>
+        /// A manifest the engine or a project has already produced, whose CoreUObject and Engine
+        /// entries this borrows.
+        ///
+        /// Borrowed rather than reconstructed: those entries list a curated set of headers, and
+        /// globbing the directories instead pulls in ones the tool rejects - the first attempt at
+        /// this failed inside ObjectMacros.h, nowhere near the code under test.
         /// </summary>
         private static string FindEngineManifest(string engineRoot)
         {
@@ -202,17 +244,28 @@ namespace SheetMan.Tests
                 return null;
 
             return Directory.EnumerateFiles(intermediate, "*.uhtmanifest", SearchOption.AllDirectories)
-                            .FirstOrDefault(path => HasCoreUObject(path));
+                            .FirstOrDefault(HasTheDependencies);
         }
 
-        private static bool HasCoreUObject(string manifestPath)
+        /// <summary>
+        /// Whether a manifest describes both modules the generated one needs.
+        /// </summary>
+        /// <remarks>
+        /// CoreUObject alone was enough until the target grew a Blueprint function library, whose
+        /// parent type is in Engine. Most manifests under Intermediate are for a single program
+        /// and have neither; the editor target's has both.
+        /// </remarks>
+        private static bool HasTheDependencies(string manifestPath)
         {
             try
             {
                 using var document = JsonDocument.Parse(File.ReadAllText(manifestPath));
 
-                return document.RootElement.GetProperty("Modules").EnumerateArray()
-                               .Any(module => module.GetProperty("Name").GetString() == "CoreUObject");
+                var names = document.RootElement.GetProperty("Modules").EnumerateArray()
+                                    .Select(module => module.GetProperty("Name").GetString())
+                                    .ToHashSet(StringComparer.Ordinal);
+
+                return names.Contains("CoreUObject") && names.Contains("Engine");
             }
             catch (Exception)
             {
@@ -230,8 +283,17 @@ namespace SheetMan.Tests
         {
             using var source = JsonDocument.Parse(File.ReadAllText(borrowedManifest));
 
-            var coreUObject = source.RootElement.GetProperty("Modules").EnumerateArray()
-                                    .First(module => module.GetProperty("Name").GetString() == "CoreUObject");
+            var borrowed = source.RootElement.GetProperty("Modules").EnumerateArray().ToList();
+
+            // In dependency order, because UHT resolves a parent type against what it has parsed
+            // so far.
+            var coreUObject = borrowed.First(module => module.GetProperty("Name").GetString() == "CoreUObject");
+
+            var dependencies = new object[]
+            {
+                JsonSerializer.Deserialize<object>(coreUObject.GetRawText()),
+                OneHeaderOfEngine(borrowed),
+            };
 
             var manifest = new
             {
@@ -239,9 +301,7 @@ namespace SheetMan.Tests
                 RootLocalPath = engineRoot,
                 TargetName = "SheetManVerify",
                 ExternalDependenciesFile = Path.Combine(workDir, "SheetManVerify.deps"),
-                Modules = new object[]
-                {
-                    JsonSerializer.Deserialize<object>(coreUObject.GetRawText()),
+                Modules = dependencies.Append<object>(
                     new
                     {
                         Name = moduleName,
@@ -256,8 +316,7 @@ namespace SheetMan.Tests
                         GeneratedCPPFilenameBase = Path.Combine(outputDir, moduleName + ".gen"),
                         SaveExportedHeaders = true,
                         UHTGeneratedCodeVersion = "None",
-                    },
-                },
+                    }).ToArray(),
             };
 
             return JsonSerializer.Serialize(manifest, new JsonSerializerOptions { WriteIndented = true });
