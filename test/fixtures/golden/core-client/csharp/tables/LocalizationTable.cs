@@ -30,31 +30,34 @@ namespace SheetMan.Fixtures.Core.Client
         [System.Serializable]
         public partial class Record
         {
-            #region Fields
+            #region Values
             /// <summary>
             /// primary index
             /// </summary>
             public int Index => _index;
-            internal int _index;
 
             /// <summary>
             /// lookup key
             /// </summary>
             public string Key => _key;
-            internal string _key = "";
 
             /// <summary>
             /// english text 1
             /// </summary>
             public string[] TextEnArray => _textEnArray;
             public const int TextEnArray_N = 2;
-            internal string[] _textEnArray = System.Array.Empty<string>();
 
             /// <summary>
             /// korean text 1
             /// </summary>
             public string[] TextKoArray => _textKoArray;
             public const int TextKoArray_N = 2;
+            #endregion
+
+            #region Storage
+            internal int _index;
+            internal string _key = "";
+            internal string[] _textEnArray = System.Array.Empty<string>();
             internal string[] _textKoArray = System.Array.Empty<string>();
             #endregion
 
@@ -146,6 +149,15 @@ namespace SheetMan.Fixtures.Core.Client
             var columns = LiteBinaryTable.ReadHeader(reader, out int count);
 
             _records.Clear();
+            _recordsByIndex.Clear();
+
+            // Sized once. The row count was checked against what the columns declare before
+            // this point, so it is a number the file could actually hold rows for - and a
+            // list that grows into twenty thousand rows reallocates fifteen times to get
+            // there, copying everything each time.
+            if (_records.Capacity < count)
+                _records.Capacity = count;
+
             for (int i = 0; i < count; i++)
                 _records.Add(new Record());
 

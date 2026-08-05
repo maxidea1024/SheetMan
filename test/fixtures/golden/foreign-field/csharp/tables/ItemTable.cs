@@ -30,25 +30,31 @@ namespace SheetMan.Fixtures.X
         [System.Serializable]
         public partial class Record
         {
-            #region Fields
+            #region Values
             /// <summary>
             /// primary index
             /// </summary>
             public int Index => _index;
-            internal int _index;
 
             /// <summary>
             /// item name
             /// </summary>
             public string Name => _name;
-            internal string _name = "";
 
             /// <summary>
             /// category name by reference
             /// </summary>
             public string CategoryName => _categoryName;
-            internal string _categoryName;
+            #endregion
+
+            #region Reference wiring
             public void SetReference_CategoryName_INTERNAL(string value) => _categoryName = value;
+            #endregion
+
+            #region Storage
+            internal int _index;
+            internal string _name = "";
+            internal string _categoryName;
             public int _categoryName_ItemCategory_index;
             public bool _categoryName_F = false;
             #endregion
@@ -140,6 +146,15 @@ namespace SheetMan.Fixtures.X
             var columns = LiteBinaryTable.ReadHeader(reader, out int count);
 
             _records.Clear();
+            _recordsByIndex.Clear();
+
+            // Sized once. The row count was checked against what the columns declare before
+            // this point, so it is a number the file could actually hold rows for - and a
+            // list that grows into twenty thousand rows reallocates fifteen times to get
+            // there, copying everything each time.
+            if (_records.Capacity < count)
+                _records.Capacity = count;
+
             for (int i = 0; i < count; i++)
                 _records.Add(new Record());
 

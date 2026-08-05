@@ -88,7 +88,10 @@ namespace SheetMan.CodeGeneration
 
         public IReadOnlyList<TsFieldView> Fields { get; set; }
 
-        /// <summary>The fields a lookup map is built for.</summary>
+/// <summary>The fields that reference another table, and so get a wiring method.</summary>
+        public IReadOnlyList<TsFieldView> ReferenceFields { get; set; }
+
+                /// <summary>The fields a lookup map is built for.</summary>
         public IReadOnlyList<TsFieldView> IndexedFields { get; set; }
     }
 

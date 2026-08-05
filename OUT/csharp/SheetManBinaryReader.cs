@@ -453,6 +453,67 @@ namespace SheetMan.Binary
         /// not survive the conversion is a value this format does not read. What each member
         /// accepts is decided at generation time - the accepted list is in the generated call.
         /// </remarks>
+        /// <summary>
+        /// The one, two and three element forms the generated code actually emits.
+        /// </summary>
+        /// <remarks>
+        /// Rather than one `params` overload, which allocates an array per column per load
+        /// for a list that is never longer than three and is known at generation time.
+        /// </remarks>
+        public static void CheckColumn(
+            in LiteBinaryColumn column, string fieldName, byte kind, int count, byte accepted)
+        {
+            CheckShape(column, fieldName, kind, count);
+
+            if (column.Element != accepted)
+                throw ElementMismatch(column, fieldName);
+        }
+
+        public static void CheckColumn(
+            in LiteBinaryColumn column, string fieldName, byte kind, int count,
+            byte accepted, byte alsoAccepted)
+        {
+            CheckShape(column, fieldName, kind, count);
+
+            if (column.Element != accepted && column.Element != alsoAccepted)
+                throw ElementMismatch(column, fieldName);
+        }
+
+        public static void CheckColumn(
+            in LiteBinaryColumn column, string fieldName, byte kind, int count,
+            byte accepted, byte alsoAccepted, byte andAccepted)
+        {
+            CheckShape(column, fieldName, kind, count);
+
+            if (column.Element != accepted && column.Element != alsoAccepted
+                && column.Element != andAccepted)
+            {
+                throw ElementMismatch(column, fieldName);
+            }
+        }
+
+        private static void CheckShape(
+            in LiteBinaryColumn column, string fieldName, byte kind, int count)
+        {
+            if (column.Kind != kind || (kind != KindVarArray && column.Count != count))
+            {
+                throw new LiteBinaryException(
+                    $"{fieldName}: the file's column (kind {column.Kind}, count {column.Count}) does not " +
+                    $"match the generated member (kind {kind}, count {count}). The schema changed shape; " +
+                    "regenerate the code or rebuild the data.");
+            }
+        }
+
+        private static LiteBinaryException ElementMismatch(
+            in LiteBinaryColumn column, string fieldName)
+            => new LiteBinaryException(
+                $"{fieldName}: the file carries element type {column.Element}, which this member " +
+                "cannot read. The column changed type incompatibly; regenerate the code or " +
+                "rebuild the data.");
+
+        /// <summary>
+        /// The general form, for an accepted list longer than three. Nothing emits one today.
+        /// </summary>
         public static void CheckColumn(
             in LiteBinaryColumn column, string fieldName, byte kind, int count, params byte[] acceptedElements)
         {

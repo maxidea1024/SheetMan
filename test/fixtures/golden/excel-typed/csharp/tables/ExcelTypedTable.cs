@@ -30,35 +30,38 @@ namespace SheetMan.Fixtures.X
         [System.Serializable]
         public partial class Record
         {
-            #region Fields
+            #region Values
             /// <summary>
             /// primary index
             /// </summary>
             public int Index => _index;
-            internal int _index;
 
             /// <summary>
             /// numeric cell holding an integer
             /// </summary>
             public int IntFromNumeric => _intFromNumeric;
-            internal int _intFromNumeric;
 
             /// <summary>
             /// numeric cell holding a fraction
             /// </summary>
             public float FloatFromNumeric => _floatFromNumeric;
-            internal float _floatFromNumeric;
 
             /// <summary>
             /// genuine Excel date cell
             /// </summary>
             public System.DateTime WhenFromDateCell => _whenFromDateCell;
-            internal System.DateTime _whenFromDateCell;
 
             /// <summary>
             /// numeric cell beyond double precision
             /// </summary>
             public long BigFromNumeric => _bigFromNumeric;
+            #endregion
+
+            #region Storage
+            internal int _index;
+            internal int _intFromNumeric;
+            internal float _floatFromNumeric;
+            internal System.DateTime _whenFromDateCell;
             internal long _bigFromNumeric;
             #endregion
 
@@ -151,6 +154,15 @@ namespace SheetMan.Fixtures.X
             var columns = LiteBinaryTable.ReadHeader(reader, out int count);
 
             _records.Clear();
+            _recordsByIndex.Clear();
+
+            // Sized once. The row count was checked against what the columns declare before
+            // this point, so it is a number the file could actually hold rows for - and a
+            // list that grows into twenty thousand rows reallocates fifteen times to get
+            // there, copying everything each time.
+            if (_records.Capacity < count)
+                _records.Capacity = count;
+
             for (int i = 0; i < count; i++)
                 _records.Add(new Record());
 

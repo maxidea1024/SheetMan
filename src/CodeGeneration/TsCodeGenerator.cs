@@ -181,6 +181,12 @@ namespace SheetMan.CodeGeneration
                                      .Where(x => x.sf.IsIndexer)
                                      .Select(x => x.view)
                                      .ToList(),
+
+                ReferenceFields = table.SerialFields
+                                       .Select((sf, i) => new { sf, view = fields[i] })
+                                       .Where(x => x.sf.IsRef)
+                                       .Select(x => x.view)
+                                       .ToList(),
             };
         }
 

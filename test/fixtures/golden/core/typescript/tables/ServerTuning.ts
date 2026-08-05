@@ -26,14 +26,15 @@ export class ServerTuningRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number = 0
 
     /** tuning key */
     public get key(): string { return this._key }
-    public _key: string = ''
 
     /** tuning amount */
     public get amount(): number { return this._amount }
+
+    public _index: number = 0
+    public _key: string = ''
     public _amount: number = 0
 
     /** Populate field values. */

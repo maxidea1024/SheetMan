@@ -27,7 +27,11 @@
         [System.Serializable]
         public partial class Record
         {
-            #region Fields
+            #region Values
+{{~## The readable surface first, and the storage below it. A property and its
+      backing field on adjacent lines reads as noise where the field is never the
+      thing a consumer wants; grouped, the top of the record is what it holds and
+      the bottom is how. ##~}}
 {{~ for field in table.fields ~}}
 {{~ if !for.first }}
 {{ end ~}}
@@ -40,28 +44,45 @@
             /// </summary>
 {{~ end ~}}
 {{~ end ~}}
-{{~ if field.kind == 'array_ref' ~}}
+{{~ if field.kind == 'array_ref' || field.kind == 'array' ~}}
             public {{ field.field_type }}[] {{ field.prop_name }} => {{ field.field_name }};
             public const int {{ field.prop_name }}_N = {{ field.element_count }};
-            internal {{ field.field_type }}[] {{ field.field_name }} = new {{ field.field_type }}[{{ field.field_name }}_N];
-            public void SetReference_{{ field.prop_name }}_INTERNAL(int index, {{ field.reference_setter_type }} value) => {{ field.field_name }}[index] = value;
-            public int[] {{ field.field_name }}_{{ field.ref_table }}_index = new int[{{ field.prop_name }}_N];
-            public bool[] {{ field.field_name }}_F = new bool[{{ field.field_name }}_N];
 {{~ else if field.kind == 'var_array' ~}}
             public {{ field.field_type }}[] {{ field.prop_name }} => {{ field.field_name }};
-            internal {{ field.field_type }}[] {{ field.field_name }} = System.Array.Empty<{{ field.field_type }}>();
-{{~ else if field.kind == 'array' ~}}
-            public {{ field.field_type }}[] {{ field.prop_name }} => {{ field.field_name }};
-            public const int {{ field.prop_name }}_N = {{ field.element_count }};
+{{~ else ~}}
+            public {{ field.field_type }} {{ field.prop_name }} => {{ field.field_name }};
+{{~ end ~}}
+{{~ end ~}}
+            #endregion
+{{~ if table.reference_fields | array.size > 0 }}
+            #region Reference wiring
+{{~## Called by the accessor once every table is read, and by nothing else. Kept
+      away from the values above because a consumer never calls one. ##~}}
+{{~ for field in table.reference_fields ~}}
+{{~ if field.kind == 'array_ref' ~}}
+            public void SetReference_{{ field.prop_name }}_INTERNAL(int index, {{ field.reference_setter_type }} value) => {{ field.field_name }}[index] = value;
+{{~ else ~}}
+            public void SetReference_{{ field.prop_name }}_INTERNAL({{ field.reference_setter_type }} value) => {{ field.field_name }} = value;
+{{~ end ~}}
+{{~ end ~}}
+            #endregion
+{{~ end ~}}
+
+            #region Storage
+{{~## Written by the enclosing table as it reads, and by the accessor as it
+      resolves references - hence `internal` and `public` rather than `private`. ##~}}
+{{~ for field in table.fields ~}}
+{{~ if field.kind == 'array_ref' ~}}
+            internal {{ field.field_type }}[] {{ field.field_name }} = new {{ field.field_type }}[{{ field.prop_name }}_N];
+            public int[] {{ field.field_name }}_{{ field.ref_table }}_index = new int[{{ field.prop_name }}_N];
+            public bool[] {{ field.field_name }}_F = new bool[{{ field.prop_name }}_N];
+{{~ else if field.kind == 'var_array' || field.kind == 'array' ~}}
             internal {{ field.field_type }}[] {{ field.field_name }} = System.Array.Empty<{{ field.field_type }}>();
 {{~ else if field.kind == 'scalar_ref' ~}}
-            public {{ field.field_type }} {{ field.prop_name }} => {{ field.field_name }};
             internal {{ field.field_type }} {{ field.field_name }};
-            public void SetReference_{{ field.prop_name }}_INTERNAL({{ field.reference_setter_type }} value) => {{ field.field_name }} = value;
             public int {{ field.field_name }}_{{ field.ref_table }}_index;
             public bool {{ field.field_name }}_F = false;
 {{~ else ~}}
-            public {{ field.field_type }} {{ field.prop_name }} => {{ field.field_name }};
             internal {{ field.field_type }} {{ field.field_name }}{{ field.initializer }};
 {{~ end ~}}
 {{~ end ~}}
@@ -162,6 +183,17 @@
 {{~ end ~}}
 
             _records.Clear();
+{{~ for field in table.indexed_fields ~}}
+            _recordsBy{{ field.prop_name }}.Clear();
+{{~ end ~}}
+
+            // Sized once. The row count was checked against what the columns declare before
+            // this point, so it is a number the file could actually hold rows for - and a
+            // list that grows into twenty thousand rows reallocates fifteen times to get
+            // there, copying everything each time.
+            if (_records.Capacity < count)
+                _records.Capacity = count;
+
             for (int i = 0; i < count; i++)
                 _records.Add(new Record());
 

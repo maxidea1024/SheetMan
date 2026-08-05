@@ -31,34 +31,35 @@ export class TemplateRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number = 0
 
     /** class: keyword in C++ and C# */
     public get class(): string { return this._class }
-    public _class: string = ''
 
     /** int: keyword in C++ and C# */
     public get int(): number { return this._int }
-    public _int: number = 0
 
     /** delete: keyword in C++ */
     public get delete(): boolean { return this._delete }
-    public _delete: boolean = false
 
     /** operator: keyword in C++ */
     public get operator(): string { return this._operator }
-    public _operator: string = ''
 
     /** namespace: keyword in C++ and C# */
     public get namespace(): string { return this._namespace }
-    public _namespace: string = ''
 
     /** constructor: special member in TypeScript */
     public get constructor_(): string { return this._constructor_ }
-    public _constructor_: string = ''
 
     /** function: keyword in TypeScript */
     public get function(): string { return this._function }
+
+    public _index: number = 0
+    public _class: string = ''
+    public _int: number = 0
+    public _delete: boolean = false
+    public _operator: string = ''
+    public _namespace: string = ''
+    public _constructor_: string = ''
     public _function: string = ''
 
     /** Populate field values. */

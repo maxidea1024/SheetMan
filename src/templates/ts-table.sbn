@@ -39,34 +39,50 @@ export class {{ name }}Record {
     /** Default constructor */
     constructor() {
     }
+{{~## The readable surface first, and the storage below it. A getter and its
+      backing field on adjacent lines reads as noise where the field is never the
+      thing a consumer wants; grouped, the top of the record is what it holds and
+      the bottom is how. ##~}}
 {{~ for field in fields }}
 {{~ for line in field.comment ~}}
     {{ line }}
 {{~ end ~}}
-{{~ if field.kind == 'array_ref' ~}}
+{{~ if field.is_array ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
+{{~ if field.kind == 'array_ref' || field.kind == 'array' ~}}
     public static readonly {{ field.prop_name }}_N: number = {{ field.element_count }}
-    public {{ field.field_name }}: {{ field.field_type }}[] = []
-    public setReference_{{ field.prop_name }}_INTERNAL(index: number, value: {{ field.reference_setter_type }}): void { this.{{ field.field_name }}[index] = value; }
-{{~ else if field.kind == 'var_array' ~}}
-    public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
-    public {{ field.field_name }}: {{ field.field_type }}[] = []
-{{~ else if field.kind == 'array' ~}}
-    public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
-    public static readonly {{ field.prop_name }}_N = {{ field.element_count }}
-    public {{ field.field_name }}: {{ field.field_type }}[] = []
-{{~ else if field.kind == 'scalar_ref' ~}}
+{{~ end ~}}
+{{~ else ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
-    public {{ field.field_name }}: {{ field.field_type }}
+{{~ end ~}}
+{{~ end ~}}
+{{~## Called by the accessor once every table is read, and by nothing else. Kept away
+      from the getters above because a consumer never calls one. ##~}}
+{{~ if reference_fields | array.size > 0 ~}}
+
+{{~ for field in fields ~}}
+{{~ if field.kind == 'array_ref' ~}}
+    public setReference_{{ field.prop_name }}_INTERNAL(index: number, value: {{ field.reference_setter_type }}): void { this.{{ field.field_name }}[index] = value; }
+{{~ else if field.kind == 'scalar_ref' ~}}
 {{~ if field.reference_is_record ~}}
     public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value; }
 {{~ else ~}}
     public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value }
 {{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+{{~## Public rather than private: the enclosing table writes them as it reads, and
+      the accessor writes the reference members as it resolves them. ##~}}
+
+{{~ for field in fields ~}}
+{{~ if field.kind == 'array_ref' || field.kind == 'var_array' || field.kind == 'array' ~}}
+    public {{ field.field_name }}: {{ field.field_type }}[] = []
+{{~ else if field.kind == 'scalar_ref' ~}}
+    public {{ field.field_name }}: {{ field.field_type }}
     public {{ field.field_name }}_{{ field.ref_table }}_index: number = 0
     public {{ field.field_name }}_F: boolean = false
 {{~ else ~}}
-    public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
     public {{ field.field_name }}: {{ field.field_type }} = {{ field.default_value }}
 {{~ end ~}}
 {{~ end ~}}

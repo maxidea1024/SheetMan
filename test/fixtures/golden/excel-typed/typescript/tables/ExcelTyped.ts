@@ -28,22 +28,23 @@ export class ExcelTypedRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number = 0
 
     /** numeric cell holding an integer */
     public get intFromNumeric(): number { return this._intFromNumeric }
-    public _intFromNumeric: number = 0
 
     /** numeric cell holding a fraction */
     public get floatFromNumeric(): number { return this._floatFromNumeric }
-    public _floatFromNumeric: number = 0
 
     /** genuine Excel date cell */
     public get whenFromDateCell(): string { return this._whenFromDateCell }
-    public _whenFromDateCell: string = ''
 
     /** numeric cell beyond double precision */
     public get bigFromNumeric(): bigint { return this._bigFromNumeric }
+
+    public _index: number = 0
+    public _intFromNumeric: number = 0
+    public _floatFromNumeric: number = 0
+    public _whenFromDateCell: string = ''
     public _bigFromNumeric: bigint = 0n
 
     /** Populate field values. */

@@ -110,14 +110,24 @@ namespace SheetMan.Fixtures.Core.Server
         }
     }
     /// <summary>
-    /// ToString helper class.
+    /// Renders a record's values into a StringBuilder.
     /// </summary>
+    /// <remarks>
+    /// One overload per value type a field can hold, and only what is left goes through the
+    /// `object` one. The typed overloads are not decoration: passing an `int` to an `object`
+    /// parameter boxes it, and an array reached as `IEnumerable` allocates an enumerator and
+    /// boxes every element on the way past. A record with twenty fields is twenty boxes per
+    /// call, and a log line over a table is that times the row count.
+    ///
+    /// What still boxes: enums, and reference types that have nothing to box. An enum needs a
+    /// generic constraint the older Unity compilers do not take, and it allocates its label
+    /// string either way, so the box is the smaller half of a cost that stays.
+    /// </remarks>
     public static class ToStringHelper
     {
         public static void ToString(object self, StringBuilder target, bool first = true)
         {
-            if (!first)
-                target.Append(", ");
+            Separator(target, first);
 
             bool firstChild = true;
             if (self is null)
@@ -162,6 +172,194 @@ namespace SheetMan.Fixtures.Core.Server
             {
                 target.Append(self);
             }
+        }
+
+        #region Scalars
+
+        public static void ToString(string self, StringBuilder target, bool first = true)
+        {
+            Separator(target, first);
+
+            if (self is null)
+            {
+                target.Append("null");
+                return;
+            }
+
+            target.Append('"');
+            target.Append(self);
+            target.Append('"');
+        }
+
+        public static void ToString(bool self, StringBuilder target, bool first = true)
+        {
+            Separator(target, first);
+            target.Append(self);
+        }
+
+        public static void ToString(int self, StringBuilder target, bool first = true)
+        {
+            Separator(target, first);
+            target.Append(self);
+        }
+
+        public static void ToString(long self, StringBuilder target, bool first = true)
+        {
+            Separator(target, first);
+            target.Append(self);
+        }
+
+        public static void ToString(float self, StringBuilder target, bool first = true)
+        {
+            Separator(target, first);
+            target.Append(self);
+        }
+
+        public static void ToString(double self, StringBuilder target, bool first = true)
+        {
+            Separator(target, first);
+            target.Append(self);
+        }
+
+        // These three render as their own ToString either way - StringBuilder has no overload
+        // for them - so what this saves is the box, not the string.
+
+        public static void ToString(System.DateTime self, StringBuilder target, bool first = true)
+        {
+            Separator(target, first);
+            target.Append(self.ToString());
+        }
+
+        public static void ToString(System.TimeSpan self, StringBuilder target, bool first = true)
+        {
+            Separator(target, first);
+            target.Append(self.ToString());
+        }
+
+        public static void ToString(System.Guid self, StringBuilder target, bool first = true)
+        {
+            Separator(target, first);
+            target.Append(self.ToString());
+        }
+
+        #endregion
+
+        #region Arrays
+
+        public static void ToString(string[] self, StringBuilder target, bool first = true)
+        {
+            if (Open(self, target, first)) return;
+
+            for (int i = 0; i < self.Length; i++)
+                ToString(self[i], target, i == 0);
+
+            target.Append("]");
+        }
+
+        public static void ToString(bool[] self, StringBuilder target, bool first = true)
+        {
+            if (Open(self, target, first)) return;
+
+            for (int i = 0; i < self.Length; i++)
+                ToString(self[i], target, i == 0);
+
+            target.Append("]");
+        }
+
+        public static void ToString(int[] self, StringBuilder target, bool first = true)
+        {
+            if (Open(self, target, first)) return;
+
+            for (int i = 0; i < self.Length; i++)
+                ToString(self[i], target, i == 0);
+
+            target.Append("]");
+        }
+
+        public static void ToString(long[] self, StringBuilder target, bool first = true)
+        {
+            if (Open(self, target, first)) return;
+
+            for (int i = 0; i < self.Length; i++)
+                ToString(self[i], target, i == 0);
+
+            target.Append("]");
+        }
+
+        public static void ToString(float[] self, StringBuilder target, bool first = true)
+        {
+            if (Open(self, target, first)) return;
+
+            for (int i = 0; i < self.Length; i++)
+                ToString(self[i], target, i == 0);
+
+            target.Append("]");
+        }
+
+        public static void ToString(double[] self, StringBuilder target, bool first = true)
+        {
+            if (Open(self, target, first)) return;
+
+            for (int i = 0; i < self.Length; i++)
+                ToString(self[i], target, i == 0);
+
+            target.Append("]");
+        }
+
+        public static void ToString(System.DateTime[] self, StringBuilder target, bool first = true)
+        {
+            if (Open(self, target, first)) return;
+
+            for (int i = 0; i < self.Length; i++)
+                ToString(self[i], target, i == 0);
+
+            target.Append("]");
+        }
+
+        public static void ToString(System.TimeSpan[] self, StringBuilder target, bool first = true)
+        {
+            if (Open(self, target, first)) return;
+
+            for (int i = 0; i < self.Length; i++)
+                ToString(self[i], target, i == 0);
+
+            target.Append("]");
+        }
+
+        public static void ToString(System.Guid[] self, StringBuilder target, bool first = true)
+        {
+            if (Open(self, target, first)) return;
+
+            for (int i = 0; i < self.Length; i++)
+                ToString(self[i], target, i == 0);
+
+            target.Append("]");
+        }
+
+        #endregion
+
+        private static void Separator(StringBuilder target, bool first)
+        {
+            if (!first)
+                target.Append(", ");
+        }
+
+        /// <summary>
+        /// Writes an array's separator and opening bracket. True means it is done - the array
+        /// was null and there is nothing to iterate.
+        /// </summary>
+        private static bool Open(object self, StringBuilder target, bool first)
+        {
+            Separator(target, first);
+
+            if (self is null)
+            {
+                target.Append("null");
+                return true;
+            }
+
+            target.Append("[");
+            return false;
         }
     }
 

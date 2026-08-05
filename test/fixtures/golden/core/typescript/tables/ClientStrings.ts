@@ -26,14 +26,15 @@ export class ClientStringsRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number = 0
 
     /** string key */
     public get key(): string { return this._key }
-    public _key: string = ''
 
     /** display text */
     public get text(): string { return this._text }
+
+    public _index: number = 0
+    public _key: string = ''
     public _text: string = ''
 
     /** Populate field values. */

@@ -32,27 +32,28 @@ export class ArrayTypesRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number = 0
 
     /** free-form tags */
     public get tags(): string[] { return this._tags }
-    public _tags: string[] = []
 
     /** cost per level */
     public get costs(): number[] { return this._costs }
-    public _costs: number[] = []
 
     /** drop weights */
     public get weights(): number[] { return this._weights }
-    public _weights: number[] = []
 
     /** allowed grades */
     public get grades(): Grade[] { return this._grades }
-    public _grades: Grade[] = []
 
     /** fixed slot 1 */
     public get slotArray(): number[] { return this._slotArray }
-    public static readonly slotArray_N = 2
+    public static readonly slotArray_N: number = 2
+
+    public _index: number = 0
+    public _tags: string[] = []
+    public _costs: number[] = []
+    public _weights: number[] = []
+    public _grades: Grade[] = []
     public _slotArray: number[] = []
 
     /** Populate field values. */

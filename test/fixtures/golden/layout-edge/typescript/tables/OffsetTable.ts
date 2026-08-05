@@ -26,14 +26,15 @@ export class OffsetTableRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number = 0
 
     /** name */
     public get name(): string { return this._name }
-    public _name: string = ''
 
     /** value */
     public get value(): number { return this._value }
+
+    public _index: number = 0
+    public _name: string = ''
     public _value: number = 0
 
     /** Populate field values. */

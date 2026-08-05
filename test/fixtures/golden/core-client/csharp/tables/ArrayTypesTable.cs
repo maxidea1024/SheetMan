@@ -30,42 +30,45 @@ namespace SheetMan.Fixtures.Core.Client
         [System.Serializable]
         public partial class Record
         {
-            #region Fields
+            #region Values
             /// <summary>
             /// primary index
             /// </summary>
             public int Index => _index;
-            internal int _index;
 
             /// <summary>
             /// free-form tags
             /// </summary>
             public string[] Tags => _tags;
-            internal string[] _tags = System.Array.Empty<string>();
 
             /// <summary>
             /// cost per level
             /// </summary>
             public int[] Costs => _costs;
-            internal int[] _costs = System.Array.Empty<int>();
 
             /// <summary>
             /// drop weights
             /// </summary>
             public float[] Weights => _weights;
-            internal float[] _weights = System.Array.Empty<float>();
 
             /// <summary>
             /// allowed grades
             /// </summary>
             public global::SheetMan.Fixtures.Core.Client.Grade[] Grades => _grades;
-            internal global::SheetMan.Fixtures.Core.Client.Grade[] _grades = System.Array.Empty<global::SheetMan.Fixtures.Core.Client.Grade>();
 
             /// <summary>
             /// fixed slot 1
             /// </summary>
             public int[] SlotArray => _slotArray;
             public const int SlotArray_N = 2;
+            #endregion
+
+            #region Storage
+            internal int _index;
+            internal string[] _tags = System.Array.Empty<string>();
+            internal int[] _costs = System.Array.Empty<int>();
+            internal float[] _weights = System.Array.Empty<float>();
+            internal global::SheetMan.Fixtures.Core.Client.Grade[] _grades = System.Array.Empty<global::SheetMan.Fixtures.Core.Client.Grade>();
             internal int[] _slotArray = System.Array.Empty<int>();
             #endregion
 
@@ -160,6 +163,15 @@ namespace SheetMan.Fixtures.Core.Client
             int tempEnumInt = 0;
 
             _records.Clear();
+            _recordsByIndex.Clear();
+
+            // Sized once. The row count was checked against what the columns declare before
+            // this point, so it is a number the file could actually hold rows for - and a
+            // list that grows into twenty thousand rows reallocates fifteen times to get
+            // there, copying everything each time.
+            if (_records.Capacity < count)
+                _records.Capacity = count;
+
             for (int i = 0; i < count; i++)
                 _records.Add(new Record());
 

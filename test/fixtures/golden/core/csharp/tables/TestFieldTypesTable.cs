@@ -30,71 +30,74 @@ namespace SheetMan.Fixtures.Core
         [System.Serializable]
         public partial class Record
         {
-            #region Fields
+            #region Values
             /// <summary>
             /// primary index
             /// </summary>
             public int Index => _index;
-            internal int _index;
 
             /// <summary>
             /// utf8 text
             /// </summary>
             public string StringField => _stringField;
-            internal string _stringField = "";
 
             /// <summary>
             /// logical flag
             /// </summary>
             public bool BoolField => _boolField;
-            internal bool _boolField;
 
             /// <summary>
             /// 32 bit integer
             /// </summary>
             public int IntField => _intField;
-            internal int _intField;
 
             /// <summary>
             /// 64 bit integer
             /// </summary>
             public long BigIntField => _bigIntField;
-            internal long _bigIntField;
 
             /// <summary>
             /// single precision
             /// </summary>
             public float FloatField => _floatField;
-            internal float _floatField;
 
             /// <summary>
             /// double precision
             /// </summary>
             public double DoubleField => _doubleField;
-            internal double _doubleField;
 
             /// <summary>
             /// date and time
             /// </summary>
             public System.DateTime DatetimeField => _datetimeField;
-            internal System.DateTime _datetimeField;
 
             /// <summary>
             /// time interval
             /// </summary>
             public System.TimeSpan TimespanField => _timespanField;
-            internal System.TimeSpan _timespanField;
 
             /// <summary>
             /// globally unique id
             /// </summary>
             public System.Guid UuidField => _uuidField;
-            internal System.Guid _uuidField;
 
             /// <summary>
             /// enum reference
             /// </summary>
             public global::SheetMan.Fixtures.Core.ValueType ValueTypeField => _valueTypeField;
+            #endregion
+
+            #region Storage
+            internal int _index;
+            internal string _stringField = "";
+            internal bool _boolField;
+            internal int _intField;
+            internal long _bigIntField;
+            internal float _floatField;
+            internal double _doubleField;
+            internal System.DateTime _datetimeField;
+            internal System.TimeSpan _timespanField;
+            internal System.Guid _uuidField;
             internal global::SheetMan.Fixtures.Core.ValueType _valueTypeField;
             #endregion
 
@@ -194,6 +197,15 @@ namespace SheetMan.Fixtures.Core
             int tempEnumInt = 0;
 
             _records.Clear();
+            _recordsByIndex.Clear();
+
+            // Sized once. The row count was checked against what the columns declare before
+            // this point, so it is a number the file could actually hold rows for - and a
+            // list that grows into twenty thousand rows reallocates fifteen times to get
+            // there, copying everything each time.
+            if (_records.Capacity < count)
+                _records.Capacity = count;
+
             for (int i = 0; i < count; i++)
                 _records.Add(new Record());
 

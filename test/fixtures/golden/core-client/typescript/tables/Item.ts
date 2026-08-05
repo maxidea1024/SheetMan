@@ -34,29 +34,31 @@ export class ItemRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number = 0
 
     /** item name */
     public get name(): string { return this._name }
-    public _name: string = ''
 
     /** owning category */
     public get categoryId(): ItemCategoryRecord { return this._categoryId }
-    public _categoryId: ItemCategoryRecord
-    public setReference_categoryId_INTERNAL(value: ItemCategoryRecord) { this._categoryId = value; }
-    public _categoryId_ItemCategory_index: number = 0
-    public _categoryId_F: boolean = false
 
     /** item grade */
     public get gradeField(): Grade { return this._gradeField }
-    public _gradeField: Grade = 0 as Grade
 
     /** granted skill */
     public get skillField(): SkillType { return this._skillField }
-    public _skillField: SkillType = 0 as SkillType
 
     /** shop blurb */
     public get description(): string { return this._description }
+
+    public setReference_categoryId_INTERNAL(value: ItemCategoryRecord) { this._categoryId = value; }
+
+    public _index: number = 0
+    public _name: string = ''
+    public _categoryId: ItemCategoryRecord
+    public _categoryId_ItemCategory_index: number = 0
+    public _categoryId_F: boolean = false
+    public _gradeField: Grade = 0 as Grade
+    public _skillField: SkillType = 0 as SkillType
     public _description: string = ''
 
     /** Populate field values. */

@@ -30,53 +30,56 @@ namespace X
         [System.Serializable]
         public partial class Record
         {
-            #region Fields
+            #region Values
             /// <summary>
             /// primary index
             /// </summary>
             public int Index => _index;
-            internal int _index;
 
             /// <summary>
             /// class: keyword in C++ and C#
             /// </summary>
             public string Class => _class;
-            internal string _class = "";
 
             /// <summary>
             /// int: keyword in C++ and C#
             /// </summary>
             public int Int => _int;
-            internal int _int;
 
             /// <summary>
             /// delete: keyword in C++
             /// </summary>
             public bool Delete => _delete;
-            internal bool _delete;
 
             /// <summary>
             /// operator: keyword in C++
             /// </summary>
             public string Operator => _operator;
-            internal string _operator = "";
 
             /// <summary>
             /// namespace: keyword in C++ and C#
             /// </summary>
             public string Namespace => _namespace;
-            internal string _namespace = "";
 
             /// <summary>
             /// constructor: special member in TypeScript
             /// </summary>
             public string Constructor => _constructor;
-            internal string _constructor = "";
 
             /// <summary>
             /// function: keyword in TypeScript
             /// </summary>
             public string Function => _function;
+            #endregion
+
+            #region Storage
+            internal int _index;
+            internal string _class = "";
+            internal int _int;
+            internal bool _delete;
+            internal string _operator = "";
+            internal string _namespace = "";
+            internal string _constructor = "";
             internal string _function = "";
             #endregion
 
@@ -172,6 +175,15 @@ namespace X
             var columns = LiteBinaryTable.ReadHeader(reader, out int count);
 
             _records.Clear();
+            _recordsByIndex.Clear();
+
+            // Sized once. The row count was checked against what the columns declare before
+            // this point, so it is a number the file could actually hold rows for - and a
+            // list that grows into twenty thousand rows reallocates fifteen times to get
+            // there, copying everything each time.
+            if (_records.Capacity < count)
+                _records.Capacity = count;
+
             for (int i = 0; i < count; i++)
                 _records.Add(new Record());
 

@@ -30,50 +30,56 @@ namespace SheetMan.Fixtures.Core.Server
         [System.Serializable]
         public partial class Record
         {
-            #region Fields
+            #region Values
             /// <summary>
             /// primary index
             /// </summary>
             public int Index => _index;
-            internal int _index;
 
             /// <summary>
             /// item name
             /// </summary>
             public string Name => _name;
-            internal string _name = "";
 
             /// <summary>
             /// owning category
             /// </summary>
             public ItemCategoryTable.Record CategoryId => _categoryId;
-            internal ItemCategoryTable.Record _categoryId;
-            public void SetReference_CategoryId_INTERNAL(ItemCategoryTable.Record value) => _categoryId = value;
-            public int _categoryId_ItemCategory_index;
-            public bool _categoryId_F = false;
 
             /// <summary>
             /// item grade
             /// </summary>
             public global::SheetMan.Fixtures.Core.Server.Grade GradeField => _gradeField;
-            internal global::SheetMan.Fixtures.Core.Server.Grade _gradeField;
 
             /// <summary>
             /// granted skill
             /// </summary>
             public global::SheetMan.Fixtures.Core.Server.SkillType SkillField => _skillField;
-            internal global::SheetMan.Fixtures.Core.Server.SkillType _skillField;
 
             /// <summary>
             /// shop blurb
             /// </summary>
             public string Description => _description;
-            internal string _description = "";
 
             /// <summary>
             /// shop price
             /// </summary>
             public int Price => _price;
+            #endregion
+
+            #region Reference wiring
+            public void SetReference_CategoryId_INTERNAL(ItemCategoryTable.Record value) => _categoryId = value;
+            #endregion
+
+            #region Storage
+            internal int _index;
+            internal string _name = "";
+            internal ItemCategoryTable.Record _categoryId;
+            public int _categoryId_ItemCategory_index;
+            public bool _categoryId_F = false;
+            internal global::SheetMan.Fixtures.Core.Server.Grade _gradeField;
+            internal global::SheetMan.Fixtures.Core.Server.SkillType _skillField;
+            internal string _description = "";
             internal int _price;
             #endregion
 
@@ -169,6 +175,15 @@ namespace SheetMan.Fixtures.Core.Server
             int tempEnumInt = 0;
 
             _records.Clear();
+            _recordsByIndex.Clear();
+
+            // Sized once. The row count was checked against what the columns declare before
+            // this point, so it is a number the file could actually hold rows for - and a
+            // list that grows into twenty thousand rows reallocates fifteen times to get
+            // there, copying everything each time.
+            if (_records.Capacity < count)
+                _records.Capacity = count;
+
             for (int i = 0; i < count; i++)
                 _records.Add(new Record());
 

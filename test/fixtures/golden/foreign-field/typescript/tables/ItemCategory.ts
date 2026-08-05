@@ -26,14 +26,15 @@ export class ItemCategoryRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number = 0
 
     /** category name */
     public get name(): string { return this._name }
-    public _name: string = ''
 
     /** description */
     public get description(): string { return this._description }
+
+    public _index: number = 0
+    public _name: string = ''
     public _description: string = ''
 
     /** Populate field values. */
