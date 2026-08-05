@@ -42,6 +42,16 @@ namespace SheetMan.Models
         /// after a reuse would read that data as the new column - the silent-wrong-value failure
         /// the tags exist to prevent. AssignTags refuses a duplicate against this list.
         /// </remarks>
+        /// <summary>
+        /// Whether the columns spell their tags out with `@N` rather than taking them from
+        /// their position.
+        ///
+        /// It is what decides how much a schema change can be trusted: with explicit tags a
+        /// column keeps its identity through a rename, a reorder and a deletion, and without
+        /// them a deletion shifts every tag after it.
+        /// </summary>
+        public bool HasExplicitTags { get; set; }
+
         public List<int> ReservedTags { get; set; } = new List<int>();
 
         /// <summary>

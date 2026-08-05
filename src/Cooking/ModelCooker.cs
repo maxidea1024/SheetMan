@@ -866,7 +866,11 @@ namespace SheetMan.Cooking
                         "field its `@N`, or drop the tag from the tombstone.");
                 }
 
-                // Ordinal mode: today's behaviour, safe for appending only.
+                // Ordinal mode: the tag is the column's position, which is safe to append
+                // to and nothing else. Recorded as such, because it is what decides how much
+                // of a schema change the baseline check can let through.
+                table.HasExplicitTags = false;
+
                 for (int position = 0; position < serials.Count; position++)
                     serials[position].FirstField.Tag = position + 1;
 
@@ -902,6 +906,8 @@ namespace SheetMan.Cooking
 
                 seen[tag] = $"field `{sf.Name}`";
             }
+
+            table.HasExplicitTags = true;
         }
 
         private Models.ValueType ParseValueType(string typeName, Location location)

@@ -24,6 +24,14 @@ namespace SheetMan.Exporters
             if (string.IsNullOrEmpty(binaryRecipe.Path))
                 return;
 
+            // Before anything is written: a schema change that would break a reader already
+            // out there stops the run here, with nothing exported and the reason named.
+            if (!string.IsNullOrEmpty(binaryRecipe.SchemaBaseline))
+            {
+                SchemaBaseline.Check(
+                    binaryRecipe.SchemaBaseline, context.Model, binaryRecipe.AcceptSchemaChanges);
+            }
+
             string manifestFilename = Path.Combine(binaryRecipe.Path, "manifest-binary.json");
 
             _manifest = Manifest.Load(manifestFilename);

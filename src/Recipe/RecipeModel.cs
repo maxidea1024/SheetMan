@@ -136,6 +136,31 @@ namespace SheetMan.Recipe
                 /// generated reader will not match the data.
                 /// </summary>
                 public string TargetSide { get; set; } = "cs";
+
+                /// <summary>
+                /// Where to keep the record of the columns data was last written with.
+                ///
+                /// Commit the file. Every run compares the schema against it and refuses a
+                /// change that a reader already built from the previous schema would not
+                /// survive - a deleted column whose tag is left free, a type that changed,
+                /// a fixed array that grew. Blank switches the check off, which leaves the
+                /// generated readers' own refusals as the only guard, and those fire in the
+                /// client rather than here.
+                /// </summary>
+                public string SchemaBaseline { get; set; } = "";
+
+                /// <summary>
+                /// Columns whose changed shape is deliberate, as `Table.Column`.
+                ///
+                /// A type change is not a thing the baseline can wave through on its own:
+                /// an already-deployed reader refuses the column rather than reading it
+                /// wrongly, so the change only works if regenerated code ships with the
+                /// data. Naming the column here says that it does.
+                ///
+                /// An acknowledgment is spent once. The next run compares against a baseline
+                /// that already has the new shape, so the entry can be taken back out.
+                /// </summary>
+                public List<string> AcceptSchemaChanges { get; set; } = new List<string>();
             }
 
             /// <summary>
