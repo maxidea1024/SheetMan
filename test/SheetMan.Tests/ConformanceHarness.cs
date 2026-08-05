@@ -413,6 +413,17 @@ namespace SheetMan.Tests
         public static ToolResult CompilePython(string scenario)
             => Execute(PythonExecutable, Generated(scenario, "python"), "-m", "compileall", "-q", ".");
 
+        /// <summary>
+        /// Runs a snippet against a scenario's generated Python package, from the directory the
+        /// package sits in so the import resolves.
+        /// </summary>
+        /// <remarks>
+        /// For the questions a harness would be too much for - whether a parameter is wired
+        /// through, say. Everything the conformance harness does needs a file; this needs a line.
+        /// </remarks>
+        public static ToolResult RunPythonSnippet(string scenario, string snippet)
+            => Execute(PythonExecutable, Generated(scenario, "python"), "-c", snippet);
+
         public static ToolResult CompileJava(string scenario)
         {
             string root = Generated(scenario, "java");

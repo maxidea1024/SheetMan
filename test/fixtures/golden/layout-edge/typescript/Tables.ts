@@ -22,16 +22,21 @@ export class Tables {
     public get secondTable(): SecondTableTable { return this._secondTable }
     private _secondTable: SecondTableTable = new SecondTableTable()
 
-    /** Read all tables asynchronously. */
-    public async readAll(basePath: string): Promise<void> {
-        await this._offsetTable.read(path.join(basePath, 'OffsetTable.json'))
-        await this._secondTable.read(path.join(basePath, 'SecondTable.json'))
+    /**
+     * Read all tables asynchronously.
+     *
+     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+     * data files were renamed after export.
+     */
+    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+        await this._offsetTable.read(path.join(basePath, `OffsetTable${fileExtension}`))
+        await this._secondTable.read(path.join(basePath, `SecondTable${fileExtension}`))
     }
 
     /** Read all tables synchronously. */
-    public readAllSync(basePath: string): void {
-        this._offsetTable.readSync(path.join(basePath, 'OffsetTable.json'))
-        this._secondTable.readSync(path.join(basePath, 'SecondTable.json'))
+    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+        this._offsetTable.readSync(path.join(basePath, `OffsetTable${fileExtension}`))
+        this._secondTable.readSync(path.join(basePath, `SecondTable${fileExtension}`))
 
         this.solveCrossReferences()
     }

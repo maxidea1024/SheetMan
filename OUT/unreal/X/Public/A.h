@@ -97,8 +97,15 @@ class X_API A
 public:
     static const FTemplateTable& Template() { return TemplateStorage; }
 
-    /** Reads every table from BasePath. Returns false if any of them could not be read. */
-    static bool ReadAll(const FString& BasePath);
+    /**
+     * Reads every table from BasePath. Returns false if any of them could not be read.
+     *
+     * FileExtension defaults to what the recipe told the exporter to write. Pass a different
+     * one when the data files were renamed on the way into the package - which they often are,
+     * since some platforms only cook what carries an extension they recognise.
+     */
+    static bool ReadAll(const FString& BasePath,
+                        const FString& FileExtension = TEXT(".table"));
 
 private:
     static FTemplateTable TemplateStorage;
@@ -159,5 +166,6 @@ public:
      */
     UFUNCTION(BlueprintCallable, Category = "SheetMan",
               meta = (DisplayName = "Load All SheetMan Tables"))
-    static bool ReadAll(const FString& BasePath);
+    static bool ReadAll(const FString& BasePath,
+                        const FString& FileExtension = TEXT(".table"));
 };

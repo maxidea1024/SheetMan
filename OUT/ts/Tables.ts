@@ -17,14 +17,19 @@ export class Tables {
     public get template(): TemplateTable { return this._template }
     private _template: TemplateTable = new TemplateTable()
 
-    /** Read all tables asynchronously. */
-    public async readAll(basePath: string): Promise<void> {
-        await this._template.read(path.join(basePath, 'Template.json'))
+    /**
+     * Read all tables asynchronously.
+     *
+     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+     * data files were renamed after export.
+     */
+    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+        await this._template.read(path.join(basePath, `Template${fileExtension}`))
     }
 
     /** Read all tables synchronously. */
-    public readAllSync(basePath: string): void {
-        this._template.readSync(path.join(basePath, 'Template.json'))
+    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+        this._template.readSync(path.join(basePath, `Template${fileExtension}`))
 
         this.solveCrossReferences()
     }

@@ -17,5 +17,10 @@ typedef struct {{ accessor.type_name }} {
 bool {{ accessor.name }}_LoadAll({{ accessor.type_name }}* data, const char* base_path,
                                   char* error, size_t error_size);
 
+/* The same, for data files carrying some other extension than the one the recipe told
+ * the exporter to write. `file_extension` includes the dot. */
+bool {{ accessor.name }}_LoadAllWithExtension({{ accessor.type_name }}* data, const char* base_path,
+                                  const char* file_extension, char* error, size_t error_size);
+
 void {{ accessor.name }}_Free({{ accessor.type_name }}* data);
 {{ include 'c-header-foot.sbn' ~}}

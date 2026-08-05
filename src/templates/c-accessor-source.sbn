@@ -42,8 +42,16 @@ static void {{ accessor.name }}_SolveCrossReferences({{ accessor.type_name }}* d
 bool {{ accessor.name }}_LoadAll({{ accessor.type_name }}* data, const char* base_path,
                                   char* error, size_t error_size)
 {
+    return {{ accessor.name }}_LoadAllWithExtension(
+        data, base_path, "{{ accessor.file_extension }}", error, error_size);
+}
+
+bool {{ accessor.name }}_LoadAllWithExtension({{ accessor.type_name }}* data, const char* base_path,
+                                  const char* file_extension, char* error, size_t error_size)
+{
 {{~ if accessor.tables | array.size == 0 ~}}
     (void)base_path;
+    (void)file_extension;
     (void)error;
     (void)error_size;
 
@@ -56,8 +64,8 @@ bool {{ accessor.name }}_LoadAll({{ accessor.type_name }}* data, const char* bas
     memset(data, 0, sizeof *data);
 {{~ for slot in accessor.tables }}
 
-    if (snprintf(path, sizeof path, "%s/%s{{ accessor.file_extension }}",
-                 base_path, "{{ slot.data_file_name }}") >= (int)sizeof path) {
+    if (snprintf(path, sizeof path, "%s/%s%s",
+                 base_path, "{{ slot.data_file_name }}", file_extension) >= (int)sizeof path) {
         sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
         {{ accessor.name }}_Free(data);
         return false;

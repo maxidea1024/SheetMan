@@ -13,13 +13,17 @@ class Tables:
         self.{{ slot.name }} = {{ slot.table_name }}()
 {{~ end ~}}
 
-    def read_all(self, base_path):
-        """Reads every table from base_path, then links the references between them."""
+    def read_all(self, base_path, file_extension="{{ accessor.file_extension }}"):
+        """Reads every table from base_path, then links the references between them.
+
+        file_extension defaults to what the recipe told the exporter to write. Pass a
+        different one when the data files were renamed after export.
+        """
 {{~ if accessor.tables | array.size == 0 ~}}
         return
 {{~ end ~}}
 {{~ for slot in accessor.tables ~}}
-        self.{{ slot.name }}.read(os.path.join(base_path, "{{ slot.data_file_name }}{{ accessor.file_extension }}"))
+        self.{{ slot.name }}.read(os.path.join(base_path, "{{ slot.data_file_name }}" + file_extension))
 {{~ end ~}}
 {{~ if accessor.tables | array.size > 0 }}
         self._solve_cross_references()

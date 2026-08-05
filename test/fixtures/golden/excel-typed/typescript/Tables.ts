@@ -17,14 +17,19 @@ export class Tables {
     public get excelTyped(): ExcelTypedTable { return this._excelTyped }
     private _excelTyped: ExcelTypedTable = new ExcelTypedTable()
 
-    /** Read all tables asynchronously. */
-    public async readAll(basePath: string): Promise<void> {
-        await this._excelTyped.read(path.join(basePath, 'ExcelTyped.json'))
+    /**
+     * Read all tables asynchronously.
+     *
+     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+     * data files were renamed after export.
+     */
+    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+        await this._excelTyped.read(path.join(basePath, `ExcelTyped${fileExtension}`))
     }
 
     /** Read all tables synchronously. */
-    public readAllSync(basePath: string): void {
-        this._excelTyped.readSync(path.join(basePath, 'ExcelTyped.json'))
+    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+        this._excelTyped.readSync(path.join(basePath, `ExcelTyped${fileExtension}`))
 
         this.solveCrossReferences()
     }

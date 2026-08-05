@@ -22,16 +22,21 @@ export class Tables {
     public get item(): ItemTable { return this._item }
     private _item: ItemTable = new ItemTable()
 
-    /** Read all tables asynchronously. */
-    public async readAll(basePath: string): Promise<void> {
-        await this._itemCategory.read(path.join(basePath, 'ItemCategory.json'))
-        await this._item.read(path.join(basePath, 'Item.json'))
+    /**
+     * Read all tables asynchronously.
+     *
+     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+     * data files were renamed after export.
+     */
+    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+        await this._itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
+        await this._item.read(path.join(basePath, `Item${fileExtension}`))
     }
 
     /** Read all tables synchronously. */
-    public readAllSync(basePath: string): void {
-        this._itemCategory.readSync(path.join(basePath, 'ItemCategory.json'))
-        this._item.readSync(path.join(basePath, 'Item.json'))
+    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+        this._itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
+        this._item.readSync(path.join(basePath, `Item${fileExtension}`))
 
         this.solveCrossReferences()
     }

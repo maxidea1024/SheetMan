@@ -154,6 +154,7 @@ namespace SheetMan.CodeGeneration
             return new CsFileView
             {
                 Namespace = _csharpReceipe.Namespace ?? "",
+                FileExtension = _csharpReceipe.BinaryTableFileExtension,
                 Tables = tables,
                 TablesWithReferences = tables.Where(t => t.ReferenceFields.Count > 0).ToList(),
                 Enums = _model.Enums.Select(BuildEnum).ToList(),

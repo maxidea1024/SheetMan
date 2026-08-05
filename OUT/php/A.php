@@ -28,9 +28,9 @@ final class A
     }
 
     /** Reads every table from $basePath, then links the references between them. */
-    public function readAll(string $basePath): void
+    public function readAll(string $basePath, string $fileExtension = '.table'): void
     {
-        $this->template->read($basePath . \DIRECTORY_SEPARATOR . 'Template.table');
+        $this->template->read($basePath . \DIRECTORY_SEPARATOR . 'Template' . $fileExtension);
 
         $this->solveCrossReferences();
     }

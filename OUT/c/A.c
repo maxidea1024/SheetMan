@@ -16,13 +16,20 @@
 bool A_LoadAll(A_t* data, const char* base_path,
                                   char* error, size_t error_size)
 {
+    return A_LoadAllWithExtension(
+        data, base_path, ".table", error, error_size);
+}
+
+bool A_LoadAllWithExtension(A_t* data, const char* base_path,
+                                  const char* file_extension, char* error, size_t error_size)
+{
     char path[1024];
 
     memset(data, 0, sizeof *data);
 
 
-    if (snprintf(path, sizeof path, "%s/%s.table",
-                 base_path, "Template") >= (int)sizeof path) {
+    if (snprintf(path, sizeof path, "%s/%s%s",
+                 base_path, "Template", file_extension) >= (int)sizeof path) {
         sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
         A_Free(data);
         return false;

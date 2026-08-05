@@ -27,6 +27,11 @@ typedef struct A_t {
 bool A_LoadAll(A_t* data, const char* base_path,
                                   char* error, size_t error_size);
 
+/* The same, for data files carrying some other extension than the one the recipe told
+ * the exporter to write. `file_extension` includes the dot. */
+bool A_LoadAllWithExtension(A_t* data, const char* base_path,
+                                  const char* file_extension, char* error, size_t error_size);
+
 void A_Free(A_t* data);
 
 #ifdef __cplusplus

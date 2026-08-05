@@ -16,17 +16,22 @@ export class Tables {
     private _{{ table.member }}: {{ table.name }}Table = new {{ table.name }}Table()
 {{~ end ~}}
 
-    /** Read all tables asynchronously. */
-    public async readAll(basePath: string): Promise<void> {
+    /**
+     * Read all tables asynchronously.
+     *
+     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+     * data files were renamed after export.
+     */
+    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
 {{~ for table in tables ~}}
-        await this._{{ table.member }}.read(path.join(basePath, '{{ table.name }}.json'))
+        await this._{{ table.member }}.read(path.join(basePath, `{{ table.name }}${fileExtension}`))
 {{~ end ~}}
     }
 
     /** Read all tables synchronously. */
-    public readAllSync(basePath: string): void {
+    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
 {{~ for table in tables ~}}
-        this._{{ table.member }}.readSync(path.join(basePath, '{{ table.name }}.json'))
+        this._{{ table.member }}.readSync(path.join(basePath, `{{ table.name }}${fileExtension}`))
 {{~ end ~}}
 
         this.solveCrossReferences()

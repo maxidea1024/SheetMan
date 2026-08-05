@@ -124,14 +124,14 @@ FTemplateRow UALibrary::GetTemplateRowAt(int32 Position, bool& bFound)
 }
 
 
-bool UALibrary::ReadAll(const FString& BasePath)
+bool UALibrary::ReadAll(const FString& BasePath, const FString& FileExtension)
 {
-    return A::ReadAll(BasePath);
+    return A::ReadAll(BasePath, FileExtension);
 }
 
-bool A::ReadAll(const FString& BasePath)
+bool A::ReadAll(const FString& BasePath, const FString& FileExtension)
 {
-    if (!TemplateStorage.Read(FPaths::Combine(BasePath, TEXT("Template.table"))))
+    if (!TemplateStorage.Read(FPaths::Combine(BasePath, TEXT("Template") + FileExtension)))
     {
         return false;
     }

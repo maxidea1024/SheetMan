@@ -14,6 +14,17 @@ namespace SheetMan.CodeGeneration
         /// <summary>The namespace, or empty. The template wraps the file in it when set.</summary>
         public string Namespace { get; set; }
 
+        /// <summary>
+        /// Extension the recipe told the exporter to write, which is what the accessor's read
+        /// defaults to.
+        /// </summary>
+        /// <remarks>
+        /// It was a `".table"` literal in the template until this existed - so a recipe that set
+        /// the extension on both the export and this target got the right file names out of the
+        /// exporter and a reader that looked for the default anyway.
+        /// </remarks>
+        public string FileExtension { get; set; }
+
         public IReadOnlyList<CsTableView> Tables { get; set; }
 
         public IReadOnlyList<CsEnumView> Enums { get; set; }

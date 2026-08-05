@@ -19,8 +19,9 @@ class Tables {
   final TemplateTable template = TemplateTable();
 
   /// Reads every table from basePath, then links the references between them.
-  void readAll(String basePath) {
-    template.read('$basePath${Platform.pathSeparator}Template.table');
+  void readAll(String basePath,
+      [String fileExtension = '.table']) {
+    template.read('$basePath${Platform.pathSeparator}Template$fileExtension');
 
     _solveCrossReferences();
   }

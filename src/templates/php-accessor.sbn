@@ -23,13 +23,13 @@ final class {{ accessor.name }}
     }
 
     /** Reads every table from $basePath, then links the references between them. */
-    public function readAll(string $basePath): void
+    public function readAll(string $basePath, string $fileExtension = '{{ accessor.file_extension }}'): void
     {
 {{~ if accessor.tables | array.size == 0 ~}}
         // No tables.
 {{~ else ~}}
 {{~ for slot in accessor.tables ~}}
-        $this->{{ slot.name }}->read($basePath . \DIRECTORY_SEPARATOR . '{{ slot.data_file_name }}{{ accessor.file_extension }}');
+        $this->{{ slot.name }}->read($basePath . \DIRECTORY_SEPARATOR . '{{ slot.data_file_name }}' . $fileExtension);
 {{~ end ~}}
 
         $this->solveCrossReferences();

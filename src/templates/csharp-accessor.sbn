@@ -25,7 +25,8 @@
         /// <summary>
         /// Read all tables.
         /// </summary>
-        public static async Task ReadAllAsync(string basePath, string fileExtension = ".table")
+        public static async Task ReadAllAsync(
+            string basePath, string fileExtension = "{{ file_extension }}")
         {
 {{~ if tables | array.size == 0 ~}}
             return await Task.CompletedTask;

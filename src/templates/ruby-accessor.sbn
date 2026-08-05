@@ -14,12 +14,12 @@
     end
 
     # Reads every table from base_path, then links the references between them.
-    def read_all(base_path)
+    def read_all(base_path, file_extension = '{{ accessor.file_extension }}')
 {{~ if accessor.tables | array.size == 0 ~}}
       nil
 {{~ else ~}}
 {{~ for slot in accessor.tables ~}}
-      @{{ slot.name }}.read(File.join(base_path, '{{ slot.data_file_name }}{{ accessor.file_extension }}'))
+      @{{ slot.name }}.read(File.join(base_path, "{{ slot.data_file_name }}#{file_extension}"))
 {{~ end ~}}
 
       solve_cross_references

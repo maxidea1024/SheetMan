@@ -875,6 +875,15 @@ const FItemRow* Sword = UGameData::Item().Find(1);
 
 **참조는 로드 후 자동으로 연결됩니다.** `foreign` 필드는 파일에 인덱스로 저장되고, `readAll`이 모든 테이블을 읽은 뒤 실제 레코드 참조로 바꿔줍니다. 테이블 하나만 따로 읽으면 그 단계가 없으니 참조는 비어 있습니다.
 
+**데이터 파일 확장자는 인자로 바꿀 수 있습니다.** 기본값은 레시피의 `BinaryTableFileExtension`이 그대로 들어가므로 보통은 아무것도 넘기지 않으면 됩니다. 넘겨야 하는 경우는 패키징 과정에서 파일 이름이 바뀔 때입니다 — 유니티는 확장자가 `.bytes`인 것만 TextAsset으로 포함하고, 엔진마다 이런 제약이 다릅니다.
+
+```csharp
+await GameData.ReadAllAsync("./data");              // 레시피가 정한 확장자
+await GameData.ReadAllAsync("./data", ".bytes");    // 패키징이 바꿔놓은 이름
+```
+
+기본 인자가 있는 언어(C#, C++, TypeScript, Python, Ruby, PHP, Dart, Kotlin, Unreal)는 두 번째 인자로 받고, 없는 언어는 이름이 다른 짝을 하나 더 냅니다 — Java는 오버로드, Go는 `ReadAllWithExtension`, Rust는 `read_all_with_extension`, C는 `<Accessor>_LoadAllWithExtension`.
+
 Rust만 예외로 **참조를 인덱스 그대로 둡니다.** 레코드가 서로를 참조하면 그래프가 되는데 Rust는 그런 소유 구조를 허용하지 않기 때문입니다. `find`로 직접 찾아 쓰면 됩니다.
 
 #### TypeScript 코드생성

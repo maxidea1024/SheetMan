@@ -13,9 +13,19 @@ import java.nio.file.Paths;
 public final class A {
     public final TemplateTable template = new TemplateTable();
 
-    /** Reads every table from basePath, then links the references between them. */
+    /**
+     * Reads every table from basePath, then links the references between them.
+     *
+     * <p>The data files are expected to carry the extension the recipe told the exporter to
+     * write. Use the overload to name a different one.
+     */
     public void readAll(String basePath) {
-        template.read(Paths.get(basePath, "Template.table"));
+        readAll(basePath, ".table");
+    }
+
+    /** The same, for data files that carry some other extension. */
+    public void readAll(String basePath, String fileExtension) {
+        template.read(Paths.get(basePath, "Template" + fileExtension));
 
         solveCrossReferences();
     }

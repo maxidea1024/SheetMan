@@ -20,9 +20,13 @@ class Tables:
     def __init__(self):
         self.template = TemplateTable()
 
-    def read_all(self, base_path):
-        """Reads every table from base_path, then links the references between them."""
-        self.template.read(os.path.join(base_path, "Template.table"))
+    def read_all(self, base_path, file_extension=".table"):
+        """Reads every table from base_path, then links the references between them.
+
+        file_extension defaults to what the recipe told the exporter to write. Pass a
+        different one when the data files were renamed after export.
+        """
+        self.template.read(os.path.join(base_path, "Template" + file_extension))
 
         self._solve_cross_references()
 

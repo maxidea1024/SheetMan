@@ -19,8 +19,8 @@ object A {
     val template: TemplateTable = TemplateTable()
 
     /** Reads every table from basePath, then links the references between them. */
-    fun readAll(basePath: String) {
-        template.read(File(basePath, "Template.table").path)
+    fun readAll(basePath: String, fileExtension: String = ".table") {
+        template.read(File(basePath, "Template$fileExtension").path)
 
         solveCrossReferences()
     }

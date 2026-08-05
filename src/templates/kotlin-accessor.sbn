@@ -10,12 +10,12 @@ object {{ accessor_name }} {
 {{~ end ~}}
 
     /** Reads every table from basePath, then links the references between them. */
-    fun readAll(basePath: String) {
+    fun readAll(basePath: String, fileExtension: String = "{{ accessor.file_extension }}") {
 {{~ if accessor.tables | array.size == 0 ~}}
         // No tables to read.
 {{~ else ~}}
 {{~ for slot in accessor.tables ~}}
-        {{ slot.name }}.read(File(basePath, "{{ slot.data_file_name }}{{ accessor.file_extension }}").path)
+        {{ slot.name }}.read(File(basePath, "{{ slot.data_file_name }}$fileExtension").path)
 {{~ end ~}}
 
         solveCrossReferences()

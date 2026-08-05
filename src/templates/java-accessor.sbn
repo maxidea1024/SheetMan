@@ -6,13 +6,23 @@ public final class {{ accessor_name }} {
     public final {{ slot.table_name }} {{ slot.name }} = new {{ slot.table_name }}();
 {{~ end ~}}
 
-    /** Reads every table from basePath, then links the references between them. */
+    /**
+     * Reads every table from basePath, then links the references between them.
+     *
+     * <p>The data files are expected to carry the extension the recipe told the exporter to
+     * write. Use the overload to name a different one.
+     */
     public void readAll(String basePath) {
+        readAll(basePath, "{{ accessor.file_extension }}");
+    }
+
+    /** The same, for data files that carry some other extension. */
+    public void readAll(String basePath, String fileExtension) {
 {{~ if accessor.tables | array.size == 0 ~}}
         // No tables to read.
 {{~ else ~}}
 {{~ for slot in accessor.tables ~}}
-        {{ slot.name }}.read(Paths.get(basePath, "{{ slot.data_file_name }}{{ accessor.file_extension }}"));
+        {{ slot.name }}.read(Paths.get(basePath, "{{ slot.data_file_name }}" + fileExtension));
 {{~ end ~}}
 
         solveCrossReferences();

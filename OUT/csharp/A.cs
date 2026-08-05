@@ -119,7 +119,8 @@ namespace X
         /// <summary>
         /// Read all tables.
         /// </summary>
-        public static async Task ReadAllAsync(string basePath, string fileExtension = ".table")
+        public static async Task ReadAllAsync(
+            string basePath, string fileExtension = ".table")
         {
             var tasks = new List<Task>();
 

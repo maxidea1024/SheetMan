@@ -10,12 +10,13 @@ class Tables {
 {{~ end ~}}
 
   /// Reads every table from basePath, then links the references between them.
-  void readAll(String basePath) {
+  void readAll(String basePath,
+      [String fileExtension = '{{ accessor.file_extension }}']) {
 {{~ if accessor.tables | array.size == 0 ~}}
     // No tables to read.
 {{~ else ~}}
 {{~ for slot in accessor.tables ~}}
-    {{ slot.name }}.read('$basePath${Platform.pathSeparator}{{ slot.data_file_name }}{{ accessor.file_extension }}');
+    {{ slot.name }}.read('$basePath${Platform.pathSeparator}{{ slot.data_file_name }}$fileExtension');
 {{~ end ~}}
 
     _solveCrossReferences();

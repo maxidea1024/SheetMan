@@ -17,8 +17,18 @@ pub struct Tables {
 
 impl Tables {
     /// Reads every table from `base_path`.
+    ///
+    /// The data files are expected to carry the extension the recipe told the exporter to
+    /// write. Use `read_all_with_extension` to name a different one.
     pub fn read_all(&mut self, base_path: &Path) -> sheetman::Result<()> {
-        self.template.read(&base_path.join("Template.table"))?;
+        self.read_all_with_extension(base_path, ".table")
+    }
+
+    /// The same, for data files that carry some other extension.
+    pub fn read_all_with_extension(
+        &mut self, base_path: &Path, file_extension: &str) -> sheetman::Result<()> {
+        self.template.read(
+            &base_path.join(format!("Template{}", file_extension)))?;
 
         Ok(())
     }

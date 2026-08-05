@@ -20,8 +20,8 @@ module X
     end
 
     # Reads every table from base_path, then links the references between them.
-    def read_all(base_path)
-      @template.read(File.join(base_path, 'Template.table'))
+    def read_all(base_path, file_extension = '.table')
+      @template.read(File.join(base_path, "Template#{file_extension}"))
 
       solve_cross_references
     end

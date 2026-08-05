@@ -8,12 +8,21 @@ type Tables struct {
 }
 
 // ReadAll reads every table from basePath, then links the references between them.
+//
+// The data files are expected to carry the extension the recipe told the exporter to write.
+// Use ReadAllWithExtension to name a different one.
 func (t *Tables) ReadAll(basePath string) error {
+	return t.ReadAllWithExtension(basePath, "{{ accessor.file_extension }}")
+}
+
+// ReadAllWithExtension is ReadAll for data files that carry some other extension.
+func (t *Tables) ReadAllWithExtension(basePath string, fileExtension string) error {
 {{~ if accessor.tables | array.size == 0 ~}}
 	_ = basePath
+	_ = fileExtension
 {{~ else ~}}
 {{~ for slot in accessor.tables ~}}
-	if err := t.{{ slot.name }}.Read(filepath.Join(basePath, "{{ slot.data_file_name }}{{ accessor.file_extension }}")); err != nil {
+	if err := t.{{ slot.name }}.Read(filepath.Join(basePath, "{{ slot.data_file_name }}"+fileExtension)); err != nil {
 		return err
 	}
 {{~ end ~}}

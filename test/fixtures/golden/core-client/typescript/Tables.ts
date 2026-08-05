@@ -42,24 +42,29 @@ export class Tables {
     public get clientStrings(): ClientStringsTable { return this._clientStrings }
     private _clientStrings: ClientStringsTable = new ClientStringsTable()
 
-    /** Read all tables asynchronously. */
-    public async readAll(basePath: string): Promise<void> {
-        await this._testFieldTypes.read(path.join(basePath, 'TestFieldTypes.json'))
-        await this._itemCategory.read(path.join(basePath, 'ItemCategory.json'))
-        await this._item.read(path.join(basePath, 'Item.json'))
-        await this._localization.read(path.join(basePath, 'Localization.json'))
-        await this._arrayTypes.read(path.join(basePath, 'ArrayTypes.json'))
-        await this._clientStrings.read(path.join(basePath, 'ClientStrings.json'))
+    /**
+     * Read all tables asynchronously.
+     *
+     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+     * data files were renamed after export.
+     */
+    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+        await this._testFieldTypes.read(path.join(basePath, `TestFieldTypes${fileExtension}`))
+        await this._itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
+        await this._item.read(path.join(basePath, `Item${fileExtension}`))
+        await this._localization.read(path.join(basePath, `Localization${fileExtension}`))
+        await this._arrayTypes.read(path.join(basePath, `ArrayTypes${fileExtension}`))
+        await this._clientStrings.read(path.join(basePath, `ClientStrings${fileExtension}`))
     }
 
     /** Read all tables synchronously. */
-    public readAllSync(basePath: string): void {
-        this._testFieldTypes.readSync(path.join(basePath, 'TestFieldTypes.json'))
-        this._itemCategory.readSync(path.join(basePath, 'ItemCategory.json'))
-        this._item.readSync(path.join(basePath, 'Item.json'))
-        this._localization.readSync(path.join(basePath, 'Localization.json'))
-        this._arrayTypes.readSync(path.join(basePath, 'ArrayTypes.json'))
-        this._clientStrings.readSync(path.join(basePath, 'ClientStrings.json'))
+    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+        this._testFieldTypes.readSync(path.join(basePath, `TestFieldTypes${fileExtension}`))
+        this._itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
+        this._item.readSync(path.join(basePath, `Item${fileExtension}`))
+        this._localization.readSync(path.join(basePath, `Localization${fileExtension}`))
+        this._arrayTypes.readSync(path.join(basePath, `ArrayTypes${fileExtension}`))
+        this._clientStrings.readSync(path.join(basePath, `ClientStrings${fileExtension}`))
 
         this.solveCrossReferences()
     }
