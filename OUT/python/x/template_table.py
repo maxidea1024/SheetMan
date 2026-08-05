@@ -56,41 +56,42 @@ class TemplateTable:
         reader = sheetman.Reader(sheetman.read_all_bytes(filename))
         count, columns = sheetman.read_table_header(reader)
 
-        self.records = [TemplateRecord() for _ in range(count)]
+        # Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+        records = [TemplateRecord() for _ in range(count)]
 
         for column in columns:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Template.Index", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
-                for record in self.records:
+                for record in records:
                     record.index = reader.read_i32_as(column.element)
             elif column.tag == 2:
                 sheetman.check_column(column, "Template.Class", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
-                for record in self.records:
+                for record in records:
                     record.class_ = reader.read_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Template.Int", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
-                for record in self.records:
+                for record in records:
                     record.int = reader.read_i32_as(column.element)
             elif column.tag == 4:
                 sheetman.check_column(column, "Template.Delete", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
-                for record in self.records:
+                for record in records:
                     record.delete = reader.read_bool()
             elif column.tag == 5:
                 sheetman.check_column(column, "Template.Operator", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
-                for record in self.records:
+                for record in records:
                     record.operator = reader.read_string()
             elif column.tag == 6:
                 sheetman.check_column(column, "Template.Namespace", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
-                for record in self.records:
+                for record in records:
                     record.namespace = reader.read_string()
             elif column.tag == 7:
                 sheetman.check_column(column, "Template.Constructor", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
-                for record in self.records:
+                for record in records:
                     record.constructor = reader.read_string()
             elif column.tag == 8:
                 sheetman.check_column(column, "Template.Function", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
-                for record in self.records:
+                for record in records:
                     record.function = reader.read_string()
             else:
                 # A column added after this code was generated.
@@ -98,4 +99,8 @@ class TemplateTable:
 
             sheetman.check_block_end(reader, column, block_end)
 
-        self.by_index = {record.index: record for record in self.records}
+        by_index = {record.index: record for record in records}
+
+        # Published, now that every column read.
+        self.records = records
+        self.by_index = by_index

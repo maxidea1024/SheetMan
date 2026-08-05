@@ -71,10 +71,17 @@ bool {{ table.table_name }}::Read(const FString& Filename)
         return false;
     }
 
-    // The header has already checked the row count against what the columns declare, so
-    // this allocation is the size the file can actually hold rows for.
-    RecordsStorage.Empty(Header.RowCount);
-    RecordsStorage.SetNum(Header.RowCount);
+    // Read beside whatever this table is already holding and swapped in at the end. Reading
+    // again is a refresh - a patched .pak, a downloaded table - and one that turns out to be
+    // unreadable has to leave the rows already there, which Blueprint graphs and gameplay
+    // code are holding by value and by pointer.
+    //
+    // The header has already checked the row count against what the columns declare, so this
+    // allocation is the size the file can actually hold rows for.
+    TArray<{{ table.record_name }}> Loaded;
+
+    Loaded.Empty(Header.RowCount);
+    Loaded.SetNum(Header.RowCount);
 
     // Column by column, matched by tag rather than by position: a column this build has no
     // member for is skipped by its declared length, and one whose type no longer fits the
@@ -90,7 +97,7 @@ bool {{ table.table_name }}::Read(const FString& Filename)
         case {{ field.tag }}:
             {{ field.column_check }}
 
-            for ({{ table.record_name }}& Record : RecordsStorage)
+            for ({{ table.record_name }}& Record : Loaded)
             {
 {{~ if field.kind == 'var_array' ~}}
                 int32 {{ field.count_local }} = 0;
@@ -137,20 +144,27 @@ bool {{ table.table_name }}::Read(const FString& Filename)
     }
 
     // Asked once, for the whole table. Anything short or malformed anywhere in it has
-    // left its reason here, and a half-read table is not one this returns true for.
+    // left its reason here, and a half-read table is not one this returns true for - nor
+    // is it one that replaces what the table was holding.
     if (Reader.HasFailed())
     {
         UE_LOG(LogTemp, Error, TEXT("SheetMan: %s is malformed. %s"), *Filename, *Reader.GetError());
 
-        RecordsStorage.Empty();
         return false;
     }
 
-    ByIndex.Empty(RecordsStorage.Num());
-    for (int32 Position = 0; Position < RecordsStorage.Num(); ++Position)
+    TMap<int32, int32> LoadedByIndex;
+
+    LoadedByIndex.Empty(Loaded.Num());
+    for (int32 Position = 0; Position < Loaded.Num(); ++Position)
     {
-        ByIndex.Add(RecordsStorage[Position].{{ table.index_field }}, Position);
+        LoadedByIndex.Add(Loaded[Position].{{ table.index_field }}, Position);
     }
+
+    // Published together: rows holding this load and an index built from the last one would
+    // answer Find with a row that has moved.
+    RecordsStorage = MoveTemp(Loaded);
+    ByIndex = MoveTemp(LoadedByIndex);
 
     return true;
 }

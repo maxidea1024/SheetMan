@@ -115,21 +115,23 @@ export class ExcelTypedTable {
 
     private readFromJson(json: string): void {
         const dataRows: any[] = JSON.parse(json)
+        const records: ExcelTypedRecord[] = []
+
         if (this.isCompactRowFormatted(dataRows)) {
             for (const dataRow of dataRows) {
                 const record = new ExcelTypedRecord()
                 record.populateFieldValuesCompact(dataRow)
-                this._records.push(record)
+                records.push(record)
             }
         } else {
             for (const dataRow of dataRows as IDataRow[]) {
                 const record = new ExcelTypedRecord()
                 record.populateFieldValues(dataRow)
-                this._records.push(record)
+                records.push(record)
             }
         }
 
-        this.mapping()
+        this.publish(records)
     }
 
     private isCompactRowFormatted(rows: any[]): boolean {
@@ -154,9 +156,11 @@ export class ExcelTypedTable {
         const reader = new sheetman.LiteBinaryReader(data)
         const { rowCount, columns } = sheetman.readTableHeader(reader)
 
-        this._records = []
+        // Built here and published at the end, so a file that turns out to be truncated - or
+        // a column this build cannot read - leaves the rows already loaded exactly as they are.
+        const records: ExcelTypedRecord[] = []
         for (let i = 0; i < rowCount; ++i)
-            this._records.push(new ExcelTypedRecord())
+            records.push(new ExcelTypedRecord())
 
         for (const column of columns)
         {
@@ -168,7 +172,7 @@ export class ExcelTypedTable {
                     sheetman.checkColumn(column, 'ExcelTyped.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._index = reader.readI32As(column.element)
                     }
                     break
@@ -176,7 +180,7 @@ export class ExcelTypedTable {
                     sheetman.checkColumn(column, 'ExcelTyped.IntFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._intFromNumeric = reader.readI32As(column.element)
                     }
                     break
@@ -184,7 +188,7 @@ export class ExcelTypedTable {
                     sheetman.checkColumn(column, 'ExcelTyped.FloatFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._floatFromNumeric = reader.readFloat()
                     }
                     break
@@ -192,7 +196,7 @@ export class ExcelTypedTable {
                     sheetman.checkColumn(column, 'ExcelTyped.WhenFromDateCell', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._whenFromDateCell = reader.readDateTime()
                     }
                     break
@@ -200,7 +204,7 @@ export class ExcelTypedTable {
                     sheetman.checkColumn(column, 'ExcelTyped.BigFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._bigFromNumeric = reader.readI64As(column.element)
                     }
                     break
@@ -213,14 +217,28 @@ export class ExcelTypedTable {
             sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
-        this.mapping()
+        this.publish(records)
     }
 
     /** Index mapping. */
-    private mapping(): void {
-        for (const record of this._records)
+    /**
+     * Publishes one whole load: the rows and the lookups built from them, together.
+     *
+     * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
+     * consumers were holding: the rows were appended to or emptied first, so a read that threw
+     * partway left the table holding some of the new data and none of the old. Everything above
+     * builds its own arrays and gets here only if it finished, and this replaces the references
+     * in one step. Whoever took `records` before still has the previous load, whole.
+     */
+    private publish(records: ExcelTypedRecord[]): void {
+        const recordsByIndex = new Map<number, ExcelTypedRecord>()
+
+        for (const record of records)
         {
-            this._recordsByIndex.set(record.index, record)
+            recordsByIndex.set(record.index, record)
         }
+
+        this._records = records
+        this._recordsByIndex = recordsByIndex
     }
 }

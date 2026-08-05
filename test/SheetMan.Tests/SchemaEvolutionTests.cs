@@ -164,6 +164,76 @@ namespace SheetMan.Tests
             }
         }
 
+        // ------------------------------------------------------------------ refresh
+
+        /// <summary>
+        /// Reading a loaded table again, which is what a data patch or a hot reload does.
+        ///
+        /// The table used to be cleared and then filled, so a second read passed through a
+        /// state where it held some of the new rows and none of the old ones - and a consumer
+        /// iterating at that moment saw it. Now a read builds its own storage and publishes it
+        /// at the end, so the rows are one whole load or the other.
+        /// </summary>
+        [Fact]
+        public void A_table_can_be_read_again_over_itself()
+        {
+            var report = Refresh(code: V1, first: V1, second: V1, table: "Evolution");
+
+            Assert.False(report.TryGetProperty("error", out _),
+                "Reading the same data twice was refused.");
+
+            // Not doubled, and not empty. The index map is rebuilt too - adding the same keys
+            // to the map that was already there is what used to throw.
+            var second = Rows(report, "second");
+
+            Assert.Equal(2, second.Count);
+            Assert.Equal("first", second[0].GetProperty("Label").GetString());
+        }
+
+        /// <summary>
+        /// A refresh that is refused leaves the rows that were already there.
+        ///
+        /// This is the case the atomicity is for. A service reads a patched file, the file has
+        /// a column this build cannot read, and the answer has to be the data it already had
+        /// plus a reason - not an empty table, and not half a table.
+        /// </summary>
+        [Fact]
+        public void A_refused_refresh_leaves_the_previous_rows_in_place()
+        {
+            // v2 widened `Amount` to a 64-bit integer, which v1's code refuses rather than
+            // truncating - so the second read fails partway through the columns.
+            var report = Refresh(code: V1, first: V1, second: V2, table: "Promoted");
+
+            Assert.True(report.TryGetProperty("error", out var error),
+                "The refresh was expected to be refused, and was not.");
+
+            Assert.Contains("Promoted.Amount", error.GetString());
+
+            var before = Rows(report, "first");
+            var after = Rows(report, "after");
+
+            Assert.Equal(2, after.Count);
+            Assert.Equal(before[0].GetProperty("Amount").GetInt32(), after[0].GetProperty("Amount").GetInt32());
+            Assert.Equal(before[1].GetProperty("Ratio").GetDouble(), after[1].GetProperty("Ratio").GetDouble());
+        }
+
+        /// <summary>
+        /// And a refresh that goes through replaces every row.
+        /// </summary>
+        [Fact]
+        public void An_accepted_refresh_replaces_the_rows()
+        {
+            var report = Refresh(code: V2, first: V2, second: V1, table: "Promoted");
+
+            Assert.False(report.TryGetProperty("error", out _),
+                "v2's code was expected to read v1's data by promotion.");
+
+            var second = Rows(report, "second");
+
+            Assert.Equal(2, second.Count);
+            Assert.Equal(1024L, second[0].GetProperty("Amount").GetInt64());
+        }
+
         // ------------------------------------------------------------------ harness
 
         /// <summary>
@@ -185,6 +255,43 @@ namespace SheetMan.Tests
                 $"{Environment.NewLine}{result.Output}");
 
             return JsonDocument.Parse(LastJsonLine(result.StdOut)).RootElement.Clone();
+        }
+
+        /// <summary>
+        /// Builds one generation's code, loads one directory's data, then loads another's over
+        /// the top. The report says what the table held before and after.
+        /// </summary>
+        private static JsonElement Refresh(string code, string first, string second, string table)
+        {
+            foreach (string scenario in new[] { code, first, second })
+            {
+                var conversion = SheetManRunner.Convert(scenario);
+                Assert.True(conversion.Succeeded,
+                    $"Converting `{scenario}` failed.{Environment.NewLine}{conversion.Describe()}");
+            }
+
+            var result = EvolutionHarness.RefreshCsharp(
+                code,
+                Path.Combine(RepoLayout.OutputDir(first), "binary"),
+                Path.Combine(RepoLayout.OutputDir(second), "binary"),
+                table);
+
+            Assert.True(result.Succeeded,
+                $"The harness built from `{code}` failed refreshing {table} from `{first}` to " +
+                $"`{second}`.{Environment.NewLine}{result.Output}");
+
+            return JsonDocument.Parse(LastJsonLine(result.StdOut)).RootElement.Clone();
+        }
+
+        /// <summary>One named array of rows out of a refresh report.</summary>
+        private static List<JsonElement> Rows(JsonElement report, string name)
+        {
+            var rows = new List<JsonElement>();
+
+            foreach (var row in report.GetProperty(name).EnumerateArray())
+                rows.Add(row.Clone());
+
+            return rows;
         }
 
         private static List<JsonElement> Rows(string code, string data, string table)

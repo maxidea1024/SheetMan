@@ -16,18 +16,26 @@ func (t *Tables) ReadAll(basePath string) error {
 }
 
 // ReadAllWithExtension is ReadAll for data files that carry some other extension.
+//
+// Safe to call on a loaded Tables. Every file is read into a set of its own and the
+// references are linked among those, so nothing here is visible until all of it is: a
+// failure part way through leaves the tables holding the load they already had.
 func (t *Tables) ReadAllWithExtension(basePath string, fileExtension string) error {
 {{~ if accessor.tables | array.size == 0 ~}}
 	_ = basePath
 	_ = fileExtension
 {{~ else ~}}
+	var loaded Tables
+
 {{~ for slot in accessor.tables ~}}
-	if err := t.{{ slot.name }}.Read(filepath.Join(basePath, "{{ slot.data_file_name }}"+fileExtension)); err != nil {
+	if err := loaded.{{ slot.name }}.Read(filepath.Join(basePath, "{{ slot.data_file_name }}"+fileExtension)); err != nil {
 		return err
 	}
 {{~ end ~}}
 
-	t.solveCrossReferences()
+	loaded.solveCrossReferences()
+
+	*t = loaded
 {{~ end ~}}
 
 	return nil

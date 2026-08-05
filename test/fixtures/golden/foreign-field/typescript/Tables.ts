@@ -29,14 +29,35 @@ export class Tables {
      * data files were renamed after export.
      */
     public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
-        await this._itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
-        await this._item.read(path.join(basePath, `Item${fileExtension}`))
+        const itemCategory = new ItemCategoryTable()
+        await itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
+        const item = new ItemTable()
+        await item.read(path.join(basePath, `Item${fileExtension}`))
+
+        this.publish(itemCategory, item)
     }
 
     /** Read all tables synchronously. */
     public readAllSync(basePath: string, fileExtension: string = '.json'): void {
-        this._itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
-        this._item.readSync(path.join(basePath, `Item${fileExtension}`))
+        const itemCategory = new ItemCategoryTable()
+        itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
+        const item = new ItemTable()
+        item.readSync(path.join(basePath, `Item${fileExtension}`))
+
+        this.publish(itemCategory, item)
+    }
+
+    /**
+     * Publishes one whole load.
+     *
+     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+     * here only once every file has been read. A failure anywhere leaves every table holding
+     * what it held, which is the answer a running program wants: the data it already had, and
+     * an exception saying why the new data was not taken.
+     */
+    private publish(itemCategory: ItemCategoryTable, item: ItemTable): void {
+        this._itemCategory = itemCategory
+        this._item = item
 
         this.solveCrossReferences()
     }

@@ -24,12 +24,30 @@ export class Tables {
      * data files were renamed after export.
      */
     public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
-        await this._excelTyped.read(path.join(basePath, `ExcelTyped${fileExtension}`))
+        const excelTyped = new ExcelTypedTable()
+        await excelTyped.read(path.join(basePath, `ExcelTyped${fileExtension}`))
+
+        this.publish(excelTyped)
     }
 
     /** Read all tables synchronously. */
     public readAllSync(basePath: string, fileExtension: string = '.json'): void {
-        this._excelTyped.readSync(path.join(basePath, `ExcelTyped${fileExtension}`))
+        const excelTyped = new ExcelTypedTable()
+        excelTyped.readSync(path.join(basePath, `ExcelTyped${fileExtension}`))
+
+        this.publish(excelTyped)
+    }
+
+    /**
+     * Publishes one whole load.
+     *
+     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+     * here only once every file has been read. A failure anywhere leaves every table holding
+     * what it held, which is the answer a running program wants: the data it already had, and
+     * an exception saying why the new data was not taken.
+     */
+    private publish(excelTyped: ExcelTypedTable): void {
+        this._excelTyped = excelTyped
 
         this.solveCrossReferences()
     }

@@ -17,10 +17,15 @@ import sheetman.LiteBinaryReader;
 
 /** Every row of Template. */
 public final class TemplateTable {
-    private final List<TemplateRecord> records = new ArrayList<>();
-    private final Map<Integer, TemplateRecord> byIndex = new HashMap<>();
+    private List<TemplateRecord> records = new ArrayList<>();
+    private Map<Integer, TemplateRecord> byIndex = new HashMap<>();
 
-    /** Every row, in the order the sheet declared them. */
+    /**
+     * Every row, in the order the sheet declared them.
+     *
+     * The list a read published, not one a read fills. A refresh replaces the reference
+     * rather than the contents, so whoever holds this holds one whole load.
+     */
     public List<TemplateRecord> records() {
         return records;
     }
@@ -41,11 +46,12 @@ public final class TemplateTable {
         LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
         int count = header.rowCount;
 
-        records.clear();
-        byIndex.clear();
+        // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+        List<TemplateRecord> loaded = new ArrayList<>(count);
+        Map<Integer, TemplateRecord> loadedByIndex = new HashMap<>(count * 2);
 
         for (int i = 0; i < count; i++) {
-            records.add(new TemplateRecord());
+            loaded.add(new TemplateRecord());
         }
 
         for (LiteBinaryReader.Column column : header.columns) {
@@ -54,56 +60,56 @@ public final class TemplateTable {
             switch (column.tag) {
                 case 1: {
                     LiteBinaryReader.checkColumn(column, "Template.Index", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
-                    for (TemplateRecord record : records) {
+                    for (TemplateRecord record : loaded) {
                         record.index = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
                     LiteBinaryReader.checkColumn(column, "Template.Class", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
-                    for (TemplateRecord record : records) {
+                    for (TemplateRecord record : loaded) {
                         record.class_ = reader.readString();
                     }
                     break;
                 }
                 case 3: {
                     LiteBinaryReader.checkColumn(column, "Template.Int", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
-                    for (TemplateRecord record : records) {
+                    for (TemplateRecord record : loaded) {
                         record.int_ = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 4: {
                     LiteBinaryReader.checkColumn(column, "Template.Delete", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_BOOL);
-                    for (TemplateRecord record : records) {
+                    for (TemplateRecord record : loaded) {
                         record.delete = reader.readBool();
                     }
                     break;
                 }
                 case 5: {
                     LiteBinaryReader.checkColumn(column, "Template.Operator", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
-                    for (TemplateRecord record : records) {
+                    for (TemplateRecord record : loaded) {
                         record.operator = reader.readString();
                     }
                     break;
                 }
                 case 6: {
                     LiteBinaryReader.checkColumn(column, "Template.Namespace", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
-                    for (TemplateRecord record : records) {
+                    for (TemplateRecord record : loaded) {
                         record.namespace = reader.readString();
                     }
                     break;
                 }
                 case 7: {
                     LiteBinaryReader.checkColumn(column, "Template.Constructor", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
-                    for (TemplateRecord record : records) {
+                    for (TemplateRecord record : loaded) {
                         record.constructor = reader.readString();
                     }
                     break;
                 }
                 case 8: {
                     LiteBinaryReader.checkColumn(column, "Template.Function", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
-                    for (TemplateRecord record : records) {
+                    for (TemplateRecord record : loaded) {
                         record.function = reader.readString();
                     }
                     break;
@@ -117,8 +123,12 @@ public final class TemplateTable {
             LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
         }
 
-        for (TemplateRecord record : records) {
-            byIndex.put(record.index, record);
+        for (TemplateRecord record : loaded) {
+            loadedByIndex.put(record.index, record);
         }
+
+        // Published, now that every column read.
+        records = loaded;
+        byIndex = loadedByIndex;
     }
 }

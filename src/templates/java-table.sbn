@@ -2,10 +2,15 @@
 {{ include 'java-file-head.sbn' ~}}
 /** Every row of {{ table.raw_name }}. */
 public final class {{ table.table_name }} {
-    private final List<{{ table.record_name }}> records = new ArrayList<>();
-    private final Map<Integer, {{ table.record_name }}> byIndex = new HashMap<>();
+    private List<{{ table.record_name }}> records = new ArrayList<>();
+    private Map<Integer, {{ table.record_name }}> byIndex = new HashMap<>();
 
-    /** Every row, in the order the sheet declared them. */
+    /**
+     * Every row, in the order the sheet declared them.
+     *
+     * The list a read published, not one a read fills. A refresh replaces the reference
+     * rather than the contents, so whoever holds this holds one whole load.
+     */
     public List<{{ table.record_name }}> records() {
         return records;
     }
@@ -26,11 +31,12 @@ public final class {{ table.table_name }} {
         LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
         int count = header.rowCount;
 
-        records.clear();
-        byIndex.clear();
+        // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+        List<{{ table.record_name }}> loaded = new ArrayList<>(count);
+        Map<Integer, {{ table.record_name }}> loadedByIndex = new HashMap<>(count * 2);
 
         for (int i = 0; i < count; i++) {
-            records.add(new {{ table.record_name }}());
+            loaded.add(new {{ table.record_name }}());
         }
 
         for (LiteBinaryReader.Column column : header.columns) {
@@ -40,7 +46,7 @@ public final class {{ table.table_name }} {
 {{~ for field in table.fields ~}}
                 case {{ field.tag }}: {
                     {{ field.column_check }}
-                    for ({{ table.record_name }} record : records) {
+                    for ({{ table.record_name }} record : loaded) {
 {{~ if field.kind == 'var_array' ~}}
                         int elementCount = reader.readCounter32();
                         record.{{ field.name }} = new {{ field.element_type }}[elementCount];
@@ -76,8 +82,12 @@ public final class {{ table.table_name }} {
             LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
         }
 
-        for ({{ table.record_name }} record : records) {
-            byIndex.put(record.{{ table.index_field }}, record);
+        for ({{ table.record_name }} record : loaded) {
+            loadedByIndex.put(record.{{ table.index_field }}, record);
         }
+
+        // Published, now that every column read.
+        records = loaded;
+        byIndex = loadedByIndex;
     }
 }

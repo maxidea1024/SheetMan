@@ -53,10 +53,16 @@ class TemplateRecord {
 /** Every row of Template. */
 class TemplateTable {
 
-    /** Every row, in the order the sheet declared them. */
-    val records: MutableList<TemplateRecord> = ArrayList()
+    /**
+     * Every row, in the order the sheet declared them.
+     *
+     * The list a read published, not one a read fills. A refresh replaces the reference
+     * rather than the contents, so whoever holds this holds one whole load.
+     */
+    var records: MutableList<TemplateRecord> = ArrayList()
+        private set
 
-    private val byIndex: HashMap<Int, TemplateRecord> = HashMap()
+    private var byIndex: HashMap<Int, TemplateRecord> = HashMap()
 
     /** The row with the given primary index, or null when there is none. */
     fun find(index: Int): TemplateRecord? = byIndex[index]
@@ -72,10 +78,11 @@ class TemplateTable {
         val header = readTableHeader(reader)
         val count = header.rowCount
 
-        records.clear()
-        byIndex.clear()
+        // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+        val loaded = ArrayList<TemplateRecord>(count)
+        val loadedByIndex = HashMap<Int, TemplateRecord>(count * 2)
 
-        repeat(count) { records.add(TemplateRecord()) }
+        repeat(count) { loaded.add(TemplateRecord()) }
 
         for (column in header.columns) {
             val blockEnd = reader.position + column.byteLength
@@ -83,49 +90,49 @@ class TemplateTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Template.Index", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
-                    for (record in records) {
+                    for (record in loaded) {
                         record.index = reader.readI32As(column.element)
                     }
                 }
                 2 -> {
                     checkColumn(column, "Template.Class", KIND_SCALAR, 1, ELEMENT_STRING)
-                    for (record in records) {
+                    for (record in loaded) {
                         record.`class` = reader.readString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Template.Int", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
-                    for (record in records) {
+                    for (record in loaded) {
                         record.int = reader.readI32As(column.element)
                     }
                 }
                 4 -> {
                     checkColumn(column, "Template.Delete", KIND_SCALAR, 1, ELEMENT_BOOL)
-                    for (record in records) {
+                    for (record in loaded) {
                         record.delete = reader.readBool()
                     }
                 }
                 5 -> {
                     checkColumn(column, "Template.Operator", KIND_SCALAR, 1, ELEMENT_STRING)
-                    for (record in records) {
+                    for (record in loaded) {
                         record.operator = reader.readString()
                     }
                 }
                 6 -> {
                     checkColumn(column, "Template.Namespace", KIND_SCALAR, 1, ELEMENT_STRING)
-                    for (record in records) {
+                    for (record in loaded) {
                         record.namespace = reader.readString()
                     }
                 }
                 7 -> {
                     checkColumn(column, "Template.Constructor", KIND_SCALAR, 1, ELEMENT_STRING)
-                    for (record in records) {
+                    for (record in loaded) {
                         record.constructor = reader.readString()
                     }
                 }
                 8 -> {
                     checkColumn(column, "Template.Function", KIND_SCALAR, 1, ELEMENT_STRING)
-                    for (record in records) {
+                    for (record in loaded) {
                         record.function = reader.readString()
                     }
                 }
@@ -137,8 +144,12 @@ class TemplateTable {
             checkBlockEnd(reader, column, blockEnd)
         }
 
-        for (record in records) {
-            byIndex[record.index] = record
+        for (record in loaded) {
+            loadedByIndex[record.index] = record
         }
+
+        // Published, now that every column read.
+        records = loaded
+        byIndex = loadedByIndex
     }
 }

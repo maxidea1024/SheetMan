@@ -24,12 +24,30 @@ export class Tables {
      * data files were renamed after export.
      */
     public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
-        await this._template.read(path.join(basePath, `Template${fileExtension}`))
+        const template = new TemplateTable()
+        await template.read(path.join(basePath, `Template${fileExtension}`))
+
+        this.publish(template)
     }
 
     /** Read all tables synchronously. */
     public readAllSync(basePath: string, fileExtension: string = '.json'): void {
-        this._template.readSync(path.join(basePath, `Template${fileExtension}`))
+        const template = new TemplateTable()
+        template.readSync(path.join(basePath, `Template${fileExtension}`))
+
+        this.publish(template)
+    }
+
+    /**
+     * Publishes one whole load.
+     *
+     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+     * here only once every file has been read. A failure anywhere leaves every table holding
+     * what it held, which is the answer a running program wants: the data it already had, and
+     * an exception saying why the new data was not taken.
+     */
+    private publish(template: TemplateTable): void {
+        this._template = template
 
         this.solveCrossReferences()
     }

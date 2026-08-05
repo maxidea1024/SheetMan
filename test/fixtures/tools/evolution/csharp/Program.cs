@@ -9,6 +9,15 @@
 //
 // Prints {"rows":[...]} on a successful read and {"error":"..."} on a refused one, and
 // exits 0 either way - a refusal is an outcome to assert, not a harness failure.
+//
+// And the refresh form, which reads a loaded table a second time:
+//
+//     evolution-csharp --refresh <first-directory> <second-directory> <table-name>
+//
+// Prints {"first":[...],"second":[...]} when the second read went through, or
+// {"first":[...],"error":"...","after":[...]} when it was refused - where `after` is what
+// the table still holds. A refused refresh has to leave the previous rows in place; that
+// is the whole assertion.
 
 using System;
 using System.Collections;
@@ -24,7 +33,21 @@ internal static class Program
         if (args.Length < 2)
         {
             Console.Error.WriteLine("usage: evolution-csharp <binary-directory> <table-name>");
+            Console.Error.WriteLine(
+                "       evolution-csharp --refresh <first-directory> <second-directory> <table-name>");
             return 1;
+        }
+
+        if (args[0] == "--refresh")
+        {
+            if (args.Length < 4)
+            {
+                Console.Error.WriteLine(
+                    "usage: evolution-csharp --refresh <first-directory> <second-directory> <table-name>");
+                return 1;
+            }
+
+            return await Refresh(args[1], args[2], args[3]);
         }
 
         string filename = Path.Combine(args[0], args[1] + ".table");
@@ -58,6 +81,93 @@ internal static class Program
             Console.WriteLine("{\"error\":" + Quote(e.Message) + "}");
             return 0;
         }
+    }
+
+    /// <summary>
+    /// Reads one table, then reads it again over the top - a refresh.
+    /// </summary>
+    /// <remarks>
+    /// The second read is the one being asked about. Whether it succeeds or is refused, the
+    /// table has to hold one whole load afterwards: the new rows if it worked, the old ones if
+    /// it did not. Never a mixture, and never nothing.
+    /// </remarks>
+    private static async Task<int> Refresh(string firstDir, string secondDir, string table)
+    {
+        object loaded = Table(table);
+
+        await Read(loaded, Path.Combine(firstDir, table + ".table"));
+
+        var json = new StringBuilder("{\"first\":");
+        Rows(loaded, json);
+
+        try
+        {
+            await Read(loaded, Path.Combine(secondDir, table + ".table"));
+
+            json.Append(",\"second\":");
+            Rows(loaded, json);
+        }
+        catch (Exception e)
+        {
+            json.Append(",\"error\":").Append(Quote(e.Message));
+
+            // What the table holds now that the refresh has failed.
+            json.Append(",\"after\":");
+            Rows(loaded, json);
+        }
+
+        Console.WriteLine(json.Append('}').ToString());
+        return 0;
+    }
+
+    /// <summary>An instance of one of the three tables both generations have.</summary>
+    private static object Table(string table)
+    {
+        switch (table)
+        {
+            case "Evolution": return new EvolutionTable();
+            case "Promoted": return new PromotedTable();
+            case "Refused": return new RefusedTable();
+            default: throw new ArgumentException($"No table called `{table}` in this generation.");
+        }
+    }
+
+    private static Task Read(object table, string filename)
+    {
+        switch (table)
+        {
+            case EvolutionTable t: return t.ReadAsync(filename);
+            case PromotedTable t: return t.ReadAsync(filename);
+            case RefusedTable t: return t.ReadAsync(filename);
+            default: throw new ArgumentException("Not a table.");
+        }
+    }
+
+    private static void Rows(object table, StringBuilder json)
+    {
+        IEnumerable rows;
+
+        switch (table)
+        {
+            case EvolutionTable t: rows = t.Records; break;
+            case PromotedTable t: rows = t.Records; break;
+            case RefusedTable t: rows = t.Records; break;
+            default: throw new ArgumentException("Not a table.");
+        }
+
+        json.Append('[');
+        bool first = true;
+
+        foreach (object row in rows)
+        {
+            if (!first)
+                json.Append(',');
+
+            json.Append(row.ToString());
+            first = false;
+        }
+
+        json.Append(']');
     }
 
     /// <summary>

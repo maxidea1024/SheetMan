@@ -68,7 +68,11 @@ func (t *TemplateTable) Read(filename string) error {
 	// Column by column, matched by tag rather than position: a column this build does
 	// not know is skipped by its block length, and one whose type changed incompatibly
 	// fails naming the field.
-	t.records = make([]TemplateRecord, count)
+	//
+	// Read into rows of its own and assigned at the end. Reading a table that is already
+	// loaded is a refresh, and a refresh that turns out to be unreadable has to leave what
+	// the table holds alone - the previous rows and an error, not an empty table.
+	records := make([]TemplateRecord, count)
 
 	for _, column := range columns {
 		blockEnd := reader.Position() + int(column.ByteLength)
@@ -77,56 +81,56 @@ func (t *TemplateTable) Read(filename string) error {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Template.Index", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
 				for i := int32(0); i < count; i++ {
-					r := &t.records[i]
+					r := &records[i]
 					r.Index = reader.ReadI32As(column.Element)
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Template.Class", sheetman.KindScalar, 1, sheetman.ElementString) {
 				for i := int32(0); i < count; i++ {
-					r := &t.records[i]
+					r := &records[i]
 					r.Class = reader.ReadString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Template.Int", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
 				for i := int32(0); i < count; i++ {
-					r := &t.records[i]
+					r := &records[i]
 					r.Int = reader.ReadI32As(column.Element)
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Template.Delete", sheetman.KindScalar, 1, sheetman.ElementBool) {
 				for i := int32(0); i < count; i++ {
-					r := &t.records[i]
+					r := &records[i]
 					r.Delete = reader.ReadBool()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Template.Operator", sheetman.KindScalar, 1, sheetman.ElementString) {
 				for i := int32(0); i < count; i++ {
-					r := &t.records[i]
+					r := &records[i]
 					r.Operator = reader.ReadString()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Template.Namespace", sheetman.KindScalar, 1, sheetman.ElementString) {
 				for i := int32(0); i < count; i++ {
-					r := &t.records[i]
+					r := &records[i]
 					r.Namespace = reader.ReadString()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Template.Constructor", sheetman.KindScalar, 1, sheetman.ElementString) {
 				for i := int32(0); i < count; i++ {
-					r := &t.records[i]
+					r := &records[i]
 					r.Constructor = reader.ReadString()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Template.Function", sheetman.KindScalar, 1, sheetman.ElementString) {
 				for i := int32(0); i < count; i++ {
-					r := &t.records[i]
+					r := &records[i]
 					r.Function = reader.ReadString()
 				}
 			}
@@ -142,10 +146,14 @@ func (t *TemplateTable) Read(filename string) error {
 		return fmt.Errorf("Template: %w", err)
 	}
 
-	t.byIndex = make(map[int32]int, len(t.records))
-	for i := range t.records {
-		t.byIndex[t.records[i].Index] = i
+	byIndex := make(map[int32]int, len(records))
+	for i := range records {
+		byIndex[records[i].Index] = i
 	}
+
+	// Published, now that every column read and the index is built.
+	t.records = records
+	t.byIndex = byIndex
 
 	return nil
 }

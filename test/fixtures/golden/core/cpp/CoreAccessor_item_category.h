@@ -60,8 +60,11 @@ class ItemCategoryTable
         const sheetman::Header header = sheetman::read_table_header(reader);
         const std::size_t row_count = static_cast<std::size_t>(header.row_count);
 
-        records_.clear();
-        records_.resize(row_count);
+        // Read into storage of its own and swapped in at the end: reading a table that is
+        // already loaded is a refresh, and one that throws part way through - a truncated
+        // file, a column this build cannot read - has to leave the rows already there.
+        std::vector<ItemCategoryRecord> records;
+        records.resize(row_count);
 
         for (const sheetman::Column& column : header.columns)
         {
@@ -74,7 +77,7 @@ class ItemCategoryTable
                     sheetman::check_column(column, "ItemCategory.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read_i32_as(column.element, record.index);
                     }
                     break;
@@ -84,7 +87,7 @@ class ItemCategoryTable
                     sheetman::check_column(column, "ItemCategory.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read(record.name);
                     }
                     break;
@@ -94,7 +97,7 @@ class ItemCategoryTable
                     sheetman::check_column(column, "ItemCategory.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read(record.description);
                     }
                     break;
@@ -108,20 +111,28 @@ class ItemCategoryTable
             sheetman::check_block_end(reader, column, block_end);
         }
 
-        build_index();
+        publish(std::move(records));
     }
 
     private:
     friend class Tables;
 
-    void build_index()
+    /// One whole load, in place of the previous one.
+    ///
+    /// The index is built here rather than by the caller, because the two have to arrive
+    /// together: a table holding this load's rows and the last one's index would answer
+    /// `find` with a row that is no longer at that position.
+    void publish(std::vector<ItemCategoryRecord>&& records)
     {
-        by_index_.clear();
-        by_index_.reserve(records_.size());
-        for (std::size_t i = 0; i < records_.size(); ++i)
+        std::unordered_map<std::int32_t, std::size_t> by_index;
+        by_index.reserve(records.size());
+        for (std::size_t i = 0; i < records.size(); ++i)
         {
-            by_index_.emplace(records_[i].index, i);
+            by_index.emplace(records[i].index, i);
         }
+
+        records_ = std::move(records);
+        by_index_ = std::move(by_index);
     }
 
     std::vector<ItemCategoryRecord> records_;

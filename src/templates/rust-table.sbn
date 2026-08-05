@@ -48,7 +48,10 @@ impl {{ table.table_name }} {
         let header = sheetman::read_table_header(&mut reader)?;
         let count = header.row_count.max(0) as usize;
 
-        self.records = vec![{{ table.record_name }}::default(); count];
+        // Read into rows of its own and assigned at the end. Reading a table that is
+        // already loaded is a refresh, and one that turns out to be unreadable has to
+        // leave the rows already there alone - `?` returns before anything is replaced.
+        let mut records = vec![{{ table.record_name }}::default(); count];
 
         for column in &header.columns {
             let block_end = reader.position() + column.byte_length.max(0) as usize;
@@ -57,7 +60,7 @@ impl {{ table.table_name }} {
 {{~ for field in table.fields ~}}
                 {{ field.tag }} => {
                     {{ field.column_check }}
-                    for record in self.records.iter_mut() {
+                    for record in records.iter_mut() {
 {{~ if field.kind == 'var_array' ~}}
                         let element_count = reader.read_counter32()?.max(0) as usize;
                         record.{{ field.name }} = Vec::with_capacity(element_count.min(65536));
@@ -91,12 +94,15 @@ impl {{ table.table_name }} {
             sheetman::check_block_end(&reader, column, block_end)?;
         }
 
-        self.by_index = self
-            .records
+        let by_index = records
             .iter()
             .enumerate()
             .map(|(position, record)| (record.{{ table.index_field }}, position))
             .collect();
+
+        // Published, now that every column read.
+        self.records = records;
+        self.by_index = by_index;
 
         Ok(())
     }

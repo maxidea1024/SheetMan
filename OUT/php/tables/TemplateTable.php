@@ -67,11 +67,12 @@ final class TemplateTable
         $reader = LiteBinaryReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
-        $this->records = [];
-        $this->byIndex = [];
+        // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+        $records = [];
+        $byIndex = [];
 
         for ($i = 0; $i < $count; $i++) {
-            $this->records[] = new TemplateRecord();
+            $records[] = new TemplateRecord();
         }
 
         foreach ($columns as $column) {
@@ -80,56 +81,56 @@ final class TemplateTable
             switch ($column['tag']) {
                 case 1:
                     LiteBinaryReader::checkColumn($column, 'Template.Index', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
-                    foreach ($this->records as $record) {
+                    foreach ($records as $record) {
                         $record->index = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
                     LiteBinaryReader::checkColumn($column, 'Template.Class', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
-                    foreach ($this->records as $record) {
+                    foreach ($records as $record) {
                         $record->class = $reader->readString();
                     }
                     break;
 
                 case 3:
                     LiteBinaryReader::checkColumn($column, 'Template.Int', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
-                    foreach ($this->records as $record) {
+                    foreach ($records as $record) {
                         $record->int = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 4:
                     LiteBinaryReader::checkColumn($column, 'Template.Delete', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
-                    foreach ($this->records as $record) {
+                    foreach ($records as $record) {
                         $record->delete = $reader->readBool();
                     }
                     break;
 
                 case 5:
                     LiteBinaryReader::checkColumn($column, 'Template.Operator', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
-                    foreach ($this->records as $record) {
+                    foreach ($records as $record) {
                         $record->operator = $reader->readString();
                     }
                     break;
 
                 case 6:
                     LiteBinaryReader::checkColumn($column, 'Template.Namespace', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
-                    foreach ($this->records as $record) {
+                    foreach ($records as $record) {
                         $record->namespace = $reader->readString();
                     }
                     break;
 
                 case 7:
                     LiteBinaryReader::checkColumn($column, 'Template.Constructor', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
-                    foreach ($this->records as $record) {
+                    foreach ($records as $record) {
                         $record->constructor = $reader->readString();
                     }
                     break;
 
                 case 8:
                     LiteBinaryReader::checkColumn($column, 'Template.Function', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
-                    foreach ($this->records as $record) {
+                    foreach ($records as $record) {
                         $record->function = $reader->readString();
                     }
                     break;
@@ -143,8 +144,12 @@ final class TemplateTable
             $reader->checkBlockEnd($column, $blockEnd);
         }
 
-        foreach ($this->records as $record) {
-            $this->byIndex[$record->index] = $record;
+        foreach ($records as $record) {
+            $byIndex[$record->index] = $record;
         }
+
+        // Published, now that every column read.
+        $this->records = $records;
+        $this->byIndex = $byIndex;
     }
 }

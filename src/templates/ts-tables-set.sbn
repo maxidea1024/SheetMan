@@ -24,14 +24,34 @@ export class Tables {
      */
     public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
 {{~ for table in tables ~}}
-        await this._{{ table.member }}.read(path.join(basePath, `{{ table.name }}${fileExtension}`))
+        const {{ table.member }} = new {{ table.name }}Table()
+        await {{ table.member }}.read(path.join(basePath, `{{ table.name }}${fileExtension}`))
 {{~ end ~}}
+
+        this.publish({{ for table in tables }}{{ if !for.first }}, {{ end }}{{ table.member }}{{ end }})
     }
 
     /** Read all tables synchronously. */
     public readAllSync(basePath: string, fileExtension: string = '.json'): void {
 {{~ for table in tables ~}}
-        this._{{ table.member }}.readSync(path.join(basePath, `{{ table.name }}${fileExtension}`))
+        const {{ table.member }} = new {{ table.name }}Table()
+        {{ table.member }}.readSync(path.join(basePath, `{{ table.name }}${fileExtension}`))
+{{~ end ~}}
+
+        this.publish({{ for table in tables }}{{ if !for.first }}, {{ end }}{{ table.member }}{{ end }})
+    }
+
+    /**
+     * Publishes one whole load.
+     *
+     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+     * here only once every file has been read. A failure anywhere leaves every table holding
+     * what it held, which is the answer a running program wants: the data it already had, and
+     * an exception saying why the new data was not taken.
+     */
+    private publish({{ for table in tables }}{{ if !for.first }}, {{ end }}{{ table.member }}: {{ table.name }}Table{{ end }}): void {
+{{~ for table in tables ~}}
+        this._{{ table.member }} = {{ table.member }}
 {{~ end ~}}
 
         this.solveCrossReferences()

@@ -34,6 +34,7 @@
 #include <cstring>
 #include <fstream>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 #include <vector>
 
@@ -227,6 +228,14 @@ private:
 };
 
 // ------------------------------------------------------------------------ TArray
+
+/// The engine's spelling of std::move. Generated code uses it to hand a whole load over
+/// rather than copying it row by row.
+template <typename T>
+constexpr typename std::remove_reference<T>::type&& MoveTemp(T&& Value)
+{
+    return static_cast<typename std::remove_reference<T>::type&&>(Value);
+}
 
 template <typename T>
 class TArray

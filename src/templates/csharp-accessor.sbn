@@ -21,37 +21,75 @@
         /// </summary>
         public static {{ table.name }}Table {{ table.name }} { get; private set; }
 {{~ end ~}}
+{{~ if tables | array.size > 0 }}
+
+        /// <summary>
+        /// The tables of one read, before any of them is visible.
+        /// </summary>
+        /// <remarks>
+        /// A read builds one of these and publishes it whole. Two things follow, and both are
+        /// about reading the data a second time - a refresh, a hot reload, a downloaded patch:
+        ///
+        /// Cross references are resolved among the tables in here, so no row ever points at a
+        /// row from the previous load. Resolving against the published tables would do exactly
+        /// that for as long as the read took.
+        ///
+        /// And a failure anywhere - a truncated file, a column this build cannot read, a
+        /// duplicate index - publishes nothing. Every table stays as it was, which is the
+        /// answer a service wants: the data it already had, and a reason.
+        /// </remarks>
+        private sealed class Snapshot
+        {
+{{~ for table in tables ~}}
+            public {{ table.name }}Table {{ table.name }} = new {{ table.name }}Table();
+{{~ end ~}}
+        }
+{{~ end }}
 
         /// <summary>
         /// Read all tables.
         /// </summary>
+        /// <remarks>
+        /// Safe to call again on a loaded accessor. Nothing published changes until every file
+        /// has been read and linked.
+        /// </remarks>
         public static async Task ReadAllAsync(
             string basePath, string fileExtension = "{{ file_extension }}")
         {
 {{~ if tables | array.size == 0 ~}}
             return await Task.CompletedTask;
 {{~ else ~}}
+            var snapshot = new Snapshot();
             var tasks = new List<Task>();
-{{~ for table in tables }}
-            {{ table.name }} = new {{ table.name }}Table();
-            tasks.Add({{ table.name }}.ReadAsync(System.IO.Path.Combine(basePath, $"{{ table.raw_name }}{fileExtension}")));
+{{~ for table in tables ~}}
+            tasks.Add(snapshot.{{ table.name }}.ReadAsync(System.IO.Path.Combine(basePath, $"{{ table.raw_name }}{fileExtension}")));
 {{~ end ~}}
 
             await Task.WhenAll(tasks);
 
-            SolveCrossReferences();
+            SolveCrossReferences(snapshot);
+
+            // Published together. The barrier keeps the writes that built these tables from
+            // being seen after the references to them, so a consumer on another thread reads
+            // this load or the one before it - never a mixture.
+            System.Threading.Thread.MemoryBarrier();
+
+{{~ for table in tables ~}}
+            {{ table.name }} = snapshot.{{ table.name }};
+{{~ end ~}}
 {{~ end ~}}
         }
+{{~ if tables | array.size > 0 }}
 
         /// <summary>
-        /// Solve cross references.
+        /// Solve cross references, among the tables of one read.
         /// </summary>
-        private static void SolveCrossReferences()
+        private static void SolveCrossReferences(Snapshot snapshot)
         {
 {{~ for table in tables_with_references ~}}
 {{~ if !for.first }}
 {{ end ~}}
-            foreach (var record in {{ table.name }}.Records)
+            foreach (var record in snapshot.{{ table.name }}.Records)
             {
 {{~ for field in table.reference_fields ~}}
 {{~ if field.kind == 'array_ref' ~}}
@@ -60,13 +98,13 @@
 {{~ if field.references_field ~}}
                     if (record.{{ field.field_name }}_{{ field.ref_table }}_index[i] > 0)
                     {
-                        record.SetReference_{{ field.prop_name }}_INTERNAL(i, {{ field.ref_table }}.GetByIndex(record._{{ field.prop_name }}_{{ field.ref_table }}_index[i]).{{ field.ref_field }});
+                        record.SetReference_{{ field.prop_name }}_INTERNAL(i, snapshot.{{ field.ref_table }}.GetByIndex(record._{{ field.prop_name }}_{{ field.ref_table }}_index[i]).{{ field.ref_field }});
                         record.{{ field.field_name }}_F[i] = true;
                     }
 {{~ else ~}}
                     if (record._{{ field.prop_name }}_{{ field.ref_table }}_index[i] > 0)
                     {
-                        record.SetReference_{{ field.prop_name }}_INTERNAL(i, {{ field.ref_table }}.GetByIndex(record.{{ field.field_name }}_{{ field.ref_table }}_index[i]));
+                        record.SetReference_{{ field.prop_name }}_INTERNAL(i, snapshot.{{ field.ref_table }}.GetByIndex(record.{{ field.field_name }}_{{ field.ref_table }}_index[i]));
                         record.{{ field.field_name }}_F[i] = true;
                     }
 {{~ end ~}}
@@ -75,9 +113,9 @@
                 if (record.{{ field.field_name }}_{{ field.ref_table }}_index > 0)
                 {
 {{~ if field.references_field ~}}
-                    record.SetReference_{{ field.prop_name }}_INTERNAL({{ field.ref_table }}.GetByIndex(record.{{ field.field_name }}_{{ field.ref_table }}_index).{{ field.ref_field }});
+                    record.SetReference_{{ field.prop_name }}_INTERNAL(snapshot.{{ field.ref_table }}.GetByIndex(record.{{ field.field_name }}_{{ field.ref_table }}_index).{{ field.ref_field }});
 {{~ else ~}}
-                    record.SetReference_{{ field.prop_name }}_INTERNAL({{ field.ref_table }}.GetByIndex(record.{{ field.field_name }}_{{ field.ref_table }}_index));
+                    record.SetReference_{{ field.prop_name }}_INTERNAL(snapshot.{{ field.ref_table }}.GetByIndex(record.{{ field.field_name }}_{{ field.ref_table }}_index));
 {{~ end ~}}
                     record.{{ field.field_name }}_F = true;
                 }
@@ -86,5 +124,6 @@
             }
 {{~ end ~}}
         }
+{{~ end }}
     }
 {{ include 'csharp-file-foot.sbn' ~}}

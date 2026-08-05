@@ -49,7 +49,11 @@ func (t *{{ table.table_name }}) Read(filename string) error {
 	// Column by column, matched by tag rather than position: a column this build does
 	// not know is skipped by its block length, and one whose type changed incompatibly
 	// fails naming the field.
-	t.records = make([]{{ table.record_name }}, count)
+	//
+	// Read into rows of its own and assigned at the end. Reading a table that is already
+	// loaded is a refresh, and a refresh that turns out to be unreadable has to leave what
+	// the table holds alone - the previous rows and an error, not an empty table.
+	records := make([]{{ table.record_name }}, count)
 
 	for _, column := range columns {
 		blockEnd := reader.Position() + int(column.ByteLength)
@@ -59,7 +63,7 @@ func (t *{{ table.table_name }}) Read(filename string) error {
 		case {{ field.tag }}:
 			if {{ field.column_check }} {
 				for i := int32(0); i < count; i++ {
-					r := &t.records[i]
+					r := &records[i]
 {{~ if field.kind == 'var_array' ~}}
 					elementCount := int(reader.ReadCounter32())
 					r.{{ field.name }} = make({{ field.array_type }}, elementCount)
@@ -97,10 +101,14 @@ func (t *{{ table.table_name }}) Read(filename string) error {
 		return fmt.Errorf("{{ table.raw_name }}: %w", err)
 	}
 
-	t.byIndex = make(map[int32]int, len(t.records))
-	for i := range t.records {
-		t.byIndex[t.records[i].{{ table.index_field }}] = i
+	byIndex := make(map[int32]int, len(records))
+	for i := range records {
+		byIndex[records[i].{{ table.index_field }}] = i
 	}
+
+	// Published, now that every column read and the index is built.
+	t.records = records
+	t.byIndex = byIndex
 
 	return nil
 }

@@ -156,21 +156,23 @@ export class {{ name }}Table {
 
     private readFromJson(json: string): void {
         const dataRows: any[] = JSON.parse(json)
+        const records: {{ name }}Record[] = []
+
         if (this.isCompactRowFormatted(dataRows)) {
             for (const dataRow of dataRows) {
                 const record = new {{ name }}Record()
                 record.populateFieldValuesCompact(dataRow)
-                this._records.push(record)
+                records.push(record)
             }
         } else {
             for (const dataRow of dataRows as IDataRow[]) {
                 const record = new {{ name }}Record()
                 record.populateFieldValues(dataRow)
-                this._records.push(record)
+                records.push(record)
             }
         }
 
-        this.mapping()
+        this.publish(records)
     }
 
     private isCompactRowFormatted(rows: any[]): boolean {
@@ -195,9 +197,11 @@ export class {{ name }}Table {
         const reader = new sheetman.LiteBinaryReader(data)
         const { rowCount, columns } = sheetman.readTableHeader(reader)
 
-        this._records = []
+        // Built here and published at the end, so a file that turns out to be truncated - or
+        // a column this build cannot read - leaves the rows already loaded exactly as they are.
+        const records: {{ name }}Record[] = []
         for (let i = 0; i < rowCount; ++i)
-            this._records.push(new {{ name }}Record())
+            records.push(new {{ name }}Record())
 
         for (const column of columns)
         {
@@ -210,7 +214,7 @@ export class {{ name }}Table {
                     {{ field.column_check }}
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
 {{~ if field.kind == 'var_array' ~}}
                         const elementCount = reader.readCounter32()
                         record.{{ field.field_name }} = []
@@ -242,18 +246,36 @@ export class {{ name }}Table {
             sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
-        this.mapping()
+        this.publish(records)
     }
 
     /** Index mapping. */
-    private mapping(): void {
+    /**
+     * Publishes one whole load: the rows and the lookups built from them, together.
+     *
+     * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
+     * consumers were holding: the rows were appended to or emptied first, so a read that threw
+     * partway left the table holding some of the new data and none of the old. Everything above
+     * builds its own arrays and gets here only if it finished, and this replaces the references
+     * in one step. Whoever took `records` before still has the previous load, whole.
+     */
+    private publish(records: {{ name }}Record[]): void {
+{{~ for field in indexed_fields ~}}
+        const recordsBy{{ field.pascal_name }} = new Map<{{ field.field_type }}, {{ name }}Record>()
+{{~ end ~}}
 {{~ if indexed_fields | array.size > 0 ~}}
-        for (const record of this._records)
+
+        for (const record of records)
         {
 {{~ for field in indexed_fields ~}}
-            this._recordsBy{{ field.pascal_name }}.set(record.{{ field.prop_name }}, record)
+            recordsBy{{ field.pascal_name }}.set(record.{{ field.prop_name }}, record)
 {{~ end ~}}
         }
+
+{{~ end ~}}
+        this._records = records
+{{~ for field in indexed_fields ~}}
+        this._recordsBy{{ field.pascal_name }} = recordsBy{{ field.pascal_name }}
 {{~ end ~}}
     }
 }

@@ -49,7 +49,8 @@ module X
       reader = Sheetman::Reader.new(Sheetman.read_all_bytes(filename))
       count, columns = Sheetman.read_table_header(reader)
 
-      @records = Array.new(count) { TemplateRecord.new }
+      # Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+      records = Array.new(count) { TemplateRecord.new }
 
       columns.each do |column|
         block_end = reader.position + column.byte_length
@@ -57,42 +58,42 @@ module X
         case column.tag
         when 1
           Sheetman.check_column(column, 'Template.Index', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
-          @records.each do |record|
+          records.each do |record|
             record.index = reader.read_i32_as(column.element)
           end
         when 2
           Sheetman.check_column(column, 'Template.Class', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
-          @records.each do |record|
+          records.each do |record|
             record.class_ = reader.read_string
           end
         when 3
           Sheetman.check_column(column, 'Template.Int', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
-          @records.each do |record|
+          records.each do |record|
             record.int = reader.read_i32_as(column.element)
           end
         when 4
           Sheetman.check_column(column, 'Template.Delete', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
-          @records.each do |record|
+          records.each do |record|
             record.delete = reader.read_bool
           end
         when 5
           Sheetman.check_column(column, 'Template.Operator', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
-          @records.each do |record|
+          records.each do |record|
             record.operator = reader.read_string
           end
         when 6
           Sheetman.check_column(column, 'Template.Namespace', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
-          @records.each do |record|
+          records.each do |record|
             record.namespace = reader.read_string
           end
         when 7
           Sheetman.check_column(column, 'Template.Constructor', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
-          @records.each do |record|
+          records.each do |record|
             record.constructor = reader.read_string
           end
         when 8
           Sheetman.check_column(column, 'Template.Function', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
-          @records.each do |record|
+          records.each do |record|
             record.function = reader.read_string
           end
         else
@@ -103,7 +104,11 @@ module X
         Sheetman.check_block_end(reader, column, block_end)
       end
 
-      @by_index = @records.to_h { |record| [record.index, record] }
+      by_index = records.to_h { |record| [record.index, record] }
+
+      # Published, now that every column read.
+      @records = records
+      @by_index = by_index
     end
   end
 end

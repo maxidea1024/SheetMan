@@ -48,11 +48,12 @@ final class {{ table.table_name }}
         $reader = LiteBinaryReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
-        $this->records = [];
-        $this->byIndex = [];
+        // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+        $records = [];
+        $byIndex = [];
 
         for ($i = 0; $i < $count; $i++) {
-            $this->records[] = new {{ table.record_name }}();
+            $records[] = new {{ table.record_name }}();
         }
 
         foreach ($columns as $column) {
@@ -62,7 +63,7 @@ final class {{ table.table_name }}
 {{~ for field in table.fields ~}}
                 case {{ field.tag }}:
                     {{ field.column_check }}
-                    foreach ($this->records as $record) {
+                    foreach ($records as $record) {
 {{~ if field.kind == 'var_array' ~}}
                         $elementCount = $reader->readCounter32();
                         $record->{{ field.name }} = [];
@@ -98,8 +99,12 @@ final class {{ table.table_name }}
             $reader->checkBlockEnd($column, $blockEnd);
         }
 
-        foreach ($this->records as $record) {
-            $this->byIndex[$record->{{ table.index_field }}] = $record;
+        foreach ($records as $record) {
+            $byIndex[$record->{{ table.index_field }}] = $record;
         }
+
+        // Published, now that every column read.
+        $this->records = $records;
+        $this->byIndex = $byIndex;
     }
 }

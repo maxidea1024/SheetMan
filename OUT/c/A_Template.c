@@ -191,23 +191,37 @@ bool A_TemplateLoad(A_TemplateTable_t* table, const char* filename,
     sm_reader reader;
     bool ok;
 
-    memset(table, 0, sizeof *table);
+    /* Loaded beside whatever the table is already holding, arena and all, and swapped in
+     * only if it worked. That is what makes a reload safe: reading a patched file that
+     * turns out to be truncated - or to carry a column this build cannot read - leaves the
+     * rows the caller has pointers to exactly where they were.
+     *
+     * It also has to be this way round for the memory. The table owns its arena, and
+     * zeroing the table before reading - which is what this did - dropped that arena
+     * without freeing it, so every reload leaked the whole of the previous load. */
+    A_TemplateTable_t loaded;
+
+    memset(&loaded, 0, sizeof loaded);
 
     if (!sm_read_all_bytes(filename, &bytes, &length)) {
         sm_copy_error(error, error_size, filename, "cannot be read");
         return false;
     }
 
-    sm_reader_init(&reader, bytes, length, &table->arena);
+    sm_reader_init(&reader, bytes, length, &loaded.arena);
 
-    ok = A_TemplateParse(table, &reader);
+    ok = A_TemplateParse(&loaded, &reader);
 
-    if (!ok) {
+    if (ok) {
+        /* The previous load goes now, and not before: its arena holds the strings and
+         * arrays the caller was reading up to this line. */
+        A_TemplateFree(table);
+        *table = loaded;
+    } else {
         sm_copy_error(error, error_size, filename, sm_error(&reader));
 
-        /* Nothing half-read is handed back: the arena goes and the table is empty
-         * again, so a caller that ignores the return value still sees no rows. */
-        A_TemplateFree(table);
+        /* Nothing half-read is kept, and the table is untouched. */
+        A_TemplateFree(&loaded);
     }
 
     /* The strings were copied into the arena, so the file buffer goes either way. */

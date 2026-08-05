@@ -96,12 +96,18 @@ namespace SheetMan.Fixtures.Core.Server
         /// <summary>
         /// All records.
         /// </summary>
+        /// <remarks>
+        /// The list a read publishes, not one a read fills. Whoever holds this reference holds
+        /// the rows as they were when they took it, and a refresh underneath them replaces the
+        /// reference rather than the contents - so an iteration in progress neither tears nor
+        /// throws, and a read that fails leaves the previous rows exactly where they were.
+        /// </remarks>
         public List<Record> Records => _records;
-        private readonly List<Record> _records = new List<Record>();
+        private List<Record> _records = new List<Record>();
 
         #region Indexing by 'Index'
         public Dictionary<int, Record> RecordsByIndex => _recordsByIndex;
-        private readonly Dictionary<int, Record> _recordsByIndex = new Dictionary<int, Record>();
+        private Dictionary<int, Record> _recordsByIndex = new Dictionary<int, Record>();
 
         /// <summary>
         /// Gets the value associated with the specified key. throw SheetManException if not found.
@@ -148,18 +154,19 @@ namespace SheetMan.Fixtures.Core.Server
         {
             var columns = LiteBinaryTable.ReadHeader(reader, out int count);
 
-            _records.Clear();
-            _recordsByIndex.Clear();
-
+            // Read into storage of its own and published at the end, which is what makes a
+            // refresh atomic: nothing here touches what the table is currently holding, so a
+            // file that turns out to be truncated - or a column this build cannot read -
+            // leaves the previous rows in place and reports why.
+            //
             // Sized once. The row count was checked against what the columns declare before
             // this point, so it is a number the file could actually hold rows for - and a
             // list that grows into twenty thousand rows reallocates fifteen times to get
             // there, copying everything each time.
-            if (_records.Capacity < count)
-                _records.Capacity = count;
+            var records = new List<Record>(count);
 
             for (int i = 0; i < count; i++)
-                _records.Add(new Record());
+                records.Add(new Record());
 
             foreach (var column in columns)
             {
@@ -171,7 +178,7 @@ namespace SheetMan.Fixtures.Core.Server
                         LiteBinaryTable.CheckColumn(column, "Localization.Index", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
-                            var record = _records[i];
+                            var record = records[i];
                             record._index = reader.ReadI32As(column.Element);
                         }
                         break;
@@ -180,7 +187,7 @@ namespace SheetMan.Fixtures.Core.Server
                         LiteBinaryTable.CheckColumn(column, "Localization.Key", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
-                            var record = _records[i];
+                            var record = records[i];
                             reader.Read(out record._key);
                         }
                         break;
@@ -189,7 +196,7 @@ namespace SheetMan.Fixtures.Core.Server
                         LiteBinaryTable.CheckColumn(column, "Localization.TextEn_array", LiteBinaryTable.KindFixedArray, 2, LiteBinaryTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
-                            var record = _records[i];
+                            var record = records[i];
                             record._textEnArray = new string[Record.TextEnArray_N];
                             for (int j = 0; j < Record.TextEnArray_N; ++j)
                             {
@@ -202,7 +209,7 @@ namespace SheetMan.Fixtures.Core.Server
                         LiteBinaryTable.CheckColumn(column, "Localization.TextKo_array", LiteBinaryTable.KindFixedArray, 2, LiteBinaryTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
-                            var record = _records[i];
+                            var record = records[i];
                             record._textKoArray = new string[Record.TextKoArray_N];
                             for (int j = 0; j < Record.TextKoArray_N; ++j)
                             {
@@ -221,9 +228,19 @@ namespace SheetMan.Fixtures.Core.Server
                 LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
-            // Index mapping
-            foreach (var record in _records)
-                _recordsByIndex.Add(record.Index, record);
+            // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a
+            // duplicate key throws here - before any of this is visible.
+            var recordsByIndex = new Dictionary<int, Record>(count);
+            foreach (var record in records)
+                recordsByIndex.Add(record.Index, record);
+
+            // Published. Everything above succeeded, and the barrier is what keeps the writes
+            // that built these from being seen after the references to them - a reader on
+            // another thread gets the whole table or the previous one, never half of either.
+            System.Threading.Thread.MemoryBarrier();
+
+            _records = records;
+            _recordsByIndex = recordsByIndex;
 
             return Task.CompletedTask;
         }

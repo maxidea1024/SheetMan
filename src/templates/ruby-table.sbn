@@ -42,7 +42,8 @@
       reader = Sheetman::Reader.new(Sheetman.read_all_bytes(filename))
       count, columns = Sheetman.read_table_header(reader)
 
-      @records = Array.new(count) { {{ table.record_name }}.new }
+      # Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+      records = Array.new(count) { {{ table.record_name }}.new }
 
       columns.each do |column|
         block_end = reader.position + column.byte_length
@@ -51,7 +52,7 @@
 {{~ for field in table.fields ~}}
         when {{ field.tag }}
           {{ field.column_check }}
-          @records.each do |record|
+          records.each do |record|
 {{~ if field.kind == 'var_array' ~}}
             element_count = reader.read_counter32
             record.{{ field.name }} = Array.new(element_count) { {{ field.read_element }} }
@@ -75,7 +76,11 @@
         Sheetman.check_block_end(reader, column, block_end)
       end
 
-      @by_index = @records.to_h { |record| [record.{{ table.index_field }}, record] }
+      by_index = records.to_h { |record| [record.{{ table.index_field }}, record] }
+
+      # Published, now that every column read.
+      @records = records
+      @by_index = by_index
     end
   end
 {{ include 'ruby-file-foot.sbn' ~}}

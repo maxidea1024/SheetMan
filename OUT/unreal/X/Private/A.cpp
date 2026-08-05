@@ -54,10 +54,17 @@ bool FTemplateTable::Read(const FString& Filename)
         return false;
     }
 
-    // The header has already checked the row count against what the columns declare, so
-    // this allocation is the size the file can actually hold rows for.
-    RecordsStorage.Empty(Header.RowCount);
-    RecordsStorage.SetNum(Header.RowCount);
+    // Read beside whatever this table is already holding and swapped in at the end. Reading
+    // again is a refresh - a patched .pak, a downloaded table - and one that turns out to be
+    // unreadable has to leave the rows already there, which Blueprint graphs and gameplay
+    // code are holding by value and by pointer.
+    //
+    // The header has already checked the row count against what the columns declare, so this
+    // allocation is the size the file can actually hold rows for.
+    TArray<FTemplateRow> Loaded;
+
+    Loaded.Empty(Header.RowCount);
+    Loaded.SetNum(Header.RowCount);
 
     // Column by column, matched by tag rather than by position: a column this build has no
     // member for is skipped by its declared length, and one whose type no longer fits the
@@ -72,7 +79,7 @@ bool FTemplateTable::Read(const FString& Filename)
         case 1:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Index"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementI32) | SheetMan::ElementMask(SheetMan::ElementVarint));
 
-            for (FTemplateRow& Record : RecordsStorage)
+            for (FTemplateRow& Record : Loaded)
             {
                 Reader.ReadAs(Column.Element, Record.Index);
             }
@@ -82,7 +89,7 @@ bool FTemplateTable::Read(const FString& Filename)
         case 2:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Class"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
 
-            for (FTemplateRow& Record : RecordsStorage)
+            for (FTemplateRow& Record : Loaded)
             {
                 Reader.ReadAs(Column.Element, Record.Class);
             }
@@ -92,7 +99,7 @@ bool FTemplateTable::Read(const FString& Filename)
         case 3:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Int"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementI32) | SheetMan::ElementMask(SheetMan::ElementVarint));
 
-            for (FTemplateRow& Record : RecordsStorage)
+            for (FTemplateRow& Record : Loaded)
             {
                 Reader.ReadAs(Column.Element, Record.Int);
             }
@@ -102,7 +109,7 @@ bool FTemplateTable::Read(const FString& Filename)
         case 4:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Delete"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
 
-            for (FTemplateRow& Record : RecordsStorage)
+            for (FTemplateRow& Record : Loaded)
             {
                 Reader.ReadAs(Column.Element, Record.bDelete);
             }
@@ -112,7 +119,7 @@ bool FTemplateTable::Read(const FString& Filename)
         case 5:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Operator"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
 
-            for (FTemplateRow& Record : RecordsStorage)
+            for (FTemplateRow& Record : Loaded)
             {
                 Reader.ReadAs(Column.Element, Record.Operator);
             }
@@ -122,7 +129,7 @@ bool FTemplateTable::Read(const FString& Filename)
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Namespace"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
 
-            for (FTemplateRow& Record : RecordsStorage)
+            for (FTemplateRow& Record : Loaded)
             {
                 Reader.ReadAs(Column.Element, Record.Namespace);
             }
@@ -132,7 +139,7 @@ bool FTemplateTable::Read(const FString& Filename)
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Constructor"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
 
-            for (FTemplateRow& Record : RecordsStorage)
+            for (FTemplateRow& Record : Loaded)
             {
                 Reader.ReadAs(Column.Element, Record.Constructor);
             }
@@ -142,7 +149,7 @@ bool FTemplateTable::Read(const FString& Filename)
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Function"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
 
-            for (FTemplateRow& Record : RecordsStorage)
+            for (FTemplateRow& Record : Loaded)
             {
                 Reader.ReadAs(Column.Element, Record.Function);
             }
@@ -160,20 +167,27 @@ bool FTemplateTable::Read(const FString& Filename)
     }
 
     // Asked once, for the whole table. Anything short or malformed anywhere in it has
-    // left its reason here, and a half-read table is not one this returns true for.
+    // left its reason here, and a half-read table is not one this returns true for - nor
+    // is it one that replaces what the table was holding.
     if (Reader.HasFailed())
     {
         UE_LOG(LogTemp, Error, TEXT("SheetMan: %s is malformed. %s"), *Filename, *Reader.GetError());
 
-        RecordsStorage.Empty();
         return false;
     }
 
-    ByIndex.Empty(RecordsStorage.Num());
-    for (int32 Position = 0; Position < RecordsStorage.Num(); ++Position)
+    TMap<int32, int32> LoadedByIndex;
+
+    LoadedByIndex.Empty(Loaded.Num());
+    for (int32 Position = 0; Position < Loaded.Num(); ++Position)
     {
-        ByIndex.Add(RecordsStorage[Position].Index, Position);
+        LoadedByIndex.Add(Loaded[Position].Index, Position);
     }
+
+    // Published together: rows holding this load and an index built from the last one would
+    // answer Find with a row that has moved.
+    RecordsStorage = MoveTemp(Loaded);
+    ByIndex = MoveTemp(LoadedByIndex);
 
     return true;
 }

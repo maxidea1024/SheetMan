@@ -31,9 +31,13 @@ class TemplateRecord {
 /// Every row of Template.
 class TemplateTable {
   /// Every row, in the order the sheet declared them.
-  final List<TemplateRecord> records = [];
+  ///
+  /// The list a read published, not one a read fills. A refresh replaces the reference
+  /// rather than the contents, so whoever holds this holds one whole load.
+  List<TemplateRecord> get records => _records;
+  List<TemplateRecord> _records = [];
 
-  final Map<int, TemplateRecord> _byIndex = {};
+  Map<int, TemplateRecord> _byIndex = {};
 
   /// The row with the given primary index, or null when there is none.
   TemplateRecord? find(int index) => _byIndex[index];
@@ -47,11 +51,12 @@ class TemplateTable {
     final header = readTableHeader(reader);
     final count = header.rowCount;
 
-    records.clear();
-    _byIndex.clear();
+    // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+    final loaded = <TemplateRecord>[];
+    final loadedByIndex = <int, TemplateRecord>{};
 
     for (var i = 0; i < count; i++) {
-      records.add(TemplateRecord());
+      loaded.add(TemplateRecord());
     }
 
     for (final column in header.columns) {
@@ -60,49 +65,49 @@ class TemplateTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Template.Index', kindScalar, 1, [elementI32, elementVarint]);
-          for (final record in records) {
+          for (final record in loaded) {
             record.index = reader.readI32As(column.element);
           }
           break;
         case 2:
           checkColumn(column, 'Template.Class', kindScalar, 1, [elementString]);
-          for (final record in records) {
+          for (final record in loaded) {
             record.class_ = reader.readString();
           }
           break;
         case 3:
           checkColumn(column, 'Template.Int', kindScalar, 1, [elementI32, elementVarint]);
-          for (final record in records) {
+          for (final record in loaded) {
             record.int_ = reader.readI32As(column.element);
           }
           break;
         case 4:
           checkColumn(column, 'Template.Delete', kindScalar, 1, [elementBool]);
-          for (final record in records) {
+          for (final record in loaded) {
             record.delete = reader.readBool();
           }
           break;
         case 5:
           checkColumn(column, 'Template.Operator', kindScalar, 1, [elementString]);
-          for (final record in records) {
+          for (final record in loaded) {
             record.operator = reader.readString();
           }
           break;
         case 6:
           checkColumn(column, 'Template.Namespace', kindScalar, 1, [elementString]);
-          for (final record in records) {
+          for (final record in loaded) {
             record.namespace = reader.readString();
           }
           break;
         case 7:
           checkColumn(column, 'Template.Constructor', kindScalar, 1, [elementString]);
-          for (final record in records) {
+          for (final record in loaded) {
             record.constructor = reader.readString();
           }
           break;
         case 8:
           checkColumn(column, 'Template.Function', kindScalar, 1, [elementString]);
-          for (final record in records) {
+          for (final record in loaded) {
             record.function = reader.readString();
           }
           break;
@@ -115,8 +120,12 @@ class TemplateTable {
       checkBlockEnd(reader, column, blockEnd);
     }
 
-    for (final record in records) {
-      _byIndex[record.index] = record;
+    for (final record in loaded) {
+      loadedByIndex[record.index] = record;
     }
+
+    // Published, now that every column read.
+    _records = loaded;
+    _byIndex = loadedByIndex;
   }
 }

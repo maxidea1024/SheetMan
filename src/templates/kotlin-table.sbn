@@ -23,10 +23,16 @@ class {{ table.record_name }} {
 /** Every row of {{ table.raw_name }}. */
 class {{ table.table_name }} {
 
-    /** Every row, in the order the sheet declared them. */
-    val records: MutableList<{{ table.record_name }}> = ArrayList()
+    /**
+     * Every row, in the order the sheet declared them.
+     *
+     * The list a read published, not one a read fills. A refresh replaces the reference
+     * rather than the contents, so whoever holds this holds one whole load.
+     */
+    var records: MutableList<{{ table.record_name }}> = ArrayList()
+        private set
 
-    private val byIndex: HashMap<Int, {{ table.record_name }}> = HashMap()
+    private var byIndex: HashMap<Int, {{ table.record_name }}> = HashMap()
 
     /** The row with the given primary index, or null when there is none. */
     fun find(index: Int): {{ table.record_name }}? = byIndex[index]
@@ -42,10 +48,11 @@ class {{ table.table_name }} {
         val header = readTableHeader(reader)
         val count = header.rowCount
 
-        records.clear()
-        byIndex.clear()
+        // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+        val loaded = ArrayList<{{ table.record_name }}>(count)
+        val loadedByIndex = HashMap<Int, {{ table.record_name }}>(count * 2)
 
-        repeat(count) { records.add({{ table.record_name }}()) }
+        repeat(count) { loaded.add({{ table.record_name }}()) }
 
         for (column in header.columns) {
             val blockEnd = reader.position + column.byteLength
@@ -54,7 +61,7 @@ class {{ table.table_name }} {
 {{~ for field in table.fields ~}}
                 {{ field.tag }} -> {
                     {{ field.column_check }}
-                    for (record in records) {
+                    for (record in loaded) {
 {{~ if field.kind == 'var_array' ~}}
                         val elementCount = reader.readCounter32()
                         record.{{ field.name }} = ArrayList(elementCount.coerceAtLeast(0))
@@ -81,8 +88,12 @@ class {{ table.table_name }} {
             checkBlockEnd(reader, column, blockEnd)
         }
 
-        for (record in records) {
-            byIndex[record.{{ table.index_field }}] = record
+        for (record in loaded) {
+            loadedByIndex[record.{{ table.index_field }}] = record
         }
+
+        // Published, now that every column read.
+        records = loaded
+        byIndex = loadedByIndex
     }
 }

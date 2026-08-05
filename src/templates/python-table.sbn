@@ -46,14 +46,15 @@ class {{ table.table_name }}:
         reader = sheetman.Reader(sheetman.read_all_bytes(filename))
         count, columns = sheetman.read_table_header(reader)
 
-        self.records = [{{ table.record_name }}() for _ in range(count)]
+        # Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+        records = [{{ table.record_name }}() for _ in range(count)]
 
         for column in columns:
             block_end = reader.position + column.byte_length
 {{~ for field in table.fields ~}}
             {{ if for.first }}if{{ else }}elif{{ end }} column.tag == {{ field.tag }}:
                 {{ field.column_check }}
-                for record in self.records:
+                for record in records:
 {{~ if field.kind == 'var_array' ~}}
                     element_count = reader.read_counter32()
                     record.{{ field.name }} = [{{ field.read_element }} for _ in range(element_count)]
@@ -74,4 +75,8 @@ class {{ table.table_name }}:
 
             sheetman.check_block_end(reader, column, block_end)
 
-        self.by_index = {record.{{ table.index_field }}: record for record in self.records}
+        by_index = {record.{{ table.index_field }}: record for record in records}
+
+        # Published, now that every column read.
+        self.records = records
+        self.by_index = by_index

@@ -77,8 +77,11 @@ class TestFieldTypesTable
         const sheetman::Header header = sheetman::read_table_header(reader);
         const std::size_t row_count = static_cast<std::size_t>(header.row_count);
 
-        records_.clear();
-        records_.resize(row_count);
+        // Read into storage of its own and swapped in at the end: reading a table that is
+        // already loaded is a refresh, and one that throws part way through - a truncated
+        // file, a column this build cannot read - has to leave the rows already there.
+        std::vector<TestFieldTypesRecord> records;
+        records.resize(row_count);
 
         for (const sheetman::Column& column : header.columns)
         {
@@ -91,7 +94,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read_i32_as(column.element, record.index);
                     }
                     break;
@@ -101,7 +104,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.StringField", sheetman::kKindScalar, 1, {sheetman::kElementString});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read(record.string_field);
                     }
                     break;
@@ -111,7 +114,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.BoolField", sheetman::kKindScalar, 1, {sheetman::kElementBool});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read(record.bool_field);
                     }
                     break;
@@ -121,7 +124,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.IntField", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read_i32_as(column.element, record.int_field);
                     }
                     break;
@@ -131,7 +134,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.BigIntField", sheetman::kKindScalar, 1, {sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read_i64_as(column.element, record.big_int_field);
                     }
                     break;
@@ -141,7 +144,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.FloatField", sheetman::kKindScalar, 1, {sheetman::kElementF32});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read(record.float_field);
                     }
                     break;
@@ -151,7 +154,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.DoubleField", sheetman::kKindScalar, 1, {sheetman::kElementF64, sheetman::kElementF32, sheetman::kElementI32});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read_f64_as(column.element, record.double_field);
                     }
                     break;
@@ -161,7 +164,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.DatetimeField", sheetman::kKindScalar, 1, {sheetman::kElementI64});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read(record.datetime_field);
                     }
                     break;
@@ -171,7 +174,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.TimespanField", sheetman::kKindScalar, 1, {sheetman::kElementI64});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read(record.timespan_field);
                     }
                     break;
@@ -181,7 +184,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.UuidField", sheetman::kKindScalar, 1, {sheetman::kElementUuid});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read(record.uuid_field);
                     }
                     break;
@@ -191,7 +194,7 @@ class TestFieldTypesTable
                     sheetman::check_column(column, "TestFieldTypes.ValueTypeField", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
                     for (std::size_t i = 0; i < row_count; ++i)
                     {
-                        auto& record = records_[i];
+                        auto& record = records[i];
                         reader.read_enum(record.value_type_field);
                     }
                     break;
@@ -205,20 +208,28 @@ class TestFieldTypesTable
             sheetman::check_block_end(reader, column, block_end);
         }
 
-        build_index();
+        publish(std::move(records));
     }
 
     private:
     friend class Tables;
 
-    void build_index()
+    /// One whole load, in place of the previous one.
+    ///
+    /// The index is built here rather than by the caller, because the two have to arrive
+    /// together: a table holding this load's rows and the last one's index would answer
+    /// `find` with a row that is no longer at that position.
+    void publish(std::vector<TestFieldTypesRecord>&& records)
     {
-        by_index_.clear();
-        by_index_.reserve(records_.size());
-        for (std::size_t i = 0; i < records_.size(); ++i)
+        std::unordered_map<std::int32_t, std::size_t> by_index;
+        by_index.reserve(records.size());
+        for (std::size_t i = 0; i < records.size(); ++i)
         {
-            by_index_.emplace(records_[i].index, i);
+            by_index.emplace(records[i].index, i);
         }
+
+        records_ = std::move(records);
+        by_index_ = std::move(by_index);
     }
 
     std::vector<TestFieldTypesRecord> records_;

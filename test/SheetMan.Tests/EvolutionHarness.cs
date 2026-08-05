@@ -18,6 +18,16 @@ namespace SheetMan.Tests
         private static bool OnWindows => OperatingSystem.IsWindows();
 
         public static ToolResult RunCsharp(string generation, string dataDir, string table)
+            => Run(generation, dataDir, table);
+
+        /// <summary>
+        /// The same build, reading a table it has already loaded - a refresh.
+        /// </summary>
+        public static ToolResult RefreshCsharp(
+            string generation, string firstDataDir, string secondDataDir, string table)
+            => Run(generation, "--refresh", firstDataDir, secondDataDir, table);
+
+        private static ToolResult Run(string generation, params string[] arguments)
         {
             string workDir = Path.Combine(RepoLayout.OutputDir("_evolution"), generation + "-csharp");
 
@@ -34,7 +44,7 @@ namespace SheetMan.Tests
 
             return Execute(
                 Path.Combine(workDir, OnWindows ? "evolution-csharp.exe" : "evolution-csharp"),
-                workDir, dataDir, table);
+                workDir, arguments);
         }
 
         private static ToolResult Execute(string fileName, string workingDirectory, params string[] args)

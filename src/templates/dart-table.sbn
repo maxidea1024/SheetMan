@@ -19,9 +19,13 @@ class {{ table.record_name }} {
 /// Every row of {{ table.raw_name }}.
 class {{ table.table_name }} {
   /// Every row, in the order the sheet declared them.
-  final List<{{ table.record_name }}> records = [];
+  ///
+  /// The list a read published, not one a read fills. A refresh replaces the reference
+  /// rather than the contents, so whoever holds this holds one whole load.
+  List<{{ table.record_name }}> get records => _records;
+  List<{{ table.record_name }}> _records = [];
 
-  final Map<int, {{ table.record_name }}> _byIndex = {};
+  Map<int, {{ table.record_name }}> _byIndex = {};
 
   /// The row with the given primary index, or null when there is none.
   {{ table.record_name }}? find(int index) => _byIndex[index];
@@ -35,11 +39,12 @@ class {{ table.table_name }} {
     final header = readTableHeader(reader);
     final count = header.rowCount;
 
-    records.clear();
-    _byIndex.clear();
+    // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
+    final loaded = <{{ table.record_name }}>[];
+    final loadedByIndex = <int, {{ table.record_name }}>{};
 
     for (var i = 0; i < count; i++) {
-      records.add({{ table.record_name }}());
+      loaded.add({{ table.record_name }}());
     }
 
     for (final column in header.columns) {
@@ -49,7 +54,7 @@ class {{ table.table_name }} {
 {{~ for field in table.fields ~}}
         case {{ field.tag }}:
           {{ field.column_check }}
-          for (final record in records) {
+          for (final record in loaded) {
 {{~ if field.kind == 'var_array' ~}}
             final elementCount = reader.readCounter32();
             record.{{ field.name }} = List.generate(elementCount, (_) => {{ field.read_element }});
@@ -74,8 +79,12 @@ class {{ table.table_name }} {
       checkBlockEnd(reader, column, blockEnd);
     }
 
-    for (final record in records) {
-      _byIndex[record.{{ table.index_field }}] = record;
+    for (final record in loaded) {
+      loadedByIndex[record.{{ table.index_field }}] = record;
     }
+
+    // Published, now that every column read.
+    _records = loaded;
+    _byIndex = loadedByIndex;
   }
 }

@@ -49,22 +49,55 @@ export class Tables {
      * data files were renamed after export.
      */
     public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
-        await this._testFieldTypes.read(path.join(basePath, `TestFieldTypes${fileExtension}`))
-        await this._itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
-        await this._item.read(path.join(basePath, `Item${fileExtension}`))
-        await this._localization.read(path.join(basePath, `Localization${fileExtension}`))
-        await this._arrayTypes.read(path.join(basePath, `ArrayTypes${fileExtension}`))
-        await this._clientStrings.read(path.join(basePath, `ClientStrings${fileExtension}`))
+        const testFieldTypes = new TestFieldTypesTable()
+        await testFieldTypes.read(path.join(basePath, `TestFieldTypes${fileExtension}`))
+        const itemCategory = new ItemCategoryTable()
+        await itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
+        const item = new ItemTable()
+        await item.read(path.join(basePath, `Item${fileExtension}`))
+        const localization = new LocalizationTable()
+        await localization.read(path.join(basePath, `Localization${fileExtension}`))
+        const arrayTypes = new ArrayTypesTable()
+        await arrayTypes.read(path.join(basePath, `ArrayTypes${fileExtension}`))
+        const clientStrings = new ClientStringsTable()
+        await clientStrings.read(path.join(basePath, `ClientStrings${fileExtension}`))
+
+        this.publish(testFieldTypes, itemCategory, item, localization, arrayTypes, clientStrings)
     }
 
     /** Read all tables synchronously. */
     public readAllSync(basePath: string, fileExtension: string = '.json'): void {
-        this._testFieldTypes.readSync(path.join(basePath, `TestFieldTypes${fileExtension}`))
-        this._itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
-        this._item.readSync(path.join(basePath, `Item${fileExtension}`))
-        this._localization.readSync(path.join(basePath, `Localization${fileExtension}`))
-        this._arrayTypes.readSync(path.join(basePath, `ArrayTypes${fileExtension}`))
-        this._clientStrings.readSync(path.join(basePath, `ClientStrings${fileExtension}`))
+        const testFieldTypes = new TestFieldTypesTable()
+        testFieldTypes.readSync(path.join(basePath, `TestFieldTypes${fileExtension}`))
+        const itemCategory = new ItemCategoryTable()
+        itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
+        const item = new ItemTable()
+        item.readSync(path.join(basePath, `Item${fileExtension}`))
+        const localization = new LocalizationTable()
+        localization.readSync(path.join(basePath, `Localization${fileExtension}`))
+        const arrayTypes = new ArrayTypesTable()
+        arrayTypes.readSync(path.join(basePath, `ArrayTypes${fileExtension}`))
+        const clientStrings = new ClientStringsTable()
+        clientStrings.readSync(path.join(basePath, `ClientStrings${fileExtension}`))
+
+        this.publish(testFieldTypes, itemCategory, item, localization, arrayTypes, clientStrings)
+    }
+
+    /**
+     * Publishes one whole load.
+     *
+     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+     * here only once every file has been read. A failure anywhere leaves every table holding
+     * what it held, which is the answer a running program wants: the data it already had, and
+     * an exception saying why the new data was not taken.
+     */
+    private publish(testFieldTypes: TestFieldTypesTable, itemCategory: ItemCategoryTable, item: ItemTable, localization: LocalizationTable, arrayTypes: ArrayTypesTable, clientStrings: ClientStringsTable): void {
+        this._testFieldTypes = testFieldTypes
+        this._itemCategory = itemCategory
+        this._item = item
+        this._localization = localization
+        this._arrayTypes = arrayTypes
+        this._clientStrings = clientStrings
 
         this.solveCrossReferences()
     }

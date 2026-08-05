@@ -116,28 +116,62 @@ namespace SheetMan.Fixtures.X
         /// </summary>
         public static ExcelTypedTable ExcelTyped { get; private set; }
 
+
+        /// <summary>
+        /// The tables of one read, before any of them is visible.
+        /// </summary>
+        /// <remarks>
+        /// A read builds one of these and publishes it whole. Two things follow, and both are
+        /// about reading the data a second time - a refresh, a hot reload, a downloaded patch:
+        ///
+        /// Cross references are resolved among the tables in here, so no row ever points at a
+        /// row from the previous load. Resolving against the published tables would do exactly
+        /// that for as long as the read took.
+        ///
+        /// And a failure anywhere - a truncated file, a column this build cannot read, a
+        /// duplicate index - publishes nothing. Every table stays as it was, which is the
+        /// answer a service wants: the data it already had, and a reason.
+        /// </remarks>
+        private sealed class Snapshot
+        {
+            public ExcelTypedTable ExcelTyped = new ExcelTypedTable();
+        }
+
+
         /// <summary>
         /// Read all tables.
         /// </summary>
+        /// <remarks>
+        /// Safe to call again on a loaded accessor. Nothing published changes until every file
+        /// has been read and linked.
+        /// </remarks>
         public static async Task ReadAllAsync(
             string basePath, string fileExtension = ".table")
         {
+            var snapshot = new Snapshot();
             var tasks = new List<Task>();
-
-            ExcelTyped = new ExcelTypedTable();
-            tasks.Add(ExcelTyped.ReadAsync(System.IO.Path.Combine(basePath, $"ExcelTyped{fileExtension}")));
+            tasks.Add(snapshot.ExcelTyped.ReadAsync(System.IO.Path.Combine(basePath, $"ExcelTyped{fileExtension}")));
 
             await Task.WhenAll(tasks);
 
-            SolveCrossReferences();
+            SolveCrossReferences(snapshot);
+
+            // Published together. The barrier keeps the writes that built these tables from
+            // being seen after the references to them, so a consumer on another thread reads
+            // this load or the one before it - never a mixture.
+            System.Threading.Thread.MemoryBarrier();
+
+            ExcelTyped = snapshot.ExcelTyped;
         }
 
+
         /// <summary>
-        /// Solve cross references.
+        /// Solve cross references, among the tables of one read.
         /// </summary>
-        private static void SolveCrossReferences()
+        private static void SolveCrossReferences(Snapshot snapshot)
         {
         }
+
     }
 
 } // namespace SheetMan.Fixtures.X

@@ -101,21 +101,23 @@ export class OffsetTableTable {
 
     private readFromJson(json: string): void {
         const dataRows: any[] = JSON.parse(json)
+        const records: OffsetTableRecord[] = []
+
         if (this.isCompactRowFormatted(dataRows)) {
             for (const dataRow of dataRows) {
                 const record = new OffsetTableRecord()
                 record.populateFieldValuesCompact(dataRow)
-                this._records.push(record)
+                records.push(record)
             }
         } else {
             for (const dataRow of dataRows as IDataRow[]) {
                 const record = new OffsetTableRecord()
                 record.populateFieldValues(dataRow)
-                this._records.push(record)
+                records.push(record)
             }
         }
 
-        this.mapping()
+        this.publish(records)
     }
 
     private isCompactRowFormatted(rows: any[]): boolean {
@@ -140,9 +142,11 @@ export class OffsetTableTable {
         const reader = new sheetman.LiteBinaryReader(data)
         const { rowCount, columns } = sheetman.readTableHeader(reader)
 
-        this._records = []
+        // Built here and published at the end, so a file that turns out to be truncated - or
+        // a column this build cannot read - leaves the rows already loaded exactly as they are.
+        const records: OffsetTableRecord[] = []
         for (let i = 0; i < rowCount; ++i)
-            this._records.push(new OffsetTableRecord())
+            records.push(new OffsetTableRecord())
 
         for (const column of columns)
         {
@@ -154,7 +158,7 @@ export class OffsetTableTable {
                     sheetman.checkColumn(column, 'OffsetTable.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._index = reader.readI32As(column.element)
                     }
                     break
@@ -162,7 +166,7 @@ export class OffsetTableTable {
                     sheetman.checkColumn(column, 'OffsetTable.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._name = reader.readString()
                     }
                     break
@@ -170,7 +174,7 @@ export class OffsetTableTable {
                     sheetman.checkColumn(column, 'OffsetTable.Value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._value = reader.readI32As(column.element)
                     }
                     break
@@ -183,14 +187,28 @@ export class OffsetTableTable {
             sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
-        this.mapping()
+        this.publish(records)
     }
 
     /** Index mapping. */
-    private mapping(): void {
-        for (const record of this._records)
+    /**
+     * Publishes one whole load: the rows and the lookups built from them, together.
+     *
+     * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
+     * consumers were holding: the rows were appended to or emptied first, so a read that threw
+     * partway left the table holding some of the new data and none of the old. Everything above
+     * builds its own arrays and gets here only if it finished, and this replaces the references
+     * in one step. Whoever took `records` before still has the previous load, whole.
+     */
+    private publish(records: OffsetTableRecord[]): void {
+        const recordsByIndex = new Map<number, OffsetTableRecord>()
+
+        for (const record of records)
         {
-            this._recordsByIndex.set(record.index, record)
+            recordsByIndex.set(record.index, record)
         }
+
+        this._records = records
+        this._recordsByIndex = recordsByIndex
     }
 }

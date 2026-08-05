@@ -160,21 +160,23 @@ export class TestFieldTypesTable {
 
     private readFromJson(json: string): void {
         const dataRows: any[] = JSON.parse(json)
+        const records: TestFieldTypesRecord[] = []
+
         if (this.isCompactRowFormatted(dataRows)) {
             for (const dataRow of dataRows) {
                 const record = new TestFieldTypesRecord()
                 record.populateFieldValuesCompact(dataRow)
-                this._records.push(record)
+                records.push(record)
             }
         } else {
             for (const dataRow of dataRows as IDataRow[]) {
                 const record = new TestFieldTypesRecord()
                 record.populateFieldValues(dataRow)
-                this._records.push(record)
+                records.push(record)
             }
         }
 
-        this.mapping()
+        this.publish(records)
     }
 
     private isCompactRowFormatted(rows: any[]): boolean {
@@ -199,9 +201,11 @@ export class TestFieldTypesTable {
         const reader = new sheetman.LiteBinaryReader(data)
         const { rowCount, columns } = sheetman.readTableHeader(reader)
 
-        this._records = []
+        // Built here and published at the end, so a file that turns out to be truncated - or
+        // a column this build cannot read - leaves the rows already loaded exactly as they are.
+        const records: TestFieldTypesRecord[] = []
         for (let i = 0; i < rowCount; ++i)
-            this._records.push(new TestFieldTypesRecord())
+            records.push(new TestFieldTypesRecord())
 
         for (const column of columns)
         {
@@ -213,7 +217,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._index = reader.readI32As(column.element)
                     }
                     break
@@ -221,7 +225,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.StringField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._stringField = reader.readString()
                     }
                     break
@@ -229,7 +233,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.BoolField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._boolField = reader.readBool()
                     }
                     break
@@ -237,7 +241,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.IntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._intField = reader.readI32As(column.element)
                     }
                     break
@@ -245,7 +249,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.BigIntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._bigIntField = reader.readI64As(column.element)
                     }
                     break
@@ -253,7 +257,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.FloatField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._floatField = reader.readFloat()
                     }
                     break
@@ -261,7 +265,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.DoubleField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F64, sheetman.ELEMENT_F32, sheetman.ELEMENT_I32])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._doubleField = reader.readF64As(column.element)
                     }
                     break
@@ -269,7 +273,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.DatetimeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._datetimeField = reader.readDateTime()
                     }
                     break
@@ -277,7 +281,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.TimespanField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._timespanField = reader.readTimeSpan()
                     }
                     break
@@ -285,7 +289,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.UuidField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_UUID])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._uuidField = reader.readUuid()
                     }
                     break
@@ -293,7 +297,7 @@ export class TestFieldTypesTable {
                     sheetman.checkColumn(column, 'TestFieldTypes.ValueTypeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
                     for (let i = 0; i < rowCount; ++i)
                     {
-                        const record = this._records[i]
+                        const record = records[i]
                         record._valueTypeField = reader.readEnum() as ValueType
                     }
                     break
@@ -306,14 +310,28 @@ export class TestFieldTypesTable {
             sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
-        this.mapping()
+        this.publish(records)
     }
 
     /** Index mapping. */
-    private mapping(): void {
-        for (const record of this._records)
+    /**
+     * Publishes one whole load: the rows and the lookups built from them, together.
+     *
+     * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
+     * consumers were holding: the rows were appended to or emptied first, so a read that threw
+     * partway left the table holding some of the new data and none of the old. Everything above
+     * builds its own arrays and gets here only if it finished, and this replaces the references
+     * in one step. Whoever took `records` before still has the previous load, whole.
+     */
+    private publish(records: TestFieldTypesRecord[]): void {
+        const recordsByIndex = new Map<number, TestFieldTypesRecord>()
+
+        for (const record of records)
         {
-            this._recordsByIndex.set(record.index, record)
+            recordsByIndex.set(record.index, record)
         }
+
+        this._records = records
+        this._recordsByIndex = recordsByIndex
     }
 }

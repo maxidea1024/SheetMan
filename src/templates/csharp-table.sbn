@@ -126,12 +126,18 @@
         /// <summary>
         /// All records.
         /// </summary>
+        /// <remarks>
+        /// The list a read publishes, not one a read fills. Whoever holds this reference holds
+        /// the rows as they were when they took it, and a refresh underneath them replaces the
+        /// reference rather than the contents - so an iteration in progress neither tears nor
+        /// throws, and a read that fails leaves the previous rows exactly where they were.
+        /// </remarks>
         public List<Record> Records => _records;
-        private readonly List<Record> _records = new List<Record>();
+        private List<Record> _records = new List<Record>();
 {{~ for field in table.indexed_fields }}
         #region Indexing by '{{ field.prop_name }}'
         public Dictionary<{{ field.field_type }}, Record> RecordsBy{{ field.prop_name }} => _recordsBy{{ field.prop_name }};
-        private readonly Dictionary<{{ field.field_type }}, Record> _recordsBy{{ field.prop_name }} = new Dictionary<{{ field.field_type }}, Record>();
+        private Dictionary<{{ field.field_type }}, Record> _recordsBy{{ field.prop_name }} = new Dictionary<{{ field.field_type }}, Record>();
 
         /// <summary>
         /// Gets the value associated with the specified key. throw SheetManException if not found.
@@ -182,20 +188,19 @@
             int tempEnumInt = 0;
 {{~ end ~}}
 
-            _records.Clear();
-{{~ for field in table.indexed_fields ~}}
-            _recordsBy{{ field.prop_name }}.Clear();
-{{~ end ~}}
-
+            // Read into storage of its own and published at the end, which is what makes a
+            // refresh atomic: nothing here touches what the table is currently holding, so a
+            // file that turns out to be truncated - or a column this build cannot read -
+            // leaves the previous rows in place and reports why.
+            //
             // Sized once. The row count was checked against what the columns declare before
             // this point, so it is a number the file could actually hold rows for - and a
             // list that grows into twenty thousand rows reallocates fifteen times to get
             // there, copying everything each time.
-            if (_records.Capacity < count)
-                _records.Capacity = count;
+            var records = new List<Record>(count);
 
             for (int i = 0; i < count; i++)
-                _records.Add(new Record());
+                records.Add(new Record());
 
             foreach (var column in columns)
             {
@@ -209,7 +214,7 @@
 {{~ if field.read_kind == 'var_array' ~}}
                         for (int i = 0; i < count; i++)
                         {
-                            var record = _records[i];
+                            var record = records[i];
                             reader.TryReadCounter32(out int elementCount);
                             record.{{ field.field_name }} = new {{ field.field_type }}[elementCount];
                             for (int j = 0; j < elementCount; ++j)
@@ -222,7 +227,7 @@
 {{~ else if field.read_kind == 'serial' ~}}
                         for (int i = 0; i < count; i++)
                         {
-                            var record = _records[i];
+                            var record = records[i];
                             record.{{ field.field_name }} = new {{ field.field_type }}[Record.{{ field.prop_name }}_N];
                             for (int j = 0; j < Record.{{ field.prop_name }}_N; ++j)
                             {
@@ -234,7 +239,7 @@
 {{~ else ~}}
                         for (int i = 0; i < count; i++)
                         {
-                            var record = _records[i];
+                            var record = records[i];
 {{~ for line in field.element_read ~}}
                             {{ line }}
 {{~ end ~}}
@@ -253,12 +258,24 @@
                 LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
             }
 {{~ if table.indexed_fields | array.size > 0 }}
-            // Index mapping
+            // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a
+            // duplicate key throws here - before any of this is visible.
 {{~ for field in table.indexed_fields ~}}
-            foreach (var record in _records)
-                _recordsBy{{ field.prop_name }}.Add(record.{{ field.prop_name }}, record);
+            var recordsBy{{ field.prop_name }} = new Dictionary<{{ field.field_type }}, Record>(count);
+            foreach (var record in records)
+                recordsBy{{ field.prop_name }}.Add(record.{{ field.prop_name }}, record);
 {{~ end ~}}
 {{~ end }}
+            // Published. Everything above succeeded, and the barrier is what keeps the writes
+            // that built these from being seen after the references to them - a reader on
+            // another thread gets the whole table or the previous one, never half of either.
+            System.Threading.Thread.MemoryBarrier();
+
+            _records = records;
+{{~ for field in table.indexed_fields ~}}
+            _recordsBy{{ field.prop_name }} = recordsBy{{ field.prop_name }};
+{{~ end ~}}
+
             return Task.CompletedTask;
         }
 
