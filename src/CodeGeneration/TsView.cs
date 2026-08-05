@@ -150,5 +150,11 @@ namespace SheetMan.CodeGeneration
 
         /// <summary>The call reading one value of the element type from binary.</summary>
         public string BinaryRead { get; set; }
+
+        /// <summary>The column's wire tag.</summary>
+        public int Tag { get; set; }
+
+        /// <summary>The rendered checkColumn call for this member.</summary>
+        public string ColumnCheck { get; set; }
     }
 }

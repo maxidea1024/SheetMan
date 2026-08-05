@@ -35,22 +35,6 @@ struct LocalizationRecord
     /// korean text 1
     std::vector<std::string> text_ko_array;
 
-    /// Reads one record. Field order must match the exporter's.
-    void read(sheetman::LiteBinaryReader& reader)
-    {
-        reader.read(index);
-        reader.read(key);
-        text_en_array.resize(2);
-        for (std::size_t i = 0; i < 2; ++i)
-        {
-            reader.read(text_en_array[i]);
-        }
-        text_ko_array.resize(2);
-        for (std::size_t i = 0; i < 2; ++i)
-        {
-            reader.read(text_ko_array[i]);
-        }
-    }
 };
 
 /// Trailing-number columns collapse into arrays.
@@ -72,13 +56,76 @@ class LocalizationTable
         const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
         sheetman::LiteBinaryReader reader(buffer);
 
-        const std::int32_t row_count = sheetman::read_table_header(reader);
+        // Column by column, matched by tag rather than position: a column this build
+        // does not know is skipped by its block length, and one whose type changed
+        // incompatibly fails naming the field.
+        const sheetman::Header header = sheetman::read_table_header(reader);
+        const std::size_t row_count = static_cast<std::size_t>(header.row_count);
 
         records_.clear();
-        records_.resize(static_cast<std::size_t>(row_count));
-        for (std::int32_t i = 0; i < row_count; ++i)
+        records_.resize(row_count);
+
+        for (const sheetman::Column& column : header.columns)
         {
-            records_[static_cast<std::size_t>(i)].read(reader);
+            const std::size_t block_end = reader.position() + static_cast<std::size_t>(column.byte_length);
+
+            switch (column.tag)
+            {
+                case 1:
+                {
+                    sheetman::check_column(column, "Localization.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        reader.read_i32_as(column.element, record.index);
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    sheetman::check_column(column, "Localization.Key", sheetman::kKindScalar, 1, {sheetman::kElementString});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        reader.read(record.key);
+                    }
+                    break;
+                }
+                case 3:
+                {
+                    sheetman::check_column(column, "Localization.TextEn_array", sheetman::kKindFixedArray, 2, {sheetman::kElementString});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        record.text_en_array.resize(2);
+                        for (std::size_t j = 0; j < 2; ++j)
+                        {
+                            reader.read(record.text_en_array[j]);
+                        }
+                    }
+                    break;
+                }
+                case 4:
+                {
+                    sheetman::check_column(column, "Localization.TextKo_array", sheetman::kKindFixedArray, 2, {sheetman::kElementString});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        record.text_ko_array.resize(2);
+                        for (std::size_t j = 0; j < 2; ++j)
+                        {
+                            reader.read(record.text_ko_array[j]);
+                        }
+                    }
+                    break;
+                }
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byte_length);
+                    break;
+            }
+
+            sheetman::check_block_end(reader, column, block_end);
         }
 
         build_index();

@@ -1,18 +1,18 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "0b987eded7f4cd88b296703bdcaad1f9",
-  "TotalSize": 53,
+  "MasterHash": "9b6cf472bddc27b0304dc324fc28ea19",
+  "TotalSize": 97,
   "Items": [
     {
       "Name": "OffsetTable.table",
-      "Size": 33,
-      "Hash": "b206967155dd7dbef7bf2b68a796159a",
+      "Size": 55,
+      "Hash": "098b8cc1c35e80ef1ea1d736d919bcf4",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "SecondTable.table",
-      "Size": 20,
-      "Hash": "38733dc1694a441a8c9a7c253431eb67",
+      "Size": 42,
+      "Hash": "f08b0c412115bf825de17524ae80010a",
       "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]

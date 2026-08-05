@@ -35,34 +35,34 @@ export class ItemRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    private _index: number
+    public _index: number
 
     /** item name */
     public get name(): string { return this._name }
-    private _name: string
+    public _name: string
 
     /** owning category */
     public get categoryId(): ItemCategoryRecord { return this._categoryId }
-    private _categoryId: ItemCategoryRecord
+    public _categoryId: ItemCategoryRecord
     public setReference_categoryId_INTERNAL(value: ItemCategoryRecord) { this._categoryId = value; }
     public _categoryId_ItemCategory_index: number
     public _categoryId_F: boolean = false
 
     /** item grade */
     public get gradeField(): Grade { return this._gradeField }
-    private _gradeField: Grade
+    public _gradeField: Grade
 
     /** granted skill */
     public get skillField(): SkillType { return this._skillField }
-    private _skillField: SkillType
+    public _skillField: SkillType
 
     /** shop blurb */
     public get description(): string { return this._description }
-    private _description: string
+    public _description: string
 
     /** shop price */
     public get price(): number { return this._price }
-    private _price: number
+    public _price: number
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {
@@ -85,18 +85,6 @@ export class ItemRecord {
         this._skillField = dataRow[offset++]
         this._description = dataRow[offset++]
         this._price = dataRow[offset++]
-    }
-
-    /** Read one record. Field order must match the exporter's. */
-    public readBinary(reader: sheetman.LiteBinaryReader): void
-    {
-        this._index = reader.readInt32()
-        this._name = reader.readString()
-        this._categoryId_ItemCategory_index = reader.readInt32()
-        this._gradeField = reader.readEnum() as Grade
-        this._skillField = reader.readEnum() as SkillType
-        this._description = reader.readString()
-        this._price = reader.readInt32()
     }
 }
 
@@ -175,17 +163,91 @@ export class ItemTable {
         this.readBinaryFrom(sheetman.readAllBytes(filename))
     }
 
-    /** Read a table from binary data already in memory. */
+    /**
+     * Read a table from binary data already in memory.
+     *
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public readBinaryFrom(data: Uint8Array): void
     {
         const reader = new sheetman.LiteBinaryReader(data)
-        const rowCount = sheetman.readTableHeader(reader)
+        const { rowCount, columns } = sheetman.readTableHeader(reader)
 
+        this._records = []
         for (let i = 0; i < rowCount; ++i)
+            this._records.push(new ItemRecord())
+
+        for (const column of columns)
         {
-            const record = new ItemRecord()
-            record.readBinary(reader)
-            this._records.push(record)
+            const blockEnd = reader.position + column.byteLength
+
+            switch (column.tag)
+            {
+                case 1:
+                    sheetman.checkColumn(column, 'Item.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._index = reader.readI32As(column.element)
+                    }
+                    break
+                case 2:
+                    sheetman.checkColumn(column, 'Item.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._name = reader.readString()
+                    }
+                    break
+                case 3:
+                    sheetman.checkColumn(column, 'Item.CategoryId', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._categoryId_ItemCategory_index = reader.readInt32()
+                    }
+                    break
+                case 4:
+                    sheetman.checkColumn(column, 'Item.GradeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._gradeField = reader.readEnum() as Grade
+                    }
+                    break
+                case 5:
+                    sheetman.checkColumn(column, 'Item.SkillField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._skillField = reader.readEnum() as SkillType
+                    }
+                    break
+                case 6:
+                    sheetman.checkColumn(column, 'Item.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._description = reader.readString()
+                    }
+                    break
+                case 7:
+                    sheetman.checkColumn(column, 'Item.Price', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._price = reader.readI32As(column.element)
+                    }
+                    break
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength)
+                    break
+            }
+
+            sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
         this.mapping()

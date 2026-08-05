@@ -34,6 +34,17 @@ namespace SheetMan.Models
         public List<Field> Fields { get; set; } = new List<Field>();
 
         /// <summary>
+        /// Wire tags reserved by `#`-excluded columns (`#OldColor@4`).
+        /// </summary>
+        /// <remarks>
+        /// A deleted column's tombstone. Its tag must never be handed to another column: a file
+        /// written before the deletion still carries data under that tag, and a reader built
+        /// after a reuse would read that data as the new column - the silent-wrong-value failure
+        /// the tags exist to prevent. AssignTags refuses a duplicate against this list.
+        /// </remarks>
+        public List<int> ReservedTags { get; set; } = new List<int>();
+
+        /// <summary>
         /// Rows, each a flat list of cells addressed by <see cref="Field.Index"/>.
         ///
         /// Always holds every column the sheet declared, even where the field list has

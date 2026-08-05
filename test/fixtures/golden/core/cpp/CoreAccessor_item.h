@@ -44,17 +44,6 @@ struct ItemRecord
     /// shop price
     std::int32_t price = 0;
 
-    /// Reads one record. Field order must match the exporter's.
-    void read(sheetman::LiteBinaryReader& reader)
-    {
-        reader.read(index);
-        reader.read(name);
-        reader.read(category_id_index);
-        reader.read_enum(grade_field);
-        reader.read_enum(skill_field);
-        reader.read(description);
-        reader.read(price);
-    }
 };
 
 /// References ItemCategory by record.
@@ -76,13 +65,98 @@ class ItemTable
         const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
         sheetman::LiteBinaryReader reader(buffer);
 
-        const std::int32_t row_count = sheetman::read_table_header(reader);
+        // Column by column, matched by tag rather than position: a column this build
+        // does not know is skipped by its block length, and one whose type changed
+        // incompatibly fails naming the field.
+        const sheetman::Header header = sheetman::read_table_header(reader);
+        const std::size_t row_count = static_cast<std::size_t>(header.row_count);
 
         records_.clear();
-        records_.resize(static_cast<std::size_t>(row_count));
-        for (std::int32_t i = 0; i < row_count; ++i)
+        records_.resize(row_count);
+
+        for (const sheetman::Column& column : header.columns)
         {
-            records_[static_cast<std::size_t>(i)].read(reader);
+            const std::size_t block_end = reader.position() + static_cast<std::size_t>(column.byte_length);
+
+            switch (column.tag)
+            {
+                case 1:
+                {
+                    sheetman::check_column(column, "Item.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        reader.read_i32_as(column.element, record.index);
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    sheetman::check_column(column, "Item.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        reader.read(record.name);
+                    }
+                    break;
+                }
+                case 3:
+                {
+                    sheetman::check_column(column, "Item.CategoryId", sheetman::kKindScalar, 1, {sheetman::kElementI32});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        reader.read(record.category_id_index);
+                    }
+                    break;
+                }
+                case 4:
+                {
+                    sheetman::check_column(column, "Item.GradeField", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        reader.read_enum(record.grade_field);
+                    }
+                    break;
+                }
+                case 5:
+                {
+                    sheetman::check_column(column, "Item.SkillField", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        reader.read_enum(record.skill_field);
+                    }
+                    break;
+                }
+                case 6:
+                {
+                    sheetman::check_column(column, "Item.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        reader.read(record.description);
+                    }
+                    break;
+                }
+                case 7:
+                {
+                    sheetman::check_column(column, "Item.Price", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+                        reader.read_i32_as(column.element, record.price);
+                    }
+                    break;
+                }
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byte_length);
+                    break;
+            }
+
+            sheetman::check_block_end(reader, column, block_end);
         }
 
         build_index();

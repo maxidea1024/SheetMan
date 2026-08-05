@@ -107,6 +107,20 @@ struct Uuid {
 ///
 /// Non-owning: the buffer has to outlive the reader. Every read either advances
 /// the cursor or throws, so callers never have to check a return value.
+// The wire element types and kinds, as the v101 column descriptors spell them.
+constexpr std::uint8_t kElementVarint = 0;
+constexpr std::uint8_t kElementBool = 1;
+constexpr std::uint8_t kElementI32 = 2;
+constexpr std::uint8_t kElementI64 = 3;
+constexpr std::uint8_t kElementF32 = 4;
+constexpr std::uint8_t kElementF64 = 5;
+constexpr std::uint8_t kElementString = 6;
+constexpr std::uint8_t kElementUuid = 7;
+
+constexpr std::uint8_t kKindScalar = 0;
+constexpr std::uint8_t kKindFixedArray = 1;
+constexpr std::uint8_t kKindVarArray = 2;
+
 class LiteBinaryReader {
  public:
   LiteBinaryReader(const std::uint8_t* data, std::size_t length)
@@ -163,6 +177,56 @@ class LiteBinaryReader {
   std::int32_t read_counter32() {
     const std::uint32_t encoded = read_varint32();
     return static_cast<std::int32_t>(encoded >> 1) ^ -static_cast<std::int32_t>(encoded & 1);
+  }
+
+  // Advances past bytes without interpreting them: an unknown column's whole block.
+  // The column-oriented layout is what makes this one call the entirety of skipping.
+  void skip(std::int32_t byte_count) {
+    if (byte_count < 0 || static_cast<std::size_t>(byte_count) > remaining()) {
+      throw LiteBinaryError("cannot skip " + std::to_string(byte_count) + " bytes with " +
+                            std::to_string(remaining()) + " remaining");
+    }
+    position_ += static_cast<std::size_t>(byte_count);
+  }
+
+  // Promotions: a member reading a file element narrower than itself. Only the
+  // mathematically lossless directions exist; check_column already refused the rest.
+
+  // An int32 member from i32 or varint.
+  void read_i32_as(std::uint8_t element, std::int32_t& value) {
+    if (element == kElementI32) {
+      read(value);
+    } else {
+      value = read_counter32();
+    }
+  }
+
+  // An int64 member from i64, i32 or varint.
+  void read_i64_as(std::uint8_t element, std::int64_t& value) {
+    if (element == kElementI64) {
+      read(value);
+    } else if (element == kElementI32) {
+      std::int32_t narrower = 0;
+      read(narrower);
+      value = narrower;
+    } else {
+      value = read_counter32();
+    }
+  }
+
+  // A double member from f64, f32 or i32 - all exact in a double.
+  void read_f64_as(std::uint8_t element, double& value) {
+    if (element == kElementF64) {
+      read(value);
+    } else if (element == kElementF32) {
+      float single = 0.0f;
+      read(single);
+      value = single;
+    } else {
+      std::int32_t integer = 0;
+      read(integer);
+      value = integer;
+    }
   }
 
   void read(bool& value) { value = read_fixed8() != 0; }
@@ -235,14 +299,35 @@ inline std::vector<std::uint8_t> read_all_bytes(const std::string& filename) {
 }
 
 /// Version stamped at the head of every table file by the exporter.
-constexpr std::uint32_t kBinaryFileFormatVersion = 100;
+// 101 is column-oriented and self-describing; it replaced 100 outright, before the tool
+// fed anything live, so nothing reads or writes 100 any more.
+constexpr std::uint32_t kBinaryFileFormatVersion = 101;
+
+
+// One column as the file describes it.
+struct Column {
+  // What identifies the column, instead of its position.
+  std::int32_t tag;
+  std::uint8_t element;
+  std::uint8_t kind;
+  // Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one.
+  std::int32_t count;
+  // Total bytes of the column block - what a skip advances by.
+  std::int32_t byte_length;
+};
+
+// A parsed v101 header: the row count and the column descriptors that follow it.
+struct Header {
+  std::int32_t row_count;
+  std::vector<Column> columns;
+};
 
 /// Reads and checks the file header, returning the row count that follows it.
 ///
 /// The reserved byte is written as zero and is where compression or encryption
 /// flags would go; a non-zero value means the file needs handling this build
 /// does not have.
-inline std::int32_t read_table_header(LiteBinaryReader& reader) {
+inline Header read_table_header(LiteBinaryReader& reader) {
   const std::uint32_t version = reader.read_fixed32();
   if (version != kBinaryFileFormatVersion) {
     throw LiteBinaryError("table format version " + std::to_string(version) + " is not supported (expected " +
@@ -252,10 +337,90 @@ inline std::int32_t read_table_header(LiteBinaryReader& reader) {
   const std::uint8_t reserved = reader.read_fixed8();
   if (reserved != 0) throw LiteBinaryError("table declares unsupported features");
 
-  const std::int32_t row_count = reader.read_counter32();
-  if (row_count < 0) throw LiteBinaryError("table row count is negative");
+  Header header;
+  header.row_count = reader.read_counter32();
+  if (header.row_count < 0) throw LiteBinaryError("table row count is negative");
 
-  return row_count;
+  const std::int32_t column_count = reader.read_counter32();
+  if (column_count < 0) throw LiteBinaryError("table column count is negative");
+
+  header.columns.reserve(static_cast<std::size_t>(column_count));
+
+  for (std::int32_t at = 0; at < column_count; ++at) {
+    Column column;
+    column.tag = reader.read_counter32();
+
+    const std::uint8_t wire = reader.read_fixed8();
+    column.element = static_cast<std::uint8_t>(wire & 0x0f);
+    column.kind = static_cast<std::uint8_t>((wire >> 4) & 0x03);
+
+    column.count = reader.read_counter32();
+    column.byte_length = static_cast<std::int32_t>(reader.read_fixed32());
+
+    header.columns.push_back(column);
+  }
+
+  // What the descriptors say about the file, checked before anybody allocates for the
+  // row count. The blocks are all that follows the header, so their declared lengths have
+  // to add up to the bytes left, and every row costs at least one byte in every block - a
+  // varint's shortest form, an empty string's length prefix, a variable array's counter.
+  // A row count larger than that is one the exporter could not have written.
+
+  const std::int32_t available = static_cast<std::int32_t>(reader.remaining());
+  std::int32_t declared = 0;
+
+  for (const Column& column : header.columns) {
+    if (column.byte_length < 0 || column.byte_length > available - declared) {
+      throw LiteBinaryError("column tag " + std::to_string(column.tag) + " declares " +
+                            std::to_string(column.byte_length) +
+                            " bytes, which the file cannot hold");
+    }
+
+    declared += column.byte_length;
+
+    if (header.row_count > column.byte_length) {
+      throw LiteBinaryError("the row count " + std::to_string(header.row_count) +
+                            " is larger than column tag " + std::to_string(column.tag) +
+                            " can hold in its " + std::to_string(column.byte_length) + " bytes");
+    }
+  }
+
+  if (declared != available) {
+    throw LiteBinaryError("the columns declare " + std::to_string(declared) + " bytes but " +
+                          std::to_string(available) + " follow the header");
+  }
+
+  return header;
+}
+
+// That a column is what the generated member expects, or a lossless promotion of it.
+// Refusal is by name and both types, never by reading anyway.
+inline void check_column(const Column& column, const char* field_name, std::uint8_t kind,
+                         std::int32_t count, std::initializer_list<std::uint8_t> accepted) {
+  if (column.kind != kind || (kind != kKindVarArray && column.count != count)) {
+    throw LiteBinaryError(std::string(field_name) +
+                          ": the file's column does not match the generated member's shape; "
+                          "the schema changed shape, regenerate the code or rebuild the data");
+  }
+
+  for (const std::uint8_t candidate : accepted) {
+    if (column.element == candidate) return;
+  }
+
+  throw LiteBinaryError(std::string(field_name) + ": the file carries element type " +
+                        std::to_string(column.element) +
+                        ", which this member cannot read; the column changed type "
+                        "incompatibly, regenerate the code or rebuild the data");
+}
+
+// That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+// here names the column instead of corrupting the next.
+inline void check_block_end(const LiteBinaryReader& reader, const Column& column,
+                            std::size_t expected_end) {
+  if (reader.position() != expected_end) {
+    throw LiteBinaryError("column tag " + std::to_string(column.tag) +
+                          ": the block's declared length and the bytes consumed disagree");
+  }
 }
 
 }  // namespace sheetman

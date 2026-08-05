@@ -361,6 +361,8 @@ namespace SheetMan.Cooking
 
             ParseTableData(result, def, dataColumnOffsets);
 
+            AssignTags(result);
+
             return result;
         }
 
@@ -385,6 +387,11 @@ namespace SheetMan.Cooking
 
                 // Names that can be used as variable or class names are normalized to Pascal case at the time of calling.
                 var rawFieldName = fieldNameCell.Value;
+
+                // The wire tag comes off first: `Price@3` is the name `Price` with tag 3.
+                // Before Pascal-casing, which would not survive the `@`.
+                (rawFieldName, int? wireTag) = ParseWireTag(rawFieldName, fieldNameCell.Location);
+
                 // Pascal-casing before the serial-field rules see the name is fine: the
                 // rules look at where the digits are, and casing moves neither the digits
                 // nor their order. `text_en_1` becomes `TextEn1`, which still reads as
@@ -396,6 +403,11 @@ namespace SheetMan.Cooking
                     // primary 인덱스 필드의 경우에는 주석으로 마킹되어 있으면 안됨.
                     if (colIdx == def.rect.x)
                         throw new SheetManException(fieldNameCell.Location, $"The primary index field cannot be omitted.");
+
+                    // A tagged tombstone: the column is gone from the model, but its tag
+                    // stays reserved so it can never identify different data.
+                    if (wireTag != null)
+                        table.ReservedTags.Add(wireTag.Value);
 
                     continue;
                 }
@@ -443,6 +455,7 @@ namespace SheetMan.Cooking
 
                 field.RawName = rawFieldName;
                 field.Name = fieldName;
+                field.Tag = wireTag;
 
                 var fieldType = fieldTypeCell.Value.ToLowerInvariant();
                 RequiresValidTypeName(fieldType, fieldTypeCell.Location);
@@ -773,6 +786,122 @@ namespace SheetMan.Cooking
         private bool IsIgnorantName(string name)
         {
             return name.StartsWith("#") || name.StartsWith("//");
+        }
+
+        /// <summary>
+        /// Splits a field name's `@N` wire-tag suffix off, when it has one.
+        /// </summary>
+        /// <remarks>
+        /// The tag identifies the column in a binary file instead of its position, which is
+        /// what lets a reader built from one generation of the model read a file written from
+        /// another. `Price@3` is the field `Price` with tag 3; a name with no `@` has no
+        /// explicit tag and AssignTags decides what that means for the table.
+        /// </remarks>
+        private static (string name, int? tag) ParseWireTag(string rawName, Location location)
+        {
+            int at = rawName.LastIndexOf('@');
+
+            if (at < 0)
+                return (rawName, null);
+
+            string digits = rawName.Substring(at + 1).Trim();
+
+            if (digits.Length == 0 || !int.TryParse(digits, NumberStyles.None, CultureInfo.InvariantCulture, out int tag))
+            {
+                throw new SheetManException(location,
+                    $"Field name `{rawName}` has an `@` where a wire tag goes, but `{digits}` is not a " +
+                    "positive integer. A tag is written as `Name@3`.");
+            }
+
+            if (tag < 1)
+            {
+                throw new SheetManException(location,
+                    $"Field `{rawName}` declares wire tag {tag}, but a tag starts at 1.");
+            }
+
+            return (rawName.Substring(0, at).Trim(), tag);
+        }
+
+        /// <summary>
+        /// Gives every logical column its wire tag, checking the sheet's own against each other.
+        /// </summary>
+        /// <remarks>
+        /// A logical column is a serial field - `Ref1..Ref3` is one column with one tag, carried
+        /// on its first member.
+        ///
+        /// Two modes, decided per table and never mixed. If no field carries a tag, the ordinal
+        /// position is the tag: the file is still self-describing, but only appending columns is
+        /// safe, because an insertion shifts every ordinal after it. The moment any field carries
+        /// one, all of them must - a half-tagged table gets neither mode's guarantees - and then
+        /// the tags are checked unique, including against the tombstones' reserved ones.
+        /// </remarks>
+        private static void AssignTags(Models.Table table)
+        {
+            var serials = table.SerialFields;
+
+            // A serial field is one logical column; the tag goes on its first member.
+            foreach (var sf in serials)
+            {
+                foreach (var extra in sf.Fields.Skip(1))
+                {
+                    if (extra.Tag != null)
+                    {
+                        throw new SheetManException(extra.NameLocation,
+                            $"Field `{table.Name}.{extra.Name}` is part of the serial field " +
+                            $"`{sf.Name}` and carries wire tag {extra.Tag}. A serial field is one " +
+                            "column on the wire, so the tag goes on its first member only.");
+                    }
+                }
+            }
+
+            var tagged = serials.Where(sf => sf.FirstField.Tag != null).ToList();
+
+            if (tagged.Count == 0)
+            {
+                if (table.ReservedTags.Count > 0)
+                {
+                    throw new SheetManException(table.Location,
+                        $"Table `{table.Name}` has a `#`-excluded column reserving a wire tag, but " +
+                        "no live field carries one. Tags are all-or-none per table: give every " +
+                        "field its `@N`, or drop the tag from the tombstone.");
+                }
+
+                // Ordinal mode: today's behaviour, safe for appending only.
+                for (int position = 0; position < serials.Count; position++)
+                    serials[position].FirstField.Tag = position + 1;
+
+                return;
+            }
+
+            if (tagged.Count != serials.Count)
+            {
+                var untagged = serials.Where(sf => sf.FirstField.Tag == null).Select(sf => sf.Name);
+
+                throw new SheetManException(table.Location,
+                    $"Table `{table.Name}` tags some fields and not others: " +
+                    $"{string.Join(", ", untagged)} carry no `@N`. Tags are all-or-none per " +
+                    "table, because a half-tagged table gets neither mode's guarantees.");
+            }
+
+            var seen = new Dictionary<int, string>();
+
+            foreach (int reserved in table.ReservedTags)
+                seen[reserved] = "a `#`-excluded column";
+
+            foreach (var sf in serials)
+            {
+                int tag = sf.FirstField.Tag.Value;
+
+                if (seen.TryGetValue(tag, out string holder))
+                {
+                    throw new SheetManException(sf.FirstField.NameLocation,
+                        $"Field `{table.Name}.{sf.Name}` declares wire tag {tag}, which {holder} " +
+                        "already holds. A tag identifies a column for the life of the data, so it " +
+                        "can never be shared or reused.");
+                }
+
+                seen[tag] = $"field `{sf.Name}`";
+            }
         }
 
         private Models.ValueType ParseValueType(string typeName, Location location)

@@ -24,7 +24,26 @@
 
 module Sheetman
   # Stamped at the head of every table file by the exporter.
-  FORMAT_VERSION = 100
+  # 101 is column-oriented and self-describing; it replaced 100 outright, before the
+  # tool fed anything live, so nothing reads or writes 100 any more.
+  FORMAT_VERSION = 101
+
+  # The wire element types and kinds, as the v101 column descriptors spell them.
+  ELEMENT_VARINT = 0
+  ELEMENT_BOOL = 1
+  ELEMENT_I32 = 2
+  ELEMENT_I64 = 3
+  ELEMENT_F32 = 4
+  ELEMENT_F64 = 5
+  ELEMENT_STRING = 6
+  ELEMENT_UUID = 7
+
+  KIND_SCALAR = 0
+  KIND_FIXED_ARRAY = 1
+  KIND_VAR_ARRAY = 2
+
+  # One column as the file describes it.
+  Column = Struct.new(:tag, :element, :kind, :count, :byte_length)
 
   # A table file is truncated, malformed, or not a table file.
   class LiteBinaryError < StandardError; end
@@ -71,6 +90,42 @@ module Sheetman
   # value.
   class Reader
     attr_reader :position
+
+    # Advances past bytes without interpreting them: an unknown column whole block.
+    # The column-oriented layout is what makes this one call the entirety of skipping.
+    def skip(byte_count)
+      if byte_count.negative? || byte_count > remaining
+        raise LiteBinaryError, "cannot skip #{byte_count} bytes with #{remaining} remaining"
+      end
+
+      @position += byte_count
+    end
+
+    # Promotions: a member reading a file element narrower than itself. Only the
+    # mathematically lossless directions exist; check_column already refused the rest.
+
+    # An int member from i32 or varint.
+    def read_i32_as(element)
+      element == ELEMENT_I32 ? read_int32 : read_counter32
+    end
+
+    # A 64-bit member from i64, i32 or varint.
+    def read_i64_as(element)
+      case element
+      when ELEMENT_I64 then read_int64
+      when ELEMENT_I32 then read_int32
+      else read_counter32
+      end
+    end
+
+    # A float member from f64, f32 or i32 - all exact in a Ruby Float.
+    def read_f64_as(element)
+      case element
+      when ELEMENT_F64 then read_double
+      when ELEMENT_F32 then read_float
+      else read_int32
+      end
+    end
 
     def initialize(data)
       @data = data.b
@@ -208,7 +263,76 @@ module Sheetman
     count = reader.read_counter32
     raise LiteBinaryError, 'table row count is negative' if count.negative?
 
-    count
+    column_count = reader.read_counter32
+    raise LiteBinaryError, 'table column count is negative' if column_count.negative?
+
+    columns = Array.new(column_count) do
+      tag = reader.read_counter32
+      wire = reader.read_uint8
+      element_count = reader.read_counter32
+      byte_length = reader.read_uint32
+      Column.new(tag, wire & 0x0F, (wire >> 4) & 0x03, element_count, byte_length)
+    end
+
+    # What the descriptors say about the file, checked before anybody allocates for the
+    # row count. The blocks are all that follows the header, so their declared lengths have
+    # to add up to the bytes left, and every row costs at least one byte in every block - a
+    # varint's shortest form, an empty string's length prefix, a variable array's counter.
+    # A row count larger than that is one the exporter could not have written.
+
+    available = reader.remaining
+    declared = 0
+
+    columns.each do |column|
+      if column.byte_length.negative? || column.byte_length > available - declared
+        raise LiteBinaryError,
+              "column tag #{column.tag} declares #{column.byte_length} bytes, which the file " \
+              'cannot hold'
+      end
+
+      declared += column.byte_length
+
+      if count > column.byte_length
+        raise LiteBinaryError,
+              "the row count #{count} is larger than column tag #{column.tag} can hold in its " \
+              "#{column.byte_length} bytes"
+      end
+    end
+
+    if declared != available
+      raise LiteBinaryError,
+            "the columns declare #{declared} bytes but #{available} follow the header"
+    end
+
+    [count, columns]
+  end
+
+  # That a column is what the generated member expects, or a lossless promotion of it.
+  # Refusal is by name and both types, never by reading anyway.
+  def self.check_column(column, field_name, kind, count, accepted)
+    if column.kind != kind || (kind != KIND_VAR_ARRAY && column.count != count)
+      raise LiteBinaryError,
+            "#{field_name}: the file column (kind #{column.kind}, count #{column.count}) " \
+            "does not match the generated member (kind #{kind}, count #{count}). The schema " \
+            'changed shape; regenerate the code or rebuild the data.'
+    end
+
+    return if accepted.include?(column.element)
+
+    raise LiteBinaryError,
+          "#{field_name}: the file carries element type #{column.element}, which this member " \
+          "cannot read (accepts #{accepted}). The column changed type incompatibly; " \
+          'regenerate the code or rebuild the data.'
+  end
+
+  # That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+  # here names the column instead of corrupting the next.
+  def self.check_block_end(reader, column, expected_end)
+    return if reader.position == expected_end
+
+    raise LiteBinaryError,
+          "column tag #{column.tag}: its block declared #{column.byte_length} bytes but the " \
+          "read ended #{expected_end - reader.position} bytes short of its boundary"
   end
 
   # Reads a whole file into memory.

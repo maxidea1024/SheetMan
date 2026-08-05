@@ -18,33 +18,6 @@ class {{ table.record_name }} {
 {{~ end ~}}
 {{~ end ~}}
 
-    /** Reads one record, in the exact field order the exporter wrote. */
-    internal fun read(reader: LiteBinaryReader) {
-{{~ if table.fields | array.size == 0 ~}}
-        // No fields to read.
-{{~ end ~}}
-{{~ for field in table.fields ~}}
-{{~ if field.kind == 'var_array' ~}}
-        // `run` rather than a bare block: Kotlin reads one of those as a trailing lambda
-        // on whatever statement came before.
-        run {
-            val count = reader.readCounter32()
-            {{ field.name }} = ArrayList(count.coerceAtLeast(0))
-            repeat(count) { {{ field.name }}.add({{ field.read_element }}) }
-        }
-{{~ else if field.kind == 'serial_ref' ~}}
-        {{ field.name }}Index = ArrayList({{ field.element_count }})
-        repeat({{ field.element_count }}) { {{ field.name }}Index.add(reader.readInt32()) }
-{{~ else if field.kind == 'serial' ~}}
-        {{ field.name }} = ArrayList({{ field.element_count }})
-        repeat({{ field.element_count }}) { {{ field.name }}.add({{ field.read_element }}) }
-{{~ else if field.kind == 'scalar_ref' ~}}
-        {{ field.name }}Index = reader.readInt32()
-{{~ else ~}}
-        {{ field.name }} = {{ field.read_scalar }}
-{{~ end ~}}
-{{~ end ~}}
-    }
 }
 
 /** Every row of {{ table.raw_name }}. */
@@ -59,17 +32,53 @@ class {{ table.table_name }} {
     fun find(index: Int): {{ table.record_name }}? = byIndex[index]
 
     /** Loads the table from a .table file written by SheetMan. */
+    /**
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     fun read(filename: String) {
         val reader = LiteBinaryReader(readAllBytes(filename))
-        val count = readTableHeader(reader)
+        val header = readTableHeader(reader)
+        val count = header.rowCount
 
         records.clear()
         byIndex.clear()
 
-        repeat(count) {
-            val record = {{ table.record_name }}()
-            record.read(reader)
-            records.add(record)
+        repeat(count) { records.add({{ table.record_name }}()) }
+
+        for (column in header.columns) {
+            val blockEnd = reader.position + column.byteLength
+
+            when (column.tag) {
+{{~ for field in table.fields ~}}
+                {{ field.tag }} -> {
+                    {{ field.column_check }}
+                    for (record in records) {
+{{~ if field.kind == 'var_array' ~}}
+                        val elementCount = reader.readCounter32()
+                        record.{{ field.name }} = ArrayList(elementCount.coerceAtLeast(0))
+                        repeat(elementCount) { record.{{ field.name }}.add({{ field.read_element }}) }
+{{~ else if field.kind == 'serial_ref' ~}}
+                        record.{{ field.name }}Index = ArrayList({{ field.element_count }})
+                        repeat({{ field.element_count }}) { record.{{ field.name }}Index.add(reader.readInt32()) }
+{{~ else if field.kind == 'serial' ~}}
+                        record.{{ field.name }} = ArrayList({{ field.element_count }})
+                        repeat({{ field.element_count }}) { record.{{ field.name }}.add({{ field.read_element }}) }
+{{~ else if field.kind == 'scalar_ref' ~}}
+                        record.{{ field.name }}Index = reader.readInt32()
+{{~ else ~}}
+                        record.{{ field.name }} = {{ field.read_scalar }}
+{{~ end ~}}
+                    }
+                }
+{{~ end ~}}
+                else ->
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength)
+            }
+
+            checkBlockEnd(reader, column, blockEnd)
         }
 
         for (record in records) {

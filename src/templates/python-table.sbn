@@ -19,27 +19,6 @@ class {{ table.record_name }}:
 {{~ end ~}}
 {{~ end ~}}
 
-    def _read(self, reader):
-        """Reads one record, in the exact field order the exporter wrote."""
-{{~ if table.fields | array.size == 0 ~}}
-        return
-{{~ end ~}}
-{{~ for field in table.fields ~}}
-{{~ if field.kind == 'var_array' ~}}
-        count = reader.read_counter32()
-        self.{{ field.name }} = [{{ field.read_element }} for _ in range(count)]
-{{~ else if field.kind == 'serial_ref' ~}}
-        self.{{ field.name }}_index = [reader.read_int32() for _ in range({{ field.element_count }})]
-        self.{{ field.name }} = [None] * {{ field.element_count }}
-{{~ else if field.kind == 'serial' ~}}
-        self.{{ field.name }} = [{{ field.read_element }} for _ in range({{ field.element_count }})]
-{{~ else if field.kind == 'scalar_ref' ~}}
-        self.{{ field.name }}_index = reader.read_int32()
-{{~ else ~}}
-        self.{{ field.name }} = {{ field.read_scalar }}
-{{~ end ~}}
-{{~ end ~}}
-
     def __repr__(self):
         return "{{ table.record_name }}({{ table.repr_format }})" % ({{ table.repr_values }})
 
@@ -58,14 +37,41 @@ class {{ table.table_name }}:
         return self.by_index.get(index)
 
     def read(self, filename):
-        """Loads the table from a .table file written by SheetMan."""
-        reader = sheetman.Reader(sheetman.read_all_bytes(filename))
-        count = sheetman.read_table_header(reader)
+        """Loads the table from a .table file written by SheetMan.
 
-        self.records = []
-        for _ in range(count):
-            record = {{ table.record_name }}()
-            record._read(reader)
-            self.records.append(record)
+        Column by column, matched by tag rather than position: a column this build does
+        not know is skipped by its block length, and one whose type changed incompatibly
+        fails naming the field.
+        """
+        reader = sheetman.Reader(sheetman.read_all_bytes(filename))
+        count, columns = sheetman.read_table_header(reader)
+
+        self.records = [{{ table.record_name }}() for _ in range(count)]
+
+        for column in columns:
+            block_end = reader.position + column.byte_length
+{{~ for field in table.fields ~}}
+            {{ if for.first }}if{{ else }}elif{{ end }} column.tag == {{ field.tag }}:
+                {{ field.column_check }}
+                for record in self.records:
+{{~ if field.kind == 'var_array' ~}}
+                    element_count = reader.read_counter32()
+                    record.{{ field.name }} = [{{ field.read_element }} for _ in range(element_count)]
+{{~ else if field.kind == 'serial_ref' ~}}
+                    record.{{ field.name }}_index = [reader.read_int32() for _ in range({{ field.element_count }})]
+                    record.{{ field.name }} = [None] * {{ field.element_count }}
+{{~ else if field.kind == 'serial' ~}}
+                    record.{{ field.name }} = [{{ field.read_element }} for _ in range({{ field.element_count }})]
+{{~ else if field.kind == 'scalar_ref' ~}}
+                    record.{{ field.name }}_index = reader.read_int32()
+{{~ else ~}}
+                    record.{{ field.name }} = {{ field.read_scalar }}
+{{~ end ~}}
+{{~ end ~}}
+            else:
+                # A column added after this code was generated.
+                reader.skip(column.byte_length)
+
+            sheetman.check_block_end(reader, column, block_end)
 
         self.by_index = {record.{{ table.index_field }}: record for record in self.records}

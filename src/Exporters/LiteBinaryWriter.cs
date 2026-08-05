@@ -68,6 +68,25 @@ namespace SheetMan.Exporters
         public void Write(uint value) => BinaryPrimitives.WriteUInt32LittleEndian(Reserve(4), value);
 
         /// <summary>
+        /// Writes a fixed32 placeholder and hands back its offset for <see cref="PatchUInt32"/>.
+        /// </summary>
+        /// <remarks>
+        /// For the column byte lengths: a length is only known after its block is written, and a
+        /// varint cannot be patched in place because its own size depends on the value. A fixed
+        /// four bytes per column is the cost, which on any real table is noise.
+        /// </remarks>
+        public int ReserveUInt32Slot()
+        {
+            int offset = _length;
+            Write(0u);
+            return offset;
+        }
+
+        /// <summary>Overwrites a slot from <see cref="ReserveUInt32Slot"/>.</summary>
+        public void PatchUInt32(int offset, uint value)
+            => BinaryPrimitives.WriteUInt32LittleEndian(_buffer.AsSpan(offset, 4), value);
+
+        /// <summary>
         /// A 64-bit integer.
         ///
         /// Written as a full eight bytes. The original cast through uint, truncating every

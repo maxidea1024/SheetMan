@@ -15,8 +15,6 @@ namespace SheetMan.Exporters
     [SheetManTarget("binary", TargetKind.Export, Section = "Exports.Binary", Order = 10)]
     public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     {
-        const uint BinaryFileFormatVersion = 100;
-
         private Manifest _manifest;
 
 
@@ -40,20 +38,42 @@ namespace SheetMan.Exporters
         private void ExportTable(RecipeModel.ExportRecipeGroup.BinaryRecipe recipe, Table table)
         {
             LiteBinaryWriter writer = new LiteBinaryWriter();
+            var serials = table.SerialFields;
 
-            writer.Write(BinaryFileFormatVersion);      // version
-            writer.Write((byte)0);                      // Reserved for future features(compression/encryption)
-            writer.WriteCounter32(table.Data.Count);    // number of row
+            writer.Write(LiteBinaryFormat.Version);
+            writer.Write((byte)0);                      // Reserved (compression/encryption)
+            writer.WriteCounter32(table.Data.Count);
 
-            foreach (var row in table.Data)
+            // The descriptors: one per logical column, so the file says what it holds. A
+            // reader matches columns by tag rather than position, skips a tag it does not
+            // know by the block's byte length, and refuses a wire it cannot read by name -
+            // which between them is the whole of what makes schema changes survivable.
+            writer.WriteCounter32(serials.Count);
+
+            var lengthSlots = new int[serials.Count];
+
+            for (int at = 0; at < serials.Count; at++)
             {
-                foreach (var sf in table.SerialFields)
+                var sf = serials[at];
+
+                writer.WriteCounter32(sf.FirstField.Tag.Value);
+                writer.Write(LiteBinaryFormat.Wire(LiteBinaryFormat.ElementFor(sf), LiteBinaryFormat.KindFor(sf)));
+                writer.WriteCounter32(LiteBinaryFormat.CountFor(sf));
+
+                // Patched after the block is written; a varint cannot be.
+                lengthSlots[at] = writer.ReserveUInt32Slot();
+            }
+
+            // Column-oriented: each column's rows are one contiguous block. That is what
+            // lets an unknown column be skipped in a single advance, with no per-type skip
+            // logic for thirteen readers to each get subtly wrong.
+            for (int at = 0; at < serials.Count; at++)
+            {
+                var sf = serials[at];
+                int blockStart = writer.Length;
+
+                foreach (var row in table.Data)
                 {
-                    // A serial field's length is its column count, which the reader
-                    // already knows from the generated code, so nothing is written for
-                    // it. A delimited array varies per row and has to carry its own
-                    // length. Only the latter gets a counter, which keeps the format
-                    // of existing tables unchanged.
                     if (sf.IsVariableLengthArray)
                     {
                         ExportArrayValue(writer, row[sf.FirstField.Index].Value, sf.FirstField);
@@ -63,6 +83,8 @@ namespace SheetMan.Exporters
                     foreach (var field in sf.Fields)
                         ExportValue(writer, row[field.Index].Value, field);
                 }
+
+                writer.PatchUInt32(lengthSlots[at], (uint)(writer.Length - blockStart));
             }
 
             var filename = Path.Combine(recipe.Path, table.Name + recipe.FileExtension);

@@ -387,10 +387,10 @@ namespace SheetMan.CodeGeneration
             Location = table.Location.ToString(),
             Comment = CommentLines(table.Comment),
             IndexField = RustName(table.Fields[0].Name),
-            Fields = table.SerialFields.Select(BuildField).ToList(),
+            Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
 
-        private RustFieldView BuildField(SerialField sf)
+        private RustFieldView BuildField(Table table, SerialField sf)
         {
             string name = RustName(sf.Name);
             string elementType = ToRustTypeName(sf.FirstField.ElementType, sf.FirstField.EnumOrNull);
@@ -400,6 +400,8 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementCount = sf.Fields.Count,
                 Declarations = Declarations(sf, name, elementType),
                 ReadScalar = ReadExpression(sf),
@@ -420,6 +422,52 @@ namespace SheetMan.CodeGeneration
             return sf.IsArray
                 ? new[] { $"{name}: Vec<{elementType}>," }
                 : new[] { $"{name}: {elementType}," };
+        }
+
+        /// <summary>
+        /// The rendered check_column call: kind, count, and the elements this member accepts -
+        /// its own plus the lossless promotions, decided here at generation time.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "sheetman::KIND_VAR_ARRAY"
+                : (sf.Fields.Count > 1 ? "sheetman::KIND_FIXED_ARRAY" : "sheetman::KIND_SCALAR");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string accepted;
+
+            if (sf.IsRef)
+                accepted = "sheetman::ELEMENT_I32";
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32:
+                        accepted = "sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT"; break;
+                    case ValueType.Int64:
+                        accepted = "sheetman::ELEMENT_I64, sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT"; break;
+                    case ValueType.Double:
+                        accepted = "sheetman::ELEMENT_F64, sheetman::ELEMENT_F32, sheetman::ELEMENT_I32"; break;
+                    case ValueType.Float: accepted = "sheetman::ELEMENT_F32"; break;
+                    case ValueType.Bool: accepted = "sheetman::ELEMENT_BOOL"; break;
+                    case ValueType.String: accepted = "sheetman::ELEMENT_STRING"; break;
+                    case ValueType.Uuid: accepted = "sheetman::ELEMENT_UUID"; break;
+                    case ValueType.Enum: accepted = "sheetman::ELEMENT_VARINT"; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = "sheetman::ELEMENT_I64"; break;
+
+                    default:
+                        throw new SheetManException($"The rust generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            return $"sheetman::check_column(column, \"{tableName}.{sf.Name}\", {kind}, {count}, &[{accepted}])?;";
         }
 
         private static string ReadKind(SerialField sf)

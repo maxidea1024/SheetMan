@@ -228,11 +228,11 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(table.Comment),
                 IndexField = RubyName(table.Fields[0].Name),
                 AccessorNames = Symbols(accessors),
-                Fields = table.SerialFields.Select(BuildField).ToList(),
+                Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
             };
         }
 
-        private RubyFieldView BuildField(SerialField sf)
+        private RubyFieldView BuildField(Table table, SerialField sf)
         {
             string name = RubyName(sf.Name);
 
@@ -241,6 +241,8 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementCount = sf.Fields.Count,
                 Initializers = Initializers(sf, name),
                 ReadScalar = ReadExpression(sf),
@@ -274,6 +276,52 @@ namespace SheetMan.CodeGeneration
                 case ValueType.Uuid: return "Sheetman::Uuid.new";
                 default: return "0";
             }
+        }
+
+        /// <summary>
+        /// The rendered check_column call: kind, count, and the elements this member accepts -
+        /// its own plus the lossless promotions, decided here at generation time.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "Sheetman::KIND_VAR_ARRAY"
+                : (sf.Fields.Count > 1 ? "Sheetman::KIND_FIXED_ARRAY" : "Sheetman::KIND_SCALAR");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string accepted;
+
+            if (sf.IsRef)
+                accepted = "Sheetman::ELEMENT_I32";
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32:
+                        accepted = "Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT"; break;
+                    case ValueType.Int64:
+                        accepted = "Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT"; break;
+                    case ValueType.Double:
+                        accepted = "Sheetman::ELEMENT_F64, Sheetman::ELEMENT_F32, Sheetman::ELEMENT_I32"; break;
+                    case ValueType.Float: accepted = "Sheetman::ELEMENT_F32"; break;
+                    case ValueType.Bool: accepted = "Sheetman::ELEMENT_BOOL"; break;
+                    case ValueType.String: accepted = "Sheetman::ELEMENT_STRING"; break;
+                    case ValueType.Uuid: accepted = "Sheetman::ELEMENT_UUID"; break;
+                    case ValueType.Enum: accepted = "Sheetman::ELEMENT_VARINT"; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = "Sheetman::ELEMENT_I64"; break;
+
+                    default:
+                        throw new SheetManException($"The ruby generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            return $"Sheetman.check_column(column, '{tableName}.{sf.Name}', {kind}, {count}, [{accepted}])";
         }
 
         private static string ReadKind(SerialField sf)

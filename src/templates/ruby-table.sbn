@@ -18,32 +18,11 @@
 {{~ end ~}}
     end
 
-    # Reads one record, in the exact field order the exporter wrote.
-    def read(reader)
-{{~ if table.fields | array.size == 0 ~}}
-      nil
-{{~ end ~}}
-{{~ for field in table.fields ~}}
-{{~ if field.kind == 'var_array' ~}}
-      count = reader.read_counter32
-      @{{ field.name }} = Array.new(count) { {{ field.read_element }} }
-{{~ else if field.kind == 'serial_ref' ~}}
-      @{{ field.name }}_index = Array.new({{ field.element_count }}) { reader.read_int32 }
-      @{{ field.name }} = Array.new({{ field.element_count }})
-{{~ else if field.kind == 'serial' ~}}
-      @{{ field.name }} = Array.new({{ field.element_count }}) { {{ field.read_element }} }
-{{~ else if field.kind == 'scalar_ref' ~}}
-      @{{ field.name }}_index = reader.read_int32
-{{~ else ~}}
-      @{{ field.name }} = {{ field.read_scalar }}
-{{~ end ~}}
-{{~ end ~}}
-    end
   end
 
   # Every row of {{ table.raw_name }}.
   class {{ table.table_name }}
-    attr_reader :records
+    attr_accessor :records
 
     def initialize
       @records = []
@@ -56,14 +35,44 @@
     end
 
     # Loads the table from a .table file written by SheetMan.
+    # Column by column, matched by tag rather than position: a column this build does
+    # not know is skipped by its block length, and one whose type changed incompatibly
+    # fails naming the field.
     def read(filename)
       reader = Sheetman::Reader.new(Sheetman.read_all_bytes(filename))
-      count = Sheetman.read_table_header(reader)
+      count, columns = Sheetman.read_table_header(reader)
 
-      @records = Array.new(count) do
-        record = {{ table.record_name }}.new
-        record.read(reader)
-        record
+      @records = Array.new(count) { {{ table.record_name }}.new }
+
+      columns.each do |column|
+        block_end = reader.position + column.byte_length
+
+        case column.tag
+{{~ for field in table.fields ~}}
+        when {{ field.tag }}
+          {{ field.column_check }}
+          @records.each do |record|
+{{~ if field.kind == 'var_array' ~}}
+            element_count = reader.read_counter32
+            record.{{ field.name }} = Array.new(element_count) { {{ field.read_element }} }
+{{~ else if field.kind == 'serial_ref' ~}}
+            record.{{ field.name }}_index = Array.new({{ field.element_count }}) { reader.read_int32 }
+            record.{{ field.name }} = Array.new({{ field.element_count }})
+{{~ else if field.kind == 'serial' ~}}
+            record.{{ field.name }} = Array.new({{ field.element_count }}) { {{ field.read_element }} }
+{{~ else if field.kind == 'scalar_ref' ~}}
+            record.{{ field.name }}_index = reader.read_int32
+{{~ else ~}}
+            record.{{ field.name }} = {{ field.read_scalar }}
+{{~ end ~}}
+          end
+{{~ end ~}}
+        else
+          # A column added after this code was generated.
+          reader.skip(column.byte_length)
+        end
+
+        Sheetman.check_block_end(reader, column, block_end)
       end
 
       @by_index = @records.to_h { |record| [record.{{ table.index_field }}, record] }

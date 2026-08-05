@@ -290,7 +290,7 @@ namespace SheetMan.CodeGeneration
 
         private PythonTableView BuildTable(Table table)
         {
-            var fields = table.SerialFields.Select(BuildField).ToList();
+            var fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList();
 
             // A reference contributes its index as well as its value, and both need a slot.
             var slots = new List<string>();
@@ -318,7 +318,7 @@ namespace SheetMan.CodeGeneration
             };
         }
 
-        private PythonFieldView BuildField(SerialField sf)
+        private PythonFieldView BuildField(Table table, SerialField sf)
         {
             string name = PythonName(sf.Name);
 
@@ -327,6 +327,8 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementCount = sf.Fields.Count,
                 Initializers = Initializers(sf, name),
                 ReadScalar = ReadExpression(sf),
@@ -365,6 +367,52 @@ namespace SheetMan.CodeGeneration
                 case ValueType.Enum: return $"{sf.FirstField.Enum.Name.ToPascalCase()}(0)";
                 default: return "0";
             }
+        }
+
+        /// <summary>
+        /// The rendered check_column call: kind, count, and the elements this member accepts -
+        /// its own plus the lossless promotions, decided here at generation time.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "sheetman.KIND_VAR_ARRAY"
+                : (sf.Fields.Count > 1 ? "sheetman.KIND_FIXED_ARRAY" : "sheetman.KIND_SCALAR");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string accepted;
+
+            if (sf.IsRef)
+                accepted = "sheetman.ELEMENT_I32,";
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32:
+                        accepted = "sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT"; break;
+                    case ValueType.Int64:
+                        accepted = "sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT"; break;
+                    case ValueType.Double:
+                        accepted = "sheetman.ELEMENT_F64, sheetman.ELEMENT_F32, sheetman.ELEMENT_I32"; break;
+                    case ValueType.Float: accepted = "sheetman.ELEMENT_F32,"; break;
+                    case ValueType.Bool: accepted = "sheetman.ELEMENT_BOOL,"; break;
+                    case ValueType.String: accepted = "sheetman.ELEMENT_STRING,"; break;
+                    case ValueType.Uuid: accepted = "sheetman.ELEMENT_UUID,"; break;
+                    case ValueType.Enum: accepted = "sheetman.ELEMENT_VARINT,"; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = "sheetman.ELEMENT_I64,"; break;
+
+                    default:
+                        throw new SheetManException($"The python generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            return $"sheetman.check_column(column, \"{tableName}.{sf.Name}\", {kind}, {count}, ({accepted}))";
         }
 
         private static string ReadKind(SerialField sf)

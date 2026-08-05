@@ -44,6 +44,54 @@
 
 namespace SheetMan
 {
+    /** Version stamped at the head of every table file by the exporter. */
+    static constexpr uint32 BinaryFileFormatVersion = 101;
+
+    // The wire element types and kinds, as the v101 column descriptors spell them.
+    static constexpr uint8 ElementVarint = 0;
+    static constexpr uint8 ElementBool = 1;
+    static constexpr uint8 ElementI32 = 2;
+    static constexpr uint8 ElementI64 = 3;
+    static constexpr uint8 ElementF32 = 4;
+    static constexpr uint8 ElementF64 = 5;
+    static constexpr uint8 ElementString = 6;
+    static constexpr uint8 ElementUuid = 7;
+
+    /**
+     * One element type as a bit, so the set a member accepts is one argument.
+     *
+     * A set rather than a container because the generated code has to spell it inline, and
+     * an engine module has no business reaching for std::initializer_list to do it.
+     */
+    constexpr uint32 ElementMask(uint8 Element) { return 1u << Element; }
+
+    static constexpr uint8 KindScalar = 0;
+    static constexpr uint8 KindFixedArray = 1;
+    static constexpr uint8 KindVarArray = 2;
+
+    /** One column as the file describes it. */
+    struct FSheetManColumn
+    {
+        /** What identifies the column, instead of its position. */
+        int32 Tag = 0;
+
+        uint8 Element = 0;
+        uint8 Kind = 0;
+
+        /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
+        int32 Count = 0;
+
+        /** Total bytes of the column block - what a skip advances by. */
+        int32 ByteLength = 0;
+    };
+
+    /** A parsed header: the row count and the column descriptors that follow it. */
+    struct FSheetManTableHeader
+    {
+        int32 RowCount = 0;
+        TArray<FSheetManColumn> Columns;
+    };
+
     /**
      * Sequential reader over a table file's bytes.
      *
@@ -99,6 +147,9 @@ namespace SheetMan
         }
 
         bool Read(uint32& Out) { return ReadFixed32(Out); }
+
+        /** A single byte as itself: the wire byte in a column descriptor. */
+        bool Read(uint8& Out) { return ReadFixed8(Out); }
 
         bool Read(int64& Out)
         {
@@ -300,6 +351,106 @@ namespace SheetMan
             return true;
         }
 
+        /**
+         * Records a reason of the caller's own and fails the reader.
+         *
+         * For the column checks, which find the file disagreeing with the generated code
+         * rather than running out of it. Sticky like every other failure, and always
+         * returns false so it reads as `return Reader.FailWith(...)`.
+         */
+        bool FailWith(const FString& Why) { return Fail(Why); }
+
+        /**
+         * Advances past bytes without interpreting them: a whole column block this build
+         * has no member for.
+         *
+         * One call is the entirety of skipping, because a column declares its own length.
+         * That is what the column-oriented layout buys - there is no per-type skip to get
+         * wrong, and thirteen readers get it right the same way.
+         */
+        bool Skip(int32 ByteCount)
+        {
+            if (bFailed)
+            {
+                return false;
+            }
+
+            if (ByteCount < 0 || ByteCount > Remaining())
+            {
+                return Fail(FString::Printf(TEXT("cannot skip %d bytes with %d remaining"),
+                    ByteCount, Remaining()));
+            }
+
+            Position += ByteCount;
+            return true;
+        }
+
+        // Promotions: a member reading a file element narrower than itself. Only the
+        // mathematically lossless directions exist; CheckColumn already refused the rest.
+        //
+        // Everything else forwards to the overload for its own type, so the generated code
+        // has one spelling for every field rather than a promoted spelling and a plain one.
+
+        template <typename T>
+        bool ReadAs(uint8 Element, T& Out)
+        {
+            (void)Element;
+            return Read(Out);
+        }
+
+        /** An int32 member, from i32 or varint. */
+        bool ReadAs(uint8 Element, int32& Out)
+        {
+            return Element == ElementI32 ? Read(Out) : ReadCounter32(Out);
+        }
+
+        /** An int64 member, from i64, i32 or varint. */
+        bool ReadAs(uint8 Element, int64& Out)
+        {
+            if (Element == ElementI64)
+            {
+                return Read(Out);
+            }
+
+            int32 Narrower = 0;
+            const bool bOk = Element == ElementI32 ? Read(Narrower) : ReadCounter32(Narrower);
+
+            Out = Narrower;
+            return bOk;
+        }
+
+        /** A double member, from f64, f32 or i32 - all of them exact in a double. */
+        bool ReadAs(uint8 Element, double& Out)
+        {
+            if (Element == ElementF64)
+            {
+                return Read(Out);
+            }
+
+            if (Element == ElementF32)
+            {
+                float Single = 0.0f;
+                const bool bOk = Read(Single);
+
+                Out = Single;
+                return bOk;
+            }
+
+            int32 Integer = 0;
+            const bool bOk = Read(Integer);
+
+            Out = Integer;
+            return bOk;
+        }
+
+        /** An enum, which travels as a varint and has nothing to promote. */
+        template <typename TEnum>
+        bool ReadEnumAs(uint8 Element, TEnum& Out)
+        {
+            (void)Element;
+            return ReadEnum(Out);
+        }
+
     private:
         bool Fail(const FString& Why)
         {
@@ -406,19 +557,25 @@ namespace SheetMan
         FString Error;
     };
 
-    /** Version stamped at the head of every table file by the exporter. */
-    static constexpr uint32 BinaryFileFormatVersion = 100;
-
     /**
-     * Reads and checks the file header, handing back the row count that follows it.
+     * Reads and checks the file header, handing back the row count and the column
+     * descriptors that follow it.
      *
      * The reserved byte is written as zero and is where compression or encryption
      * flags would go; a non-zero value means the file needs handling this build does
      * not have.
+     *
+     * The descriptors are checked against the file's own size before anybody allocates
+     * for the row count: the blocks are all that follows the header, so their declared
+     * lengths have to add up to the bytes left, and every row costs at least one byte in
+     * every block. A row count larger than that is one the exporter could not have
+     * written, and finding that out here rather than during the read is what keeps a
+     * corrupt count from becoming an allocation of two billion rows.
      */
-    inline bool ReadTableHeader(FSheetManBinaryReader& Reader, int32& OutRowCount)
+    inline bool ReadTableHeader(FSheetManBinaryReader& Reader, FSheetManTableHeader& OutHeader)
     {
-        OutRowCount = 0;
+        OutHeader.RowCount = 0;
+        OutHeader.Columns.Empty();
 
         uint32 Version = 0;
         if (!Reader.Read(Version))
@@ -428,11 +585,9 @@ namespace SheetMan
 
         if (Version != BinaryFileFormatVersion)
         {
-            UE_LOG(LogTemp, Error,
-                TEXT("SheetMan: table format version %u is not supported (expected %u)"),
-                Version, BinaryFileFormatVersion);
-
-            return false;
+            return Reader.FailWith(FString::Printf(
+                TEXT("table format version %u is not supported (expected %u)"),
+                Version, BinaryFileFormatVersion));
         }
 
         bool bReserved = false;
@@ -443,21 +598,153 @@ namespace SheetMan
 
         if (bReserved)
         {
-            UE_LOG(LogTemp, Error, TEXT("SheetMan: table declares unsupported features"));
-            return false;
+            return Reader.FailWith(TEXT("table declares unsupported features"));
         }
 
-        if (!Reader.ReadCounter32(OutRowCount))
+        if (!Reader.ReadCounter32(OutHeader.RowCount))
         {
             return false;
         }
 
-        if (OutRowCount < 0)
+        if (OutHeader.RowCount < 0)
         {
-            UE_LOG(LogTemp, Error, TEXT("SheetMan: table row count %d is negative"), OutRowCount);
+            const int32 Bad = OutHeader.RowCount;
 
-            OutRowCount = 0;
+            OutHeader.RowCount = 0;
+            return Reader.FailWith(
+                FString::Printf(TEXT("table row count %d is negative"), Bad));
+        }
+
+        int32 ColumnCount = 0;
+        if (!Reader.ReadCounter32(ColumnCount))
+        {
             return false;
+        }
+
+        if (ColumnCount < 0)
+        {
+            return Reader.FailWith(
+                FString::Printf(TEXT("table column count %d is negative"), ColumnCount));
+        }
+
+        // Bounded, because the count came out of the file: no file describes more columns
+        // than it has bytes left, and a descriptor is several bytes each.
+        OutHeader.Columns.Empty(ColumnCount < Reader.Remaining() ? ColumnCount : Reader.Remaining());
+
+        for (int32 At = 0; At < ColumnCount && !Reader.HasFailed(); ++At)
+        {
+            FSheetManColumn Column;
+
+            Reader.ReadCounter32(Column.Tag);
+
+            uint8 Wire = 0;
+            Reader.Read(Wire);
+            Column.Element = static_cast<uint8>(Wire & 0x0F);
+            Column.Kind = static_cast<uint8>((Wire >> 4) & 0x03);
+
+            Reader.ReadCounter32(Column.Count);
+
+            uint32 ByteLength = 0;
+            Reader.Read(ByteLength);
+            Column.ByteLength = static_cast<int32>(ByteLength);
+
+            OutHeader.Columns.Add(Column);
+        }
+
+        if (Reader.HasFailed())
+        {
+            return false;
+        }
+
+        const int32 Remaining = Reader.Remaining();
+        int32 Declared = 0;
+
+        for (const FSheetManColumn& Column : OutHeader.Columns)
+        {
+            if (Column.ByteLength < 0 || Column.ByteLength > Remaining - Declared)
+            {
+                return Reader.FailWith(FString::Printf(
+                    TEXT("column tag %d declares %d bytes, which the file cannot hold"),
+                    Column.Tag, Column.ByteLength));
+            }
+
+            Declared += Column.ByteLength;
+
+            if (OutHeader.RowCount > Column.ByteLength)
+            {
+                const int32 Bad = OutHeader.RowCount;
+
+                OutHeader.RowCount = 0;
+                return Reader.FailWith(FString::Printf(
+                    TEXT("the row count %d is larger than column tag %d can hold in its %d bytes"),
+                    Bad, Column.Tag, Column.ByteLength));
+            }
+        }
+
+        if (Declared != Remaining)
+        {
+            return Reader.FailWith(FString::Printf(
+                TEXT("the columns declare %d bytes but %d follow the header"),
+                Declared, Remaining));
+        }
+
+        return true;
+    }
+
+    /**
+     * That a column is what the generated member expects, or a lossless promotion of it.
+     *
+     * Refusal names the field and both types, because a column whose type changed
+     * incompatibly is a schema mistake to fix, not bytes to reinterpret.
+     */
+    inline bool CheckColumn(FSheetManBinaryReader& Reader, const FSheetManColumn& Column,
+        const TCHAR* FieldName, uint8 Kind, int32 Count, uint32 Accepted)
+    {
+        if (Reader.HasFailed())
+        {
+            return false;
+        }
+
+        if (Column.Kind != Kind || (Kind != KindVarArray && Column.Count != Count))
+        {
+            return Reader.FailWith(FString::Printf(
+                TEXT("%s: the file column (kind %d, count %d) does not match the generated ")
+                TEXT("member (kind %d, count %d). The schema changed shape; regenerate the ")
+                TEXT("code or rebuild the data."),
+                FieldName, Column.Kind, Column.Count, Kind, Count));
+        }
+
+        if ((Accepted & ElementMask(Column.Element)) != 0)
+        {
+            return true;
+        }
+
+        return Reader.FailWith(FString::Printf(
+            TEXT("%s: the file carries element type %d, which this member cannot read. The ")
+            TEXT("column changed type incompatibly; regenerate the code or rebuild the data."),
+            FieldName, Column.Element));
+    }
+
+    /**
+     * That a block was consumed exactly.
+     *
+     * A mismatch means the file and this code disagree about the encoding, and stopping
+     * here names the column instead of reading the next one out of the wrong bytes.
+     */
+    inline bool CheckBlockEnd(FSheetManBinaryReader& Reader, const FSheetManColumn& Column,
+        int32 ExpectedEnd)
+    {
+        if (Reader.HasFailed())
+        {
+            return false;
+        }
+
+        if (Reader.Tell() != ExpectedEnd)
+        {
+            return Reader.FailWith(FString::Printf(
+                TEXT("column tag %d: its block declared %d bytes but the read ended %d bytes ")
+                TEXT("short of its boundary"),
+                Column.Tag, Column.ByteLength, ExpectedEnd - Reader.Tell()));
         }
 
         return true;

@@ -26,15 +26,15 @@ export class ServerTuningRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    private _index: number
+    public _index: number
 
     /** tuning key */
     public get key(): string { return this._key }
-    private _key: string
+    public _key: string
 
     /** tuning amount */
     public get amount(): number { return this._amount }
-    private _amount: number
+    public _amount: number
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {
@@ -49,14 +49,6 @@ export class ServerTuningRecord {
         this._index = dataRow[offset++]
         this._key = dataRow[offset++]
         this._amount = dataRow[offset++]
-    }
-
-    /** Read one record. Field order must match the exporter's. */
-    public readBinary(reader: sheetman.LiteBinaryReader): void
-    {
-        this._index = reader.readInt32()
-        this._key = reader.readString()
-        this._amount = reader.readInt32()
     }
 }
 
@@ -135,17 +127,59 @@ export class ServerTuningTable {
         this.readBinaryFrom(sheetman.readAllBytes(filename))
     }
 
-    /** Read a table from binary data already in memory. */
+    /**
+     * Read a table from binary data already in memory.
+     *
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public readBinaryFrom(data: Uint8Array): void
     {
         const reader = new sheetman.LiteBinaryReader(data)
-        const rowCount = sheetman.readTableHeader(reader)
+        const { rowCount, columns } = sheetman.readTableHeader(reader)
 
+        this._records = []
         for (let i = 0; i < rowCount; ++i)
+            this._records.push(new ServerTuningRecord())
+
+        for (const column of columns)
         {
-            const record = new ServerTuningRecord()
-            record.readBinary(reader)
-            this._records.push(record)
+            const blockEnd = reader.position + column.byteLength
+
+            switch (column.tag)
+            {
+                case 1:
+                    sheetman.checkColumn(column, 'ServerTuning.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._index = reader.readI32As(column.element)
+                    }
+                    break
+                case 2:
+                    sheetman.checkColumn(column, 'ServerTuning.Key', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._key = reader.readString()
+                    }
+                    break
+                case 3:
+                    sheetman.checkColumn(column, 'ServerTuning.Amount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._amount = reader.readI32As(column.element)
+                    }
+                    break
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength)
+                    break
+            }
+
+            sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
         this.mapping()

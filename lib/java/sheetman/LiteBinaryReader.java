@@ -34,7 +34,37 @@ import java.nio.file.Path;
 public final class LiteBinaryReader {
 
     /** Stamped at the head of every table file by the exporter. */
-    public static final int FORMAT_VERSION = 100;
+    /**
+     * 101 is column-oriented and self-describing; it replaced 100 outright, before the
+     * tool fed anything live, so nothing reads or writes 100 any more.
+     */
+    public static final int FORMAT_VERSION = 101;
+
+    // The wire's element types and kinds, as the v101 column descriptors spell them.
+    public static final int ELEMENT_VARINT = 0;
+    public static final int ELEMENT_BOOL = 1;
+    public static final int ELEMENT_I32 = 2;
+    public static final int ELEMENT_I64 = 3;
+    public static final int ELEMENT_F32 = 4;
+    public static final int ELEMENT_F64 = 5;
+    public static final int ELEMENT_STRING = 6;
+    public static final int ELEMENT_UUID = 7;
+
+    public static final int KIND_SCALAR = 0;
+    public static final int KIND_FIXED_ARRAY = 1;
+    public static final int KIND_VAR_ARRAY = 2;
+
+    /** One column as the file describes it. */
+    public static final class Column {
+        /** What identifies the column, instead of its position. */
+        public int tag;
+        public int element;
+        public int kind;
+        /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
+        public int count;
+        /** Total bytes of the column's block - what a skip advances by. */
+        public int byteLength;
+    }
 
     /** A table file is truncated, malformed, or not a table file. */
     public static final class LiteBinaryException extends RuntimeException {
@@ -105,6 +135,42 @@ public final class LiteBinaryReader {
     }
 
     /** Bytes consumed so far. */
+    /**
+     * Advances past bytes without interpreting them: an unknown column's whole block.
+     * The column-oriented layout is what makes this one call the entirety of skipping.
+     */
+    public void skip(int byteCount) {
+        if (byteCount < 0 || byteCount > data.length - position) {
+            throw new LiteBinaryException(
+                "cannot skip " + byteCount + " bytes with " + (data.length - position) + " remaining");
+        }
+        position += byteCount;
+    }
+
+    // Promotions: a member reading a file element narrower than itself. Only the
+    // mathematically lossless directions exist; checkColumn already refused the rest.
+
+    /** An int member from i32 or varint. */
+    public int readI32As(int element) {
+        return element == ELEMENT_I32 ? readInt32() : readCounter32();
+    }
+
+    /** A long member from i64, i32 or varint. */
+    public long readI64As(int element) {
+        if (element == ELEMENT_I64) {
+            return readInt64();
+        }
+        return element == ELEMENT_I32 ? readInt32() : readCounter32();
+    }
+
+    /** A double member from f64, f32 or i32 - all exact in a double. */
+    public double readF64As(int element) {
+        if (element == ELEMENT_F64) {
+            return readDouble();
+        }
+        return element == ELEMENT_F32 ? readFloat() : readInt32();
+    }
+
     public int position() {
         return position;
     }
@@ -251,7 +317,7 @@ public final class LiteBinaryReader {
      * <p>The reserved byte is written as zero and is where compression or encryption flags
      * would go; a non-zero value means the file needs handling this build does not have.
      */
-    public static int readTableHeader(LiteBinaryReader reader) {
+    public static Header readTableHeader(LiteBinaryReader reader) {
         int version = reader.readInt32();
 
         if (version != FORMAT_VERSION) {
@@ -264,13 +330,109 @@ public final class LiteBinaryReader {
             throw new LiteBinaryException("table declares unsupported features");
         }
 
-        int count = reader.readCounter32();
+        Header header = new Header();
+        header.rowCount = reader.readCounter32();
 
-        if (count < 0) {
+        if (header.rowCount < 0) {
             throw new LiteBinaryException("table row count is negative");
         }
 
-        return count;
+        int columnCount = reader.readCounter32();
+
+        if (columnCount < 0) {
+            throw new LiteBinaryException("table column count is negative");
+        }
+
+        header.columns = new Column[columnCount];
+
+        for (int at = 0; at < columnCount; at++) {
+            Column column = new Column();
+            column.tag = reader.readCounter32();
+
+            int wire = reader.readUInt8();
+            column.element = wire & 0x0F;
+            column.kind = (wire >> 4) & 0x03;
+
+            column.count = reader.readCounter32();
+            column.byteLength = reader.readInt32();
+
+            header.columns[at] = column;
+        }
+
+        // What the descriptors say about the file, checked before anybody allocates for the
+        // row count. The blocks are all that follows the header, so their declared lengths have
+        // to add up to the bytes left, and every row costs at least one byte in every block - a
+        // varint's shortest form, an empty string's length prefix, a variable array's counter.
+        // A row count larger than that is one the exporter could not have written.
+
+        int available = reader.remaining();
+        int declared = 0;
+
+        for (Column column : header.columns) {
+            if (column.byteLength < 0 || column.byteLength > available - declared) {
+                throw new LiteBinaryException(String.format(
+                    "column tag %d declares %d bytes, which the file cannot hold",
+                    column.tag, column.byteLength));
+            }
+
+            declared += column.byteLength;
+
+            if (header.rowCount > column.byteLength) {
+                throw new LiteBinaryException(String.format(
+                    "the row count %d is larger than column tag %d can hold in its %d bytes",
+                    header.rowCount, column.tag, column.byteLength));
+            }
+        }
+
+        if (declared != available) {
+            throw new LiteBinaryException(String.format(
+                "the columns declare %d bytes but %d follow the header", declared, available));
+        }
+
+        return header;
+    }
+
+    /** A parsed v101 header: the row count and the column descriptors that follow it. */
+    public static final class Header {
+        public int rowCount;
+        public Column[] columns;
+    }
+
+    /**
+     * That a column is what the generated member expects, or a lossless promotion of it.
+     * Refusal is by name and both types, never by reading anyway.
+     */
+    public static void checkColumn(Column column, String fieldName, int kind, int count, int... accepted) {
+        if (column.kind != kind || (kind != KIND_VAR_ARRAY && column.count != count)) {
+            throw new LiteBinaryException(
+                fieldName + ": the file's column (kind " + column.kind + ", count " + column.count
+                    + ") does not match the generated member (kind " + kind + ", count " + count
+                    + "). The schema changed shape; regenerate the code or rebuild the data.");
+        }
+
+        for (int candidate : accepted) {
+            if (column.element == candidate) {
+                return;
+            }
+        }
+
+        throw new LiteBinaryException(
+            fieldName + ": the file carries element type " + column.element + ", which this member "
+                + "cannot read. The column changed type incompatibly; regenerate the code or "
+                + "rebuild the data.");
+    }
+
+    /**
+     * That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+     * here names the column instead of corrupting the next.
+     */
+    public static void checkBlockEnd(LiteBinaryReader reader, Column column, int expectedEnd) {
+        if (reader.position() != expectedEnd) {
+            throw new LiteBinaryException(
+                "column tag " + column.tag + ": its block declared " + column.byteLength
+                    + " bytes but the read ended " + (expectedEnd - reader.position())
+                    + " bytes short of its boundary");
+        }
     }
 
     /** Reads a whole file into memory. */

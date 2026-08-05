@@ -1,48 +1,48 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "4fa3d446554883500b77fb946210ba60",
-  "TotalSize": 816,
+  "MasterHash": "117f8189875ff7e11d813749b3d0da46",
+  "TotalSize": 1082,
   "Items": [
     {
       "Name": "TestFieldTypes.table",
-      "Size": 206,
-      "Hash": "12e88a745e6e33a2f0f42f7f48a9ad6e",
+      "Size": 284,
+      "Hash": "8a7ace8b6d5602a80dd354b736f61f1c",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ItemCategory.table",
-      "Size": 90,
-      "Hash": "c52f60ed743899b4d96ca8b1f88a54c4",
+      "Size": 112,
+      "Hash": "abe0486be7d635895d20f251097aa770",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Item.table",
-      "Size": 182,
-      "Hash": "674e47b7ce76120de2d9a109deec43cd",
+      "Size": 232,
+      "Hash": "f76019ffc1e22b4f169a4048a4393aab",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Localization.table",
-      "Size": 102,
-      "Hash": "82faad36e3b7498c217ab37ab42bdf0c",
+      "Size": 131,
+      "Hash": "4cff3527887d1b608dfd9b153fa00810",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ArrayTypes.table",
-      "Size": 153,
-      "Hash": "b344d394a5204b44fb85d017d90282f5",
+      "Size": 196,
+      "Hash": "f8c33409a1ca7b8fdfc92323f43544e4",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ServerTuning.table",
-      "Size": 43,
-      "Hash": "10e743ba9ae72bae9b3510eff5a1b609",
+      "Size": 65,
+      "Hash": "88ccf82351e9f85572217b011bece178",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ClientStrings.table",
-      "Size": 40,
-      "Hash": "0c42319c24fa6620f4c5ded15e986a19",
+      "Size": 62,
+      "Hash": "e5b5b8d421ae83d391e9a7459acc66c6",
       "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]

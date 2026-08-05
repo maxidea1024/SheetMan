@@ -1,12 +1,12 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "1092a7d765654fdb09d133ad921427f4",
-  "TotalSize": 62,
+  "MasterHash": "28803dd0e4317076a2c8b8d1d799b92f",
+  "TotalSize": 98,
   "Items": [
     {
       "Name": "ExcelTyped.table",
-      "Size": 62,
-      "Hash": "1092a7d765654fdb09d133ad921427f4",
+      "Size": 98,
+      "Hash": "28803dd0e4317076a2c8b8d1d799b92f",
       "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]

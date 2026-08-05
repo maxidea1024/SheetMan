@@ -304,10 +304,10 @@ namespace SheetMan.CodeGeneration
             Location = table.Location.ToString(),
             Comment = CommentLines(table.Comment),
             IndexField = CppName(table.Fields[0].Name),
-            Fields = table.SerialFields.Select(BuildField).ToList(),
+            Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
 
-        private CppFieldView BuildField(SerialField sf)
+        private CppFieldView BuildField(Table table, SerialField sf)
         {
             string name = CppName(sf.Name);
 
@@ -316,12 +316,14 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Declarations = Declarations(sf, name),
                 Kind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 Name = name,
                 ElementCount = sf.Fields.Count,
                 RefDefault = RefDefault(sf),
-                ReadScalar = ReadElementExpression(sf, name),
-                ReadElement = ReadElementExpression(sf, name + "[i]"),
-                ReadVarElement = ReadElementExpression(sf, name + "[static_cast<std::size_t>(i)]"),
+                ReadScalar = ReadElementExpression(sf, "record." + name),
+                ReadElement = ReadElementExpression(sf, "record." + name + "[j]"),
+                ReadVarElement = ReadElementExpression(sf, "record." + name + "[static_cast<std::size_t>(j)]"),
             };
         }
 
@@ -423,7 +425,64 @@ namespace SheetMan.CodeGeneration
             if (sf.ElementType == ValueType.Enum)
                 return $"reader.read_enum({target})";
 
-            return $"reader.read({target})";
+            if (sf.IsRef)
+                return $"reader.read({target})";
+
+            // The three promotable members read through the as-helpers, so a file written
+            // before the column was widened still reads.
+            switch (sf.ElementType)
+            {
+                case ValueType.Int32: return $"reader.read_i32_as(column.element, {target})";
+                case ValueType.Int64: return $"reader.read_i64_as(column.element, {target})";
+                case ValueType.Double: return $"reader.read_f64_as(column.element, {target})";
+                default: return $"reader.read({target})";
+            }
+        }
+
+        /// <summary>
+        /// The rendered check_column call: kind, count, and the elements this member accepts -
+        /// its own plus the lossless promotions, decided here at generation time.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "sheetman::kKindVarArray"
+                : (sf.Fields.Count > 1 ? "sheetman::kKindFixedArray" : "sheetman::kKindScalar");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string accepted;
+
+            if (sf.IsRef)
+                accepted = "sheetman::kElementI32";
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32:
+                        accepted = "sheetman::kElementI32, sheetman::kElementVarint"; break;
+                    case ValueType.Int64:
+                        accepted = "sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint"; break;
+                    case ValueType.Double:
+                        accepted = "sheetman::kElementF64, sheetman::kElementF32, sheetman::kElementI32"; break;
+                    case ValueType.Float: accepted = "sheetman::kElementF32"; break;
+                    case ValueType.Bool: accepted = "sheetman::kElementBool"; break;
+                    case ValueType.String: accepted = "sheetman::kElementString"; break;
+                    case ValueType.Uuid: accepted = "sheetman::kElementUuid"; break;
+                    case ValueType.Enum: accepted = "sheetman::kElementVarint"; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = "sheetman::kElementI64"; break;
+
+                    default:
+                        throw new SheetManException($"The cpp generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            return $"sheetman::check_column(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {{{accepted}}});";
         }
 
         /// <summary>

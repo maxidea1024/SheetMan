@@ -46,18 +46,18 @@ export class {{ name }}Record {
 {{~ if field.kind == 'array_ref' ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
     public static readonly {{ field.prop_name }}_N: number = {{ field.element_count }}
-    private {{ field.field_name }}: {{ field.field_type }}[]
+    public {{ field.field_name }}: {{ field.field_type }}[]
     public setReference_{{ field.prop_name }}_INTERNAL(index: number, value: {{ field.reference_setter_type }}): void { this.{{ field.field_name }}[index] = value; }
 {{~ else if field.kind == 'var_array' ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
-    private {{ field.field_name }}: {{ field.field_type }}[] = []
+    public {{ field.field_name }}: {{ field.field_type }}[] = []
 {{~ else if field.kind == 'array' ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
     public static readonly {{ field.prop_name }}_N = {{ field.element_count }}
-    private {{ field.field_name }}: {{ field.field_type }}[]
+    public {{ field.field_name }}: {{ field.field_type }}[]
 {{~ else if field.kind == 'scalar_ref' ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
-    private {{ field.field_name }}: {{ field.field_type }}
+    public {{ field.field_name }}: {{ field.field_type }}
 {{~ if field.reference_is_record ~}}
     public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value; }
 {{~ else ~}}
@@ -67,7 +67,7 @@ export class {{ name }}Record {
     public {{ field.field_name }}_F: boolean = false
 {{~ else ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
-    private {{ field.field_name }}: {{ field.field_type }}
+    public {{ field.field_name }}: {{ field.field_type }}
 {{~ end ~}}
 {{~ end ~}}
 
@@ -84,42 +84,6 @@ export class {{ name }}Record {
 {{~ for field in fields ~}}
 {{~ for line in field.from_compact_row ~}}
         {{ line }}
-{{~ end ~}}
-{{~ end ~}}
-    }
-
-    /** Read one record. Field order must match the exporter's. */
-    public readBinary(reader: sheetman.LiteBinaryReader): void
-    {
-{{~ if fields | array.size == 0 ~}}
-        // No fields to read.
-{{~ end ~}}
-{{~ for field in fields ~}}
-{{~ if field.kind == 'var_array' ~}}
-        {
-            const count = reader.readCounter32()
-            this.{{ field.field_name }} = []
-            for (let i = 0; i < count; ++i)
-            {
-                this.{{ field.field_name }}.push({{ field.binary_read }})
-            }
-        }
-{{~ else if field.kind == 'array_ref' ~}}
-        this.{{ field.field_name }} = []
-        for (let i = 0; i < {{ field.element_count }}; ++i)
-        {
-            this.{{ field.field_name }}_{{ field.ref_table }}_index.push(reader.readInt32())
-        }
-{{~ else if field.kind == 'array' ~}}
-        this.{{ field.field_name }} = []
-        for (let i = 0; i < {{ field.element_count }}; ++i)
-        {
-            this.{{ field.field_name }}.push({{ field.binary_read }})
-        }
-{{~ else if field.kind == 'scalar_ref' ~}}
-        this.{{ field.field_name }}_{{ field.ref_table }}_index = reader.readInt32()
-{{~ else ~}}
-        this.{{ field.field_name }} = {{ field.binary_read }}
 {{~ end ~}}
 {{~ end ~}}
     }
@@ -203,17 +167,63 @@ export class {{ name }}Table {
         this.readBinaryFrom(sheetman.readAllBytes(filename))
     }
 
-    /** Read a table from binary data already in memory. */
+    /**
+     * Read a table from binary data already in memory.
+     *
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public readBinaryFrom(data: Uint8Array): void
     {
         const reader = new sheetman.LiteBinaryReader(data)
-        const rowCount = sheetman.readTableHeader(reader)
+        const { rowCount, columns } = sheetman.readTableHeader(reader)
 
+        this._records = []
         for (let i = 0; i < rowCount; ++i)
+            this._records.push(new {{ name }}Record())
+
+        for (const column of columns)
         {
-            const record = new {{ name }}Record()
-            record.readBinary(reader)
-            this._records.push(record)
+            const blockEnd = reader.position + column.byteLength
+
+            switch (column.tag)
+            {
+{{~ for field in fields ~}}
+                case {{ field.tag }}:
+                    {{ field.column_check }}
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+{{~ if field.kind == 'var_array' ~}}
+                        const elementCount = reader.readCounter32()
+                        record.{{ field.field_name }} = []
+                        for (let j = 0; j < elementCount; ++j)
+                            record.{{ field.field_name }}.push({{ field.binary_read }})
+{{~ else if field.kind == 'array_ref' ~}}
+                        record.{{ field.field_name }} = []
+                        record.{{ field.field_name }}_{{ field.ref_table }}_index = []
+                        for (let j = 0; j < {{ field.element_count }}; ++j)
+                            record.{{ field.field_name }}_{{ field.ref_table }}_index.push(reader.readInt32())
+{{~ else if field.kind == 'array' ~}}
+                        record.{{ field.field_name }} = []
+                        for (let j = 0; j < {{ field.element_count }}; ++j)
+                            record.{{ field.field_name }}.push({{ field.binary_read }})
+{{~ else if field.kind == 'scalar_ref' ~}}
+                        record.{{ field.field_name }}_{{ field.ref_table }}_index = reader.readInt32()
+{{~ else ~}}
+                        record.{{ field.field_name }} = {{ field.binary_read }}
+{{~ end ~}}
+                    }
+                    break
+{{~ end ~}}
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength)
+                    break
+            }
+
+            sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
         this.mapping()

@@ -156,17 +156,6 @@ namespace SheetMan.CodeGeneration
         /// <summary>Name of the primary index member.</summary>
         public string IndexField { get; set; }
 
-        /// <summary>
-        /// What one row costs at its very smallest.
-        ///
-        /// Every field encodes to at least one byte - a varint's shortest form, a fixed8,
-        /// an empty string's length prefix - so this is the field count. It is what lets
-        /// the generated code reject a row count larger than the file before allocating
-        /// for it, rather than asking the allocator for four billion rows and finding out
-        /// that way.
-        /// </summary>
-        public int MinRowBytes { get; set; }
-
         public IReadOnlyList<CFieldView> Fields { get; set; }
     }
 
@@ -189,6 +178,12 @@ namespace SheetMan.CodeGeneration
         /// `scalar`.
         /// </summary>
         public string Kind { get; set; }
+
+        /// <summary>The column's wire tag, which is what the read matches on.</summary>
+        public int Tag { get; set; }
+
+        /// <summary>The rendered sm_check_column call for this member.</summary>
+        public string ColumnCheck { get; set; }
 
         public int ElementCount { get; set; }
 

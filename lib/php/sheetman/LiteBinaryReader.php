@@ -91,7 +91,25 @@ final class Uuid implements \Stringable
 final class LiteBinaryReader
 {
     /** Version stamped at the head of every table file by the exporter. */
-    public const FILE_FORMAT_VERSION = 100;
+    /**
+     * 101 is column-oriented and self-describing; it replaced 100 outright, before the
+     * tool fed anything live, so nothing reads or writes 100 any more.
+     */
+    public const FILE_FORMAT_VERSION = 101;
+
+    // The wire element types and kinds, as the v101 column descriptors spell them.
+    public const ELEMENT_VARINT = 0;
+    public const ELEMENT_BOOL = 1;
+    public const ELEMENT_I32 = 2;
+    public const ELEMENT_I64 = 3;
+    public const ELEMENT_F32 = 4;
+    public const ELEMENT_F64 = 5;
+    public const ELEMENT_STRING = 6;
+    public const ELEMENT_UUID = 7;
+
+    public const KIND_SCALAR = 0;
+    public const KIND_FIXED_ARRAY = 1;
+    public const KIND_VAR_ARRAY = 2;
 
     private int $position = 0;
     private readonly int $length;
@@ -110,6 +128,50 @@ final class LiteBinaryReader
         }
 
         return new self($data);
+    }
+
+    /**
+     * Advances past bytes without interpreting them: an unknown column whole block.
+     * The column-oriented layout is what makes this one call the entirety of skipping.
+     */
+    public function skip(int $byteCount): void
+    {
+        $remaining = \strlen($this->bytes) - $this->position;
+
+        if ($byteCount < 0 || $byteCount > $remaining) {
+            throw new LiteBinaryException("Cannot skip {$byteCount} bytes with {$remaining} remaining.");
+        }
+
+        $this->position += $byteCount;
+    }
+
+    // Promotions: a member reading a file element narrower than itself. Only the
+    // mathematically lossless directions exist; checkColumn already refused the rest.
+
+    /** An int member from i32 or varint. */
+    public function readI32As(int $element): int
+    {
+        return $element === self::ELEMENT_I32 ? $this->readInt32() : $this->readCounter32();
+    }
+
+    /** A 64-bit member from i64, i32 or varint. */
+    public function readI64As(int $element): int
+    {
+        if ($element === self::ELEMENT_I64) {
+            return $this->readInt64();
+        }
+
+        return $element === self::ELEMENT_I32 ? $this->readInt32() : $this->readCounter32();
+    }
+
+    /** A float member from f64, f32 or i32 - all exact in a PHP float. */
+    public function readF64As(int $element): float
+    {
+        if ($element === self::ELEMENT_F64) {
+            return $this->readDouble();
+        }
+
+        return $element === self::ELEMENT_F32 ? $this->readFloat() : (float)$this->readInt32();
     }
 
     public function position(): int
@@ -249,7 +311,13 @@ final class LiteBinaryReader
      * encryption flags would go; a non-zero value means the file needs handling
      * this build does not have.
      */
-    public function readTableHeader(): int
+    /**
+     * Reads and checks a table file header.
+     *
+     * Returns [rowCount, columns]: the column descriptors the data blocks follow, each
+     * an array with tag, element, kind, count and byteLength keys.
+     */
+    public function readTableHeader(): array
     {
         $version = $this->readFixed32();
 
@@ -270,7 +338,98 @@ final class LiteBinaryReader
             throw new LiteBinaryException("The table row count {$rowCount} is negative.");
         }
 
-        return $rowCount;
+        $columnCount = $this->readCounter32();
+
+        if ($columnCount < 0) {
+            throw new LiteBinaryException("The table column count {$columnCount} is negative.");
+        }
+
+        $columns = [];
+
+        for ($at = 0; $at < $columnCount; $at++) {
+            $tag = $this->readCounter32();
+            $wire = $this->readFixed8();
+            $count = $this->readCounter32();
+            $byteLength = $this->readFixed32();
+
+            $columns[] = [
+                'tag' => $tag,
+                'element' => $wire & 0x0F,
+                'kind' => ($wire >> 4) & 0x03,
+                'count' => $count,
+                'byteLength' => $byteLength,
+            ];
+        }
+
+        // What the descriptors say about the file, checked before anybody allocates for the
+        // row count. The blocks are all that follows the header, so their declared lengths have
+        // to add up to the bytes left, and every row costs at least one byte in every block - a
+        // varint's shortest form, an empty string's length prefix, a variable array's counter.
+        // A row count larger than that is one the exporter could not have written.
+
+        $available = $this->remaining();
+        $declared = 0;
+
+        foreach ($columns as $column) {
+            if ($column['byteLength'] < 0 || $column['byteLength'] > $available - $declared) {
+                throw new LiteBinaryException(
+                    "Column tag {$column['tag']} declares {$column['byteLength']} bytes, which " .
+                    'the file cannot hold.');
+            }
+
+            $declared += $column['byteLength'];
+
+            if ($rowCount > $column['byteLength']) {
+                throw new LiteBinaryException(
+                    "The row count {$rowCount} is larger than column tag {$column['tag']} can " .
+                    "hold in its {$column['byteLength']} bytes.");
+            }
+        }
+
+        if ($declared !== $available) {
+            throw new LiteBinaryException(
+                "The columns declare {$declared} bytes but {$available} follow the header.");
+        }
+
+        return [$rowCount, $columns];
+    }
+
+    /**
+     * That a column is what the generated member expects, or a lossless promotion of it.
+     * Refusal is by name and both types, never by reading anyway.
+     */
+    public static function checkColumn(array $column, string $fieldName, int $kind, int $count, array $accepted): void
+    {
+        if ($column['kind'] !== $kind || ($kind !== self::KIND_VAR_ARRAY && $column['count'] !== $count)) {
+            throw new LiteBinaryException(
+                "{$fieldName}: the file column (kind {$column['kind']}, count {$column['count']}) "
+                . "does not match the generated member (kind {$kind}, count {$count}). The schema "
+                . 'changed shape; regenerate the code or rebuild the data.'
+            );
+        }
+
+        if (!\in_array($column['element'], $accepted, true)) {
+            throw new LiteBinaryException(
+                "{$fieldName}: the file carries element type {$column['element']}, which this "
+                . 'member cannot read. The column changed type incompatibly; regenerate the code '
+                . 'or rebuild the data.'
+            );
+        }
+    }
+
+    /**
+     * That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+     * here names the column instead of corrupting the next.
+     */
+    public function checkBlockEnd(array $column, int $expectedEnd): void
+    {
+        if ($this->position !== $expectedEnd) {
+            $short = $expectedEnd - $this->position;
+            throw new LiteBinaryException(
+                "Column tag {$column['tag']}: its block declared {$column['byteLength']} bytes "
+                . "but the read ended {$short} bytes short of its boundary."
+            );
+        }
     }
 
     // ---------------------------------------------------------------- inner

@@ -164,7 +164,7 @@ namespace SheetMan.CodeGeneration
 
         private CsTableView BuildTable(Table table)
         {
-            var fields = table.SerialFields.Select(BuildField).ToList();
+            var fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList();
 
             return new CsTableView
             {
@@ -197,7 +197,7 @@ namespace SheetMan.CodeGeneration
             };
         }
 
-        private CsFieldView BuildField(SerialField sf)
+        private CsFieldView BuildField(Table table, SerialField sf)
         {
             string fieldType = ToCSharpTypeName(sf.FirstField);
             string fieldName = "_" + sf.Name.ToCamelCase();
@@ -214,6 +214,8 @@ namespace SheetMan.CodeGeneration
                 RefField = sf.FirstField.RefFieldName.ToPascalCase(),
                 Kind = DeclarationKind(sf),
                 ReadKind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementRead = ElementReadLines(sf, fieldName, fieldType, refTable),
 
                 // A reference to a whole row is assigned the target record; one that names a
@@ -258,14 +260,76 @@ namespace SheetMan.CodeGeneration
         /// The lines that read one element, whether the template places them in a loop or
         /// straight into the method body.
         /// </summary>
+        /// <summary>
+        /// The rendered CheckColumn call for one field: its kind, its count, and every wire
+        /// element this member reads - its own plus the lossless promotions.
+        /// </summary>
+        /// <remarks>
+        /// The accepted list is decided here, at generation time, so the runtime carries no
+        /// table of what-converts-to-what: an int member says it takes i32 and varint, a
+        /// double member says f64, f32 and i32, and everything else is exact. Anything not
+        /// listed is refused by name before a byte of the block is read.
+        /// </remarks>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "LiteBinaryTable.KindVarArray"
+                : (sf.Fields.Count > 1 ? "LiteBinaryTable.KindFixedArray" : "LiteBinaryTable.KindScalar");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string accepted;
+
+            if (sf.IsRef)
+                accepted = "LiteBinaryTable.ElementI32";
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case Models.ValueType.Int32:
+                        accepted = "LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint";
+                        break;
+                    case Models.ValueType.Int64:
+                        accepted = "LiteBinaryTable.ElementI64, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint";
+                        break;
+                    case Models.ValueType.Double:
+                        accepted = "LiteBinaryTable.ElementF64, LiteBinaryTable.ElementF32, LiteBinaryTable.ElementI32";
+                        break;
+                    case Models.ValueType.Float: accepted = "LiteBinaryTable.ElementF32"; break;
+                    case Models.ValueType.Bool: accepted = "LiteBinaryTable.ElementBool"; break;
+                    case Models.ValueType.String: accepted = "LiteBinaryTable.ElementString"; break;
+                    case Models.ValueType.Uuid: accepted = "LiteBinaryTable.ElementUuid"; break;
+                    case Models.ValueType.Enum: accepted = "LiteBinaryTable.ElementVarint"; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be numerically
+                    // lossless and semantically wrong, so no promotion.
+                    case Models.ValueType.DateTime:
+                    case Models.ValueType.TimeSpan:
+                        accepted = "LiteBinaryTable.ElementI64";
+                        break;
+
+                    default:
+                        throw new SheetManException($"The csharp generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            return $"LiteBinaryTable.CheckColumn(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {accepted});";
+        }
+
+        /// <summary>
+        /// The lines that read one element into a record, inside the columnar fill loop.
+        ///
+        /// `record` is the row being filled and `column` the descriptor in scope; an array
+        /// element is at `[j]`, the template's inner loop variable.
+        /// </summary>
         private static IReadOnlyList<string> ElementReadLines(
             SerialField sf, string fieldName, string fieldType, string refTable)
         {
-            string target = sf.IsArray ? fieldName + "[i]" : fieldName;
-            string flag = sf.IsArray ? fieldName + "_F[i]" : fieldName + "_F";
+            string target = sf.IsArray ? $"record.{fieldName}[j]" : $"record.{fieldName}";
+            string flag = sf.IsArray ? $"record.{fieldName}_F[j]" : $"record.{fieldName}_F";
             string index = sf.IsArray
-                ? $"{fieldName}_{refTable}_index[i]"
-                : $"{fieldName}_{refTable}_index";
+                ? $"record.{fieldName}_{refTable}_index[j]"
+                : $"record.{fieldName}_{refTable}_index";
 
             if (sf.ElementType == Models.ValueType.Enum)
             {
@@ -289,7 +353,19 @@ namespace SheetMan.CodeGeneration
                 };
             }
 
-            return new[] { $"reader.Read(out {target});" };
+            // The three promotable members read through the As-helpers, so a file written
+            // before the column was widened still reads. Everything else is exact.
+            switch (sf.ElementType)
+            {
+                case Models.ValueType.Int32:
+                    return new[] { $"{target} = reader.ReadI32As(column.Element);" };
+                case Models.ValueType.Int64:
+                    return new[] { $"{target} = reader.ReadI64As(column.Element);" };
+                case Models.ValueType.Double:
+                    return new[] { $"{target} = reader.ReadF64As(column.Element);" };
+                default:
+                    return new[] { $"reader.Read(out {target});" };
+            }
         }
 
         private CsEnumView BuildEnum(Models.Enum enumm) => new CsEnumView

@@ -27,21 +27,21 @@ export class LocalizationRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    private _index: number
+    public _index: number
 
     /** lookup key */
     public get key(): string { return this._key }
-    private _key: string
+    public _key: string
 
     /** english text 1 */
     public get textEnArray(): string[] { return this._textEnArray }
     public static readonly textEnArray_N = 2
-    private _textEnArray: string[]
+    public _textEnArray: string[]
 
     /** korean text 1 */
     public get textKoArray(): string[] { return this._textKoArray }
     public static readonly textKoArray_N = 2
-    private _textKoArray: string[]
+    public _textKoArray: string[]
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {
@@ -60,23 +60,6 @@ export class LocalizationRecord {
         offset += 2
         this._textKoArray = dataRow.slice(offset, offset + 2)
         offset += 2
-    }
-
-    /** Read one record. Field order must match the exporter's. */
-    public readBinary(reader: sheetman.LiteBinaryReader): void
-    {
-        this._index = reader.readInt32()
-        this._key = reader.readString()
-        this._textEnArray = []
-        for (let i = 0; i < 2; ++i)
-        {
-            this._textEnArray.push(reader.readString())
-        }
-        this._textKoArray = []
-        for (let i = 0; i < 2; ++i)
-        {
-            this._textKoArray.push(reader.readString())
-        }
     }
 }
 
@@ -155,17 +138,71 @@ export class LocalizationTable {
         this.readBinaryFrom(sheetman.readAllBytes(filename))
     }
 
-    /** Read a table from binary data already in memory. */
+    /**
+     * Read a table from binary data already in memory.
+     *
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public readBinaryFrom(data: Uint8Array): void
     {
         const reader = new sheetman.LiteBinaryReader(data)
-        const rowCount = sheetman.readTableHeader(reader)
+        const { rowCount, columns } = sheetman.readTableHeader(reader)
 
+        this._records = []
         for (let i = 0; i < rowCount; ++i)
+            this._records.push(new LocalizationRecord())
+
+        for (const column of columns)
         {
-            const record = new LocalizationRecord()
-            record.readBinary(reader)
-            this._records.push(record)
+            const blockEnd = reader.position + column.byteLength
+
+            switch (column.tag)
+            {
+                case 1:
+                    sheetman.checkColumn(column, 'Localization.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._index = reader.readI32As(column.element)
+                    }
+                    break
+                case 2:
+                    sheetman.checkColumn(column, 'Localization.Key', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._key = reader.readString()
+                    }
+                    break
+                case 3:
+                    sheetman.checkColumn(column, 'Localization.TextEn_array', sheetman.KIND_FIXED_ARRAY, 2, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._textEnArray = []
+                        for (let j = 0; j < 2; ++j)
+                            record._textEnArray.push(reader.readString())
+                    }
+                    break
+                case 4:
+                    sheetman.checkColumn(column, 'Localization.TextKo_array', sheetman.KIND_FIXED_ARRAY, 2, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._textKoArray = []
+                        for (let j = 0; j < 2; ++j)
+                            record._textKoArray.push(reader.readString())
+                    }
+                    break
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength)
+                    break
+            }
+
+            sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
         this.mapping()

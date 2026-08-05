@@ -37,47 +37,47 @@ export class TestFieldTypesRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    private _index: number
+    public _index: number
 
     /** utf8 text */
     public get stringField(): string { return this._stringField }
-    private _stringField: string
+    public _stringField: string
 
     /** logical flag */
     public get boolField(): boolean { return this._boolField }
-    private _boolField: boolean
+    public _boolField: boolean
 
     /** 32 bit integer */
     public get intField(): number { return this._intField }
-    private _intField: number
+    public _intField: number
 
     /** 64 bit integer */
     public get bigIntField(): bigint { return this._bigIntField }
-    private _bigIntField: bigint
+    public _bigIntField: bigint
 
     /** single precision */
     public get floatField(): number { return this._floatField }
-    private _floatField: number
+    public _floatField: number
 
     /** double precision */
     public get doubleField(): number { return this._doubleField }
-    private _doubleField: number
+    public _doubleField: number
 
     /** date and time */
     public get datetimeField(): string { return this._datetimeField }
-    private _datetimeField: string
+    public _datetimeField: string
 
     /** time interval */
     public get timespanField(): string { return this._timespanField }
-    private _timespanField: string
+    public _timespanField: string
 
     /** globally unique id */
     public get uuidField(): string { return this._uuidField }
-    private _uuidField: string
+    public _uuidField: string
 
     /** enum reference */
     public get valueTypeField(): ValueType { return this._valueTypeField }
-    private _valueTypeField: ValueType
+    public _valueTypeField: ValueType
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {
@@ -108,22 +108,6 @@ export class TestFieldTypesRecord {
         this._timespanField = dataRow[offset++]
         this._uuidField = dataRow[offset++]
         this._valueTypeField = dataRow[offset++]
-    }
-
-    /** Read one record. Field order must match the exporter's. */
-    public readBinary(reader: sheetman.LiteBinaryReader): void
-    {
-        this._index = reader.readInt32()
-        this._stringField = reader.readString()
-        this._boolField = reader.readBool()
-        this._intField = reader.readInt32()
-        this._bigIntField = reader.readInt64()
-        this._floatField = reader.readFloat()
-        this._doubleField = reader.readDouble()
-        this._datetimeField = reader.readDateTime()
-        this._timespanField = reader.readTimeSpan()
-        this._uuidField = reader.readUuid()
-        this._valueTypeField = reader.readEnum() as ValueType
     }
 }
 
@@ -202,17 +186,123 @@ export class TestFieldTypesTable {
         this.readBinaryFrom(sheetman.readAllBytes(filename))
     }
 
-    /** Read a table from binary data already in memory. */
+    /**
+     * Read a table from binary data already in memory.
+     *
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public readBinaryFrom(data: Uint8Array): void
     {
         const reader = new sheetman.LiteBinaryReader(data)
-        const rowCount = sheetman.readTableHeader(reader)
+        const { rowCount, columns } = sheetman.readTableHeader(reader)
 
+        this._records = []
         for (let i = 0; i < rowCount; ++i)
+            this._records.push(new TestFieldTypesRecord())
+
+        for (const column of columns)
         {
-            const record = new TestFieldTypesRecord()
-            record.readBinary(reader)
-            this._records.push(record)
+            const blockEnd = reader.position + column.byteLength
+
+            switch (column.tag)
+            {
+                case 1:
+                    sheetman.checkColumn(column, 'TestFieldTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._index = reader.readI32As(column.element)
+                    }
+                    break
+                case 2:
+                    sheetman.checkColumn(column, 'TestFieldTypes.StringField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._stringField = reader.readString()
+                    }
+                    break
+                case 3:
+                    sheetman.checkColumn(column, 'TestFieldTypes.BoolField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._boolField = reader.readBool()
+                    }
+                    break
+                case 4:
+                    sheetman.checkColumn(column, 'TestFieldTypes.IntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._intField = reader.readI32As(column.element)
+                    }
+                    break
+                case 5:
+                    sheetman.checkColumn(column, 'TestFieldTypes.BigIntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._bigIntField = reader.readI64As(column.element)
+                    }
+                    break
+                case 6:
+                    sheetman.checkColumn(column, 'TestFieldTypes.FloatField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._floatField = reader.readFloat()
+                    }
+                    break
+                case 7:
+                    sheetman.checkColumn(column, 'TestFieldTypes.DoubleField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F64, sheetman.ELEMENT_F32, sheetman.ELEMENT_I32])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._doubleField = reader.readF64As(column.element)
+                    }
+                    break
+                case 8:
+                    sheetman.checkColumn(column, 'TestFieldTypes.DatetimeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._datetimeField = reader.readDateTime()
+                    }
+                    break
+                case 9:
+                    sheetman.checkColumn(column, 'TestFieldTypes.TimespanField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._timespanField = reader.readTimeSpan()
+                    }
+                    break
+                case 10:
+                    sheetman.checkColumn(column, 'TestFieldTypes.UuidField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_UUID])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._uuidField = reader.readUuid()
+                    }
+                    break
+                case 11:
+                    sheetman.checkColumn(column, 'TestFieldTypes.ValueTypeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._valueTypeField = reader.readEnum() as ValueType
+                    }
+                    break
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength)
+                    break
+            }
+
+            sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
         this.mapping()

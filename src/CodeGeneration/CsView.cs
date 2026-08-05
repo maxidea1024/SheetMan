@@ -142,6 +142,15 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         public string ReadKind { get; set; }
 
+        /// <summary>The column's wire tag, which is how the read matches it in a file.</summary>
+        public int Tag { get; set; }
+
+        /// <summary>
+        /// The rendered CheckColumn call: kind, count and the elements this member accepts -
+        /// its own, plus the lossless promotions.
+        /// </summary>
+        public string ColumnCheck { get; set; }
+
         /// <summary>
         /// The lines reading one element, at whatever depth the template places them. Two
         /// or three of them for an enum or a reference, one otherwise.

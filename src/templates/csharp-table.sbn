@@ -43,68 +43,28 @@
 {{~ if field.kind == 'array_ref' ~}}
             public {{ field.field_type }}[] {{ field.prop_name }} => {{ field.field_name }};
             public const int {{ field.prop_name }}_N = {{ field.element_count }};
-            private {{ field.field_type }}[] {{ field.field_name }} = new {{ field.field_type }}[{{ field.field_name }}_N];
+            internal {{ field.field_type }}[] {{ field.field_name }} = new {{ field.field_type }}[{{ field.field_name }}_N];
             public void SetReference_{{ field.prop_name }}_INTERNAL(int index, {{ field.reference_setter_type }} value) => {{ field.field_name }}[index] = value;
             public int[] {{ field.field_name }}_{{ field.ref_table }}_index = new int[{{ field.prop_name }}_N];
             public bool[] {{ field.field_name }}_F = new bool[{{ field.field_name }}_N];
 {{~ else if field.kind == 'var_array' ~}}
             public {{ field.field_type }}[] {{ field.prop_name }} => {{ field.field_name }};
-            private {{ field.field_type }}[] {{ field.field_name }} = System.Array.Empty<{{ field.field_type }}>();
+            internal {{ field.field_type }}[] {{ field.field_name }} = System.Array.Empty<{{ field.field_type }}>();
 {{~ else if field.kind == 'array' ~}}
             public {{ field.field_type }}[] {{ field.prop_name }} => {{ field.field_name }};
             public const int {{ field.prop_name }}_N = {{ field.element_count }};
-            private {{ field.field_type }}[] {{ field.field_name }} = new {{ field.field_type }}[{{ field.prop_name }}_N];
+            internal {{ field.field_type }}[] {{ field.field_name }} = new {{ field.field_type }}[{{ field.prop_name }}_N];
 {{~ else if field.kind == 'scalar_ref' ~}}
             public {{ field.field_type }} {{ field.prop_name }} => {{ field.field_name }};
-            private {{ field.field_type }} {{ field.field_name }};
+            internal {{ field.field_type }} {{ field.field_name }};
             public void SetReference_{{ field.prop_name }}_INTERNAL({{ field.reference_setter_type }} value) => {{ field.field_name }} = value;
             public int {{ field.field_name }}_{{ field.ref_table }}_index;
             public bool {{ field.field_name }}_F = false;
 {{~ else ~}}
             public {{ field.field_type }} {{ field.prop_name }} => {{ field.field_name }};
-            private {{ field.field_type }} {{ field.field_name }};
+            internal {{ field.field_type }} {{ field.field_name }};
 {{~ end ~}}
 {{~ end ~}}
-            #endregion
-
-            #region Read record
-            /// <summary>
-            /// Reads a table record.
-            /// </summary>
-            public Task ReadAsync(LiteBinaryReader reader)
-            {
-{{~ if table.needs_enum_temp ~}}
-                int tempEnumInt = 0;
-{{~ end ~}}
-{{~ for field in table.fields ~}}
-{{~ if !for.first }}
-{{ end ~}}
-{{~ if field.read_kind == 'var_array' ~}}
-                reader.TryReadCounter32(out int {{ field.prop_name }}_count);
-                {{ field.field_name }} = new {{ field.field_type }}[{{ field.prop_name }}_count];
-                for (int i = 0; i < {{ field.prop_name }}_count; ++i)
-                {
-{{~ for line in field.element_read ~}}
-                    {{ line }}
-{{~ end ~}}
-                }
-{{~ else if field.read_kind == 'serial' ~}}
-                for (int i = 0; i < {{ field.prop_name }}_N; ++i)
-                {
-{{~ for line in field.element_read ~}}
-                    {{ line }}
-{{~ end ~}}
-                }
-{{~ else ~}}
-{{~ for line in field.element_read ~}}
-                {{ line }}
-{{~ end ~}}
-{{~ end ~}}
-{{~ end ~}}
-{{~ if table.fields | array.size > 0 }}
-{{ end ~}}
-                return Task.CompletedTask;
-            }
             #endregion
 
             #region ToString
@@ -188,21 +148,76 @@
         /// <summary>
         /// Read a table from specified reader.
         /// </summary>
-        public async Task ReadAsync(LiteBinaryReader reader)
+        /// <remarks>
+        /// Column by column, matched by tag rather than position. A column this build does
+        /// not know is skipped by its block length; one it knows but cannot read - the type
+        /// changed incompatibly - fails naming the field. Order, names and columns added or
+        /// removed on either side are therefore all survivable.
+        /// </remarks>
+        public Task ReadAsync(LiteBinaryReader reader)
         {
-            // Version and reserved flags are checked by the reader.
-            uint version = 0;
-            reader.Read(out version);
+            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+{{~ if table.needs_enum_temp ~}}
+            int tempEnumInt = 0;
+{{~ end ~}}
 
-            byte flags = 0;
-            reader.Read(out flags);
-
-            int count = reader.ReadCounter32();
+            _records.Clear();
             for (int i = 0; i < count; i++)
+                _records.Add(new Record());
+
+            foreach (var column in columns)
             {
-                var record = new Record();
-                await record.ReadAsync(reader);
-                _records.Add(record);
+                int blockEnd = reader.Position + column.ByteLength;
+
+                switch (column.Tag)
+                {
+{{~ for field in table.fields ~}}
+                    case {{ field.tag }}:
+                        {{ field.column_check }}
+{{~ if field.read_kind == 'var_array' ~}}
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.TryReadCounter32(out int elementCount);
+                            record.{{ field.field_name }} = new {{ field.field_type }}[elementCount];
+                            for (int j = 0; j < elementCount; ++j)
+                            {
+{{~ for line in field.element_read ~}}
+                                {{ line }}
+{{~ end ~}}
+                            }
+                        }
+{{~ else if field.read_kind == 'serial' ~}}
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            for (int j = 0; j < Record.{{ field.prop_name }}_N; ++j)
+                            {
+{{~ for line in field.element_read ~}}
+                                {{ line }}
+{{~ end ~}}
+                            }
+                        }
+{{~ else ~}}
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+{{~ for line in field.element_read ~}}
+                            {{ line }}
+{{~ end ~}}
+                        }
+{{~ end ~}}
+                        break;
+
+{{~ end ~}}
+                    default:
+                        // A column added after this code was generated. Its block length
+                        // says how far to move on.
+                        reader.Skip(column.ByteLength);
+                        break;
+                }
+
+                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
             }
 {{~ if table.indexed_fields | array.size > 0 }}
             // Index mapping
@@ -210,7 +225,8 @@
             foreach (var record in _records)
                 _recordsBy{{ field.prop_name }}.Add(record.{{ field.prop_name }}, record);
 {{~ end ~}}
-{{~ end ~}}
+{{~ end }}
+            return Task.CompletedTask;
         }
 
         public override string ToString()

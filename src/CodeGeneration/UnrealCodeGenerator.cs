@@ -286,7 +286,7 @@ namespace SheetMan.CodeGeneration
                 Location = table.Location.ToString(),
                 Comment = CommentLines(table.Comment),
                 IndexField = MemberName(table.Fields[0]),
-                Fields = table.SerialFields.Select(sf => BuildField(sf, members)).ToList(),
+                Fields = table.SerialFields.Select(sf => BuildField(table, sf, members)).ToList(),
             };
         }
 
@@ -310,7 +310,7 @@ namespace SheetMan.CodeGeneration
             }
         }
 
-        private UnrealFieldView BuildField(SerialField sf, ICollection<string> members)
+        private UnrealFieldView BuildField(Table table, SerialField sf, ICollection<string> members)
         {
             string name = MemberName(sf.FirstField, sf.Name);
 
@@ -320,6 +320,8 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementCount = sf.Fields.Count,
                 Declaration = Declaration(sf, name),
 
@@ -373,12 +375,12 @@ namespace SheetMan.CodeGeneration
         private static string ReadCall(SerialField sf)
         {
             if (sf.IsRef)
-                return "Read";
+                return "ReadAs";
 
             switch (sf.ElementType)
             {
                 case ValueType.Enum:
-                    return "ReadEnum";
+                    return "ReadEnumAs";
 
                 case ValueType.String:
                 case ValueType.Bool:
@@ -389,11 +391,62 @@ namespace SheetMan.CodeGeneration
                 case ValueType.DateTime:
                 case ValueType.TimeSpan:
                 case ValueType.Uuid:
-                    return "Read";
+                    return "ReadAs";
 
                 default:
                     throw new SheetManException($"The unreal generator cannot read type `{sf.Type}`.");
             }
+        }
+
+        /// <summary>
+        /// The rendered CheckColumn call: kind, count, and the elements this member accepts -
+        /// its own plus the lossless promotions, decided here at generation time rather than
+        /// in the reader.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "SheetMan::KindVarArray"
+                : (sf.Fields.Count > 1 ? "SheetMan::KindFixedArray" : "SheetMan::KindScalar");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string[] accepted;
+
+            if (sf.IsRef)
+                accepted = new[] { "ElementI32" };
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32:
+                        accepted = new[] { "ElementI32", "ElementVarint" }; break;
+                    case ValueType.Int64:
+                        accepted = new[] { "ElementI64", "ElementI32", "ElementVarint" }; break;
+                    case ValueType.Double:
+                        accepted = new[] { "ElementF64", "ElementF32", "ElementI32" }; break;
+                    case ValueType.Float: accepted = new[] { "ElementF32" }; break;
+                    case ValueType.Bool: accepted = new[] { "ElementBool" }; break;
+                    case ValueType.String: accepted = new[] { "ElementString" }; break;
+                    case ValueType.Uuid: accepted = new[] { "ElementUuid" }; break;
+                    case ValueType.Enum: accepted = new[] { "ElementVarint" }; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = new[] { "ElementI64" }; break;
+
+                    default:
+                        throw new SheetManException($"The unreal generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            string mask = string.Join(
+                " | ", accepted.Select(name => $"SheetMan::ElementMask(SheetMan::{name})"));
+
+            return $"SheetMan::CheckColumn(Reader, Column, TEXT(\"{tableName}.{sf.Name}\"), " +
+                   $"{kind}, {count}, {mask});";
         }
 
         /// <summary>

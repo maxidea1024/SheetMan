@@ -29,7 +29,38 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 
 /** Stamped at the head of every table file by the exporter. */
-const val FORMAT_VERSION: Int = 100
+// 101 is column-oriented and self-describing; it replaced 100 outright, before the tool
+// fed anything live, so nothing reads or writes 100 any more.
+const val FORMAT_VERSION: Int = 101
+
+// The wire element types and kinds, as the v101 column descriptors spell them.
+const val ELEMENT_VARINT = 0
+const val ELEMENT_BOOL = 1
+const val ELEMENT_I32 = 2
+const val ELEMENT_I64 = 3
+const val ELEMENT_F32 = 4
+const val ELEMENT_F64 = 5
+const val ELEMENT_STRING = 6
+const val ELEMENT_UUID = 7
+
+const val KIND_SCALAR = 0
+const val KIND_FIXED_ARRAY = 1
+const val KIND_VAR_ARRAY = 2
+
+/** One column as the file describes it. */
+class Column(
+    /** What identifies the column, instead of its position. */
+    val tag: Int,
+    val element: Int,
+    val kind: Int,
+    /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
+    val count: Int,
+    /** Total bytes of the column block - what a skip advances by. */
+    val byteLength: Int,
+)
+
+/** A parsed v101 header: the row count and the column descriptors that follow it. */
+class Header(val rowCount: Int, val columns: List<Column>)
 
 /** A table file is truncated, malformed, or not a table file. */
 class LiteBinaryException(message: String) : RuntimeException(message)
@@ -76,6 +107,40 @@ class LiteBinaryReader(private val data: ByteArray) {
 
     var position: Int = 0
         private set
+
+    /**
+     * Advances past bytes without interpreting them: an unknown column whole block.
+     * The column-oriented layout is what makes this one call the entirety of skipping.
+     */
+    fun skip(byteCount: Int) {
+        if (byteCount < 0 || byteCount > data.size - position) {
+            throw LiteBinaryException(
+                "cannot skip $byteCount bytes with ${data.size - position} remaining")
+        }
+        position += byteCount
+    }
+
+    // Promotions: a member reading a file element narrower than itself. Only the
+    // mathematically lossless directions exist; checkColumn already refused the rest.
+
+    /** An Int member from i32 or varint. */
+    fun readI32As(element: Int): Int =
+        if (element == ELEMENT_I32) readInt32() else readCounter32()
+
+    /** A Long member from i64, i32 or varint. */
+    fun readI64As(element: Int): Long = when (element) {
+        ELEMENT_I64 -> readInt64()
+        ELEMENT_I32 -> readInt32().toLong()
+        else -> readCounter32().toLong()
+    }
+
+    /** A Double member from f64, f32 or i32 - all exact in a Double. */
+    fun readF64As(element: Int): Double = when (element) {
+        ELEMENT_F64 -> readDouble()
+        ELEMENT_F32 -> readFloat().toDouble()
+        else -> readInt32().toDouble()
+    }
+
 
     /** Bytes left to read. */
     val remaining: Int get() = data.size - position
@@ -191,7 +256,7 @@ class LiteBinaryReader(private val data: ByteArray) {
  * The reserved byte is written as zero and is where compression or encryption flags would
  * go; a non-zero value means the file needs handling this build does not have.
  */
-fun readTableHeader(reader: LiteBinaryReader): Int {
+fun readTableHeader(reader: LiteBinaryReader): Header {
     val version = reader.readInt32()
 
     if (version != FORMAT_VERSION) {
@@ -204,10 +269,84 @@ fun readTableHeader(reader: LiteBinaryReader): Int {
     }
 
     val count = reader.readCounter32()
-
     if (count < 0) throw LiteBinaryException("table row count is negative")
 
-    return count
+    val columnCount = reader.readCounter32()
+    if (columnCount < 0) throw LiteBinaryException("table column count is negative")
+
+    val columns = ArrayList<Column>(columnCount)
+
+    repeat(columnCount) {
+        val tag = reader.readCounter32()
+        val wire = reader.readUInt8()
+        val elementCount = reader.readCounter32()
+        val byteLength = reader.readInt32()
+        columns.add(Column(tag, wire and 0x0F, (wire shr 4) and 0x03, elementCount, byteLength))
+    }
+
+    // What the descriptors say about the file, checked before anybody allocates for the
+    // row count. The blocks are all that follows the header, so their declared lengths have
+    // to add up to the bytes left, and every row costs at least one byte in every block - a
+    // varint's shortest form, an empty string's length prefix, a variable array's counter.
+    // A row count larger than that is one the exporter could not have written.
+
+    val available = reader.remaining
+    var declared = 0
+
+    for (column in columns) {
+        if (column.byteLength < 0 || column.byteLength > available - declared) {
+            throw LiteBinaryException(
+                "column tag ${column.tag} declares ${column.byteLength} bytes, which the file " +
+                    "cannot hold")
+        }
+
+        declared += column.byteLength
+
+        if (count > column.byteLength) {
+            throw LiteBinaryException(
+                "the row count $count is larger than column tag ${column.tag} can hold in its " +
+                    "${column.byteLength} bytes")
+        }
+    }
+
+    if (declared != available) {
+        throw LiteBinaryException(
+            "the columns declare $declared bytes but $available follow the header")
+    }
+
+    return Header(count, columns)
+}
+
+/**
+ * That a column is what the generated member expects, or a lossless promotion of it.
+ * Refusal is by name and both types, never by reading anyway.
+ */
+fun checkColumn(column: Column, fieldName: String, kind: Int, count: Int, vararg accepted: Int) {
+    if (column.kind != kind || (kind != KIND_VAR_ARRAY && column.count != count)) {
+        throw LiteBinaryException(
+            "$fieldName: the file column (kind ${column.kind}, count ${column.count}) does not " +
+                "match the generated member (kind $kind, count $count). The schema changed shape; " +
+                "regenerate the code or rebuild the data.")
+    }
+
+    if (column.element !in accepted) {
+        throw LiteBinaryException(
+            "$fieldName: the file carries element type ${column.element}, which this member " +
+                "cannot read (accepts ${accepted.joinToString()}). The column changed type " +
+                "incompatibly; regenerate the code or rebuild the data.")
+    }
+}
+
+/**
+ * That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+ * here names the column instead of corrupting the next.
+ */
+fun checkBlockEnd(reader: LiteBinaryReader, column: Column, expectedEnd: Int) {
+    if (reader.position != expectedEnd) {
+        throw LiteBinaryException(
+            "column tag ${column.tag}: its block declared ${column.byteLength} bytes but the " +
+                "read ended ${expectedEnd - reader.position} bytes short of its boundary")
+    }
 }
 
 /** Reads a whole file into memory. */

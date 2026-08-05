@@ -27,7 +27,42 @@ use std::io;
 use std::path::Path;
 
 /// Stamped at the head of every table file by the exporter.
-pub const FORMAT_VERSION: u32 = 100;
+/// 101 is column-oriented and self-describing; it replaced 100 outright, before the
+/// tool fed anything live, so nothing reads or writes 100 any more.
+pub const FORMAT_VERSION: u32 = 101;
+
+// The wire element types and kinds, as the v101 column descriptors spell them.
+pub const ELEMENT_VARINT: u8 = 0;
+pub const ELEMENT_BOOL: u8 = 1;
+pub const ELEMENT_I32: u8 = 2;
+pub const ELEMENT_I64: u8 = 3;
+pub const ELEMENT_F32: u8 = 4;
+pub const ELEMENT_F64: u8 = 5;
+pub const ELEMENT_STRING: u8 = 6;
+pub const ELEMENT_UUID: u8 = 7;
+
+pub const KIND_SCALAR: u8 = 0;
+pub const KIND_FIXED_ARRAY: u8 = 1;
+pub const KIND_VAR_ARRAY: u8 = 2;
+
+/// One column as the file describes it.
+#[derive(Clone, Copy, Debug)]
+pub struct Column {
+    /// What identifies the column, instead of its position.
+    pub tag: i32,
+    pub element: u8,
+    pub kind: u8,
+    /// Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one.
+    pub count: i32,
+    /// Total bytes of the column block - what a skip advances by.
+    pub byte_length: i32,
+}
+
+/// A parsed v101 header: the row count and the column descriptors that follow it.
+pub struct Header {
+    pub row_count: i32,
+    pub columns: Vec<Column>,
+}
 
 /// What went wrong while reading a table.
 #[derive(Debug)]
@@ -44,6 +79,19 @@ pub enum Error {
     UnsupportedFeatures,
     /// The bytes of a string were not valid UTF-8.
     InvalidUtf8,
+    /// A column and the generated member disagree about shape or type.
+    ///
+    /// Refusal is by name and both wires, never by reading anyway: a value that might
+    /// not survive the conversion is a value this format does not read.
+    ColumnMismatch { field: &'static str, detail: &'static str },
+    /// A column block's declared length and the bytes the read consumed disagree.
+    BlockLengthMismatch { tag: i32 },
+    /// A column declares more bytes than the file has left to give it.
+    ColumnLengthImplausible { tag: i32, byte_length: i32 },
+    /// The row count is larger than a column block could hold that many rows in.
+    RowCountImplausible { rows: i32, tag: i32, byte_length: i32 },
+    /// The blocks the columns declare and the bytes after the header do not add up.
+    HeaderLengthMismatch { declared: i32, available: i32 },
     /// The file could not be opened or read.
     Io(io::Error),
 }
@@ -65,6 +113,27 @@ impl fmt::Display for Error {
             ),
             Error::UnsupportedFeatures => write!(f, "table declares unsupported features"),
             Error::InvalidUtf8 => write!(f, "string bytes are not valid UTF-8"),
+            Error::ColumnMismatch { field, detail } => write!(f, "{}: {}", field, detail),
+            Error::ColumnLengthImplausible { tag, byte_length } => write!(
+                f,
+                "column tag {} declares {} bytes, which the file cannot hold",
+                tag, byte_length
+            ),
+            Error::RowCountImplausible { rows, tag, byte_length } => write!(
+                f,
+                "the row count {} is larger than column tag {} can hold in its {} bytes",
+                rows, tag, byte_length
+            ),
+            Error::HeaderLengthMismatch { declared, available } => write!(
+                f,
+                "the columns declare {} bytes but {} follow the header",
+                declared, available
+            ),
+            Error::BlockLengthMismatch { tag } => write!(
+                f,
+                "column tag {}: the block's declared length and the bytes consumed disagree",
+                tag
+            ),
             Error::Io(inner) => write!(f, "{}", inner),
         }
     }
@@ -94,6 +163,48 @@ impl<'a> Reader<'a> {
     }
 
     /// Bytes consumed so far.
+    /// Advances past bytes without interpreting them: an unknown column whole block.
+    /// The column-oriented layout is what makes this one call the entirety of skipping.
+    pub fn skip(&mut self, byte_count: i32) -> Result<()> {
+        if byte_count < 0 {
+            return Err(Error::NegativeLength);
+        }
+
+        // take() is the bounds check.
+        self.take(byte_count as usize)?;
+        Ok(())
+    }
+
+    // Promotions: a member reading a file element narrower than itself. Only the
+    // mathematically lossless directions exist; check_column already refused the rest.
+
+    /// An i32 member from i32 or varint.
+    pub fn read_i32_as(&mut self, element: u8) -> Result<i32> {
+        if element == ELEMENT_I32 {
+            self.read_i32()
+        } else {
+            self.read_counter32()
+        }
+    }
+
+    /// An i64 member from i64, i32 or varint.
+    pub fn read_i64_as(&mut self, element: u8) -> Result<i64> {
+        match element {
+            ELEMENT_I64 => self.read_i64(),
+            ELEMENT_I32 => Ok(self.read_i32()? as i64),
+            _ => Ok(self.read_counter32()? as i64),
+        }
+    }
+
+    /// An f64 member from f64, f32 or i32 - all exact in an f64.
+    pub fn read_f64_as(&mut self, element: u8) -> Result<f64> {
+        match element {
+            ELEMENT_F64 => self.read_f64(),
+            ELEMENT_F32 => Ok(self.read_f32()? as f64),
+            _ => Ok(self.read_i32()? as f64),
+        }
+    }
+
     pub fn position(&self) -> usize {
         self.position
     }
@@ -265,7 +376,7 @@ impl fmt::Display for Uuid {
 ///
 /// The reserved byte is written as zero and is where compression or encryption flags
 /// would go; a non-zero value means the file needs handling this build does not have.
-pub fn read_table_header(reader: &mut Reader<'_>) -> Result<i32> {
+pub fn read_table_header(reader: &mut Reader<'_>) -> Result<Header> {
     let version = reader.read_u32()?;
 
     if version != FORMAT_VERSION {
@@ -277,12 +388,98 @@ pub fn read_table_header(reader: &mut Reader<'_>) -> Result<i32> {
     }
 
     let count = reader.read_counter32()?;
-
     if count < 0 {
         return Err(Error::NegativeLength);
     }
 
-    Ok(count)
+    let column_count = reader.read_counter32()?;
+    if column_count < 0 {
+        return Err(Error::NegativeLength);
+    }
+
+    let mut columns = Vec::with_capacity(column_count as usize);
+
+    for _ in 0..column_count {
+        let tag = reader.read_counter32()?;
+        let wire = reader.read_u8()?;
+        let element_count = reader.read_counter32()?;
+        let byte_length = reader.read_u32()? as i32;
+
+        columns.push(Column {
+            tag,
+            element: wire & 0x0f,
+            kind: (wire >> 4) & 0x03,
+            count: element_count,
+            byte_length,
+        });
+    }
+
+    // What the descriptors say about the file, checked before anybody allocates for the
+    // row count. The blocks are all that follows the header, so their declared lengths have
+    // to add up to the bytes left, and every row costs at least one byte in every block - a
+    // varint's shortest form, an empty string's length prefix, a variable array's counter.
+    // A row count larger than that is one the exporter could not have written.
+
+    let available = reader.remaining() as i32;
+    let mut declared: i32 = 0;
+
+    for column in &columns {
+        if column.byte_length < 0 || column.byte_length > available - declared {
+            return Err(Error::ColumnLengthImplausible {
+                tag: column.tag,
+                byte_length: column.byte_length,
+            });
+        }
+
+        declared += column.byte_length;
+
+        if count > column.byte_length {
+            return Err(Error::RowCountImplausible {
+                rows: count,
+                tag: column.tag,
+                byte_length: column.byte_length,
+            });
+        }
+    }
+
+    if declared != available {
+        return Err(Error::HeaderLengthMismatch { declared, available });
+    }
+
+    Ok(Header { row_count: count, columns })
+}
+
+/// That a column is what the generated member expects, or a lossless promotion of it.
+pub fn check_column(
+    column: &Column, field: &'static str, kind: u8, count: i32, accepted: &[u8],
+) -> Result<()> {
+    if column.kind != kind || (kind != KIND_VAR_ARRAY && column.count != count) {
+        return Err(Error::ColumnMismatch {
+            field,
+            detail: "the column's shape does not match the generated member; the schema \
+                     changed shape, regenerate the code or rebuild the data",
+        });
+    }
+
+    if !accepted.contains(&column.element) {
+        return Err(Error::ColumnMismatch {
+            field,
+            detail: "the column's element type is one this member cannot read; the column \
+                     changed type incompatibly, regenerate the code or rebuild the data",
+        });
+    }
+
+    Ok(())
+}
+
+/// That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+/// here names the column instead of corrupting the next.
+pub fn check_block_end(reader: &Reader<'_>, column: &Column, expected_end: usize) -> Result<()> {
+    if reader.position() != expected_end {
+        return Err(Error::BlockLengthMismatch { tag: column.tag });
+    }
+
+    Ok(())
 }
 
 /// Reads a whole file into memory.

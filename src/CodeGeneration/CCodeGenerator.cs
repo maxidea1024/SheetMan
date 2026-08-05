@@ -379,14 +379,10 @@ namespace SheetMan.CodeGeneration
             Comment = CommentLines(table.Comment),
             IndexField = CName(table.Fields[0].Name),
 
-            // One byte per encoded field at the very least, and a serial field encodes
-            // once per element. Nothing encodes to nothing.
-            MinRowBytes = table.SerialFields.Sum(sf => sf.IsVariableLengthArray ? 1 : sf.Fields.Count),
-
-            Fields = table.SerialFields.Select(BuildField).ToList(),
+            Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
 
-        private CFieldView BuildField(SerialField sf)
+        private CFieldView BuildField(Table table, SerialField sf)
         {
             string name = CName(sf.Name);
             bool isEnum = !sf.IsRef && sf.ElementType == ValueType.Enum;
@@ -396,6 +392,8 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementCount = sf.Fields.Count,
                 ElementType = ResolvedElementType(sf),
                 Declarations = Declarations(sf, name),
@@ -404,6 +402,56 @@ namespace SheetMan.CodeGeneration
                 ReadScalar = ReadCall(sf, $"&record->{name}"),
                 ReadElement = ReadCall(sf, $"&record->{name}[element]"),
             };
+        }
+
+        /// <summary>
+        /// The rendered sm_check_column call: kind, count, and the set of elements this
+        /// member accepts - its own plus the lossless promotions, decided here at
+        /// generation time rather than in the reader.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "SM_KIND_VAR_ARRAY"
+                : (sf.Fields.Count > 1 ? "SM_KIND_FIXED_ARRAY" : "SM_KIND_SCALAR");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string[] accepted;
+
+            if (sf.IsRef)
+                accepted = new[] { "SM_ELEMENT_I32" };
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32:
+                        accepted = new[] { "SM_ELEMENT_I32", "SM_ELEMENT_VARINT" }; break;
+                    case ValueType.Int64:
+                        accepted = new[] { "SM_ELEMENT_I64", "SM_ELEMENT_I32", "SM_ELEMENT_VARINT" }; break;
+                    case ValueType.Double:
+                        accepted = new[] { "SM_ELEMENT_F64", "SM_ELEMENT_F32", "SM_ELEMENT_I32" }; break;
+                    case ValueType.Float: accepted = new[] { "SM_ELEMENT_F32" }; break;
+                    case ValueType.Bool: accepted = new[] { "SM_ELEMENT_BOOL" }; break;
+                    case ValueType.String: accepted = new[] { "SM_ELEMENT_STRING" }; break;
+                    case ValueType.Uuid: accepted = new[] { "SM_ELEMENT_UUID" }; break;
+                    case ValueType.Enum: accepted = new[] { "SM_ELEMENT_VARINT" }; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = new[] { "SM_ELEMENT_I64" }; break;
+
+                    default:
+                        throw new SheetManException($"The c generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            string mask = string.Join(" | ", accepted.Select(name => $"SM_ELEMENT_MASK({name})"));
+
+            return $"(void)sm_check_column(reader, column, \"{tableName}.{sf.Name}\", " +
+                   $"{kind}, {count}, {mask});";
         }
 
         /// <summary>

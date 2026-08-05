@@ -35,35 +35,19 @@ namespace SheetMan.Fixtures.Core.Client
             /// primary index
             /// </summary>
             public int Index => _index;
-            private int _index;
+            internal int _index;
 
             /// <summary>
             /// string key
             /// </summary>
             public string Key => _key;
-            private string _key;
+            internal string _key;
 
             /// <summary>
             /// display text
             /// </summary>
             public string Text => _text;
-            private string _text;
-            #endregion
-
-            #region Read record
-            /// <summary>
-            /// Reads a table record.
-            /// </summary>
-            public Task ReadAsync(LiteBinaryReader reader)
-            {
-                reader.Read(out _index);
-
-                reader.Read(out _key);
-
-                reader.Read(out _text);
-
-                return Task.CompletedTask;
-            }
+            internal string _text;
             #endregion
 
             #region ToString
@@ -142,26 +126,68 @@ namespace SheetMan.Fixtures.Core.Client
         /// <summary>
         /// Read a table from specified reader.
         /// </summary>
-        public async Task ReadAsync(LiteBinaryReader reader)
+        /// <remarks>
+        /// Column by column, matched by tag rather than position. A column this build does
+        /// not know is skipped by its block length; one it knows but cannot read - the type
+        /// changed incompatibly - fails naming the field. Order, names and columns added or
+        /// removed on either side are therefore all survivable.
+        /// </remarks>
+        public Task ReadAsync(LiteBinaryReader reader)
         {
-            // Version and reserved flags are checked by the reader.
-            uint version = 0;
-            reader.Read(out version);
+            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
 
-            byte flags = 0;
-            reader.Read(out flags);
-
-            int count = reader.ReadCounter32();
+            _records.Clear();
             for (int i = 0; i < count; i++)
+                _records.Add(new Record());
+
+            foreach (var column in columns)
             {
-                var record = new Record();
-                await record.ReadAsync(reader);
-                _records.Add(record);
+                int blockEnd = reader.Position + column.ByteLength;
+
+                switch (column.Tag)
+                {
+                    case 1:
+                        LiteBinaryTable.CheckColumn(column, "ClientStrings.Index", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            record._index = reader.ReadI32As(column.Element);
+                        }
+                        break;
+
+                    case 2:
+                        LiteBinaryTable.CheckColumn(column, "ClientStrings.Key", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._key);
+                        }
+                        break;
+
+                    case 3:
+                        LiteBinaryTable.CheckColumn(column, "ClientStrings.Text", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._text);
+                        }
+                        break;
+
+                    default:
+                        // A column added after this code was generated. Its block length
+                        // says how far to move on.
+                        reader.Skip(column.ByteLength);
+                        break;
+                }
+
+                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping
             foreach (var record in _records)
                 _recordsByIndex.Add(record.Index, record);
+
+            return Task.CompletedTask;
         }
 
         public override string ToString()

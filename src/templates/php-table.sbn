@@ -20,37 +20,6 @@ final class {{ table.record_name }}
     {{ line }}
 {{~ end ~}}
 {{~ end ~}}
-    /** Reads one record, in the exact field order the exporter wrote. */
-    public function read(LiteBinaryReader $reader): void
-    {
-{{~ if table.fields | array.size == 0 ~}}
-        // No fields.
-{{~ end ~}}
-{{~ for field in table.fields ~}}
-{{~ if field.kind == 'var_array' ~}}
-        $count = $reader->readCounter32();
-        $this->{{ field.name }} = [];
-        for ($i = 0; $i < $count; $i++) {
-            $this->{{ field.name }}[] = {{ field.read_element }};
-        }
-{{~ else if field.kind == 'serial_ref' ~}}
-        $this->{{ field.name }}Index = [];
-        for ($i = 0; $i < {{ field.element_count }}; $i++) {
-            $this->{{ field.name }}Index[] = $reader->readInt32();
-        }
-        $this->{{ field.name }} = \array_fill(0, {{ field.element_count }}, null);
-{{~ else if field.kind == 'serial' ~}}
-        $this->{{ field.name }} = [];
-        for ($i = 0; $i < {{ field.element_count }}; $i++) {
-            $this->{{ field.name }}[] = {{ field.read_element }};
-        }
-{{~ else if field.kind == 'scalar_ref' ~}}
-        $this->{{ field.name }}Index = $reader->readInt32();
-{{~ else ~}}
-        $this->{{ field.name }} = {{ field.read_scalar }};
-{{~ end ~}}
-{{~ end ~}}
-    }
 }
 
 /** Every row of {{ table.raw_name }}. */
@@ -69,19 +38,67 @@ final class {{ table.table_name }}
     }
 
     /** Loads the table from a .table file written by SheetMan. */
+    /**
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public function read(string $filename): void
     {
         $reader = LiteBinaryReader::fromFile($filename);
-        $count = $reader->readTableHeader();
+        [$count, $columns] = $reader->readTableHeader();
 
         $this->records = [];
         $this->byIndex = [];
 
         for ($i = 0; $i < $count; $i++) {
-            $record = new {{ table.record_name }}();
-            $record->read($reader);
+            $this->records[] = new {{ table.record_name }}();
+        }
 
-            $this->records[] = $record;
+        foreach ($columns as $column) {
+            $blockEnd = $reader->position() + $column['byteLength'];
+
+            switch ($column['tag']) {
+{{~ for field in table.fields ~}}
+                case {{ field.tag }}:
+                    {{ field.column_check }}
+                    foreach ($this->records as $record) {
+{{~ if field.kind == 'var_array' ~}}
+                        $elementCount = $reader->readCounter32();
+                        $record->{{ field.name }} = [];
+                        for ($j = 0; $j < $elementCount; $j++) {
+                            $record->{{ field.name }}[] = {{ field.read_element }};
+                        }
+{{~ else if field.kind == 'serial_ref' ~}}
+                        $record->{{ field.name }}Index = [];
+                        for ($j = 0; $j < {{ field.element_count }}; $j++) {
+                            $record->{{ field.name }}Index[] = $reader->readInt32();
+                        }
+                        $record->{{ field.name }} = \array_fill(0, {{ field.element_count }}, null);
+{{~ else if field.kind == 'serial' ~}}
+                        $record->{{ field.name }} = [];
+                        for ($j = 0; $j < {{ field.element_count }}; $j++) {
+                            $record->{{ field.name }}[] = {{ field.read_element }};
+                        }
+{{~ else if field.kind == 'scalar_ref' ~}}
+                        $record->{{ field.name }}Index = $reader->readInt32();
+{{~ else ~}}
+                        $record->{{ field.name }} = {{ field.read_scalar }};
+{{~ end ~}}
+                    }
+                    break;
+
+{{~ end ~}}
+                default:
+                    // A column added after this code was generated.
+                    $reader->skip($column['byteLength']);
+                    break;
+            }
+
+            $reader->checkBlockEnd($column, $blockEnd);
+        }
+
+        foreach ($this->records as $record) {
             $this->byIndex[$record->{{ table.index_field }}] = $record;
         }
     }

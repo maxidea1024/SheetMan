@@ -14,29 +14,6 @@ class {{ table.record_name }} {
 {{~ end ~}}
 {{~ end ~}}
 
-  /// Reads one record, in the exact field order the exporter wrote.
-  void read(LiteBinaryReader reader) {
-{{~ if table.fields | array.size == 0 ~}}
-    // No fields to read.
-{{~ end ~}}
-{{~ for field in table.fields ~}}
-{{~ if field.kind == 'var_array' ~}}
-    {
-      final count = reader.readCounter32();
-      {{ field.name }} = List.generate(count, (_) => {{ field.read_element }});
-    }
-{{~ else if field.kind == 'serial_ref' ~}}
-    {{ field.name }}Index = List.generate({{ field.element_count }}, (_) => reader.readInt32());
-    {{ field.name }} = List.filled({{ field.element_count }}, null);
-{{~ else if field.kind == 'serial' ~}}
-    {{ field.name }} = List.generate({{ field.element_count }}, (_) => {{ field.read_element }});
-{{~ else if field.kind == 'scalar_ref' ~}}
-    {{ field.name }}Index = reader.readInt32();
-{{~ else ~}}
-    {{ field.name }} = {{ field.read_scalar }};
-{{~ end ~}}
-{{~ end ~}}
-  }
 }
 
 /// Every row of {{ table.raw_name }}.
@@ -50,17 +27,51 @@ class {{ table.table_name }} {
   {{ table.record_name }}? find(int index) => _byIndex[index];
 
   /// Loads the table from a .table file written by SheetMan.
+  /// Column by column, matched by tag rather than position: a column this build does
+  /// not know is skipped by its block length, and one whose type changed incompatibly
+  /// fails naming the field.
   void read(String filename) {
     final reader = LiteBinaryReader(readAllBytes(filename));
-    final count = readTableHeader(reader);
+    final header = readTableHeader(reader);
+    final count = header.rowCount;
 
     records.clear();
     _byIndex.clear();
 
     for (var i = 0; i < count; i++) {
-      final record = {{ table.record_name }}();
-      record.read(reader);
-      records.add(record);
+      records.add({{ table.record_name }}());
+    }
+
+    for (final column in header.columns) {
+      final blockEnd = reader.position + column.byteLength;
+
+      switch (column.tag) {
+{{~ for field in table.fields ~}}
+        case {{ field.tag }}:
+          {{ field.column_check }}
+          for (final record in records) {
+{{~ if field.kind == 'var_array' ~}}
+            final elementCount = reader.readCounter32();
+            record.{{ field.name }} = List.generate(elementCount, (_) => {{ field.read_element }});
+{{~ else if field.kind == 'serial_ref' ~}}
+            record.{{ field.name }}Index = List.generate({{ field.element_count }}, (_) => reader.readInt32());
+{{~ else if field.kind == 'serial' ~}}
+            record.{{ field.name }} = List.generate({{ field.element_count }}, (_) => {{ field.read_element }});
+{{~ else if field.kind == 'scalar_ref' ~}}
+            record.{{ field.name }}Index = reader.readInt32();
+{{~ else ~}}
+            record.{{ field.name }} = {{ field.read_scalar }};
+{{~ end ~}}
+          }
+          break;
+{{~ end ~}}
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byteLength);
+          break;
+      }
+
+      checkBlockEnd(reader, column, blockEnd);
     }
 
     for (final record in records) {

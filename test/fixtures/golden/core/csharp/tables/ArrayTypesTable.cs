@@ -35,85 +35,38 @@ namespace SheetMan.Fixtures.Core
             /// primary index
             /// </summary>
             public int Index => _index;
-            private int _index;
+            internal int _index;
 
             /// <summary>
             /// free-form tags
             /// </summary>
             public string[] Tags => _tags;
-            private string[] _tags = System.Array.Empty<string>();
+            internal string[] _tags = System.Array.Empty<string>();
 
             /// <summary>
             /// cost per level
             /// </summary>
             public int[] Costs => _costs;
-            private int[] _costs = System.Array.Empty<int>();
+            internal int[] _costs = System.Array.Empty<int>();
 
             /// <summary>
             /// drop weights
             /// </summary>
             public float[] Weights => _weights;
-            private float[] _weights = System.Array.Empty<float>();
+            internal float[] _weights = System.Array.Empty<float>();
 
             /// <summary>
             /// allowed grades
             /// </summary>
             public global::SheetMan.Fixtures.Core.Grade[] Grades => _grades;
-            private global::SheetMan.Fixtures.Core.Grade[] _grades = System.Array.Empty<global::SheetMan.Fixtures.Core.Grade>();
+            internal global::SheetMan.Fixtures.Core.Grade[] _grades = System.Array.Empty<global::SheetMan.Fixtures.Core.Grade>();
 
             /// <summary>
             /// fixed slot 1
             /// </summary>
             public int[] SlotArray => _slotArray;
             public const int SlotArray_N = 2;
-            private int[] _slotArray = new int[SlotArray_N];
-            #endregion
-
-            #region Read record
-            /// <summary>
-            /// Reads a table record.
-            /// </summary>
-            public Task ReadAsync(LiteBinaryReader reader)
-            {
-                int tempEnumInt = 0;
-                reader.Read(out _index);
-
-                reader.TryReadCounter32(out int Tags_count);
-                _tags = new string[Tags_count];
-                for (int i = 0; i < Tags_count; ++i)
-                {
-                    reader.Read(out _tags[i]);
-                }
-
-                reader.TryReadCounter32(out int Costs_count);
-                _costs = new int[Costs_count];
-                for (int i = 0; i < Costs_count; ++i)
-                {
-                    reader.Read(out _costs[i]);
-                }
-
-                reader.TryReadCounter32(out int Weights_count);
-                _weights = new float[Weights_count];
-                for (int i = 0; i < Weights_count; ++i)
-                {
-                    reader.Read(out _weights[i]);
-                }
-
-                reader.TryReadCounter32(out int Grades_count);
-                _grades = new global::SheetMan.Fixtures.Core.Grade[Grades_count];
-                for (int i = 0; i < Grades_count; ++i)
-                {
-                    reader.ReadOptimalInt32(out tempEnumInt);
-                    _grades[i] = (global::SheetMan.Fixtures.Core.Grade)tempEnumInt;
-                }
-
-                for (int i = 0; i < SlotArray_N; ++i)
-                {
-                    reader.Read(out _slotArray[i]);
-                }
-
-                return Task.CompletedTask;
-            }
+            internal int[] _slotArray = new int[SlotArray_N];
             #endregion
 
             #region ToString
@@ -195,26 +148,120 @@ namespace SheetMan.Fixtures.Core
         /// <summary>
         /// Read a table from specified reader.
         /// </summary>
-        public async Task ReadAsync(LiteBinaryReader reader)
+        /// <remarks>
+        /// Column by column, matched by tag rather than position. A column this build does
+        /// not know is skipped by its block length; one it knows but cannot read - the type
+        /// changed incompatibly - fails naming the field. Order, names and columns added or
+        /// removed on either side are therefore all survivable.
+        /// </remarks>
+        public Task ReadAsync(LiteBinaryReader reader)
         {
-            // Version and reserved flags are checked by the reader.
-            uint version = 0;
-            reader.Read(out version);
+            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            int tempEnumInt = 0;
 
-            byte flags = 0;
-            reader.Read(out flags);
-
-            int count = reader.ReadCounter32();
+            _records.Clear();
             for (int i = 0; i < count; i++)
+                _records.Add(new Record());
+
+            foreach (var column in columns)
             {
-                var record = new Record();
-                await record.ReadAsync(reader);
-                _records.Add(record);
+                int blockEnd = reader.Position + column.ByteLength;
+
+                switch (column.Tag)
+                {
+                    case 1:
+                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Index", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            record._index = reader.ReadI32As(column.Element);
+                        }
+                        break;
+
+                    case 2:
+                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Tags", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementString);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.TryReadCounter32(out int elementCount);
+                            record._tags = new string[elementCount];
+                            for (int j = 0; j < elementCount; ++j)
+                            {
+                                reader.Read(out record._tags[j]);
+                            }
+                        }
+                        break;
+
+                    case 3:
+                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Costs", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.TryReadCounter32(out int elementCount);
+                            record._costs = new int[elementCount];
+                            for (int j = 0; j < elementCount; ++j)
+                            {
+                                record._costs[j] = reader.ReadI32As(column.Element);
+                            }
+                        }
+                        break;
+
+                    case 4:
+                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Weights", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementF32);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.TryReadCounter32(out int elementCount);
+                            record._weights = new float[elementCount];
+                            for (int j = 0; j < elementCount; ++j)
+                            {
+                                reader.Read(out record._weights[j]);
+                            }
+                        }
+                        break;
+
+                    case 5:
+                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Grades", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.TryReadCounter32(out int elementCount);
+                            record._grades = new global::SheetMan.Fixtures.Core.Grade[elementCount];
+                            for (int j = 0; j < elementCount; ++j)
+                            {
+                                reader.ReadOptimalInt32(out tempEnumInt);
+                                record._grades[j] = (global::SheetMan.Fixtures.Core.Grade)tempEnumInt;
+                            }
+                        }
+                        break;
+
+                    case 6:
+                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Slot_array", LiteBinaryTable.KindFixedArray, 2, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            for (int j = 0; j < Record.SlotArray_N; ++j)
+                            {
+                                record._slotArray[j] = reader.ReadI32As(column.Element);
+                            }
+                        }
+                        break;
+
+                    default:
+                        // A column added after this code was generated. Its block length
+                        // says how far to move on.
+                        reader.Skip(column.ByteLength);
+                        break;
+                }
+
+                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping
             foreach (var record in _records)
                 _recordsByIndex.Add(record.Index, record);
+
+            return Task.CompletedTask;
         }
 
         public override string ToString()

@@ -15,42 +15,6 @@ struct {{ table.record_name }}
 {{~ end ~}}
 {{~ end ~}}
 
-    /// Reads one record. Field order must match the exporter's.
-    void read(sheetman::LiteBinaryReader& reader)
-    {
-{{~ if table.fields | array.size == 0 ~}}
-        (void)reader;
-{{~ end ~}}
-{{~ for field in table.fields ~}}
-{{~ if field.kind == "var_array" ~}}
-        {
-            const std::int32_t count = reader.read_counter32();
-            {{ field.name }}.resize(static_cast<std::size_t>(count));
-            for (std::int32_t i = 0; i < count; ++i)
-            {
-                {{ field.read_var_element }};
-            }
-        }
-{{~ else if field.kind == "serial_ref" ~}}
-        {{ field.name }}.assign({{ field.element_count }}, {{ field.ref_default }});
-        {{ field.name }}_index.resize({{ field.element_count }});
-        for (std::size_t i = 0; i < {{ field.element_count }}; ++i)
-        {
-            reader.read({{ field.name }}_index[i]);
-        }
-{{~ else if field.kind == "serial" ~}}
-        {{ field.name }}.resize({{ field.element_count }});
-        for (std::size_t i = 0; i < {{ field.element_count }}; ++i)
-        {
-            {{ field.read_element }};
-        }
-{{~ else if field.kind == "scalar_ref" ~}}
-        reader.read({{ field.name }}_index);
-{{~ else ~}}
-        {{ field.read_scalar }};
-{{~ end ~}}
-{{~ end ~}}
-    }
 };
 
 {{~ for line in table.comment ~}}
@@ -74,13 +38,64 @@ class {{ table.table_name }}
         const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
         sheetman::LiteBinaryReader reader(buffer);
 
-        const std::int32_t row_count = sheetman::read_table_header(reader);
+        // Column by column, matched by tag rather than position: a column this build
+        // does not know is skipped by its block length, and one whose type changed
+        // incompatibly fails naming the field.
+        const sheetman::Header header = sheetman::read_table_header(reader);
+        const std::size_t row_count = static_cast<std::size_t>(header.row_count);
 
         records_.clear();
-        records_.resize(static_cast<std::size_t>(row_count));
-        for (std::int32_t i = 0; i < row_count; ++i)
+        records_.resize(row_count);
+
+        for (const sheetman::Column& column : header.columns)
         {
-            records_[static_cast<std::size_t>(i)].read(reader);
+            const std::size_t block_end = reader.position() + static_cast<std::size_t>(column.byte_length);
+
+            switch (column.tag)
+            {
+{{~ for field in table.fields ~}}
+                case {{ field.tag }}:
+                {
+                    {{ field.column_check }}
+                    for (std::size_t i = 0; i < row_count; ++i)
+                    {
+                        auto& record = records_[i];
+{{~ if field.kind == "var_array" ~}}
+                        const std::int32_t element_count = reader.read_counter32();
+                        record.{{ field.name }}.resize(static_cast<std::size_t>(element_count));
+                        for (std::int32_t j = 0; j < element_count; ++j)
+                        {
+                            {{ field.read_var_element }};
+                        }
+{{~ else if field.kind == "serial_ref" ~}}
+                        record.{{ field.name }}.assign({{ field.element_count }}, {{ field.ref_default }});
+                        record.{{ field.name }}_index.resize({{ field.element_count }});
+                        for (std::size_t j = 0; j < {{ field.element_count }}; ++j)
+                        {
+                            reader.read(record.{{ field.name }}_index[j]);
+                        }
+{{~ else if field.kind == "serial" ~}}
+                        record.{{ field.name }}.resize({{ field.element_count }});
+                        for (std::size_t j = 0; j < {{ field.element_count }}; ++j)
+                        {
+                            {{ field.read_element }};
+                        }
+{{~ else if field.kind == "scalar_ref" ~}}
+                        reader.read(record.{{ field.name }}_index);
+{{~ else ~}}
+                        {{ field.read_scalar }};
+{{~ end ~}}
+                    }
+                    break;
+                }
+{{~ end ~}}
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byte_length);
+                    break;
+            }
+
+            sheetman::check_block_end(reader, column, block_end);
         }
 
         build_index();

@@ -35,19 +35,19 @@ namespace SheetMan.Fixtures.Core.Client
             /// primary index
             /// </summary>
             public int Index => _index;
-            private int _index;
+            internal int _index;
 
             /// <summary>
             /// item name
             /// </summary>
             public string Name => _name;
-            private string _name;
+            internal string _name;
 
             /// <summary>
             /// owning category
             /// </summary>
             public ItemCategoryTable.Record CategoryId => _categoryId;
-            private ItemCategoryTable.Record _categoryId;
+            internal ItemCategoryTable.Record _categoryId;
             public void SetReference_CategoryId_INTERNAL(ItemCategoryTable.Record value) => _categoryId = value;
             public int _categoryId_ItemCategory_index;
             public bool _categoryId_F = false;
@@ -56,46 +56,19 @@ namespace SheetMan.Fixtures.Core.Client
             /// item grade
             /// </summary>
             public global::SheetMan.Fixtures.Core.Client.Grade GradeField => _gradeField;
-            private global::SheetMan.Fixtures.Core.Client.Grade _gradeField;
+            internal global::SheetMan.Fixtures.Core.Client.Grade _gradeField;
 
             /// <summary>
             /// granted skill
             /// </summary>
             public global::SheetMan.Fixtures.Core.Client.SkillType SkillField => _skillField;
-            private global::SheetMan.Fixtures.Core.Client.SkillType _skillField;
+            internal global::SheetMan.Fixtures.Core.Client.SkillType _skillField;
 
             /// <summary>
             /// shop blurb
             /// </summary>
             public string Description => _description;
-            private string _description;
-            #endregion
-
-            #region Read record
-            /// <summary>
-            /// Reads a table record.
-            /// </summary>
-            public Task ReadAsync(LiteBinaryReader reader)
-            {
-                int tempEnumInt = 0;
-                reader.Read(out _index);
-
-                reader.Read(out _name);
-
-                reader.Read(out _categoryId_ItemCategory_index);
-                _categoryId = default(ItemCategoryTable.Record); // will be assigned.
-                _categoryId_F = false;
-
-                reader.ReadOptimalInt32(out tempEnumInt);
-                _gradeField = (global::SheetMan.Fixtures.Core.Client.Grade)tempEnumInt;
-
-                reader.ReadOptimalInt32(out tempEnumInt);
-                _skillField = (global::SheetMan.Fixtures.Core.Client.SkillType)tempEnumInt;
-
-                reader.Read(out _description);
-
-                return Task.CompletedTask;
-            }
+            internal string _description;
             #endregion
 
             #region ToString
@@ -177,26 +150,100 @@ namespace SheetMan.Fixtures.Core.Client
         /// <summary>
         /// Read a table from specified reader.
         /// </summary>
-        public async Task ReadAsync(LiteBinaryReader reader)
+        /// <remarks>
+        /// Column by column, matched by tag rather than position. A column this build does
+        /// not know is skipped by its block length; one it knows but cannot read - the type
+        /// changed incompatibly - fails naming the field. Order, names and columns added or
+        /// removed on either side are therefore all survivable.
+        /// </remarks>
+        public Task ReadAsync(LiteBinaryReader reader)
         {
-            // Version and reserved flags are checked by the reader.
-            uint version = 0;
-            reader.Read(out version);
+            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            int tempEnumInt = 0;
 
-            byte flags = 0;
-            reader.Read(out flags);
-
-            int count = reader.ReadCounter32();
+            _records.Clear();
             for (int i = 0; i < count; i++)
+                _records.Add(new Record());
+
+            foreach (var column in columns)
             {
-                var record = new Record();
-                await record.ReadAsync(reader);
-                _records.Add(record);
+                int blockEnd = reader.Position + column.ByteLength;
+
+                switch (column.Tag)
+                {
+                    case 1:
+                        LiteBinaryTable.CheckColumn(column, "Item.Index", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            record._index = reader.ReadI32As(column.Element);
+                        }
+                        break;
+
+                    case 2:
+                        LiteBinaryTable.CheckColumn(column, "Item.Name", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._name);
+                        }
+                        break;
+
+                    case 3:
+                        LiteBinaryTable.CheckColumn(column, "Item.CategoryId", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._categoryId_ItemCategory_index);
+                            record._categoryId = default(ItemCategoryTable.Record); // will be assigned.
+                            record._categoryId_F = false;
+                        }
+                        break;
+
+                    case 4:
+                        LiteBinaryTable.CheckColumn(column, "Item.GradeField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.ReadOptimalInt32(out tempEnumInt);
+                            record._gradeField = (global::SheetMan.Fixtures.Core.Client.Grade)tempEnumInt;
+                        }
+                        break;
+
+                    case 5:
+                        LiteBinaryTable.CheckColumn(column, "Item.SkillField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.ReadOptimalInt32(out tempEnumInt);
+                            record._skillField = (global::SheetMan.Fixtures.Core.Client.SkillType)tempEnumInt;
+                        }
+                        break;
+
+                    case 6:
+                        LiteBinaryTable.CheckColumn(column, "Item.Description", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._description);
+                        }
+                        break;
+
+                    default:
+                        // A column added after this code was generated. Its block length
+                        // says how far to move on.
+                        reader.Skip(column.ByteLength);
+                        break;
+                }
+
+                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping
             foreach (var record in _records)
                 _recordsByIndex.Add(record.Index, record);
+
+            return Task.CompletedTask;
         }
 
         public override string ToString()

@@ -78,16 +78,7 @@ struct {{ api_macro }} {{ table.record_name }}
 {{~ end ~}}
     {{ field.declaration }}
 
-{{~ end ~}}
-    /**
-     * Reads one record, in the exact field order the exporter wrote.
-     *
-     * Nothing is returned. The reader's failure is sticky, so a truncated file leaves
-     * this record holding defaults and the table's load reports it once at the end -
-     * which is why twenty fields in a row need no twenty checks between them.
-     */
-    void Read(SheetMan::FSheetManBinaryReader& Reader);
-};
+{{~ end ~}}};
 {{~ end ~}}
 {{~ for table in tables }}
 

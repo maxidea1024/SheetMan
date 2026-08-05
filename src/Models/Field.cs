@@ -121,6 +121,19 @@ namespace SheetMan.Models
         public bool IsRef => !string.IsNullOrEmpty(RefTableName);
 
         /// <summary>
+        /// The column's wire tag: what identifies it in a binary file, instead of its position.
+        /// </summary>
+        /// <remarks>
+        /// Comes from an `@N` suffix on the sheet's field name (`Price@3`), or is assigned by
+        /// ordinal after the table is parsed when no field in the table carries one. By the time
+        /// anything downstream reads it, it is never null - the cooker's AssignTags fills it.
+        ///
+        /// For a serial field, the tag lives on the first column and identifies the whole
+        /// logical column; the other members must not carry one.
+        /// </remarks>
+        public int? Tag { get; set; }
+
+        /// <summary>
         /// Whether this field's cells hold a delimited list.
         ///
         /// Only true of the `T[]` types. A serial field is also an array to its

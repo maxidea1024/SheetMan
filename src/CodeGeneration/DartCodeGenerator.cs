@@ -210,10 +210,10 @@ namespace SheetMan.CodeGeneration
             Location = table.Location.ToString(),
             Comment = CommentLines(table.Comment),
             IndexField = DartName(table.Fields[0].Name),
-            Fields = table.SerialFields.Select(BuildField).ToList(),
+            Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
 
-        private DartFieldView BuildField(SerialField sf)
+        private DartFieldView BuildField(Table table, SerialField sf)
         {
             string name = DartName(sf.Name);
 
@@ -222,6 +222,8 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementCount = sf.Fields.Count,
                 Declarations = Declarations(sf, name),
                 ReadScalar = ReadExpression(sf),
@@ -277,6 +279,49 @@ namespace SheetMan.CodeGeneration
                     return $"{sf.FirstField.Enum.Name.ToPascalCase()}.of(0)";
                 default: return "0";
             }
+        }
+
+        /// <summary>
+        /// The rendered checkColumn call: kind, count, and the elements this member accepts -
+        /// its own plus the lossless promotions, decided here at generation time.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "kindVarArray"
+                : (sf.Fields.Count > 1 ? "kindFixedArray" : "kindScalar");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string accepted;
+
+            if (sf.IsRef)
+                accepted = "elementI32";
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32: accepted = "elementI32, elementVarint"; break;
+                    case ValueType.Int64: accepted = "elementI64, elementI32, elementVarint"; break;
+                    case ValueType.Double: accepted = "elementF64, elementF32, elementI32"; break;
+                    case ValueType.Float: accepted = "elementF32"; break;
+                    case ValueType.Bool: accepted = "elementBool"; break;
+                    case ValueType.String: accepted = "elementString"; break;
+                    case ValueType.Uuid: accepted = "elementUuid"; break;
+                    case ValueType.Enum: accepted = "elementVarint"; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = "elementI64"; break;
+
+                    default:
+                        throw new SheetManException($"The dart generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            return $"checkColumn(column, '{tableName}.{sf.Name}', {kind}, {count}, [{accepted}]);";
         }
 
         private static string ReadKind(SerialField sf)

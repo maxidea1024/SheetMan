@@ -322,10 +322,10 @@ namespace SheetMan.CodeGeneration
             Location = table.Location.ToString(),
             Comment = CommentLines(table.Comment),
             IndexField = GoName(table.Fields[0].Name),
-            Fields = table.SerialFields.Select(BuildField).ToList(),
+            Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
 
-        private GoFieldView BuildField(SerialField sf)
+        private GoFieldView BuildField(Table table, SerialField sf)
         {
             string name = GoName(sf.Name);
             string elementType = ResolvedElementType(sf);
@@ -335,6 +335,8 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementCount = sf.Fields.Count,
                 ArrayType = "[]" + elementType,
                 Declarations = Declarations(sf, name, elementType),
@@ -360,6 +362,52 @@ namespace SheetMan.CodeGeneration
             return sf.IsArray
                 ? new[] { $"{name} []{elementType}" }
                 : new[] { $"{name} {elementType}" };
+        }
+
+        /// <summary>
+        /// The rendered CheckColumn call: kind, count, and the elements this member accepts -
+        /// its own plus the lossless promotions, decided here at generation time.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "sheetman.KindVarArray"
+                : (sf.Fields.Count > 1 ? "sheetman.KindFixedArray" : "sheetman.KindScalar");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string accepted;
+
+            if (sf.IsRef)
+                accepted = "sheetman.ElementI32";
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32:
+                        accepted = "sheetman.ElementI32, sheetman.ElementVarint"; break;
+                    case ValueType.Int64:
+                        accepted = "sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint"; break;
+                    case ValueType.Double:
+                        accepted = "sheetman.ElementF64, sheetman.ElementF32, sheetman.ElementI32"; break;
+                    case ValueType.Float: accepted = "sheetman.ElementF32"; break;
+                    case ValueType.Bool: accepted = "sheetman.ElementBool"; break;
+                    case ValueType.String: accepted = "sheetman.ElementString"; break;
+                    case ValueType.Uuid: accepted = "sheetman.ElementUUID"; break;
+                    case ValueType.Enum: accepted = "sheetman.ElementVarint"; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = "sheetman.ElementI64"; break;
+
+                    default:
+                        throw new SheetManException($"The go generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            return $"sheetman.CheckColumn(reader, column, \"{tableName}.{sf.Name.ToPascalCase()}\", {kind}, {count}, {accepted})";
         }
 
         private static string ReadKind(SerialField sf)

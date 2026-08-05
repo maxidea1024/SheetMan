@@ -119,6 +119,12 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         public string Kind { get; set; }
 
+        /// <summary>The column wire tag.</summary>
+        public int Tag { get; set; }
+
+        /// <summary>The rendered checkColumn call for this member.</summary>
+        public string ColumnCheck { get; set; }
+
         public int ElementCount { get; set; }
 
         public string ReadScalar { get; set; }

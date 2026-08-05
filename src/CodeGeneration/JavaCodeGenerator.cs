@@ -278,10 +278,10 @@ namespace SheetMan.CodeGeneration
             Location = table.Location.ToString(),
             Comment = CommentLines(table.Comment),
             IndexField = JavaName(table.Fields[0].Name),
-            Fields = table.SerialFields.Select(BuildField).ToList(),
+            Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
 
-        private JavaFieldView BuildField(SerialField sf)
+        private JavaFieldView BuildField(Table table, SerialField sf)
         {
             string name = JavaName(sf.Name);
             string elementType = ResolvedElementType(sf);
@@ -291,6 +291,8 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementCount = sf.Fields.Count,
                 ElementType = elementType,
                 Declarations = Declarations(sf, name, elementType),
@@ -311,6 +313,52 @@ namespace SheetMan.CodeGeneration
             return sf.IsArray
                 ? new[] { $"{elementType}[] {name};" }
                 : new[] { $"{elementType} {name};" };
+        }
+
+        /// <summary>
+        /// The rendered checkColumn call: kind, count, and the elements this member accepts -
+        /// its own plus the lossless promotions, decided here at generation time.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "LiteBinaryReader.KIND_VAR_ARRAY"
+                : (sf.Fields.Count > 1 ? "LiteBinaryReader.KIND_FIXED_ARRAY" : "LiteBinaryReader.KIND_SCALAR");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string accepted;
+
+            if (sf.IsRef)
+                accepted = "LiteBinaryReader.ELEMENT_I32";
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32:
+                        accepted = "LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT"; break;
+                    case ValueType.Int64:
+                        accepted = "LiteBinaryReader.ELEMENT_I64, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT"; break;
+                    case ValueType.Double:
+                        accepted = "LiteBinaryReader.ELEMENT_F64, LiteBinaryReader.ELEMENT_F32, LiteBinaryReader.ELEMENT_I32"; break;
+                    case ValueType.Float: accepted = "LiteBinaryReader.ELEMENT_F32"; break;
+                    case ValueType.Bool: accepted = "LiteBinaryReader.ELEMENT_BOOL"; break;
+                    case ValueType.String: accepted = "LiteBinaryReader.ELEMENT_STRING"; break;
+                    case ValueType.Uuid: accepted = "LiteBinaryReader.ELEMENT_UUID"; break;
+                    case ValueType.Enum: accepted = "LiteBinaryReader.ELEMENT_VARINT"; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = "LiteBinaryReader.ELEMENT_I64"; break;
+
+                    default:
+                        throw new SheetManException($"The java generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            return $"LiteBinaryReader.checkColumn(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {accepted});";
         }
 
         private static string ReadKind(SerialField sf)

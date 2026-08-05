@@ -3,15 +3,12 @@
 static bool {{ table.function_prefix }}Parse({{ table.table_name }}* table, sm_reader* reader)
 {
     int32_t row;
+    int32_t at;
+    sm_column* columns = NULL;
+    int32_t column_count = 0;
 
-    if (!sm_read_table_header(reader, &table->count))
+    if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
         return false;
-
-    /* Every field encodes to at least one byte, so a row count larger than the
-     * bytes left is one the exporter could not have written. Checked before the
-     * allocation rather than discovered during it. */
-    if (!sm_row_count_is_plausible(reader, table->count, {{ table.min_row_bytes }}))
-        return sm_fail_with(reader, "the row count is larger than the file can hold");
 
     if (table->count > 0) {
         table->records = ({{ table.record_name }}*)sm_arena_alloc(
@@ -24,87 +21,122 @@ static bool {{ table.function_prefix }}Parse({{ table.table_name }}* table, sm_r
             return sm_fail_with(reader, "out of memory allocating the rows");
     }
 
-    for (row = 0; row < table->count && !sm_failed(reader); ++row) {
-        {{ table.record_name }}* record = &table->records[row];
-{{~ if table.fields | array.size == 0 }}
+    /* Column by column, matched by tag rather than by position: a column this build has
+     * no member for is skipped by its declared length, and one whose type no longer fits
+     * the member stops the read naming the field. The rows arrive already zeroed, so a
+     * member the file has nothing for keeps its default. */
+    for (at = 0; at < column_count && !sm_failed(reader); ++at) {
+        const sm_column* column = &columns[at];
+        int32_t block_end = reader->position + column->byte_length;
 
-        (void)record;
-{{~ end ~}}
+        switch (column->tag) {
 {{~ for field in table.fields }}
+        case {{ field.tag }}:
+            {{ field.column_check }}
 {{~ if field.kind == 'var_array' }}
 
-        {
-            int32_t element_count = 0;
-            int32_t element;
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                {{ table.record_name }}* record = &table->records[row];
+                int32_t element_count = 0;
+                int32_t element;
 
-            (void)sm_read_counter32(reader, &element_count);
+                (void)sm_read_counter32(reader, &element_count);
 
-            /* The count came off the wire, and one element is at least one byte. */
-            if (!sm_row_count_is_plausible(reader, element_count, 1))
-                return sm_fail_with(reader, "an array is longer than the file can hold");
+                /* The count came off the wire, and one element is at least one byte. */
+                if (!sm_row_count_is_plausible(reader, element_count, 1))
+                    return sm_fail_with(reader, "an array is longer than the file can hold");
 
-            record->{{ field.name }}_count = element_count;
-            record->{{ field.name }} = ({{ field.element_type }}*)sm_arena_alloc(
-                &table->arena, (size_t)element_count * sizeof *record->{{ field.name }});
+                record->{{ field.name }}_count = element_count;
+                record->{{ field.name }} = ({{ field.element_type }}*)sm_arena_alloc(
+                    &table->arena, (size_t)element_count * sizeof *record->{{ field.name }});
 
-            if (element_count > 0 && record->{{ field.name }} == NULL)
-                return sm_fail_with(reader, "out of memory allocating an array");
+                if (element_count > 0 && record->{{ field.name }} == NULL)
+                    return sm_fail_with(reader, "out of memory allocating an array");
 
-            for (element = 0; element < element_count && !sm_failed(reader); ++element)
+                for (element = 0; element < element_count && !sm_failed(reader); ++element)
 {{~ if field.needs_scratch ~}}
-            {
-                int32_t scratch = 0;
-                (void)sm_read_enum(reader, &scratch);
-                record->{{ field.name }}[element] = ({{ field.enum_type }})scratch;
-            }
+                {
+                    int32_t scratch = 0;
+                    (void)sm_read_enum(reader, &scratch);
+                    record->{{ field.name }}[element] = ({{ field.enum_type }})scratch;
+                }
 {{~ else ~}}
-                (void){{ field.read_element }};
+                    (void){{ field.read_element }};
 {{~ end ~}}
-        }
+            }
 {{~ else if field.kind == 'serial_ref' }}
 
-        {
-            int32_t element;
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                {{ table.record_name }}* record = &table->records[row];
+                int32_t element;
 
-            for (element = 0; element < {{ field.element_count }}; ++element)
-                (void)sm_read_int32(reader, &record->{{ field.name }}_index[element]);
-        }
+                for (element = 0; element < {{ field.element_count }}; ++element)
+                    (void)sm_read_int32(reader, &record->{{ field.name }}_index[element]);
+            }
 {{~ else if field.kind == 'serial' }}
 
-        {
-            int32_t element;
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                {{ table.record_name }}* record = &table->records[row];
+                int32_t element;
 
-            for (element = 0; element < {{ field.element_count }}; ++element)
+                for (element = 0; element < {{ field.element_count }}; ++element)
 {{~ if field.needs_scratch ~}}
-            {
-                int32_t scratch = 0;
-                (void)sm_read_enum(reader, &scratch);
-                record->{{ field.name }}[element] = ({{ field.enum_type }})scratch;
-            }
+                {
+                    int32_t scratch = 0;
+                    (void)sm_read_enum(reader, &scratch);
+                    record->{{ field.name }}[element] = ({{ field.enum_type }})scratch;
+                }
 {{~ else ~}}
-                (void){{ field.read_element }};
+                    (void){{ field.read_element }};
 {{~ end ~}}
-        }
-{{~ else if field.kind == 'scalar_ref' ~}}
-        (void)sm_read_int32(reader, &record->{{ field.name }}_index);
+            }
+{{~ else if field.kind == 'scalar_ref' }}
+
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                {{ table.record_name }}* record = &table->records[row];
+
+                (void)sm_read_int32(reader, &record->{{ field.name }}_index);
+            }
 {{~ else if field.needs_scratch }}
 
-        {
-            int32_t scratch = 0;
-            (void)sm_read_enum(reader, &scratch);
-            record->{{ field.name }} = ({{ field.enum_type }})scratch;
-        }
-{{~ else ~}}
-        (void){{ field.read_scalar }};
-{{~ end ~}}
-{{~ end }}
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                {{ table.record_name }}* record = &table->records[row];
+                int32_t scratch = 0;
 
-        table->by_index[row].key = record->{{ table.index_field }};
-        table->by_index[row].position = row;
+                (void)sm_read_enum(reader, &scratch);
+                record->{{ field.name }} = ({{ field.enum_type }})scratch;
+            }
+{{~ else }}
+
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                {{ table.record_name }}* record = &table->records[row];
+
+                (void){{ field.read_scalar }};
+            }
+{{~ end }}
+            break;
+{{~ end }}
+        default:
+            /* A column this build has no member for: added to the schema after the code
+             * was generated, or removed from the code while the data still carries it.
+             * The block's declared length is the whole of what skipping needs to know. */
+            (void)sm_skip(reader, column->byte_length);
+            break;
+        }
+
+        if (!sm_check_block_end(reader, column, block_end))
+            return false;
     }
 
     if (sm_failed(reader))
         return false;
+
+    /* The key can only be gathered once every column has been read: the column that
+     * carries it arrives wherever the file happens to put it. */
+    for (row = 0; row < table->count; ++row) {
+        table->by_index[row].key = table->records[row].{{ table.index_field }};
+        table->by_index[row].position = row;
+    }
 
     sm_index_sort(table->by_index, table->count);
 

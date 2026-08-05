@@ -1,18 +1,18 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "f77b84cc70e8dca99d4964872ae4c35f",
-  "TotalSize": 110,
+  "MasterHash": "0637378a801495f482f1cf613bb12e80",
+  "TotalSize": 154,
   "Items": [
     {
       "Name": "ItemCategory.table",
-      "Size": 62,
-      "Hash": "fe8b904492a257843c7dd46241c4d5e7",
+      "Size": 84,
+      "Hash": "0c74d68d16b3d10cd7e295c655beb979",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Item.table",
-      "Size": 48,
-      "Hash": "0595eba011d66b9cc8c2ecb5162f5d09",
+      "Size": 70,
+      "Hash": "3afd5635fc13835dc66edf24861e43cf",
       "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]

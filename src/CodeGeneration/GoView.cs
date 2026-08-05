@@ -107,6 +107,12 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         public string Kind { get; set; }
 
+        /// <summary>The column's wire tag.</summary>
+        public int Tag { get; set; }
+
+        /// <summary>The rendered CheckColumn call for this member.</summary>
+        public string ColumnCheck { get; set; }
+
         /// <summary>Element count of a serial field, which is its column count.</summary>
         public int ElementCount { get; set; }
 

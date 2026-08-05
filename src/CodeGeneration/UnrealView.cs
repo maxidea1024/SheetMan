@@ -111,6 +111,12 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         public string ReadCall { get; set; }
 
+        /// <summary>The column's wire tag, which is what the read matches on.</summary>
+        public int Tag { get; set; }
+
+        /// <summary>The rendered CheckColumn call for this member.</summary>
+        public string ColumnCheck { get; set; }
+
         /// <summary>
         /// Name for the local holding a variable length array's element count.
         ///

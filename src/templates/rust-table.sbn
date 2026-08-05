@@ -17,43 +17,6 @@ pub struct {{ table.record_name }} {
 }
 
 impl {{ table.record_name }} {
-    /// Reads one record, in the exact field order the exporter wrote.
-    fn read(reader: &mut sheetman::Reader<'_>) -> sheetman::Result<Self> {
-        Ok({{ table.record_name }} {
-{{~ for field in table.fields ~}}
-{{~ if field.kind == 'var_array' ~}}
-            {{ field.name }}: {
-                let count = reader.read_counter32()?;
-                let mut values = Vec::with_capacity(count.max(0) as usize);
-                for _ in 0..count {
-                    values.push({{ field.read_element }});
-                }
-                values
-            },
-{{~ else if field.kind == 'serial_ref' ~}}
-            {{ field.name }}_index: {
-                let mut values = Vec::with_capacity({{ field.element_count }});
-                for _ in 0..{{ field.element_count }} {
-                    values.push(reader.read_i32()?);
-                }
-                values
-            },
-{{~ else if field.kind == 'serial' ~}}
-            {{ field.name }}: {
-                let mut values = Vec::with_capacity({{ field.element_count }});
-                for _ in 0..{{ field.element_count }} {
-                    values.push({{ field.read_element }});
-                }
-                values
-            },
-{{~ else if field.kind == 'scalar_ref' ~}}
-            {{ field.name }}_index: reader.read_i32()?,
-{{~ else ~}}
-            {{ field.name }}: {{ field.read_scalar }},
-{{~ end ~}}
-{{~ end ~}}
-        })
-    }
 }
 
 /// Every row of {{ table.raw_name }}.
@@ -79,11 +42,53 @@ impl {{ table.table_name }} {
         let data = sheetman::read_all_bytes(filename)?;
         let mut reader = sheetman::Reader::new(&data);
 
-        let count = sheetman::read_table_header(&mut reader)?;
+        // Column by column, matched by tag rather than position: a column this build
+        // does not know is skipped by its block length, and one whose type changed
+        // incompatibly fails naming the field.
+        let header = sheetman::read_table_header(&mut reader)?;
+        let count = header.row_count.max(0) as usize;
 
-        self.records = Vec::with_capacity(count.max(0) as usize);
-        for _ in 0..count {
-            self.records.push({{ table.record_name }}::read(&mut reader)?);
+        self.records = vec![{{ table.record_name }}::default(); count];
+
+        for column in &header.columns {
+            let block_end = reader.position() + column.byte_length.max(0) as usize;
+
+            match column.tag {
+{{~ for field in table.fields ~}}
+                {{ field.tag }} => {
+                    {{ field.column_check }}
+                    for record in self.records.iter_mut() {
+{{~ if field.kind == 'var_array' ~}}
+                        let element_count = reader.read_counter32()?.max(0) as usize;
+                        record.{{ field.name }} = Vec::with_capacity(element_count.min(65536));
+                        for _ in 0..element_count {
+                            record.{{ field.name }}.push({{ field.read_element }});
+                        }
+{{~ else if field.kind == 'serial_ref' ~}}
+                        record.{{ field.name }}_index = Vec::with_capacity({{ field.element_count }});
+                        for _ in 0..{{ field.element_count }} {
+                            record.{{ field.name }}_index.push(reader.read_i32()?);
+                        }
+{{~ else if field.kind == 'serial' ~}}
+                        record.{{ field.name }} = Vec::with_capacity({{ field.element_count }});
+                        for _ in 0..{{ field.element_count }} {
+                            record.{{ field.name }}.push({{ field.read_element }});
+                        }
+{{~ else if field.kind == 'scalar_ref' ~}}
+                        record.{{ field.name }}_index = reader.read_i32()?;
+{{~ else ~}}
+                        record.{{ field.name }} = {{ field.read_scalar }};
+{{~ end ~}}
+                    }
+                }
+{{~ end ~}}
+                _ => {
+                    // A column added after this code was generated.
+                    reader.skip(column.byte_length)?;
+                }
+            }
+
+            sheetman::check_block_end(&reader, column, block_end)?;
         }
 
         self.by_index = self

@@ -166,7 +166,7 @@ namespace SheetMan.CodeGeneration
 
         private TsTableView BuildTable(Models.Table table)
         {
-            var fields = table.SerialFields.Select(BuildField).ToList();
+            var fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList();
 
             return new TsTableView
             {
@@ -222,7 +222,7 @@ namespace SheetMan.CodeGeneration
             }
         }
 
-        private TsFieldView BuildField(SerialField sf)
+        private TsFieldView BuildField(Table table, SerialField sf)
         {
             string prop = TsName(sf.Name);
             string field = "_" + prop;
@@ -250,6 +250,8 @@ namespace SheetMan.CodeGeneration
                 FromNamedRow = NamedRowAssignment(sf, field, prop),
                 FromCompactRow = CompactRowStatements(sf, field, prop),
                 BinaryRead = BinaryReadExpression(sf),
+                Tag = sf.FirstField.Tag.Value,
+                ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
             };
         }
 
@@ -325,6 +327,52 @@ namespace SheetMan.CodeGeneration
         /// <summary>
         /// The call reading one value of a column's element type.
         /// </summary>
+        /// <summary>
+        /// The rendered checkColumn call: kind, count, and the elements this member accepts -
+        /// its own plus the lossless promotions, decided here at generation time.
+        /// </summary>
+        private static string ColumnCheck(SerialField sf, string tableName)
+        {
+            string kind = sf.IsVariableLengthArray
+                ? "sheetman.KIND_VAR_ARRAY"
+                : (sf.Fields.Count > 1 ? "sheetman.KIND_FIXED_ARRAY" : "sheetman.KIND_SCALAR");
+
+            int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+
+            string accepted;
+
+            if (sf.IsRef)
+                accepted = "sheetman.ELEMENT_I32";
+            else
+            {
+                switch (sf.ElementType)
+                {
+                    case ValueType.Int32:
+                        accepted = "sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT"; break;
+                    case ValueType.Int64:
+                        accepted = "sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT"; break;
+                    case ValueType.Double:
+                        accepted = "sheetman.ELEMENT_F64, sheetman.ELEMENT_F32, sheetman.ELEMENT_I32"; break;
+                    case ValueType.Float: accepted = "sheetman.ELEMENT_F32"; break;
+                    case ValueType.Bool: accepted = "sheetman.ELEMENT_BOOL"; break;
+                    case ValueType.String: accepted = "sheetman.ELEMENT_STRING"; break;
+                    case ValueType.Uuid: accepted = "sheetman.ELEMENT_UUID"; break;
+                    case ValueType.Enum: accepted = "sheetman.ELEMENT_VARINT"; break;
+
+                    // Ticks are exact i64: reading an int as a datetime would be lossless
+                    // and semantically wrong, so no promotion.
+                    case ValueType.DateTime:
+                    case ValueType.TimeSpan:
+                        accepted = "sheetman.ELEMENT_I64"; break;
+
+                    default:
+                        throw new SheetManException($"The typescript generator cannot check type `{sf.Type}`.");
+                }
+            }
+
+            return $"sheetman.checkColumn(column, '{tableName}.{sf.Name}', {kind}, {count}, [{accepted}])";
+        }
+
         private string BinaryReadExpression(SerialField sf)
         {
             switch (sf.ElementType)

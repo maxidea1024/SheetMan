@@ -32,28 +32,28 @@ export class ArrayTypesRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    private _index: number
+    public _index: number
 
     /** free-form tags */
     public get tags(): string[] { return this._tags }
-    private _tags: string[] = []
+    public _tags: string[] = []
 
     /** cost per level */
     public get costs(): number[] { return this._costs }
-    private _costs: number[] = []
+    public _costs: number[] = []
 
     /** drop weights */
     public get weights(): number[] { return this._weights }
-    private _weights: number[] = []
+    public _weights: number[] = []
 
     /** allowed grades */
     public get grades(): Grade[] { return this._grades }
-    private _grades: Grade[] = []
+    public _grades: Grade[] = []
 
     /** fixed slot 1 */
     public get slotArray(): number[] { return this._slotArray }
     public static readonly slotArray_N = 2
-    private _slotArray: number[]
+    public _slotArray: number[]
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {
@@ -75,49 +75,6 @@ export class ArrayTypesRecord {
         this._grades = dataRow[offset++]
         this._slotArray = dataRow.slice(offset, offset + 2)
         offset += 2
-    }
-
-    /** Read one record. Field order must match the exporter's. */
-    public readBinary(reader: sheetman.LiteBinaryReader): void
-    {
-        this._index = reader.readInt32()
-        {
-            const count = reader.readCounter32()
-            this._tags = []
-            for (let i = 0; i < count; ++i)
-            {
-                this._tags.push(reader.readString())
-            }
-        }
-        {
-            const count = reader.readCounter32()
-            this._costs = []
-            for (let i = 0; i < count; ++i)
-            {
-                this._costs.push(reader.readInt32())
-            }
-        }
-        {
-            const count = reader.readCounter32()
-            this._weights = []
-            for (let i = 0; i < count; ++i)
-            {
-                this._weights.push(reader.readFloat())
-            }
-        }
-        {
-            const count = reader.readCounter32()
-            this._grades = []
-            for (let i = 0; i < count; ++i)
-            {
-                this._grades.push(reader.readEnum() as Grade)
-            }
-        }
-        this._slotArray = []
-        for (let i = 0; i < 2; ++i)
-        {
-            this._slotArray.push(reader.readInt32())
-        }
     }
 }
 
@@ -196,17 +153,97 @@ export class ArrayTypesTable {
         this.readBinaryFrom(sheetman.readAllBytes(filename))
     }
 
-    /** Read a table from binary data already in memory. */
+    /**
+     * Read a table from binary data already in memory.
+     *
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public readBinaryFrom(data: Uint8Array): void
     {
         const reader = new sheetman.LiteBinaryReader(data)
-        const rowCount = sheetman.readTableHeader(reader)
+        const { rowCount, columns } = sheetman.readTableHeader(reader)
 
+        this._records = []
         for (let i = 0; i < rowCount; ++i)
+            this._records.push(new ArrayTypesRecord())
+
+        for (const column of columns)
         {
-            const record = new ArrayTypesRecord()
-            record.readBinary(reader)
-            this._records.push(record)
+            const blockEnd = reader.position + column.byteLength
+
+            switch (column.tag)
+            {
+                case 1:
+                    sheetman.checkColumn(column, 'ArrayTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._index = reader.readI32As(column.element)
+                    }
+                    break
+                case 2:
+                    sheetman.checkColumn(column, 'ArrayTypes.Tags', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        const elementCount = reader.readCounter32()
+                        record._tags = []
+                        for (let j = 0; j < elementCount; ++j)
+                            record._tags.push(reader.readString())
+                    }
+                    break
+                case 3:
+                    sheetman.checkColumn(column, 'ArrayTypes.Costs', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        const elementCount = reader.readCounter32()
+                        record._costs = []
+                        for (let j = 0; j < elementCount; ++j)
+                            record._costs.push(reader.readI32As(column.element))
+                    }
+                    break
+                case 4:
+                    sheetman.checkColumn(column, 'ArrayTypes.Weights', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_F32])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        const elementCount = reader.readCounter32()
+                        record._weights = []
+                        for (let j = 0; j < elementCount; ++j)
+                            record._weights.push(reader.readFloat())
+                    }
+                    break
+                case 5:
+                    sheetman.checkColumn(column, 'ArrayTypes.Grades', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        const elementCount = reader.readCounter32()
+                        record._grades = []
+                        for (let j = 0; j < elementCount; ++j)
+                            record._grades.push(reader.readEnum() as Grade)
+                    }
+                    break
+                case 6:
+                    sheetman.checkColumn(column, 'ArrayTypes.Slot_array', sheetman.KIND_FIXED_ARRAY, 2, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._slotArray = []
+                        for (let j = 0; j < 2; ++j)
+                            record._slotArray.push(reader.readI32As(column.element))
+                    }
+                    break
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength)
+                    break
+            }
+
+            sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
         this.mapping()

@@ -35,93 +35,61 @@ namespace SheetMan.Fixtures.Core.Server
             /// primary index
             /// </summary>
             public int Index => _index;
-            private int _index;
+            internal int _index;
 
             /// <summary>
             /// utf8 text
             /// </summary>
             public string StringField => _stringField;
-            private string _stringField;
+            internal string _stringField;
 
             /// <summary>
             /// 32 bit integer
             /// </summary>
             public int IntField => _intField;
-            private int _intField;
+            internal int _intField;
 
             /// <summary>
             /// 64 bit integer
             /// </summary>
             public long BigIntField => _bigIntField;
-            private long _bigIntField;
+            internal long _bigIntField;
 
             /// <summary>
             /// single precision
             /// </summary>
             public float FloatField => _floatField;
-            private float _floatField;
+            internal float _floatField;
 
             /// <summary>
             /// double precision
             /// </summary>
             public double DoubleField => _doubleField;
-            private double _doubleField;
+            internal double _doubleField;
 
             /// <summary>
             /// date and time
             /// </summary>
             public System.DateTime DatetimeField => _datetimeField;
-            private System.DateTime _datetimeField;
+            internal System.DateTime _datetimeField;
 
             /// <summary>
             /// time interval
             /// </summary>
             public System.TimeSpan TimespanField => _timespanField;
-            private System.TimeSpan _timespanField;
+            internal System.TimeSpan _timespanField;
 
             /// <summary>
             /// globally unique id
             /// </summary>
             public System.Guid UuidField => _uuidField;
-            private System.Guid _uuidField;
+            internal System.Guid _uuidField;
 
             /// <summary>
             /// enum reference
             /// </summary>
             public global::SheetMan.Fixtures.Core.Server.ValueType ValueTypeField => _valueTypeField;
-            private global::SheetMan.Fixtures.Core.Server.ValueType _valueTypeField;
-            #endregion
-
-            #region Read record
-            /// <summary>
-            /// Reads a table record.
-            /// </summary>
-            public Task ReadAsync(LiteBinaryReader reader)
-            {
-                int tempEnumInt = 0;
-                reader.Read(out _index);
-
-                reader.Read(out _stringField);
-
-                reader.Read(out _intField);
-
-                reader.Read(out _bigIntField);
-
-                reader.Read(out _floatField);
-
-                reader.Read(out _doubleField);
-
-                reader.Read(out _datetimeField);
-
-                reader.Read(out _timespanField);
-
-                reader.Read(out _uuidField);
-
-                reader.ReadOptimalInt32(out tempEnumInt);
-                _valueTypeField = (global::SheetMan.Fixtures.Core.Server.ValueType)tempEnumInt;
-
-                return Task.CompletedTask;
-            }
+            internal global::SheetMan.Fixtures.Core.Server.ValueType _valueTypeField;
             #endregion
 
             #region ToString
@@ -207,26 +175,133 @@ namespace SheetMan.Fixtures.Core.Server
         /// <summary>
         /// Read a table from specified reader.
         /// </summary>
-        public async Task ReadAsync(LiteBinaryReader reader)
+        /// <remarks>
+        /// Column by column, matched by tag rather than position. A column this build does
+        /// not know is skipped by its block length; one it knows but cannot read - the type
+        /// changed incompatibly - fails naming the field. Order, names and columns added or
+        /// removed on either side are therefore all survivable.
+        /// </remarks>
+        public Task ReadAsync(LiteBinaryReader reader)
         {
-            // Version and reserved flags are checked by the reader.
-            uint version = 0;
-            reader.Read(out version);
+            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            int tempEnumInt = 0;
 
-            byte flags = 0;
-            reader.Read(out flags);
-
-            int count = reader.ReadCounter32();
+            _records.Clear();
             for (int i = 0; i < count; i++)
+                _records.Add(new Record());
+
+            foreach (var column in columns)
             {
-                var record = new Record();
-                await record.ReadAsync(reader);
-                _records.Add(record);
+                int blockEnd = reader.Position + column.ByteLength;
+
+                switch (column.Tag)
+                {
+                    case 1:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.Index", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            record._index = reader.ReadI32As(column.Element);
+                        }
+                        break;
+
+                    case 2:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.StringField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._stringField);
+                        }
+                        break;
+
+                    case 4:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.IntField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            record._intField = reader.ReadI32As(column.Element);
+                        }
+                        break;
+
+                    case 5:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.BigIntField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI64, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            record._bigIntField = reader.ReadI64As(column.Element);
+                        }
+                        break;
+
+                    case 6:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.FloatField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._floatField);
+                        }
+                        break;
+
+                    case 7:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.DoubleField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF64, LiteBinaryTable.ElementF32, LiteBinaryTable.ElementI32);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            record._doubleField = reader.ReadF64As(column.Element);
+                        }
+                        break;
+
+                    case 8:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.DatetimeField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI64);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._datetimeField);
+                        }
+                        break;
+
+                    case 9:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.TimespanField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI64);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._timespanField);
+                        }
+                        break;
+
+                    case 10:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.UuidField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementUuid);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.Read(out record._uuidField);
+                        }
+                        break;
+
+                    case 11:
+                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.ValueTypeField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = _records[i];
+                            reader.ReadOptimalInt32(out tempEnumInt);
+                            record._valueTypeField = (global::SheetMan.Fixtures.Core.Server.ValueType)tempEnumInt;
+                        }
+                        break;
+
+                    default:
+                        // A column added after this code was generated. Its block length
+                        // says how far to move on.
+                        reader.Skip(column.ByteLength);
+                        break;
+                }
+
+                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping
             foreach (var record in _records)
                 _recordsByIndex.Add(record.Index, record);
+
+            return Task.CompletedTask;
         }
 
         public override string ToString()

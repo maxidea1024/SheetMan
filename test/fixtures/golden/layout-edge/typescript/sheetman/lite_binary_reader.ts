@@ -41,7 +41,33 @@ export class LiteBinaryError extends Error {
 }
 
 /** Version stamped at the head of every table file by the exporter. */
-export const BINARY_FILE_FORMAT_VERSION = 100
+export const BINARY_FILE_FORMAT_VERSION = 101
+
+// The wire's element types and kinds, as the v101 column descriptors spell them.
+export const ELEMENT_VARINT = 0
+export const ELEMENT_BOOL = 1
+export const ELEMENT_I32 = 2
+export const ELEMENT_I64 = 3
+export const ELEMENT_F32 = 4
+export const ELEMENT_F64 = 5
+export const ELEMENT_STRING = 6
+export const ELEMENT_UUID = 7
+
+export const KIND_SCALAR = 0
+export const KIND_FIXED_ARRAY = 1
+export const KIND_VAR_ARRAY = 2
+
+/** One column as the file describes it. */
+export interface LiteBinaryColumn {
+    /** What identifies the column, instead of its position. */
+    tag: number
+    element: number
+    kind: number
+    /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
+    count: number
+    /** Total bytes of the column's block - what a skip advances by. */
+    byteLength: number
+}
 
 /** Ticks between 0001-01-01 and the Unix epoch. */
 const UNIX_EPOCH_TICKS = 621355968000000000n
@@ -65,6 +91,39 @@ export class LiteBinaryReader {
     }
 
     get position(): number { return this.offset }
+
+    /**
+     * Advances past bytes without interpreting them: an unknown column's whole block.
+     * The column-oriented layout is what makes this one call the entirety of skipping.
+     */
+    skip(byteCount: number): void {
+        if (byteCount < 0 || byteCount > this.remaining) {
+            throw new LiteBinaryError(`cannot skip ${byteCount} bytes with ${this.remaining} remaining`)
+        }
+        this.offset += byteCount
+    }
+
+    // Promotions: a member reading a file element narrower than itself. Only the
+    // mathematically lossless directions exist; the column check already refused the rest.
+
+    /** An int32 member from i32 or varint. */
+    readI32As(element: number): number {
+        return element === ELEMENT_I32 ? this.readInt32() : this.readCounter32()
+    }
+
+    /** An int64 member from i64, i32 or varint. Always a bigint, as int64 is here. */
+    readI64As(element: number): bigint {
+        if (element === ELEMENT_I64) return this.readInt64()
+        if (element === ELEMENT_I32) return BigInt(this.readInt32())
+        return BigInt(this.readCounter32())
+    }
+
+    /** A double member from f64, f32 or i32 - all exact in a double. */
+    readF64As(element: number): number {
+        if (element === ELEMENT_F64) return this.readDouble()
+        if (element === ELEMENT_F32) return this.readFloat()
+        return this.readInt32()
+    }
     get remaining(): number { return this.data.length - this.offset }
 
     readFixed8(): number {
@@ -216,7 +275,7 @@ export class LiteBinaryReader {
  * flags would go; a non-zero value means the file needs handling this build does
  * not have.
  */
-export function readTableHeader(reader: LiteBinaryReader): number {
+export function readTableHeader(reader: LiteBinaryReader): { rowCount: number, columns: LiteBinaryColumn[] } {
     const version = reader.readFixed32()
     if (version !== BINARY_FILE_FORMAT_VERSION) {
         throw new LiteBinaryError(
@@ -230,7 +289,80 @@ export function readTableHeader(reader: LiteBinaryReader): number {
     const rowCount = reader.readCounter32()
     if (rowCount < 0) throw new LiteBinaryError('table row count is negative')
 
-    return rowCount
+    const columnCount = reader.readCounter32()
+    if (columnCount < 0) throw new LiteBinaryError('table column count is negative')
+
+    const columns: LiteBinaryColumn[] = []
+    for (let at = 0; at < columnCount; ++at) {
+        const tag = reader.readCounter32()
+        const wire = reader.readFixed8()
+        const count = reader.readCounter32()
+        const byteLength = reader.readFixed32()
+        columns.push({ tag, element: wire & 0x0f, kind: (wire >> 4) & 0x03, count, byteLength })
+    }
+
+    // What the descriptors say about the file, checked before anybody allocates for the
+    // row count. The blocks are all that follows the header, so their declared lengths have
+    // to add up to the bytes left, and every row costs at least one byte in every block - a
+    // varint's shortest form, an empty string's length prefix, a variable array's counter.
+    // A row count larger than that is one the exporter could not have written.
+
+    const available = reader.remaining
+    let declared = 0
+
+    for (const column of columns) {
+        if (column.byteLength < 0 || column.byteLength > available - declared) {
+            throw new LiteBinaryError(
+                `column tag ${column.tag} declares ${column.byteLength} bytes, which the file cannot hold`)
+        }
+
+        declared += column.byteLength
+
+        if (rowCount > column.byteLength) {
+            throw new LiteBinaryError(
+                `the row count ${rowCount} is larger than column tag ${column.tag} can hold in ` +
+                `its ${column.byteLength} bytes`)
+        }
+    }
+
+    if (declared !== available) {
+        throw new LiteBinaryError(
+            `the columns declare ${declared} bytes but ${available} follow the header`)
+    }
+
+    return { rowCount, columns }
+}
+
+/**
+ * That a column is what the generated member expects, or a lossless promotion of it.
+ * Refusal is by name and both types, never by reading anyway.
+ */
+export function checkColumn(
+    column: LiteBinaryColumn, fieldName: string, kind: number, count: number, accepted: number[]): void {
+    if (column.kind !== kind || (kind !== KIND_VAR_ARRAY && column.count !== count)) {
+        throw new LiteBinaryError(
+            `${fieldName}: the file's column (kind ${column.kind}, count ${column.count}) does not ` +
+            `match the generated member (kind ${kind}, count ${count}). The schema changed shape; ` +
+            'regenerate the code or rebuild the data.')
+    }
+    if (!accepted.includes(column.element)) {
+        throw new LiteBinaryError(
+            `${fieldName}: the file carries element type ${column.element}, which this member ` +
+            `cannot read (accepts: ${accepted.join(', ')}). The column changed type incompatibly; ` +
+            'regenerate the code or rebuild the data.')
+    }
+}
+
+/**
+ * That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+ * here names the column instead of corrupting the next.
+ */
+export function checkBlockEnd(reader: LiteBinaryReader, column: LiteBinaryColumn, expectedEnd: number): void {
+    if (reader.position !== expectedEnd) {
+        throw new LiteBinaryError(
+            `column tag ${column.tag}: its block declared ${column.byteLength} bytes but the read ` +
+            `ended ${expectedEnd - reader.position} bytes short of its boundary`)
+    }
 }
 
 // Declared here rather than pulled from @types/node.
