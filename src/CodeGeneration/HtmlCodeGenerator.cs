@@ -263,10 +263,23 @@ namespace SheetMan.CodeGeneration
         {
             if (field.IsRef)
             {
-                // What a reference points at is not rendered here. Following it and showing
-                // the target's type was attempted and abandoned; the table it points into
-                // is one link away on the same page.
-                return "<font color=red><b>ref?</b></font>";
+                // What it points at, as a link to that table's heading on this page.
+                //
+                // It used to read `ref?` in red bold, which is what a generator prints when it
+                // has not decided - and a reader cannot tell that from an error. The name was
+                // always to hand; only the rendering was missing.
+                string target = field.ResolvedRefTable != null
+                    ? field.ResolvedRefTable.Name
+                    : field.RefTableName;
+
+                string caption = string.IsNullOrEmpty(field.RefFieldName)
+                    ? target
+                    : $"{target}.{field.RefFieldName}";
+
+                string brackets = field.IsArray ? "[]" : "";
+
+                return $"<a href=\"#table_{Esc(target)}\" title=\"references {Esc(caption)}\">" +
+                       $"&#x2192; {Esc(caption)}</a>{brackets}";
             }
 
             // Element type drives the choice; the brackets are appended after, so an array
@@ -288,12 +301,16 @@ namespace SheetMan.CodeGeneration
             {
                 // The stored index, not the value it points at.
                 //
-                // Following the reference and rendering the target's value was attempted
-                // and abandoned: a chain that leads back on itself recursed without bound.
-                // The cooker now rejects cyclic references outright, so it could be
-                // revisited - but showing the key is also the honest thing for a page
-                // documenting what is stored.
-                return $"<code><font color=green>{Esc(value?.ToString())}</font></code> : ";
+                // Following the reference and rendering the target's value was attempted and
+                // abandoned: a chain that leads back on itself recursed without bound. The
+                // cooker now rejects cyclic references outright, so it could be revisited - but
+                // showing the key is also the honest thing for a page documenting what is
+                // stored, and the column heading now names what the key points into.
+                //
+                // No trailing `" : "`. It was the separator the abandoned attempt would have put
+                // the target's value after, so every reference cell ended in a colon with
+                // nothing behind it.
+                return $"<code><font color=green>{Esc(value?.ToString())}</font></code>";
             }
 
             // A delimited cell holds an array, so render its elements. Falling into the
@@ -359,9 +376,6 @@ namespace SheetMan.CodeGeneration
                     return $"<a href=\"{EnumHref(field.Enum.Name, $"const_{field.Enum.Name}.{label.Name}")}\" " +
                            $"title=\"enum.{field.Enum.Name}.{label.Name}\">{label.Name}</a>";
                 }
-
-                case Models.ValueType.ForeignRecord:
-                    return "TODO";
 
                 default:
                     throw new SheetManException($"unsupported type `{field.Type}`");
