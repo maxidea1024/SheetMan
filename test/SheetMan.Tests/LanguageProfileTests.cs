@@ -94,6 +94,79 @@ namespace SheetMan.Tests
         }
 
         /// <summary>
+        /// And every language with a read-call table has a call for every scalar type.
+        /// </summary>
+        /// <remarks>
+        /// This was ten copies of the same switch, one per generator, each ending in a `default:`
+        /// that throws. Adding a value type meant ten edits, and forgetting one still compiled -
+        /// it surfaced at runtime in whoever's project reached that field first.
+        ///
+        /// Now it is ten entries in LanguageProfile.cs, and this fails naming the language and
+        /// the type - in the same file and the same run as the test above, which already asks
+        /// for the type's name. One place to add a type instead of eleven.
+        ///
+        /// Three profiles have no table at all: the C++, C# and Unreal readers resolve a read by
+        /// overload, one method per type rather than a method per name, so there is no per-type
+        /// call to record. Skipped by asking whether the table exists rather than by naming them,
+        /// so a fourth reader written that way needs nothing here.
+        /// </remarks>
+        [Fact]
+        public void Every_language_with_a_read_table_can_read_every_scalar_type()
+        {
+            var missing = new List<string>();
+            int tables = 0;
+
+            foreach (var profile in Profiles())
+            {
+                if (profile.ReadCalls == null)
+                    continue;
+
+                tables++;
+
+                foreach (var type in RenderableScalars())
+                {
+                    if (!profile.ReadCalls.ContainsKey(type))
+                        missing.Add($"  {profile.Id} has no read call for {type}");
+                }
+            }
+
+            Assert.True(missing.Count == 0,
+                $"A type was added to ValueType and not to every language's reads:{Environment.NewLine}" +
+                string.Join(Environment.NewLine, missing));
+
+            // And the three that resolve by overload really are the only ones without a table.
+            Assert.Equal(Profiles().Count - 3, tables);
+        }
+
+        /// <summary>
+        /// A read call for a type the language cannot read is refused by name, not by returning
+        /// something that looks like a call.
+        /// </summary>
+        [Fact]
+        public void A_type_a_language_cannot_read_is_refused_by_name()
+        {
+            foreach (var profile in Profiles())
+            {
+                if (profile.ReadCalls == null)
+                {
+                    // Asking a reader that resolves by overload says so, rather than answering.
+                    var overloaded = Assert.Throws<SheetManException>(
+                        () => profile.ReadCall(ValueType.Int32));
+
+                    Assert.Contains(profile.Id, overloaded.Message);
+                    Assert.Contains("overload", overloaded.Message);
+                    continue;
+                }
+
+                var thrown = Assert.Throws<SheetManException>(
+                    () => profile.ReadCall(ValueType.Unresolved));
+
+                Assert.Contains(profile.Id, thrown.Message);
+                Assert.Contains("Unresolved", thrown.Message);
+            }
+        }
+
+        /// <summary>
         /// And every array form resolves to its element, so a generator can name an array by
         /// naming the element and wrapping it.
         /// </summary>

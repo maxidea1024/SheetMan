@@ -543,24 +543,14 @@ namespace SheetMan.CodeGeneration
             if (sf.IsRef)
                 return $"sm_read_int32(reader, {address})";
 
-            switch (sf.ElementType)
-            {
-                case ValueType.String: return $"sm_read_string(reader, {address})";
-                case ValueType.Bool: return $"sm_read_bool(reader, {address})";
-                case ValueType.Int32: return $"sm_read_int32(reader, {address})";
-                case ValueType.Int64: return $"sm_read_int64(reader, {address})";
-                case ValueType.Float: return $"sm_read_float(reader, {address})";
-                case ValueType.Double: return $"sm_read_double(reader, {address})";
-                case ValueType.DateTime: return $"sm_read_datetime(reader, {address})";
-                case ValueType.TimeSpan: return $"sm_read_timespan(reader, {address})";
-                case ValueType.Uuid: return $"sm_read_uuid(reader, {address})";
+            // Handled with a scratch int32 and a cast; nothing calls this for one.
+            if (sf.ElementType == ValueType.Enum)
+                return $"sm_read_enum(reader, {address})";
 
-                // Handled with a scratch int32 and a cast; nothing calls this for one.
-                case ValueType.Enum: return $"sm_read_enum(reader, {address})";
-
-                default:
-                    throw new SheetManException($"The c generator cannot read type `{sf.Type}`.");
-            }
+            // The rest are named in the profile. C is the one language whose reader fills an
+            // out-parameter rather than returning the value, which is what the `{0}` in those
+            // entries is for.
+            return LanguageProfile.C.ReadCall(sf.ElementType, address);
         }
 
         private string ResolvedElementType(SerialField sf)

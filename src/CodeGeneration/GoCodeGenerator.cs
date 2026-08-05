@@ -416,23 +416,15 @@ namespace SheetMan.CodeGeneration
         {
             switch (sf.ElementType)
             {
-                case ValueType.String: return "reader.ReadString()";
-                case ValueType.Bool: return "reader.ReadBool()";
-                case ValueType.Int32: return "reader.ReadInt32()";
-                case ValueType.Int64: return "reader.ReadInt64()";
-                case ValueType.Float: return "reader.ReadFloat32()";
-                case ValueType.Double: return "reader.ReadFloat64()";
-                case ValueType.DateTime: return "reader.ReadDateTimeTicks()";
-                case ValueType.TimeSpan: return "reader.ReadDurationTicks()";
-                case ValueType.Uuid: return "reader.ReadUUID()";
 
                 // Enum values travel zig-zag encoded rather than fixed width.
                 case ValueType.Enum: return $"{sf.FirstField.Enum.Name.ToPascalCase()}(reader.ReadEnum())";
 
                 case ValueType.ForeignRecord: return "reader.ReadInt32()";
 
-                default:
-                    throw new SheetManException($"The go generator cannot read type `{sf.Type}`.");
+                // Everything else is a plain call named in the profile, which is where the
+                // nine of them live now rather than here and in nine other generators.
+                default: return LanguageProfile.Go.ReadCall(sf.ElementType);
             }
         }
 

@@ -28,12 +28,14 @@ namespace SheetMan.CodeGeneration
             IReadOnlyDictionary<ValueType, string> scalarTypes,
             string arrayFormat,
             string memberNameEscape,
+            IReadOnlyDictionary<ValueType, string> readCalls,
             params string[] reservedMemberNames)
         {
             Id = id;
             ScalarTypes = scalarTypes;
             ArrayFormat = arrayFormat;
             MemberNameEscape = memberNameEscape;
+            ReadCalls = readCalls;
 
             // Ordinal: every language here is case-sensitive about its keywords.
             _reservedMemberNames = new HashSet<string>(reservedMemberNames, StringComparer.Ordinal);
@@ -54,6 +56,53 @@ namespace SheetMan.CodeGeneration
         /// for the element - `{0}[]`, `std::vector&lt;{0}&gt;`.
         /// </summary>
         public string ArrayFormat { get; }
+
+        /// <summary>
+        /// Which call on the emitted reader reads each scalar type, with `{0}` standing for the
+        /// destination where the language passes one.
+        /// </summary>
+        /// <remarks>
+        /// This was ten copies of the same switch, one per generator, each with a `default:` that
+        /// throws. So adding a value type meant ten edits and forgetting one still compiled - it
+        /// surfaced at runtime in whoever's project reached that field first.
+        ///
+        /// Here it is ten entries in one file, and `LanguageProfileTests` requires every scalar
+        /// type to have one for every language that has a table at all. Adding a type fails that
+        /// test naming the languages, in the same file and the same failure that already asks for
+        /// the type's name.
+        ///
+        /// Most languages ignore the `{0}`: their reader returns the value, so the call is an
+        /// expression. C's fills an out-parameter, so its entries pass the address.
+        ///
+        /// Null for C++ and Unreal, whose readers resolve by overload - one `Read` per engine
+        /// type rather than a method per name - so there is no per-type call to table. That is a
+        /// property of those readers, not an omission, which is why it is null rather than empty.
+        ///
+        /// Enum and ForeignRecord are absent for the same reason they are absent from
+        /// <see cref="ScalarTypes"/>: both name something from the model and each language
+        /// qualifies them its own way, so each generator keeps those two arms.
+        /// </remarks>
+        public IReadOnlyDictionary<ValueType, string> ReadCalls { get; }
+
+        /// <summary>
+        /// The reader call for a scalar type, or an error naming the language and the type.
+        /// </summary>
+        /// <param name="destination">
+        /// Where the value goes, for the languages whose reader fills an out-parameter. Ignored
+        /// by the rest, whose entries have no placeholder.
+        /// </param>
+        public string ReadCall(ValueType type, string destination = null)
+        {
+            if (ReadCalls == null)
+                throw new SheetManException($"The {Id} reader resolves reads by overload, so it has no call table.");
+
+            var element = ValueTypes.ElementOf(type);
+
+            if (ReadCalls.TryGetValue(element, out string call))
+                return string.Format(call, destination);
+
+            throw new SheetManException($"The {Id} generator cannot read type `{type}`.");
+        }
 
         /// <summary>
         /// The name of a scalar type, or an error naming the language and the type.
@@ -138,6 +187,10 @@ namespace SheetMan.CodeGeneration
             // Escaping the method but not the field instead makes the two collide.
             "sm_{0}",
 
+            // No read-call table: the C++ reader has one `read` overload per type, so what a
+            // field reads with does not depend on which type it is.
+            null,
+
             // https://en.cppreference.com/w/cpp/keyword - the whole list, because a C++
             // member name is snake_case and every keyword is lowercase, so all of them
             // survive the casing.
@@ -193,6 +246,19 @@ namespace SheetMan.CodeGeneration
             // A trailing underscore. A leading one would be reserved to the implementation
             // at file scope, and a double one is reserved everywhere.
             "{0}_",
+
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "sm_read_string(reader, {0})" },
+                { ValueType.Bool, "sm_read_bool(reader, {0})" },
+                { ValueType.Int32, "sm_read_int32(reader, {0})" },
+                { ValueType.Int64, "sm_read_int64(reader, {0})" },
+                { ValueType.Float, "sm_read_float(reader, {0})" },
+                { ValueType.Double, "sm_read_double(reader, {0})" },
+                { ValueType.DateTime, "sm_read_datetime(reader, {0})" },
+                { ValueType.TimeSpan, "sm_read_timespan(reader, {0})" },
+                { ValueType.Uuid, "sm_read_uuid(reader, {0})" },
+            },
 
             // C11 keywords. Members are snake_case and every keyword is lowercase, so all
             // of them survive the casing - the same reason C++ carries the full list.
@@ -259,7 +325,20 @@ namespace SheetMan.CodeGeneration
             // done to it - and renaming one would change the generated API for no reason.
             // The reserved-words fixture is what turns that from an argument into a fact:
             // the suite runs its output through the real interpreter.
-            "{0}_"
+            "{0}_",
+
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "$reader->readString()" },
+                { ValueType.Bool, "$reader->readBool()" },
+                { ValueType.Int32, "$reader->readInt32()" },
+                { ValueType.Int64, "$reader->readInt64()" },
+                { ValueType.Float, "$reader->readFloat()" },
+                { ValueType.Double, "$reader->readDouble()" },
+                { ValueType.DateTime, "$reader->readDateTimeTicks()" },
+                { ValueType.TimeSpan, "$reader->readTimespanTicks()" },
+                { ValueType.Uuid, "$reader->readUuid()" },
+            }
             );
 
         /// <summary>
@@ -284,7 +363,10 @@ namespace SheetMan.CodeGeneration
 
             // Never used: the list below is empty, so nothing is ever escaped. Kept as the
             // place the answer would go if that changed.
-            "@{0}"
+            "@{0}",
+
+            // No read-call table: the C# reader has one `Read(out T)` overload per type.
+            null
 
             // No reserved names. C# renders members PascalCase and every C# keyword is
             // lowercase, so a field called `class` becomes `Class` and cannot collide. The
@@ -323,7 +405,20 @@ namespace SheetMan.CodeGeneration
 
             // Never used, as with C#: Go exports a name by capitalizing it and every Go
             // keyword is lowercase, so none can survive into an exported member.
-            "{0}_"
+            "{0}_",
+
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "reader.ReadString()" },
+                { ValueType.Bool, "reader.ReadBool()" },
+                { ValueType.Int32, "reader.ReadInt32()" },
+                { ValueType.Int64, "reader.ReadInt64()" },
+                { ValueType.Float, "reader.ReadFloat32()" },
+                { ValueType.Double, "reader.ReadFloat64()" },
+                { ValueType.DateTime, "reader.ReadDateTimeTicks()" },
+                { ValueType.TimeSpan, "reader.ReadDurationTicks()" },
+                { ValueType.Uuid, "reader.ReadUUID()" },
+            }
             );
 
         /// <summary>
@@ -358,6 +453,19 @@ namespace SheetMan.CodeGeneration
             // escape but does not work for all of them - `crate`, `self`, `super` and `Self`
             // cannot be raw - and one rule that always holds beats two that nearly do.
             "{0}_",
+
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "reader.read_string()?" },
+                { ValueType.Bool, "reader.read_bool()?" },
+                { ValueType.Int32, "reader.read_i32()?" },
+                { ValueType.Int64, "reader.read_i64()?" },
+                { ValueType.Float, "reader.read_f32()?" },
+                { ValueType.Double, "reader.read_f64()?" },
+                { ValueType.DateTime, "reader.read_datetime_ticks()?" },
+                { ValueType.TimeSpan, "reader.read_duration_ticks()?" },
+                { ValueType.Uuid, "reader.read_uuid()?" },
+            },
 
             // https://doc.rust-lang.org/reference/keywords.html - strict, reserved and the
             // weak ones, because a member name is snake_case and every keyword is lowercase.
@@ -402,6 +510,19 @@ namespace SheetMan.CodeGeneration
             // A trailing underscore, which is what PEP 8 prescribes for exactly this.
             "{0}_",
 
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "reader.read_string()" },
+                { ValueType.Bool, "reader.read_bool()" },
+                { ValueType.Int32, "reader.read_int32()" },
+                { ValueType.Int64, "reader.read_int64()" },
+                { ValueType.Float, "reader.read_float()" },
+                { ValueType.Double, "reader.read_double()" },
+                { ValueType.DateTime, "reader.read_datetime_ticks()" },
+                { ValueType.TimeSpan, "reader.read_duration_ticks()" },
+                { ValueType.Uuid, "reader.read_uuid()" },
+            },
+
             // https://docs.python.org/3/reference/lexical_analysis.html#keywords, plus the
             // soft keywords. Members are snake_case and nearly every keyword is lowercase.
             "False", "None", "True", "and", "as", "assert", "async", "await", "break",
@@ -443,6 +564,19 @@ namespace SheetMan.CodeGeneration
             // keyword, so the name has to change.
             "{0}_",
 
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "reader.readString()" },
+                { ValueType.Bool, "reader.readBool()" },
+                { ValueType.Int32, "reader.readInt32()" },
+                { ValueType.Int64, "reader.readInt64()" },
+                { ValueType.Float, "reader.readFloat()" },
+                { ValueType.Double, "reader.readDouble()" },
+                { ValueType.DateTime, "reader.readDateTimeTicks()" },
+                { ValueType.TimeSpan, "reader.readDurationTicks()" },
+                { ValueType.Uuid, "reader.readUuid()" },
+            },
+
             // https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.9 - the
             // keywords and the three literals, all reserved as identifiers.
             "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char",
@@ -482,7 +616,10 @@ namespace SheetMan.CodeGeneration
 
             // Never used: members are PascalCase and every C++ keyword is lowercase, the
             // same reason C# and Go escape nothing.
-            "{0}_"
+            "{0}_",
+
+            // No read-call table: the Unreal reader has one `Read` overload per engine type.
+            null
             );
 
         /// <summary>
@@ -510,6 +647,19 @@ namespace SheetMan.CodeGeneration
 
             // Backticks, which is what Kotlin provides for exactly this.
             "`{0}`",
+
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "reader.readString()" },
+                { ValueType.Bool, "reader.readBool()" },
+                { ValueType.Int32, "reader.readInt32()" },
+                { ValueType.Int64, "reader.readInt64()" },
+                { ValueType.Float, "reader.readFloat()" },
+                { ValueType.Double, "reader.readDouble()" },
+                { ValueType.DateTime, "reader.readDateTimeTicks()" },
+                { ValueType.TimeSpan, "reader.readDurationTicks()" },
+                { ValueType.Uuid, "reader.readUuid()" },
+            },
 
             // https://kotlinlang.org/docs/keyword-reference.html - the hard keywords, which
             // are the ones an identifier cannot be without them.
@@ -543,6 +693,19 @@ namespace SheetMan.CodeGeneration
             // A trailing underscore. Ruby has no escape for an identifier that lands on a
             // keyword, so the name has to change.
             "{0}_",
+
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "reader.read_string" },
+                { ValueType.Bool, "reader.read_bool" },
+                { ValueType.Int32, "reader.read_int32" },
+                { ValueType.Int64, "reader.read_int64" },
+                { ValueType.Float, "reader.read_float" },
+                { ValueType.Double, "reader.read_double" },
+                { ValueType.DateTime, "reader.read_datetime_ticks" },
+                { ValueType.TimeSpan, "reader.read_duration_ticks" },
+                { ValueType.Uuid, "reader.read_uuid" },
+            },
 
             // https://docs.ruby-lang.org/en/master/keywords_rdoc.html
             "BEGIN", "END", "alias", "and", "begin", "break", "case", "class", "def",
@@ -579,6 +742,19 @@ namespace SheetMan.CodeGeneration
             // A trailing underscore. Dart has no escape either, and a leading one would
             // make the member private to its library.
             "{0}_",
+
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "reader.readString()" },
+                { ValueType.Bool, "reader.readBool()" },
+                { ValueType.Int32, "reader.readInt32()" },
+                { ValueType.Int64, "reader.readInt64()" },
+                { ValueType.Float, "reader.readFloat()" },
+                { ValueType.Double, "reader.readDouble()" },
+                { ValueType.DateTime, "reader.readDateTimeTicks()" },
+                { ValueType.TimeSpan, "reader.readDurationTicks()" },
+                { ValueType.Uuid, "reader.readUuid()" },
+            },
 
             // https://dart.dev/language/keywords - the reserved words, which are the ones
             // an identifier cannot be. The built-in and contextual ones are legal.
@@ -630,6 +806,19 @@ namespace SheetMan.CodeGeneration
             // A trailing underscore is safe here: TypeScript's private members carry a
             // leading one, so the two conventions cannot combine into anything illegal.
             "{0}_",
+
+            new Dictionary<ValueType, string>
+            {
+                { ValueType.String, "reader.readString()" },
+                { ValueType.Bool, "reader.readBool()" },
+                { ValueType.Int32, "reader.readInt32()" },
+                { ValueType.Int64, "reader.readInt64()" },
+                { ValueType.Float, "reader.readFloat()" },
+                { ValueType.Double, "reader.readDouble()" },
+                { ValueType.DateTime, "reader.readDateTime()" },
+                { ValueType.TimeSpan, "reader.readTimeSpan()" },
+                { ValueType.Uuid, "reader.readUuid()" },
+            },
 
             // Not the reserved words. TypeScript accepts `class`, `function`, `delete` and
             // the rest as member names, and escaping them would rename the generated API

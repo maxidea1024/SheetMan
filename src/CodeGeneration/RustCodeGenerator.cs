@@ -439,15 +439,6 @@ namespace SheetMan.CodeGeneration
         {
             switch (sf.ElementType)
             {
-                case ValueType.String: return "reader.read_string()?";
-                case ValueType.Bool: return "reader.read_bool()?";
-                case ValueType.Int32: return "reader.read_i32()?";
-                case ValueType.Int64: return "reader.read_i64()?";
-                case ValueType.Float: return "reader.read_f32()?";
-                case ValueType.Double: return "reader.read_f64()?";
-                case ValueType.DateTime: return "reader.read_datetime_ticks()?";
-                case ValueType.TimeSpan: return "reader.read_duration_ticks()?";
-                case ValueType.Uuid: return "reader.read_uuid()?";
 
                 // Enum values travel zig-zag encoded. A value the sheet never declared
                 // falls back to the default rather than failing the whole read, matching
@@ -458,8 +449,9 @@ namespace SheetMan.CodeGeneration
 
                 case ValueType.ForeignRecord: return "reader.read_i32()?";
 
-                default:
-                    throw new SheetManException($"The rust generator cannot read type `{sf.Type}`.");
+                // Everything else is a plain call named in the profile, which is where the
+                // nine of them live now rather than here and in nine other generators.
+                default: return LanguageProfile.Rust.ReadCall(sf.ElementType);
             }
         }
 

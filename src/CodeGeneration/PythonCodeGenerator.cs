@@ -421,15 +421,6 @@ namespace SheetMan.CodeGeneration
         {
             switch (sf.ElementType)
             {
-                case ValueType.String: return "reader.read_string()";
-                case ValueType.Bool: return "reader.read_bool()";
-                case ValueType.Int32: return "reader.read_int32()";
-                case ValueType.Int64: return "reader.read_int64()";
-                case ValueType.Float: return "reader.read_float()";
-                case ValueType.Double: return "reader.read_double()";
-                case ValueType.DateTime: return "reader.read_datetime_ticks()";
-                case ValueType.TimeSpan: return "reader.read_duration_ticks()";
-                case ValueType.Uuid: return "reader.read_uuid()";
 
                 // Enum values travel zig-zag encoded rather than fixed width.
                 case ValueType.Enum:
@@ -437,8 +428,9 @@ namespace SheetMan.CodeGeneration
 
                 case ValueType.ForeignRecord: return "reader.read_int32()";
 
-                default:
-                    throw new SheetManException($"The python generator cannot read type `{sf.Type}`.");
+                // Everything else is a plain call named in the profile, which is where the
+                // nine of them live now rather than here and in nine other generators.
+                default: return LanguageProfile.Python.ReadCall(sf.ElementType);
             }
         }
 

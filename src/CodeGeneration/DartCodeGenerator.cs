@@ -332,15 +332,6 @@ namespace SheetMan.CodeGeneration
         {
             switch (sf.ElementType)
             {
-                case ValueType.String: return "reader.readString()";
-                case ValueType.Bool: return "reader.readBool()";
-                case ValueType.Int32: return "reader.readInt32()";
-                case ValueType.Int64: return "reader.readInt64()";
-                case ValueType.Float: return "reader.readFloat()";
-                case ValueType.Double: return "reader.readDouble()";
-                case ValueType.DateTime: return "reader.readDateTimeTicks()";
-                case ValueType.TimeSpan: return "reader.readDurationTicks()";
-                case ValueType.Uuid: return "reader.readUuid()";
 
                 // Enum values travel zig-zag encoded rather than fixed width.
                 case ValueType.Enum:
@@ -348,8 +339,9 @@ namespace SheetMan.CodeGeneration
 
                 case ValueType.ForeignRecord: return "reader.readInt32()";
 
-                default:
-                    throw new SheetManException($"The dart generator cannot read type `{sf.Type}`.");
+                // Everything else is a plain call named in the profile, which is where the
+                // nine of them live now rather than here and in nine other generators.
+                default: return LanguageProfile.Dart.ReadCall(sf.ElementType);
             }
         }
 
