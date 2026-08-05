@@ -1,0 +1,245 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Xunit;
+
+namespace SheetMan.Tests
+{
+    /// <summary>
+    /// The binary format, pinned byte for byte.
+    ///
+    /// The golden trees already compare every exported .table byte for byte, but they are
+    /// recorded from the converter's own output: a change to the layout re-records them and
+    /// the thirteen readers are regenerated to match, so the whole gate can move together
+    /// and still agree with itself. The expectation below is written out here instead, from
+    /// the specification rather than from the output, and moving it means editing this file
+    /// on purpose.
+    ///
+    /// What that protects is not this repository. It is every .table file already written by
+    /// a build that shipped: they are read by the layout this test spells out, and a silent
+    /// change to it is a silent change to what those files mean.
+    /// </summary>
+    public class BinaryFormatTests
+    {
+        /// <summary>
+        /// The smallest table in the corpus: three scalar columns, one row.
+        ///
+        /// `layout-edge` is a workbook whose sheets start away from A1, which is beside the
+        /// point here - it is used because SecondTable is 42 bytes, and 42 bytes can be
+        /// accounted for one at a time.
+        /// </summary>
+        private const string Scenario = "layout-edge";
+
+        /// <summary>
+        /// Every byte of a whole table file, assembled from the specification.
+        ///
+        /// Written as segments rather than one hex blob so that a mismatch names the part of
+        /// the format that moved, and so that reading the test is a way of reading the
+        /// format. The row is index 1, label "gamma", amount 30.
+        /// </summary>
+        [Fact]
+        public void A_table_file_is_byte_for_byte_what_the_format_specifies()
+        {
+            var conversion = SheetManRunner.Convert(Scenario);
+            Assert.True(conversion.Succeeded,
+                $"Conversion failed.{Environment.NewLine}{conversion.Describe()}");
+
+            var expected = new Segments();
+
+            // ---------------------------------------------------------------- header
+            expected.Add("version", 0x65, 0x00, 0x00, 0x00);     // 101, fixed32
+            expected.Add("flags", 0x00);                         // no compression, no encryption
+            expected.Add("row count", 0x02);                     // counter32: zig-zag of 1
+            expected.Add("column count", 0x06);                  // counter32: zig-zag of 3
+
+            // ----------------------------------------------------------- descriptors
+            //
+            // Four fields each: the tag, the wire byte (element in the low nibble, kind in
+            // bits 4-5), the elements per row, and the block's length in bytes. The length
+            // is a plain fixed32 rather than a counter because the writer patches it once
+            // the block is behind it, and a varint cannot be patched.
+            expected.Add("index: tag", 0x02);                    // counter32: zig-zag of 1
+            expected.Add("index: wire", 0x02);                   // element i32, kind scalar
+            expected.Add("index: count", 0x02);                  // counter32: zig-zag of 1
+            expected.Add("index: block length", 0x04, 0x00, 0x00, 0x00);
+
+            expected.Add("label: tag", 0x04);                    // zig-zag of 2
+            expected.Add("label: wire", 0x06);                   // element string, kind scalar
+            expected.Add("label: count", 0x02);
+            expected.Add("label: block length", 0x06, 0x00, 0x00, 0x00);
+
+            expected.Add("amount: tag", 0x06);                   // zig-zag of 3
+            expected.Add("amount: wire", 0x02);                  // element i32, kind scalar
+            expected.Add("amount: count", 0x02);
+            expected.Add("amount: block length", 0x04, 0x00, 0x00, 0x00);
+
+            // ---------------------------------------------------------------- blocks
+            //
+            // One contiguous block per column, in descriptor order. This is the whole of
+            // what makes an unknown column skippable in a single advance.
+            expected.Add("index block: row 1", 0x01, 0x00, 0x00, 0x00);
+
+            expected.Add("label block: row 1 length", 0x0a);     // counter32: zig-zag of 5
+            expected.Add("label block: row 1 bytes",
+                Encoding.UTF8.GetBytes("gamma"));
+
+            expected.Add("amount block: row 1", 0x1e, 0x00, 0x00, 0x00);
+
+            byte[] produced = File.ReadAllBytes(Path.Combine(
+                RepoLayout.OutputDir(Scenario), "binary", "SecondTable.table"));
+
+            expected.AssertMatches(produced);
+        }
+
+        /// <summary>
+        /// The invariant every reader checks before it allocates: the blocks are all that
+        /// follows the header, so their declared lengths add up to the bytes left, and no
+        /// row costs less than one byte in any block.
+        ///
+        /// Asserted over every table in every scenario's golden tree, because a writer that
+        /// gets this wrong writes a file no reader will take - and there is no reason to
+        /// discover that one target at a time.
+        /// </summary>
+        [Fact]
+        public void Every_committed_table_declares_lengths_that_add_up()
+        {
+            var tables = Directory
+                .EnumerateFiles(Path.Combine(RepoLayout.Root, "test", "fixtures", "golden"),
+                    "*.table", SearchOption.AllDirectories)
+                .OrderBy(path => path, StringComparer.Ordinal)
+                .ToList();
+
+            Assert.NotEmpty(tables);
+
+            var failures = new List<string>();
+
+            foreach (string path in tables)
+            {
+                byte[] bytes = File.ReadAllBytes(path);
+                string relative = Path.GetRelativePath(RepoLayout.Root, path);
+
+                var reader = new FormatWalker(bytes);
+
+                Assert.Equal(101u, reader.ReadFixed32());
+                Assert.Equal(0, reader.ReadByte());
+
+                int rowCount = reader.ReadCounter32();
+                int columnCount = reader.ReadCounter32();
+
+                int declared = 0;
+
+                for (int at = 0; at < columnCount; at++)
+                {
+                    reader.ReadCounter32();                      // tag
+                    byte wire = reader.ReadByte();
+                    reader.ReadCounter32();                      // elements per row
+                    int byteLength = (int)reader.ReadFixed32();
+
+                    int kind = (wire >> 4) & 0x03;
+
+                    if (kind > 2)
+                        failures.Add($"{relative}: column {at} declares kind {kind}");
+
+                    if (rowCount > byteLength)
+                    {
+                        failures.Add(
+                            $"{relative}: column {at} holds {byteLength} bytes for {rowCount} rows");
+                    }
+
+                    declared += byteLength;
+                }
+
+                if (declared != bytes.Length - reader.Position)
+                {
+                    failures.Add($"{relative}: columns declare {declared} bytes but " +
+                                 $"{bytes.Length - reader.Position} follow the header");
+                }
+            }
+
+            Assert.True(failures.Count == 0,
+                "Committed table files disagree with their own descriptors:" +
+                Environment.NewLine + string.Join(Environment.NewLine, failures));
+        }
+
+        /// <summary>
+        /// Just enough of a reader to walk a header: the four primitives it is made of.
+        /// </summary>
+        private sealed class FormatWalker
+        {
+            private readonly byte[] _bytes;
+
+            public FormatWalker(byte[] bytes) => _bytes = bytes;
+
+            public int Position { get; private set; }
+
+            public byte ReadByte() => _bytes[Position++];
+
+            public uint ReadFixed32()
+            {
+                uint value = (uint)(_bytes[Position]
+                    | _bytes[Position + 1] << 8
+                    | _bytes[Position + 2] << 16
+                    | _bytes[Position + 3] << 24);
+
+                Position += 4;
+                return value;
+            }
+
+            /// <summary>A zig-zag folded varint, which is how every count travels.</summary>
+            public int ReadCounter32()
+            {
+                uint value = 0;
+
+                for (int shift = 0; shift < 35; shift += 7)
+                {
+                    byte b = ReadByte();
+                    value |= (uint)(b & 0x7F) << shift;
+
+                    if ((b & 0x80) == 0)
+                        break;
+                }
+
+                return (int)(value >> 1) ^ -(int)(value & 1);
+            }
+        }
+
+        /// <summary>
+        /// A byte sequence built out of named pieces, so a mismatch reports which piece.
+        /// </summary>
+        private sealed class Segments
+        {
+            private readonly List<(string Name, byte[] Bytes)> _segments =
+                new List<(string, byte[])>();
+
+            public void Add(string name, params byte[] bytes) => _segments.Add((name, bytes));
+
+            public void AssertMatches(byte[] produced)
+            {
+                int at = 0;
+
+                foreach (var (name, bytes) in _segments)
+                {
+                    Assert.True(at + bytes.Length <= produced.Length,
+                        $"The file ends before `{name}`: {produced.Length} bytes in all, " +
+                        $"{at + bytes.Length} needed by this point.");
+
+                    var slice = produced.Skip(at).Take(bytes.Length).ToArray();
+
+                    Assert.True(slice.SequenceEqual(bytes),
+                        $"`{name}` at offset {at} is {Hex(slice)}, expected {Hex(bytes)}.");
+
+                    at += bytes.Length;
+                }
+
+                Assert.True(at == produced.Length,
+                    $"The file is {produced.Length} bytes and the format accounts for {at}. " +
+                    $"Trailing bytes: {Hex(produced.Skip(at).ToArray())}.");
+            }
+
+            private static string Hex(byte[] bytes)
+                => bytes.Length == 0 ? "<nothing>" : string.Join(" ", bytes.Select(b => b.ToString("x2")));
+        }
+    }
+}

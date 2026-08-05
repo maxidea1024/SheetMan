@@ -41,13 +41,13 @@ namespace SheetMan.Fixtures.Core.Client
             /// string key
             /// </summary>
             public string Key => _key;
-            internal string _key;
+            internal string _key = "";
 
             /// <summary>
             /// display text
             /// </summary>
             public string Text => _text;
-            internal string _text;
+            internal string _text = "";
             #endregion
 
             #region ToString

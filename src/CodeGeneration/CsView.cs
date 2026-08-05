@@ -120,6 +120,12 @@ namespace SheetMan.CodeGeneration
         /// <summary>Element type name.</summary>
         public string FieldType { get; set; }
 
+        /// <summary>
+        /// What follows the member's declaration to initialize it, or nothing when C#'s own
+        /// default is already an empty value.
+        /// </summary>
+        public string Initializer { get; set; }
+
         /// <summary>Element count of a serial field, which is its column count.</summary>
         public int ElementCount { get; set; }
 

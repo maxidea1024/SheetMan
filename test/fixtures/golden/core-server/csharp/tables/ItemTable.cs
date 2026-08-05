@@ -41,7 +41,7 @@ namespace SheetMan.Fixtures.Core.Server
             /// item name
             /// </summary>
             public string Name => _name;
-            internal string _name;
+            internal string _name = "";
 
             /// <summary>
             /// owning category
@@ -68,7 +68,7 @@ namespace SheetMan.Fixtures.Core.Server
             /// shop blurb
             /// </summary>
             public string Description => _description;
-            internal string _description;
+            internal string _description = "";
 
             /// <summary>
             /// shop price

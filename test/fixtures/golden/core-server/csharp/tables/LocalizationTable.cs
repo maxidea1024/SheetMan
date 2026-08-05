@@ -41,7 +41,7 @@ namespace SheetMan.Fixtures.Core.Server
             /// lookup key
             /// </summary>
             public string Key => _key;
-            internal string _key;
+            internal string _key = "";
 
             /// <summary>
             /// english text 1

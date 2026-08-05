@@ -379,6 +379,9 @@ namespace SheetMan.CodeGeneration
             Comment = CommentLines(table.Comment),
             IndexField = CName(table.Fields[0].Name),
 
+            HasStringFields = table.SerialFields.Any(
+                sf => !sf.IsRef && sf.ElementType == ValueType.String && !sf.IsVariableLengthArray),
+
             Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
 
@@ -392,6 +395,7 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(sf.FirstField.Comment),
                 Name = name,
                 Kind = ReadKind(sf),
+                IsString = !sf.IsRef && sf.ElementType == ValueType.String,
                 Tag = sf.FirstField.Tag.Value,
                 ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
                 ElementCount = sf.Fields.Count,

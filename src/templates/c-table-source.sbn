@@ -21,10 +21,34 @@ static bool {{ table.function_prefix }}Parse({{ table.table_name }}* table, sm_r
             return sm_fail_with(reader, "out of memory allocating the rows");
     }
 
+{{~ if table.has_string_fields }}
+    /* The arena hands back zeroed memory, so every member starts at its zero - which for
+     * a string is NULL, and NULL is what reaches printf when a column the file does not
+     * carry is read. An empty string instead: a literal, so there is nothing to free and
+     * nothing to allocate. */
+    for (row = 0; row < table->count; ++row) {
+        {{ table.record_name }}* record = &table->records[row];
+{{~ for field in table.fields ~}}
+{{~ if field.is_string ~}}
+{{~ if field.kind == 'serial' }}
+        {
+            int32_t element;
+
+            for (element = 0; element < {{ field.element_count }}; ++element)
+                record->{{ field.name }}[element] = "";
+        }
+{{~ else if field.kind == 'scalar' }}
+        record->{{ field.name }} = "";
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+    }
+
+{{~ end ~}}
     /* Column by column, matched by tag rather than by position: a column this build has
      * no member for is skipped by its declared length, and one whose type no longer fits
-     * the member stops the read naming the field. The rows arrive already zeroed, so a
-     * member the file has nothing for keeps its default. */
+     * the member stops the read naming the field. Rows arrive with every member at an
+     * empty value, so one the file has nothing for keeps it. */
     for (at = 0; at < column_count && !sm_failed(reader); ++at) {
         const sm_column* column = &columns[at];
         int32_t block_end = reader->position + column->byte_length;

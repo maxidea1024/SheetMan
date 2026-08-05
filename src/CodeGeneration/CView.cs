@@ -156,6 +156,9 @@ namespace SheetMan.CodeGeneration
         /// <summary>Name of the primary index member.</summary>
         public string IndexField { get; set; }
 
+        /// <summary>Whether any member holds strings, and so needs the pre-read pass.</summary>
+        public bool HasStringFields { get; set; }
+
         public IReadOnlyList<CFieldView> Fields { get; set; }
     }
 
@@ -178,6 +181,18 @@ namespace SheetMan.CodeGeneration
         /// `scalar`.
         /// </summary>
         public string Kind { get; set; }
+
+        /// <summary>
+        /// Whether this member holds strings, and so needs pointing at something before
+        /// the read.
+        /// </summary>
+        /// <remarks>
+        /// The arena hands back zeroed memory, which for a `const char*` is NULL - and a
+        /// column the file does not carry leaves it that way. Every other language gives an
+        /// empty string there; in C a NULL reaches printf and takes the process with it, so
+        /// the generated parse points every string member at "" before reading a column.
+        /// </remarks>
+        public bool IsString { get; set; }
 
         /// <summary>The column's wire tag, which is what the read matches on.</summary>
         public int Tag { get; set; }

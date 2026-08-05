@@ -41,13 +41,13 @@ namespace SheetMan.Fixtures.X
             /// category name
             /// </summary>
             public string Name => _name;
-            internal string _name;
+            internal string _name = "";
 
             /// <summary>
             /// description
             /// </summary>
             public string Description => _description;
-            internal string _description;
+            internal string _description = "";
             #endregion
 
             #region ToString

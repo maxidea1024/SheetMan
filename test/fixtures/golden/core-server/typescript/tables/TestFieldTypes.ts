@@ -36,43 +36,43 @@ export class TestFieldTypesRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number
+    public _index: number = 0
 
     /** utf8 text */
     public get stringField(): string { return this._stringField }
-    public _stringField: string
+    public _stringField: string = ''
 
     /** 32 bit integer */
     public get intField(): number { return this._intField }
-    public _intField: number
+    public _intField: number = 0
 
     /** 64 bit integer */
     public get bigIntField(): bigint { return this._bigIntField }
-    public _bigIntField: bigint
+    public _bigIntField: bigint = 0n
 
     /** single precision */
     public get floatField(): number { return this._floatField }
-    public _floatField: number
+    public _floatField: number = 0
 
     /** double precision */
     public get doubleField(): number { return this._doubleField }
-    public _doubleField: number
+    public _doubleField: number = 0
 
     /** date and time */
     public get datetimeField(): string { return this._datetimeField }
-    public _datetimeField: string
+    public _datetimeField: string = ''
 
     /** time interval */
     public get timespanField(): string { return this._timespanField }
-    public _timespanField: string
+    public _timespanField: string = ''
 
     /** globally unique id */
     public get uuidField(): string { return this._uuidField }
-    public _uuidField: string
+    public _uuidField: string = ''
 
     /** enum reference */
     public get valueTypeField(): ValueType { return this._valueTypeField }
-    public _valueTypeField: ValueType
+    public _valueTypeField: ValueType = 0 as ValueType
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {

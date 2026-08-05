@@ -41,7 +41,7 @@ namespace SheetMan.Fixtures.X
             /// label
             /// </summary>
             public string Label => _label;
-            internal string _label;
+            internal string _label = "";
 
             /// <summary>
             /// amount

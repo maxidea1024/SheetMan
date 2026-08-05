@@ -26,17 +26,17 @@ export class ItemRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number
+    public _index: number = 0
 
     /** item name */
     public get name(): string { return this._name }
-    public _name: string
+    public _name: string = ''
 
     /** category name by reference */
     public get categoryName(): string { return this._categoryName }
     public _categoryName: string
     public setReference_categoryName_INTERNAL(value: string) { this._categoryName = value }
-    public _categoryName_ItemCategory_index: number
+    public _categoryName_ItemCategory_index: number = 0
     public _categoryName_F: boolean = false
 
     /** Populate field values. */

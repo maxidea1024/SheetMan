@@ -41,7 +41,7 @@ namespace SheetMan.Fixtures.X
             /// item name
             /// </summary>
             public string Name => _name;
-            internal string _name;
+            internal string _name = "";
 
             /// <summary>
             /// category name by reference

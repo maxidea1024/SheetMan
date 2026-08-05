@@ -41,7 +41,7 @@ namespace SheetMan.Fixtures.Core
             /// utf8 text
             /// </summary>
             public string StringField => _stringField;
-            internal string _stringField;
+            internal string _stringField = "";
 
             /// <summary>
             /// logical flag

@@ -48,6 +48,12 @@ namespace SheetMan.FixtureGen
             WriteReservedWords(Prepare(outputDir, "reserved-words", "reserved-words.xlsx"));
             WriteConformance(Prepare(outputDir, "conformance", "conformance.xlsx"));
 
+            // The same three tables at two points in their history. Read across the pair -
+            // one generation's code against the other's data - and every kind of schema
+            // change gets an answer: the right value, the default, or a refusal by name.
+            WriteEvolution(Prepare(outputDir, "evolution-v1", "evolution-v1.xlsx"), second: false);
+            WriteEvolution(Prepare(outputDir, "evolution-v2", "evolution-v2.xlsx"), second: true);
+
             Console.WriteLine($"Fixtures written to {outputDir}");
             return 0;
         }
@@ -905,6 +911,138 @@ namespace SheetMan.FixtureGen
 
             // Column 1, well below the Flag enum: the two tables are at column 8.
             b.Const(1, 20, limits);
+
+            Save(workbook, path);
+        }
+
+        // --------------------------------------------------------- evolution
+
+        /// <summary>
+        /// One workbook at two points in its history, written by the same code so the
+        /// difference between the two is the whole of what the fixture is about.
+        ///
+        /// Columns carry explicit `@N` tags, which is what makes them the same columns
+        /// across the pair. What changes between v1 and v2:
+        ///
+        ///   Evolution  A column renamed, the order shuffled, one column deleted and its
+        ///              tag tombstoned, one column added. Nothing changes type, so the
+        ///              code of either generation reads the other's data.
+        ///   Promoted   Two columns widened - int to bigint, float to double. v2's code
+        ///              reads v1's data because both widenings are lossless. v1's code
+        ///              refuses v2's data, because narrowing is not.
+        ///   Refused    A column that went from string to int, which is no conversion at
+        ///              all. Refused in both directions, by name.
+        ///
+        /// The values are identical across the pair wherever a column survives, so a test
+        /// asserting what came back does not have to keep two sets of numbers straight.
+        /// </summary>
+        private static void WriteEvolution(string path, bool second)
+        {
+            var workbook = new XSSFWorkbook();
+
+            // A sheet each, because the three tables are of different widths and a rect
+            // scanner reads a sheet as one rectangle.
+            var b = new SheetBuilder(workbook.CreateSheet("Evolution"));
+
+            // --- Evolution: everything that changes without changing a type ---
+
+            var evolution = new TableSpec
+            {
+                Name = "Evolution",
+                Comment = "Columns added, deleted, renamed and reordered.",
+            };
+
+            if (!second)
+            {
+                evolution
+                    .Field(FieldSpec.Of("index@1", "int", "primary index"))
+                    .Field(FieldSpec.Of("Label@2", "string", "renamed in v2"))
+                    .Field(FieldSpec.Of("Amount@3", "int", "unchanged"))
+                    .Field(FieldSpec.Of("Doomed@4", "string", "deleted in v2"));
+
+                evolution
+                    .Row("1", "first", "10", "gone")
+                    .Row("2", "second", "-20", "also gone");
+            }
+            else
+            {
+                // Reordered as well as renamed: position carries no meaning any more, so
+                // moving a column has to be a change nothing notices.
+                evolution
+                    .Field(FieldSpec.Of("index@1", "int", "primary index"))
+                    .Field(FieldSpec.Of("Amount@3", "int", "unchanged, and now second"))
+                    .Field(FieldSpec.Of("Renamed@2", "string", "was Label in v1"))
+                    // A tombstone: the column is gone but its tag is not free. Reusing 4
+                    // for something else would make v1's code read the new column as
+                    // `Doomed`, which is the one way a tag scheme can still go wrong.
+                    .Field(FieldSpec.Of("#Doomed@4", "string", "deleted, tag reserved"))
+                    .Field(FieldSpec.Of("Added@5", "int", "new in v2"));
+
+                evolution
+                    .Row("1", "10", "first", "", "100")
+                    .Row("2", "-20", "second", "", "-200");
+            }
+
+            b.Table(1, 1, evolution);
+
+            // --- Promoted: widened types ---------------------------------------
+
+            b = new SheetBuilder(workbook.CreateSheet("Promoted"));
+
+            var promoted = new TableSpec
+            {
+                Name = "Promoted",
+                Comment = "Columns widened to a type that holds every old value.",
+            };
+
+            promoted.Field(FieldSpec.Of("index@1", "int", "primary index"));
+
+            if (!second)
+            {
+                promoted
+                    .Field(FieldSpec.Of("Amount@2", "int", "widened to bigint in v2"))
+                    .Field(FieldSpec.Of("Ratio@3", "float", "widened to double in v2"));
+            }
+            else
+            {
+                promoted
+                    .Field(FieldSpec.Of("Amount@2", "bigint", "was int in v1"))
+                    .Field(FieldSpec.Of("Ratio@3", "double", "was float in v1"));
+            }
+
+            // Values an int and a float both carry exactly, so what comes back after a
+            // promotion is comparable without a tolerance.
+            promoted
+                .Row("1", "1024", "1.5")
+                .Row("2", "-1024", "-0.25");
+
+            b.Table(1, 1, promoted);
+
+            // --- Refused: a change that is no conversion -----------------------
+
+            b = new SheetBuilder(workbook.CreateSheet("Refused"));
+
+            var refused = new TableSpec
+            {
+                Name = "Refused",
+                Comment = "A column whose type changed incompatibly.",
+            };
+
+            refused.Field(FieldSpec.Of("index@1", "int", "primary index"));
+
+            refused.Field(!second
+                ? FieldSpec.Of("Code@2", "string", "an int in v2, which is not a conversion")
+                : FieldSpec.Of("Code@2", "int", "a string in v1, which is not a conversion"));
+
+            // A third column because a table is at least three wide, and an untouched one
+            // because the refusal has to be about `Code` and nothing else.
+            refused.Field(FieldSpec.Of("Note@3", "string", "unchanged"));
+
+            refused
+                .Row("1", second ? "7" : "seven", "first")
+                .Row("2", second ? "8" : "eight", "second");
+
+            b.Table(1, 1, refused);
 
             Save(workbook, path);
         }

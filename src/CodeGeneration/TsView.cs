@@ -111,6 +111,9 @@ namespace SheetMan.CodeGeneration
         /// <summary>Member type.</summary>
         public string FieldType { get; set; }
 
+        /// <summary>What the member is declared as, when no column fills it.</summary>
+        public string DefaultValue { get; set; }
+
         /// <summary>
         /// Type the value has in the JSON export, which is not always the member type: a
         /// 64-bit integer is exported as a string, because JSON's single numeric type is a

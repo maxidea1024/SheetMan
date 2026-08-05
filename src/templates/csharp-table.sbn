@@ -62,7 +62,7 @@
             public bool {{ field.field_name }}_F = false;
 {{~ else ~}}
             public {{ field.field_type }} {{ field.prop_name }} => {{ field.field_name }};
-            internal {{ field.field_type }} {{ field.field_name }};
+            internal {{ field.field_type }} {{ field.field_name }}{{ field.initializer }};
 {{~ end ~}}
 {{~ end ~}}
             #endregion

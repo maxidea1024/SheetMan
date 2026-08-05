@@ -209,6 +209,7 @@ namespace SheetMan.CodeGeneration
                 PropName = sf.Name.ToPascalCase(),
                 FieldName = fieldName,
                 FieldType = fieldType,
+                Initializer = Initializer(sf),
                 ElementCount = sf.Fields.Count,
                 RefTable = refTable,
                 RefField = sf.FirstField.RefFieldName.ToPascalCase(),
@@ -235,6 +236,23 @@ namespace SheetMan.CodeGeneration
         /// there is no element count to expose, and the array is allocated by the read path
         /// once it knows how long this row's is.
         /// </summary>
+        /// <summary>
+        /// What a member is initialized to, as the text that follows its declaration -
+        /// nothing at all where C#'s own default is already an empty value.
+        /// </summary>
+        /// <remarks>
+        /// A column the file does not carry leaves its member at its default, and that is
+        /// not a hypothetical: delete a column and every build made before the deletion
+        /// reads files with nothing for it. Every type here zero-initializes to something
+        /// usable except a string, which starts null - and a null string is a crash one
+        /// field later rather than an empty one.
+        ///
+        /// A reference is left alone: the absence of a referenced row is what null means
+        /// here, and there is nothing to put in its place.
+        /// </remarks>
+        private static string Initializer(SerialField sf)
+            => !sf.IsRef && sf.ElementType == Models.ValueType.String ? " = \"\"" : "";
+
         private static string DeclarationKind(SerialField sf)
         {
             if (sf.IsArray)

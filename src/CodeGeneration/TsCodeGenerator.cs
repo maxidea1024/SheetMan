@@ -234,6 +234,7 @@ namespace SheetMan.CodeGeneration
                 PropName = prop,
                 FieldName = field,
                 PascalName = sf.Name.ToPascalCase(),
+                DefaultValue = DefaultValue(sf),
                 FieldType = fieldType,
                 JsonWireType = JsonWireTypeOf(sf),
                 ElementCount = sf.Fields.Count,
@@ -253,6 +254,43 @@ namespace SheetMan.CodeGeneration
                 Tag = sf.FirstField.Tag.Value,
                 ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
             };
+        }
+
+        /// <summary>
+        /// An empty value of the member's own type, for the declaration to start at.
+        /// </summary>
+        /// <remarks>
+        /// A column the file does not carry leaves its member at whatever the declaration
+        /// gave it, and that is not a hypothetical: delete a column and every build made
+        /// before the deletion reads files that have nothing for it. An empty string is a
+        /// value a consumer can use; `undefined` is a crash one field later.
+        /// </remarks>
+        private string DefaultValue(SerialField sf)
+        {
+            // A reference stays undefined: the absence of a referenced row is what that
+            // means here, and there is nothing to put in its place.
+            if (sf.IsRef)
+                return "undefined";
+
+            switch (sf.ElementType)
+            {
+                case ValueType.String: return "''";
+                case ValueType.Bool: return "false";
+
+                // A bigint literal, because a number does not assign to one.
+                case ValueType.Int64: return "0n";
+
+                // Both travel as ticks and are exposed as a decimal string, and a uuid as
+                // its canonical text form.
+                case ValueType.DateTime:
+                case ValueType.TimeSpan:
+                case ValueType.Uuid: return "''";
+
+                // A numeric enum, so its zero is a value whether or not a label names it.
+                case ValueType.Enum: return $"0 as {sf.FirstField.Enum.Name}";
+
+                default: return "0";
+            }
         }
 
         private static string DeclarationKind(SerialField sf)

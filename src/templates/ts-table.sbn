@@ -46,7 +46,7 @@ export class {{ name }}Record {
 {{~ if field.kind == 'array_ref' ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
     public static readonly {{ field.prop_name }}_N: number = {{ field.element_count }}
-    public {{ field.field_name }}: {{ field.field_type }}[]
+    public {{ field.field_name }}: {{ field.field_type }}[] = []
     public setReference_{{ field.prop_name }}_INTERNAL(index: number, value: {{ field.reference_setter_type }}): void { this.{{ field.field_name }}[index] = value; }
 {{~ else if field.kind == 'var_array' ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
@@ -54,7 +54,7 @@ export class {{ name }}Record {
 {{~ else if field.kind == 'array' ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
     public static readonly {{ field.prop_name }}_N = {{ field.element_count }}
-    public {{ field.field_name }}: {{ field.field_type }}[]
+    public {{ field.field_name }}: {{ field.field_type }}[] = []
 {{~ else if field.kind == 'scalar_ref' ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
     public {{ field.field_name }}: {{ field.field_type }}
@@ -63,11 +63,11 @@ export class {{ name }}Record {
 {{~ else ~}}
     public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value }
 {{~ end ~}}
-    public {{ field.field_name }}_{{ field.ref_table }}_index: number
+    public {{ field.field_name }}_{{ field.ref_table }}_index: number = 0
     public {{ field.field_name }}_F: boolean = false
 {{~ else ~}}
     public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
-    public {{ field.field_name }}: {{ field.field_type }}
+    public {{ field.field_name }}: {{ field.field_type }} = {{ field.default_value }}
 {{~ end ~}}
 {{~ end ~}}
 

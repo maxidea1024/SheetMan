@@ -32,7 +32,7 @@ export class ArrayTypesRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number
+    public _index: number = 0
 
     /** free-form tags */
     public get tags(): string[] { return this._tags }
@@ -53,7 +53,7 @@ export class ArrayTypesRecord {
     /** fixed slot 1 */
     public get slotArray(): number[] { return this._slotArray }
     public static readonly slotArray_N = 2
-    public _slotArray: number[]
+    public _slotArray: number[] = []
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {

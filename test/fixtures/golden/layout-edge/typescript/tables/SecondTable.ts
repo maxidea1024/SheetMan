@@ -26,15 +26,15 @@ export class SecondTableRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number
+    public _index: number = 0
 
     /** label */
     public get label(): string { return this._label }
-    public _label: string
+    public _label: string = ''
 
     /** amount */
     public get amount(): number { return this._amount }
-    public _amount: number
+    public _amount: number = 0
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {

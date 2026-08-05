@@ -27,21 +27,21 @@ export class LocalizationRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    public _index: number
+    public _index: number = 0
 
     /** lookup key */
     public get key(): string { return this._key }
-    public _key: string
+    public _key: string = ''
 
     /** english text 1 */
     public get textEnArray(): string[] { return this._textEnArray }
     public static readonly textEnArray_N = 2
-    public _textEnArray: string[]
+    public _textEnArray: string[] = []
 
     /** korean text 1 */
     public get textKoArray(): string[] { return this._textKoArray }
     public static readonly textKoArray_N = 2
-    public _textKoArray: string[]
+    public _textKoArray: string[] = []
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {

@@ -120,7 +120,11 @@ namespace SheetMan.Fixtures.Core.Server
                 target.Append(", ");
 
             bool firstChild = true;
-            if (self is string)
+            if (self is null)
+            {
+                target.Append("null");
+            }
+            else if (self is string)
             {
                 target.Append('"');
                 target.Append(self);

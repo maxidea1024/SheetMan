@@ -301,18 +301,47 @@ namespace SheetMan.CodeGeneration
             };
         }
 
+        /// <summary>
+        /// The member declarations, every one of them initialized.
+        /// </summary>
+        /// <remarks>
+        /// Java's own default for a reference is null, and a column the file does not carry
+        /// is exactly the case that leaves a member at its default: delete a column, and
+        /// code generated before the deletion reads a file that has nothing for it. An
+        /// empty string and an empty array are values a consumer can use; null is a crash
+        /// one field later.
+        ///
+        /// A reference is the exception and stays null, because the absence of a referenced
+        /// row is what null means here and there is nothing to put in its place.
+        /// </remarks>
         private IReadOnlyList<string> Declarations(SerialField sf, string name, string elementType)
         {
             if (sf.IsRef)
             {
                 return sf.IsArray
-                    ? new[] { $"{elementType}[] {name};", $"int[] {name}Index;" }
+                    ? new[] { $"{elementType}[] {name} = new {elementType}[0];", $"int[] {name}Index = new int[0];" }
                     : new[] { $"{elementType} {name};", $"int {name}Index;" };
             }
 
             return sf.IsArray
-                ? new[] { $"{elementType}[] {name};" }
-                : new[] { $"{elementType} {name};" };
+                ? new[] { $"{elementType}[] {name} = new {elementType}[0];" }
+                : new[] { $"{elementType} {name}{Initializer(sf)};" };
+        }
+
+        /// <summary>
+        /// An empty value of the member's own type, for the declaration to start at.
+        /// </summary>
+        private string Initializer(SerialField sf)
+        {
+            switch (sf.ElementType)
+            {
+                // The reference types. Everything else is a primitive whose zero is already
+                // an empty value, and saying so again would only be noise.
+                case ValueType.String: return " = \"\"";
+                case ValueType.Uuid: return " = LiteBinaryReader.Uuid.empty()";
+                case ValueType.Enum: return $" = {sf.FirstField.Enum.Name.ToPascalCase()}.of(0)";
+                default: return "";
+            }
         }
 
         /// <summary>
