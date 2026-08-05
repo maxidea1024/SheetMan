@@ -1,0 +1,70 @@
+# CLI
+
+빌드하고 실행하는 법, 그리고 명령줄 옵션.
+
+> [문서 목록으로](../readme.md)
+
+---
+
+## Build
+
+`build/` 폴더에 빌드용 스크립트들이 있습니다. 각 플랫폼별로 빌드하려면 아래 표를 참고하세요.
+
+|플랫폼|빌드스크립트|
+|--|--|
+|Windows|build-win64.bat|
+|Linux|build-linux64.sh|
+|Mac|build-osx64.sh|
+
+빌드 전에 [.NET 10 SDK](https://dotnet.microsoft.com/download)를 설치해 주셔야합니다.
+
+생성되는 실행 파일은 self-contained 단일 파일입니다. `PublishTrimmed`는 의도적으로 사용하지 않습니다 — NPOI, Newtonsoft.Json, Google.Apis가 모두 리플렉션으로 타입을 찾기 때문에 트리밍이 런타임에 필요한 멤버를 제거합니다.
+
+
+
+
+### 배포 (Publish)
+
+```
+dotnet publish src/SheetMan.csproj -c Release -r win-x64 --self-contained true -o out
+```
+
+`-r`는 `win-x64` / `linux-x64` / `osx-arm64` 등으로 바꿉니다. 결과는 실행파일 하나(약 60MB)와 네이티브 의존 두 개뿐이며, **.NET이 설치되지 않은 머신에서 그대로 동작합니다.**
+
+프레임워크 의존(`--self-contained false`)으로 배포한다면 대상 머신에 **ASP.NET Core 런타임**이 필요합니다. 기본 .NET 런타임만으로는 `--serve`뿐 아니라 변환도 시작되지 않습니다 — 웹서버가 프레임워크 참조로 들어가 있기 때문입니다. 빌드 머신에 무엇이 깔려 있을지 확신할 수 없다면 self-contained가 안전합니다.
+
+> CI가 매 실행마다 linux-x64로 self-contained 퍼블리시를 만들고 그 결과물로 변환 하나를 돌립니다. 위 문장은 주장이 아니라 검증된 사실입니다.
+
+
+
+## Run
+
+```
+sheetman --recipe recipe.json
+```
+
+|옵션|설명|
+|--|--|
+|`-r`, `--recipe`|사용할 recipe 파일|
+|`--new-recipe <파일>`|시작용 recipe를 만들고 종료. 모든 목록에 기본값이 채워진 항목 하나가 들어 있어 **어떤 설정이 있는지 파일만 보고 알 수 있습니다**. 필요 없는 항목은 지우면 되고, 경로가 빈 항목은 꺼진 것으로 취급되니 그냥 둬도 됩니다.|
+|`--target-side <side>`|실행 전체를 한쪽으로 좁힘. `client` / `server` / `both`(기본).|
+|`--commit <id>`|이 변환이 어느 커밋의 것인지. 생략하면 시트가 있는 워킹카피에서 git으로 읽습니다. 「[Summary와 히스토리](history.md)」 참고.|
+|`--branch <name>`|스냅샷이 속할 브랜치. 생략하면 git에서 읽습니다.|
+|`--commit-author "Name <email>"`|작성자를 직접 지정. git 값을 덮어씁니다.|
+|`--commit-date <ISO8601>`|변경 시각을 직접 지정. git 값을 덮어씁니다.|
+|`--repository <경로>`|커밋 정보를 읽을 워킹카피. 생략하면 시트의 소스 디렉터리, 그다음 현재 디렉터리를 봅니다.|
+|`--history`|변환 대신 **변경 내역을 조회**하고 종료|
+|`--stats`|변환 대신 **한 커밋의 통계를 조회**하고 종료|
+|`--serve`|변환 대신 **HTTP로 히스토리를 서비스**하고 계속 실행|
+|`--prune`|변환 대신 **오래된 스냅샷의 변경 상세를 정리**하고 종료|
+|`--verbose`|디버그 로그까지 출력|
+|`--silent`|ERROR/FATAL 외에는 출력하지 않음|
+|`--debug`|오류 발생 시 콜스택까지 출력|
+
+인자가 많아지면 파일로 빼서 `@`로 넘길 수 있습니다. 한 줄에 인자 하나씩 적습니다.
+
+```
+sheetman @args.txt
+```
+
+성공하면 `0`, 실패하면 `0`이 아닌 값을 반환하므로 빌드 파이프라인에서 그대로 사용할 수 있습니다.
