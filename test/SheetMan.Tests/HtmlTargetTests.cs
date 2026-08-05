@@ -187,5 +187,71 @@ namespace SheetMan.Tests
                 }
             }
         }
+
+        /// <summary>
+        /// A section with nothing in it says so, rather than rendering an empty list.
+        /// </summary>
+        /// <remarks>
+        /// The index has a column per kind of entity, and a model that declares no enum is
+        /// ordinary - most do not. It rendered `Enumerations` over an empty `&lt;ul&gt;`, which
+        /// reads as a page that failed to fill itself in rather than as an answer.
+        ///
+        /// `core` has an enum and a constant set, so every column there is full - which is why
+        /// this scenario alone would prove nothing, and why `reserved-words` is here too.
+        ///
+        /// Three golden trees turned out to have been recording the empty `&lt;ul&gt;` all along:
+        /// `excel-typed`, `foreign-field` and `layout-edge` all generate documentation for a model
+        /// with no enum. Which is the usual shape of this - a golden comparison answers "did the
+        /// output change" and had happily pinned the wrong answer, three times over.
+        ///
+        /// Stated as "no page contains an empty list" rather than naming the columns, so a column
+        /// added later is covered without anyone remembering to add it.
+        /// </remarks>
+        [Theory]
+        [InlineData("core")]
+        [InlineData("reserved-words")]
+        public void No_page_shows_an_empty_list(string scenario)
+        {
+            var conversion = SheetManRunner.Convert(scenario);
+
+            Assert.True(conversion.Succeeded,
+                $"Conversion of `{scenario}` failed.{Environment.NewLine}{conversion.Describe()}");
+
+            string root = Path.Combine(RepoLayout.OutputDir(scenario), "html");
+
+            Assert.True(Directory.Exists(root), $"`{scenario}` generated no documentation at {root}.");
+
+            var pages = Directory.GetFiles(root, "*.html", SearchOption.AllDirectories);
+
+            Assert.NotEmpty(pages);
+
+            foreach (var page in pages)
+            {
+                string text = File.ReadAllText(page).Replace("\r\n", "\n");
+
+                Assert.DoesNotContain("<ul>\n</ul>", text);
+                Assert.DoesNotContain("<ul></ul>", text);
+            }
+        }
+
+        /// <summary>
+        /// And the empty case really is reached, so the test above is not passing by never
+        /// meeting one.
+        /// </summary>
+        [Fact]
+        public void The_index_says_so_when_a_model_declares_no_enum()
+        {
+            var conversion = SheetManRunner.Convert("reserved-words");
+
+            Assert.True(conversion.Succeeded,
+                $"Conversion failed.{Environment.NewLine}{conversion.Describe()}");
+
+            string index = File.ReadAllText(
+                Path.Combine(RepoLayout.OutputDir("reserved-words"), "html", "index.html"));
+
+            // The heading stays, because the navigation links to it by id.
+            Assert.Contains("id=\"enums\"", index);
+            Assert.Contains("None declared.", index);
+        }
     }
 }

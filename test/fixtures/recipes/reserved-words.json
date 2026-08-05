@@ -52,7 +52,13 @@
     { "Type": "c", "Path": "test/fixtures/output/reserved-words/c",
       "AccessorName": "ReservedData" },
     { "Type": "php", "Path": "test/fixtures/output/reserved-words/php",
-      "Namespace": "Reserved", "AccessorName": "ReservedData" }
+      "Namespace": "Reserved", "AccessorName": "ReservedData" },
+
+    // Not for the names - the documentation escapes nothing, so a keyword is just a word
+    // here. It is here because this model declares no enum and no constant set, and the
+    // index page's empty columns had no test on them. Three golden trees had been recording
+    // the empty list as correct.
+    { "Type": "html", "Path": "test/fixtures/output/reserved-words/html" }
   ],
 
   "CodeGenerations": {
