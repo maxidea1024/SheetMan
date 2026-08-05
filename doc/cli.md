@@ -4,6 +4,8 @@
 
 > [문서 목록으로](../readme.md)
 
+오류 메시지별 대처는 [트러블슈팅](troubleshooting.md)에 있습니다.
+
 ---
 
 ## Build

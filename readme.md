@@ -15,8 +15,9 @@ __정의된 엔티티를 사용하기 위해서 단 한줄의 코드도 작성�
 |[시트 작성](doc/sheets.md)|엑셀·구글 스프레드시트에 데이터를 배치하는 법, 엔티티 마커, 이름 규칙, 지원 타입, 서버/클라 분리, 정적 검증|
 |[CLI](doc/cli.md)|빌드하고 실행하는 법, 명령줄 옵션|
 |[Recipe 파일](doc/recipe.md)|무엇을 어디서 읽어 어디로 내보낼지 적는 파일|
-|[내보내기](doc/exports.md)|바이너리·JSON 파일과 MySQL / PostgreSQL / MongoDB / Redis 적재|
+|[내보내기](doc/exports.md)|바이너리·JSON 파일과 MySQL / PostgreSQL / MongoDB / Redis 적재. **바이너리 형식과 그것을 쓰는 이유**|
 |[**언어별 가이드**](doc/languages/readme.md)|생성된 코드를 프로젝트에 넣고 쓰는 법. 언어마다 준비물·주의사항·트러블슈팅이 다릅니다|
+|[**트러블슈팅**](doc/troubleshooting.md)|변환이 실패했을 때 어디를 볼 것인가. 도구가 실제로 출력하는 메시지별로|
 |[Summary와 히스토리](doc/history.md)|누가 언제 무엇을 바꿨는지 셀 단위로 추적하고 브라우저로 확인하기|
 |[아키텍처와 개발](doc/architecture.md)|내부 구조, 패키징 주의점, 이 저장소에서 개발·테스트하는 법|
 |[앞으로 할 것](doc/roadmap.md)|하려는 것과, 하지 않기로 한 것과 그 이유|
