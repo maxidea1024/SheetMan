@@ -29,8 +29,10 @@ namespace SheetMan.CodeGeneration
         public string PackageName { get; set; } = "gamedata";
 
         /// <summary>
-        /// Name of the accessor class, which every generated type nests inside and which
-        /// names the file.
+        /// Name of the accessor class, and so of its file.
+        ///
+        /// Every generated type used to nest inside it. They are one file each now, because
+        /// Java demands a public type be alone in a file named after it.
         /// </summary>
         public string AccessorName { get; set; } = "SheetManData";
 

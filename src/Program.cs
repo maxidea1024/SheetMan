@@ -73,7 +73,21 @@ namespace SheetMan
         {
             if (!string.IsNullOrEmpty(options.NewRecipeFilename))
             {
-                RecipeSkeleton.WriteToFile(options.NewRecipeFilename);
+                // Its own try, because this runs before the conversion's error handling is set
+                // up - and naming a template that does not exist is the most likely way to get
+                // this wrong, so it has to answer with the list rather than a stack trace.
+                try
+                {
+                    if (string.IsNullOrEmpty(options.RecipeTemplate))
+                        RecipeSkeleton.WriteToFile(options.NewRecipeFilename);
+                    else
+                        RecipeSkeleton.WriteTemplateToFile(options.NewRecipeFilename, options.RecipeTemplate);
+                }
+                catch (SheetManException ex)
+                {
+                    Console.Error.WriteLine(ex.Message);
+                    return 1;
+                }
 
                 Console.WriteLine($"Wrote a starting recipe to {Path.GetFullPath(options.NewRecipeFilename)}");
                 return 0;

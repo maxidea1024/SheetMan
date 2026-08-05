@@ -89,6 +89,15 @@
 
   <ItemGroup>
     <!--
+      Starting recipes the `template` option writes, embedded so that `sheetman` produces the
+      same file wherever it was installed from.
+    -->
+    <EmbeddedResource Include="recipes\*.jsonc"
+                      LogicalName="SheetMan.Recipes.%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
       Code generation templates, embedded for the same reason as the readers: what ships
       cannot drift from what is committed, and a target cannot be pointed at a template of
       a different vintage.

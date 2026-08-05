@@ -18,6 +18,21 @@ namespace SheetMan
         public string NewRecipeFilename { get; set; }
 
         /// <summary>
+        /// Which starting recipe `--new-recipe` writes.
+        /// </summary>
+        /// <remarks>
+        /// Left out, the file holds every setting at its default. That answers what a target
+        /// takes and not what to write for a given situation - and a page holding forty options
+        /// at their defaults is its own kind of blank page.
+        ///
+        /// A template is a recipe for a situation, carrying the settings that situation needs
+        /// and a comment on each saying what it is for.
+        /// </remarks>
+        [Option("template", HelpText =
+            "Which starting recipe --new-recipe writes. Omit for one holding every setting.")]
+        public string RecipeTemplate { get; set; }
+
+        /// <summary>
         /// Narrows the whole run to one side of the data.
         ///
         /// Two things follow from it. Output entries built for the other side are skipped,

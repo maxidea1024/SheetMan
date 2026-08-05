@@ -281,8 +281,10 @@ namespace SheetMan.Recipe
                 public string Path { get; set; } = "";
 
                 /// <summary>
-                /// Name of the generated accessor, which is also the generated file's
-                /// name where the target emits a single file.
+                /// Name of the generated accessor, which also names the file it lands in.
+                ///
+                /// The other generated types are files of their own beside it, named after
+                /// themselves - a table, an enum and a constant set each get one.
                 /// </summary>
                 public string AccessorName { get; set; } = "SheetManAccessor";
 
@@ -333,8 +335,10 @@ namespace SheetMan.Recipe
                 public string Path { get; set; } = "";
 
                 /// <summary>
-                /// Name of the generated accessor, which is also the generated file's
-                /// name where the target emits a single file.
+                /// Name of the generated accessor, which also names the file it lands in.
+                ///
+                /// The other generated types are files of their own beside it, named after
+                /// themselves - a table, an enum and a constant set each get one.
                 /// </summary>
                 public string AccessorName { get; set; } = "SheetManAccessor";
 
@@ -385,8 +389,10 @@ namespace SheetMan.Recipe
                 public string Path { get; set; } = "";
 
                 /// <summary>
-                /// Name of the generated accessor, which is also the generated file's
-                /// name where the target emits a single file.
+                /// Name of the generated accessor, which also names the file it lands in.
+                ///
+                /// The other generated types are files of their own beside it, named after
+                /// themselves - a table, an enum and a constant set each get one.
                 /// </summary>
                 public string AccessorName { get; set; } = "SheetManAccessor";
 

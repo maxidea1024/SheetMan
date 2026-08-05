@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
@@ -29,6 +30,63 @@ namespace SheetMan.Recipe
     /// </summary>
     internal static class RecipeSkeleton
     {
+        /// <summary>Prefix of the embedded starting recipes.</summary>
+        private const string TemplatePrefix = "SheetMan.Recipes.";
+
+        /// <summary>
+        /// The one the header shows in its example line.
+        /// </summary>
+        /// <remarks>
+        /// Named rather than "whichever sorts first", which was `ci` - a template for a
+        /// situation nobody is in on their first day.
+        /// </remarks>
+        private const string ExampleTemplate = "unity";
+
+        /// <summary>
+        /// The template names `--template` accepts, in the order they are offered.
+        /// </summary>
+        /// <remarks>
+        /// Read from the assembly rather than listed, so a template added to src/recipes is
+        /// offered without anyone remembering to name it here.
+        /// </remarks>
+        public static IReadOnlyList<string> TemplateNames
+            => typeof(RecipeSkeleton).Assembly.GetManifestResourceNames()
+                .Where(name => name.StartsWith(TemplatePrefix, StringComparison.Ordinal))
+                .Select(name => name.Substring(TemplatePrefix.Length).Replace(".jsonc", ""))
+                .OrderBy(name => name, StringComparer.Ordinal)
+                .ToList();
+
+        /// <summary>
+        /// Writes one of the worked starting recipes.
+        /// </summary>
+        /// <remarks>
+        /// The reflected skeleton below shows every setting a target takes, which answers "what
+        /// can I write" and not "what should I write" - and starting from a page holding every
+        /// option at its default is its own kind of blank page.
+        ///
+        /// So there are templates: a recipe for a situation, with the settings that situation
+        /// needs, each carrying a comment saying what it is for and when to change it. Somebody
+        /// shipping a Unity client should be able to change three paths and be done.
+        /// </remarks>
+        public static void WriteTemplateToFile(string filename, string template)
+        {
+            string resource = TemplatePrefix + template + ".jsonc";
+
+            using var stream = typeof(RecipeSkeleton).Assembly.GetManifestResourceStream(resource);
+
+            if (stream == null)
+            {
+                throw new SheetManException(
+                    $"There is no starting recipe called `{template}`. " +
+                    $"Use one of: {string.Join(", ", TemplateNames)} - or leave --template off " +
+                    "for one holding every setting at its default.");
+            }
+
+            using var reader = new StreamReader(stream);
+
+            File.WriteAllText(filename, reader.ReadToEnd());
+        }
+
         public static void WriteToFile(string filename)
         {
             var recipe = new RecipeModel();
@@ -60,6 +118,14 @@ namespace SheetMan.Recipe
             header.AppendLine("//");
             header.AppendLine($"// Sources: {SourceRegistry.KnownIds}");
             header.AppendLine($"// Targets: {TargetRegistry.KnownIds}");
+            header.AppendLine("//");
+            header.AppendLine("// This file shows every setting at its default, which answers what a target takes");
+            header.AppendLine("// and not what to write for a given situation. For that there are worked starting");
+            header.AppendLine("// recipes, each commented with what its settings are for:");
+            header.AppendLine("//");
+            header.AppendLine($"//   sheetman --new-recipe my-recipe.json --template {ExampleTemplate}");
+            header.AppendLine("//");
+            header.AppendLine($"// Templates: {string.Join(", ", TemplateNames)}");
             header.AppendLine();
 
             return header.ToString();

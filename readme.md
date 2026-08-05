@@ -2,7 +2,7 @@
 
 엑셀 또는 구글스프레드시트로 작성한 테이블 데이터를 프로그램에서 사용하기 쉬운 형태로 가공하고 정적 검증을 해주는 간단한 `Command Line Interface` 형태의 도구입니다.
 
-![임포트 → 검증 → 내보내기/코드생성 파이프라인](doc/pipeline-overview.png)
+![임포트 → 검증 → 내보내기/코드생성 파이프라인](doc/pipeline.svg)
 
 __정의된 엔티티를 사용하기 위해서 단 한줄의 코드도 작성할 필요가 없습니다!__
 
@@ -58,9 +58,22 @@ dotnet build SheetMan.slnx -c Release
 무엇을 어디서 읽어 어디로 내보낼지는 recipe 파일에 적습니다.
 
 ```
-sheetman --new-recipe my-recipe.json    # 뼈대 만들기
-sheetman --recipe my-recipe.json        # 변환
+sheetman --new-recipe my-recipe.json --template unity   # 상황에 맞는 시작점
+sheetman --recipe my-recipe.json                        # 변환
 ```
+
+`--template`은 **그 상황에 필요한 설정만, 각각 왜 있는지 주석을 달아** 내놓습니다. 처음부터 백지로 시작하지 않아도 됩니다.
+
+|템플릿|무엇을 위한 것|
+|--|--|
+|`unity`|유니티 클라이언트 — StreamingAssets + C#|
+|`client-server`|같은 시트에서 클라이언트와 서버 두 벌|
+|`web`|구글 스프레드시트 → TypeScript + JSON|
+|`server`|게임 서버 — 데이터베이스 적재 + C++|
+|`unreal`|언리얼 모듈|
+|`ci`|변경 이력을 남기는 CI 변환|
+
+`--template`을 생략하면 **모든 설정이 기본값으로 채워진** 파일이 나옵니다 — 무엇을 쓸 수 있는지 훑어볼 때.
 
 자세한 것은 [CLI](doc/cli.md)와 [Recipe 파일](doc/recipe.md)을 보세요.
 
