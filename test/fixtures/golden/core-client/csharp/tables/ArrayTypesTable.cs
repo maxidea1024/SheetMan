@@ -66,7 +66,7 @@ namespace SheetMan.Fixtures.Core.Client
             /// </summary>
             public int[] SlotArray => _slotArray;
             public const int SlotArray_N = 2;
-            internal int[] _slotArray = new int[SlotArray_N];
+            internal int[] _slotArray = System.Array.Empty<int>();
             #endregion
 
             #region ToString
@@ -240,6 +240,7 @@ namespace SheetMan.Fixtures.Core.Client
                         for (int i = 0; i < count; i++)
                         {
                             var record = _records[i];
+                            record._slotArray = new int[Record.SlotArray_N];
                             for (int j = 0; j < Record.SlotArray_N; ++j)
                             {
                                 record._slotArray[j] = reader.ReadI32As(column.Element);

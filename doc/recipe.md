@@ -134,6 +134,8 @@ sheetman --new-recipe my-recipe.json --template unity
 |--|--|--|--|
 |`FileExtension`|Binary|`".table"`|각 테이블 파일의 확장자. 코드 생성 쪽 `BinaryTableFileExtension`과 짝을 맞추세요|
 |`Compress`|Binary|`false`|**예약. 구현되어 있지 않습니다.** 형식이 압축 플래그 자리를 비워두고 있을 뿐, 아무것도 읽거나 쓰지 않습니다|
+|`SchemaBaseline`|Binary|`""`|지난 스키마의 기록을 둘 경로. **커밋하세요.** 매 실행이 스키마를 그것과 비교해서, 이미 배포된 리더가 버티지 못할 변경이면 **아무것도 쓰기 전에** 컬럼 이름을 짚어 멈춥니다. 비워두면 검사하지 않습니다|
+|`AcceptSchemaChanges`|Binary|`[]`|의도한 변경을 `"테이블.컬럼"`으로 승인. 타입 변경은 재생성된 코드와 함께 나가야 하므로 자동 통과가 아닙니다. 한 번 통과하면 베이스라인이 갱신되니 다시 지워도 됩니다|
 |`UseCompactRowFormat`|Json|`false`|각 행을 필드 이름 있는 객체 대신 **값만 담은 배열**로. 작아지지만 사람이 보기 어렵습니다|
 |`Indented`|Json|`false`|들여쓰기. 사람이 들여다볼 때만 켜세요|
 |`ConnectionString`|DB 4종|`""`|연결 문자열. **`${NAME}`으로 환경 변수를 채웁니다** — 비밀번호를 recipe에 적지 마세요. 변수가 없으면 오류이고 어느 변수인지 말합니다|
@@ -342,6 +344,8 @@ TypeScript는 JSON과 바이너리 양쪽을 읽으므로 둘 다 내보냅니�
 
 `history`는 변환마다 셀 단위 스냅샷을 남깁니다. `OnFailure`가 `warn`이라, 기록용 데이터베이스가 잠깐 안 되어도 빌드는 계속됩니다.
 
+`SchemaBaseline`은 CI에서 특히 값을 합니다 — 이미 배포된 클라이언트가 못 읽을 스키마 변경이면 **데이터를 쓰기 전에** 빌드가 멈춥니다. 베이스라인 파일은 커밋하세요.
+
 ```jsonc
 {
   "Sources": {
@@ -349,7 +353,13 @@ TypeScript는 JSON과 바이너리 양쪽을 읽으므로 둘 다 내보냅니�
   },
 
   "Exports": {
-    "Binary": [ { "Path": "./build/data" } ]
+    "Binary": [
+      {
+        "Path": "./build/data",
+        "SchemaBaseline": "./schema-baseline.json",
+        "AcceptSchemaChanges": []
+      }
+    ]
   },
 
   "Targets": [

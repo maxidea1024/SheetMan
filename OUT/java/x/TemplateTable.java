@@ -31,17 +31,90 @@ public final class TemplateTable {
     }
 
     /** Loads the table from a .table file written by SheetMan. */
+    /**
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public void read(Path filename) {
         LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        int count = LiteBinaryReader.readTableHeader(reader);
+        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        int count = header.rowCount;
 
         records.clear();
         byIndex.clear();
 
         for (int i = 0; i < count; i++) {
-                TemplateRecord record = new TemplateRecord();
-            record.read(reader);
-            records.add(record);
+            records.add(new TemplateRecord());
+        }
+
+        for (LiteBinaryReader.Column column : header.columns) {
+            int blockEnd = reader.position() + column.byteLength;
+
+            switch (column.tag) {
+                case 1: {
+                    LiteBinaryReader.checkColumn(column, "Template.Index", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    for (TemplateRecord record : records) {
+                        record.index = reader.readI32As(column.element);
+                    }
+                    break;
+                }
+                case 2: {
+                    LiteBinaryReader.checkColumn(column, "Template.Class", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    for (TemplateRecord record : records) {
+                        record.class_ = reader.readString();
+                    }
+                    break;
+                }
+                case 3: {
+                    LiteBinaryReader.checkColumn(column, "Template.Int", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    for (TemplateRecord record : records) {
+                        record.int_ = reader.readI32As(column.element);
+                    }
+                    break;
+                }
+                case 4: {
+                    LiteBinaryReader.checkColumn(column, "Template.Delete", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_BOOL);
+                    for (TemplateRecord record : records) {
+                        record.delete = reader.readBool();
+                    }
+                    break;
+                }
+                case 5: {
+                    LiteBinaryReader.checkColumn(column, "Template.Operator", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    for (TemplateRecord record : records) {
+                        record.operator = reader.readString();
+                    }
+                    break;
+                }
+                case 6: {
+                    LiteBinaryReader.checkColumn(column, "Template.Namespace", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    for (TemplateRecord record : records) {
+                        record.namespace = reader.readString();
+                    }
+                    break;
+                }
+                case 7: {
+                    LiteBinaryReader.checkColumn(column, "Template.Constructor", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    for (TemplateRecord record : records) {
+                        record.constructor = reader.readString();
+                    }
+                    break;
+                }
+                case 8: {
+                    LiteBinaryReader.checkColumn(column, "Template.Function", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    for (TemplateRecord record : records) {
+                        record.function = reader.readString();
+                    }
+                    break;
+                }
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength);
+                    break;
+            }
+
+            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (TemplateRecord record : records) {

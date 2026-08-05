@@ -39,18 +39,6 @@ final class TemplateRecord
     public string $constructor = '';
     /** function: keyword in TypeScript */
     public string $function = '';
-    /** Reads one record, in the exact field order the exporter wrote. */
-    public function read(LiteBinaryReader $reader): void
-    {
-        $this->index = $reader->readInt32();
-        $this->class = $reader->readString();
-        $this->int = $reader->readInt32();
-        $this->delete = $reader->readBool();
-        $this->operator = $reader->readString();
-        $this->namespace = $reader->readString();
-        $this->constructor = $reader->readString();
-        $this->function = $reader->readString();
-    }
 }
 
 /** Every row of Template. */
@@ -69,19 +57,93 @@ final class TemplateTable
     }
 
     /** Loads the table from a .table file written by SheetMan. */
+    /**
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public function read(string $filename): void
     {
         $reader = LiteBinaryReader::fromFile($filename);
-        $count = $reader->readTableHeader();
+        [$count, $columns] = $reader->readTableHeader();
 
         $this->records = [];
         $this->byIndex = [];
 
         for ($i = 0; $i < $count; $i++) {
-            $record = new TemplateRecord();
-            $record->read($reader);
+            $this->records[] = new TemplateRecord();
+        }
 
-            $this->records[] = $record;
+        foreach ($columns as $column) {
+            $blockEnd = $reader->position() + $column['byteLength'];
+
+            switch ($column['tag']) {
+                case 1:
+                    LiteBinaryReader::checkColumn($column, 'Template.Index', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    foreach ($this->records as $record) {
+                        $record->index = $reader->readI32As($column['element']);
+                    }
+                    break;
+
+                case 2:
+                    LiteBinaryReader::checkColumn($column, 'Template.Class', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    foreach ($this->records as $record) {
+                        $record->class = $reader->readString();
+                    }
+                    break;
+
+                case 3:
+                    LiteBinaryReader::checkColumn($column, 'Template.Int', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    foreach ($this->records as $record) {
+                        $record->int = $reader->readI32As($column['element']);
+                    }
+                    break;
+
+                case 4:
+                    LiteBinaryReader::checkColumn($column, 'Template.Delete', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
+                    foreach ($this->records as $record) {
+                        $record->delete = $reader->readBool();
+                    }
+                    break;
+
+                case 5:
+                    LiteBinaryReader::checkColumn($column, 'Template.Operator', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    foreach ($this->records as $record) {
+                        $record->operator = $reader->readString();
+                    }
+                    break;
+
+                case 6:
+                    LiteBinaryReader::checkColumn($column, 'Template.Namespace', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    foreach ($this->records as $record) {
+                        $record->namespace = $reader->readString();
+                    }
+                    break;
+
+                case 7:
+                    LiteBinaryReader::checkColumn($column, 'Template.Constructor', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    foreach ($this->records as $record) {
+                        $record->constructor = $reader->readString();
+                    }
+                    break;
+
+                case 8:
+                    LiteBinaryReader::checkColumn($column, 'Template.Function', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    foreach ($this->records as $record) {
+                        $record->function = $reader->readString();
+                    }
+                    break;
+
+                default:
+                    // A column added after this code was generated.
+                    $reader->skip($column['byteLength']);
+                    break;
+            }
+
+            $reader->checkBlockEnd($column, $blockEnd);
+        }
+
+        foreach ($this->records as $record) {
             $this->byIndex[$record->index] = $record;
         }
     }

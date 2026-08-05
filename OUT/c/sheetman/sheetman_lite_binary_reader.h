@@ -52,7 +52,40 @@ extern "C" {
 #endif
 
 /* Version stamped at the head of every table file by the exporter. */
-#define SHEETMAN_BINARY_FILE_FORMAT_VERSION 100u
+/* 101 is column-oriented and self-describing; it replaced 100 outright, before the tool
+ * fed anything live, so nothing reads or writes 100 any more. */
+#define SHEETMAN_BINARY_FILE_FORMAT_VERSION 101u
+
+/* The wire element types and kinds, as the v101 column descriptors spell them. */
+#define SM_ELEMENT_VARINT 0
+#define SM_ELEMENT_BOOL 1
+#define SM_ELEMENT_I32 2
+#define SM_ELEMENT_I64 3
+#define SM_ELEMENT_F32 4
+#define SM_ELEMENT_F64 5
+#define SM_ELEMENT_STRING 6
+#define SM_ELEMENT_UUID 7
+
+#define SM_KIND_SCALAR 0
+#define SM_KIND_FIXED_ARRAY 1
+#define SM_KIND_VAR_ARRAY 2
+
+/* One element type as a bit, so the set a member accepts is one integer argument.
+ * A set rather than an array because the generated code has to spell it inline, and
+ * C89 has no array literal to spell it with. */
+#define SM_ELEMENT_MASK(element) (1u << (element))
+
+/* One column as the file describes it. */
+typedef struct sm_column {
+    /* What identifies the column, instead of its position. */
+    int32_t tag;
+    uint8_t element;
+    uint8_t kind;
+    /* Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
+    int32_t count;
+    /* Total bytes of the column block - what a skip advances by. */
+    int32_t byte_length;
+} sm_column;
 
 /* Longest message the reader will keep. Truncated rather than allocated: a
  * reader that has just run out of memory is a poor time to ask for more. */
@@ -148,7 +181,30 @@ bool sm_read_enum(sm_reader* reader, int32_t* out);
  * The reserved byte is written as zero and is where compression or encryption
  * flags would go; a non-zero value means the file needs handling this build
  * does not have. */
-bool sm_read_table_header(sm_reader* reader, int32_t* out_row_count);
+/* Reads and checks a table file's header. The descriptors are allocated from the
+ * reader's arena; *out_columns is left NULL when the table has none. */
+bool sm_read_table_header(sm_reader* reader, int32_t* out_row_count,
+                          sm_column** out_columns, int32_t* out_column_count);
+
+/* Advances past bytes without interpreting them: an unknown column's whole block.
+ * The column-oriented layout is what makes this one call the entirety of skipping. */
+bool sm_skip(sm_reader* reader, int32_t byte_count);
+
+/* Promotions: a member reading a file element narrower than itself. Only the
+ * mathematically lossless directions exist; sm_check_column already refused the rest. */
+bool sm_read_i32_as(sm_reader* reader, uint8_t element, int32_t* out);
+bool sm_read_i64_as(sm_reader* reader, uint8_t element, int64_t* out);
+bool sm_read_f64_as(sm_reader* reader, uint8_t element, double* out);
+
+/* That a column is what the generated member expects, or a lossless promotion of it.
+ * Refusal is by name and both types, never by reading anyway. `accepted` is the set the
+ * member can read, built out of SM_ELEMENT_MASK. */
+bool sm_check_column(sm_reader* reader, const sm_column* column, const char* field_name,
+                     uint8_t kind, int32_t count, unsigned accepted);
+
+/* That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+ * here names the column instead of corrupting the next. */
+bool sm_check_block_end(sm_reader* reader, const sm_column* column, int32_t expected_end);
 
 /* Reads a whole file. The caller frees the buffer with sm_free_bytes. */
 bool sm_read_all_bytes(const char* filename, uint8_t** out_data, int32_t* out_length);
@@ -536,12 +592,18 @@ bool sm_read_string(sm_reader* reader, const char** out)
     return true;
 }
 
-bool sm_read_table_header(sm_reader* reader, int32_t* out_row_count)
+bool sm_read_table_header(sm_reader* reader, int32_t* out_row_count,
+                          sm_column** out_columns, int32_t* out_column_count)
 {
     uint32_t version;
     uint8_t reserved;
+    int32_t column_count;
+    int32_t at;
+    sm_column* columns;
 
     *out_row_count = 0;
+    *out_columns = NULL;
+    *out_column_count = 0;
 
     if (!sm_read_fixed32(reader, &version))
         return false;
@@ -565,6 +627,204 @@ bool sm_read_table_header(sm_reader* reader, int32_t* out_row_count)
 
         *out_row_count = 0;
         return sm_fail(reader, "table row count %d is negative", bad);
+    }
+
+    if (!sm_read_counter32(reader, &column_count))
+        return false;
+
+    if (column_count < 0)
+        return sm_fail(reader, "table column count %d is negative", column_count);
+
+    if (column_count == 0)
+        return true;
+
+    columns = (sm_column*)sm_arena_alloc(reader->arena, (size_t)column_count * sizeof *columns);
+    if (columns == NULL)
+        return sm_fail(reader, "out of memory allocating the column descriptors");
+
+    for (at = 0; at < column_count; ++at) {
+        uint8_t wire = 0;
+        uint32_t byte_length = 0;
+
+        (void)sm_read_counter32(reader, &columns[at].tag);
+        (void)sm_read_fixed8(reader, &wire);
+        (void)sm_read_counter32(reader, &columns[at].count);
+        (void)sm_read_fixed32(reader, &byte_length);
+
+        columns[at].element = (uint8_t)(wire & 0x0f);
+        columns[at].kind = (uint8_t)((wire >> 4) & 0x03);
+        columns[at].byte_length = (int32_t)byte_length;
+    }
+
+    if (sm_failed(reader))
+        return false;
+
+    /* What the descriptors themselves say about the file, checked before the generated
+     * code allocates for the row count. The blocks are all that follows the header, so
+     * their declared lengths have to add up to the bytes left, and every row costs at
+     * least one byte in every block - a varint's shortest form, an empty string's
+     * length prefix, a variable array's counter. A row count larger than that is one
+     * the exporter could not have written. */
+    {
+        int32_t remaining = reader->length - reader->position;
+        int32_t declared = 0;
+
+        for (at = 0; at < column_count; ++at) {
+            if (columns[at].byte_length < 0 || columns[at].byte_length > remaining - declared) {
+                return sm_fail(reader,
+                               "column tag %d declares %d bytes, which the file cannot hold",
+                               columns[at].tag, columns[at].byte_length);
+            }
+
+            declared += columns[at].byte_length;
+
+            if (*out_row_count > columns[at].byte_length) {
+                int32_t bad = *out_row_count;
+
+                *out_row_count = 0;
+                return sm_fail(reader,
+                               "the row count %d is larger than column tag %d can hold in "
+                               "its %d bytes", bad, columns[at].tag, columns[at].byte_length);
+            }
+        }
+
+        if (declared != remaining) {
+            return sm_fail(reader,
+                           "the columns declare %d bytes but %d follow the header",
+                           declared, remaining);
+        }
+    }
+
+    *out_columns = columns;
+    *out_column_count = column_count;
+
+    return true;
+}
+
+bool sm_skip(sm_reader* reader, int32_t byte_count)
+{
+    if (sm_failed(reader))
+        return false;
+
+    if (byte_count < 0 || byte_count > reader->length - reader->position)
+        return sm_fail(reader, "cannot skip %d bytes with %d remaining",
+                       byte_count, reader->length - reader->position);
+
+    reader->position += byte_count;
+
+    return true;
+}
+
+bool sm_read_i32_as(sm_reader* reader, uint8_t element, int32_t* out)
+{
+    if (element == SM_ELEMENT_I32)
+        return sm_read_int32(reader, out);
+
+    return sm_read_counter32(reader, out);
+}
+
+bool sm_read_i64_as(sm_reader* reader, uint8_t element, int64_t* out)
+{
+    if (element == SM_ELEMENT_I64)
+        return sm_read_int64(reader, out);
+
+    {
+        int32_t narrower = 0;
+        bool ok = (element == SM_ELEMENT_I32)
+            ? sm_read_int32(reader, &narrower)
+            : sm_read_counter32(reader, &narrower);
+
+        *out = narrower;
+        return ok;
+    }
+}
+
+bool sm_read_f64_as(sm_reader* reader, uint8_t element, double* out)
+{
+    if (element == SM_ELEMENT_F64)
+        return sm_read_double(reader, out);
+
+    if (element == SM_ELEMENT_F32) {
+        float single = 0.0f;
+        bool ok = sm_read_float(reader, &single);
+
+        *out = single;
+        return ok;
+    }
+
+    {
+        int32_t integer = 0;
+        bool ok = sm_read_int32(reader, &integer);
+
+        *out = integer;
+        return ok;
+    }
+}
+
+/* The element codes in a mask, as "2, 0", for a message that has to say what the
+ * member would have taken. */
+static void sm_describe_elements(unsigned accepted, char* out, size_t out_size)
+{
+    size_t at = 0;
+    int element;
+
+    if (out_size == 0)
+        return;
+
+    for (element = 0; element < 16; ++element) {
+        if ((accepted & SM_ELEMENT_MASK(element)) == 0)
+            continue;
+
+        if (at > 0 && at + 2 < out_size) {
+            out[at++] = ',';
+            out[at++] = ' ';
+        }
+
+        if (at + 1 < out_size)
+            out[at++] = (char)('0' + element);
+    }
+
+    out[at] = '\0';
+}
+
+bool sm_check_column(sm_reader* reader, const sm_column* column, const char* field_name,
+                     uint8_t kind, int32_t count, unsigned accepted)
+{
+    char elements[48];
+
+    if (sm_failed(reader))
+        return false;
+
+    if (column->kind != kind || (kind != SM_KIND_VAR_ARRAY && column->count != count)) {
+        return sm_fail(reader,
+                       "%s: the file column (kind %d, count %d) does not match the generated "
+                       "member (kind %d, count %d). The schema changed shape; regenerate the "
+                       "code or rebuild the data.",
+                       field_name, (int)column->kind, column->count, (int)kind, count);
+    }
+
+    if ((accepted & SM_ELEMENT_MASK(column->element)) != 0)
+        return true;
+
+    sm_describe_elements(accepted, elements, sizeof elements);
+
+    return sm_fail(reader,
+                   "%s: the file carries element type %d, which this member cannot read "
+                   "(accepts %s). The column changed type incompatibly; regenerate the code "
+                   "or rebuild the data.",
+                   field_name, (int)column->element, elements);
+}
+
+bool sm_check_block_end(sm_reader* reader, const sm_column* column, int32_t expected_end)
+{
+    if (sm_failed(reader))
+        return false;
+
+    if (reader->position != expected_end) {
+        return sm_fail(reader,
+                       "column tag %d: its block declared %d bytes but the read ended %d "
+                       "bytes short of its boundary",
+                       column->tag, column->byte_length, expected_end - reader->position);
     }
 
     return true;

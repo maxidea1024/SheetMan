@@ -15,29 +15,18 @@ public final class TemplateRecord {
     /** primary index */
     public int index;
     /** class: keyword in C++ and C# */
-    public String class_;
+    public String class_ = "";
     /** int: keyword in C++ and C# */
     public int int_;
     /** delete: keyword in C++ */
     public boolean delete;
     /** operator: keyword in C++ */
-    public String operator;
+    public String operator = "";
     /** namespace: keyword in C++ and C# */
-    public String namespace;
+    public String namespace = "";
     /** constructor: special member in TypeScript */
-    public String constructor;
+    public String constructor = "";
     /** function: keyword in TypeScript */
-    public String function;
+    public String function = "";
 
-    /** Reads one record, in the exact field order the exporter wrote. */
-    void read(LiteBinaryReader reader) {
-            index = reader.readInt32();
-            class_ = reader.readString();
-            int_ = reader.readInt32();
-            delete = reader.readBool();
-            operator = reader.readString();
-            namespace = reader.readString();
-            constructor = reader.readString();
-            function = reader.readString();
-    }
 }

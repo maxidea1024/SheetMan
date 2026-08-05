@@ -11,19 +11,6 @@
 #include "Misc/Paths.h"
 
 
-void FTemplateRow::Read(SheetMan::FSheetManBinaryReader& Reader)
-{
-    Reader.Read(Index);
-    Reader.Read(Class);
-    Reader.Read(Int);
-    Reader.Read(bDelete);
-    Reader.Read(Operator);
-    Reader.Read(Namespace);
-    Reader.Read(Constructor);
-    Reader.Read(Function);
-}
-
-
 const FTemplateRow* FTemplateTable::Find(int32 Index) const
 {
     const int32* Position = ByIndex.Find(Index);
@@ -58,8 +45,8 @@ bool FTemplateTable::Read(const FString& Filename)
     // a second time - a localization table is megabytes.
     SheetMan::FSheetManBinaryReader Reader(TArrayView<const uint8>(Buffer.GetData(), Buffer.Num()));
 
-    int32 RowCount = 0;
-    if (!SheetMan::ReadTableHeader(Reader, RowCount))
+    SheetMan::FSheetManTableHeader Header;
+    if (!SheetMan::ReadTableHeader(Reader, Header))
     {
         UE_LOG(LogTemp, Error, TEXT("SheetMan: %s is not a table this build can read. %s"),
             *Filename, *Reader.GetError());
@@ -67,11 +54,109 @@ bool FTemplateTable::Read(const FString& Filename)
         return false;
     }
 
-    RecordsStorage.Empty(SheetMan::ReserveBound(RowCount));
+    // The header has already checked the row count against what the columns declare, so
+    // this allocation is the size the file can actually hold rows for.
+    RecordsStorage.Empty(Header.RowCount);
+    RecordsStorage.SetNum(Header.RowCount);
 
-    while (RecordsStorage.Num() < RowCount && !Reader.HasFailed())
+    // Column by column, matched by tag rather than by position: a column this build has no
+    // member for is skipped by its declared length, and one whose type no longer fits the
+    // member stops the read naming the field. Rows arrive default constructed, so a member
+    // the file carries nothing for keeps its default.
+    for (const SheetMan::FSheetManColumn& Column : Header.Columns)
     {
-        RecordsStorage.AddDefaulted_GetRef().Read(Reader);
+        const int32 BlockEnd = Reader.Tell() + Column.ByteLength;
+
+        switch (Column.Tag)
+        {
+        case 1:
+            SheetMan::CheckColumn(Reader, Column, TEXT("Template.Index"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementI32) | SheetMan::ElementMask(SheetMan::ElementVarint));
+
+            for (FTemplateRow& Record : RecordsStorage)
+            {
+                Reader.ReadAs(Column.Element, Record.Index);
+            }
+
+            break;
+
+        case 2:
+            SheetMan::CheckColumn(Reader, Column, TEXT("Template.Class"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+
+            for (FTemplateRow& Record : RecordsStorage)
+            {
+                Reader.ReadAs(Column.Element, Record.Class);
+            }
+
+            break;
+
+        case 3:
+            SheetMan::CheckColumn(Reader, Column, TEXT("Template.Int"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementI32) | SheetMan::ElementMask(SheetMan::ElementVarint));
+
+            for (FTemplateRow& Record : RecordsStorage)
+            {
+                Reader.ReadAs(Column.Element, Record.Int);
+            }
+
+            break;
+
+        case 4:
+            SheetMan::CheckColumn(Reader, Column, TEXT("Template.Delete"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+
+            for (FTemplateRow& Record : RecordsStorage)
+            {
+                Reader.ReadAs(Column.Element, Record.bDelete);
+            }
+
+            break;
+
+        case 5:
+            SheetMan::CheckColumn(Reader, Column, TEXT("Template.Operator"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+
+            for (FTemplateRow& Record : RecordsStorage)
+            {
+                Reader.ReadAs(Column.Element, Record.Operator);
+            }
+
+            break;
+
+        case 6:
+            SheetMan::CheckColumn(Reader, Column, TEXT("Template.Namespace"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+
+            for (FTemplateRow& Record : RecordsStorage)
+            {
+                Reader.ReadAs(Column.Element, Record.Namespace);
+            }
+
+            break;
+
+        case 7:
+            SheetMan::CheckColumn(Reader, Column, TEXT("Template.Constructor"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+
+            for (FTemplateRow& Record : RecordsStorage)
+            {
+                Reader.ReadAs(Column.Element, Record.Constructor);
+            }
+
+            break;
+
+        case 8:
+            SheetMan::CheckColumn(Reader, Column, TEXT("Template.Function"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+
+            for (FTemplateRow& Record : RecordsStorage)
+            {
+                Reader.ReadAs(Column.Element, Record.Function);
+            }
+
+            break;
+
+        default:
+            // A column this build has no member for: added to the schema after the code
+            // was generated, or removed from the code while the data still carries it.
+            Reader.Skip(Column.ByteLength);
+            break;
+        }
+
+        SheetMan::CheckBlockEnd(Reader, Column, BlockEnd);
     }
 
     // Asked once, for the whole table. Anything short or malformed anywhere in it has

@@ -31,7 +31,47 @@ import 'dart:io';
 import 'dart:typed_data';
 
 /// Stamped at the head of every table file by the exporter.
-const int formatVersion = 100;
+/// 101 is column-oriented and self-describing; it replaced 100 outright, before the
+/// tool fed anything live, so nothing reads or writes 100 any more.
+const int formatVersion = 101;
+
+// The wire element types and kinds, as the v101 column descriptors spell them.
+const int elementVarint = 0;
+const int elementBool = 1;
+const int elementI32 = 2;
+const int elementI64 = 3;
+const int elementF32 = 4;
+const int elementF64 = 5;
+const int elementString = 6;
+const int elementUuid = 7;
+
+const int kindScalar = 0;
+const int kindFixedArray = 1;
+const int kindVarArray = 2;
+
+/// One column as the file describes it.
+class Column {
+  Column(this.tag, this.element, this.kind, this.count, this.byteLength);
+
+  /// What identifies the column, instead of its position.
+  final int tag;
+  final int element;
+  final int kind;
+
+  /// Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one.
+  final int count;
+
+  /// Total bytes of the column block - what a skip advances by.
+  final int byteLength;
+}
+
+/// A parsed v101 header: the row count and the column descriptors that follow it.
+class Header {
+  Header(this.rowCount, this.columns);
+
+  final int rowCount;
+  final List<Column> columns;
+}
 
 /// A table file is truncated, malformed, or not a table file.
 class LiteBinaryException implements Exception {
@@ -99,6 +139,40 @@ class LiteBinaryReader {
 
   /// Bytes consumed so far.
   int get position => _position;
+
+  /// Advances past bytes without interpreting them: an unknown column whole block.
+  /// The column-oriented layout is what makes this one call the entirety of skipping.
+  void skip(int byteCount) {
+    final remaining = _data.length - _position;
+
+    if (byteCount < 0 || byteCount > remaining) {
+      throw LiteBinaryException('cannot skip $byteCount bytes with $remaining remaining');
+    }
+
+    _position += byteCount;
+  }
+
+  // Promotions: a member reading a file element narrower than itself. Only the
+  // mathematically lossless directions exist; checkColumn already refused the rest.
+
+  /// An int member from i32 or varint.
+  int readI32As(int element) =>
+      element == elementI32 ? readInt32() : readCounter32();
+
+  /// A 64-bit member from i64, i32 or varint. BigInt, as int64 is here: on the web a
+  /// Dart int is a double and holds 53 bits.
+  BigInt readI64As(int element) {
+    if (element == elementI64) return readInt64();
+    if (element == elementI32) return BigInt.from(readInt32());
+    return BigInt.from(readCounter32());
+  }
+
+  /// A double member from f64, f32 or i32 - all exact in a double.
+  double readF64As(int element) {
+    if (element == elementF64) return readDouble();
+    if (element == elementF32) return readFloat();
+    return readInt32().toDouble();
+  }
 
   /// Bytes left to read.
   int get remaining => _data.lengthInBytes - _position;
@@ -212,7 +286,7 @@ class LiteBinaryReader {
 ///
 /// The reserved byte is written as zero and is where compression or encryption flags
 /// would go; a non-zero value means the file needs handling this build does not have.
-int readTableHeader(LiteBinaryReader reader) {
+Header readTableHeader(LiteBinaryReader reader) {
   final version = reader.readUint32();
 
   if (version != formatVersion) {
@@ -225,10 +299,80 @@ int readTableHeader(LiteBinaryReader reader) {
   }
 
   final count = reader.readCounter32();
-
   if (count < 0) throw LiteBinaryException('table row count is negative');
 
-  return count;
+  final columnCount = reader.readCounter32();
+  if (columnCount < 0) throw LiteBinaryException('table column count is negative');
+
+  final columns = <Column>[];
+
+  for (var at = 0; at < columnCount; at++) {
+    final tag = reader.readCounter32();
+    final wire = reader.readUint8();
+    final elementCount = reader.readCounter32();
+    final byteLength = reader.readUint32();
+    columns.add(Column(tag, wire & 0x0f, (wire >> 4) & 0x03, elementCount, byteLength));
+  }
+
+  // What the descriptors say about the file, checked before anybody allocates for the
+  // row count. The blocks are all that follows the header, so their declared lengths have
+  // to add up to the bytes left, and every row costs at least one byte in every block - a
+  // varint's shortest form, an empty string's length prefix, a variable array's counter.
+  // A row count larger than that is one the exporter could not have written.
+
+  final available = reader.remaining;
+  var declared = 0;
+
+  for (final column in columns) {
+    if (column.byteLength < 0 || column.byteLength > available - declared) {
+      throw LiteBinaryException(
+          'column tag ${column.tag} declares ${column.byteLength} bytes, which the file '
+          'cannot hold');
+    }
+
+    declared += column.byteLength;
+
+    if (count > column.byteLength) {
+      throw LiteBinaryException(
+          'the row count $count is larger than column tag ${column.tag} can hold in its '
+          '${column.byteLength} bytes');
+    }
+  }
+
+  if (declared != available) {
+    throw LiteBinaryException(
+        'the columns declare $declared bytes but $available follow the header');
+  }
+
+  return Header(count, columns);
+}
+
+/// That a column is what the generated member expects, or a lossless promotion of it.
+/// Refusal is by name and both types, never by reading anyway.
+void checkColumn(Column column, String fieldName, int kind, int count, List<int> accepted) {
+  if (column.kind != kind || (kind != kindVarArray && column.count != count)) {
+    throw LiteBinaryException(
+        '$fieldName: the file column (kind ${column.kind}, count ${column.count}) does not '
+        'match the generated member (kind $kind, count $count). The schema changed shape; '
+        'regenerate the code or rebuild the data.');
+  }
+
+  if (!accepted.contains(column.element)) {
+    throw LiteBinaryException(
+        '$fieldName: the file carries element type ${column.element}, which this member '
+        'cannot read (accepts $accepted). The column changed type incompatibly; regenerate '
+        'the code or rebuild the data.');
+  }
+}
+
+/// That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+/// here names the column instead of corrupting the next.
+void checkBlockEnd(LiteBinaryReader reader, Column column, int expectedEnd) {
+  if (reader.position != expectedEnd) {
+    throw LiteBinaryException(
+        'column tag ${column.tag}: its block declared ${column.byteLength} bytes but the '
+        'read ended ${expectedEnd - reader.position} bytes short of its boundary');
+  }
 }
 
 /// Reads a whole file into memory.

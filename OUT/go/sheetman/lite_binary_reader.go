@@ -34,7 +34,38 @@ import (
 )
 
 // FormatVersion is stamped at the head of every table file by the exporter.
-const FormatVersion uint32 = 100
+//
+// 101 is column-oriented and self-describing; it replaced 100 outright, before the tool
+// fed anything live, so nothing reads or writes 100 any more.
+const FormatVersion uint32 = 101
+
+// The wire's element types and kinds, as the v101 column descriptors spell them.
+const (
+	ElementVarint uint8 = 0
+	ElementBool   uint8 = 1
+	ElementI32    uint8 = 2
+	ElementI64    uint8 = 3
+	ElementF32    uint8 = 4
+	ElementF64    uint8 = 5
+	ElementString uint8 = 6
+	ElementUUID   uint8 = 7
+
+	KindScalar     uint8 = 0
+	KindFixedArray uint8 = 1
+	KindVarArray   uint8 = 2
+)
+
+// Column is one column as the file describes it.
+type Column struct {
+	// Tag identifies the column, instead of its position.
+	Tag int32
+	Element uint8
+	Kind    uint8
+	// Count is the elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one.
+	Count int32
+	// ByteLength is the column block's total bytes - what a skip advances by.
+	ByteLength int32
+}
 
 // ticksPerSecond is the .NET tick, 100 nanoseconds.
 const ticksPerSecond int64 = 10000000
@@ -237,6 +268,54 @@ func (r *Reader) ReadUUID() UUID {
 
 // ReadOptimalInt32 reads an int32 written in as few bytes as its magnitude needed,
 // either sign.
+// Skip advances past bytes without interpreting them: an unknown column's whole block.
+// The column-oriented layout is what makes this one call the entirety of skipping.
+func (r *Reader) Skip(byteCount int32) {
+	if r.err != nil {
+		return
+	}
+	if byteCount < 0 || int(byteCount) > r.Remaining() {
+		r.err = fmt.Errorf("sheetman: cannot skip %d bytes with %d remaining", byteCount, r.Remaining())
+		return
+	}
+	r.pos += int(byteCount)
+}
+
+// The promotions: a member reading a file element narrower than itself. Only the
+// mathematically lossless directions exist; CheckColumn already refused the rest.
+
+// ReadI32As reads an int32 member from i32 or varint.
+func (r *Reader) ReadI32As(element uint8) int32 {
+	if element == ElementI32 {
+		return r.ReadInt32()
+	}
+	return r.ReadOptimalInt32()
+}
+
+// ReadI64As reads an int64 member from i64, i32 or varint.
+func (r *Reader) ReadI64As(element uint8) int64 {
+	switch element {
+	case ElementI64:
+		return r.ReadInt64()
+	case ElementI32:
+		return int64(r.ReadInt32())
+	default:
+		return int64(r.ReadOptimalInt32())
+	}
+}
+
+// ReadF64As reads a float64 member from f64, f32 or i32 - all exact in a float64.
+func (r *Reader) ReadF64As(element uint8) float64 {
+	switch element {
+	case ElementF64:
+		return r.ReadFloat64()
+	case ElementF32:
+		return float64(r.ReadFloat32())
+	default:
+		return float64(r.ReadInt32())
+	}
+}
+
 func (r *Reader) ReadOptimalInt32() int32 {
 	encoded := r.readVarint32()
 	if r.err != nil {
@@ -275,45 +354,128 @@ func (r *Reader) readVarint32() uint32 {
 	return 0
 }
 
-// ReadTableHeader reads and checks a table file's header, returning the row count that
-// follows it.
-//
-// The reserved byte is written as zero and is where compression or encryption flags
-// would go; a non-zero value means the file needs handling this build does not have.
-func ReadTableHeader(r *Reader) int32 {
+// ReadTableHeader reads and checks a table file's header, returning the row count and
+// the column descriptors the data blocks follow.
+func ReadTableHeader(r *Reader) (int32, []Column) {
 	version := r.ReadUint32()
 	if r.err != nil {
-		return 0
+		return 0, nil
 	}
 
 	if version != FormatVersion {
 		r.err = fmt.Errorf(
 			"sheetman: table format version %d is not supported (expected %d)",
 			version, FormatVersion)
-		return 0
+		return 0, nil
 	}
 
 	reserved := r.ReadUint8()
-	if r.err != nil {
-		return 0
-	}
-
-	if reserved != 0 {
+	if reserved != 0 && r.err == nil {
 		r.err = fmt.Errorf("sheetman: table declares unsupported features")
-		return 0
 	}
 
 	count := r.ReadCounter32()
-	if r.err != nil {
-		return 0
-	}
-
-	if count < 0 {
+	if count < 0 && r.err == nil {
 		r.err = fmt.Errorf("sheetman: table row count is negative")
-		return 0
 	}
 
-	return count
+	columnCount := r.ReadCounter32()
+	if columnCount < 0 && r.err == nil {
+		r.err = fmt.Errorf("sheetman: table column count is negative")
+	}
+
+	if r.err != nil {
+		return 0, nil
+	}
+
+	columns := make([]Column, columnCount)
+	for at := range columns {
+		columns[at].Tag = r.ReadCounter32()
+		wire := r.ReadUint8()
+		columns[at].Element = wire & 0x0f
+		columns[at].Kind = (wire >> 4) & 0x03
+		columns[at].Count = r.ReadCounter32()
+		columns[at].ByteLength = int32(r.ReadUint32())
+	}
+
+	if r.err != nil {
+		return 0, nil
+	}
+
+	// What the descriptors say about the file, checked before anybody allocates for the
+	// row count. The blocks are all that follows the header, so their declared lengths have
+	// to add up to the bytes left, and every row costs at least one byte in every block - a
+	// varint's shortest form, an empty string's length prefix, a variable array's counter.
+	// A row count larger than that is one the exporter could not have written.
+	available := int32(r.Remaining())
+	declared := int32(0)
+
+	for _, column := range columns {
+		if column.ByteLength < 0 || column.ByteLength > available-declared {
+			r.err = fmt.Errorf(
+				"sheetman: column tag %d declares %d bytes, which the file cannot hold",
+				column.Tag, column.ByteLength)
+
+			return 0, nil
+		}
+
+		declared += column.ByteLength
+
+		if count > column.ByteLength {
+			r.err = fmt.Errorf(
+				"sheetman: the row count %d is larger than column tag %d can hold in its %d bytes",
+				count, column.Tag, column.ByteLength)
+
+			return 0, nil
+		}
+	}
+
+	if declared != available {
+		r.err = fmt.Errorf(
+			"sheetman: the columns declare %d bytes but %d follow the header", declared, available)
+
+		return 0, nil
+	}
+
+	return count, columns
+}
+
+// CheckColumn verifies a column is what the generated member expects, or a lossless
+// promotion of it. Refusal is by name and both types, never by reading anyway.
+func CheckColumn(r *Reader, col Column, fieldName string, kind uint8, count int32, accepted ...uint8) bool {
+	if r.err != nil {
+		return false
+	}
+
+	if col.Kind != kind || (kind != KindVarArray && col.Count != count) {
+		r.err = fmt.Errorf(
+			"sheetman: %s: the file's column (kind %d, count %d) does not match the generated "+
+				"member (kind %d, count %d); the schema changed shape, regenerate the code or "+
+				"rebuild the data", fieldName, col.Kind, col.Count, kind, count)
+		return false
+	}
+
+	for _, e := range accepted {
+		if col.Element == e {
+			return true
+		}
+	}
+
+	r.err = fmt.Errorf(
+		"sheetman: %s: the file carries element type %d, which this member cannot read "+
+			"(accepts %v); the column changed type incompatibly, regenerate the code or "+
+			"rebuild the data", fieldName, col.Element, accepted)
+	return false
+}
+
+// CheckBlockEnd verifies a block was consumed exactly: a mismatch is a format
+// disagreement, and stopping here names the column instead of corrupting the next.
+func CheckBlockEnd(r *Reader, col Column, expectedEnd int) {
+	if r.err == nil && r.Position() != expectedEnd {
+		r.err = fmt.Errorf(
+			"sheetman: column tag %d: its block declared %d bytes but the read ended %d bytes "+
+				"short of its boundary", col.Tag, col.ByteLength, expectedEnd-r.Position())
+	}
 }
 
 // ReadAllBytes reads a whole file into memory.

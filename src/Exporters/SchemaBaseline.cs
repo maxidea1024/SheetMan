@@ -182,7 +182,8 @@ namespace SheetMan.Exporters
                     continue;
                 }
 
-                if (!before.ExplicitTag && !now.ExplicitTag && before.Name != now.Name)
+                if (!before.ExplicitTag && !now.ExplicitTag && before.Name != now.Name
+                    && !accepted.Contains($"{table.Name}.{now.Name}"))
                 {
                     // Without `@N` tags the tag is the column's position, so a name that
                     // moved means every column after it moved too.

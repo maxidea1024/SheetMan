@@ -29,17 +29,6 @@ class TemplateRecord:
         self.constructor = ""
         self.function = ""
 
-    def _read(self, reader):
-        """Reads one record, in the exact field order the exporter wrote."""
-        self.index = reader.read_int32()
-        self.class_ = reader.read_string()
-        self.int = reader.read_int32()
-        self.delete = reader.read_bool()
-        self.operator = reader.read_string()
-        self.namespace = reader.read_string()
-        self.constructor = reader.read_string()
-        self.function = reader.read_string()
-
     def __repr__(self):
         return "TemplateRecord(index=%r, class_=%r, int=%r, delete=%r, operator=%r, namespace=%r, constructor=%r, function=%r)" % (self.index, self.class_, self.int, self.delete, self.operator, self.namespace, self.constructor, self.function)
 
@@ -58,14 +47,55 @@ class TemplateTable:
         return self.by_index.get(index)
 
     def read(self, filename):
-        """Loads the table from a .table file written by SheetMan."""
-        reader = sheetman.Reader(sheetman.read_all_bytes(filename))
-        count = sheetman.read_table_header(reader)
+        """Loads the table from a .table file written by SheetMan.
 
-        self.records = []
-        for _ in range(count):
-            record = TemplateRecord()
-            record._read(reader)
-            self.records.append(record)
+        Column by column, matched by tag rather than position: a column this build does
+        not know is skipped by its block length, and one whose type changed incompatibly
+        fails naming the field.
+        """
+        reader = sheetman.Reader(sheetman.read_all_bytes(filename))
+        count, columns = sheetman.read_table_header(reader)
+
+        self.records = [TemplateRecord() for _ in range(count)]
+
+        for column in columns:
+            block_end = reader.position + column.byte_length
+            if column.tag == 1:
+                sheetman.check_column(column, "Template.Index", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                for record in self.records:
+                    record.index = reader.read_i32_as(column.element)
+            elif column.tag == 2:
+                sheetman.check_column(column, "Template.Class", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                for record in self.records:
+                    record.class_ = reader.read_string()
+            elif column.tag == 3:
+                sheetman.check_column(column, "Template.Int", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                for record in self.records:
+                    record.int = reader.read_i32_as(column.element)
+            elif column.tag == 4:
+                sheetman.check_column(column, "Template.Delete", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                for record in self.records:
+                    record.delete = reader.read_bool()
+            elif column.tag == 5:
+                sheetman.check_column(column, "Template.Operator", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                for record in self.records:
+                    record.operator = reader.read_string()
+            elif column.tag == 6:
+                sheetman.check_column(column, "Template.Namespace", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                for record in self.records:
+                    record.namespace = reader.read_string()
+            elif column.tag == 7:
+                sheetman.check_column(column, "Template.Constructor", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                for record in self.records:
+                    record.constructor = reader.read_string()
+            elif column.tag == 8:
+                sheetman.check_column(column, "Template.Function", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                for record in self.records:
+                    record.function = reader.read_string()
+            else:
+                # A column added after this code was generated.
+                reader.skip(column.byte_length)
+
+            sheetman.check_block_end(reader, column, block_end)
 
         self.by_index = {record.index: record for record in self.records}

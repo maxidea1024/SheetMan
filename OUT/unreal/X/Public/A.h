@@ -57,14 +57,6 @@ struct X_API FTemplateRow
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Template")
     FString Function;
 
-    /**
-     * Reads one record, in the exact field order the exporter wrote.
-     *
-     * Nothing is returned. The reader's failure is sticky, so a truncated file leaves
-     * this record holding defaults and the table's load reports it once at the end -
-     * which is why twenty fields in a row need no twenty checks between them.
-     */
-    void Read(SheetMan::FSheetManBinaryReader& Reader);
 };
 
 

@@ -14,6 +14,19 @@ import sheetman.LiteBinaryReader
 import sheetman.Uuid
 import sheetman.readAllBytes
 import sheetman.readTableHeader
+import sheetman.checkColumn
+import sheetman.checkBlockEnd
+import sheetman.ELEMENT_VARINT
+import sheetman.ELEMENT_BOOL
+import sheetman.ELEMENT_I32
+import sheetman.ELEMENT_I64
+import sheetman.ELEMENT_F32
+import sheetman.ELEMENT_F64
+import sheetman.ELEMENT_STRING
+import sheetman.ELEMENT_UUID
+import sheetman.KIND_SCALAR
+import sheetman.KIND_FIXED_ARRAY
+import sheetman.KIND_VAR_ARRAY
 
 // Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
 /** Named after a C++ keyword. */
@@ -35,17 +48,6 @@ class TemplateRecord {
     /** function: keyword in TypeScript */
     var function: String = ""
 
-    /** Reads one record, in the exact field order the exporter wrote. */
-    internal fun read(reader: LiteBinaryReader) {
-        index = reader.readInt32()
-        `class` = reader.readString()
-        int = reader.readInt32()
-        delete = reader.readBool()
-        operator = reader.readString()
-        namespace = reader.readString()
-        constructor = reader.readString()
-        function = reader.readString()
-    }
 }
 
 /** Every row of Template. */
@@ -60,17 +62,79 @@ class TemplateTable {
     fun find(index: Int): TemplateRecord? = byIndex[index]
 
     /** Loads the table from a .table file written by SheetMan. */
+    /**
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     fun read(filename: String) {
         val reader = LiteBinaryReader(readAllBytes(filename))
-        val count = readTableHeader(reader)
+        val header = readTableHeader(reader)
+        val count = header.rowCount
 
         records.clear()
         byIndex.clear()
 
-        repeat(count) {
-            val record = TemplateRecord()
-            record.read(reader)
-            records.add(record)
+        repeat(count) { records.add(TemplateRecord()) }
+
+        for (column in header.columns) {
+            val blockEnd = reader.position + column.byteLength
+
+            when (column.tag) {
+                1 -> {
+                    checkColumn(column, "Template.Index", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    for (record in records) {
+                        record.index = reader.readI32As(column.element)
+                    }
+                }
+                2 -> {
+                    checkColumn(column, "Template.Class", KIND_SCALAR, 1, ELEMENT_STRING)
+                    for (record in records) {
+                        record.`class` = reader.readString()
+                    }
+                }
+                3 -> {
+                    checkColumn(column, "Template.Int", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    for (record in records) {
+                        record.int = reader.readI32As(column.element)
+                    }
+                }
+                4 -> {
+                    checkColumn(column, "Template.Delete", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    for (record in records) {
+                        record.delete = reader.readBool()
+                    }
+                }
+                5 -> {
+                    checkColumn(column, "Template.Operator", KIND_SCALAR, 1, ELEMENT_STRING)
+                    for (record in records) {
+                        record.operator = reader.readString()
+                    }
+                }
+                6 -> {
+                    checkColumn(column, "Template.Namespace", KIND_SCALAR, 1, ELEMENT_STRING)
+                    for (record in records) {
+                        record.namespace = reader.readString()
+                    }
+                }
+                7 -> {
+                    checkColumn(column, "Template.Constructor", KIND_SCALAR, 1, ELEMENT_STRING)
+                    for (record in records) {
+                        record.constructor = reader.readString()
+                    }
+                }
+                8 -> {
+                    checkColumn(column, "Template.Function", KIND_SCALAR, 1, ELEMENT_STRING)
+                    for (record in records) {
+                        record.function = reader.readString()
+                    }
+                }
+                else ->
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength)
+            }
+
+            checkBlockEnd(reader, column, blockEnd)
         }
 
         for (record in records) {

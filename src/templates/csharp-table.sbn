@@ -53,7 +53,7 @@
 {{~ else if field.kind == 'array' ~}}
             public {{ field.field_type }}[] {{ field.prop_name }} => {{ field.field_name }};
             public const int {{ field.prop_name }}_N = {{ field.element_count }};
-            internal {{ field.field_type }}[] {{ field.field_name }} = new {{ field.field_type }}[{{ field.prop_name }}_N];
+            internal {{ field.field_type }}[] {{ field.field_name }} = System.Array.Empty<{{ field.field_type }}>();
 {{~ else if field.kind == 'scalar_ref' ~}}
             public {{ field.field_type }} {{ field.prop_name }} => {{ field.field_name }};
             internal {{ field.field_type }} {{ field.field_name }};
@@ -191,6 +191,7 @@
                         for (int i = 0; i < count; i++)
                         {
                             var record = _records[i];
+                            record.{{ field.field_name }} = new {{ field.field_type }}[Record.{{ field.prop_name }}_N];
                             for (int j = 0; j < Record.{{ field.prop_name }}_N; ++j)
                             {
 {{~ for line in field.element_read ~}}

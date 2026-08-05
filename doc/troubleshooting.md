@@ -130,6 +130,72 @@ primary index가 중복입니다. 행을 복사하고 인덱스를 안 고쳤을
 
 ---
 
+## 스키마가 바뀐 뒤
+
+여기 모인 메시지는 대부분 **막는 것이 목적**입니다. 이미 배포된 클라이언트가 못 읽을 데이터를 쓰기 전에 멈추는 것이고, 규칙과 근거는 [바이너리 형식](binary-format-v101.md)에 있습니다.
+
+### `Field name 'Price@x' has an '@' where a wire tag goes`
+
+`@` 뒤가 1 이상의 정수가 아닙니다. `Price@3`처럼 씁니다.
+
+### `Table 'Item' tags some fields and not others: ...`
+
+태그는 테이블 단위로 **전부 또는 전무**입니다. 반쯤 단 표는 어느 쪽 보장도 못 하기 때문입니다. 나열된 필드에 `@N`을 달거나, 전부에서 떼세요.
+
+### `Field 'Item.Price' declares wire tag 3, which field 'Name' already holds`
+
+같은 테이블에서 태그가 겹쳤습니다. `#`로 제외된 컬럼이 예약한 태그와 겹친 경우도 같은 메시지가 나옵니다 — 그 태그는 이미 데이터를 실었으므로 비어 있는 것이 아닙니다.
+
+### `The schema changed in ... way(s) that a reader already built from the previous schema would not survive`
+
+`SchemaBaseline` 검사가 막았습니다. **아무것도 쓰이지 않았습니다.** 아래 항목들이 뒤따라 나오며, 각각이 무엇을 하라고 말합니다.
+
+### `... is gone from the schema. Tombstone it in the sheet as ... so nothing takes its tag`
+
+컬럼을 지웠는데 태그가 남지 않았습니다. 시트에 `#이름@N`을 남기세요 — 태그가 비면 다음에 추가하는 컬럼이 그것을 가져가고, 그러면 삭제 전에 만들어진 리더가 새 컬럼을 옛 필드로 읽습니다.
+
+정말 태그까지 버릴 생각이라면 `AcceptSchemaChanges`에 `"테이블.컬럼"`을 적으세요. 그래도 베이스라인은 그 태그를 retired로 계속 기억합니다.
+
+### `... refuses this column rather than reading it wrongly`
+
+컬럼의 타입이나 모양이 바뀌었습니다. 넓히는 변경(int→bigint 등)이라도 **구 리더는 거절합니다** — 잘릴 수 있는 값을 읽지 않는 것이 설계이기 때문입니다. 그래서 이 변경은 재생성된 코드와 함께 나가야 하고, 그 사실을 `AcceptSchemaChanges: ["테이블.컬럼"]`로 적어 확인합니다. 한 번 통과하면 베이스라인이 갱신되니 목록에서 지워도 됩니다.
+
+### `... has taken tag ..., which ... used and gave up`
+
+한 번 쓰이고 버려진 태그를 다른 컬럼이 가져갔습니다. **승인 방법이 없습니다** — 다른 변경은 구 리더가 맞게 읽거나 거절하지만, 이것만은 틀린 컬럼을 성공적으로 읽습니다. 그 컬럼에 아무도 쓴 적 없는 새 태그를 주세요.
+
+### `... has no explicit tags, and tag ... was ... and is now ...`
+
+`@N`이 없는 테이블에서 컬럼이 밀렸습니다. 태그가 위치이므로 중간을 지우거나 삽입하면 그 뒤 전부의 태그가 바뀝니다. 그 테이블에 `@N`을 달거나(권장), 밀린 것이 의도라면 승인하세요.
+
+### `The schema baseline ... could not be read`
+
+베이스라인 파일이 깨졌습니다. 고치거나 지우세요 — 지우면 한 번은 검사를 포기하고 현재 스키마로 새로 씁니다. 도구가 알아서 새로 쓰지 않는 이유는, 누가 파일을 깨뜨린 바로 그 순간이 검사를 포기할 때가 아니기 때문입니다.
+
+### 생성된 리더가 컬럼을 거부함
+
+런타임에 다음 형태의 메시지가 납니다.
+
+```
+Item.Price: the file carries element type 3, which this member cannot read
+(accepts 2, 0). The column changed type incompatibly; regenerate the code
+or rebuild the data.
+```
+
+파일의 컬럼과 그것을 읽는 멤버의 타입이 맞지 않습니다. 데이터가 코드보다 새롭다면(넓어진 컬럼) 코드를 재생성하고, 코드가 새롭다면 데이터를 다시 뽑으세요. **읽고 나서 틀린 값을 주는 것보다 여기서 멈추는 것이 낫다**는 판단이고, `SchemaBaseline`을 켜두면 이 상황이 배포 전에 잡힙니다.
+
+모양이 바뀐 경우(스칼라 ↔ 배열, 고정배열 길이 변경)에는 `does not match the generated member`가 붙은 메시지가 같은 자리에서 납니다.
+
+### 리더가 파일 버전을 거부함
+
+```
+table format version 100 is not supported (expected 101)
+```
+
+v100 시절에 뽑은 데이터입니다. 호환 경로가 없으므로 다시 뽑으세요. v101이 v100을 대체했고, 두 형식을 함께 유지하지 않습니다.
+
+---
+
 ## Recipe
 
 ### `Recipe 'Targets[2]' has no 'Type', so there is nothing to say which target it configures`

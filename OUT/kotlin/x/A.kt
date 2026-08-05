@@ -14,6 +14,19 @@ import sheetman.LiteBinaryReader
 import sheetman.Uuid
 import sheetman.readAllBytes
 import sheetman.readTableHeader
+import sheetman.checkColumn
+import sheetman.checkBlockEnd
+import sheetman.ELEMENT_VARINT
+import sheetman.ELEMENT_BOOL
+import sheetman.ELEMENT_I32
+import sheetman.ELEMENT_I64
+import sheetman.ELEMENT_F32
+import sheetman.ELEMENT_F64
+import sheetman.ELEMENT_STRING
+import sheetman.ELEMENT_UUID
+import sheetman.KIND_SCALAR
+import sheetman.KIND_FIXED_ARRAY
+import sheetman.KIND_VAR_ARRAY
 /** Every table, loaded together so cross-table references can be resolved. */
 object A {
     val template: TemplateTable = TemplateTable()

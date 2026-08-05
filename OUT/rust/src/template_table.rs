@@ -32,19 +32,6 @@ pub struct TemplateRecord {
 }
 
 impl TemplateRecord {
-    /// Reads one record, in the exact field order the exporter wrote.
-    fn read(reader: &mut sheetman::Reader<'_>) -> sheetman::Result<Self> {
-        Ok(TemplateRecord {
-            index: reader.read_i32()?,
-            class: reader.read_string()?,
-            int: reader.read_i32()?,
-            delete: reader.read_bool()?,
-            operator: reader.read_string()?,
-            namespace: reader.read_string()?,
-            constructor: reader.read_string()?,
-            function: reader.read_string()?,
-        })
-    }
 }
 
 /// Every row of Template.
@@ -70,11 +57,73 @@ impl TemplateTable {
         let data = sheetman::read_all_bytes(filename)?;
         let mut reader = sheetman::Reader::new(&data);
 
-        let count = sheetman::read_table_header(&mut reader)?;
+        // Column by column, matched by tag rather than position: a column this build
+        // does not know is skipped by its block length, and one whose type changed
+        // incompatibly fails naming the field.
+        let header = sheetman::read_table_header(&mut reader)?;
+        let count = header.row_count.max(0) as usize;
 
-        self.records = Vec::with_capacity(count.max(0) as usize);
-        for _ in 0..count {
-            self.records.push(TemplateRecord::read(&mut reader)?);
+        self.records = vec![TemplateRecord::default(); count];
+
+        for column in &header.columns {
+            let block_end = reader.position() + column.byte_length.max(0) as usize;
+
+            match column.tag {
+                1 => {
+                    sheetman::check_column(column, "Template.Index", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    for record in self.records.iter_mut() {
+                        record.index = reader.read_i32_as(column.element)?;
+                    }
+                }
+                2 => {
+                    sheetman::check_column(column, "Template.Class", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    for record in self.records.iter_mut() {
+                        record.class = reader.read_string()?;
+                    }
+                }
+                3 => {
+                    sheetman::check_column(column, "Template.Int", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    for record in self.records.iter_mut() {
+                        record.int = reader.read_i32_as(column.element)?;
+                    }
+                }
+                4 => {
+                    sheetman::check_column(column, "Template.Delete", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    for record in self.records.iter_mut() {
+                        record.delete = reader.read_bool()?;
+                    }
+                }
+                5 => {
+                    sheetman::check_column(column, "Template.Operator", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    for record in self.records.iter_mut() {
+                        record.operator = reader.read_string()?;
+                    }
+                }
+                6 => {
+                    sheetman::check_column(column, "Template.Namespace", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    for record in self.records.iter_mut() {
+                        record.namespace = reader.read_string()?;
+                    }
+                }
+                7 => {
+                    sheetman::check_column(column, "Template.Constructor", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    for record in self.records.iter_mut() {
+                        record.constructor = reader.read_string()?;
+                    }
+                }
+                8 => {
+                    sheetman::check_column(column, "Template.Function", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    for record in self.records.iter_mut() {
+                        record.function = reader.read_string()?;
+                    }
+                }
+                _ => {
+                    // A column added after this code was generated.
+                    reader.skip(column.byte_length)?;
+                }
+            }
+
+            sheetman::check_block_end(&reader, column, block_end)?;
         }
 
         self.by_index = self

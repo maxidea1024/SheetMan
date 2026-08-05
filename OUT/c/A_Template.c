@@ -13,15 +13,12 @@
 static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader)
 {
     int32_t row;
+    int32_t at;
+    sm_column* columns = NULL;
+    int32_t column_count = 0;
 
-    if (!sm_read_table_header(reader, &table->count))
+    if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
         return false;
-
-    /* Every field encodes to at least one byte, so a row count larger than the
-     * bytes left is one the exporter could not have written. Checked before the
-     * allocation rather than discovered during it. */
-    if (!sm_row_count_is_plausible(reader, table->count, 8))
-        return sm_fail_with(reader, "the row count is larger than the file can hold");
 
     if (table->count > 0) {
         table->records = (A_TemplateRecord_t*)sm_arena_alloc(
@@ -34,32 +31,152 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader)
             return sm_fail_with(reader, "out of memory allocating the rows");
     }
 
-    for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+
+    /* The arena hands back zeroed memory, so every member starts at its zero - which for
+     * a string is NULL, and NULL is what reaches printf when a column the file does not
+     * carry is read. An empty string instead: a literal, so there is nothing to free and
+     * nothing to allocate. */
+    for (row = 0; row < table->count; ++row) {
         A_TemplateRecord_t* record = &table->records[row];
 
-        (void)sm_read_int32(reader, &record->index);
+        record->class_ = "";
 
-        (void)sm_read_string(reader, &record->class_);
+        record->operator_ = "";
 
-        (void)sm_read_int32(reader, &record->int_);
+        record->namespace_ = "";
 
-        (void)sm_read_bool(reader, &record->delete_);
+        record->constructor = "";
 
-        (void)sm_read_string(reader, &record->operator_);
+        record->function = "";
+    }
 
-        (void)sm_read_string(reader, &record->namespace_);
+    /* Column by column, matched by tag rather than by position: a column this build has
+     * no member for is skipped by its declared length, and one whose type no longer fits
+     * the member stops the read naming the field. Rows arrive with every member at an
+     * empty value, so one the file has nothing for keeps it. */
+    for (at = 0; at < column_count && !sm_failed(reader); ++at) {
+        const sm_column* column = &columns[at];
+        int32_t block_end = reader->position + column->byte_length;
 
-        (void)sm_read_string(reader, &record->constructor);
+        switch (column->tag) {
 
-        (void)sm_read_string(reader, &record->function);
+        case 1:
+            (void)sm_check_column(reader, column, "Template.Index", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
 
-        table->by_index[row].key = record->index;
-        table->by_index[row].position = row;
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                A_TemplateRecord_t* record = &table->records[row];
+
+                (void)sm_read_i32_as(reader, column->element, &record->index);
+            }
+
+            break;
+
+        case 2:
+            (void)sm_check_column(reader, column, "Template.Class", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
+
+
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                A_TemplateRecord_t* record = &table->records[row];
+
+                (void)sm_read_string(reader, &record->class_);
+            }
+
+            break;
+
+        case 3:
+            (void)sm_check_column(reader, column, "Template.Int", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
+
+
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                A_TemplateRecord_t* record = &table->records[row];
+
+                (void)sm_read_i32_as(reader, column->element, &record->int_);
+            }
+
+            break;
+
+        case 4:
+            (void)sm_check_column(reader, column, "Template.Delete", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
+
+
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                A_TemplateRecord_t* record = &table->records[row];
+
+                (void)sm_read_bool(reader, &record->delete_);
+            }
+
+            break;
+
+        case 5:
+            (void)sm_check_column(reader, column, "Template.Operator", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
+
+
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                A_TemplateRecord_t* record = &table->records[row];
+
+                (void)sm_read_string(reader, &record->operator_);
+            }
+
+            break;
+
+        case 6:
+            (void)sm_check_column(reader, column, "Template.Namespace", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
+
+
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                A_TemplateRecord_t* record = &table->records[row];
+
+                (void)sm_read_string(reader, &record->namespace_);
+            }
+
+            break;
+
+        case 7:
+            (void)sm_check_column(reader, column, "Template.Constructor", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
+
+
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                A_TemplateRecord_t* record = &table->records[row];
+
+                (void)sm_read_string(reader, &record->constructor);
+            }
+
+            break;
+
+        case 8:
+            (void)sm_check_column(reader, column, "Template.Function", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
+
+
+            for (row = 0; row < table->count && !sm_failed(reader); ++row) {
+                A_TemplateRecord_t* record = &table->records[row];
+
+                (void)sm_read_string(reader, &record->function);
+            }
+
+            break;
+
+        default:
+            /* A column this build has no member for: added to the schema after the code
+             * was generated, or removed from the code while the data still carries it.
+             * The block's declared length is the whole of what skipping needs to know. */
+            (void)sm_skip(reader, column->byte_length);
+            break;
+        }
+
+        if (!sm_check_block_end(reader, column, block_end))
+            return false;
     }
 
     if (sm_failed(reader))
         return false;
+
+    /* The key can only be gathered once every column has been read: the column that
+     * carries it arrives wherever the file happens to put it. */
+    for (row = 0; row < table->count; ++row) {
+        table->by_index[row].key = table->records[row].index;
+        table->by_index[row].position = row;
+    }
 
     sm_index_sort(table->by_index, table->count);
 

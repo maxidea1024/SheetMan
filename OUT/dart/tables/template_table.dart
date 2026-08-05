@@ -26,17 +26,6 @@ class TemplateRecord {
   /// function: keyword in TypeScript
   String function = '';
 
-  /// Reads one record, in the exact field order the exporter wrote.
-  void read(LiteBinaryReader reader) {
-    index = reader.readInt32();
-    class_ = reader.readString();
-    int_ = reader.readInt32();
-    delete = reader.readBool();
-    operator = reader.readString();
-    namespace = reader.readString();
-    constructor = reader.readString();
-    function = reader.readString();
-  }
 }
 
 /// Every row of Template.
@@ -50,17 +39,80 @@ class TemplateTable {
   TemplateRecord? find(int index) => _byIndex[index];
 
   /// Loads the table from a .table file written by SheetMan.
+  /// Column by column, matched by tag rather than position: a column this build does
+  /// not know is skipped by its block length, and one whose type changed incompatibly
+  /// fails naming the field.
   void read(String filename) {
     final reader = LiteBinaryReader(readAllBytes(filename));
-    final count = readTableHeader(reader);
+    final header = readTableHeader(reader);
+    final count = header.rowCount;
 
     records.clear();
     _byIndex.clear();
 
     for (var i = 0; i < count; i++) {
-      final record = TemplateRecord();
-      record.read(reader);
-      records.add(record);
+      records.add(TemplateRecord());
+    }
+
+    for (final column in header.columns) {
+      final blockEnd = reader.position + column.byteLength;
+
+      switch (column.tag) {
+        case 1:
+          checkColumn(column, 'Template.Index', kindScalar, 1, [elementI32, elementVarint]);
+          for (final record in records) {
+            record.index = reader.readI32As(column.element);
+          }
+          break;
+        case 2:
+          checkColumn(column, 'Template.Class', kindScalar, 1, [elementString]);
+          for (final record in records) {
+            record.class_ = reader.readString();
+          }
+          break;
+        case 3:
+          checkColumn(column, 'Template.Int', kindScalar, 1, [elementI32, elementVarint]);
+          for (final record in records) {
+            record.int_ = reader.readI32As(column.element);
+          }
+          break;
+        case 4:
+          checkColumn(column, 'Template.Delete', kindScalar, 1, [elementBool]);
+          for (final record in records) {
+            record.delete = reader.readBool();
+          }
+          break;
+        case 5:
+          checkColumn(column, 'Template.Operator', kindScalar, 1, [elementString]);
+          for (final record in records) {
+            record.operator = reader.readString();
+          }
+          break;
+        case 6:
+          checkColumn(column, 'Template.Namespace', kindScalar, 1, [elementString]);
+          for (final record in records) {
+            record.namespace = reader.readString();
+          }
+          break;
+        case 7:
+          checkColumn(column, 'Template.Constructor', kindScalar, 1, [elementString]);
+          for (final record in records) {
+            record.constructor = reader.readString();
+          }
+          break;
+        case 8:
+          checkColumn(column, 'Template.Function', kindScalar, 1, [elementString]);
+          for (final record in records) {
+            record.function = reader.readString();
+          }
+          break;
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byteLength);
+          break;
+      }
+
+      checkBlockEnd(reader, column, blockEnd);
     }
 
     for (final record in records) {

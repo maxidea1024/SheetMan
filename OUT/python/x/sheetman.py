@@ -27,7 +27,36 @@
 import struct
 
 # Stamped at the head of every table file by the exporter.
-FORMAT_VERSION = 100
+# 101 is column-oriented and self-describing; it replaced 100 outright, before the tool
+# fed anything live, so nothing reads or writes 100 any more.
+FORMAT_VERSION = 101
+
+# The wire's element types and kinds, as the v101 column descriptors spell them.
+ELEMENT_VARINT = 0
+ELEMENT_BOOL = 1
+ELEMENT_I32 = 2
+ELEMENT_I64 = 3
+ELEMENT_F32 = 4
+ELEMENT_F64 = 5
+ELEMENT_STRING = 6
+ELEMENT_UUID = 7
+
+KIND_SCALAR = 0
+KIND_FIXED_ARRAY = 1
+KIND_VAR_ARRAY = 2
+
+
+class Column:
+    """One column as the file describes it."""
+
+    __slots__ = ("tag", "element", "kind", "count", "byte_length")
+
+    def __init__(self, tag, element, kind, count, byte_length):
+        self.tag = tag
+        self.element = element
+        self.kind = kind
+        self.count = count
+        self.byte_length = byte_length
 
 
 class LiteBinaryError(Exception):
@@ -143,6 +172,39 @@ class Reader:
 
         return self._take(length).decode("utf-8")
 
+    def skip(self, byte_count):
+        """Advances past bytes without interpreting them: an unknown column's block.
+
+        The column-oriented layout is what makes this one call the entirety of skipping.
+        """
+        if byte_count < 0 or byte_count > self.remaining:
+            raise LiteBinaryError(
+                "cannot skip %d bytes with %d remaining" % (byte_count, self.remaining))
+        self._position += byte_count
+
+    # Promotions: a member reading a file element narrower than itself. Only the
+    # mathematically lossless directions exist; check_column already refused the rest.
+
+    def read_i32_as(self, element):
+        """An int32 member from i32 or varint."""
+        return self.read_int32() if element == ELEMENT_I32 else self.read_counter32()
+
+    def read_i64_as(self, element):
+        """An int64 member from i64, i32 or varint."""
+        if element == ELEMENT_I64:
+            return self.read_int64()
+        if element == ELEMENT_I32:
+            return self.read_int32()
+        return self.read_counter32()
+
+    def read_f64_as(self, element):
+        """A double member from f64, f32 or i32 - all exact in a double."""
+        if element == ELEMENT_F64:
+            return self.read_double()
+        if element == ELEMENT_F32:
+            return self.read_float()
+        return self.read_int32()
+
     def read_datetime_ticks(self):
         """A timestamp as .NET ticks: 100 ns units since 0001-01-01.
 
@@ -192,10 +254,9 @@ class Reader:
 
 
 def read_table_header(reader):
-    """Reads and checks a table file's header, returning the row count that follows.
+    """Reads and checks a table file's header.
 
-    The reserved byte is written as zero and is where compression or encryption flags
-    would go; a non-zero value means the file needs handling this build does not have.
+    Returns (row_count, columns): the column descriptors the data blocks follow.
     """
     version = reader.read_uint32()
     if version != FORMAT_VERSION:
@@ -210,7 +271,75 @@ def read_table_header(reader):
     if count < 0:
         raise LiteBinaryError("table row count is negative")
 
-    return count
+    column_count = reader.read_counter32()
+    if column_count < 0:
+        raise LiteBinaryError("table column count is negative")
+
+    columns = []
+    for _ in range(column_count):
+        tag = reader.read_counter32()
+        wire = reader.read_uint8()
+        element_count = reader.read_counter32()
+        byte_length = reader.read_uint32()
+        columns.append(Column(tag, wire & 0x0F, (wire >> 4) & 0x03, element_count, byte_length))
+
+    # What the descriptors say about the file, checked before anybody allocates for the
+    # row count. The blocks are all that follows the header, so their declared lengths have
+    # to add up to the bytes left, and every row costs at least one byte in every block - a
+    # varint's shortest form, an empty string's length prefix, a variable array's counter.
+    # A row count larger than that is one the exporter could not have written.
+
+    available = reader.remaining
+    declared = 0
+
+    for column in columns:
+        if column.byte_length < 0 or column.byte_length > available - declared:
+            raise LiteBinaryError(
+                "column tag %d declares %d bytes, which the file cannot hold"
+                % (column.tag, column.byte_length))
+
+        declared += column.byte_length
+
+        if count > column.byte_length:
+            raise LiteBinaryError(
+                "the row count %d is larger than column tag %d can hold in its %d bytes"
+                % (count, column.tag, column.byte_length))
+
+    if declared != available:
+        raise LiteBinaryError(
+            "the columns declare %d bytes but %d follow the header" % (declared, available))
+
+    return count, columns
+
+
+def check_column(column, field_name, kind, count, accepted):
+    """That a column is what the generated member expects, or a lossless promotion.
+
+    Refusal is by name and both types, never by reading anyway.
+    """
+    if column.kind != kind or (kind != KIND_VAR_ARRAY and column.count != count):
+        raise LiteBinaryError(
+            "%s: the file's column (kind %d, count %d) does not match the generated member "
+            "(kind %d, count %d). The schema changed shape; regenerate the code or rebuild "
+            "the data." % (field_name, column.kind, column.count, kind, count))
+
+    if column.element not in accepted:
+        raise LiteBinaryError(
+            "%s: the file carries element type %d, which this member cannot read "
+            "(accepts %s). The column changed type incompatibly; regenerate the code or "
+            "rebuild the data." % (field_name, column.element, accepted))
+
+
+def check_block_end(reader, column, expected_end):
+    """That a block was consumed exactly.
+
+    A mismatch is a format disagreement, and stopping here names the column instead of
+    corrupting the next.
+    """
+    if reader.position != expected_end:
+        raise LiteBinaryError(
+            "column tag %d: its block declared %d bytes but the read ended %d bytes short "
+            "of its boundary" % (column.tag, column.byte_length, expected_end - reader.position))
 
 
 def read_all_bytes(filename):

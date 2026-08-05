@@ -25,22 +25,11 @@ module X
       @function = ''
     end
 
-    # Reads one record, in the exact field order the exporter wrote.
-    def read(reader)
-      @index = reader.read_int32
-      @class_ = reader.read_string
-      @int = reader.read_int32
-      @delete = reader.read_bool
-      @operator = reader.read_string
-      @namespace = reader.read_string
-      @constructor = reader.read_string
-      @function = reader.read_string
-    end
   end
 
   # Every row of Template.
   class TemplateTable
-    attr_reader :records
+    attr_accessor :records
 
     def initialize
       @records = []
@@ -53,14 +42,65 @@ module X
     end
 
     # Loads the table from a .table file written by SheetMan.
+    # Column by column, matched by tag rather than position: a column this build does
+    # not know is skipped by its block length, and one whose type changed incompatibly
+    # fails naming the field.
     def read(filename)
       reader = Sheetman::Reader.new(Sheetman.read_all_bytes(filename))
-      count = Sheetman.read_table_header(reader)
+      count, columns = Sheetman.read_table_header(reader)
 
-      @records = Array.new(count) do
-        record = TemplateRecord.new
-        record.read(reader)
-        record
+      @records = Array.new(count) { TemplateRecord.new }
+
+      columns.each do |column|
+        block_end = reader.position + column.byte_length
+
+        case column.tag
+        when 1
+          Sheetman.check_column(column, 'Template.Index', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          @records.each do |record|
+            record.index = reader.read_i32_as(column.element)
+          end
+        when 2
+          Sheetman.check_column(column, 'Template.Class', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          @records.each do |record|
+            record.class_ = reader.read_string
+          end
+        when 3
+          Sheetman.check_column(column, 'Template.Int', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          @records.each do |record|
+            record.int = reader.read_i32_as(column.element)
+          end
+        when 4
+          Sheetman.check_column(column, 'Template.Delete', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          @records.each do |record|
+            record.delete = reader.read_bool
+          end
+        when 5
+          Sheetman.check_column(column, 'Template.Operator', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          @records.each do |record|
+            record.operator = reader.read_string
+          end
+        when 6
+          Sheetman.check_column(column, 'Template.Namespace', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          @records.each do |record|
+            record.namespace = reader.read_string
+          end
+        when 7
+          Sheetman.check_column(column, 'Template.Constructor', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          @records.each do |record|
+            record.constructor = reader.read_string
+          end
+        when 8
+          Sheetman.check_column(column, 'Template.Function', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          @records.each do |record|
+            record.function = reader.read_string
+          end
+        else
+          # A column added after this code was generated.
+          reader.skip(column.byte_length)
+        end
+
+        Sheetman.check_block_end(reader, column, block_end)
       end
 
       @by_index = @records.to_h { |record| [record.index, record] }

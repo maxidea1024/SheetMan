@@ -35,16 +35,6 @@ type TemplateRecord struct {
 }
 
 // read fills the record from the reader, in the exact field order the exporter wrote.
-func (r *TemplateRecord) read(reader *sheetman.Reader) {
-	r.Index = reader.ReadInt32()
-	r.Class = reader.ReadString()
-	r.Int = reader.ReadInt32()
-	r.Delete = reader.ReadBool()
-	r.Operator = reader.ReadString()
-	r.Namespace = reader.ReadString()
-	r.Constructor = reader.ReadString()
-	r.Function = reader.ReadString()
-}
 
 // TemplateTable holds every row of Template.
 type TemplateTable struct {
@@ -73,11 +63,79 @@ func (t *TemplateTable) Read(filename string) error {
 	}
 
 	reader := sheetman.NewReader(data)
-	count := sheetman.ReadTableHeader(reader)
+	count, columns := sheetman.ReadTableHeader(reader)
 
+	// Column by column, matched by tag rather than position: a column this build does
+	// not know is skipped by its block length, and one whose type changed incompatibly
+	// fails naming the field.
 	t.records = make([]TemplateRecord, count)
-	for i := int32(0); i < count; i++ {
-		t.records[i].read(reader)
+
+	for _, column := range columns {
+		blockEnd := reader.Position() + int(column.ByteLength)
+
+		switch column.Tag {
+		case 1:
+			if sheetman.CheckColumn(reader, column, "Template.Index", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				for i := int32(0); i < count; i++ {
+					r := &t.records[i]
+					r.Index = reader.ReadI32As(column.Element)
+				}
+			}
+		case 2:
+			if sheetman.CheckColumn(reader, column, "Template.Class", sheetman.KindScalar, 1, sheetman.ElementString) {
+				for i := int32(0); i < count; i++ {
+					r := &t.records[i]
+					r.Class = reader.ReadString()
+				}
+			}
+		case 3:
+			if sheetman.CheckColumn(reader, column, "Template.Int", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				for i := int32(0); i < count; i++ {
+					r := &t.records[i]
+					r.Int = reader.ReadI32As(column.Element)
+				}
+			}
+		case 4:
+			if sheetman.CheckColumn(reader, column, "Template.Delete", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				for i := int32(0); i < count; i++ {
+					r := &t.records[i]
+					r.Delete = reader.ReadBool()
+				}
+			}
+		case 5:
+			if sheetman.CheckColumn(reader, column, "Template.Operator", sheetman.KindScalar, 1, sheetman.ElementString) {
+				for i := int32(0); i < count; i++ {
+					r := &t.records[i]
+					r.Operator = reader.ReadString()
+				}
+			}
+		case 6:
+			if sheetman.CheckColumn(reader, column, "Template.Namespace", sheetman.KindScalar, 1, sheetman.ElementString) {
+				for i := int32(0); i < count; i++ {
+					r := &t.records[i]
+					r.Namespace = reader.ReadString()
+				}
+			}
+		case 7:
+			if sheetman.CheckColumn(reader, column, "Template.Constructor", sheetman.KindScalar, 1, sheetman.ElementString) {
+				for i := int32(0); i < count; i++ {
+					r := &t.records[i]
+					r.Constructor = reader.ReadString()
+				}
+			}
+		case 8:
+			if sheetman.CheckColumn(reader, column, "Template.Function", sheetman.KindScalar, 1, sheetman.ElementString) {
+				for i := int32(0); i < count; i++ {
+					r := &t.records[i]
+					r.Function = reader.ReadString()
+				}
+			}
+		default:
+			// A column added after this code was generated.
+			reader.Skip(column.ByteLength)
+		}
+
+		sheetman.CheckBlockEnd(reader, column, blockEnd)
 	}
 
 	if err := reader.Err(); err != nil {

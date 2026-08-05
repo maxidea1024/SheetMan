@@ -48,14 +48,14 @@ namespace SheetMan.Fixtures.Core
             /// </summary>
             public string[] TextEnArray => _textEnArray;
             public const int TextEnArray_N = 2;
-            internal string[] _textEnArray = new string[TextEnArray_N];
+            internal string[] _textEnArray = System.Array.Empty<string>();
 
             /// <summary>
             /// korean text 1
             /// </summary>
             public string[] TextKoArray => _textKoArray;
             public const int TextKoArray_N = 2;
-            internal string[] _textKoArray = new string[TextKoArray_N];
+            internal string[] _textKoArray = System.Array.Empty<string>();
             #endregion
 
             #region ToString
@@ -178,6 +178,7 @@ namespace SheetMan.Fixtures.Core
                         for (int i = 0; i < count; i++)
                         {
                             var record = _records[i];
+                            record._textEnArray = new string[Record.TextEnArray_N];
                             for (int j = 0; j < Record.TextEnArray_N; ++j)
                             {
                                 reader.Read(out record._textEnArray[j]);
@@ -190,6 +191,7 @@ namespace SheetMan.Fixtures.Core
                         for (int i = 0; i < count; i++)
                         {
                             var record = _records[i];
+                            record._textKoArray = new string[Record.TextKoArray_N];
                             for (int j = 0; j < Record.TextKoArray_N; ++j)
                             {
                                 reader.Read(out record._textKoArray[j]);

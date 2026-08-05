@@ -1,0 +1,316 @@
+{
+  "Comment": "SheetMan's record of the columns data was last written with. Commit it: the converter compares the schema against this and refuses a change that would break a reader already deployed. See doc/binary-format-v101.md.",
+  "BaselineVersion": 1,
+  "Tables": {
+    "TestFieldTypes": {
+      "1": {
+        "Name": "Index",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "2": {
+        "Name": "StringField",
+        "Element": 6,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "3": {
+        "Name": "BoolField",
+        "Element": 1,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "4": {
+        "Name": "IntField",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "5": {
+        "Name": "BigIntField",
+        "Element": 3,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "6": {
+        "Name": "FloatField",
+        "Element": 4,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "7": {
+        "Name": "DoubleField",
+        "Element": 5,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "8": {
+        "Name": "DatetimeField",
+        "Element": 3,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "9": {
+        "Name": "TimespanField",
+        "Element": 3,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "10": {
+        "Name": "UuidField",
+        "Element": 7,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "11": {
+        "Name": "ValueTypeField",
+        "Element": 0,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      }
+    },
+    "ItemCategory": {
+      "1": {
+        "Name": "Index",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "2": {
+        "Name": "Name",
+        "Element": 6,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "3": {
+        "Name": "Description",
+        "Element": 6,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      }
+    },
+    "Item": {
+      "1": {
+        "Name": "Index",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "2": {
+        "Name": "Name",
+        "Element": 6,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "3": {
+        "Name": "CategoryId",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "4": {
+        "Name": "GradeField",
+        "Element": 0,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "5": {
+        "Name": "SkillField",
+        "Element": 0,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "6": {
+        "Name": "Description",
+        "Element": 6,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "7": {
+        "Name": "Price",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      }
+    },
+    "Localization": {
+      "1": {
+        "Name": "Index",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "2": {
+        "Name": "Key",
+        "Element": 6,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "3": {
+        "Name": "TextEn_array",
+        "Element": 6,
+        "Kind": 1,
+        "Count": 2,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "4": {
+        "Name": "TextKo_array",
+        "Element": 6,
+        "Kind": 1,
+        "Count": 2,
+        "Retired": false,
+        "ExplicitTag": false
+      }
+    },
+    "ArrayTypes": {
+      "1": {
+        "Name": "Index",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "2": {
+        "Name": "Tags",
+        "Element": 6,
+        "Kind": 2,
+        "Count": 0,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "3": {
+        "Name": "Costs",
+        "Element": 2,
+        "Kind": 2,
+        "Count": 0,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "4": {
+        "Name": "Weights",
+        "Element": 4,
+        "Kind": 2,
+        "Count": 0,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "5": {
+        "Name": "Grades",
+        "Element": 0,
+        "Kind": 2,
+        "Count": 0,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "6": {
+        "Name": "Slot_array",
+        "Element": 2,
+        "Kind": 1,
+        "Count": 2,
+        "Retired": false,
+        "ExplicitTag": false
+      }
+    },
+    "ServerTuning": {
+      "1": {
+        "Name": "Index",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "2": {
+        "Name": "Key",
+        "Element": 6,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "3": {
+        "Name": "Amount",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      }
+    },
+    "ClientStrings": {
+      "1": {
+        "Name": "Index",
+        "Element": 2,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "2": {
+        "Name": "Key",
+        "Element": 6,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      },
+      "3": {
+        "Name": "Text",
+        "Element": 6,
+        "Kind": 0,
+        "Count": 1,
+        "Retired": false,
+        "ExplicitTag": false
+      }
+    }
+  }
+}

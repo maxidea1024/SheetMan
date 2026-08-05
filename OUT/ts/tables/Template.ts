@@ -31,35 +31,35 @@ export class TemplateRecord {
 
     /** primary index */
     public get index(): number { return this._index }
-    private _index: number
+    public _index: number = 0
 
     /** class: keyword in C++ and C# */
     public get class(): string { return this._class }
-    private _class: string
+    public _class: string = ''
 
     /** int: keyword in C++ and C# */
     public get int(): number { return this._int }
-    private _int: number
+    public _int: number = 0
 
     /** delete: keyword in C++ */
     public get delete(): boolean { return this._delete }
-    private _delete: boolean
+    public _delete: boolean = false
 
     /** operator: keyword in C++ */
     public get operator(): string { return this._operator }
-    private _operator: string
+    public _operator: string = ''
 
     /** namespace: keyword in C++ and C# */
     public get namespace(): string { return this._namespace }
-    private _namespace: string
+    public _namespace: string = ''
 
     /** constructor: special member in TypeScript */
     public get constructor_(): string { return this._constructor_ }
-    private _constructor_: string
+    public _constructor_: string = ''
 
     /** function: keyword in TypeScript */
     public get function(): string { return this._function }
-    private _function: string
+    public _function: string = ''
 
     /** Populate field values. */
     public populateFieldValues(dataRow: IDataRow): void {
@@ -84,19 +84,6 @@ export class TemplateRecord {
         this._namespace = dataRow[offset++]
         this._constructor_ = dataRow[offset++]
         this._function = dataRow[offset++]
-    }
-
-    /** Read one record. Field order must match the exporter's. */
-    public readBinary(reader: sheetman.LiteBinaryReader): void
-    {
-        this._index = reader.readInt32()
-        this._class = reader.readString()
-        this._int = reader.readInt32()
-        this._delete = reader.readBool()
-        this._operator = reader.readString()
-        this._namespace = reader.readString()
-        this._constructor_ = reader.readString()
-        this._function = reader.readString()
     }
 }
 
@@ -175,17 +162,99 @@ export class TemplateTable {
         this.readBinaryFrom(sheetman.readAllBytes(filename))
     }
 
-    /** Read a table from binary data already in memory. */
+    /**
+     * Read a table from binary data already in memory.
+     *
+     * Column by column, matched by tag rather than position: a column this build does not
+     * know is skipped by its block length, and one whose type changed incompatibly fails
+     * naming the field.
+     */
     public readBinaryFrom(data: Uint8Array): void
     {
         const reader = new sheetman.LiteBinaryReader(data)
-        const rowCount = sheetman.readTableHeader(reader)
+        const { rowCount, columns } = sheetman.readTableHeader(reader)
 
+        this._records = []
         for (let i = 0; i < rowCount; ++i)
+            this._records.push(new TemplateRecord())
+
+        for (const column of columns)
         {
-            const record = new TemplateRecord()
-            record.readBinary(reader)
-            this._records.push(record)
+            const blockEnd = reader.position + column.byteLength
+
+            switch (column.tag)
+            {
+                case 1:
+                    sheetman.checkColumn(column, 'Template.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._index = reader.readI32As(column.element)
+                    }
+                    break
+                case 2:
+                    sheetman.checkColumn(column, 'Template.Class', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._class = reader.readString()
+                    }
+                    break
+                case 3:
+                    sheetman.checkColumn(column, 'Template.Int', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._int = reader.readI32As(column.element)
+                    }
+                    break
+                case 4:
+                    sheetman.checkColumn(column, 'Template.Delete', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._delete = reader.readBool()
+                    }
+                    break
+                case 5:
+                    sheetman.checkColumn(column, 'Template.Operator', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._operator = reader.readString()
+                    }
+                    break
+                case 6:
+                    sheetman.checkColumn(column, 'Template.Namespace', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._namespace = reader.readString()
+                    }
+                    break
+                case 7:
+                    sheetman.checkColumn(column, 'Template.Constructor', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._constructor_ = reader.readString()
+                    }
+                    break
+                case 8:
+                    sheetman.checkColumn(column, 'Template.Function', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+                    for (let i = 0; i < rowCount; ++i)
+                    {
+                        const record = this._records[i]
+                        record._function = reader.readString()
+                    }
+                    break
+                default:
+                    // A column added after this code was generated.
+                    reader.skip(column.byteLength)
+                    break
+            }
+
+            sheetman.checkBlockEnd(reader, column, blockEnd)
         }
 
         this.mapping()
