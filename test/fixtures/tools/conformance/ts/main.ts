@@ -69,6 +69,10 @@ const rows = table.records.map(r => ({
     ints: r.ints,
     strs: r.strs,
 
+    // The two array forms whose element read is not the scalar one in a loop.
+    labels: r.labels as unknown as number[],
+    uids: r.uids.map((value) => value.toLowerCase()),
+
     // The reference indices, which is what the exporter writes for a foreign field.
     owner: r._owner_Owners_index,
     tier: r._tier_Owners_index,

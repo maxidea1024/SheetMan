@@ -12,7 +12,26 @@ import (
 	"strconv"
 
 	"conformance"
+	"conformance/sheetman"
 )
+
+// The two array forms whose element read is not the scalar one in a loop, rendered as the
+// contract asks: an enum as its number, a uuid as its text.
+func labels(values []conformance.Flag) []int32 {
+	out := make([]int32, 0, len(values))
+	for _, value := range values {
+		out = append(out, int32(value))
+	}
+	return out
+}
+
+func uuids(values []sheetman.UUID) []string {
+	out := make([]string, 0, len(values))
+	for _, value := range values {
+		out = append(out, value.String())
+	}
+	return out
+}
 
 func main() {
 	if len(os.Args) < 2 {
@@ -48,6 +67,10 @@ func main() {
 			"label": int32(r.Label),
 			"ints":  r.Ints,
 			"strs":  r.Strs,
+
+			// The two array forms whose element read is not the scalar one in a loop.
+			"labels": labels(r.Labels),
+			"uids":   uuids(r.Uids),
 
 			// The reference indices, which is what the exporter writes for a foreign field.
 			"owner": r.OwnerIndex,

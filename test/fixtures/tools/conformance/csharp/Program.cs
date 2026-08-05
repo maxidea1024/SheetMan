@@ -51,6 +51,18 @@ internal static class Program
             json.Append("\"strs\":[");
             for (int k = 0; k < r.Strs.Length; k++)
                 json.Append(k > 0 ? "," : "").Append(Quote(r.Strs[k]));
+            json.Append("],");
+
+            // The two array forms whose element read is not the scalar one in a loop.
+            json.Append("\"labels\":[");
+            for (int k = 0; k < r.Labels.Length; k++)
+                json.Append(k > 0 ? "," : "").Append(Number((int)r.Labels[k]));
+            json.Append("],");
+
+            json.Append("\"uids\":[");
+            for (int k = 0; k < r.Uids.Length; k++)
+                json.Append(k > 0 ? "," : "")
+                    .Append('"').Append(r.Uids[k].ToString("D").ToLowerInvariant()).Append('"');
             json.Append(']');
 
             // The reference indices, which is what the exporter writes for a foreign field.

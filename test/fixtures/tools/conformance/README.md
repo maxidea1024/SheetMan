@@ -73,3 +73,15 @@ from what the reader assumes, both would be wrong together and this would pass.
 That is a smaller gap than the one it closes. Before this, the Unreal target was checked for
 compiling, for using engine types, and for not throwing - and never once for reading the
 right values, in the target most likely to end up in a shipped game.
+
+## Adding a value type
+
+`CorpusCoverageTests` reads the `ValueType` enum and requires the corpus to have a field of
+every one, so adding a type fails that test the same day - before any of the twelve generators
+have been touched. The bill it prints is the real one: a column in `WriteConformance`, a
+regenerated workbook, and a line in each of the twelve harnesses.
+
+That is the point. Twelve generators each carry their own switch deciding which reader call a
+field turns into, and forgetting one still compiles - the `default:` throws at runtime, in
+whoever's project reaches that field first. What keeps that from happening is that the corpus
+has every type and twelve harnesses read it. Which only holds while the corpus really does.

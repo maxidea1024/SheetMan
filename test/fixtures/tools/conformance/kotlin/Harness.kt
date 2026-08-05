@@ -52,6 +52,21 @@ fun main(args: Array<String>) {
             if (i > 0) json.append(',')
             json.append(quote(value))
         }
+        json.append("],")
+
+        // The two array forms whose element read is not the scalar one in a loop.
+        json.append("\"labels\":[")
+        for ((i, value) in r.labels.withIndex()) {
+            if (i > 0) json.append(',')
+            json.append(value.value)
+        }
+        json.append("],")
+
+        json.append("\"uids\":[")
+        for ((i, value) in r.uids.withIndex()) {
+            if (i > 0) json.append(',')
+            json.append('"').append(value).append('"')
+        }
         json.append(']')
 
         // The reference indices, which is what the exporter writes for a foreign field.

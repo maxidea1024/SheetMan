@@ -37,6 +37,14 @@
   // which is what that list is for: a language added after it costs its own files and
   // touches nothing existing.
   "Targets": [
+    // Not for the corpus's own sake: it is what CorpusCoverageTests reads to ask whether every
+    // value type a field can hold is actually in here. A type nobody put in the corpus is a
+    // type no language's reader is ever run against.
+    {
+      "Type": "summary",
+      "Path": "test/fixtures/output/conformance/summary"
+    },
+
     {
       "Type": "go",
       "Path": "test/fixtures/output/conformance/go",

@@ -60,6 +60,19 @@ public final class Harness {
             for (int k = 0; k < r.strs.length; k++) {
                 json.append(k > 0 ? "," : "").append(quote(r.strs[k]));
             }
+            json.append("],");
+
+            // The two array forms whose element read is not the scalar one in a loop.
+            json.append("\"labels\":[");
+            for (int k = 0; k < r.labels.length; k++) {
+                json.append(k > 0 ? "," : "").append(r.labels[k].value());
+            }
+            json.append("],");
+
+            json.append("\"uids\":[");
+            for (int k = 0; k < r.uids.length; k++) {
+                json.append(k > 0 ? "," : "").append('"').append(r.uids[k]).append('"');
+            }
             json.append(']');
 
             // The reference indices, which is what the exporter writes for a foreign field.

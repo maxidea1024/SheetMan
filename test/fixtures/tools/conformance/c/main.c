@@ -127,6 +127,25 @@ int main(int argc, char** argv)
             print_quoted(r->strs[i]);
         }
 
+        /* The two array forms whose element read is not the scalar one in a loop. An enum
+           element is the one place this target reads into a scratch int and casts. */
+        fputs("],\"labels\":[", stdout);
+        for (i = 0; i < r->labels_count; ++i) {
+            if (i > 0)
+                putchar(',');
+
+            printf("%d", (int)r->labels[i]);
+        }
+
+        fputs("],\"uids\":[", stdout);
+        for (i = 0; i < r->uids_count; ++i) {
+            if (i > 0)
+                putchar(',');
+
+            sm_uuid_to_string(&r->uids[i], uuid);
+            printf("\"%s\"", uuid);
+        }
+
         /* The reference indices, which is what the exporter writes for a foreign field. */
         printf("],\"owner\":%d,\"tier\":%d}",
                (int)r->owner_index, (int)r->tier_index);

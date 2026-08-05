@@ -68,6 +68,25 @@ fn main() {
             }
             json.push_str(&quote(value));
         }
+        json.push_str("],");
+
+        // The two array forms whose element read is not the scalar one in a loop.
+        json.push_str("\"labels\":[");
+        for (i, value) in record.labels.iter().enumerate() {
+            if i > 0 {
+                json.push(',');
+            }
+            json.push_str(&(*value as i32).to_string());
+        }
+        json.push_str("],");
+
+        json.push_str("\"uids\":[");
+        for (i, value) in record.uids.iter().enumerate() {
+            if i > 0 {
+                json.push(',');
+            }
+            json.push_str(&quote(&value.to_string()));
+        }
         json.push(']');
 
         // The reference indices, which is what the exporter writes for a foreign field.

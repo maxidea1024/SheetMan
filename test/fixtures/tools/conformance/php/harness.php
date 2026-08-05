@@ -95,6 +95,9 @@ foreach ($data->vectors->records as $r) {
 
     $row .= '"ints":[' . \implode(',', \array_map('strval', $r->ints)) . '],';
     $row .= '"strs":[' . \implode(',', \array_map('quoted', $r->strs)) . ']';
+    // The two array forms whose element read is not the scalar one in a loop.
+    $row .= ',"labels":[' . \implode(',', \array_map(static fn ($v) => $v->value, $r->labels)) . ']';
+    $row .= ',"uids":[' . \implode(',', \array_map(static fn ($v) => quoted((string)$v), $r->uids)) . ']';
     // The reference indices, which is what the exporter writes for a foreign field.
     $row .= ',"owner":' . $r->ownerIndex;
     $row .= ',"tier":' . $r->tierIndex;

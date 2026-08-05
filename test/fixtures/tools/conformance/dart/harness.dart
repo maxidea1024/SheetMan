@@ -47,6 +47,10 @@ void main(List<String> args) {
     json.write('"ints":[${r.ints.join(',')}],');
     json.write('"strs":[${r.strs.map(quote).join(',')}]');
 
+    // The two array forms whose element read is not the scalar one in a loop.
+    json.write(',"labels":[${r.labels.map((v) => v.value).join(',')}]');
+    json.write(',"uids":[${r.uids.map((v) => quote(v.toString())).join(',')}]');
+
     // The reference indices, which is what the exporter writes for a foreign field.
     json.write(',"owner":${r.ownerIndex}');
     json.write(',"tier":${r.tierIndex}');

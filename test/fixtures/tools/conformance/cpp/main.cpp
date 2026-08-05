@@ -97,6 +97,17 @@ int main(int argc, char** argv) {
     json << "\"strs\":[";
     for (std::size_t k = 0; k < r.strs.size(); ++k)
       json << (k > 0 ? "," : "") << quote(r.strs[k]);
+    json << "],";
+
+    // The two array forms whose element read is not the scalar one in a loop.
+    json << "\"labels\":[";
+    for (std::size_t k = 0; k < r.labels.size(); ++k)
+      json << (k > 0 ? "," : "") << static_cast<std::int32_t>(r.labels[k]);
+    json << "],";
+
+    json << "\"uids\":[";
+    for (std::size_t k = 0; k < r.uids.size(); ++k)
+      json << (k > 0 ? "," : "") << '"' << r.uids[k].to_string() << '"';
     json << ']';
 
     // The reference indices, which is what the exporter writes for a foreign field.

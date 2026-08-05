@@ -132,6 +132,17 @@ int main(int argc, char** argv) {
     json << "\"strs\":[";
     for (int32 k = 0; k < r.Strs.Num(); ++k)
       json << (k > 0 ? "," : "") << quote(r.Strs[k].ToUtf8());
+    json << "],";
+
+    // The two array forms whose element read is not the scalar one in a loop.
+    json << "\"labels\":[";
+    for (int32 k = 0; k < r.Labels.Num(); ++k)
+      json << (k > 0 ? "," : "") << static_cast<std::int32_t>(r.Labels[k]);
+    json << "],";
+
+    json << "\"uids\":[";
+    for (int32 k = 0; k < r.Uids.Num(); ++k)
+      json << (k > 0 ? "," : "") << '"' << guid(r.Uids[k]) << '"';
     json << ']';
 
     // The reference indices, which is what the exporter writes for a foreign field.

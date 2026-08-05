@@ -45,6 +45,12 @@ namespace SheetMan.Tests
             { "ints", "int[]" },
             { "strs", "string[]" },
 
+            // The two array forms whose element read is not the scalar one in a loop: an enum
+            // element goes through a cast, and in C through a scratch variable, and a uuid
+            // element is sixteen bytes rather than a value.
+            { "labels", "enum[]" },
+            { "uids", "uuid[]" },
+
             // The two references, compared as the index each came in as - which is what the
             // exporter writes for a `foreign` field, resolved value or not.
             //

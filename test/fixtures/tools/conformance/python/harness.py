@@ -55,6 +55,10 @@ def main():
             "ints": list(record.ints),
             "strs": list(record.strs),
 
+            # The two array forms whose element read is not the scalar one in a loop.
+            "labels": [int(value) for value in record.labels],
+            "uids": [str(value) for value in record.uids],
+
             # The reference indices, which is what the exporter writes for a foreign field.
             "owner": record.owner_index,
             "tier": record.tier_index,

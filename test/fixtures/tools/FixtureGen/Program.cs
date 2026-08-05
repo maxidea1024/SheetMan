@@ -784,6 +784,21 @@ namespace SheetMan.FixtureGen
                 .Field(FieldSpec.Of("ints", "int[]", "length-prefixed, including empty"))
                 .Field(FieldSpec.Of("strs", "string[]", "length-prefixed strings"))
 
+                // The two array forms whose element read is not the scalar one in a loop.
+                //
+                // An enum element goes through a cast in most targets and through a scratch
+                // variable in C, because the reader fills an int and the member is the enum. A
+                // uuid element is sixteen bytes rather than a value, so the targets that own
+                // their memory allocate per element rather than assigning.
+                //
+                // The other six array forms - bool, bigint, float, double, datetime, timespan -
+                // are the same loop with a different scalar call, and each of those calls is
+                // already read as a scalar column above. Left out on purpose, and the reason is
+                // in CorpusCoverageTests so that leaving them out stays a decision.
+                .Field(FieldSpec.Of("labels", "enum[]", "an element that needs a cast",
+                                    detailType: "Flag"))
+                .Field(FieldSpec.Of("uids", "uuid[]", "an element that is sixteen bytes"))
+
                 // A whole-row reference, so a table's own file names the other table's record
                 // type - which is the dependency a per-table output has to carry.
                 .Field(FieldSpec.Of("owner", "foreign", "a whole row of another table",
@@ -799,27 +814,27 @@ namespace SheetMan.FixtureGen
                 // paths at length zero.
                 .Row("1", "0", "0", "0", "0", "", "N",
                      "0001-01-01 00:00:00", "00:00:00", "00000000-0000-0000-0000-000000000000",
-                     "None", "", "", "0", "0")
+                     "None", "", "", "", "", "0", "0")
 
                 // The value a double cannot hold, and one varint byte short of two.
                 .Row("2", "63", "9007199254740993", "0.1", "0.1", "ascii", "Y",
                      "2022-03-01 09:00:00", "0.00:05:00", "6f9619ff-8b86-d011-b42d-00c04fc964ff",
-                     "One", "0;1;-1", "a;b", "1", "1")
+                     "One", "0;1;-1", "a;b", "One", "6f9619ff-8b86-d011-b42d-00c04fc964ff", "1", "1")
 
                 // Its negative, and the zig-zag boundary either side of zero.
                 .Row("3", "-64", "-9007199254740993", "-0.1", "-0.1", "é한Ａ", "N",
                      "9999-12-31 23:59:59", "-0.00:05:00", "ffffffff-ffff-ffff-ffff-ffffffffffff",
-                     "Negative", "-2147483648;2147483647", "", "2", "2")
+                     "Negative", "-2147483648;2147483647", "", "Negative;Large", "00000000-0000-0000-0000-000000000000;ffffffff-ffff-ffff-ffff-ffffffffffff", "2", "2")
 
                 // Three varint bytes, and both 32-bit extremes.
                 .Row("4", "1048576", "-1", "3.4028235E+38", "1.7976931348623157E+308", "  spaced  ", "Y",
                      "1970-01-01 00:00:00", "10675199.02:48:05", "01020304-0506-0708-090a-0b0c0d0e0f10",
-                     "Large", "1048576", "one;;three", "3", "3")
+                     "Large", "1048576", "one;;three", "None;One;Large", "01020304-0506-0708-090a-0b0c0d0e0f10", "3", "3")
 
                 // Five varint bytes each way.
                 .Row("5", "2147483647", "9223372036854775807", "1.4E-45", "5E-324", "tail", "N",
                      "2038-01-19 03:14:07", "00:00:00.0000001", "ffffffff-0000-ffff-0000-ffffffffffff",
-                     "None", "134217728;-134217729", "z", "1", "3")
+                     "None", "134217728;-134217729", "z", "Large", "ffffffff-0000-ffff-0000-ffffffffffff", "1", "3")
 
                 // Negative zero is deliberately not here: JSON has no such value, so the
                 // harness contract cannot carry it and a disagreement would say nothing
@@ -827,7 +842,7 @@ namespace SheetMan.FixtureGen
                 // does survive the round trip.
                 .Row("6", "-2147483648", "-9223372036854775808", "-1.4E-45", "-5E-324", "", "Y",
                      "2000-02-29 12:00:00", "1.00:00:00", "80000000-0000-0000-0000-000000000001",
-                     "One", "", "é", "3", "1");
+                     "One", "", "é", "", "80000000-0000-0000-0000-000000000001", "3", "1");
 
             b.Table(8, 1, spec);
 
