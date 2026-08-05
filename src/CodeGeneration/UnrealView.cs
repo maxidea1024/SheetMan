@@ -27,6 +27,26 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
         public IReadOnlyList<UnrealEnumLabelView> Labels { get; set; }
+
+        /// <summary>
+        /// Whether this enum can be `UENUM(BlueprintType)`, which requires a uint8 underlying
+        /// type and so every label between 0 and 255.
+        /// </summary>
+        /// <remarks>
+        /// A label outside that range used to refuse the whole conversion. Which made the Unreal
+        /// target the one that could not read a model the other eleven read - and the values are
+        /// the sheet's, not something a generator gets to reject. It degrades instead: the enum
+        /// widens to int32, stays a UENUM so it is still reflected and still serialises, and
+        /// loses only its Blueprint visibility. The fields typed with it lose theirs too, because
+        /// UHT will not expose a property whose type Blueprint cannot see.
+        /// </remarks>
+        public bool BlueprintVisible { get; set; }
+
+        /// <summary>The underlying type: `uint8` normally, `int32` when a label does not fit.</summary>
+        public string UnderlyingType { get; set; }
+
+        /// <summary>Which label pushed it past uint8, for the comment that says so.</summary>
+        public string NotVisibleBecause { get; set; }
     }
 
     internal sealed class UnrealEnumLabelView

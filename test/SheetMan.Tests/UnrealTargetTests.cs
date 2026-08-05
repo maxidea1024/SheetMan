@@ -296,19 +296,44 @@ namespace SheetMan.Tests
         }
 
         /// <summary>
-        /// A BlueprintType enum is uint8, so a label outside 0 to 255 cannot be represented.
-        ///
-        /// The generator says so rather than emitting a header that fails deep inside the
-        /// header tool, after a build has already started.
+        /// A BlueprintType enum is uint8, so a label outside 0 to 255 makes the enum widen to
+        /// int32 and give up Blueprint rather than failing the conversion.
         /// </summary>
+        /// <remarks>
+        /// It used to refuse outright, which made the Unreal target the only one that could not
+        /// read a model the other eleven read. The values belong to the sheet - an enum of error
+        /// codes or bit flags is ordinary - and a code generator does not get to reject one.
+        ///
+        /// So it degrades and says which label did it. The enum stays a UENUM, so it is still
+        /// reflected and still serialises; it loses BlueprintType, and every field declared with
+        /// it loses its UPROPERTY, because UHT will not expose a property whose type Blueprint
+        /// cannot see. All of it still reads from C++, which is where the data is used.
+        ///
+        /// The conformance corpus is what made this matter rather than a preference: its `Flag`
+        /// enum has a label at 1048576 - three varint bytes, which is the point of it - so the
+        /// Unreal target could not read the corpus at all while this threw.
+        /// </remarks>
         [Fact]
-        public void Enum_values_outside_a_byte_are_rejected()
+        public void An_enum_value_outside_a_byte_widens_instead_of_failing()
         {
             var result = SheetManRunner.Convert("unreal-enum-range");
 
-            Assert.False(result.Succeeded, "An enum value a uint8 cannot hold was accepted.");
+            Assert.True(result.Succeeded,
+                $"An enum value a uint8 cannot hold failed the conversion.{Environment.NewLine}{result.Describe()}");
+
+            // Warned, so a project that wanted the enum in Blueprint does not find out from a
+            // missing pin.
             Assert.Contains("1048576", result.StdOut);
             Assert.Contains("uint8", result.StdOut);
+
+            string header = File.ReadAllText(Path.Combine(
+                ModuleDir("unreal-enum-range", "SheetManOutOfRange"), "Public", "FSheetManOutOfRange.h"));
+
+            Assert.Contains(": int32", header);
+            Assert.DoesNotContain("UENUM(BlueprintType)", header);
+
+            // And the field declared with it is written, without a UPROPERTY.
+            Assert.Contains("// No UPROPERTY:", header);
         }
 
         /// <summary>

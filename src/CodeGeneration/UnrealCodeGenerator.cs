@@ -108,7 +108,6 @@ namespace SheetMan.CodeGeneration
             _recipe = recipe;
             _model = context.Model;
 
-            VerifyEnumsFitBlueprint();
 
             var view = BuildView();
 
@@ -134,27 +133,31 @@ namespace SheetMan.CodeGeneration
 
         /// <summary>
         /// A BlueprintType enum's underlying type must be uint8, so a label outside 0 to 255
-        /// cannot be represented.
-        ///
-        /// Checked here rather than left to the header tool, which reports it as a parse
-        /// failure some distance from the value that caused it - and only after a build has
-        /// been started.
+        /// cannot be one - and the enum widens to int32 and gives up Blueprint instead.
         /// </summary>
-        private void VerifyEnumsFitBlueprint()
+        /// <remarks>
+        /// This used to throw and refuse the whole conversion, which made the Unreal target the
+        /// only one that could not read a model the other eleven read. The values belong to the
+        /// sheet: an enum of network error codes or bit flags is ordinary, and a code generator
+        /// does not get to reject it.
+        ///
+        /// So it degrades, and says which label did it. The enum stays a `UENUM`, so it is still
+        /// reflected and still serialises; it loses `BlueprintType`, and the fields typed with it
+        /// lose their `UPROPERTY`, because UHT will not expose a property Blueprint cannot see.
+        /// Everything remains readable from C++, which is where the data is used.
+        ///
+        /// Warned rather than silent, because a project that wanted the enum in Blueprint would
+        /// otherwise find out from a missing pin.
+        /// </remarks>
+        private Models.Enum.Label OutOfBlueprintRange(Models.Enum enumm)
         {
-            foreach (var enumm in _model.Enums)
+            foreach (var label in enumm.Labels)
             {
-                foreach (var label in enumm.Labels)
-                {
-                    if (label.Value >= 0 && label.Value <= 255)
-                        continue;
-
-                    throw new SheetManException(label.Location,
-                        $"Enum `{enumm.Name}` label `{label.Name}` has value {label.Value}, which the " +
-                        "unreal target cannot represent: a BlueprintType enum is uint8, so every label " +
-                        "must be between 0 and 255.");
-                }
+                if (label.Value < 0 || label.Value > 255)
+                    return label;
             }
+
+            return null;
         }
 
         private void WriteBinaryReaderRuntime()
@@ -227,11 +230,29 @@ namespace SheetMan.CodeGeneration
             },
         };
 
-        private UnrealEnumView BuildEnum(Models.Enum enumm) => new UnrealEnumView
+        private UnrealEnumView BuildEnum(Models.Enum enumm)
+        {
+            var offender = OutOfBlueprintRange(enumm);
+
+            if (offender != null)
+            {
+                Log.Warning(
+                    $"Enum `{enumm.Name}` label `{offender.Name}` has value {offender.Value}, which does " +
+                    "not fit the uint8 a BlueprintType enum has to be. Generating it as a plain int32 " +
+                    "UENUM instead: readable from C++, not visible in Blueprint, and neither are the " +
+                    "fields typed with it.");
+            }
+
+            return new UnrealEnumView
         {
             Name = EnumName(enumm),
             Location = enumm.Location.ToString(),
             Comment = CommentLines(enumm.Comment),
+            BlueprintVisible = offender == null,
+            UnderlyingType = offender == null ? "uint8" : "int32",
+            NotVisibleBecause = offender == null
+                ? null
+                : $"label `{offender.Name}` is {offender.Value}, and a BlueprintType enum is uint8.",
             Labels = enumm.Labels.Select(label => new UnrealEnumLabelView
             {
                 Name = label.Name.ToPascalCase(),
@@ -240,6 +261,7 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(label.Comment),
             }).ToList(),
         };
+        }
 
         private UnrealTableView BuildTable(Table table)
         {
@@ -301,14 +323,41 @@ namespace SheetMan.CodeGeneration
                 ElementCount = sf.Fields.Count,
                 Declaration = Declaration(sf, name),
 
-                // UE4's header tool rejects a double UPROPERTY and UE5 accepts one. The
-                // member is written either way and left unreflected, which builds on both -
-                // the value is read and usable from C++, and only Blueprint cannot see it.
-                BlueprintVisible = sf.ElementType != ValueType.Double,
-                NotVisibleBecause = "UE4's header tool does not accept a double property.",
+                // Two reasons a member is written without a UPROPERTY, and it is written either
+                // way: the value is read and usable from C++, and only Blueprint cannot see it.
+                //
+                // UE4's header tool rejects a double property and UE5 accepts one, so a double is
+                // left unreflected to build on both.
+                //
+                // And an enum whose labels do not fit uint8 is not a BlueprintType, so UHT will
+                // not expose a property of that type either - the enum's own degradation carries
+                // through to every field declared with it.
+                BlueprintVisible = sf.ElementType != ValueType.Double && !NamesAWideEnum(sf),
+                NotVisibleBecause = sf.ElementType == ValueType.Double
+                    ? "UE4's header tool does not accept a double property."
+                    : WideEnumReason(sf),
 
                 ReadCall = ReadCall(sf),
             };
+        }
+
+        /// <summary>
+        /// Whether this field is declared with an enum that had to widen past uint8.
+        /// </summary>
+        private bool NamesAWideEnum(SerialField sf)
+            => sf.ElementType == ValueType.Enum && OutOfBlueprintRange(sf.FirstField.Enum) != null;
+
+        private string WideEnumReason(SerialField sf)
+        {
+            if (sf.ElementType != ValueType.Enum)
+                return null;
+
+            var offender = OutOfBlueprintRange(sf.FirstField.Enum);
+
+            return offender == null
+                ? null
+                : $"`{EnumName(sf.FirstField.Enum)}` is not a BlueprintType - label `{offender.Name}` " +
+                  $"is {offender.Value}, and a BlueprintType enum is uint8.";
         }
 
         /// <summary>

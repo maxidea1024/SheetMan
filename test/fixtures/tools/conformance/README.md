@@ -56,3 +56,20 @@ enum, the dependency graph did not say so, and the crate did not compile.
 `DefaultFlag` and `BuildId` are the two that earn their place. An enum-typed constant makes
 the file depend on an enum declared elsewhere, and a uuid makes it depend on the reader.
 Every other type is self-contained and is here only so the set is not misleadingly narrow.
+
+## Unreal
+
+Built against `../unreal-stubs` rather than an engine, and it is the only harness that is.
+Everything else here compiles and runs with the language's own toolchain; Unreal needs
+`CoreMinimal.h`, and a test machine does not have one.
+
+So there is enough of it in that directory to run: FString, TArray, FGuid, FDateTime,
+FTimespan, the UHT macros as no-ops. What that proves is the reader's decoding - the varints,
+the zig-zag, the UTF-8, the GUID byte order, the ticks - because that is the generated code's
+work and the stubs only store and format the results. What it does not prove is that the
+engine's own types behave as the stubs do; if FGuid's components were laid out differently
+from what the reader assumes, both would be wrong together and this would pass.
+
+That is a smaller gap than the one it closes. Before this, the Unreal target was checked for
+compiling, for using engine types, and for not throwing - and never once for reading the
+right values, in the target most likely to end up in a shipped game.

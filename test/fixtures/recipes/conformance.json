@@ -96,6 +96,17 @@
       "Namespace": "Conformance",
       "AccessorName": "ConformanceData",
       "BinaryTableFileExtension": ".table"
+    },
+
+    // Read off-engine, against the stubs in tools/unreal-stubs. The engine is not something a
+    // test machine has, and until this the Unreal target was the one output whose values
+    // nobody checked - only that it compiled and used the right types.
+    {
+      "Type": "unreal",
+      "Path": "test/fixtures/output/conformance/unreal",
+      "ModuleName": "Conformance",
+      "AccessorName": "ConformanceData",
+      "BinaryTableFileExtension": ".table"
     }
   ],
 

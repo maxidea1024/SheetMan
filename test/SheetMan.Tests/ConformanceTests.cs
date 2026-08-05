@@ -83,6 +83,37 @@ namespace SheetMan.Tests
             Compare("C++", expected, Parse(harness.StdOut));
         }
 
+        /// <summary>
+        /// Unreal, built against stubs rather than an engine.
+        /// </summary>
+        /// <remarks>
+        /// The last target to get here, and the one that most needed to. Every other language's
+        /// reader had its values compared against the exporter's from the day it was added; this
+        /// one had "does it compile, does it use engine types, does it avoid throwing", because
+        /// running it meant installing an engine and a test machine does not have one. So the
+        /// varint decoding, the zig-zag, the UTF-8, the GUID byte order and the tick handling in
+        /// the target most likely to ship in a game were the least checked bytes in the
+        /// repository.
+        ///
+        /// What the stubs do and do not prove is written down in tools/unreal-stubs/CoreMinimal.h.
+        /// The short version: the decoding is the generated code's and the reader's, which is
+        /// what this compares; the stubs supply storage and formatting. What is still unchecked
+        /// is whether the engine's own types behave as the stubs do - and that is a smaller gap
+        /// than the one this closes.
+        /// </remarks>
+        [Fact]
+        public void Generated_unreal_reader_matches_the_corpus()
+        {
+            var expected = Expected();
+
+            Assert.True(ConformanceHarness.UnrealOffEngineIsAvailable(out string why), why);
+
+            var harness = ConformanceHarness.RunUnreal(Scenario);
+            Assert.True(harness.Succeeded, $"Unreal harness failed.{Environment.NewLine}{harness.Output}");
+
+            Compare("Unreal", expected, Parse(harness.StdOut));
+        }
+
         [Fact]
         public void Generated_typescript_reader_matches_the_corpus()
         {

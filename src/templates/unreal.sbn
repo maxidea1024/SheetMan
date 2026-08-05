@@ -39,8 +39,14 @@
 {{~ for line in enumm.comment ~}}
 /** {{ line }} */
 {{~ end ~}}
+{{~ if enumm.blueprint_visible ~}}
 UENUM(BlueprintType)
-enum class {{ enumm.name }} : uint8
+{{~ else ~}}
+// Not BlueprintType: {{ enumm.not_visible_because }} Still a UENUM, so it is reflected and
+// serialises; it is only Blueprint that cannot see it, and neither can the fields using it.
+UENUM()
+{{~ end ~}}
+enum class {{ enumm.name }} : {{ enumm.underlying_type }}
 {
 {{~ for label in enumm.labels ~}}
 {{~ for line in label.comment ~}}

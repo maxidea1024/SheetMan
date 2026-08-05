@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,112 @@ namespace SheetMan.Tests
     /// </summary>
     internal static class UnrealToolchain
     {
+        private static bool OnWindows => Environment.OSVersion.Platform == PlatformID.Win32NT;
+
+        /// <summary>
+        /// Builds a scenario's generated Unreal module against the off-engine stubs and runs a
+        /// harness over it.
+        /// </summary>
+        /// <remarks>
+        /// The Unreal target was the one output whose values nobody checked. Every other language
+        /// has a conformance harness whose result is compared field by field against what the
+        /// exporter wrote; this one had "does it compile, does it use engine types, does it avoid
+        /// throwing" - because running it meant an engine, and a test machine does not have one.
+        ///
+        /// So it builds against test/fixtures/tools/unreal-stubs, which is enough of CoreMinimal
+        /// to run. What that proves and what it does not is written down in the stub header
+        /// itself; the short version is that the decoding under test is the generated code's, and
+        /// what the stubs supply is storage and formatting.
+        ///
+        /// C++20, because UE 5.3 made UTF8CHAR a distinct type and the stubs spell it char8_t -
+        /// which is the spelling the reader casts to, so building it any other way would check a
+        /// cast the engine does not make.
+        ///
+        /// A `.generated.h` is written empty. UHT produces it during a real build and the header
+        /// includes it by name; nothing in it matters here, because the reflection data is what
+        /// RunHeaderTool checks and this checks the reading.
+        /// </remarks>
+        public static ToolResult BuildAndRunOffEngine(
+            string workDir, string moduleDir, string accessorName, string harness, string dataDir)
+        {
+            Directory.CreateDirectory(workDir);
+
+            string publicDir = Path.Combine(moduleDir, "Public");
+            string privateDir = Path.Combine(moduleDir, "Private");
+            string stubs = Path.Combine(RepoLayout.Root, "test", "fixtures", "tools", "unreal-stubs");
+
+            File.WriteAllText(Path.Combine(publicDir, accessorName + ".generated.h"),
+                "// Written by the test suite. UHT produces this during a real build; nothing in\n" +
+                "// it is needed to read a table, which is what the off-engine harness checks.\n" +
+                "#pragma once\n");
+
+            var sources = new[] { harness, Path.Combine(privateDir, accessorName + ".cpp") };
+            var includes = new[] { publicDir, stubs };
+
+            // <MODULE>_API, which UnrealBuildTool defines per module and which the generated
+            // types carry so they export from a DLL build. Empty here: one executable, nothing
+            // to export from.
+            string apiMacro = Path.GetFileName(moduleDir).ToUpperInvariant() + "_API";
+
+            string exe = Path.Combine(workDir, OnWindows ? "conformance-unreal.exe" : "conformance-unreal");
+
+            var build = OnWindows
+                ? BuildOffEngineWithMsvc(workDir, includes, sources, exe, accessorName, apiMacro)
+                : BuildOffEngineWithGcc(workDir, includes, sources, exe, accessorName, apiMacro);
+
+            if (!build.Succeeded)
+                return build;
+
+            return Execute(exe, workDir, dataDir);
+        }
+
+        private static ToolResult BuildOffEngineWithMsvc(
+            string workDir, IReadOnlyList<string> includes, IReadOnlyList<string> sources,
+            string exe, string accessorName, string apiMacro)
+        {
+            string vcvars = CppToolchain.FindVcVars();
+            string script = Path.Combine(workDir, "build-off-engine.bat");
+
+            string includeFlags = string.Join(" ", includes.Select(dir => $"/I \"{dir}\""));
+            string sourceFiles = string.Join(" ", sources.Select(file => $"\"{file}\""));
+
+            File.WriteAllText(script, string.Join(Environment.NewLine, new[]
+            {
+                "@echo off",
+                $"call \"{vcvars}\" >nul",
+                $"cl /nologo /std:c++20 /EHsc /W3 /utf-8 " +
+                $"/DSHEETMAN_ACCESSOR_HEADER=\\\"{accessorName}.h\\\" /D{apiMacro}= " +
+                $"{includeFlags} {sourceFiles} /Fo:\"{workDir}\\\\\" /Fe:\"{exe}\"",
+                "exit /b %ERRORLEVEL%",
+            }));
+
+            return Execute("cmd.exe", workDir, "/c", script);
+        }
+
+        private static ToolResult BuildOffEngineWithGcc(
+            string workDir, IReadOnlyList<string> includes, IReadOnlyList<string> sources,
+            string exe, string accessorName, string apiMacro)
+        {
+            var arguments = new List<string>
+            {
+                "-std=c++20", "-Wall", "-Wextra",
+                $"-DSHEETMAN_ACCESSOR_HEADER=\"{accessorName}.h\"",
+                $"-D{apiMacro}=",
+            };
+
+            foreach (var dir in includes)
+            {
+                arguments.Add("-I");
+                arguments.Add(dir);
+            }
+
+            arguments.AddRange(sources);
+            arguments.Add("-o");
+            arguments.Add(exe);
+
+            return Execute("g++", workDir, arguments.ToArray());
+        }
+
         public static ToolResult RunHeaderTool(
             string engineRoot, string moduleDir, string moduleName, string headerName)
         {
@@ -165,6 +272,13 @@ namespace SheetMan.Tests
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
+
+                // UTF-8 explicitly. Without it the child's output is decoded as the system
+                // codepage, which on a Korean Windows turned the conformance harness's `é한Ａ`
+                // into `챕?쒙샥` - the bytes were right and the reading of them was not, which
+                // is the most misleading way for a test to fail.
+                StandardOutputEncoding = new UTF8Encoding(false),
+                StandardErrorEncoding = new UTF8Encoding(false),
             };
 
             foreach (var arg in args)
@@ -172,9 +286,21 @@ namespace SheetMan.Tests
 
             var output = new StringBuilder();
 
+            // Kept apart as well as together: a harness's answer is on stdout and has to be
+            // parsed, while `Output` is the pair of them for a failure message.
+            var standardOutput = new StringBuilder();
+
             using var process = new Process { StartInfo = psi };
 
-            process.OutputDataReceived += (_, e) => { if (e.Data != null) output.AppendLine(e.Data); };
+            process.OutputDataReceived += (_, e) =>
+            {
+                if (e.Data == null)
+                    return;
+
+                standardOutput.AppendLine(e.Data);
+                output.AppendLine(e.Data);
+            };
+
             process.ErrorDataReceived += (_, e) => { if (e.Data != null) output.AppendLine(e.Data); };
 
             process.Start();
@@ -192,7 +318,7 @@ namespace SheetMan.Tests
             return new ToolResult
             {
                 Succeeded = process.ExitCode == 0,
-                StdOut = output.ToString(),
+                StdOut = standardOutput.ToString(),
                 Output = output.ToString(),
             };
         }

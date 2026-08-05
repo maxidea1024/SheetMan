@@ -47,6 +47,34 @@ namespace SheetMan.Tests
                            workDir, BinaryDir(scenario));
         }
 
+        /// <summary>
+        /// Whether the generated Unreal module can be built off-engine.
+        /// </summary>
+        /// <remarks>
+        /// The same C++ toolchain the C++ harness needs. There is no engine involved, which is
+        /// the point - the module builds against the stubs in tools/unreal-stubs.
+        /// </remarks>
+        public static bool UnrealOffEngineIsAvailable(out string reason)
+        {
+            bool available = CppToolchain.IsAvailable(out reason);
+
+            if (!available)
+                reason = $"A C++ compiler is required to build the generated Unreal off-engine. {reason}";
+
+            return available;
+        }
+
+        /// <summary>
+        /// Builds and runs the Unreal harness against the stubs, with no engine.
+        /// </summary>
+        public static ToolResult RunUnreal(string scenario)
+            => UnrealToolchain.BuildAndRunOffEngine(
+                WorkDir(scenario, "unreal"),
+                moduleDir: Path.Combine(RepoLayout.OutputDir(scenario), "unreal", "Conformance"),
+                accessorName: "ConformanceData",
+                harness: Path.Combine(HarnessDir("unreal"), "main.cpp"),
+                dataDir: BinaryDir(scenario));
+
         public static ToolResult RunCpp(string scenario)
         {
             string workDir = WorkDir(scenario, "cpp");
