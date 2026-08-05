@@ -9,6 +9,10 @@ class Tables
 {{~ end ~}}
 
     /// Reads every table from `base_path`, then links the references between them.
+    ///
+    /// Safe to call on a loaded accessor. Every file is read into a table of its own and the
+    /// references are linked among those, so a read that throws part way through leaves every
+    /// table holding the load it already had, and no row points at a row from it.
     void read_all(const std::string& base_path, const std::string& file_extension = "{{ accessor.file_extension }}")
     {
 {{~ if accessor.tables | array.size == 0 ~}}
@@ -16,33 +20,40 @@ class Tables
         (void)file_extension;
 {{~ else ~}}
 {{~ for slot in accessor.tables ~}}
-        {{ slot.name }}_.read(base_path + "/{{ slot.data_file_name }}" + file_extension);
+        {{ slot.table_name }} loaded_{{ slot.name }};
+        loaded_{{ slot.name }}.read(base_path + "/{{ slot.data_file_name }}" + file_extension);
 {{~ end ~}}
 
-        solve_cross_references();
+        solve_cross_references({{ for slot in accessor.tables }}{{ if !for.first }}, {{ end }}loaded_{{ slot.name }}{{ end }});
+
+{{~ for slot in accessor.tables ~}}
+        {{ slot.name }}_ = std::move(loaded_{{ slot.name }});
+{{~ end ~}}
 {{~ end ~}}
     }
 
     private:
-    void solve_cross_references()
+    /// The tables arrive as arguments, which is how this links the load being read rather
+    /// than the one already published.
+    void solve_cross_references({{ for slot in accessor.tables }}{{ if !for.first }}, {{ end }}{{ slot.table_name }}& loaded_{{ slot.name }}{{ end }})
     {
 {{~ if accessor.cross_references | array.size == 0 ~}}
         // No table references another.
 {{~ else ~}}
 {{~ for reference in accessor.cross_references ~}}
-        for (auto& record : {{ reference.table }}_.records_)
+        for (auto& record : loaded_{{ reference.table }}.records_)
         {
 {{~ for field in reference.fields ~}}
 {{~ if field.is_array ~}}
             record.{{ field.name }}.resize(record.{{ field.name }}_index.size(), {{ field.ref_default }});
             for (std::size_t i = 0; i < record.{{ field.name }}_index.size(); ++i)
             {
-                const auto* target = {{ field.ref_table }}_.find(record.{{ field.name }}_index[i]);
+                const auto* target = loaded_{{ field.ref_table }}.find(record.{{ field.name }}_index[i]);
                 if (target != nullptr) record.{{ field.name }}[i] = {{ field.value }};
             }
 {{~ else ~}}
             {
-                const auto* target = {{ field.ref_table }}_.find(record.{{ field.name }}_index);
+                const auto* target = loaded_{{ field.ref_table }}.find(record.{{ field.name }}_index);
                 if (target != nullptr) record.{{ field.name }} = {{ field.value }};
             }
 {{~ end ~}}

@@ -29,17 +29,30 @@ import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 /** Every table, loaded together so cross-table references can be resolved. */
 object A {
-    val template: TemplateTable = TemplateTable()
+    var template: TemplateTable = TemplateTable()
+        private set
 
-    /** Reads every table from basePath, then links the references between them. */
+    /**
+     * Reads every table from basePath, then links the references between them.
+     *
+     * Safe to call on a loaded accessor. Every file is read into a set of its own and the references are linked among those, so nothing here is visible until all of it is: a failure part way through leaves the tables holding the load they already had, and no row ever points at a row from it.
+     */
     fun readAll(basePath: String, fileExtension: String = ".table") {
-        template.read(File(basePath, "Template$fileExtension").path)
+        val loadedTemplateTable = TemplateTable()
+        loadedTemplateTable.read(File(basePath, "Template$fileExtension").path)
 
-        solveCrossReferences()
+        solveCrossReferences(loadedTemplateTable)
+
+        template = loadedTemplateTable
     }
 
-    /** Turns the stored indices into usable values, once every table is in memory. */
-    private fun solveCrossReferences() {
+    /**
+     * Turns the stored indices into usable values, once every table is in memory.
+     *
+     * The tables arrive as arguments and shadow the properties of the same name, which is
+     * how this resolves the load being read rather than the one already published.
+     */
+    private fun solveCrossReferences(template: TemplateTable) {
         // No table references another.
     }
 }

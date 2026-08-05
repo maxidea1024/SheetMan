@@ -50,7 +50,9 @@ C에는 네임스페이스가 없으므로 `AccessorName`이 충돌 회피의 �
 ```c
 #include "GameData.h"
 
-GameData_t data;
+/* = {0}가 중요합니다. LoadAll이 이전 로드를 해제하고 새 로드를 갈아끼우므로,
+   첫 호출에서는 들고 있는 것이 없어야 합니다. */
+GameData_t data = {0};
 char error[512];
 
 if (!GameData_LoadAll(&data, "./data", error, sizeof error)) {
@@ -80,6 +82,8 @@ GameData_LoadAllWithExtension(&data, "./data", ".bytes", error, sizeof error);
 ```
 
 ## 주의사항
+
+**다시 로드하는 것이 안전합니다.** 같은 구조체에 `LoadAll`을 다시 불러도 됩니다 — 데이터 패치를 받아 갈아끼우는 흐름이 그것입니다. 모든 파일을 **옆에** 읽고 마지막에 교체하므로, 실패하면 `data`는 손대지 않은 상태이고 들고 있던 레코드 포인터도 그대로 유효합니다. 성공하면 그 지점에서 이전 아레나가 해제되므로, **교체 이후에는 옛 포인터를 쓰지 마세요.**
 
 **메모리는 테이블이 소유합니다.** 테이블마다 아레나가 하나이고, 레코드의 문자열과 배열은 전부 그 안을 가리킵니다. `GameData_Free` 한 번으로 전부 해제되고, 어떤 레코드의 포인터도 그보다 오래 살지 않습니다. 개별 `free`를 부르지 마세요.
 

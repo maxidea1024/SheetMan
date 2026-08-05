@@ -28,15 +28,28 @@ final class A
     }
 
     /** Reads every table from $basePath, then links the references between them. */
+    /**
+     * Safe to call on a loaded accessor. Every file is read into a table of its own and the
+     * references are linked among those, so a failure part way through leaves every table
+     * holding the load it already had, and no row points at a row from it.
+     */
     public function readAll(string $basePath, string $fileExtension = '.table'): void
     {
-        $this->template->read($basePath . \DIRECTORY_SEPARATOR . 'Template' . $fileExtension);
+        $loadedTemplateTable = new TemplateTable();
+        $loadedTemplateTable->read($basePath . \DIRECTORY_SEPARATOR . 'Template' . $fileExtension);
 
-        $this->solveCrossReferences();
+        $this->solveCrossReferences($loadedTemplateTable);
+
+        $this->template = $loadedTemplateTable;
     }
 
-    /** Turns the stored indices into usable values, once every table is in memory. */
-    private function solveCrossReferences(): void
+    /**
+     * Turns the stored indices into usable values, once every table is in memory.
+     *
+     * The tables arrive as arguments rather than off $this, which is how this resolves the
+     * load being read rather than the one already published.
+     */
+    private function solveCrossReferences(TemplateTable $template): void
     {
         // No table references another.
     }

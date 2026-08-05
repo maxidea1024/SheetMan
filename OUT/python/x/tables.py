@@ -25,12 +25,23 @@ class Tables:
 
         file_extension defaults to what the recipe told the exporter to write. Pass a
         different one when the data files were renamed after export.
+
+        Safe to call on a loaded accessor. Every file is read into a table of its own and
+        the references are linked among those, so a failure part way through leaves every
+        table holding the load it already had, and no row points at a row from it.
         """
-        self.template.read(os.path.join(base_path, "Template" + file_extension))
+        loaded_template = TemplateTable()
+        loaded_template.read(os.path.join(base_path, "Template" + file_extension))
 
-        self._solve_cross_references()
+        self._solve_cross_references(loaded_template)
 
-    def _solve_cross_references(self):
-        """Turns the stored indices into usable values, once every table is in memory."""
+        self.template = loaded_template
+
+    def _solve_cross_references(self, template):
+        """Turns the stored indices into usable values, once every table is in memory.
+
+        The tables arrive as arguments rather than off self, which is how this resolves the
+        load being read rather than the one already published.
+        """
         # No table references another.
         return

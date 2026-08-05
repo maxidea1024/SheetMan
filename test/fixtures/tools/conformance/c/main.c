@@ -58,7 +58,9 @@ static void print_number(double value)
 
 int main(int argc, char** argv)
 {
-    ConformanceData_t data;
+    /* Zeroed, which is what LoadAll requires: it frees the previous load before
+     * swapping in the new one, and on a first call there has to be nothing there. */
+    ConformanceData_t data = {0};
     char error[512];
     int32_t row;
 

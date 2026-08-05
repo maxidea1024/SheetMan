@@ -25,10 +25,18 @@ impl Tables {
     }
 
     /// The same, for data files that carry some other extension.
+    ///
+    /// Safe to call on a loaded `Tables`. Every file is read into a set of its own, so `?`
+    /// on an unreadable one returns before anything is replaced and leaves the tables
+    /// holding the load they already had.
     pub fn read_all_with_extension(
         &mut self, base_path: &Path, file_extension: &str) -> sheetman::Result<()> {
-        self.template.read(
+        let mut loaded = Tables::default();
+
+        loaded.template.read(
             &base_path.join(format!("Template{}", file_extension)))?;
+
+        *self = loaded;
 
         Ok(())
     }

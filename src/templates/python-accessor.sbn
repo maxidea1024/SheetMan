@@ -18,33 +18,46 @@ class Tables:
 
         file_extension defaults to what the recipe told the exporter to write. Pass a
         different one when the data files were renamed after export.
+
+        Safe to call on a loaded accessor. Every file is read into a table of its own and
+        the references are linked among those, so a failure part way through leaves every
+        table holding the load it already had, and no row points at a row from it.
         """
 {{~ if accessor.tables | array.size == 0 ~}}
         return
 {{~ end ~}}
 {{~ for slot in accessor.tables ~}}
-        self.{{ slot.name }}.read(os.path.join(base_path, "{{ slot.data_file_name }}" + file_extension))
+        loaded_{{ slot.name }} = {{ slot.table_name }}()
+        loaded_{{ slot.name }}.read(os.path.join(base_path, "{{ slot.data_file_name }}" + file_extension))
 {{~ end ~}}
 {{~ if accessor.tables | array.size > 0 }}
-        self._solve_cross_references()
+        self._solve_cross_references({{ for slot in accessor.tables }}{{ if !for.first }}, {{ end }}loaded_{{ slot.name }}{{ end }})
+
+{{~ for slot in accessor.tables ~}}
+        self.{{ slot.name }} = loaded_{{ slot.name }}
+{{~ end ~}}
 {{~ end ~}}
 
-    def _solve_cross_references(self):
-        """Turns the stored indices into usable values, once every table is in memory."""
+    def _solve_cross_references(self{{ for slot in accessor.tables }}, {{ slot.name }}{{ end }}):
+        """Turns the stored indices into usable values, once every table is in memory.
+
+        The tables arrive as arguments rather than off self, which is how this resolves the
+        load being read rather than the one already published.
+        """
 {{~ if accessor.cross_references | array.size == 0 ~}}
         # No table references another.
         return
 {{~ else ~}}
 {{~ for reference in accessor.cross_references ~}}
-        for record in self.{{ reference.table }}.records:
+        for record in {{ reference.table }}.records:
 {{~ for field in reference.fields ~}}
 {{~ if field.is_array ~}}
             for position, index in enumerate(record.{{ field.name }}_index):
-                target = self.{{ field.ref_table }}.find(index)
+                target = {{ field.ref_table }}.find(index)
                 if target is not None:
                     record.{{ field.name }}[position] = {{ field.value }}
 {{~ else ~}}
-            target = self.{{ field.ref_table }}.find(record.{{ field.name }}_index)
+            target = {{ field.ref_table }}.find(record.{{ field.name }}_index)
             if target is not None:
                 record.{{ field.name }} = {{ field.value }}
 {{~ end ~}}

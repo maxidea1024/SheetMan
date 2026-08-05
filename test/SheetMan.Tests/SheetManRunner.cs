@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Text;
 using System.Collections.Generic;
 
@@ -80,9 +81,7 @@ namespace SheetMan.Tests
             // Each scenario owns its output tree, and it is rebuilt from scratch so a
             // file that stops being generated shows up as a deletion rather than
             // lingering from a previous run.
-            string outputDir = RepoLayout.OutputDir(scenario);
-            if (Directory.Exists(outputDir))
-                Directory.Delete(outputDir, recursive: true);
+            ClearOutput(RepoLayout.OutputDir(scenario));
 
             // --debug: makes SheetMan print the call stack when it throws. Successful runs are
             // unaffected, and it lets the defect tests assert on stack frames instead of
@@ -95,6 +94,41 @@ namespace SheetMan.Tests
             args.AddRange(extraArgs ?? Array.Empty<string>());
 
             return Run(environment, Executable.Value, args.ToArray());
+        }
+
+        /// <summary>
+        /// Empties a scenario's output tree, retrying a file another process is still holding.
+        /// </summary>
+        /// <remarks>
+        /// Two test classes can convert the same scenario, and xUnit runs classes in parallel:
+        /// one compiles the generated C or Unreal module out of the tree while the other is
+        /// deleting it, and the compiler still has a source file open for a moment after it
+        /// exits. The delete then fails, and the test that fails is whichever one got there
+        /// second - which is a flake, not a finding.
+        ///
+        /// Retried rather than serialized, because the lock lasts milliseconds and serializing
+        /// the suite costs minutes on every run.
+        /// </remarks>
+        private static void ClearOutput(string outputDir)
+        {
+            for (int attempt = 1; ; attempt++)
+            {
+                try
+                {
+                    if (Directory.Exists(outputDir))
+                        Directory.Delete(outputDir, recursive: true);
+
+                    return;
+                }
+                catch (IOException) when (attempt < 10)
+                {
+                    Thread.Sleep(200);
+                }
+                catch (UnauthorizedAccessException) when (attempt < 10)
+                {
+                    Thread.Sleep(200);
+                }
+            }
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 /** Every table, loaded together so cross-table references can be resolved. */
 public final class A {
-    public final TemplateTable template = new TemplateTable();
+    public TemplateTable template = new TemplateTable();
 
     /**
      * Reads every table from basePath, then links the references between them.
@@ -23,15 +23,27 @@ public final class A {
         readAll(basePath, ".table");
     }
 
-    /** The same, for data files that carry some other extension. */
+    /**
+     * The same, for data files that carry some other extension.
+     *
+     * <p>Safe to call on a loaded accessor. Every file is read into a set of its own and the references are linked among those, so nothing here is visible until all of it is: a failure part way through leaves the tables holding the load they already had, and no row ever points at a row from it.
+     */
     public void readAll(String basePath, String fileExtension) {
-        template.read(Paths.get(basePath, "Template" + fileExtension));
+        TemplateTable loadedTemplateTable = new TemplateTable();
+        loadedTemplateTable.read(Paths.get(basePath, "Template" + fileExtension));
 
-        solveCrossReferences();
+        solveCrossReferences(loadedTemplateTable);
+
+        template = loadedTemplateTable;
     }
 
-    /** Turns the stored indices into usable values, once every table is in memory. */
-    private void solveCrossReferences() {
+    /**
+     * Turns the stored indices into usable values, once every table is in memory.
+     *
+     * <p>The tables arrive as arguments and shadow the fields of the same name, which is
+     * how this resolves the load being read rather than the one already published.
+     */
+    private void solveCrossReferences(TemplateTable template) {
         // No table references another.
     }
 }

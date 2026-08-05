@@ -25,24 +25,34 @@ bool A_LoadAllWithExtension(A_t* data, const char* base_path,
 {
     char path[1024];
 
-    memset(data, 0, sizeof *data);
+    /* Loaded beside whatever `data` is already holding and swapped in at the end. Reading
+     * again is a reload, and one that fails has to leave the caller's pointers valid: they
+     * point into the arenas of the previous load, which is why this cannot start by zeroing
+     * `data` - doing that dropped those arenas without freeing them. */
+    A_t loaded;
+
+    memset(&loaded, 0, sizeof loaded);
 
 
     if (snprintf(path, sizeof path, "%s/%s%s",
                  base_path, "Template", file_extension) >= (int)sizeof path) {
         sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
-        A_Free(data);
+        A_Free(&loaded);
         return false;
     }
 
-    if (!A_TemplateLoad(&data->template_, path, error, error_size)) {
+    if (!A_TemplateLoad(&loaded.template_, path, error, error_size)) {
         /* Everything loaded so far goes too. A model missing one table is not one
          * a caller can use, and leaving it allocated makes that a leak as well. */
-        A_Free(data);
+        A_Free(&loaded);
         return false;
     }
 
 
+
+    /* The previous load goes now, and not before. */
+    A_Free(data);
+    *data = loaded;
 
     return true;
 }

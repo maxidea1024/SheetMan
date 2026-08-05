@@ -23,38 +23,53 @@ final class {{ accessor.name }}
     }
 
     /** Reads every table from $basePath, then links the references between them. */
+    /**
+     * Safe to call on a loaded accessor. Every file is read into a table of its own and the
+     * references are linked among those, so a failure part way through leaves every table
+     * holding the load it already had, and no row points at a row from it.
+     */
     public function readAll(string $basePath, string $fileExtension = '{{ accessor.file_extension }}'): void
     {
 {{~ if accessor.tables | array.size == 0 ~}}
         // No tables.
 {{~ else ~}}
 {{~ for slot in accessor.tables ~}}
-        $this->{{ slot.name }}->read($basePath . \DIRECTORY_SEPARATOR . '{{ slot.data_file_name }}' . $fileExtension);
+        $loaded{{ slot.table_name }} = new {{ slot.table_name }}();
+        $loaded{{ slot.table_name }}->read($basePath . \DIRECTORY_SEPARATOR . '{{ slot.data_file_name }}' . $fileExtension);
 {{~ end ~}}
 
-        $this->solveCrossReferences();
+        $this->solveCrossReferences({{ for slot in accessor.tables }}{{ if !for.first }}, {{ end }}$loaded{{ slot.table_name }}{{ end }});
+
+{{~ for slot in accessor.tables ~}}
+        $this->{{ slot.name }} = $loaded{{ slot.table_name }};
+{{~ end ~}}
 {{~ end ~}}
     }
 
-    /** Turns the stored indices into usable values, once every table is in memory. */
-    private function solveCrossReferences(): void
+    /**
+     * Turns the stored indices into usable values, once every table is in memory.
+     *
+     * The tables arrive as arguments rather than off $this, which is how this resolves the
+     * load being read rather than the one already published.
+     */
+    private function solveCrossReferences({{ for slot in accessor.tables }}{{ if !for.first }}, {{ end }}{{ slot.table_name }} ${{ slot.name }}{{ end }}): void
     {
 {{~ if accessor.cross_references | array.size == 0 ~}}
         // No table references another.
 {{~ else ~}}
 {{~ for reference in accessor.cross_references ~}}
-        foreach ($this->{{ reference.table }}->records as $record) {
+        foreach (${{ reference.table }}->records as $record) {
 {{~ for field in reference.fields ~}}
 {{~ if field.is_array ~}}
             foreach ($record->{{ field.name }}Index as $position => $index) {
-                $target = $this->{{ field.ref_table }}->find($index);
+                $target = ${{ field.ref_table }}->find($index);
 
                 if ($target !== null) {
                     $record->{{ field.name }}[$position] = {{ field.value }};
                 }
             }
 {{~ else ~}}
-            $target = $this->{{ field.ref_table }}->find($record->{{ field.name }}Index);
+            $target = ${{ field.ref_table }}->find($record->{{ field.name }}Index);
 
             if ($target !== null) {
                 $record->{{ field.name }} = {{ field.value }};

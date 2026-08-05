@@ -24,15 +24,24 @@ class Tables
     const TemplateTable& sm_template() const { return sm_template_; }
 
     /// Reads every table from `base_path`, then links the references between them.
+    ///
+    /// Safe to call on a loaded accessor. Every file is read into a table of its own and the
+    /// references are linked among those, so a read that throws part way through leaves every
+    /// table holding the load it already had, and no row points at a row from it.
     void read_all(const std::string& base_path, const std::string& file_extension = ".table")
     {
-        sm_template_.read(base_path + "/Template" + file_extension);
+        TemplateTable loaded_sm_template;
+        loaded_sm_template.read(base_path + "/Template" + file_extension);
 
-        solve_cross_references();
+        solve_cross_references(loaded_sm_template);
+
+        sm_template_ = std::move(loaded_sm_template);
     }
 
     private:
-    void solve_cross_references()
+    /// The tables arrive as arguments, which is how this links the load being read rather
+    /// than the one already published.
+    void solve_cross_references(TemplateTable& loaded_sm_template)
     {
         // No table references another.
     }

@@ -22,8 +22,13 @@ typedef struct A_t {
 
 /* Reads every table from base_path, then links the references between them.
  *
- * Returns false if any of them could not be read, having released whatever had
- * been loaded up to that point - a half-loaded model is not one to hand back. */
+ * Declare the struct zeroed - `A_t data = {0};` - and this is safe to
+ * call again on it afterwards. That is what a reload is: every file is read beside what the
+ * struct already holds and swapped in at the end, so the pointers a caller is holding stay
+ * valid until this returns true, and stay valid for the previous load if it returns false.
+ *
+ * Returns false if any table could not be read, having released whatever had been loaded up
+ * to that point and left `data` alone - a half-loaded model is not one to hand back. */
 bool A_LoadAll(A_t* data, const char* base_path,
                                   char* error, size_t error_size);
 

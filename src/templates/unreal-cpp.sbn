@@ -212,11 +212,20 @@ bool {{ accessor_name }}::ReadAll(const FString& BasePath, const FString& FileEx
     (void)BasePath;
     (void)FileExtension;
 {{~ else ~}}
+    // Read into tables of their own and moved into place at the end. Reading again is a
+    // refresh - a patched .pak, a downloaded table - and one that fails on the third file
+    // must not leave the first two replaced and the rest as they were.
 {{~ for slot in accessor.tables ~}}
-    if (!{{ slot.name }}Storage.Read(FPaths::Combine(BasePath, TEXT("{{ slot.data_file_name }}") + FileExtension)))
+    {{ slot.table_name }} Loaded{{ slot.name }};
+
+    if (!Loaded{{ slot.name }}.Read(FPaths::Combine(BasePath, TEXT("{{ slot.data_file_name }}") + FileExtension)))
     {
         return false;
     }
+{{~ end ~}}
+
+{{~ for slot in accessor.tables ~}}
+    {{ slot.name }}Storage = MoveTemp(Loaded{{ slot.name }});
 {{~ end ~}}
 {{~ end ~}}
 

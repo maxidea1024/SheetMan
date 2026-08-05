@@ -20,16 +20,24 @@ module X
     end
 
     # Reads every table from base_path, then links the references between them.
+    # Safe to call on a loaded accessor. Every file is read into a table of its own and
+    # the references are linked among those, so a failure part way through leaves every
+    # table holding the load it already had, and no row points at a row from it.
     def read_all(base_path, file_extension = '.table')
-      @template.read(File.join(base_path, "Template#{file_extension}"))
+      loaded_template = TemplateTable.new
+      loaded_template.read(File.join(base_path, "Template#{file_extension}"))
 
-      solve_cross_references
+      solve_cross_references(loaded_template)
+
+      @template = loaded_template
     end
 
     private
 
     # Turns the stored indices into usable values, once every table is in memory.
-    def solve_cross_references
+    # The tables arrive as arguments rather than off the instance, which is how this
+    # resolves the load being read rather than the one already published.
+    def solve_cross_references(template)
       # No table references another.
       nil
     end

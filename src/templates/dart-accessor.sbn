@@ -6,25 +6,37 @@
 /// Every table, loaded together so cross-table references can be resolved.
 class Tables {
 {{~ for slot in accessor.tables ~}}
-  final {{ slot.table_name }} {{ slot.name }} = {{ slot.table_name }}();
+  {{ slot.table_name }} {{ slot.name }} = {{ slot.table_name }}();
 {{~ end ~}}
 
   /// Reads every table from basePath, then links the references between them.
+  ///
+  /// Safe to call on a loaded accessor: every file is read into a table of its own and
+  /// the references are linked among those, so a failure part way through leaves every
+  /// table holding the load it already had.
   void readAll(String basePath,
       [String fileExtension = '{{ accessor.file_extension }}']) {
 {{~ if accessor.tables | array.size == 0 ~}}
     // No tables to read.
 {{~ else ~}}
 {{~ for slot in accessor.tables ~}}
-    {{ slot.name }}.read('$basePath${Platform.pathSeparator}{{ slot.data_file_name }}$fileExtension');
+    final loaded{{ slot.table_name }} = {{ slot.table_name }}();
+    loaded{{ slot.table_name }}.read('$basePath${Platform.pathSeparator}{{ slot.data_file_name }}$fileExtension');
 {{~ end ~}}
 
-    _solveCrossReferences();
+    _solveCrossReferences({{ for slot in accessor.tables }}{{ if !for.first }}, {{ end }}loaded{{ slot.table_name }}{{ end }});
+
+{{~ for slot in accessor.tables ~}}
+    {{ slot.name }} = loaded{{ slot.table_name }};
+{{~ end ~}}
 {{~ end ~}}
   }
 
   /// Turns the stored indices into usable values, once every table is in memory.
-  void _solveCrossReferences() {
+  ///
+  /// The tables arrive as arguments and shadow the fields of the same name, which is how
+  /// this resolves the load being read rather than the one already published.
+  void _solveCrossReferences({{ for slot in accessor.tables }}{{ if !for.first }}, {{ end }}{{ slot.table_name }} {{ slot.name }}{{ end }}) {
 {{~ if accessor.cross_references | array.size == 0 ~}}
     // No table references another.
 {{~ else ~}}

@@ -230,10 +230,17 @@ bool UALibrary::ReadAll(const FString& BasePath, const FString& FileExtension)
 
 bool A::ReadAll(const FString& BasePath, const FString& FileExtension)
 {
-    if (!TemplateStorage.Read(FPaths::Combine(BasePath, TEXT("Template") + FileExtension)))
+    // Read into tables of their own and moved into place at the end. Reading again is a
+    // refresh - a patched .pak, a downloaded table - and one that fails on the third file
+    // must not leave the first two replaced and the rest as they were.
+    FTemplateTable LoadedTemplate;
+
+    if (!LoadedTemplate.Read(FPaths::Combine(BasePath, TEXT("Template") + FileExtension)))
     {
         return false;
     }
+
+    TemplateStorage = MoveTemp(LoadedTemplate);
 
     return true;
 }

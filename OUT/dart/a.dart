@@ -16,18 +16,28 @@ part 'tables/template_table.dart';
 
 /// Every table, loaded together so cross-table references can be resolved.
 class Tables {
-  final TemplateTable template = TemplateTable();
+  TemplateTable template = TemplateTable();
 
   /// Reads every table from basePath, then links the references between them.
+  ///
+  /// Safe to call on a loaded accessor: every file is read into a table of its own and
+  /// the references are linked among those, so a failure part way through leaves every
+  /// table holding the load it already had.
   void readAll(String basePath,
       [String fileExtension = '.table']) {
-    template.read('$basePath${Platform.pathSeparator}Template$fileExtension');
+    final loadedTemplateTable = TemplateTable();
+    loadedTemplateTable.read('$basePath${Platform.pathSeparator}Template$fileExtension');
 
-    _solveCrossReferences();
+    _solveCrossReferences(loadedTemplateTable);
+
+    template = loadedTemplateTable;
   }
 
   /// Turns the stored indices into usable values, once every table is in memory.
-  void _solveCrossReferences() {
+  ///
+  /// The tables arrive as arguments and shadow the fields of the same name, which is how
+  /// this resolves the load being read rather than the one already published.
+  void _solveCrossReferences(TemplateTable template) {
     // No table references another.
   }
 }
