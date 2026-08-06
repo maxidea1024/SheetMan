@@ -9,12 +9,12 @@
 
 import * as path from 'path'
 
-import { TestFieldTypesTable } from './tables/TestFieldTypes'
-import { ItemCategoryTable } from './tables/ItemCategory'
-import { ItemTable } from './tables/Item'
-import { LocalizationTable } from './tables/Localization'
-import { ArrayTypesTable } from './tables/ArrayTypes'
-import { ClientStringsTable } from './tables/ClientStrings'
+import { TestFieldTypesTable } from './tables/test-field-types'
+import { ItemCategoryTable } from './tables/item-category'
+import { ItemTable } from './tables/item'
+import { LocalizationTable } from './tables/localization'
+import { ArrayTypesTable } from './tables/array-types'
+import { ClientStringsTable } from './tables/client-strings'
 
 /** Tables */
 export class Tables {

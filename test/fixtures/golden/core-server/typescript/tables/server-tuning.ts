@@ -8,18 +8,18 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
   index: number
   key: string
-  text: string
+  amount: number
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : G2
-/** Client-only table. Must not appear in server output. */
-export class ClientStringsRecord {
+// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
+/** Server-only table. Must not appear in client output. */
+export class ServerTuningRecord {
   /** Default constructor */
   constructor() {
   }
@@ -27,21 +27,21 @@ export class ClientStringsRecord {
   /** primary index */
   public get index(): number { return this._index }
 
-  /** string key */
+  /** tuning key */
   public get key(): string { return this._key }
 
-  /** display text */
-  public get text(): string { return this._text }
+  /** tuning amount */
+  public get amount(): number { return this._amount }
 
   public _index: number = 0
   public _key: string = ''
-  public _text: string = ''
+  public _amount: number = 0
 
   /** Populate field values. */
   public populateFieldValues(dataRow: IDataRow): void {
     this._index = dataRow.index
     this._key = dataRow.key
-    this._text = dataRow.text
+    this._amount = dataRow.amount
   }
 
   /** Populate field values. */
@@ -49,36 +49,36 @@ export class ClientStringsRecord {
     let offset = 0
     this._index = dataRow[offset++]
     this._key = dataRow[offset++]
-    this._text = dataRow[offset++]
+    this._amount = dataRow[offset++]
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : G2
-/** Client-only table. Must not appear in server output. */
-export class ClientStringsTable {
+// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
+/** Server-only table. Must not appear in client output. */
+export class ServerTuningTable {
   /** Default constructor. */
   constructor() {
   }
 
   /** All records. */
-  public get records(): ClientStringsRecord[] { return this._records }
-  private _records: ClientStringsRecord[] = []
+  public get records(): ServerTuningRecord[] { return this._records }
+  private _records: ServerTuningRecord[] = []
 
   // Indexing by 'index'
-  public get recordsByIndex(): Map<number, ClientStringsRecord> { return this._recordsByIndex }
-  private _recordsByIndex: Map<number, ClientStringsRecord> = new Map<number, ClientStringsRecord>()
+  public get recordsByIndex(): Map<number, ServerTuningRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, ServerTuningRecord> = new Map<number, ServerTuningRecord>()
 
   /** Gets the value associated with the specified key. throw Error if not found. */
-  public getByIndex(key: number): ClientStringsRecord {
+  public getByIndex(key: number): ServerTuningRecord {
     const found = this._recordsByIndex.get(key)
     if (!found)
-      throw new Error(`There is no record in table "ClientStrings" that corresponds to field "index" value ${key}`)
+      throw new Error(`There is no record in table "ServerTuning" that corresponds to field "index" value ${key}`)
 
     return found
   }
 
   /** Gets the value associated with the specified key. */
-  public tryGetByIndex(key: number): ClientStringsRecord | undefined {
+  public tryGetByIndex(key: number): ServerTuningRecord | undefined {
     return this._recordsByIndex.get(key)
   }
 
@@ -101,17 +101,17 @@ export class ClientStringsTable {
 
   private readFromJson(json: string): void {
     const dataRows: any[] = JSON.parse(json)
-    const records: ClientStringsRecord[] = []
+    const records: ServerTuningRecord[] = []
 
     if (this.isCompactRowFormatted(dataRows)) {
       for (const dataRow of dataRows) {
-        const record = new ClientStringsRecord()
+        const record = new ServerTuningRecord()
         record.populateFieldValuesCompact(dataRow)
         records.push(record)
       }
     } else {
       for (const dataRow of dataRows as IDataRow[]) {
-        const record = new ClientStringsRecord()
+        const record = new ServerTuningRecord()
         record.populateFieldValues(dataRow)
         records.push(record)
       }
@@ -142,33 +142,33 @@ export class ClientStringsTable {
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
-    const records: ClientStringsRecord[] = []
+    const records: ServerTuningRecord[] = []
     for (let i = 0; i < rowCount; ++i)
-      records.push(new ClientStringsRecord())
+      records.push(new ServerTuningRecord())
 
     for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
       switch (column.tag) {
         case 1:
-          sheetman.checkColumn(column, 'ClientStrings.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'ServerTuning.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
-          sheetman.checkColumn(column, 'ClientStrings.Key', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          sheetman.checkColumn(column, 'ServerTuning.Key', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._key = reader.readString()
           }
           break
         case 3:
-          sheetman.checkColumn(column, 'ClientStrings.Text', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          sheetman.checkColumn(column, 'ServerTuning.Amount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._text = reader.readString()
+            record._amount = reader.readI32As(column.element)
           }
           break
         default:
@@ -193,8 +193,8 @@ export class ClientStringsTable {
    * builds its own arrays and gets here only if it finished, and this replaces the references
    * in one step. Whoever took `records` before still has the previous load, whole.
    */
-  private publish(records: ClientStringsRecord[]): void {
-    const recordsByIndex = new Map<number, ClientStringsRecord>()
+  private publish(records: ServerTuningRecord[]): void {
+    const recordsByIndex = new Map<number, ServerTuningRecord>()
 
     for (const record of records) {
       recordsByIndex.set(record.index, record)

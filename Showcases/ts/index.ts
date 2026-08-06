@@ -9,7 +9,7 @@
 
 
 // Tables
-export { TemplateRecord } from './tables/Template'
-export { TemplateTable } from './tables/Template'
+export { TemplateRecord } from './tables/template'
+export { TemplateTable } from './tables/template'
 
-export { Tables } from './Tables'
+export { Tables } from './tables'

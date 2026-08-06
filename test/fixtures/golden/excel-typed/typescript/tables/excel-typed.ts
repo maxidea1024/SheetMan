@@ -8,18 +8,20 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
   index: number
-  key: string
-  amount: number
+  intFromNumeric: number
+  floatFromNumeric: number
+  whenFromDateCell: string
+  bigFromNumeric: string
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
-/** Server-only table. Must not appear in client output. */
-export class ServerTuningRecord {
+// Generated from test/fixtures/xlsx/excel-typed\excel-typed.xlsx : Typed : B2
+/** Values entered as real Excel types rather than text. */
+export class ExcelTypedRecord {
   /** Default constructor */
   constructor() {
   }
@@ -27,58 +29,70 @@ export class ServerTuningRecord {
   /** primary index */
   public get index(): number { return this._index }
 
-  /** tuning key */
-  public get key(): string { return this._key }
+  /** numeric cell holding an integer */
+  public get intFromNumeric(): number { return this._intFromNumeric }
 
-  /** tuning amount */
-  public get amount(): number { return this._amount }
+  /** numeric cell holding a fraction */
+  public get floatFromNumeric(): number { return this._floatFromNumeric }
+
+  /** genuine Excel date cell */
+  public get whenFromDateCell(): string { return this._whenFromDateCell }
+
+  /** numeric cell beyond double precision */
+  public get bigFromNumeric(): bigint { return this._bigFromNumeric }
 
   public _index: number = 0
-  public _key: string = ''
-  public _amount: number = 0
+  public _intFromNumeric: number = 0
+  public _floatFromNumeric: number = 0
+  public _whenFromDateCell: string = ''
+  public _bigFromNumeric: bigint = 0n
 
   /** Populate field values. */
   public populateFieldValues(dataRow: IDataRow): void {
     this._index = dataRow.index
-    this._key = dataRow.key
-    this._amount = dataRow.amount
+    this._intFromNumeric = dataRow.intFromNumeric
+    this._floatFromNumeric = Math.fround(dataRow.floatFromNumeric)
+    this._whenFromDateCell = dataRow.whenFromDateCell
+    this._bigFromNumeric = BigInt(dataRow.bigFromNumeric)
   }
 
   /** Populate field values. */
   public populateFieldValuesCompact(dataRow: any[]): void {
     let offset = 0
     this._index = dataRow[offset++]
-    this._key = dataRow[offset++]
-    this._amount = dataRow[offset++]
+    this._intFromNumeric = dataRow[offset++]
+    this._floatFromNumeric = Math.fround(dataRow[offset++])
+    this._whenFromDateCell = dataRow[offset++]
+    this._bigFromNumeric = BigInt(dataRow[offset++])
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
-/** Server-only table. Must not appear in client output. */
-export class ServerTuningTable {
+// Generated from test/fixtures/xlsx/excel-typed\excel-typed.xlsx : Typed : B2
+/** Values entered as real Excel types rather than text. */
+export class ExcelTypedTable {
   /** Default constructor. */
   constructor() {
   }
 
   /** All records. */
-  public get records(): ServerTuningRecord[] { return this._records }
-  private _records: ServerTuningRecord[] = []
+  public get records(): ExcelTypedRecord[] { return this._records }
+  private _records: ExcelTypedRecord[] = []
 
   // Indexing by 'index'
-  public get recordsByIndex(): Map<number, ServerTuningRecord> { return this._recordsByIndex }
-  private _recordsByIndex: Map<number, ServerTuningRecord> = new Map<number, ServerTuningRecord>()
+  public get recordsByIndex(): Map<number, ExcelTypedRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, ExcelTypedRecord> = new Map<number, ExcelTypedRecord>()
 
   /** Gets the value associated with the specified key. throw Error if not found. */
-  public getByIndex(key: number): ServerTuningRecord {
+  public getByIndex(key: number): ExcelTypedRecord {
     const found = this._recordsByIndex.get(key)
     if (!found)
-      throw new Error(`There is no record in table "ServerTuning" that corresponds to field "index" value ${key}`)
+      throw new Error(`There is no record in table "ExcelTyped" that corresponds to field "index" value ${key}`)
 
     return found
   }
 
   /** Gets the value associated with the specified key. */
-  public tryGetByIndex(key: number): ServerTuningRecord | undefined {
+  public tryGetByIndex(key: number): ExcelTypedRecord | undefined {
     return this._recordsByIndex.get(key)
   }
 
@@ -101,17 +115,17 @@ export class ServerTuningTable {
 
   private readFromJson(json: string): void {
     const dataRows: any[] = JSON.parse(json)
-    const records: ServerTuningRecord[] = []
+    const records: ExcelTypedRecord[] = []
 
     if (this.isCompactRowFormatted(dataRows)) {
       for (const dataRow of dataRows) {
-        const record = new ServerTuningRecord()
+        const record = new ExcelTypedRecord()
         record.populateFieldValuesCompact(dataRow)
         records.push(record)
       }
     } else {
       for (const dataRow of dataRows as IDataRow[]) {
-        const record = new ServerTuningRecord()
+        const record = new ExcelTypedRecord()
         record.populateFieldValues(dataRow)
         records.push(record)
       }
@@ -142,33 +156,47 @@ export class ServerTuningTable {
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
-    const records: ServerTuningRecord[] = []
+    const records: ExcelTypedRecord[] = []
     for (let i = 0; i < rowCount; ++i)
-      records.push(new ServerTuningRecord())
+      records.push(new ExcelTypedRecord())
 
     for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
       switch (column.tag) {
         case 1:
-          sheetman.checkColumn(column, 'ServerTuning.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'ExcelTyped.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
-          sheetman.checkColumn(column, 'ServerTuning.Key', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          sheetman.checkColumn(column, 'ExcelTyped.IntFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._key = reader.readString()
+            record._intFromNumeric = reader.readI32As(column.element)
           }
           break
         case 3:
-          sheetman.checkColumn(column, 'ServerTuning.Amount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'ExcelTyped.FloatFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._amount = reader.readI32As(column.element)
+            record._floatFromNumeric = reader.readFloat()
+          }
+          break
+        case 4:
+          sheetman.checkColumn(column, 'ExcelTyped.WhenFromDateCell', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
+          for (let i = 0; i < rowCount; ++i) {
+            const record = records[i]
+            record._whenFromDateCell = reader.readDateTime()
+          }
+          break
+        case 5:
+          sheetman.checkColumn(column, 'ExcelTyped.BigFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i) {
+            const record = records[i]
+            record._bigFromNumeric = reader.readI64As(column.element)
           }
           break
         default:
@@ -193,8 +221,8 @@ export class ServerTuningTable {
    * builds its own arrays and gets here only if it finished, and this replaces the references
    * in one step. Whoever took `records` before still has the previous load, whole.
    */
-  private publish(records: ServerTuningRecord[]): void {
-    const recordsByIndex = new Map<number, ServerTuningRecord>()
+  private publish(records: ExcelTypedRecord[]): void {
+    const recordsByIndex = new Map<number, ExcelTypedRecord>()
 
     for (const record of records) {
       recordsByIndex.set(record.index, record)

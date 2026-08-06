@@ -8,18 +8,18 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
   index: number
-  key: string
-  text: string
+  name: string
+  value: number
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : G2
-/** Client-only table. Must not appear in server output. */
-export class ClientStringsRecord {
+// Generated from test/fixtures/xlsx/layout-edge\layout-edge.xlsx : Offset : F9
+/** Starts at F9 rather than the top-left corner. */
+export class OffsetTableRecord {
   /** Default constructor */
   constructor() {
   }
@@ -27,58 +27,58 @@ export class ClientStringsRecord {
   /** primary index */
   public get index(): number { return this._index }
 
-  /** string key */
-  public get key(): string { return this._key }
+  /** name */
+  public get name(): string { return this._name }
 
-  /** display text */
-  public get text(): string { return this._text }
+  /** value */
+  public get value(): number { return this._value }
 
   public _index: number = 0
-  public _key: string = ''
-  public _text: string = ''
+  public _name: string = ''
+  public _value: number = 0
 
   /** Populate field values. */
   public populateFieldValues(dataRow: IDataRow): void {
     this._index = dataRow.index
-    this._key = dataRow.key
-    this._text = dataRow.text
+    this._name = dataRow.name
+    this._value = dataRow.value
   }
 
   /** Populate field values. */
   public populateFieldValuesCompact(dataRow: any[]): void {
     let offset = 0
     this._index = dataRow[offset++]
-    this._key = dataRow[offset++]
-    this._text = dataRow[offset++]
+    this._name = dataRow[offset++]
+    this._value = dataRow[offset++]
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : G2
-/** Client-only table. Must not appear in server output. */
-export class ClientStringsTable {
+// Generated from test/fixtures/xlsx/layout-edge\layout-edge.xlsx : Offset : F9
+/** Starts at F9 rather than the top-left corner. */
+export class OffsetTableTable {
   /** Default constructor. */
   constructor() {
   }
 
   /** All records. */
-  public get records(): ClientStringsRecord[] { return this._records }
-  private _records: ClientStringsRecord[] = []
+  public get records(): OffsetTableRecord[] { return this._records }
+  private _records: OffsetTableRecord[] = []
 
   // Indexing by 'index'
-  public get recordsByIndex(): Map<number, ClientStringsRecord> { return this._recordsByIndex }
-  private _recordsByIndex: Map<number, ClientStringsRecord> = new Map<number, ClientStringsRecord>()
+  public get recordsByIndex(): Map<number, OffsetTableRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, OffsetTableRecord> = new Map<number, OffsetTableRecord>()
 
   /** Gets the value associated with the specified key. throw Error if not found. */
-  public getByIndex(key: number): ClientStringsRecord {
+  public getByIndex(key: number): OffsetTableRecord {
     const found = this._recordsByIndex.get(key)
     if (!found)
-      throw new Error(`There is no record in table "ClientStrings" that corresponds to field "index" value ${key}`)
+      throw new Error(`There is no record in table "OffsetTable" that corresponds to field "index" value ${key}`)
 
     return found
   }
 
   /** Gets the value associated with the specified key. */
-  public tryGetByIndex(key: number): ClientStringsRecord | undefined {
+  public tryGetByIndex(key: number): OffsetTableRecord | undefined {
     return this._recordsByIndex.get(key)
   }
 
@@ -101,17 +101,17 @@ export class ClientStringsTable {
 
   private readFromJson(json: string): void {
     const dataRows: any[] = JSON.parse(json)
-    const records: ClientStringsRecord[] = []
+    const records: OffsetTableRecord[] = []
 
     if (this.isCompactRowFormatted(dataRows)) {
       for (const dataRow of dataRows) {
-        const record = new ClientStringsRecord()
+        const record = new OffsetTableRecord()
         record.populateFieldValuesCompact(dataRow)
         records.push(record)
       }
     } else {
       for (const dataRow of dataRows as IDataRow[]) {
-        const record = new ClientStringsRecord()
+        const record = new OffsetTableRecord()
         record.populateFieldValues(dataRow)
         records.push(record)
       }
@@ -142,33 +142,33 @@ export class ClientStringsTable {
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
-    const records: ClientStringsRecord[] = []
+    const records: OffsetTableRecord[] = []
     for (let i = 0; i < rowCount; ++i)
-      records.push(new ClientStringsRecord())
+      records.push(new OffsetTableRecord())
 
     for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
       switch (column.tag) {
         case 1:
-          sheetman.checkColumn(column, 'ClientStrings.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'OffsetTable.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
-          sheetman.checkColumn(column, 'ClientStrings.Key', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          sheetman.checkColumn(column, 'OffsetTable.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._key = reader.readString()
+            record._name = reader.readString()
           }
           break
         case 3:
-          sheetman.checkColumn(column, 'ClientStrings.Text', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          sheetman.checkColumn(column, 'OffsetTable.Value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._text = reader.readString()
+            record._value = reader.readI32As(column.element)
           }
           break
         default:
@@ -193,8 +193,8 @@ export class ClientStringsTable {
    * builds its own arrays and gets here only if it finished, and this replaces the references
    * in one step. Whoever took `records` before still has the previous load, whole.
    */
-  private publish(records: ClientStringsRecord[]): void {
-    const recordsByIndex = new Map<number, ClientStringsRecord>()
+  private publish(records: OffsetTableRecord[]): void {
+    const recordsByIndex = new Map<number, OffsetTableRecord>()
 
     for (const record of records) {
       recordsByIndex.set(record.index, record)

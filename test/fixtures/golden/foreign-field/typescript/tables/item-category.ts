@@ -8,18 +8,18 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
   index: number
-  key: string
-  amount: number
+  name: string
+  description: string
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
-/** Server-only table. Must not appear in client output. */
-export class ServerTuningRecord {
+// Generated from test/fixtures/xlsx/foreign-field\foreign-field.xlsx : Refs : B2
+/** Target of the field-level reference below. */
+export class ItemCategoryRecord {
   /** Default constructor */
   constructor() {
   }
@@ -27,58 +27,58 @@ export class ServerTuningRecord {
   /** primary index */
   public get index(): number { return this._index }
 
-  /** tuning key */
-  public get key(): string { return this._key }
+  /** category name */
+  public get name(): string { return this._name }
 
-  /** tuning amount */
-  public get amount(): number { return this._amount }
+  /** description */
+  public get description(): string { return this._description }
 
   public _index: number = 0
-  public _key: string = ''
-  public _amount: number = 0
+  public _name: string = ''
+  public _description: string = ''
 
   /** Populate field values. */
   public populateFieldValues(dataRow: IDataRow): void {
     this._index = dataRow.index
-    this._key = dataRow.key
-    this._amount = dataRow.amount
+    this._name = dataRow.name
+    this._description = dataRow.description
   }
 
   /** Populate field values. */
   public populateFieldValuesCompact(dataRow: any[]): void {
     let offset = 0
     this._index = dataRow[offset++]
-    this._key = dataRow[offset++]
-    this._amount = dataRow[offset++]
+    this._name = dataRow[offset++]
+    this._description = dataRow[offset++]
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
-/** Server-only table. Must not appear in client output. */
-export class ServerTuningTable {
+// Generated from test/fixtures/xlsx/foreign-field\foreign-field.xlsx : Refs : B2
+/** Target of the field-level reference below. */
+export class ItemCategoryTable {
   /** Default constructor. */
   constructor() {
   }
 
   /** All records. */
-  public get records(): ServerTuningRecord[] { return this._records }
-  private _records: ServerTuningRecord[] = []
+  public get records(): ItemCategoryRecord[] { return this._records }
+  private _records: ItemCategoryRecord[] = []
 
   // Indexing by 'index'
-  public get recordsByIndex(): Map<number, ServerTuningRecord> { return this._recordsByIndex }
-  private _recordsByIndex: Map<number, ServerTuningRecord> = new Map<number, ServerTuningRecord>()
+  public get recordsByIndex(): Map<number, ItemCategoryRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, ItemCategoryRecord> = new Map<number, ItemCategoryRecord>()
 
   /** Gets the value associated with the specified key. throw Error if not found. */
-  public getByIndex(key: number): ServerTuningRecord {
+  public getByIndex(key: number): ItemCategoryRecord {
     const found = this._recordsByIndex.get(key)
     if (!found)
-      throw new Error(`There is no record in table "ServerTuning" that corresponds to field "index" value ${key}`)
+      throw new Error(`There is no record in table "ItemCategory" that corresponds to field "index" value ${key}`)
 
     return found
   }
 
   /** Gets the value associated with the specified key. */
-  public tryGetByIndex(key: number): ServerTuningRecord | undefined {
+  public tryGetByIndex(key: number): ItemCategoryRecord | undefined {
     return this._recordsByIndex.get(key)
   }
 
@@ -101,17 +101,17 @@ export class ServerTuningTable {
 
   private readFromJson(json: string): void {
     const dataRows: any[] = JSON.parse(json)
-    const records: ServerTuningRecord[] = []
+    const records: ItemCategoryRecord[] = []
 
     if (this.isCompactRowFormatted(dataRows)) {
       for (const dataRow of dataRows) {
-        const record = new ServerTuningRecord()
+        const record = new ItemCategoryRecord()
         record.populateFieldValuesCompact(dataRow)
         records.push(record)
       }
     } else {
       for (const dataRow of dataRows as IDataRow[]) {
-        const record = new ServerTuningRecord()
+        const record = new ItemCategoryRecord()
         record.populateFieldValues(dataRow)
         records.push(record)
       }
@@ -142,33 +142,33 @@ export class ServerTuningTable {
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
-    const records: ServerTuningRecord[] = []
+    const records: ItemCategoryRecord[] = []
     for (let i = 0; i < rowCount; ++i)
-      records.push(new ServerTuningRecord())
+      records.push(new ItemCategoryRecord())
 
     for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
       switch (column.tag) {
         case 1:
-          sheetman.checkColumn(column, 'ServerTuning.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'ItemCategory.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
-          sheetman.checkColumn(column, 'ServerTuning.Key', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          sheetman.checkColumn(column, 'ItemCategory.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._key = reader.readString()
+            record._name = reader.readString()
           }
           break
         case 3:
-          sheetman.checkColumn(column, 'ServerTuning.Amount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'ItemCategory.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._amount = reader.readI32As(column.element)
+            record._description = reader.readString()
           }
           break
         default:
@@ -193,8 +193,8 @@ export class ServerTuningTable {
    * builds its own arrays and gets here only if it finished, and this replaces the references
    * in one step. Whoever took `records` before still has the previous load, whole.
    */
-  private publish(records: ServerTuningRecord[]): void {
-    const recordsByIndex = new Map<number, ServerTuningRecord>()
+  private publish(records: ItemCategoryRecord[]): void {
+    const recordsByIndex = new Map<number, ItemCategoryRecord>()
 
     for (const record of records) {
       recordsByIndex.set(record.index, record)

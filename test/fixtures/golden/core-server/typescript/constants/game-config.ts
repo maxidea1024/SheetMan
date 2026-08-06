@@ -9,7 +9,7 @@
 
 
 // Automatically import to handle external type references.
-import { Grade } from '../enums/Grade'
+import { Grade } from '../enums/grade'
 
 // Generated from test/fixtures/xlsx/core\core.xlsx : Consts : B2
 /** Assorted tuning constants. */

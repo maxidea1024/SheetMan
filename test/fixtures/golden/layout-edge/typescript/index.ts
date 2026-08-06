@@ -9,9 +9,9 @@
 
 
 // Tables
-export { OffsetTableRecord } from './tables/OffsetTable'
-export { OffsetTableTable } from './tables/OffsetTable'
-export { SecondTableRecord } from './tables/SecondTable'
-export { SecondTableTable } from './tables/SecondTable'
+export { OffsetTableRecord } from './tables/offset-table'
+export { OffsetTableTable } from './tables/offset-table'
+export { SecondTableRecord } from './tables/second-table'
+export { SecondTableTable } from './tables/second-table'
 
-export { Tables } from './Tables'
+export { Tables } from './tables'

@@ -8,20 +8,18 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
   index: number
-  intFromNumeric: number
-  floatFromNumeric: number
-  whenFromDateCell: string
-  bigFromNumeric: string
+  name: string
+  description: string
 }
 
-// Generated from test/fixtures/xlsx/excel-typed\excel-typed.xlsx : Typed : B2
-/** Values entered as real Excel types rather than text. */
-export class ExcelTypedRecord {
+// Generated from test/fixtures/xlsx/core\core.xlsx : Refs : B2
+/** Referenced by Item.CategoryId. */
+export class ItemCategoryRecord {
   /** Default constructor */
   constructor() {
   }
@@ -29,70 +27,58 @@ export class ExcelTypedRecord {
   /** primary index */
   public get index(): number { return this._index }
 
-  /** numeric cell holding an integer */
-  public get intFromNumeric(): number { return this._intFromNumeric }
+  /** category name */
+  public get name(): string { return this._name }
 
-  /** numeric cell holding a fraction */
-  public get floatFromNumeric(): number { return this._floatFromNumeric }
-
-  /** genuine Excel date cell */
-  public get whenFromDateCell(): string { return this._whenFromDateCell }
-
-  /** numeric cell beyond double precision */
-  public get bigFromNumeric(): bigint { return this._bigFromNumeric }
+  /** human readable description */
+  public get description(): string { return this._description }
 
   public _index: number = 0
-  public _intFromNumeric: number = 0
-  public _floatFromNumeric: number = 0
-  public _whenFromDateCell: string = ''
-  public _bigFromNumeric: bigint = 0n
+  public _name: string = ''
+  public _description: string = ''
 
   /** Populate field values. */
   public populateFieldValues(dataRow: IDataRow): void {
     this._index = dataRow.index
-    this._intFromNumeric = dataRow.intFromNumeric
-    this._floatFromNumeric = Math.fround(dataRow.floatFromNumeric)
-    this._whenFromDateCell = dataRow.whenFromDateCell
-    this._bigFromNumeric = BigInt(dataRow.bigFromNumeric)
+    this._name = dataRow.name
+    this._description = dataRow.description
   }
 
   /** Populate field values. */
   public populateFieldValuesCompact(dataRow: any[]): void {
     let offset = 0
     this._index = dataRow[offset++]
-    this._intFromNumeric = dataRow[offset++]
-    this._floatFromNumeric = Math.fround(dataRow[offset++])
-    this._whenFromDateCell = dataRow[offset++]
-    this._bigFromNumeric = BigInt(dataRow[offset++])
+    this._name = dataRow[offset++]
+    this._description = dataRow[offset++]
   }
 }
 
-// Generated from test/fixtures/xlsx/excel-typed\excel-typed.xlsx : Typed : B2
-/** Values entered as real Excel types rather than text. */
-export class ExcelTypedTable {
+// Generated from test/fixtures/xlsx/core\core.xlsx : Refs : B2
+/** Referenced by Item.CategoryId. */
+export class ItemCategoryTable {
   /** Default constructor. */
   constructor() {
   }
 
   /** All records. */
-  public get records(): ExcelTypedRecord[] { return this._records }
-  private _records: ExcelTypedRecord[] = []
+  public get records(): ItemCategoryRecord[] { return this._records }
+  private _records: ItemCategoryRecord[] = []
 
   // Indexing by 'index'
-  public get recordsByIndex(): Map<number, ExcelTypedRecord> { return this._recordsByIndex }
-  private _recordsByIndex: Map<number, ExcelTypedRecord> = new Map<number, ExcelTypedRecord>()
+  public get recordsByIndex(): Map<number, ItemCategoryRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, ItemCategoryRecord> = new Map<number, ItemCategoryRecord>()
 
   /** Gets the value associated with the specified key. throw Error if not found. */
-  public getByIndex(key: number): ExcelTypedRecord {
+  public getByIndex(key: number): ItemCategoryRecord {
     const found = this._recordsByIndex.get(key)
     if (!found)
-      throw new Error(`There is no record in table "ExcelTyped" that corresponds to field "index" value ${key}`)
+      throw new Error(`There is no record in table "ItemCategory" that corresponds to field "index" value ${key}`)
 
     return found
   }
 
   /** Gets the value associated with the specified key. */
-  public tryGetByIndex(key: number): ExcelTypedRecord | undefined {
+  public tryGetByIndex(key: number): ItemCategoryRecord | undefined {
     return this._recordsByIndex.get(key)
   }
 
@@ -115,17 +101,17 @@ export class ExcelTypedTable {
 
   private readFromJson(json: string): void {
     const dataRows: any[] = JSON.parse(json)
-    const records: ExcelTypedRecord[] = []
+    const records: ItemCategoryRecord[] = []
 
     if (this.isCompactRowFormatted(dataRows)) {
       for (const dataRow of dataRows) {
-        const record = new ExcelTypedRecord()
+        const record = new ItemCategoryRecord()
         record.populateFieldValuesCompact(dataRow)
         records.push(record)
       }
     } else {
       for (const dataRow of dataRows as IDataRow[]) {
-        const record = new ExcelTypedRecord()
+        const record = new ItemCategoryRecord()
         record.populateFieldValues(dataRow)
         records.push(record)
       }
@@ -156,47 +142,33 @@ export class ExcelTypedTable {
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
-    const records: ExcelTypedRecord[] = []
+    const records: ItemCategoryRecord[] = []
     for (let i = 0; i < rowCount; ++i)
-      records.push(new ExcelTypedRecord())
+      records.push(new ItemCategoryRecord())
 
     for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
       switch (column.tag) {
         case 1:
-          sheetman.checkColumn(column, 'ExcelTyped.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'ItemCategory.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
-          sheetman.checkColumn(column, 'ExcelTyped.IntFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'ItemCategory.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._intFromNumeric = reader.readI32As(column.element)
+            record._name = reader.readString()
           }
           break
         case 3:
-          sheetman.checkColumn(column, 'ExcelTyped.FloatFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          sheetman.checkColumn(column, 'ItemCategory.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._floatFromNumeric = reader.readFloat()
-          }
-          break
-        case 4:
-          sheetman.checkColumn(column, 'ExcelTyped.WhenFromDateCell', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
-          for (let i = 0; i < rowCount; ++i) {
-            const record = records[i]
-            record._whenFromDateCell = reader.readDateTime()
-          }
-          break
-        case 5:
-          sheetman.checkColumn(column, 'ExcelTyped.BigFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i) {
-            const record = records[i]
-            record._bigFromNumeric = reader.readI64As(column.element)
+            record._description = reader.readString()
           }
           break
         default:
@@ -221,8 +193,8 @@ export class ExcelTypedTable {
    * builds its own arrays and gets here only if it finished, and this replaces the references
    * in one step. Whoever took `records` before still has the previous load, whole.
    */
-  private publish(records: ExcelTypedRecord[]): void {
-    const recordsByIndex = new Map<number, ExcelTypedRecord>()
+  private publish(records: ItemCategoryRecord[]): void {
+    const recordsByIndex = new Map<number, ItemCategoryRecord>()
 
     for (const record of records) {
       recordsByIndex.set(record.index, record)

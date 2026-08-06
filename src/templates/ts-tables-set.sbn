@@ -3,7 +3,7 @@
 import * as path from 'path'
 
 {{~ for table in tables ~}}
-import { {{ table.name }}Table } from './tables/{{ table.name }}'
+import { {{ table.name }}Table } from './tables/{{ table.file }}'
 {{~ end ~}}
 
 /** Tables */

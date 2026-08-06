@@ -11,7 +11,7 @@
 ##~}}
 {{ include 'ts-head.sbn' ~}}
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
 {{~ if imports | array.size > 0 ~}}
 
 // Automatically import to handle external type references.

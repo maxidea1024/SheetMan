@@ -60,20 +60,21 @@ namespace SheetMan.CodeGeneration
             if (_model.Enums.Count > 0)
             {
                 foreach (var enumm in _model.Enums)
-                    Write($"enums/{enumm.Name}.ts", "ts-enum.sbn", BuildEnum(enumm));
+                    Write($"enums/{TsFileName(enumm.Name)}.ts", "ts-enum.sbn", BuildEnum(enumm));
             }
 
             if (_model.Tables.Count > 0)
             {
                 foreach (var table in _model.Tables)
-                    Write($"tables/{table.Name}.ts", "ts-table.sbn", BuildTable(table));
+                    Write($"tables/{TsFileName(table.Name)}.ts", "ts-table.sbn", BuildTable(table));
 
-                Write("Tables.ts", "ts-tables-set.sbn", new TsTableSetView
+                Write("tables.ts", "ts-tables-set.sbn", new TsTableSetView
                 {
                     Tables = _model.Tables.Select(table => new TsTableSlotView
                     {
                         Member = TsName(table.Name),
                         Name = table.Name,
+                        File = TsFileName(table.Name),
                     }).ToList(),
                 });
 
@@ -82,7 +83,7 @@ namespace SheetMan.CodeGeneration
             if (_model.ConstantSets.Count > 0)
             {
                 foreach (var constantSet in _model.ConstantSets)
-                    Write($"constants/{constantSet.Name}.ts", "ts-constants.sbn", BuildConstantSet(constantSet));
+                    Write($"constants/{TsFileName(constantSet.Name)}.ts", "ts-constants.sbn", BuildConstantSet(constantSet));
             }
 
             WriteBinaryReaderRuntime();
@@ -96,9 +97,9 @@ namespace SheetMan.CodeGeneration
             {
                 NamespaceOpen = string.IsNullOrEmpty(ns) ? "" : $"namespace {ns}\n{{",
                 NamespaceClose = string.IsNullOrEmpty(ns) ? "" : "}",
-                EnumNames = _model.Enums.Select(x => x.Name).ToList(),
-                TableNames = _model.Tables.Select(x => x.Name).ToList(),
-                ConstantSetNames = _model.ConstantSets.Select(x => x.Name).ToList(),
+                Enums = _model.Enums.Select(Exported).ToList(),
+                Tables = _model.Tables.Select(x => Exported(x.Name)).ToList(),
+                ConstantSets = _model.ConstantSets.Select(Exported).ToList(),
             });
         }
 
@@ -113,11 +114,28 @@ namespace SheetMan.CodeGeneration
         /// The source is an embedded resource taken from lib/ts, so there is one copy to
         /// maintain and it cannot drift from what is shipped.
         /// </summary>
+        /// <summary>
+        /// The file a type of this name lives in: lower kebab-case, so `TableData` is
+        /// `table-data.ts`.
+        /// </summary>
+        /// <remarks>
+        /// What TypeScript projects write, and the spelling that survives a case-insensitive
+        /// filesystem handing its output to a case-sensitive one - a `Tables.ts` imported as
+        /// `./tables` builds on a laptop and not on the server that deploys it.
+        /// </remarks>
+        private static TsExportView Exported(Models.Enum enumm) => Exported(enumm.Name);
+        private static TsExportView Exported(ConstantSet set) => Exported(set.Name);
+
+        private static TsExportView Exported(string name)
+            => new TsExportView { Name = name, File = TsFileName(name) };
+
+        private static string TsFileName(string name) => name.ToKebabCase().ToLowerInvariant();
+
         private void WriteBinaryReaderRuntime()
         {
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Ts.lite_binary_reader.ts",
-                GetTsFilename("sheetman/lite_binary_reader.ts"));
+                GetTsFilename("sheetman/lite-binary-reader.ts"));
 
             // Asked for rather than assumed. It reaches the network and it is of no use to a
             // project that ships its data with its code.
@@ -159,7 +177,7 @@ namespace SheetMan.CodeGeneration
 
             Imports = constantSet.Constants
                                  .Where(c => c.Type == ValueType.Enum)
-                                 .Select(c => $"import {{ {c.Enum.Name} }} from '../enums/{c.Enum.Name}'")
+                                 .Select(c => $"import {{ {c.Enum.Name} }} from '../enums/{TsFileName(c.Enum.Name)}'")
                                  .Distinct()
                                  .ToList(),
 
@@ -213,7 +231,7 @@ namespace SheetMan.CodeGeneration
             {
                 if (sf.ElementType == ValueType.Enum)
                 {
-                    Add($"import {{ {sf.FirstField.Enum.Name} }} from '../enums/{sf.FirstField.Enum.Name}'");
+                    Add($"import {{ {sf.FirstField.Enum.Name} }} from '../enums/{TsFileName(sf.FirstField.Enum.Name)}'");
                 }
                 else if (sf.ElementType == ValueType.ForeignRecord)
                 {
@@ -223,7 +241,7 @@ namespace SheetMan.CodeGeneration
                     var refTable = sf.FirstField.ResolvedRefTable;
 
                     if (refTable != null && refTable.Name != table.Name)
-                        Add($"import {{ {refTable.Name.ToPascalCase()}Record }} from './{refTable.Name}'");
+                        Add($"import {{ {refTable.Name.ToPascalCase()}Record }} from './{TsFileName(refTable.Name)}'");
                 }
             }
 

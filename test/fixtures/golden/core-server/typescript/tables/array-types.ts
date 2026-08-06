@@ -8,18 +8,24 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
+
+// Automatically import to handle external type references.
+import { Grade } from '../enums/grade'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
   index: number
-  name: string
-  value: number
+  tags: string[]
+  costs: number[]
+  weights: number[]
+  grades: Grade[]
+  slotArray: number[]
 }
 
-// Generated from test/fixtures/xlsx/layout-edge\layout-edge.xlsx : Offset : F9
-/** Starts at F9 rather than the top-left corner. */
-export class OffsetTableRecord {
+// Generated from test/fixtures/xlsx/core\core.xlsx : Arrays : B2
+/** One cell holding several delimited values, length varying per row. */
+export class ArrayTypesRecord {
   /** Default constructor */
   constructor() {
   }
@@ -27,58 +33,78 @@ export class OffsetTableRecord {
   /** primary index */
   public get index(): number { return this._index }
 
-  /** name */
-  public get name(): string { return this._name }
+  /** free-form tags */
+  public get tags(): string[] { return this._tags }
 
-  /** value */
-  public get value(): number { return this._value }
+  /** cost per level */
+  public get costs(): number[] { return this._costs }
+
+  /** drop weights */
+  public get weights(): number[] { return this._weights }
+
+  /** allowed grades */
+  public get grades(): Grade[] { return this._grades }
+
+  /** fixed slot 1 */
+  public get slotArray(): number[] { return this._slotArray }
+  public static readonly slotArray_N: number = 2
 
   public _index: number = 0
-  public _name: string = ''
-  public _value: number = 0
+  public _tags: string[] = []
+  public _costs: number[] = []
+  public _weights: number[] = []
+  public _grades: Grade[] = []
+  public _slotArray: number[] = []
 
   /** Populate field values. */
   public populateFieldValues(dataRow: IDataRow): void {
     this._index = dataRow.index
-    this._name = dataRow.name
-    this._value = dataRow.value
+    this._tags = dataRow.tags
+    this._costs = dataRow.costs
+    this._weights = dataRow.weights.map(v => Math.fround(v))
+    this._grades = dataRow.grades
+    this._slotArray = dataRow.slotArray
   }
 
   /** Populate field values. */
   public populateFieldValuesCompact(dataRow: any[]): void {
     let offset = 0
     this._index = dataRow[offset++]
-    this._name = dataRow[offset++]
-    this._value = dataRow[offset++]
+    this._tags = dataRow[offset++]
+    this._costs = dataRow[offset++]
+    this._weights = dataRow[offset++].map(v => Math.fround(v))
+    this._grades = dataRow[offset++]
+    this._slotArray = dataRow.slice(offset, offset + 2)
+    offset += 2
   }
 }
 
-// Generated from test/fixtures/xlsx/layout-edge\layout-edge.xlsx : Offset : F9
-/** Starts at F9 rather than the top-left corner. */
-export class OffsetTableTable {
+// Generated from test/fixtures/xlsx/core\core.xlsx : Arrays : B2
+/** One cell holding several delimited values, length varying per row. */
+export class ArrayTypesTable {
   /** Default constructor. */
   constructor() {
   }
 
   /** All records. */
-  public get records(): OffsetTableRecord[] { return this._records }
-  private _records: OffsetTableRecord[] = []
+  public get records(): ArrayTypesRecord[] { return this._records }
+  private _records: ArrayTypesRecord[] = []
 
   // Indexing by 'index'
-  public get recordsByIndex(): Map<number, OffsetTableRecord> { return this._recordsByIndex }
-  private _recordsByIndex: Map<number, OffsetTableRecord> = new Map<number, OffsetTableRecord>()
+  public get recordsByIndex(): Map<number, ArrayTypesRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, ArrayTypesRecord> = new Map<number, ArrayTypesRecord>()
 
   /** Gets the value associated with the specified key. throw Error if not found. */
-  public getByIndex(key: number): OffsetTableRecord {
+  public getByIndex(key: number): ArrayTypesRecord {
     const found = this._recordsByIndex.get(key)
     if (!found)
-      throw new Error(`There is no record in table "OffsetTable" that corresponds to field "index" value ${key}`)
+      throw new Error(`There is no record in table "ArrayTypes" that corresponds to field "index" value ${key}`)
 
     return found
   }
 
   /** Gets the value associated with the specified key. */
-  public tryGetByIndex(key: number): OffsetTableRecord | undefined {
+  public tryGetByIndex(key: number): ArrayTypesRecord | undefined {
     return this._recordsByIndex.get(key)
   }
 
@@ -101,17 +127,17 @@ export class OffsetTableTable {
 
   private readFromJson(json: string): void {
     const dataRows: any[] = JSON.parse(json)
-    const records: OffsetTableRecord[] = []
+    const records: ArrayTypesRecord[] = []
 
     if (this.isCompactRowFormatted(dataRows)) {
       for (const dataRow of dataRows) {
-        const record = new OffsetTableRecord()
+        const record = new ArrayTypesRecord()
         record.populateFieldValuesCompact(dataRow)
         records.push(record)
       }
     } else {
       for (const dataRow of dataRows as IDataRow[]) {
-        const record = new OffsetTableRecord()
+        const record = new ArrayTypesRecord()
         record.populateFieldValues(dataRow)
         records.push(record)
       }
@@ -142,33 +168,68 @@ export class OffsetTableTable {
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
-    const records: OffsetTableRecord[] = []
+    const records: ArrayTypesRecord[] = []
     for (let i = 0; i < rowCount; ++i)
-      records.push(new OffsetTableRecord())
+      records.push(new ArrayTypesRecord())
 
     for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
       switch (column.tag) {
         case 1:
-          sheetman.checkColumn(column, 'OffsetTable.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'ArrayTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
-          sheetman.checkColumn(column, 'OffsetTable.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          sheetman.checkColumn(column, 'ArrayTypes.Tags', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_STRING])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            const elementCount = reader.readCounter32()
+            record._tags = []
+            for (let j = 0; j < elementCount; ++j)
+              record._tags.push(reader.readString())
           }
           break
         case 3:
-          sheetman.checkColumn(column, 'OffsetTable.Value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          sheetman.checkColumn(column, 'ArrayTypes.Costs', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._value = reader.readI32As(column.element)
+            const elementCount = reader.readCounter32()
+            record._costs = []
+            for (let j = 0; j < elementCount; ++j)
+              record._costs.push(reader.readI32As(column.element))
+          }
+          break
+        case 4:
+          sheetman.checkColumn(column, 'ArrayTypes.Weights', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_F32])
+          for (let i = 0; i < rowCount; ++i) {
+            const record = records[i]
+            const elementCount = reader.readCounter32()
+            record._weights = []
+            for (let j = 0; j < elementCount; ++j)
+              record._weights.push(reader.readFloat())
+          }
+          break
+        case 5:
+          sheetman.checkColumn(column, 'ArrayTypes.Grades', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i) {
+            const record = records[i]
+            const elementCount = reader.readCounter32()
+            record._grades = []
+            for (let j = 0; j < elementCount; ++j)
+              record._grades.push(reader.readEnum() as Grade)
+          }
+          break
+        case 6:
+          sheetman.checkColumn(column, 'ArrayTypes.Slot_array', sheetman.KIND_FIXED_ARRAY, 2, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i) {
+            const record = records[i]
+            record._slotArray = []
+            for (let j = 0; j < 2; ++j)
+              record._slotArray.push(reader.readI32As(column.element))
           }
           break
         default:
@@ -193,8 +254,8 @@ export class OffsetTableTable {
    * builds its own arrays and gets here only if it finished, and this replaces the references
    * in one step. Whoever took `records` before still has the previous load, whole.
    */
-  private publish(records: OffsetTableRecord[]): void {
-    const recordsByIndex = new Map<number, OffsetTableRecord>()
+  private publish(records: ArrayTypesRecord[]): void {
+    const recordsByIndex = new Map<number, ArrayTypesRecord>()
 
     for (const record of records) {
       recordsByIndex.set(record.index, record)

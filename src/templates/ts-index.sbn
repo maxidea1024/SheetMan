@@ -3,26 +3,26 @@
 {{~ if namespace_open != '' }}
 {{ namespace_open }}
 {{~ end ~}}
-{{~ if enum_names | array.size > 0 }}
+{{~ if enums | array.size > 0 }}
 // Enums
-{{~ for name in enum_names ~}}
-export { {{ name }} } from './enums/{{ name }}'
+{{~ for one in enums ~}}
+export { {{ one.name }} } from './enums/{{ one.file }}'
 {{~ end ~}}
 {{~ end ~}}
-{{~ if table_names | array.size > 0 }}
+{{~ if tables | array.size > 0 }}
 // Tables
-{{~ for name in table_names ~}}
-export { {{ name }}Record } from './tables/{{ name }}'
-export { {{ name }}Table } from './tables/{{ name }}'
+{{~ for one in tables ~}}
+export { {{ one.name }}Record } from './tables/{{ one.file }}'
+export { {{ one.name }}Table } from './tables/{{ one.file }}'
 {{~ end ~}}
 {{~ end ~}}
-{{~ if constant_set_names | array.size > 0 }}
+{{~ if constant_sets | array.size > 0 }}
 // Constants
-{{~ for name in constant_set_names ~}}
-export { {{ name }} } from './constants/{{ name }}'
+{{~ for one in constant_sets ~}}
+export { {{ one.name }} } from './constants/{{ one.file }}'
 {{~ end ~}}
 {{~ end }}
-export { Tables } from './Tables'
+export { Tables } from './tables'
 {{~ if namespace_close != '' }}
 {{ namespace_close }}
 {{~ end ~}}

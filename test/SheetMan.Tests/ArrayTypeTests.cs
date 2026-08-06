@@ -143,7 +143,7 @@ namespace SheetMan.Tests
                 "\"ArrayTypes.Slot_array\", LiteBinaryTable.KindFixedArray, 2", cs);
 
             string ts = File.ReadAllText(
-                Path.Combine(RepoLayout.OutputDir("core"), "typescript", "tables", "ArrayTypes.ts"));
+                Path.Combine(RepoLayout.OutputDir("core"), "typescript", "tables", "array-types.ts"));
 
             Assert.Contains("tags: string[]", ts);
             Assert.Contains("grades: Grade[]", ts);

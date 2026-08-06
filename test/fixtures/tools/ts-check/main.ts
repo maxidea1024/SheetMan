@@ -7,10 +7,10 @@
 //
 // Prints JSON on stdout for the C# harness to assert against.
 
-import { ArrayTypesTable } from './generated/tables/ArrayTypes'
-import { ItemTable } from './generated/tables/Item'
-import { LocalizationTable } from './generated/tables/Localization'
-import { TestFieldTypesTable } from './generated/tables/TestFieldTypes'
+import { ArrayTypesTable } from './generated/tables/array-types'
+import { ItemTable } from './generated/tables/item'
+import { LocalizationTable } from './generated/tables/localization'
+import { TestFieldTypesTable } from './generated/tables/test-field-types'
 
 /** A single disagreement between the two read paths. */
 interface Mismatch {

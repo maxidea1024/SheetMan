@@ -9,8 +9,8 @@
 
 import * as path from 'path'
 
-import { OffsetTableTable } from './tables/OffsetTable'
-import { SecondTableTable } from './tables/SecondTable'
+import { OffsetTableTable } from './tables/offset-table'
+import { SecondTableTable } from './tables/second-table'
 
 /** Tables */
 export class Tables {

@@ -9,25 +9,25 @@
 
 
 // Enums
-export { ValueType } from './enums/ValueType'
-export { Grade } from './enums/Grade'
-export { SkillType } from './enums/SkillType'
+export { ValueType } from './enums/value-type'
+export { Grade } from './enums/grade'
+export { SkillType } from './enums/skill-type'
 
 // Tables
-export { TestFieldTypesRecord } from './tables/TestFieldTypes'
-export { TestFieldTypesTable } from './tables/TestFieldTypes'
-export { ItemCategoryRecord } from './tables/ItemCategory'
-export { ItemCategoryTable } from './tables/ItemCategory'
-export { ItemRecord } from './tables/Item'
-export { ItemTable } from './tables/Item'
-export { LocalizationRecord } from './tables/Localization'
-export { LocalizationTable } from './tables/Localization'
-export { ArrayTypesRecord } from './tables/ArrayTypes'
-export { ArrayTypesTable } from './tables/ArrayTypes'
-export { ServerTuningRecord } from './tables/ServerTuning'
-export { ServerTuningTable } from './tables/ServerTuning'
+export { TestFieldTypesRecord } from './tables/test-field-types'
+export { TestFieldTypesTable } from './tables/test-field-types'
+export { ItemCategoryRecord } from './tables/item-category'
+export { ItemCategoryTable } from './tables/item-category'
+export { ItemRecord } from './tables/item'
+export { ItemTable } from './tables/item'
+export { LocalizationRecord } from './tables/localization'
+export { LocalizationTable } from './tables/localization'
+export { ArrayTypesRecord } from './tables/array-types'
+export { ArrayTypesTable } from './tables/array-types'
+export { ServerTuningRecord } from './tables/server-tuning'
+export { ServerTuningTable } from './tables/server-tuning'
 
 // Constants
-export { GameConfig } from './constants/GameConfig'
+export { GameConfig } from './constants/game-config'
 
-export { Tables } from './Tables'
+export { Tables } from './tables'

@@ -9,7 +9,7 @@ declare const process: any
 
 const path = require('path')
 
-import { VectorsTable } from './tables/Vectors'
+import { VectorsTable } from './tables/vectors'
 
 const binaryDir: string = process.argv[2]
 if (!binaryDir) {

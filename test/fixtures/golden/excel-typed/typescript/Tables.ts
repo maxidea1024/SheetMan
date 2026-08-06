@@ -9,7 +9,7 @@
 
 import * as path from 'path'
 
-import { ExcelTypedTable } from './tables/ExcelTyped'
+import { ExcelTypedTable } from './tables/excel-typed'
 
 /** Tables */
 export class Tables {

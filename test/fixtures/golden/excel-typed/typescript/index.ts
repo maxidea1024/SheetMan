@@ -9,7 +9,7 @@
 
 
 // Tables
-export { ExcelTypedRecord } from './tables/ExcelTyped'
-export { ExcelTypedTable } from './tables/ExcelTyped'
+export { ExcelTypedRecord } from './tables/excel-typed'
+export { ExcelTypedTable } from './tables/excel-typed'
 
-export { Tables } from './Tables'
+export { Tables } from './tables'

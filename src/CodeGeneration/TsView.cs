@@ -16,9 +16,22 @@ namespace SheetMan.CodeGeneration
         /// <summary>The matching closer, or empty.</summary>
         public string NamespaceClose { get; set; }
 
-        public IReadOnlyList<string> EnumNames { get; set; }
-        public IReadOnlyList<string> TableNames { get; set; }
-        public IReadOnlyList<string> ConstantSetNames { get; set; }
+        /// <summary>
+        /// What is exported, and out of which file. The two differ: a type keeps its Pascal
+        /// name and the file it lives in is kebab-case.
+        /// </summary>
+        public IReadOnlyList<TsExportView> Enums { get; set; }
+        public IReadOnlyList<TsExportView> Tables { get; set; }
+        public IReadOnlyList<TsExportView> ConstantSets { get; set; }
+    }
+
+    internal sealed class TsExportView
+    {
+        /// <summary>The exported name, as declared.</summary>
+        public string Name { get; set; }
+
+        /// <summary>The file it is in, without the extension.</summary>
+        public string File { get; set; }
     }
 
     internal sealed class TsTableSetView
@@ -33,6 +46,9 @@ namespace SheetMan.CodeGeneration
 
         /// <summary>Table name as declared, which is also the class prefix.</summary>
         public string Name { get; set; }
+
+        /// <summary>The file the table is in, without the extension.</summary>
+        public string File { get; set; }
     }
 
     internal sealed class TsEnumView

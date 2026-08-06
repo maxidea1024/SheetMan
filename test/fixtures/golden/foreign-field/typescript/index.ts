@@ -9,9 +9,9 @@
 
 
 // Tables
-export { ItemCategoryRecord } from './tables/ItemCategory'
-export { ItemCategoryTable } from './tables/ItemCategory'
-export { ItemRecord } from './tables/Item'
-export { ItemTable } from './tables/Item'
+export { ItemCategoryRecord } from './tables/item-category'
+export { ItemCategoryTable } from './tables/item-category'
+export { ItemRecord } from './tables/item'
+export { ItemTable } from './tables/item'
 
-export { Tables } from './Tables'
+export { Tables } from './tables'

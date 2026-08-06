@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using Xunit;
 
@@ -106,9 +106,9 @@ namespace SheetMan.Tests
                      {
                          Path.Combine("tables", "Item.ts"),
                          Path.Combine("enums", "Grade.ts"),
-                         Path.Combine("constants", "GameConfig.ts"),
+                         Path.Combine("constants", "game-config.ts"),
                          "index.ts",
-                         Path.Combine("sheetman", "lite_binary_reader.ts"),
+                         Path.Combine("sheetman", "lite-binary-reader.ts"),
                      })
             {
                 Assert.True(File.Exists(Path.Combine(TypescriptDir, expected)),

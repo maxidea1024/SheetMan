@@ -9,8 +9,8 @@
 
 import * as path from 'path'
 
-import { ItemCategoryTable } from './tables/ItemCategory'
-import { ItemTable } from './tables/Item'
+import { ItemCategoryTable } from './tables/item-category'
+import { ItemTable } from './tables/item'
 
 /** Tables */
 export class Tables {

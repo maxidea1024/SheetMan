@@ -8,17 +8,16 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
 
 // Automatically import to handle external type references.
-import { ValueType } from '../enums/ValueType'
+import { ValueType } from '../enums/value-type'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
   index: number
   stringField: string
   boolField: boolean
-  intField: number
   bigIntField: string
   floatField: number
   doubleField: number
@@ -44,9 +43,6 @@ export class TestFieldTypesRecord {
   /** logical flag */
   public get boolField(): boolean { return this._boolField }
 
-  /** 32 bit integer */
-  public get intField(): number { return this._intField }
-
   /** 64 bit integer */
   public get bigIntField(): bigint { return this._bigIntField }
 
@@ -71,7 +67,6 @@ export class TestFieldTypesRecord {
   public _index: number = 0
   public _stringField: string = ''
   public _boolField: boolean = false
-  public _intField: number = 0
   public _bigIntField: bigint = 0n
   public _floatField: number = 0
   public _doubleField: number = 0
@@ -85,7 +80,6 @@ export class TestFieldTypesRecord {
     this._index = dataRow.index
     this._stringField = dataRow.stringField
     this._boolField = dataRow.boolField
-    this._intField = dataRow.intField
     this._bigIntField = BigInt(dataRow.bigIntField)
     this._floatField = Math.fround(dataRow.floatField)
     this._doubleField = dataRow.doubleField
@@ -101,7 +95,6 @@ export class TestFieldTypesRecord {
     this._index = dataRow[offset++]
     this._stringField = dataRow[offset++]
     this._boolField = dataRow[offset++]
-    this._intField = dataRow[offset++]
     this._bigIntField = BigInt(dataRow[offset++])
     this._floatField = Math.fround(dataRow[offset++])
     this._doubleField = dataRow[offset++]
@@ -228,13 +221,6 @@ export class TestFieldTypesTable {
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._boolField = reader.readBool()
-          }
-          break
-        case 4:
-          sheetman.checkColumn(column, 'TestFieldTypes.IntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i) {
-            const record = records[i]
-            record._intField = reader.readI32As(column.element)
           }
           break
         case 5:

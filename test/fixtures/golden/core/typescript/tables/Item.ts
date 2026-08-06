@@ -8,12 +8,12 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
 
 // Automatically import to handle external type references.
-import { ItemCategoryRecord } from './ItemCategory'
-import { Grade } from '../enums/Grade'
-import { SkillType } from '../enums/SkillType'
+import { ItemCategoryRecord } from './item-category'
+import { Grade } from '../enums/grade'
+import { SkillType } from '../enums/skill-type'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {

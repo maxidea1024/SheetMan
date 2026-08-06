@@ -8,10 +8,10 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite_binary_reader'
+import * as sheetman from '../sheetman/lite-binary-reader'
 
 // Automatically import to handle external type references.
-import { Grade } from '../enums/Grade'
+import { Grade } from '../enums/grade'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {

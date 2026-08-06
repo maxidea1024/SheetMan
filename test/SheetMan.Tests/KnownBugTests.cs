@@ -82,7 +82,7 @@ namespace SheetMan.Tests
             var result = SheetManRunner.Convert("foreign-field");
             Assert.True(result.Succeeded, $"Conversion failed.{Environment.NewLine}{result.Describe()}");
 
-            string item = OutputFile("foreign-field", "typescript", "tables", "Item.ts");
+            string item = OutputFile("foreign-field", "typescript", "tables", "item.ts");
 
             // Exposed as the referenced field's type...
             Assert.Contains("public get categoryName(): string", item);
@@ -103,7 +103,7 @@ namespace SheetMan.Tests
         {
             SheetManRunner.Convert("foreign-field");
 
-            string item = OutputFile("foreign-field", "typescript", "tables", "Item.ts");
+            string item = OutputFile("foreign-field", "typescript", "tables", "item.ts");
 
             Assert.Contains("setReference_categoryName_INTERNAL", item);
             Assert.Contains("{ this._categoryName = value }", item);
@@ -125,13 +125,13 @@ namespace SheetMan.Tests
             SheetManRunner.Convert("core");
 
             string index = OutputFile("core", "typescript", "index.ts");
-            Assert.Contains("export { GameConfig } from './constants/GameConfig'", index);
+            Assert.Contains("export { GameConfig } from './constants/game-config'", index);
 
-            string constants = OutputFile("core", "typescript", "constants", "GameConfig.ts");
+            string constants = OutputFile("core", "typescript", "constants", "game-config.ts");
             Assert.Contains("export class GameConfig", constants);
             Assert.Contains("public static readonly maxLevel: number = 100", constants);
             // Enum-typed constants resolve to a label and import their enum.
-            Assert.Contains("import { Grade } from '../enums/Grade'", constants);
+            Assert.Contains("import { Grade } from '../enums/grade'", constants);
             Assert.Contains("public static readonly defaultGrade: Grade = Grade.Rare", constants);
         }
 
@@ -144,9 +144,9 @@ namespace SheetMan.Tests
         {
             SheetManRunner.Convert("core");
 
-            string item = OutputFile("core", "typescript", "tables", "Item.ts");
+            string item = OutputFile("core", "typescript", "tables", "item.ts");
 
-            Assert.Contains("import { ItemCategoryRecord } from './ItemCategory'", item);
+            Assert.Contains("import { ItemCategoryRecord } from './item-category'", item);
         }
         /// <summary>
         /// A3 - the named JSON row format lost serial-field data.
@@ -186,7 +186,7 @@ namespace SheetMan.Tests
         {
             SheetManRunner.Convert("core");
 
-            string ts = OutputFile("core", "typescript", "tables", "Localization.ts");
+            string ts = OutputFile("core", "typescript", "tables", "localization.ts");
 
             Assert.Contains("this._textEnArray = dataRow.slice(offset, offset + 2)", ts);
             Assert.Contains("this._textKoArray = dataRow.slice(offset, offset + 2)", ts);

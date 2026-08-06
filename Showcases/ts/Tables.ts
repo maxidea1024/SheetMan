@@ -9,7 +9,7 @@
 
 import * as path from 'path'
 
-import { TemplateTable } from './tables/Template'
+import { TemplateTable } from './tables/template'
 
 /** Tables */
 export class Tables {
