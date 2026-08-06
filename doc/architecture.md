@@ -75,6 +75,19 @@ dotnet test            # 전체 회귀 스위트
 |웹서버|실제 포트에 서버를 띄우고, **API 응답과 CLI 출력을 바이트 단위로 비교**합니다. 토큰 없는 외부 바인딩 거부도 확인합니다.|
 |셀프컨테인드 배포|CI가 매 실행마다 linux-x64로 퍼블리시하고 그 산출물로 변환을 돌립니다.|
 
+생성기나 템플릿을 건드렸다면 **세 가지를 순서대로** 합니다.
+
+```
+set SHEETMAN_UE_ROOT=C:/path/to/UnrealEngine     # 언리얼 게이트를 돌릴 때만
+
+set SHEETMAN_UPDATE_GOLDEN=1 && dotnet test      # 1. 골든 다시 기록
+dotnet run --project src/SheetMan.csproj -- --recipe showcases/showcase.json
+                                                 # 2. 쇼케이스 다시 생성 (커밋 대상입니다)
+dotnet test                                      # 3. 기록 없이 검증
+```
+
+`SHEETMAN_UPDATE_GOLDEN=1` 실행에서는 `core-dynamic`이 실패합니다 — `core`의 골든을 공유하는 시나리오라 스스로 기록할 수 없다고 거부하는 것이고, 3단계에서 통과하면 정상입니다.
+
 의도한 출력 변경이 있을 때는 골든을 갱신하고 git diff로 리뷰합니다.
 
 ```
