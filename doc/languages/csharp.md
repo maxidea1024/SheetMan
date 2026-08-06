@@ -11,6 +11,7 @@
   <AccessorName>.cs        접근자 — 테이블 프로퍼티, ReadAllAsync, 참조 연결
   SheetManBinaryReader.cs  바이너리 리더 (함께 생성됩니다)
   SheetManHelpers.cs       예외 타입과 보조 함수
+  SheetManUpdater.cs       데이터 갱신 (WriteUpdater를 켰을 때만)
   tables/<Table>Table.cs   테이블당 하나
   enums/<Enum>.cs          enum당 하나
   constants/<Set>.cs       상수 세트당 하나
@@ -37,6 +38,7 @@
       "Namespace": "MyGame.Data",       // 비우면 전역 네임스페이스
       "AccessorName": "GameData",       // 기본값 SheetManAccessor
       "BinaryTableFileExtension": ".bytes",
+      "WriteUpdater": false,            // CDN에서 데이터를 갱신할 거라면 true
       "Sweep": true,
       "TargetSide": "c"
     }
@@ -88,6 +90,60 @@ GameData.ReadAllBytesAsync = async filename =>
 
 await GameData.ReadAllAsync("");
 ```
+
+## 데이터만 갱신하기 (`WriteUpdater`)
+
+recipe에 `"WriteUpdater": true`를 적으면 `SheetManUpdater.cs`가 함께 나옵니다. CDN이나 버킷에 올려둔 데이터를 받아 로컬 사본을 최신으로 유지하는 코드이고, **빌드를 새로 내보내지 않고 데이터만 패치**하기 위한 것입니다. 기본값이 `false`인 이유는 네트워크를 쓰기 때문이고, 데이터를 빌드 안에 넣어 배포한다면 필요가 없기 때문입니다.
+
+익스포터가 데이터 옆에 이미 쓰고 있는 **매니페스트**(`manifest-binary.json` — 파일별 크기와 MD5)가 전부입니다. 서버에는 익스포트 결과를 그대로 올리면 되고, 따로 준비할 것이 없습니다.
+
+```csharp
+var result = await SheetManUpdater.UpdateAsync("https://cdn.example.com/data");
+
+if (!result.Succeeded)
+{
+    // 이전 데이터는 그대로 있습니다. 그걸로 계속 가도 됩니다.
+    Debug.LogWarning($"데이터 갱신 실패: {result.Error}");
+}
+
+await GameData.ReadAllAsync(result.LocalPath);
+```
+
+업데이터는 **읽지 않습니다.** 디렉터리를 만들어 그 경로를 돌려주고, 로드는 접근자가 합니다. 둘이 서로를 모르는 편이 낫고, 받은 데이터의 스키마가 이 빌드와 달라도 [바이너리 형식](../binary-format.md)의 태그 덕에 안전하게 읽힙니다.
+
+**무엇을 보장하나.**
+
+|상황|결과|
+|--|--|
+|바뀐 것이 없음|요청 한 번(매니페스트)으로 끝. `UpToDate == true`|
+|일부 파일만 바뀜|바뀐 파일만 받습니다|
+|서버에서 사라진 테이블|로컬 캐시에서도 지웁니다|
+|받은 파일이 손상됨|매니페스트의 MD5와 대조해 **거부**하고, 캐시는 손대지 않습니다|
+|중간에 실패·강제 종료|**이전 데이터가 그대로** 남습니다. 파일은 `.staging`을 거쳐 마지막에 옮겨지고, 로컬 매니페스트는 그보다 더 나중에 쓰입니다|
+|일시적 네트워크 장애|재시도합니다 — 연결 실패·408·429·5xx. 대기 시간은 두 배씩 늘어납니다|
+|404|재시도하지 않습니다. 서버가 답을 한 것이고, 세 번 더 물어도 같은 답입니다|
+
+**설정할 수 있는 것.**
+
+```csharp
+var options = new SheetManUpdateOptions
+{
+    ManifestFileName = "manifest-binary.json",  // JSON 익스포트라면 manifest-json.json
+    MaxAttempts = 3,                            // 첫 시도 포함
+    RetryDelay = TimeSpan.FromMilliseconds(500),// 재시도마다 두 배
+    RequestTimeout = TimeSpan.FromSeconds(30),
+    VerifyHash = true,
+    Log = Debug.Log,
+};
+
+var result = await SheetManUpdater.UpdateAsync(baseUrl, cacheDirectory: null, options, cancellationToken);
+```
+
+캐시 위치를 지정하지 않으면 유니티에서는 `Application.persistentDataPath/sheetman-data`, 그 외에서는 실행 파일 옆입니다.
+
+**예외를 던지지 않습니다.** 네트워크·디스크·손상된 파일은 전부 호출자가 다뤄야 하는 상황이지 결함이 아니고, 게임 루프 안으로 예외를 던지는 패처는 이유를 삼키는 try/catch로 감싸이게 됩니다. 실패는 `result.Error`에 문장으로 옵니다.
+
+> 언리얼에는 아직 없습니다. 이유는 [앞으로 할 것](../roadmap.md)에 적어두었습니다 — 코드의 문제가 아니라, 지금 언리얼 게이트가 HTTP를 쓰는 .cpp를 컴파일하지 않아 **검증되지 않은 코드를 배포하게 되기 때문**입니다.
 
 ## 주의사항
 
