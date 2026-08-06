@@ -41,6 +41,15 @@ namespace SheetMan.CodeGeneration
         public string BinaryTableFileExtension { get; set; } = ".table";
 
         /// <summary>
+        /// Whether to write the data updater beside the reader.
+        ///
+        /// It fetches the manifest and the changed data files over HTTP and keeps a local
+        /// copy current, so a program can take new data without being redeployed. Off by
+        /// default: one that ships its data alongside its code has no use for it.
+        /// </summary>
+        public bool WriteUpdater { get; set; } = false;
+
+        /// <summary>
         /// Whether generated files this run did not write are removed from <see cref="Path"/>.
         /// </summary>
         /// <remarks>
@@ -181,6 +190,15 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Python.lite_binary_reader.py",
                 System.IO.Path.Combine(PackageDir, "sheetman.py"));
+
+            // Asked for rather than assumed. It reaches the network and it is of no use to a
+            // program that ships its data alongside its code.
+            if (_recipe.WriteUpdater)
+            {
+                WriteBinaryReaderRuntime(
+                    "SheetMan.Runtime.Python.updater.py",
+                    System.IO.Path.Combine(PackageDir, "updater.py"));
+            }
         }
 
         /// <summary>

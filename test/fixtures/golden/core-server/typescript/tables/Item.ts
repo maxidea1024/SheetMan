@@ -162,8 +162,7 @@ export class ItemTable {
   }
 
   /** Read a table from a binary .table file. */
-  public readBinarySync(filename: string): void
-  {
+  public readBinarySync(filename: string): void {
     this.readBinaryFrom(sheetman.readAllBytes(filename))
   }
 
@@ -174,8 +173,7 @@ export class ItemTable {
    * know is skipped by its block length, and one whose type changed incompatibly fails
    * naming the field.
    */
-  public readBinaryFrom(data: Uint8Array): void
-  {
+  public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.LiteBinaryReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
 
@@ -185,64 +183,55 @@ export class ItemTable {
     for (let i = 0; i < rowCount; ++i)
       records.push(new ItemRecord())
 
-    for (const column of columns)
-    {
+    for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
-      switch (column.tag)
-      {
+      switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Item.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Item.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._name = reader.readString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Item.CategoryId', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._categoryId_ItemCategory_index = reader.readInt32()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Item.GradeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._gradeField = reader.readEnum() as Grade
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Item.SkillField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._skillField = reader.readEnum() as SkillType
           }
           break
         case 6:
           sheetman.checkColumn(column, 'Item.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._description = reader.readString()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'Item.Price', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._price = reader.readI32As(column.element)
           }
@@ -272,8 +261,7 @@ export class ItemTable {
   private publish(records: ItemRecord[]): void {
     const recordsByIndex = new Map<number, ItemRecord>()
 
-    for (const record of records)
-    {
+    for (const record of records) {
       recordsByIndex.set(record.index, record)
     }
 

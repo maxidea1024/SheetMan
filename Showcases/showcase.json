@@ -38,9 +38,9 @@
   },
 
   "Targets": [
-    { "Type": "go", "Path": "Showcases/go", "PackageName": "x", "ModulePath": "x" },
+    { "Type": "go", "Path": "Showcases/go", "PackageName": "x", "ModulePath": "x" , "WriteUpdater": true },
     { "Type": "rust", "Path": "Showcases/rust", "CrateName": "x" },
-    { "Type": "python", "Path": "Showcases/python", "PackageName": "x" },
+    { "Type": "python", "Path": "Showcases/python", "PackageName": "x" , "WriteUpdater": true },
     { "Type": "java", "Path": "Showcases/java", "PackageName": "x", "AccessorName": "A" },
     { "Type": "kotlin", "Path": "Showcases/kotlin", "PackageName": "x", "AccessorName": "A" },
     { "Type": "ruby", "Path": "Showcases/ruby", "ModuleName": "X", "AccessorName": "a" },

@@ -180,8 +180,7 @@ export class {{ name }}Table {
   }
 
   /** Read a table from a binary .table file. */
-  public readBinarySync(filename: string): void
-  {
+  public readBinarySync(filename: string): void {
     this.readBinaryFrom(sheetman.readAllBytes(filename))
   }
 
@@ -192,8 +191,7 @@ export class {{ name }}Table {
    * know is skipped by its block length, and one whose type changed incompatibly fails
    * naming the field.
    */
-  public readBinaryFrom(data: Uint8Array): void
-  {
+  public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.LiteBinaryReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
 
@@ -203,17 +201,14 @@ export class {{ name }}Table {
     for (let i = 0; i < rowCount; ++i)
       records.push(new {{ name }}Record())
 
-    for (const column of columns)
-    {
+    for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
-      switch (column.tag)
-      {
+      switch (column.tag) {
 {{~ for field in fields ~}}
         case {{ field.tag }}:
           {{ field.column_check }}
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
 {{~ if field.kind == 'var_array' ~}}
             const elementCount = reader.readCounter32()
@@ -265,8 +260,7 @@ export class {{ name }}Table {
 {{~ end ~}}
 {{~ if indexed_fields | array.size > 0 ~}}
 
-    for (const record of records)
-    {
+    for (const record of records) {
 {{~ for field in indexed_fields ~}}
       recordsBy{{ field.pascal_name }}.set(record.{{ field.prop_name }}, record)
 {{~ end ~}}

@@ -160,8 +160,7 @@ export class TemplateTable {
   }
 
   /** Read a table from a binary .table file. */
-  public readBinarySync(filename: string): void
-  {
+  public readBinarySync(filename: string): void {
     this.readBinaryFrom(sheetman.readAllBytes(filename))
   }
 
@@ -172,8 +171,7 @@ export class TemplateTable {
    * know is skipped by its block length, and one whose type changed incompatibly fails
    * naming the field.
    */
-  public readBinaryFrom(data: Uint8Array): void
-  {
+  public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.LiteBinaryReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
 
@@ -183,72 +181,62 @@ export class TemplateTable {
     for (let i = 0; i < rowCount; ++i)
       records.push(new TemplateRecord())
 
-    for (const column of columns)
-    {
+    for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
-      switch (column.tag)
-      {
+      switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Template.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Template.Class', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._class = reader.readString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Template.Int', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._int = reader.readI32As(column.element)
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Template.Delete', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._delete = reader.readBool()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Template.Operator', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._operator = reader.readString()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'Template.Namespace', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._namespace = reader.readString()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'Template.Constructor', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._constructor_ = reader.readString()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'Template.Function', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._function = reader.readString()
           }
@@ -278,8 +266,7 @@ export class TemplateTable {
   private publish(records: TemplateRecord[]): void {
     const recordsByIndex = new Map<number, TemplateRecord>()
 
-    for (const record of records)
-    {
+    for (const record of records) {
       recordsByIndex.set(record.index, record)
     }
 

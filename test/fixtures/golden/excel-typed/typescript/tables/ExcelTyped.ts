@@ -139,8 +139,7 @@ export class ExcelTypedTable {
   }
 
   /** Read a table from a binary .table file. */
-  public readBinarySync(filename: string): void
-  {
+  public readBinarySync(filename: string): void {
     this.readBinaryFrom(sheetman.readAllBytes(filename))
   }
 
@@ -151,8 +150,7 @@ export class ExcelTypedTable {
    * know is skipped by its block length, and one whose type changed incompatibly fails
    * naming the field.
    */
-  public readBinaryFrom(data: Uint8Array): void
-  {
+  public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.LiteBinaryReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
 
@@ -162,48 +160,41 @@ export class ExcelTypedTable {
     for (let i = 0; i < rowCount; ++i)
       records.push(new ExcelTypedRecord())
 
-    for (const column of columns)
-    {
+    for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
-      switch (column.tag)
-      {
+      switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'ExcelTyped.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
           sheetman.checkColumn(column, 'ExcelTyped.IntFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._intFromNumeric = reader.readI32As(column.element)
           }
           break
         case 3:
           sheetman.checkColumn(column, 'ExcelTyped.FloatFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._floatFromNumeric = reader.readFloat()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'ExcelTyped.WhenFromDateCell', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._whenFromDateCell = reader.readDateTime()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'ExcelTyped.BigFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._bigFromNumeric = reader.readI64As(column.element)
           }
@@ -233,8 +224,7 @@ export class ExcelTypedTable {
   private publish(records: ExcelTypedRecord[]): void {
     const recordsByIndex = new Map<number, ExcelTypedRecord>()
 
-    for (const record of records)
-    {
+    for (const record of records) {
       recordsByIndex.set(record.index, record)
     }
 

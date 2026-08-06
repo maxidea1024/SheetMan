@@ -48,6 +48,7 @@
     {
       "Type": "go",
       "Path": "test/fixtures/output/conformance/go",
+      "WriteUpdater": true,
       "PackageName": "conformance",
       "ModulePath": "conformance",
       "AccessorName": "conformance_data",
@@ -62,6 +63,7 @@
     {
       "Type": "python",
       "Path": "test/fixtures/output/conformance/python",
+      "WriteUpdater": true,
       "PackageName": "conformance",
       "BinaryTableFileExtension": ".table"
     },

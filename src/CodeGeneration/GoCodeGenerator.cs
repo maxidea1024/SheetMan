@@ -51,6 +51,15 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         public bool WriteGoMod { get; set; } = true;
 
+        /// <summary>
+        /// Whether to write the data updater beside the reader.
+        ///
+        /// It fetches the manifest and the changed data files over HTTP and keeps a local
+        /// copy current, so a build can take new data without being redeployed. Off by
+        /// default: a service that ships its data with its binary has no use for it.
+        /// </summary>
+        public bool WriteUpdater { get; set; } = false;
+
         /// <summary>Go version the generated go.mod requires.</summary>
         public string GoVersion { get; set; } = "1.21";
 
@@ -205,6 +214,15 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Go.lite_binary_reader.go",
                 System.IO.Path.Combine(_recipe.Path, "sheetman", "lite_binary_reader.go"));
+
+            // Asked for rather than assumed. It reaches the network and it is of no use to a
+            // service that ships its data with its binary.
+            if (_recipe.WriteUpdater)
+            {
+                WriteBinaryReaderRuntime(
+                    "SheetMan.Runtime.Go.updater.go",
+                    System.IO.Path.Combine(_recipe.Path, "sheetman", "updater.go"));
+            }
         }
 
         /// <summary>

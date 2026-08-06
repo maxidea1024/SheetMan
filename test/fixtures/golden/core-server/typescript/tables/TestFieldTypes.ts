@@ -177,8 +177,7 @@ export class TestFieldTypesTable {
   }
 
   /** Read a table from a binary .table file. */
-  public readBinarySync(filename: string): void
-  {
+  public readBinarySync(filename: string): void {
     this.readBinaryFrom(sheetman.readAllBytes(filename))
   }
 
@@ -189,8 +188,7 @@ export class TestFieldTypesTable {
    * know is skipped by its block length, and one whose type changed incompatibly fails
    * naming the field.
    */
-  public readBinaryFrom(data: Uint8Array): void
-  {
+  public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.LiteBinaryReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
 
@@ -200,88 +198,76 @@ export class TestFieldTypesTable {
     for (let i = 0; i < rowCount; ++i)
       records.push(new TestFieldTypesRecord())
 
-    for (const column of columns)
-    {
+    for (const column of columns) {
       const blockEnd = reader.position + column.byteLength
 
-      switch (column.tag)
-      {
+      switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'TestFieldTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._index = reader.readI32As(column.element)
           }
           break
         case 2:
           sheetman.checkColumn(column, 'TestFieldTypes.StringField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._stringField = reader.readString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'TestFieldTypes.IntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._intField = reader.readI32As(column.element)
           }
           break
         case 5:
           sheetman.checkColumn(column, 'TestFieldTypes.BigIntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._bigIntField = reader.readI64As(column.element)
           }
           break
         case 6:
           sheetman.checkColumn(column, 'TestFieldTypes.FloatField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._floatField = reader.readFloat()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'TestFieldTypes.DoubleField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F64, sheetman.ELEMENT_F32, sheetman.ELEMENT_I32])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._doubleField = reader.readF64As(column.element)
           }
           break
         case 8:
           sheetman.checkColumn(column, 'TestFieldTypes.DatetimeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._datetimeField = reader.readDateTime()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'TestFieldTypes.TimespanField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._timespanField = reader.readTimeSpan()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'TestFieldTypes.UuidField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_UUID])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._uuidField = reader.readUuid()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'TestFieldTypes.ValueTypeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
-          for (let i = 0; i < rowCount; ++i)
-          {
+          for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
             record._valueTypeField = reader.readEnum() as ValueType
           }
@@ -311,8 +297,7 @@ export class TestFieldTypesTable {
   private publish(records: TestFieldTypesRecord[]): void {
     const recordsByIndex = new Map<number, TestFieldTypesRecord>()
 
-    for (const record of records)
-    {
+    for (const record of records) {
       recordsByIndex.set(record.index, record)
     }
 

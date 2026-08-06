@@ -62,10 +62,14 @@
                       LogicalName="SheetMan.Runtime.Cpp.lite_binary_reader.h" />
     <EmbeddedResource Include="..\lib\go\sheetman\lite_binary_reader.go"
                       LogicalName="SheetMan.Runtime.Go.lite_binary_reader.go" />
+    <EmbeddedResource Include="..\lib\go\sheetman\updater.go"
+                      LogicalName="SheetMan.Runtime.Go.updater.go" />
     <EmbeddedResource Include="..\lib\rust\sheetman\lite_binary_reader.rs"
                       LogicalName="SheetMan.Runtime.Rust.lite_binary_reader.rs" />
     <EmbeddedResource Include="..\lib\python\sheetman\lite_binary_reader.py"
                       LogicalName="SheetMan.Runtime.Python.lite_binary_reader.py" />
+    <EmbeddedResource Include="..\lib\python\sheetman\updater.py"
+                      LogicalName="SheetMan.Runtime.Python.updater.py" />
     <EmbeddedResource Include="..\lib\java\sheetman\LiteBinaryReader.java"
                       LogicalName="SheetMan.Runtime.Java.LiteBinaryReader.java" />
     <EmbeddedResource Include="..\lib\kotlin\sheetman\LiteBinaryReader.kt"
