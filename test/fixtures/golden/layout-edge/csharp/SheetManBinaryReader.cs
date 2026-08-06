@@ -322,7 +322,7 @@ namespace SheetMan.Binary
     }
 
     /// <summary>
-    /// One column as the file describes it: the descriptor a v101 header carries per column.
+    /// One column as the file describes it: the descriptor the header carries per column.
     /// </summary>
     public struct LiteBinaryColumn
     {
@@ -349,8 +349,9 @@ namespace SheetMan.Binary
     {
         /// <summary>Version stamped at the head of every table file by the exporter.</summary>
         /// <remarks>
-        /// 101 is column-oriented and self-describing; it replaced 100 outright, before the
-        /// tool fed anything live, so nothing reads or writes 100 any more.
+        /// The format is column-oriented and self-describing: the header names every column
+        /// and how long its block is, and a reader that meets a version it does not know
+        /// stops rather than guessing.
         /// </remarks>
         public const uint FormatVersion = 101;
 

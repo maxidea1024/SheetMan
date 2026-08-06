@@ -107,7 +107,7 @@ struct Uuid {
 ///
 /// Non-owning: the buffer has to outlive the reader. Every read either advances
 /// the cursor or throws, so callers never have to check a return value.
-// The wire element types and kinds, as the v101 column descriptors spell them.
+// The wire element types and kinds, as a column descriptor spells them.
 constexpr std::uint8_t kElementVarint = 0;
 constexpr std::uint8_t kElementBool = 1;
 constexpr std::uint8_t kElementI32 = 2;
@@ -299,8 +299,9 @@ inline std::vector<std::uint8_t> read_all_bytes(const std::string& filename) {
 }
 
 /// Version stamped at the head of every table file by the exporter.
-// 101 is column-oriented and self-describing; it replaced 100 outright, before the tool
-// fed anything live, so nothing reads or writes 100 any more.
+// The format is column-oriented and self-describing: the header names every column
+// and how long its block is, and a reader that meets a version it does not know stops
+// rather than guessing.
 constexpr std::uint32_t kBinaryFileFormatVersion = 101;
 
 
@@ -316,7 +317,7 @@ struct Column {
   std::int32_t byte_length;
 };
 
-// A parsed v101 header: the row count and the column descriptors that follow it.
+// A parsed header: the row count and the column descriptors that follow it.
 struct Header {
   std::int32_t row_count;
   std::vector<Column> columns;

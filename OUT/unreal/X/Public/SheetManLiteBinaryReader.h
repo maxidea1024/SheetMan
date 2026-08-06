@@ -47,7 +47,7 @@ namespace SheetMan
     /** Version stamped at the head of every table file by the exporter. */
     static constexpr uint32 BinaryFileFormatVersion = 101;
 
-    // The wire element types and kinds, as the v101 column descriptors spell them.
+    // The wire element types and kinds, as a column descriptor spells them.
     static constexpr uint8 ElementVarint = 0;
     static constexpr uint8 ElementBool = 1;
     static constexpr uint8 ElementI32 = 2;

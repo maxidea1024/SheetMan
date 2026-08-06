@@ -5,11 +5,11 @@ using ValueType = SheetMan.Models.ValueType;
 namespace SheetMan.Exporters
 {
     /// <summary>
-    /// The constants of the LiteBinary format, version 101: what a column descriptor's wire
-    /// byte means, and how a model field maps onto it.
+    /// The constants of the LiteBinary format: what a column descriptor's wire byte means,
+    /// and how a model field maps onto it.
     /// </summary>
     /// <remarks>
-    /// v101 is column-oriented and self-describing. The header carries one descriptor per
+    /// The format is column-oriented and self-describing. The header carries one descriptor per
     /// column - tag, wire, element count, byte length - and the data follows as one contiguous
     /// block per column. That layout is what makes schema evolution safe to the point of being
     /// boring: a reader that does not know a column advances past its block in one call, with
@@ -31,9 +31,9 @@ namespace SheetMan.Exporters
         /// <summary>
         /// The format version stamped at the head of every table file.
         ///
-        /// 101 replaced 100 outright - the tool is not yet feeding a live service, so the
-        /// column-oriented format was adopted without a compatibility period, and nothing
-        /// reads or writes 100 any more.
+        /// One version exists, and a reader that meets any other stops rather than guessing.
+        /// There is no compatibility path to an older layout and none is planned: a file this
+        /// build cannot read is a file to write again, not one to interpret.
         /// </summary>
         public const uint Version = 101;
 

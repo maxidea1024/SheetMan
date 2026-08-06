@@ -31,11 +31,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 /// Stamped at the head of every table file by the exporter.
-/// 101 is column-oriented and self-describing; it replaced 100 outright, before the
-/// tool fed anything live, so nothing reads or writes 100 any more.
+/// The format is column-oriented and self-describing: the header names every column
+/// and how long its block is, and a reader that meets a version it does not know stops
+/// rather than guessing.
 const int formatVersion = 101;
 
-// The wire element types and kinds, as the v101 column descriptors spell them.
+// The wire element types and kinds, as a column descriptor spells them.
 const int elementVarint = 0;
 const int elementBool = 1;
 const int elementI32 = 2;
@@ -65,7 +66,7 @@ class Column {
   final int byteLength;
 }
 
-/// A parsed v101 header: the row count and the column descriptors that follow it.
+/// A parsed header: the row count and the column descriptors that follow it.
 class Header {
   Header(this.rowCount, this.columns);
 

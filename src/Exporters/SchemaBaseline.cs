@@ -53,7 +53,7 @@ namespace SheetMan.Exporters
         public string Comment { get; set; } =
             "SheetMan's record of the columns data was last written with. Commit it: the " +
             "converter compares the schema against this and refuses a change that would " +
-            "break a reader already deployed. See doc/binary-format-v101.md.";
+            "break a reader already deployed. See doc/binary-format.md.";
 
         public int BaselineVersion { get; set; } = 1;
 

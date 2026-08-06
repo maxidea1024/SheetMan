@@ -27,11 +27,12 @@ use std::io;
 use std::path::Path;
 
 /// Stamped at the head of every table file by the exporter.
-/// 101 is column-oriented and self-describing; it replaced 100 outright, before the
-/// tool fed anything live, so nothing reads or writes 100 any more.
+/// The format is column-oriented and self-describing: the header names every column
+/// and how long its block is, and a reader that meets a version it does not know stops
+/// rather than guessing.
 pub const FORMAT_VERSION: u32 = 101;
 
-// The wire element types and kinds, as the v101 column descriptors spell them.
+// The wire element types and kinds, as a column descriptor spells them.
 pub const ELEMENT_VARINT: u8 = 0;
 pub const ELEMENT_BOOL: u8 = 1;
 pub const ELEMENT_I32: u8 = 2;
@@ -58,7 +59,7 @@ pub struct Column {
     pub byte_length: i32,
 }
 
-/// A parsed v101 header: the row count and the column descriptors that follow it.
+/// A parsed header: the row count and the column descriptors that follow it.
 pub struct Header {
     pub row_count: i32,
     pub columns: Vec<Column>,

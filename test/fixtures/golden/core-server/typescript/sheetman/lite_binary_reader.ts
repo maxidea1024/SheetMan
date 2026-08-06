@@ -43,7 +43,7 @@ export class LiteBinaryError extends Error {
 /** Version stamped at the head of every table file by the exporter. */
 export const BINARY_FILE_FORMAT_VERSION = 101
 
-// The wire's element types and kinds, as the v101 column descriptors spell them.
+// The wire's element types and kinds, as a column descriptor spells them.
 export const ELEMENT_VARINT = 0
 export const ELEMENT_BOOL = 1
 export const ELEMENT_I32 = 2

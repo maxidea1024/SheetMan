@@ -39,7 +39,7 @@ import (
 // fed anything live, so nothing reads or writes 100 any more.
 const FormatVersion uint32 = 101
 
-// The wire's element types and kinds, as the v101 column descriptors spell them.
+// The wire's element types and kinds, as a column descriptor spells them.
 const (
 	ElementVarint uint8 = 0
 	ElementBool   uint8 = 1

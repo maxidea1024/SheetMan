@@ -51,12 +51,14 @@
 extern "C" {
 #endif
 
-/* Version stamped at the head of every table file by the exporter. */
-/* 101 is column-oriented and self-describing; it replaced 100 outright, before the tool
- * fed anything live, so nothing reads or writes 100 any more. */
+/* Version stamped at the head of every table file by the exporter.
+ *
+ * The format is column-oriented and self-describing: the header names every column
+ * and how long its block is, and a reader that meets a version it does not know
+ * stops rather than guessing. */
 #define SHEETMAN_BINARY_FILE_FORMAT_VERSION 101u
 
-/* The wire element types and kinds, as the v101 column descriptors spell them. */
+/* The wire element types and kinds, as a column descriptor spells them. */
 #define SM_ELEMENT_VARINT 0
 #define SM_ELEMENT_BOOL 1
 #define SM_ELEMENT_I32 2
