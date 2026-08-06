@@ -111,3 +111,8 @@ logs/
 # generated crate. test/fixtures/output is already ignored; this covers a crate
 # generated anywhere else.
 target/
+
+# The CI recipe template names ./schema-baseline.json, which is right for somebody
+# using it and wrong for this repository: RecipeTemplateTests converts every template
+# for real, from the repository root, so the file lands here. A user commits theirs.
+/schema-baseline.json
