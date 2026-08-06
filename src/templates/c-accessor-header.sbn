@@ -3,10 +3,10 @@
 /* Every table, loaded together so cross-table references can be resolved. */
 typedef struct {{ accessor.type_name }} {
 {{~ if accessor.tables | array.size == 0 ~}}
-    char unused; /* No tables. */
+  char unused; /* No tables. */
 {{~ end ~}}
 {{~ for slot in accessor.tables ~}}
-    {{ slot.table_name }} {{ slot.name }};
+  {{ slot.table_name }} {{ slot.name }};
 {{~ end ~}}
 } {{ accessor.type_name }};
 
@@ -20,12 +20,12 @@ typedef struct {{ accessor.type_name }} {
  * Returns false if any table could not be read, having released whatever had been loaded up
  * to that point and left `data` alone - a half-loaded model is not one to hand back. */
 bool {{ accessor.name }}_LoadAll({{ accessor.type_name }}* data, const char* base_path,
-                                  char* error, size_t error_size);
+                 char* error, size_t error_size);
 
 /* The same, for data files carrying some other extension than the one the recipe told
  * the exporter to write. `file_extension` includes the dot. */
 bool {{ accessor.name }}_LoadAllWithExtension({{ accessor.type_name }}* data, const char* base_path,
-                                  const char* file_extension, char* error, size_t error_size);
+                 const char* file_extension, char* error, size_t error_size);
 
 void {{ accessor.name }}_Free({{ accessor.type_name }}* data);
 {{ include 'c-header-foot.sbn' ~}}

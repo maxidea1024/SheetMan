@@ -22,182 +22,155 @@
 
 namespace sheetman_fixtures {
 namespace core {
-
 // Generated from test/fixtures/xlsx/core\core.xlsx : Arrays : B2
 /// One cell holding several delimited values, length varying per row.
-struct ArrayTypesRecord
-{
-    /// primary index
-    std::int32_t index = 0;
-    /// free-form tags
-    std::vector<std::string> tags;
-    /// cost per level
-    std::vector<std::int32_t> costs;
-    /// drop weights
-    std::vector<float> weights;
-    /// allowed grades
-    std::vector<Grade> grades;
-    /// fixed slot 1
-    std::vector<std::int32_t> slot_array;
-
+struct ArrayTypesRecord {
+  /// primary index
+  std::int32_t index = 0;
+  /// free-form tags
+  std::vector<std::string> tags;
+  /// cost per level
+  std::vector<std::int32_t> costs;
+  /// drop weights
+  std::vector<float> weights;
+  /// allowed grades
+  std::vector<Grade> grades;
+  /// fixed slot 1
+  std::vector<std::int32_t> slot_array;
 };
 
 /// One cell holding several delimited values, length varying per row.
-class ArrayTypesTable
-{
-    public:
-    const std::vector<ArrayTypesRecord>& records() const { return records_; }
+class ArrayTypesTable {
+ public:
+  const std::vector<ArrayTypesRecord>& records() const { return records_; }
 
-    /// Record with the given primary index, or nullptr when there is none.
-    const ArrayTypesRecord* find(std::int32_t index) const
-    {
-        const auto it = by_index_.find(index);
-        return it == by_index_.end() ? nullptr : &records_[it->second];
-    }
+  /// Record with the given primary index, or nullptr when there is none.
+  const ArrayTypesRecord* find(std::int32_t index) const {
+    const auto it = by_index_.find(index);
+    return it == by_index_.end() ? nullptr : &records_[it->second];
+  }
 
-    /// Loads the table from a .table file written by SheetMan.
-    void read(const std::string& filename)
-    {
-        const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
-        sheetman::LiteBinaryReader reader(buffer);
+  /// Loads the table from a .table file written by SheetMan.
+  void read(const std::string& filename) {
+    const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
+    sheetman::LiteBinaryReader reader(buffer);
 
-        // Column by column, matched by tag rather than position: a column this build
-        // does not know is skipped by its block length, and one whose type changed
-        // incompatibly fails naming the field.
-        const sheetman::Header header = sheetman::read_table_header(reader);
-        const std::size_t row_count = static_cast<std::size_t>(header.row_count);
+    // Column by column, matched by tag rather than position: a column this build
+    // does not know is skipped by its block length, and one whose type changed
+    // incompatibly fails naming the field.
+    const sheetman::Header header = sheetman::read_table_header(reader);
+    const std::size_t row_count = static_cast<std::size_t>(header.row_count);
 
-        // Read into storage of its own and swapped in at the end: reading a table that is
-        // already loaded is a refresh, and one that throws part way through - a truncated
-        // file, a column this build cannot read - has to leave the rows already there.
-        std::vector<ArrayTypesRecord> records;
-        records.resize(row_count);
+    // Read into storage of its own and swapped in at the end: reading a table that is
+    // already loaded is a refresh, and one that throws part way through - a truncated
+    // file, a column this build cannot read - has to leave the rows already there.
+    std::vector<ArrayTypesRecord> records;
+    records.resize(row_count);
 
-        for (const sheetman::Column& column : header.columns)
-        {
-            const std::size_t block_end = reader.position() + static_cast<std::size_t>(column.byte_length);
+    for (const sheetman::Column& column : header.columns) {
+      const std::size_t block_end = reader.position() + static_cast<std::size_t>(column.byte_length);
 
-            switch (column.tag)
-            {
-                case 1:
-                {
-                    sheetman::check_column(column, "ArrayTypes.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read_i32_as(column.element, record.index);
-                    }
-                    break;
-                }
-                case 2:
-                {
-                    sheetman::check_column(column, "ArrayTypes.Tags", sheetman::kKindVarArray, 0, {sheetman::kElementString});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        const std::int32_t element_count = reader.read_counter32();
-                        record.tags.resize(static_cast<std::size_t>(element_count));
-                        for (std::int32_t j = 0; j < element_count; ++j)
-                        {
-                            reader.read(record.tags[static_cast<std::size_t>(j)]);
-                        }
-                    }
-                    break;
-                }
-                case 3:
-                {
-                    sheetman::check_column(column, "ArrayTypes.Costs", sheetman::kKindVarArray, 0, {sheetman::kElementI32, sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        const std::int32_t element_count = reader.read_counter32();
-                        record.costs.resize(static_cast<std::size_t>(element_count));
-                        for (std::int32_t j = 0; j < element_count; ++j)
-                        {
-                            reader.read_i32_as(column.element, record.costs[static_cast<std::size_t>(j)]);
-                        }
-                    }
-                    break;
-                }
-                case 4:
-                {
-                    sheetman::check_column(column, "ArrayTypes.Weights", sheetman::kKindVarArray, 0, {sheetman::kElementF32});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        const std::int32_t element_count = reader.read_counter32();
-                        record.weights.resize(static_cast<std::size_t>(element_count));
-                        for (std::int32_t j = 0; j < element_count; ++j)
-                        {
-                            reader.read(record.weights[static_cast<std::size_t>(j)]);
-                        }
-                    }
-                    break;
-                }
-                case 5:
-                {
-                    sheetman::check_column(column, "ArrayTypes.Grades", sheetman::kKindVarArray, 0, {sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        const std::int32_t element_count = reader.read_counter32();
-                        record.grades.resize(static_cast<std::size_t>(element_count));
-                        for (std::int32_t j = 0; j < element_count; ++j)
-                        {
-                            reader.read_enum(record.grades[static_cast<std::size_t>(j)]);
-                        }
-                    }
-                    break;
-                }
-                case 6:
-                {
-                    sheetman::check_column(column, "ArrayTypes.Slot_array", sheetman::kKindFixedArray, 2, {sheetman::kElementI32, sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        record.slot_array.resize(2);
-                        for (std::size_t j = 0; j < 2; ++j)
-                        {
-                            reader.read_i32_as(column.element, record.slot_array[j]);
-                        }
-                    }
-                    break;
-                }
-                default:
-                    // A column added after this code was generated.
-                    reader.skip(column.byte_length);
-                    break;
+      switch (column.tag) {
+        case 1: {
+          sheetman::check_column(column, "ArrayTypes.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read_i32_as(column.element, record.index);
+          }
+          break;
+        }
+        case 2: {
+          sheetman::check_column(column, "ArrayTypes.Tags", sheetman::kKindVarArray, 0, {sheetman::kElementString});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            const std::int32_t element_count = reader.read_counter32();
+            record.tags.resize(static_cast<std::size_t>(element_count));
+            for (std::int32_t j = 0; j < element_count; ++j) {
+              reader.read(record.tags[static_cast<std::size_t>(j)]);
             }
-
-            sheetman::check_block_end(reader, column, block_end);
+          }
+          break;
         }
+        case 3: {
+          sheetman::check_column(column, "ArrayTypes.Costs", sheetman::kKindVarArray, 0, {sheetman::kElementI32, sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            const std::int32_t element_count = reader.read_counter32();
+            record.costs.resize(static_cast<std::size_t>(element_count));
+            for (std::int32_t j = 0; j < element_count; ++j) {
+              reader.read_i32_as(column.element, record.costs[static_cast<std::size_t>(j)]);
+            }
+          }
+          break;
+        }
+        case 4: {
+          sheetman::check_column(column, "ArrayTypes.Weights", sheetman::kKindVarArray, 0, {sheetman::kElementF32});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            const std::int32_t element_count = reader.read_counter32();
+            record.weights.resize(static_cast<std::size_t>(element_count));
+            for (std::int32_t j = 0; j < element_count; ++j) {
+              reader.read(record.weights[static_cast<std::size_t>(j)]);
+            }
+          }
+          break;
+        }
+        case 5: {
+          sheetman::check_column(column, "ArrayTypes.Grades", sheetman::kKindVarArray, 0, {sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            const std::int32_t element_count = reader.read_counter32();
+            record.grades.resize(static_cast<std::size_t>(element_count));
+            for (std::int32_t j = 0; j < element_count; ++j) {
+              reader.read_enum(record.grades[static_cast<std::size_t>(j)]);
+            }
+          }
+          break;
+        }
+        case 6: {
+          sheetman::check_column(column, "ArrayTypes.Slot_array", sheetman::kKindFixedArray, 2, {sheetman::kElementI32, sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            record.slot_array.resize(2);
+            for (std::size_t j = 0; j < 2; ++j) {
+              reader.read_i32_as(column.element, record.slot_array[j]);
+            }
+          }
+          break;
+        }
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byte_length);
+          break;
+      }
 
-        publish(std::move(records));
+      sheetman::check_block_end(reader, column, block_end);
     }
 
-    private:
-    friend class Tables;
+    publish(std::move(records));
+  }
 
-    /// One whole load, in place of the previous one.
-    ///
-    /// The index is built here rather than by the caller, because the two have to arrive
-    /// together: a table holding this load's rows and the last one's index would answer
-    /// `find` with a row that is no longer at that position.
-    void publish(std::vector<ArrayTypesRecord>&& records)
-    {
-        std::unordered_map<std::int32_t, std::size_t> by_index;
-        by_index.reserve(records.size());
-        for (std::size_t i = 0; i < records.size(); ++i)
-        {
-            by_index.emplace(records[i].index, i);
-        }
+ private:
+  friend class Tables;
 
-        records_ = std::move(records);
-        by_index_ = std::move(by_index);
+  /// One whole load, in place of the previous one.
+  ///
+  /// The index is built here rather than by the caller, because the two have to arrive
+  /// together: a table holding this load's rows and the last one's index would answer
+  /// `find` with a row that is no longer at that position.
+  void publish(std::vector<ArrayTypesRecord>&& records) {
+    std::unordered_map<std::int32_t, std::size_t> by_index;
+    by_index.reserve(records.size());
+    for (std::size_t i = 0; i < records.size(); ++i) {
+      by_index.emplace(records[i].index, i);
     }
 
-    std::vector<ArrayTypesRecord> records_;
-    std::unordered_map<std::int32_t, std::size_t> by_index_;
+    records_ = std::move(records);
+    by_index_ = std::move(by_index);
+  }
+
+  std::vector<ArrayTypesRecord> records_;
+  std::unordered_map<std::int32_t, std::size_t> by_index_;
 };
 
 }  // namespace core

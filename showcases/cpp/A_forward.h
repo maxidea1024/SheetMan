@@ -11,7 +11,6 @@
 #define SHEETMAN_GENERATED_A_FORWARD_H
 
 namespace x {
-
 struct TemplateRecord;
 
 }  // namespace x

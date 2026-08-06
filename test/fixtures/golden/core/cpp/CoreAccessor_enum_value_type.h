@@ -14,19 +14,17 @@
 
 namespace sheetman_fixtures {
 namespace core {
-
 // Generated from test/fixtures/xlsx/core\core.xlsx : Enums : B2
 /// Value types used by the test tables.
-enum class ValueType : std::int32_t
-{
-    /// no value
-    None = 0,
-    /// 32 bit integer
-    Int32 = 1,
-    /// 64 bit integer
-    Int64 = 2,
-    /// single precision float
-    Float = 3,
+enum class ValueType : std::int32_t {
+  /// no value
+  None = 0,
+  /// 32 bit integer
+  Int32 = 1,
+  /// 64 bit integer
+  Int64 = 2,
+  /// single precision float
+  Float = 3,
 };
 
 }  // namespace core

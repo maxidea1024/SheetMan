@@ -22,218 +22,186 @@
 
 namespace sheetman_fixtures {
 namespace core {
-
 // Generated from test/fixtures/xlsx/core\core.xlsx : Types : B2
 /// One column per supported primitive type.
-struct TestFieldTypesRecord
-{
-    /// primary index
-    std::int32_t index = 0;
-    /// utf8 text
-    std::string string_field;
-    /// logical flag
-    bool bool_field = false;
-    /// 32 bit integer
-    std::int32_t int_field = 0;
-    /// 64 bit integer
-    std::int64_t big_int_field = 0;
-    /// single precision
-    float float_field = 0.0f;
-    /// double precision
-    double double_field = 0.0;
-    /// date and time
-    sheetman::DateTime datetime_field;
-    /// time interval
-    sheetman::TimeSpan timespan_field;
-    /// globally unique id
-    sheetman::Uuid uuid_field;
-    /// enum reference
-    ValueType value_type_field = static_cast<ValueType>(0);
-
+struct TestFieldTypesRecord {
+  /// primary index
+  std::int32_t index = 0;
+  /// utf8 text
+  std::string string_field;
+  /// logical flag
+  bool bool_field = false;
+  /// 32 bit integer
+  std::int32_t int_field = 0;
+  /// 64 bit integer
+  std::int64_t big_int_field = 0;
+  /// single precision
+  float float_field = 0.0f;
+  /// double precision
+  double double_field = 0.0;
+  /// date and time
+  sheetman::DateTime datetime_field;
+  /// time interval
+  sheetman::TimeSpan timespan_field;
+  /// globally unique id
+  sheetman::Uuid uuid_field;
+  /// enum reference
+  ValueType value_type_field = static_cast<ValueType>(0);
 };
 
 /// One column per supported primitive type.
-class TestFieldTypesTable
-{
-    public:
-    const std::vector<TestFieldTypesRecord>& records() const { return records_; }
+class TestFieldTypesTable {
+ public:
+  const std::vector<TestFieldTypesRecord>& records() const { return records_; }
 
-    /// Record with the given primary index, or nullptr when there is none.
-    const TestFieldTypesRecord* find(std::int32_t index) const
-    {
-        const auto it = by_index_.find(index);
-        return it == by_index_.end() ? nullptr : &records_[it->second];
-    }
+  /// Record with the given primary index, or nullptr when there is none.
+  const TestFieldTypesRecord* find(std::int32_t index) const {
+    const auto it = by_index_.find(index);
+    return it == by_index_.end() ? nullptr : &records_[it->second];
+  }
 
-    /// Loads the table from a .table file written by SheetMan.
-    void read(const std::string& filename)
-    {
-        const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
-        sheetman::LiteBinaryReader reader(buffer);
+  /// Loads the table from a .table file written by SheetMan.
+  void read(const std::string& filename) {
+    const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
+    sheetman::LiteBinaryReader reader(buffer);
 
-        // Column by column, matched by tag rather than position: a column this build
-        // does not know is skipped by its block length, and one whose type changed
-        // incompatibly fails naming the field.
-        const sheetman::Header header = sheetman::read_table_header(reader);
-        const std::size_t row_count = static_cast<std::size_t>(header.row_count);
+    // Column by column, matched by tag rather than position: a column this build
+    // does not know is skipped by its block length, and one whose type changed
+    // incompatibly fails naming the field.
+    const sheetman::Header header = sheetman::read_table_header(reader);
+    const std::size_t row_count = static_cast<std::size_t>(header.row_count);
 
-        // Read into storage of its own and swapped in at the end: reading a table that is
-        // already loaded is a refresh, and one that throws part way through - a truncated
-        // file, a column this build cannot read - has to leave the rows already there.
-        std::vector<TestFieldTypesRecord> records;
-        records.resize(row_count);
+    // Read into storage of its own and swapped in at the end: reading a table that is
+    // already loaded is a refresh, and one that throws part way through - a truncated
+    // file, a column this build cannot read - has to leave the rows already there.
+    std::vector<TestFieldTypesRecord> records;
+    records.resize(row_count);
 
-        for (const sheetman::Column& column : header.columns)
-        {
-            const std::size_t block_end = reader.position() + static_cast<std::size_t>(column.byte_length);
+    for (const sheetman::Column& column : header.columns) {
+      const std::size_t block_end = reader.position() + static_cast<std::size_t>(column.byte_length);
 
-            switch (column.tag)
-            {
-                case 1:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read_i32_as(column.element, record.index);
-                    }
-                    break;
-                }
-                case 2:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.StringField", sheetman::kKindScalar, 1, {sheetman::kElementString});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read(record.string_field);
-                    }
-                    break;
-                }
-                case 3:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.BoolField", sheetman::kKindScalar, 1, {sheetman::kElementBool});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read(record.bool_field);
-                    }
-                    break;
-                }
-                case 4:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.IntField", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read_i32_as(column.element, record.int_field);
-                    }
-                    break;
-                }
-                case 5:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.BigIntField", sheetman::kKindScalar, 1, {sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read_i64_as(column.element, record.big_int_field);
-                    }
-                    break;
-                }
-                case 6:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.FloatField", sheetman::kKindScalar, 1, {sheetman::kElementF32});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read(record.float_field);
-                    }
-                    break;
-                }
-                case 7:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.DoubleField", sheetman::kKindScalar, 1, {sheetman::kElementF64, sheetman::kElementF32, sheetman::kElementI32});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read_f64_as(column.element, record.double_field);
-                    }
-                    break;
-                }
-                case 8:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.DatetimeField", sheetman::kKindScalar, 1, {sheetman::kElementI64});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read(record.datetime_field);
-                    }
-                    break;
-                }
-                case 9:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.TimespanField", sheetman::kKindScalar, 1, {sheetman::kElementI64});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read(record.timespan_field);
-                    }
-                    break;
-                }
-                case 10:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.UuidField", sheetman::kKindScalar, 1, {sheetman::kElementUuid});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read(record.uuid_field);
-                    }
-                    break;
-                }
-                case 11:
-                {
-                    sheetman::check_column(column, "TestFieldTypes.ValueTypeField", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read_enum(record.value_type_field);
-                    }
-                    break;
-                }
-                default:
-                    // A column added after this code was generated.
-                    reader.skip(column.byte_length);
-                    break;
-            }
-
-            sheetman::check_block_end(reader, column, block_end);
+      switch (column.tag) {
+        case 1: {
+          sheetman::check_column(column, "TestFieldTypes.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read_i32_as(column.element, record.index);
+          }
+          break;
         }
-
-        publish(std::move(records));
-    }
-
-    private:
-    friend class Tables;
-
-    /// One whole load, in place of the previous one.
-    ///
-    /// The index is built here rather than by the caller, because the two have to arrive
-    /// together: a table holding this load's rows and the last one's index would answer
-    /// `find` with a row that is no longer at that position.
-    void publish(std::vector<TestFieldTypesRecord>&& records)
-    {
-        std::unordered_map<std::int32_t, std::size_t> by_index;
-        by_index.reserve(records.size());
-        for (std::size_t i = 0; i < records.size(); ++i)
-        {
-            by_index.emplace(records[i].index, i);
+        case 2: {
+          sheetman::check_column(column, "TestFieldTypes.StringField", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.string_field);
+          }
+          break;
         }
+        case 3: {
+          sheetman::check_column(column, "TestFieldTypes.BoolField", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.bool_field);
+          }
+          break;
+        }
+        case 4: {
+          sheetman::check_column(column, "TestFieldTypes.IntField", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read_i32_as(column.element, record.int_field);
+          }
+          break;
+        }
+        case 5: {
+          sheetman::check_column(column, "TestFieldTypes.BigIntField", sheetman::kKindScalar, 1, {sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read_i64_as(column.element, record.big_int_field);
+          }
+          break;
+        }
+        case 6: {
+          sheetman::check_column(column, "TestFieldTypes.FloatField", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.float_field);
+          }
+          break;
+        }
+        case 7: {
+          sheetman::check_column(column, "TestFieldTypes.DoubleField", sheetman::kKindScalar, 1, {sheetman::kElementF64, sheetman::kElementF32, sheetman::kElementI32});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read_f64_as(column.element, record.double_field);
+          }
+          break;
+        }
+        case 8: {
+          sheetman::check_column(column, "TestFieldTypes.DatetimeField", sheetman::kKindScalar, 1, {sheetman::kElementI64});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.datetime_field);
+          }
+          break;
+        }
+        case 9: {
+          sheetman::check_column(column, "TestFieldTypes.TimespanField", sheetman::kKindScalar, 1, {sheetman::kElementI64});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.timespan_field);
+          }
+          break;
+        }
+        case 10: {
+          sheetman::check_column(column, "TestFieldTypes.UuidField", sheetman::kKindScalar, 1, {sheetman::kElementUuid});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.uuid_field);
+          }
+          break;
+        }
+        case 11: {
+          sheetman::check_column(column, "TestFieldTypes.ValueTypeField", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read_enum(record.value_type_field);
+          }
+          break;
+        }
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byte_length);
+          break;
+      }
 
-        records_ = std::move(records);
-        by_index_ = std::move(by_index);
+      sheetman::check_block_end(reader, column, block_end);
     }
 
-    std::vector<TestFieldTypesRecord> records_;
-    std::unordered_map<std::int32_t, std::size_t> by_index_;
+    publish(std::move(records));
+  }
+
+ private:
+  friend class Tables;
+
+  /// One whole load, in place of the previous one.
+  ///
+  /// The index is built here rather than by the caller, because the two have to arrive
+  /// together: a table holding this load's rows and the last one's index would answer
+  /// `find` with a row that is no longer at that position.
+  void publish(std::vector<TestFieldTypesRecord>&& records) {
+    std::unordered_map<std::int32_t, std::size_t> by_index;
+    by_index.reserve(records.size());
+    for (std::size_t i = 0; i < records.size(); ++i) {
+      by_index.emplace(records[i].index, i);
+    }
+
+    records_ = std::move(records);
+    by_index_ = std::move(by_index);
+  }
+
+  std::vector<TestFieldTypesRecord> records_;
+  std::unordered_map<std::int32_t, std::size_t> by_index_;
 };
 
 }  // namespace core

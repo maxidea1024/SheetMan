@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using Xunit;
@@ -91,7 +91,7 @@ namespace SheetMan.Tests
             Convert(scenario);
 
             AssertNoTableHeaderIncludesAnother(
-                Path.Combine(RepoLayout.OutputDir(scenario), "cpp"), recordMarker: "Record\n{");
+                Path.Combine(RepoLayout.OutputDir(scenario), "cpp"), recordMarker: "Record {");
         }
 
         // ------------------------------------------------------------- shared

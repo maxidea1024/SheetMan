@@ -12,7 +12,6 @@
 
 namespace sheetman_fixtures {
 namespace core {
-
 struct TestFieldTypesRecord;
 struct ItemCategoryRecord;
 struct ItemRecord;

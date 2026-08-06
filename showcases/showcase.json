@@ -5,8 +5,8 @@
   // this - what it cannot do is let somebody see, side by side and in a diff, what the
   // eleven generators actually emit. That turns out to matter: the Unreal target shipped
   // for a while with the plain C++ reader inside it, and nothing in the suite could tell,
-  // because every gate it had was still green. It was reading Showcases/cpp/A.h next to
-  // Showcases/unreal that made it obvious.
+  // because every gate it had was still green. It was reading showcases/cpp/A.h next to
+  // showcases/unreal that made it obvious.
   //
   // The reserved-words fixture on purpose. Its columns are named `class`, `delete`,
   // `operator`, `namespace`, `constructor`, `function` and `int`, so the output also
@@ -16,7 +16,7 @@
   //
   // Regenerate after changing a generator, a template or a reader, and review the diff:
   //
-  //     dotnet run --project src/SheetMan.csproj -- --recipe Showcases/showcase.json --silent
+  //     dotnet run --project src/SheetMan.csproj -- --recipe showcases/showcase.json --silent
   //
   // Paths are relative to the repository root, which is where the CLI has to be run from.
 
@@ -33,40 +33,40 @@
   // tree; what it is not is reviewable - a .table in a diff says nothing to anybody.
   "Exports": {
     "Json": [
-      { "Path": "Showcases/json", "UseCompactRowFormat": false, "Indented": true }
+      { "Path": "showcases/json", "UseCompactRowFormat": false, "Indented": true }
     ]
   },
 
   "Targets": [
-    { "Type": "go", "Path": "Showcases/go", "PackageName": "x", "ModulePath": "x" , "WriteUpdater": true },
-    { "Type": "rust", "Path": "Showcases/rust", "CrateName": "x" },
-    { "Type": "python", "Path": "Showcases/python", "PackageName": "x" , "WriteUpdater": true },
-    { "Type": "java", "Path": "Showcases/java", "PackageName": "x", "AccessorName": "A" },
-    { "Type": "kotlin", "Path": "Showcases/kotlin", "PackageName": "x", "AccessorName": "A" },
-    { "Type": "ruby", "Path": "Showcases/ruby", "ModuleName": "X", "AccessorName": "a" },
-    { "Type": "dart", "Path": "Showcases/dart", "AccessorName": "a" },
-    { "Type": "unreal", "Path": "Showcases/unreal", "ModuleName": "X", "AccessorName": "A", "WriteUpdater": true },
-    { "Type": "c", "Path": "Showcases/c", "AccessorName": "A" },
-    { "Type": "php", "Path": "Showcases/php", "Namespace": "X", "AccessorName": "A" }
+    { "Type": "go", "Path": "showcases/go", "PackageName": "x", "ModulePath": "x" , "WriteUpdater": true },
+    { "Type": "rust", "Path": "showcases/rust", "CrateName": "x" },
+    { "Type": "python", "Path": "showcases/python", "PackageName": "x" , "WriteUpdater": true },
+    { "Type": "java", "Path": "showcases/java", "PackageName": "x", "AccessorName": "A" },
+    { "Type": "kotlin", "Path": "showcases/kotlin", "PackageName": "x", "AccessorName": "A" },
+    { "Type": "ruby", "Path": "showcases/ruby", "ModuleName": "X", "AccessorName": "a" },
+    { "Type": "dart", "Path": "showcases/dart", "AccessorName": "a" },
+    { "Type": "unreal", "Path": "showcases/unreal", "ModuleName": "X", "AccessorName": "A", "WriteUpdater": true },
+    { "Type": "c", "Path": "showcases/c", "AccessorName": "A" },
+    { "Type": "php", "Path": "showcases/php", "Namespace": "X", "AccessorName": "A" }
   ],
 
   "CodeGenerations": {
     "Cpp": [
       {
-        "Path": "Showcases/cpp",
+        "Path": "showcases/cpp",
         "Namespace": "x",
         "AccessorName": "A",
         "BinaryTableFileExtension": ".table"
       }
     ],
     "CSharp": [
-      { "Path": "Showcases/csharp", "Namespace": "X", "AccessorName": "A", "WriteUpdater": true }
+      { "Path": "showcases/csharp", "Namespace": "X", "AccessorName": "A", "WriteUpdater": true }
     ],
     "Typescript": [
-      { "Path": "Showcases/ts", "WriteUpdater": true }
+      { "Path": "showcases/ts", "WriteUpdater": true }
     ],
     "Html": [
-      { "Path": "Showcases/html" }
+      { "Path": "showcases/html" }
     ]
   }
 }

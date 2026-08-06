@@ -14,17 +14,15 @@
 
 namespace sheetman_fixtures {
 namespace core {
-
 // Generated from test/fixtures/xlsx/core\core.xlsx : Enums : L2
 /// Declared in snake_case on purpose.
-enum class SkillType : std::int32_t
-{
-    /// no skill
-    None = 0,
-    /// throws a fireball
-    FireBall = 1,
-    /// throws an ice shard
-    IceShard = 2,
+enum class SkillType : std::int32_t {
+  /// no skill
+  None = 0,
+  /// throws a fireball
+  FireBall = 1,
+  /// throws an ice shard
+  IceShard = 2,
 };
 
 }  // namespace core

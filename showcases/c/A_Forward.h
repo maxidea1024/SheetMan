@@ -8,7 +8,6 @@
 
 #ifndef A_FORWARD_H
 #define A_FORWARD_H
-
 typedef struct A_TemplateRecord_t A_TemplateRecord_t;
 
 #endif /* A_FORWARD_H */

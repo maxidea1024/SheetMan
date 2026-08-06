@@ -7,8 +7,8 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-#ifndef SHEETMAN_GENERATED_COREACCESSOR_LOCALIZATION_H
-#define SHEETMAN_GENERATED_COREACCESSOR_LOCALIZATION_H
+#ifndef SHEETMAN_GENERATED_A_TEMPLATE_H
+#define SHEETMAN_GENERATED_A_TEMPLATE_H
 
 #include <cstddef>
 #include <cstdint>
@@ -17,30 +17,37 @@
 #include <vector>
 
 #include "sheetman/lite_binary_reader.h"
-#include "CoreAccessor_forward.h"
+#include "A_forward.h"
 
-namespace sheetman_fixtures {
-namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Serial : B2
-/// Trailing-number columns collapse into arrays.
-struct LocalizationRecord {
+namespace x {
+// Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
+/// Named after a C++ keyword.
+struct TemplateRecord {
   /// primary index
   std::int32_t index = 0;
-  /// lookup key
-  std::string key;
-  /// english text 1
-  std::vector<std::string> text_en_array;
-  /// korean text 1
-  std::vector<std::string> text_ko_array;
+  /// class: keyword in C++ and C#
+  std::string sm_class;
+  /// int: keyword in C++ and C#
+  std::int32_t sm_int = 0;
+  /// delete: keyword in C++
+  bool sm_delete = false;
+  /// operator: keyword in C++
+  std::string sm_operator;
+  /// namespace: keyword in C++ and C#
+  std::string sm_namespace;
+  /// constructor: special member in TypeScript
+  std::string constructor;
+  /// function: keyword in TypeScript
+  std::string function;
 };
 
-/// Trailing-number columns collapse into arrays.
-class LocalizationTable {
+/// Named after a C++ keyword.
+class TemplateTable {
  public:
-  const std::vector<LocalizationRecord>& records() const { return records_; }
+  const std::vector<TemplateRecord>& records() const { return records_; }
 
   /// Record with the given primary index, or nullptr when there is none.
-  const LocalizationRecord* find(std::int32_t index) const {
+  const TemplateRecord* find(std::int32_t index) const {
     const auto it = by_index_.find(index);
     return it == by_index_.end() ? nullptr : &records_[it->second];
   }
@@ -59,7 +66,7 @@ class LocalizationTable {
     // Read into storage of its own and swapped in at the end: reading a table that is
     // already loaded is a refresh, and one that throws part way through - a truncated
     // file, a column this build cannot read - has to leave the rows already there.
-    std::vector<LocalizationRecord> records;
+    std::vector<TemplateRecord> records;
     records.resize(row_count);
 
     for (const sheetman::Column& column : header.columns) {
@@ -67,7 +74,7 @@ class LocalizationTable {
 
       switch (column.tag) {
         case 1: {
-          sheetman::check_column(column, "Localization.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::check_column(column, "Template.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
             reader.read_i32_as(column.element, record.index);
@@ -75,32 +82,58 @@ class LocalizationTable {
           break;
         }
         case 2: {
-          sheetman::check_column(column, "Localization.Key", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::check_column(column, "Template.Class", sheetman::kKindScalar, 1, {sheetman::kElementString});
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.key);
+            reader.read(record.sm_class);
           }
           break;
         }
         case 3: {
-          sheetman::check_column(column, "Localization.TextEn_array", sheetman::kKindFixedArray, 2, {sheetman::kElementString});
+          sheetman::check_column(column, "Template.Int", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            record.text_en_array.resize(2);
-            for (std::size_t j = 0; j < 2; ++j) {
-              reader.read(record.text_en_array[j]);
-            }
+            reader.read_i32_as(column.element, record.sm_int);
           }
           break;
         }
         case 4: {
-          sheetman::check_column(column, "Localization.TextKo_array", sheetman::kKindFixedArray, 2, {sheetman::kElementString});
+          sheetman::check_column(column, "Template.Delete", sheetman::kKindScalar, 1, {sheetman::kElementBool});
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            record.text_ko_array.resize(2);
-            for (std::size_t j = 0; j < 2; ++j) {
-              reader.read(record.text_ko_array[j]);
-            }
+            reader.read(record.sm_delete);
+          }
+          break;
+        }
+        case 5: {
+          sheetman::check_column(column, "Template.Operator", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.sm_operator);
+          }
+          break;
+        }
+        case 6: {
+          sheetman::check_column(column, "Template.Namespace", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.sm_namespace);
+          }
+          break;
+        }
+        case 7: {
+          sheetman::check_column(column, "Template.Constructor", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.constructor);
+          }
+          break;
+        }
+        case 8: {
+          sheetman::check_column(column, "Template.Function", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.function);
           }
           break;
         }
@@ -124,7 +157,7 @@ class LocalizationTable {
   /// The index is built here rather than by the caller, because the two have to arrive
   /// together: a table holding this load's rows and the last one's index would answer
   /// `find` with a row that is no longer at that position.
-  void publish(std::vector<LocalizationRecord>&& records) {
+  void publish(std::vector<TemplateRecord>&& records) {
     std::unordered_map<std::int32_t, std::size_t> by_index;
     by_index.reserve(records.size());
     for (std::size_t i = 0; i < records.size(); ++i) {
@@ -135,11 +168,10 @@ class LocalizationTable {
     by_index_ = std::move(by_index);
   }
 
-  std::vector<LocalizationRecord> records_;
+  std::vector<TemplateRecord> records_;
   std::unordered_map<std::int32_t, std::size_t> by_index_;
 };
 
-}  // namespace core
-}  // namespace sheetman_fixtures
+}  // namespace x
 
-#endif  // SHEETMAN_GENERATED_COREACCESSOR_LOCALIZATION_H
+#endif  // SHEETMAN_GENERATED_A_TEMPLATE_H

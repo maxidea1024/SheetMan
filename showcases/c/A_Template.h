@@ -16,28 +16,27 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 /* Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
  *
  * Named after a C++ keyword.
  */
 struct A_TemplateRecord_t {
-    /* primary index */
-    int32_t index;
-    /* class: keyword in C++ and C# */
-    const char* class_;
-    /* int: keyword in C++ and C# */
-    int32_t int_;
-    /* delete: keyword in C++ */
-    bool delete_;
-    /* operator: keyword in C++ */
-    const char* operator_;
-    /* namespace: keyword in C++ and C# */
-    const char* namespace_;
-    /* constructor: special member in TypeScript */
-    const char* constructor;
-    /* function: keyword in TypeScript */
-    const char* function;
+  /* primary index */
+  int32_t index;
+  /* class: keyword in C++ and C# */
+  const char* class_;
+  /* int: keyword in C++ and C# */
+  int32_t int_;
+  /* delete: keyword in C++ */
+  bool delete_;
+  /* operator: keyword in C++ */
+  const char* operator_;
+  /* namespace: keyword in C++ and C# */
+  const char* namespace_;
+  /* constructor: special member in TypeScript */
+  const char* constructor;
+  /* function: keyword in TypeScript */
+  const char* function;
 };
 
 /* Every row of Template.
@@ -45,11 +44,11 @@ struct A_TemplateRecord_t {
  * The arena owns every string and every array the records point into, so the
  * whole table is released in one call and no record's pointer outlives it. */
 typedef struct A_TemplateTable_t {
-    A_TemplateRecord_t* records;
-    int32_t count;
+  A_TemplateRecord_t* records;
+  int32_t count;
 
-    sm_index_entry* by_index;
-    sm_arena arena;
+  sm_index_entry* by_index;
+  sm_arena arena;
 } A_TemplateTable_t;
 
 /* Loads the table from a .table file written by SheetMan.
@@ -57,14 +56,14 @@ typedef struct A_TemplateTable_t {
  * Returns false and leaves the table empty when the file is missing, truncated
  * or malformed; the reason goes to `error` when one is passed. */
 bool A_TemplateLoad(A_TemplateTable_t* table, const char* filename,
-                                      char* error, size_t error_size);
+                   char* error, size_t error_size);
 
 /* Releases everything the table owns. Safe on a zeroed table, and safe twice. */
 void A_TemplateFree(A_TemplateTable_t* table);
 
 /* The row with the given primary index, or NULL when there is none. */
 const A_TemplateRecord_t* A_TemplateFind(
-    const A_TemplateTable_t* table, int32_t index);
+  const A_TemplateTable_t* table, int32_t index);
 
 #ifdef __cplusplus
 }

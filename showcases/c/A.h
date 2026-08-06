@@ -14,10 +14,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 /* Every table, loaded together so cross-table references can be resolved. */
 typedef struct A_t {
-    A_TemplateTable_t template_;
+  A_TemplateTable_t template_;
 } A_t;
 
 /* Reads every table from base_path, then links the references between them.
@@ -30,12 +29,12 @@ typedef struct A_t {
  * Returns false if any table could not be read, having released whatever had been loaded up
  * to that point and left `data` alone - a half-loaded model is not one to hand back. */
 bool A_LoadAll(A_t* data, const char* base_path,
-                                  char* error, size_t error_size);
+                 char* error, size_t error_size);
 
 /* The same, for data files carrying some other extension than the one the recipe told
  * the exporter to write. `file_extension` includes the dot. */
 bool A_LoadAllWithExtension(A_t* data, const char* base_path,
-                                  const char* file_extension, char* error, size_t error_size);
+                 const char* file_extension, char* error, size_t error_size);
 
 void A_Free(A_t* data);
 

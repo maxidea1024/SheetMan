@@ -38,7 +38,6 @@
 #include <vector>
 
 namespace sheetman {
-
 /// Thrown when a table file is truncated, malformed, or not a table file.
 class LiteBinaryError : public std::runtime_error {
  public:
@@ -304,7 +303,6 @@ inline std::vector<std::uint8_t> read_all_bytes(const std::string& filename) {
 // rather than guessing.
 constexpr std::uint32_t kBinaryFileFormatVersion = 101;
 
-
 // One column as the file describes it.
 struct Column {
   // What identifies the column, instead of its position.
@@ -423,7 +421,6 @@ inline void check_block_end(const LiteBinaryReader& reader, const Column& column
                           ": the block's declared length and the bytes consumed disagree");
   }
 }
-
 }  // namespace sheetman
 
 #endif  // SHEETMAN_LITE_BINARY_READER_H

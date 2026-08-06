@@ -27,73 +27,68 @@
 
 namespace sheetman_fixtures {
 namespace core {
-
 /// Every table, loaded together so cross-table references can be resolved.
-class Tables
-{
-    public:
-    const TestFieldTypesTable& test_field_types() const { return test_field_types_; }
-    const ItemCategoryTable& item_category() const { return item_category_; }
-    const ItemTable& item() const { return item_; }
-    const LocalizationTable& localization() const { return localization_; }
-    const ArrayTypesTable& array_types() const { return array_types_; }
-    const ServerTuningTable& server_tuning() const { return server_tuning_; }
-    const ClientStringsTable& client_strings() const { return client_strings_; }
+class Tables {
+ public:
+  const TestFieldTypesTable& test_field_types() const { return test_field_types_; }
+  const ItemCategoryTable& item_category() const { return item_category_; }
+  const ItemTable& item() const { return item_; }
+  const LocalizationTable& localization() const { return localization_; }
+  const ArrayTypesTable& array_types() const { return array_types_; }
+  const ServerTuningTable& server_tuning() const { return server_tuning_; }
+  const ClientStringsTable& client_strings() const { return client_strings_; }
 
-    /// Reads every table from `base_path`, then links the references between them.
-    ///
-    /// Safe to call on a loaded accessor. Every file is read into a table of its own and the
-    /// references are linked among those, so a read that throws part way through leaves every
-    /// table holding the load it already had, and no row points at a row from it.
-    void read_all(const std::string& base_path, const std::string& file_extension = ".table")
-    {
-        TestFieldTypesTable loaded_test_field_types;
-        loaded_test_field_types.read(base_path + "/TestFieldTypes" + file_extension);
-        ItemCategoryTable loaded_item_category;
-        loaded_item_category.read(base_path + "/ItemCategory" + file_extension);
-        ItemTable loaded_item;
-        loaded_item.read(base_path + "/Item" + file_extension);
-        LocalizationTable loaded_localization;
-        loaded_localization.read(base_path + "/Localization" + file_extension);
-        ArrayTypesTable loaded_array_types;
-        loaded_array_types.read(base_path + "/ArrayTypes" + file_extension);
-        ServerTuningTable loaded_server_tuning;
-        loaded_server_tuning.read(base_path + "/ServerTuning" + file_extension);
-        ClientStringsTable loaded_client_strings;
-        loaded_client_strings.read(base_path + "/ClientStrings" + file_extension);
+  /// Reads every table from `base_path`, then links the references between them.
+  ///
+  /// Safe to call on a loaded accessor. Every file is read into a table of its own and the
+  /// references are linked among those, so a read that throws part way through leaves every
+  /// table holding the load it already had, and no row points at a row from it.
+  void read_all(const std::string& base_path, const std::string& file_extension = ".table") {
+    TestFieldTypesTable loaded_test_field_types;
+    loaded_test_field_types.read(base_path + "/TestFieldTypes" + file_extension);
+    ItemCategoryTable loaded_item_category;
+    loaded_item_category.read(base_path + "/ItemCategory" + file_extension);
+    ItemTable loaded_item;
+    loaded_item.read(base_path + "/Item" + file_extension);
+    LocalizationTable loaded_localization;
+    loaded_localization.read(base_path + "/Localization" + file_extension);
+    ArrayTypesTable loaded_array_types;
+    loaded_array_types.read(base_path + "/ArrayTypes" + file_extension);
+    ServerTuningTable loaded_server_tuning;
+    loaded_server_tuning.read(base_path + "/ServerTuning" + file_extension);
+    ClientStringsTable loaded_client_strings;
+    loaded_client_strings.read(base_path + "/ClientStrings" + file_extension);
 
-        solve_cross_references(loaded_test_field_types, loaded_item_category, loaded_item, loaded_localization, loaded_array_types, loaded_server_tuning, loaded_client_strings);
+    solve_cross_references(loaded_test_field_types, loaded_item_category, loaded_item, loaded_localization, loaded_array_types, loaded_server_tuning, loaded_client_strings);
 
-        test_field_types_ = std::move(loaded_test_field_types);
-        item_category_ = std::move(loaded_item_category);
-        item_ = std::move(loaded_item);
-        localization_ = std::move(loaded_localization);
-        array_types_ = std::move(loaded_array_types);
-        server_tuning_ = std::move(loaded_server_tuning);
-        client_strings_ = std::move(loaded_client_strings);
+    test_field_types_ = std::move(loaded_test_field_types);
+    item_category_ = std::move(loaded_item_category);
+    item_ = std::move(loaded_item);
+    localization_ = std::move(loaded_localization);
+    array_types_ = std::move(loaded_array_types);
+    server_tuning_ = std::move(loaded_server_tuning);
+    client_strings_ = std::move(loaded_client_strings);
+  }
+
+ private:
+  /// The tables arrive as arguments, which is how this links the load being read rather
+  /// than the one already published.
+  void solve_cross_references(TestFieldTypesTable& loaded_test_field_types, ItemCategoryTable& loaded_item_category, ItemTable& loaded_item, LocalizationTable& loaded_localization, ArrayTypesTable& loaded_array_types, ServerTuningTable& loaded_server_tuning, ClientStringsTable& loaded_client_strings) {
+    for (auto& record : loaded_item.records_) {
+      {
+        const auto* target = loaded_item_category.find(record.category_id_index);
+        if (target != nullptr) record.category_id = target;
+      }
     }
+  }
 
-    private:
-    /// The tables arrive as arguments, which is how this links the load being read rather
-    /// than the one already published.
-    void solve_cross_references(TestFieldTypesTable& loaded_test_field_types, ItemCategoryTable& loaded_item_category, ItemTable& loaded_item, LocalizationTable& loaded_localization, ArrayTypesTable& loaded_array_types, ServerTuningTable& loaded_server_tuning, ClientStringsTable& loaded_client_strings)
-    {
-        for (auto& record : loaded_item.records_)
-        {
-            {
-                const auto* target = loaded_item_category.find(record.category_id_index);
-                if (target != nullptr) record.category_id = target;
-            }
-        }
-    }
-
-    TestFieldTypesTable test_field_types_;
-    ItemCategoryTable item_category_;
-    ItemTable item_;
-    LocalizationTable localization_;
-    ArrayTypesTable array_types_;
-    ServerTuningTable server_tuning_;
-    ClientStringsTable client_strings_;
+  TestFieldTypesTable test_field_types_;
+  ItemCategoryTable item_category_;
+  ItemTable item_;
+  LocalizationTable localization_;
+  ArrayTypesTable array_types_;
+  ServerTuningTable server_tuning_;
+  ClientStringsTable client_strings_;
 };
 
 }  // namespace core

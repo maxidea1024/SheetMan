@@ -17,27 +17,25 @@
 
 namespace sheetman_fixtures {
 namespace core {
-
 // Generated from test/fixtures/xlsx/core\core.xlsx : Consts : B2
 /// Assorted tuning constants.
-struct GameConfig
-{
-    /// level cap
-    static inline const std::int32_t MaxLevel = 100;
-    /// gold granted to new accounts
-    static inline const std::int64_t StartGold = 1000LL;
-    /// base drop rate
-    static inline const float DropRate = 0.25f;
-    /// whether debug hooks are active
-    static inline const bool DebugMode = false;
-    /// grade assigned when unspecified
-    static inline const Grade DefaultGrade = Grade::Rare;
-    /// when the season opens
-    static inline const sheetman::DateTime SeasonStart = sheetman::DateTime{ 637817220000000000LL };
-    /// length of one round
-    static inline const sheetman::TimeSpan RoundLength = sheetman::TimeSpan{ 3000000000LL };
-    /// identifies this data build
-    static inline const sheetman::Uuid BuildId = sheetman::Uuid{ { 0xff, 0x19, 0x96, 0x6f, 0x86, 0x8b, 0x11, 0xd0, 0xb4, 0x2d, 0x00, 0xc0, 0x4f, 0xc9, 0x64, 0xff } };
+struct GameConfig {
+  /// level cap
+  static inline const std::int32_t MaxLevel = 100;
+  /// gold granted to new accounts
+  static inline const std::int64_t StartGold = 1000LL;
+  /// base drop rate
+  static inline const float DropRate = 0.25f;
+  /// whether debug hooks are active
+  static inline const bool DebugMode = false;
+  /// grade assigned when unspecified
+  static inline const Grade DefaultGrade = Grade::Rare;
+  /// when the season opens
+  static inline const sheetman::DateTime SeasonStart = sheetman::DateTime{ 637817220000000000LL };
+  /// length of one round
+  static inline const sheetman::TimeSpan RoundLength = sheetman::TimeSpan{ 3000000000LL };
+  /// identifies this data build
+  static inline const sheetman::Uuid BuildId = sheetman::Uuid{ { 0xff, 0x19, 0x96, 0x6f, 0x86, 0x8b, 0x11, 0xd0, 0xb4, 0x2d, 0x00, 0xc0, 0x4f, 0xc9, 0x64, 0xff } };
 };
 
 }  // namespace core

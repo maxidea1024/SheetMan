@@ -21,122 +21,106 @@
 
 namespace sheetman_fixtures {
 namespace core {
-
 // Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
 /// Server-only table. Must not appear in client output.
-struct ServerTuningRecord
-{
-    /// primary index
-    std::int32_t index = 0;
-    /// tuning key
-    std::string key;
-    /// tuning amount
-    std::int32_t amount = 0;
-
+struct ServerTuningRecord {
+  /// primary index
+  std::int32_t index = 0;
+  /// tuning key
+  std::string key;
+  /// tuning amount
+  std::int32_t amount = 0;
 };
 
 /// Server-only table. Must not appear in client output.
-class ServerTuningTable
-{
-    public:
-    const std::vector<ServerTuningRecord>& records() const { return records_; }
+class ServerTuningTable {
+ public:
+  const std::vector<ServerTuningRecord>& records() const { return records_; }
 
-    /// Record with the given primary index, or nullptr when there is none.
-    const ServerTuningRecord* find(std::int32_t index) const
-    {
-        const auto it = by_index_.find(index);
-        return it == by_index_.end() ? nullptr : &records_[it->second];
-    }
+  /// Record with the given primary index, or nullptr when there is none.
+  const ServerTuningRecord* find(std::int32_t index) const {
+    const auto it = by_index_.find(index);
+    return it == by_index_.end() ? nullptr : &records_[it->second];
+  }
 
-    /// Loads the table from a .table file written by SheetMan.
-    void read(const std::string& filename)
-    {
-        const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
-        sheetman::LiteBinaryReader reader(buffer);
+  /// Loads the table from a .table file written by SheetMan.
+  void read(const std::string& filename) {
+    const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
+    sheetman::LiteBinaryReader reader(buffer);
 
-        // Column by column, matched by tag rather than position: a column this build
-        // does not know is skipped by its block length, and one whose type changed
-        // incompatibly fails naming the field.
-        const sheetman::Header header = sheetman::read_table_header(reader);
-        const std::size_t row_count = static_cast<std::size_t>(header.row_count);
+    // Column by column, matched by tag rather than position: a column this build
+    // does not know is skipped by its block length, and one whose type changed
+    // incompatibly fails naming the field.
+    const sheetman::Header header = sheetman::read_table_header(reader);
+    const std::size_t row_count = static_cast<std::size_t>(header.row_count);
 
-        // Read into storage of its own and swapped in at the end: reading a table that is
-        // already loaded is a refresh, and one that throws part way through - a truncated
-        // file, a column this build cannot read - has to leave the rows already there.
-        std::vector<ServerTuningRecord> records;
-        records.resize(row_count);
+    // Read into storage of its own and swapped in at the end: reading a table that is
+    // already loaded is a refresh, and one that throws part way through - a truncated
+    // file, a column this build cannot read - has to leave the rows already there.
+    std::vector<ServerTuningRecord> records;
+    records.resize(row_count);
 
-        for (const sheetman::Column& column : header.columns)
-        {
-            const std::size_t block_end = reader.position() + static_cast<std::size_t>(column.byte_length);
+    for (const sheetman::Column& column : header.columns) {
+      const std::size_t block_end = reader.position() + static_cast<std::size_t>(column.byte_length);
 
-            switch (column.tag)
-            {
-                case 1:
-                {
-                    sheetman::check_column(column, "ServerTuning.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read_i32_as(column.element, record.index);
-                    }
-                    break;
-                }
-                case 2:
-                {
-                    sheetman::check_column(column, "ServerTuning.Key", sheetman::kKindScalar, 1, {sheetman::kElementString});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read(record.key);
-                    }
-                    break;
-                }
-                case 3:
-                {
-                    sheetman::check_column(column, "ServerTuning.Amount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
-                    for (std::size_t i = 0; i < row_count; ++i)
-                    {
-                        auto& record = records[i];
-                        reader.read_i32_as(column.element, record.amount);
-                    }
-                    break;
-                }
-                default:
-                    // A column added after this code was generated.
-                    reader.skip(column.byte_length);
-                    break;
-            }
-
-            sheetman::check_block_end(reader, column, block_end);
+      switch (column.tag) {
+        case 1: {
+          sheetman::check_column(column, "ServerTuning.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read_i32_as(column.element, record.index);
+          }
+          break;
         }
-
-        publish(std::move(records));
-    }
-
-    private:
-    friend class Tables;
-
-    /// One whole load, in place of the previous one.
-    ///
-    /// The index is built here rather than by the caller, because the two have to arrive
-    /// together: a table holding this load's rows and the last one's index would answer
-    /// `find` with a row that is no longer at that position.
-    void publish(std::vector<ServerTuningRecord>&& records)
-    {
-        std::unordered_map<std::int32_t, std::size_t> by_index;
-        by_index.reserve(records.size());
-        for (std::size_t i = 0; i < records.size(); ++i)
-        {
-            by_index.emplace(records[i].index, i);
+        case 2: {
+          sheetman::check_column(column, "ServerTuning.Key", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read(record.key);
+          }
+          break;
         }
+        case 3: {
+          sheetman::check_column(column, "ServerTuning.Amount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          for (std::size_t i = 0; i < row_count; ++i) {
+            auto& record = records[i];
+            reader.read_i32_as(column.element, record.amount);
+          }
+          break;
+        }
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byte_length);
+          break;
+      }
 
-        records_ = std::move(records);
-        by_index_ = std::move(by_index);
+      sheetman::check_block_end(reader, column, block_end);
     }
 
-    std::vector<ServerTuningRecord> records_;
-    std::unordered_map<std::int32_t, std::size_t> by_index_;
+    publish(std::move(records));
+  }
+
+ private:
+  friend class Tables;
+
+  /// One whole load, in place of the previous one.
+  ///
+  /// The index is built here rather than by the caller, because the two have to arrive
+  /// together: a table holding this load's rows and the last one's index would answer
+  /// `find` with a row that is no longer at that position.
+  void publish(std::vector<ServerTuningRecord>&& records) {
+    std::unordered_map<std::int32_t, std::size_t> by_index;
+    by_index.reserve(records.size());
+    for (std::size_t i = 0; i < records.size(); ++i) {
+      by_index.emplace(records[i].index, i);
+    }
+
+    records_ = std::move(records);
+    by_index_ = std::move(by_index);
+  }
+
+  std::vector<ServerTuningRecord> records_;
+  std::unordered_map<std::int32_t, std::size_t> by_index_;
 };
 
 }  // namespace core

@@ -9,9 +9,9 @@
 typedef enum {{ enumm.name }} {
 {{~ for label in enumm.labels ~}}
 {{~ for line in label.comment ~}}
-    /* {{ line }} */
+  /* {{ line }} */
 {{~ end ~}}
-    {{ label.name }} = {{ label.value }},
+  {{ label.name }} = {{ label.value }},
 {{~ end ~}}
 } {{ enumm.name }};
 {{ include 'c-header-foot.sbn' ~}}
