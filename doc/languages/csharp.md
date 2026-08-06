@@ -143,7 +143,7 @@ var result = await SheetManUpdater.UpdateAsync(baseUrl, cacheDirectory: null, op
 
 **예외를 던지지 않습니다.** 네트워크·디스크·손상된 파일은 전부 호출자가 다뤄야 하는 상황이지 결함이 아니고, 게임 루프 안으로 예외를 던지는 패처는 이유를 삼키는 try/catch로 감싸이게 됩니다. 실패는 `result.Error`에 문장으로 옵니다.
 
-> 언리얼에는 아직 없습니다. 이유는 [앞으로 할 것](../roadmap.md)에 적어두었습니다 — 코드의 문제가 아니라, 지금 언리얼 게이트가 HTTP를 쓰는 .cpp를 컴파일하지 않아 **검증되지 않은 코드를 배포하게 되기 때문**입니다.
+> 언리얼에도 같은 것이 있습니다 — [언리얼 가이드](unreal.md#데이터만-갱신하기-writeupdater).
 
 ## 주의사항
 

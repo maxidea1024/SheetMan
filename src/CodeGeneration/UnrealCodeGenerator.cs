@@ -47,6 +47,16 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         public bool WriteBuildFile { get; set; } = true;
 
+            /// <summary>
+            /// Whether to write the data updater beside the reader.
+            ///
+            /// It fetches the manifest and the changed data files over HTTP and keeps a local
+            /// copy current, so a build can take new data without shipping a new one. Off by
+            /// default: it puts the HTTP module into the generated Build.cs, and a project
+            /// that ships its data inside the .pak has no use for either.
+            /// </summary>
+            public bool WriteUpdater { get; set; } = false;
+
         /// <summary>
         /// Extension of the table files the generated reader opens. Must match what the
         /// binary exporter was told to write.
@@ -167,6 +177,19 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Unreal.SheetManLiteBinaryReader.h",
                 System.IO.Path.Combine(ModuleDir, "Public", "SheetManLiteBinaryReader.h"));
+
+            // Asked for rather than assumed: it reaches the network, and it is what puts the
+            // HTTP module into this module's dependencies.
+            if (_recipe.WriteUpdater)
+            {
+                WriteBinaryReaderRuntime(
+                    "SheetMan.Runtime.Unreal.SheetManUpdater.h",
+                    System.IO.Path.Combine(ModuleDir, "Public", "SheetManUpdater.h"));
+
+                WriteBinaryReaderRuntime(
+                    "SheetMan.Runtime.Unreal.SheetManUpdater.cpp",
+                    System.IO.Path.Combine(ModuleDir, "Private", "SheetManUpdater.cpp"));
+            }
         }
 
         /// <summary>
@@ -192,10 +215,23 @@ namespace SheetMan.CodeGeneration
             text.Append("        // UBlueprintFunctionLibrary, which is what makes the rows reachable\n");
             text.Append("        // from a Blueprint graph at all.\n");
             text.Append("        //\n");
-            text.Append("        // Nothing else, and no bEnableExceptions: the reader reports a malformed\n");
-            text.Append("        // file by returning false, so this module builds with the engine's defaults.\n");
+            text.Append("        // No bEnableExceptions: the reader reports a malformed file by returning\n");
+            text.Append("        // false, so this module builds with the engine's defaults.\n");
+
+            if (_recipe.WriteUpdater)
+            {
+                text.Append("        //\n");
+                text.Append("        // HTTP is here because the updater is: it fetches the manifest and the\n");
+                text.Append("        // changed data files. Turn WriteUpdater off and this goes with it.\n");
+            }
+
             text.Append("        PublicDependencyModuleNames.AddRange(\n");
-            text.Append("            new string[] { \"Core\", \"CoreUObject\", \"Engine\" });\n");
+
+            // HTTP only when the updater is written. A module that does not patch its data
+            // should not carry a dependency on the transport that would.
+            text.Append(_recipe.WriteUpdater
+                ? "            new string[] { \"Core\", \"CoreUObject\", \"Engine\", \"HTTP\" });\n"
+                : "            new string[] { \"Core\", \"CoreUObject\", \"Engine\" });\n");
             text.Append("    }\n");
             text.Append("}\n");
 

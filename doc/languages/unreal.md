@@ -93,6 +93,39 @@ FGameData::ReadAll(BasePath, TEXT(".bytes"));
 
 행을 값으로 돌려주는 이유는 블루프린트가 구조체를 값으로 받기 때문입니다. 배열이나 참조를 돌려주는 시그니처는 UHT가 거부합니다.
 
+## 데이터만 갱신하기 (`WriteUpdater`)
+
+recipe의 언리얼 타깃에 `"WriteUpdater": true`를 적으면 모듈에 `SheetManUpdater.h/.cpp`가 함께 나오고, 생성되는 `Build.cs`에 **`HTTP` 모듈 의존성이 추가**됩니다. CDN에 올려둔 데이터를 받아 로컬 사본을 최신으로 유지하는 코드이고, **패키징을 새로 하지 않고 데이터만 패치**하기 위한 것입니다. 기본값이 `false`인 이유가 그 의존성입니다 — 데이터를 .pak에 넣어 배포한다면 필요가 없습니다.
+
+```cpp
+FSheetManUpdateOptions Options;
+Options.MaxAttempts = 3;                 // 첫 시도 포함
+Options.RetryDelaySeconds = 0.5f;        // 재시도마다 두 배
+
+FSheetManUpdater::Update(
+    TEXT("https://cdn.example.com/data"),
+    FString(),                           // 비우면 ProjectPersistentDownloadDir 아래
+    Options,
+    FSheetManUpdateComplete::CreateLambda([](const FSheetManUpdateResult& Result)
+    {
+        if (!Result.bSucceeded)
+        {
+            // 이전 데이터는 그대로 있습니다. 그걸로 계속 가도 됩니다.
+            UE_LOG(LogTemp, Warning, TEXT("데이터 갱신 실패: %s"), *Result.Error);
+        }
+
+        USheetManData::ReadAll(Result.LocalPath, TEXT(".table"));
+    }));
+```
+
+**비동기입니다.** 언리얼의 HTTP가 콜백이므로 델리게이트로 끝을 알립니다. 업데이터는 자기 자신을 살려두므로 반환된 핸들을 붙들고 있지 않아도 되고, 델리게이트는 게임 스레드에서 한 번만 불립니다.
+
+**무엇을 보장하나** — C#과 같습니다: 바뀐 파일만 받고, 매니페스트의 MD5로 검증하고, `.staging`을 거쳐 마지막에 옮기고, 로컬 매니페스트를 그보다 더 나중에 씁니다. 중간에 실패하거나 앱이 죽어도 **이전 데이터가 그대로** 남습니다. 일시적 장애(연결 실패·408·429·5xx)는 두 배씩 늘어나는 간격으로 재시도하고, 404는 재시도하지 않습니다. 표는 [C# 가이드](csharp.md#데이터만-갱신하기-writeupdater)에 있습니다.
+
+**재시도 대기는 `FTicker`(UE5는 `FTSTicker`)로 합니다.** 게임 스레드를 재우지 않습니다.
+
+> 이 코드는 **실제 엔진의 UnrealBuildTool로 빌드·실행하는 게이트**가 있습니다(`SHEETMAN_UE_ROOT` 지정 시). 스텁으로 컴파일해보는 것과 다릅니다 — 첫 실행에서 `ENGINE_MAJOR_VERSION`이 Program 타깃에 정의되어 있지 않다는 것을 잡아냈고, 그건 스텁으로는 영원히 안 잡혔을 종류입니다.
+
 ## 주의사항
 
 ### 패키징 — 데이터가 빌드에 들어가는가

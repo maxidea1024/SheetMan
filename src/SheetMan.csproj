@@ -87,6 +87,10 @@
     -->
     <EmbeddedResource Include="..\lib\unreal\sheetman\SheetManLiteBinaryReader.h"
                       LogicalName="SheetMan.Runtime.Unreal.SheetManLiteBinaryReader.h" />
+    <EmbeddedResource Include="..\lib\unreal\sheetman\SheetManUpdater.h"
+                      LogicalName="SheetMan.Runtime.Unreal.SheetManUpdater.h" />
+    <EmbeddedResource Include="..\lib\unreal\sheetman\SheetManUpdater.cpp"
+                      LogicalName="SheetMan.Runtime.Unreal.SheetManUpdater.cpp" />
   </ItemGroup>
 
   <ItemGroup>

@@ -348,6 +348,47 @@ namespace SheetMan.Tests
         /// of the two the target supports: its header tool rejects a double property, which
         /// is why a double member here carries no UPROPERTY.
         /// </summary>
+        /// <summary>
+        /// The generated updater, built by UnrealBuildTool against a real engine and run.
+        /// </summary>
+        /// <remarks>
+        /// The only thing in this repository that compiles Unreal C++ the way Unreal does.
+        /// Everything else Unreal-shaped is checked by the header tool, which parses headers,
+        /// or by an off-engine build against hand-written stubs - and a stub cannot tell you
+        /// whether `IHttpRequest::SetTimeout` exists, only that your code agrees with your own
+        /// idea of the engine.
+        ///
+        /// Which is not a hypothetical worry. The first run of this gate failed on a `#if`
+        /// comparing `ENGINE_MAJOR_VERSION`, which a Program target does not define: the
+        /// updater picked the wrong ticker type on every engine, and the stubs had said it was
+        /// fine.
+        ///
+        /// Needs an engine, which CI does not have. Point SHEETMAN_UE_ROOT at one and it runs;
+        /// leave it unset and it does not. Verified against 4.27.2.
+        /// </remarks>
+        [Fact]
+        public void The_updater_builds_with_unreal_build_tool()
+        {
+            string engineRoot = Environment.GetEnvironmentVariable("SHEETMAN_UE_ROOT");
+
+            if (string.IsNullOrEmpty(engineRoot))
+                return;
+
+            SheetManRunner.Convert(Scenario);
+
+            var result = UnrealToolchain.BuildUpdaterWithUbt(
+                engineRoot,
+                Path.Combine(RepoLayout.OutputDir(Scenario), "Source", "SheetManCore"));
+
+            Assert.True(result.Succeeded,
+                $"The generated updater did not build against the engine at {engineRoot}." +
+                $"{Environment.NewLine}{result.Output}");
+
+            // The program checks the manifest parser and the hash against known values, so a
+            // zero exit is more than "it linked".
+            Assert.Contains("compiles, links and runs", result.Output);
+        }
+
         [Fact]
         public void Unreal_header_tool_accepts_the_generated_module()
         {

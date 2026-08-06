@@ -129,6 +129,134 @@ namespace SheetMan.Tests
             return Execute("g++", workDir, arguments.ToArray());
         }
 
+        /// <summary>
+        /// Builds the generated updater with UnrealBuildTool, against a real engine.
+        /// </summary>
+        /// <remarks>
+        /// The one gate that compiles Unreal C++ as Unreal compiles it. The off-engine build
+        /// beside it uses hand-written stubs, which answer "does this agree with what I think
+        /// the engine looks like" - a question that cannot fail usefully, because the same
+        /// hand wrote both sides. This one asks the engine.
+        ///
+        /// It found its keep immediately: `ENGINE_MAJOR_VERSION` is not defined in a Program
+        /// target, so the `#if` picking between FTicker and FTSTicker was comparing an
+        /// undefined name - which the engine builds as an error and no stub would have
+        /// noticed.
+        ///
+        /// A Program target rather than a game or an editor one, because the updater needs
+        /// Core and HTTP and nothing else. An editor target would link the whole engine to
+        /// answer the same question in twenty minutes instead of two seconds.
+        ///
+        /// The program is copied into the engine's Source/Programs, built, run, and removed.
+        /// Writing into somebody's engine is not free, so what goes in is one directory named
+        /// after this tool and what comes out is that directory plus what UBT put beside it.
+        /// </remarks>
+        public static ToolResult BuildUpdaterWithUbt(string engineRoot, string moduleDir)
+        {
+            string build = Path.Combine(engineRoot, "Engine", "Build", "BatchFiles", "Build.bat");
+
+            if (!File.Exists(build))
+            {
+                return new ToolResult
+                {
+                    Succeeded = false,
+                    Output = $"No Build.bat at {build}. SHEETMAN_UE_ROOT must name an engine.",
+                };
+            }
+
+            const string Program = "SheetManUpdaterCheck";
+
+            string skeleton = Path.Combine(RepoLayout.Root, "test", "fixtures", "tools", "unreal-ubt");
+            string programDir = Path.Combine(engineRoot, "Engine", "Source", "Programs", Program);
+
+            try
+            {
+                if (Directory.Exists(programDir))
+                    Directory.Delete(programDir, recursive: true);
+
+                Directory.CreateDirectory(Path.Combine(programDir, "Private"));
+
+                foreach (string path in Directory.GetFiles(skeleton))
+                    File.Copy(path, Path.Combine(programDir, Path.GetFileName(path)));
+
+                File.Copy(Path.Combine(skeleton, "Private", Program + ".cpp"),
+                          Path.Combine(programDir, "Private", Program + ".cpp"), overwrite: true);
+
+                // The generated files, not the ones in lib/. What is compiled here is what a
+                // consumer's project would get.
+                foreach (var (from, to) in new[]
+                         {
+                             (Path.Combine(moduleDir, "Public", "SheetManUpdater.h"), "SheetManUpdater.h"),
+                             (Path.Combine(moduleDir, "Private", "SheetManUpdater.cpp"), "SheetManUpdater.cpp"),
+                         })
+                {
+                    if (!File.Exists(from))
+                    {
+                        return new ToolResult
+                        {
+                            Succeeded = false,
+                            Output = $"The module at {moduleDir} has no {Path.GetFileName(from)}. " +
+                                     "WriteUpdater has to be on for this scenario.",
+                        };
+                    }
+
+                    File.Copy(from, Path.Combine(programDir, "Private", to), overwrite: true);
+                }
+
+                var built = Execute("cmd.exe", engineRoot, "/c", build, Program, "Win64", "Development", "-WaitMutex");
+
+                if (!built.Succeeded)
+                    return built;
+
+                // Built is most of it, but a header that declares what the .cpp does not
+                // define links and then does nothing. Running it also checks the two pieces
+                // that can be checked without a server: the manifest parser and the hash.
+                string exe = Path.Combine(engineRoot, "Engine", "Binaries", "Win64", Program + ".exe");
+
+                return Execute(exe, Path.GetDirectoryName(exe));
+            }
+            finally
+            {
+                TryDelete(programDir);
+
+                foreach (string leftover in new[]
+                         {
+                             Path.Combine(engineRoot, "Engine", "Intermediate", "Build", "Win64", Program),
+                         })
+                {
+                    TryDelete(leftover);
+                }
+
+                foreach (string path in Directory.EnumerateFiles(
+                             Path.Combine(engineRoot, "Engine", "Binaries", "Win64"), Program + ".*"))
+                {
+                    try
+                    {
+                        File.Delete(path);
+                    }
+                    catch (IOException)
+                    {
+                    }
+                }
+            }
+        }
+
+        /// <summary>Removes a directory, and does not mind if it cannot.</summary>
+        private static void TryDelete(string directory)
+        {
+            try
+            {
+                if (Directory.Exists(directory))
+                    Directory.Delete(directory, recursive: true);
+            }
+            catch (IOException)
+            {
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
+        }
+
         public static ToolResult RunHeaderTool(
             string engineRoot, string moduleDir, string moduleName, string headerName)
         {

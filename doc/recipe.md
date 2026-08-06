@@ -127,7 +127,7 @@ sheetman --new-recipe my-recipe.json --template unity
 |`Edition`|Rust|`"2021"`|생성되는 `Cargo.toml`이 선언할 edition|
 |`WriteBuildFile`|Unreal|`true`|모듈의 `Build.cs`를 쓸 것인가. 의존성을 직접 관리한다면 `false`|
 |`UseStringEnum`|TypeScript|`false`|enum을 숫자 대신 문자열 유니온으로. 디버거와 로그에서 읽히지만 파일에 저장된 정수와는 어긋납니다|
-|`WriteUpdater`|C#|`false`|데이터 갱신기(`SheetManUpdater.cs`)를 함께 낼 것인가. CDN에서 바뀐 파일만 받아 로컬 사본을 최신으로 유지합니다 — 「[C# 가이드](languages/csharp.md#데이터만-갱신하기-writeupdater)」|
+|`WriteUpdater`|C#, Unreal|`false`|데이터 갱신기(`SheetManUpdater.cs`)를 함께 낼 것인가. CDN에서 바뀐 파일만 받아 로컬 사본을 최신으로 유지합니다 — 언리얼에서는 `Build.cs`에 `HTTP` 의존성이 함께 추가됩니다 — 「[C#](languages/csharp.md#데이터만-갱신하기-writeupdater)」·「[언리얼](languages/unreal.md#데이터만-갱신하기-writeupdater)」|
 
 ### 내보내기
 
