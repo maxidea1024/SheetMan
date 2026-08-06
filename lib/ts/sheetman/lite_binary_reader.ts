@@ -34,10 +34,10 @@
 
 /** Thrown when a table file is truncated, malformed, or not a table file. */
 export class LiteBinaryError extends Error {
-    constructor(message: string) {
-        super(message)
-        this.name = 'LiteBinaryError'
-    }
+  constructor(message: string) {
+    super(message)
+    this.name = 'LiteBinaryError'
+  }
 }
 
 /** Version stamped at the head of every table file by the exporter. */
@@ -59,14 +59,14 @@ export const KIND_VAR_ARRAY = 2
 
 /** One column as the file describes it. */
 export interface LiteBinaryColumn {
-    /** What identifies the column, instead of its position. */
-    tag: number
-    element: number
-    kind: number
-    /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
-    count: number
-    /** Total bytes of the column's block - what a skip advances by. */
-    byteLength: number
+  /** What identifies the column, instead of its position. */
+  tag: number
+  element: number
+  kind: number
+  /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
+  count: number
+  /** Total bytes of the column's block - what a skip advances by. */
+  byteLength: number
 }
 
 /** Ticks between 0001-01-01 and the Unix epoch. */
@@ -81,191 +81,191 @@ const TICKS_PER_MINUTE = 600000000n
 
 /** Sequential reader over a table file's bytes. */
 export class LiteBinaryReader {
-    private readonly data: Uint8Array
-    private readonly view: DataView
-    private offset = 0
+  private readonly data: Uint8Array
+  private readonly view: DataView
+  private offset = 0
 
-    constructor(data: Uint8Array) {
-        this.data = data
-        this.view = new DataView(data.buffer, data.byteOffset, data.byteLength)
+  constructor(data: Uint8Array) {
+    this.data = data
+    this.view = new DataView(data.buffer, data.byteOffset, data.byteLength)
+  }
+
+  get position(): number { return this.offset }
+
+  /**
+   * Advances past bytes without interpreting them: an unknown column's whole block.
+   * The column-oriented layout is what makes this one call the entirety of skipping.
+   */
+  skip(byteCount: number): void {
+    if (byteCount < 0 || byteCount > this.remaining) {
+      throw new LiteBinaryError(`cannot skip ${byteCount} bytes with ${this.remaining} remaining`)
+    }
+    this.offset += byteCount
+  }
+
+  // Promotions: a member reading a file element narrower than itself. Only the
+  // mathematically lossless directions exist; the column check already refused the rest.
+
+  /** An int32 member from i32 or varint. */
+  readI32As(element: number): number {
+    return element === ELEMENT_I32 ? this.readInt32() : this.readCounter32()
+  }
+
+  /** An int64 member from i64, i32 or varint. Always a bigint, as int64 is here. */
+  readI64As(element: number): bigint {
+    if (element === ELEMENT_I64) return this.readInt64()
+    if (element === ELEMENT_I32) return BigInt(this.readInt32())
+    return BigInt(this.readCounter32())
+  }
+
+  /** A double member from f64, f32 or i32 - all exact in a double. */
+  readF64As(element: number): number {
+    if (element === ELEMENT_F64) return this.readDouble()
+    if (element === ELEMENT_F32) return this.readFloat()
+    return this.readInt32()
+  }
+  get remaining(): number { return this.data.length - this.offset }
+
+  readFixed8(): number {
+    this.require(1)
+    return this.data[this.offset++]
+  }
+
+  readFixed32(): number {
+    this.require(4)
+    const value = this.view.getUint32(this.offset, true)
+    this.offset += 4
+    return value
+  }
+
+  readFixed64(): bigint {
+    this.require(8)
+    const value = this.view.getBigUint64(this.offset, true)
+    this.offset += 8
+    return value
+  }
+
+  readVarint32(): number {
+    let value = 0
+
+    for (let shift = 0; shift < 35; shift += 7) {
+      const byte = this.readFixed8()
+
+      // Shifting with `<<` is a 32-bit signed operation in JS, so the top
+      // bits of a five-byte varint would land in the sign. Multiplying keeps
+      // the arithmetic in the double range, where 32 bits fit exactly.
+      value += (byte & 0x7f) * Math.pow(2, shift)
+
+      if ((byte & 0x80) === 0) return value
     }
 
-    get position(): number { return this.offset }
+    throw new LiteBinaryError('varint32 is longer than five bytes')
+  }
 
-    /**
-     * Advances past bytes without interpreting them: an unknown column's whole block.
-     * The column-oriented layout is what makes this one call the entirety of skipping.
-     */
-    skip(byteCount: number): void {
-        if (byteCount < 0 || byteCount > this.remaining) {
-            throw new LiteBinaryError(`cannot skip ${byteCount} bytes with ${this.remaining} remaining`)
-        }
-        this.offset += byteCount
+  /**
+   * Zig-zag decoded int32: the encoding used for lengths and enum values, so
+   * small negatives cost as little as small positives.
+   */
+  readCounter32(): number {
+    const encoded = this.readVarint32()
+
+    // `>>> 1` then a conditional negate, rather than the usual xor: the xor
+    // form relies on 32-bit two's complement, which JS bitwise operators
+    // provide only for values that already fit in a signed 32-bit int.
+    const magnitude = Math.floor(encoded / 2)
+    return (encoded & 1) === 1 ? -(magnitude + 1) : magnitude
+  }
+
+  readBool(): boolean {
+    return this.readFixed8() !== 0
+  }
+
+  readInt32(): number {
+    this.require(4)
+    const value = this.view.getInt32(this.offset, true)
+    this.offset += 4
+    return value
+  }
+
+  /**
+   * A 64-bit integer, as a BigInt.
+   *
+   * Not a `number`: a double holds only 53 bits of mantissa, so anything past
+   * 2^53 comes back quietly wrong - which is exactly the class of corruption
+   * the writer itself once had.
+   */
+  readInt64(): bigint {
+    this.require(8)
+    const value = this.view.getBigInt64(this.offset, true)
+    this.offset += 8
+    return value
+  }
+
+  readFloat(): number {
+    this.require(4)
+    const value = this.view.getFloat32(this.offset, true)
+    this.offset += 4
+    return value
+  }
+
+  readDouble(): number {
+    this.require(8)
+    const value = this.view.getFloat64(this.offset, true)
+    this.offset += 8
+    return value
+  }
+
+  readString(): string {
+    const length = this.readCounter32()
+    if (length < 0) throw new LiteBinaryError('string length is negative')
+
+    this.require(length)
+
+    const bytes = this.data.subarray(this.offset, this.offset + length)
+    this.offset += length
+
+    return decodeUtf8(bytes)
+  }
+
+  /**
+   * A date, formatted the way the JSON export writes one, so both read paths
+   * of a generated table yield the same string.
+   */
+  readDateTime(): string {
+    return formatDateTimeTicks(this.readFixed64())
+  }
+
+  /**
+   * A duration, formatted the way the JSON export writes one.
+   *
+   * Read signed, unlike a date: a duration may be negative.
+   */
+  readTimeSpan(): string {
+    return formatTimeSpanTicks(this.readInt64())
+  }
+
+  /** A uuid in its canonical text form. */
+  readUuid(): string {
+    this.require(16)
+
+    const bytes = this.data.subarray(this.offset, this.offset + 16)
+    this.offset += 16
+
+    return formatUuid(bytes)
+  }
+
+  /** An enum value, which travels zig-zag encoded rather than fixed width. */
+  readEnum(): number {
+    return this.readCounter32()
+  }
+
+  private require(count: number): void {
+    if (this.remaining < count) {
+      throw new LiteBinaryError(
+        `table data ended after ${this.offset} of ${this.data.length} bytes ` +
+        `while ${count} more were expected`)
     }
-
-    // Promotions: a member reading a file element narrower than itself. Only the
-    // mathematically lossless directions exist; the column check already refused the rest.
-
-    /** An int32 member from i32 or varint. */
-    readI32As(element: number): number {
-        return element === ELEMENT_I32 ? this.readInt32() : this.readCounter32()
-    }
-
-    /** An int64 member from i64, i32 or varint. Always a bigint, as int64 is here. */
-    readI64As(element: number): bigint {
-        if (element === ELEMENT_I64) return this.readInt64()
-        if (element === ELEMENT_I32) return BigInt(this.readInt32())
-        return BigInt(this.readCounter32())
-    }
-
-    /** A double member from f64, f32 or i32 - all exact in a double. */
-    readF64As(element: number): number {
-        if (element === ELEMENT_F64) return this.readDouble()
-        if (element === ELEMENT_F32) return this.readFloat()
-        return this.readInt32()
-    }
-    get remaining(): number { return this.data.length - this.offset }
-
-    readFixed8(): number {
-        this.require(1)
-        return this.data[this.offset++]
-    }
-
-    readFixed32(): number {
-        this.require(4)
-        const value = this.view.getUint32(this.offset, true)
-        this.offset += 4
-        return value
-    }
-
-    readFixed64(): bigint {
-        this.require(8)
-        const value = this.view.getBigUint64(this.offset, true)
-        this.offset += 8
-        return value
-    }
-
-    readVarint32(): number {
-        let value = 0
-
-        for (let shift = 0; shift < 35; shift += 7) {
-            const byte = this.readFixed8()
-
-            // Shifting with `<<` is a 32-bit signed operation in JS, so the top
-            // bits of a five-byte varint would land in the sign. Multiplying keeps
-            // the arithmetic in the double range, where 32 bits fit exactly.
-            value += (byte & 0x7f) * Math.pow(2, shift)
-
-            if ((byte & 0x80) === 0) return value
-        }
-
-        throw new LiteBinaryError('varint32 is longer than five bytes')
-    }
-
-    /**
-     * Zig-zag decoded int32: the encoding used for lengths and enum values, so
-     * small negatives cost as little as small positives.
-     */
-    readCounter32(): number {
-        const encoded = this.readVarint32()
-
-        // `>>> 1` then a conditional negate, rather than the usual xor: the xor
-        // form relies on 32-bit two's complement, which JS bitwise operators
-        // provide only for values that already fit in a signed 32-bit int.
-        const magnitude = Math.floor(encoded / 2)
-        return (encoded & 1) === 1 ? -(magnitude + 1) : magnitude
-    }
-
-    readBool(): boolean {
-        return this.readFixed8() !== 0
-    }
-
-    readInt32(): number {
-        this.require(4)
-        const value = this.view.getInt32(this.offset, true)
-        this.offset += 4
-        return value
-    }
-
-    /**
-     * A 64-bit integer, as a BigInt.
-     *
-     * Not a `number`: a double holds only 53 bits of mantissa, so anything past
-     * 2^53 comes back quietly wrong - which is exactly the class of corruption
-     * the writer itself once had.
-     */
-    readInt64(): bigint {
-        this.require(8)
-        const value = this.view.getBigInt64(this.offset, true)
-        this.offset += 8
-        return value
-    }
-
-    readFloat(): number {
-        this.require(4)
-        const value = this.view.getFloat32(this.offset, true)
-        this.offset += 4
-        return value
-    }
-
-    readDouble(): number {
-        this.require(8)
-        const value = this.view.getFloat64(this.offset, true)
-        this.offset += 8
-        return value
-    }
-
-    readString(): string {
-        const length = this.readCounter32()
-        if (length < 0) throw new LiteBinaryError('string length is negative')
-
-        this.require(length)
-
-        const bytes = this.data.subarray(this.offset, this.offset + length)
-        this.offset += length
-
-        return decodeUtf8(bytes)
-    }
-
-    /**
-     * A date, formatted the way the JSON export writes one, so both read paths
-     * of a generated table yield the same string.
-     */
-    readDateTime(): string {
-        return formatDateTimeTicks(this.readFixed64())
-    }
-
-    /**
-     * A duration, formatted the way the JSON export writes one.
-     *
-     * Read signed, unlike a date: a duration may be negative.
-     */
-    readTimeSpan(): string {
-        return formatTimeSpanTicks(this.readInt64())
-    }
-
-    /** A uuid in its canonical text form. */
-    readUuid(): string {
-        this.require(16)
-
-        const bytes = this.data.subarray(this.offset, this.offset + 16)
-        this.offset += 16
-
-        return formatUuid(bytes)
-    }
-
-    /** An enum value, which travels zig-zag encoded rather than fixed width. */
-    readEnum(): number {
-        return this.readCounter32()
-    }
-
-    private require(count: number): void {
-        if (this.remaining < count) {
-            throw new LiteBinaryError(
-                `table data ended after ${this.offset} of ${this.data.length} bytes ` +
-                `while ${count} more were expected`)
-        }
-    }
+  }
 }
 
 /**
@@ -276,61 +276,61 @@ export class LiteBinaryReader {
  * not have.
  */
 export function readTableHeader(reader: LiteBinaryReader): { rowCount: number, columns: LiteBinaryColumn[] } {
-    const version = reader.readFixed32()
-    if (version !== BINARY_FILE_FORMAT_VERSION) {
-        throw new LiteBinaryError(
-            `table format version ${version} is not supported ` +
-            `(expected ${BINARY_FILE_FORMAT_VERSION})`)
+  const version = reader.readFixed32()
+  if (version !== BINARY_FILE_FORMAT_VERSION) {
+    throw new LiteBinaryError(
+      `table format version ${version} is not supported ` +
+      `(expected ${BINARY_FILE_FORMAT_VERSION})`)
+  }
+
+  const reserved = reader.readFixed8()
+  if (reserved !== 0) throw new LiteBinaryError('table declares unsupported features')
+
+  const rowCount = reader.readCounter32()
+  if (rowCount < 0) throw new LiteBinaryError('table row count is negative')
+
+  const columnCount = reader.readCounter32()
+  if (columnCount < 0) throw new LiteBinaryError('table column count is negative')
+
+  const columns: LiteBinaryColumn[] = []
+  for (let at = 0; at < columnCount; ++at) {
+    const tag = reader.readCounter32()
+    const wire = reader.readFixed8()
+    const count = reader.readCounter32()
+    const byteLength = reader.readFixed32()
+    columns.push({ tag, element: wire & 0x0f, kind: (wire >> 4) & 0x03, count, byteLength })
+  }
+
+  // What the descriptors say about the file, checked before anybody allocates for the
+  // row count. The blocks are all that follows the header, so their declared lengths have
+  // to add up to the bytes left, and every row costs at least one byte in every block - a
+  // varint's shortest form, an empty string's length prefix, a variable array's counter.
+  // A row count larger than that is one the exporter could not have written.
+
+  const available = reader.remaining
+  let declared = 0
+
+  for (const column of columns) {
+    if (column.byteLength < 0 || column.byteLength > available - declared) {
+      throw new LiteBinaryError(
+        `column tag ${column.tag} declares ${column.byteLength} bytes, which the file cannot hold`)
     }
 
-    const reserved = reader.readFixed8()
-    if (reserved !== 0) throw new LiteBinaryError('table declares unsupported features')
+    declared += column.byteLength
 
-    const rowCount = reader.readCounter32()
-    if (rowCount < 0) throw new LiteBinaryError('table row count is negative')
-
-    const columnCount = reader.readCounter32()
-    if (columnCount < 0) throw new LiteBinaryError('table column count is negative')
-
-    const columns: LiteBinaryColumn[] = []
-    for (let at = 0; at < columnCount; ++at) {
-        const tag = reader.readCounter32()
-        const wire = reader.readFixed8()
-        const count = reader.readCounter32()
-        const byteLength = reader.readFixed32()
-        columns.push({ tag, element: wire & 0x0f, kind: (wire >> 4) & 0x03, count, byteLength })
+    if (rowCount > column.byteLength) {
+      throw new LiteBinaryError(
+        `the row count ${rowCount} is larger than column tag ${column.tag} can hold in ` +
+        `its ${column.byteLength} bytes`)
     }
+  }
 
-    // What the descriptors say about the file, checked before anybody allocates for the
-    // row count. The blocks are all that follows the header, so their declared lengths have
-    // to add up to the bytes left, and every row costs at least one byte in every block - a
-    // varint's shortest form, an empty string's length prefix, a variable array's counter.
-    // A row count larger than that is one the exporter could not have written.
+  if (declared !== available) {
+    throw new LiteBinaryError(
+      `the columns declare ${declared} bytes but ${available} follow the header`)
+  }
 
-    const available = reader.remaining
-    let declared = 0
-
-    for (const column of columns) {
-        if (column.byteLength < 0 || column.byteLength > available - declared) {
-            throw new LiteBinaryError(
-                `column tag ${column.tag} declares ${column.byteLength} bytes, which the file cannot hold`)
-        }
-
-        declared += column.byteLength
-
-        if (rowCount > column.byteLength) {
-            throw new LiteBinaryError(
-                `the row count ${rowCount} is larger than column tag ${column.tag} can hold in ` +
-                `its ${column.byteLength} bytes`)
-        }
-    }
-
-    if (declared !== available) {
-        throw new LiteBinaryError(
-            `the columns declare ${declared} bytes but ${available} follow the header`)
-    }
-
-    return { rowCount, columns }
+  return { rowCount, columns }
 }
 
 /**
@@ -338,19 +338,19 @@ export function readTableHeader(reader: LiteBinaryReader): { rowCount: number, c
  * Refusal is by name and both types, never by reading anyway.
  */
 export function checkColumn(
-    column: LiteBinaryColumn, fieldName: string, kind: number, count: number, accepted: number[]): void {
-    if (column.kind !== kind || (kind !== KIND_VAR_ARRAY && column.count !== count)) {
-        throw new LiteBinaryError(
-            `${fieldName}: the file's column (kind ${column.kind}, count ${column.count}) does not ` +
-            `match the generated member (kind ${kind}, count ${count}). The schema changed shape; ` +
-            'regenerate the code or rebuild the data.')
-    }
-    if (!accepted.includes(column.element)) {
-        throw new LiteBinaryError(
-            `${fieldName}: the file carries element type ${column.element}, which this member ` +
-            `cannot read (accepts: ${accepted.join(', ')}). The column changed type incompatibly; ` +
-            'regenerate the code or rebuild the data.')
-    }
+  column: LiteBinaryColumn, fieldName: string, kind: number, count: number, accepted: number[]): void {
+  if (column.kind !== kind || (kind !== KIND_VAR_ARRAY && column.count !== count)) {
+    throw new LiteBinaryError(
+      `${fieldName}: the file's column (kind ${column.kind}, count ${column.count}) does not ` +
+      `match the generated member (kind ${kind}, count ${count}). The schema changed shape; ` +
+      'regenerate the code or rebuild the data.')
+  }
+  if (!accepted.includes(column.element)) {
+    throw new LiteBinaryError(
+      `${fieldName}: the file carries element type ${column.element}, which this member ` +
+      `cannot read (accepts: ${accepted.join(', ')}). The column changed type incompatibly; ` +
+      'regenerate the code or rebuild the data.')
+  }
 }
 
 /**
@@ -358,11 +358,11 @@ export function checkColumn(
  * here names the column instead of corrupting the next.
  */
 export function checkBlockEnd(reader: LiteBinaryReader, column: LiteBinaryColumn, expectedEnd: number): void {
-    if (reader.position !== expectedEnd) {
-        throw new LiteBinaryError(
-            `column tag ${column.tag}: its block declared ${column.byteLength} bytes but the read ` +
-            `ended ${expectedEnd - reader.position} bytes short of its boundary`)
-    }
+  if (reader.position !== expectedEnd) {
+    throw new LiteBinaryError(
+      `column tag ${column.tag}: its block declared ${column.byteLength} bytes but the read ` +
+      `ended ${expectedEnd - reader.position} bytes short of its boundary`)
+  }
 }
 
 // Declared here rather than pulled from @types/node.
@@ -380,8 +380,8 @@ declare function require(moduleName: string): any
  * readBinaryFrom in that case.
  */
 export function readAllBytes(filename: string): Uint8Array {
-    const fs = require('fs')
-    return new Uint8Array(fs.readFileSync(filename))
+  const fs = require('fs')
+  return new Uint8Array(fs.readFileSync(filename))
 }
 
 // --------------------------------------------------------------- formatting
@@ -393,36 +393,36 @@ export function readAllBytes(filename: string): Uint8Array {
  * fallback so the reader does not depend on the host providing it.
  */
 function decodeUtf8(bytes: Uint8Array): string {
-    if (typeof TextDecoder !== 'undefined') {
-        return new TextDecoder('utf-8').decode(bytes)
+  if (typeof TextDecoder !== 'undefined') {
+    return new TextDecoder('utf-8').decode(bytes)
+  }
+
+  let out = ''
+  let i = 0
+
+  while (i < bytes.length) {
+    const b0 = bytes[i++]
+
+    if (b0 < 0x80) {
+      out += String.fromCharCode(b0)
+    } else if (b0 < 0xe0) {
+      out += String.fromCharCode(((b0 & 0x1f) << 6) | (bytes[i++] & 0x3f))
+    } else if (b0 < 0xf0) {
+      out += String.fromCharCode(
+        ((b0 & 0x0f) << 12) | ((bytes[i++] & 0x3f) << 6) | (bytes[i++] & 0x3f))
+    } else {
+      const codePoint =
+        ((b0 & 0x07) << 18) | ((bytes[i++] & 0x3f) << 12) |
+        ((bytes[i++] & 0x3f) << 6) | (bytes[i++] & 0x3f)
+      out += String.fromCodePoint(codePoint)
     }
+  }
 
-    let out = ''
-    let i = 0
-
-    while (i < bytes.length) {
-        const b0 = bytes[i++]
-
-        if (b0 < 0x80) {
-            out += String.fromCharCode(b0)
-        } else if (b0 < 0xe0) {
-            out += String.fromCharCode(((b0 & 0x1f) << 6) | (bytes[i++] & 0x3f))
-        } else if (b0 < 0xf0) {
-            out += String.fromCharCode(
-                ((b0 & 0x0f) << 12) | ((bytes[i++] & 0x3f) << 6) | (bytes[i++] & 0x3f))
-        } else {
-            const codePoint =
-                ((b0 & 0x07) << 18) | ((bytes[i++] & 0x3f) << 12) |
-                ((bytes[i++] & 0x3f) << 6) | (bytes[i++] & 0x3f)
-            out += String.fromCodePoint(codePoint)
-        }
-    }
-
-    return out
+  return out
 }
 
 function pad(value: number, width: number): string {
-    return value.toString().padStart(width, '0')
+  return value.toString().padStart(width, '0')
 }
 
 /**
@@ -433,31 +433,31 @@ function pad(value: number, width: number): string {
  * export writes for a DateTime of unspecified kind.
  */
 function formatDateTimeTicks(ticks: bigint): string {
-    const sinceEpoch = ticks - UNIX_EPOCH_TICKS
+  const sinceEpoch = ticks - UNIX_EPOCH_TICKS
 
-    // Split before converting, so the sub-second part keeps full tick resolution
-    // rather than being rounded into a millisecond.
-    let seconds = sinceEpoch / TICKS_PER_SECOND
-    let subTicks = sinceEpoch % TICKS_PER_SECOND
+  // Split before converting, so the sub-second part keeps full tick resolution
+  // rather than being rounded into a millisecond.
+  let seconds = sinceEpoch / TICKS_PER_SECOND
+  let subTicks = sinceEpoch % TICKS_PER_SECOND
 
-    if (subTicks < 0n) {
-        subTicks += TICKS_PER_SECOND
-        seconds -= 1n
-    }
+  if (subTicks < 0n) {
+    subTicks += TICKS_PER_SECOND
+    seconds -= 1n
+  }
 
-    // Read the calendar fields in UTC: the value carries no offset, so treating it
-    // as UTC and reading it back the same way round-trips the wall clock exactly.
-    const date = new Date(Number(seconds) * 1000)
+  // Read the calendar fields in UTC: the value carries no offset, so treating it
+  // as UTC and reading it back the same way round-trips the wall clock exactly.
+  const date = new Date(Number(seconds) * 1000)
 
-    const text =
-        `${pad(date.getUTCFullYear(), 4)}-${pad(date.getUTCMonth() + 1, 2)}-${pad(date.getUTCDate(), 2)}` +
-        `T${pad(date.getUTCHours(), 2)}:${pad(date.getUTCMinutes(), 2)}:${pad(date.getUTCSeconds(), 2)}`
+  const text =
+    `${pad(date.getUTCFullYear(), 4)}-${pad(date.getUTCMonth() + 1, 2)}-${pad(date.getUTCDate(), 2)}` +
+    `T${pad(date.getUTCHours(), 2)}:${pad(date.getUTCMinutes(), 2)}:${pad(date.getUTCSeconds(), 2)}`
 
-    if (subTicks === 0n) return text
+  if (subTicks === 0n) return text
 
-    // Seven digits with trailing zeros trimmed, which is how .NET renders a
-    // fractional second.
-    return `${text}.${subTicks.toString().padStart(7, '0').replace(/0+$/, '')}`
+  // Seven digits with trailing zeros trimmed, which is how .NET renders a
+  // fractional second.
+  return `${text}.${subTicks.toString().padStart(7, '0').replace(/0+$/, '')}`
 }
 
 /**
@@ -465,28 +465,28 @@ function formatDateTimeTicks(ticks: bigint): string {
  * `[-][d.]hh:mm:ss[.fffffff]`.
  */
 function formatTimeSpanTicks(ticks: bigint): string {
-    const negative = ticks < 0n
-    let remaining = negative ? -ticks : ticks
+  const negative = ticks < 0n
+  let remaining = negative ? -ticks : ticks
 
-    const days = remaining / TICKS_PER_DAY
-    remaining %= TICKS_PER_DAY
+  const days = remaining / TICKS_PER_DAY
+  remaining %= TICKS_PER_DAY
 
-    const hours = remaining / TICKS_PER_HOUR
-    remaining %= TICKS_PER_HOUR
+  const hours = remaining / TICKS_PER_HOUR
+  remaining %= TICKS_PER_HOUR
 
-    const minutes = remaining / TICKS_PER_MINUTE
-    remaining %= TICKS_PER_MINUTE
+  const minutes = remaining / TICKS_PER_MINUTE
+  remaining %= TICKS_PER_MINUTE
 
-    const seconds = remaining / TICKS_PER_SECOND
-    const subTicks = remaining % TICKS_PER_SECOND
+  const seconds = remaining / TICKS_PER_SECOND
+  const subTicks = remaining % TICKS_PER_SECOND
 
-    let text = `${pad(Number(hours), 2)}:${pad(Number(minutes), 2)}:${pad(Number(seconds), 2)}`
+  let text = `${pad(Number(hours), 2)}:${pad(Number(minutes), 2)}:${pad(Number(seconds), 2)}`
 
-    // Days and the fraction are both omitted when zero, as .NET does.
-    if (days !== 0n) text = `${days}.${text}`
-    if (subTicks !== 0n) text += `.${subTicks.toString().padStart(7, '0').replace(/0+$/, '')}`
+  // Days and the fraction are both omitted when zero, as .NET does.
+  if (days !== 0n) text = `${days}.${text}`
+  if (subTicks !== 0n) text += `.${subTicks.toString().padStart(7, '0').replace(/0+$/, '')}`
 
-    return negative ? `-${text}` : text
+  return negative ? `-${text}` : text
 }
 
 /**
@@ -497,14 +497,14 @@ function formatTimeSpanTicks(ticks: bigint): string {
  * below accounts for.
  */
 function formatUuid(bytes: Uint8Array): string {
-    const order = [3, 2, 1, 0, 5, 4, 7, 6, 8, 9, 10, 11, 12, 13, 14, 15]
+  const order = [3, 2, 1, 0, 5, 4, 7, 6, 8, 9, 10, 11, 12, 13, 14, 15]
 
-    let out = ''
+  let out = ''
 
-    for (let i = 0; i < 16; i++) {
-        if (i === 4 || i === 6 || i === 8 || i === 10) out += '-'
-        out += bytes[order[i]].toString(16).padStart(2, '0')
-    }
+  for (let i = 0; i < 16; i++) {
+    if (i === 4 || i === 6 || i === 8 || i === 10) out += '-'
+    out += bytes[order[i]].toString(16).padStart(2, '0')
+  }
 
-    return out
+  return out
 }

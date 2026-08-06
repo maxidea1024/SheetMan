@@ -14,27 +14,27 @@ import { Grade } from '../enums/Grade'
 // Generated from test/fixtures/xlsx/core\core.xlsx : Consts : B2
 /** Assorted tuning constants. */
 export class GameConfig {
-    /** level cap */
-    public static readonly maxLevel: number = 100
+  /** level cap */
+  public static readonly maxLevel: number = 100
 
-    /** gold granted to new accounts */
-    public static readonly startGold: bigint = 1000n
+  /** gold granted to new accounts */
+  public static readonly startGold: bigint = 1000n
 
-    /** base drop rate */
-    public static readonly dropRate: number = 0.25
+  /** base drop rate */
+  public static readonly dropRate: number = 0.25
 
-    /** whether debug hooks are active */
-    public static readonly debugMode: boolean = false
+  /** whether debug hooks are active */
+  public static readonly debugMode: boolean = false
 
-    /** grade assigned when unspecified */
-    public static readonly defaultGrade: Grade = Grade.Rare
+  /** grade assigned when unspecified */
+  public static readonly defaultGrade: Grade = Grade.Rare
 
-    /** when the season opens */
-    public static readonly seasonStart: string = '2022-03-01T09:00:00.0000000'
+  /** when the season opens */
+  public static readonly seasonStart: string = '2022-03-01T09:00:00.0000000'
 
-    /** length of one round */
-    public static readonly roundLength: string = '00:05:00'
+  /** length of one round */
+  public static readonly roundLength: string = '00:05:00'
 
-    /** identifies this data build */
-    public static readonly buildId: string = '6f9619ff-8b86-d011-b42d-00c04fc964ff'
+  /** identifies this data build */
+  public static readonly buildId: string = '6f9619ff-8b86-d011-b42d-00c04fc964ff'
 }

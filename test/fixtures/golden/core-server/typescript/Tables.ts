@@ -18,90 +18,90 @@ import { ServerTuningTable } from './tables/ServerTuning'
 
 /** Tables */
 export class Tables {
-    /** Peroperty for table TestFieldTypes */
-    public get testFieldTypes(): TestFieldTypesTable { return this._testFieldTypes }
-    private _testFieldTypes: TestFieldTypesTable = new TestFieldTypesTable()
+  /** Peroperty for table TestFieldTypes */
+  public get testFieldTypes(): TestFieldTypesTable { return this._testFieldTypes }
+  private _testFieldTypes: TestFieldTypesTable = new TestFieldTypesTable()
 
-    /** Peroperty for table ItemCategory */
-    public get itemCategory(): ItemCategoryTable { return this._itemCategory }
-    private _itemCategory: ItemCategoryTable = new ItemCategoryTable()
+  /** Peroperty for table ItemCategory */
+  public get itemCategory(): ItemCategoryTable { return this._itemCategory }
+  private _itemCategory: ItemCategoryTable = new ItemCategoryTable()
 
-    /** Peroperty for table Item */
-    public get item(): ItemTable { return this._item }
-    private _item: ItemTable = new ItemTable()
+  /** Peroperty for table Item */
+  public get item(): ItemTable { return this._item }
+  private _item: ItemTable = new ItemTable()
 
-    /** Peroperty for table Localization */
-    public get localization(): LocalizationTable { return this._localization }
-    private _localization: LocalizationTable = new LocalizationTable()
+  /** Peroperty for table Localization */
+  public get localization(): LocalizationTable { return this._localization }
+  private _localization: LocalizationTable = new LocalizationTable()
 
-    /** Peroperty for table ArrayTypes */
-    public get arrayTypes(): ArrayTypesTable { return this._arrayTypes }
-    private _arrayTypes: ArrayTypesTable = new ArrayTypesTable()
+  /** Peroperty for table ArrayTypes */
+  public get arrayTypes(): ArrayTypesTable { return this._arrayTypes }
+  private _arrayTypes: ArrayTypesTable = new ArrayTypesTable()
 
-    /** Peroperty for table ServerTuning */
-    public get serverTuning(): ServerTuningTable { return this._serverTuning }
-    private _serverTuning: ServerTuningTable = new ServerTuningTable()
+  /** Peroperty for table ServerTuning */
+  public get serverTuning(): ServerTuningTable { return this._serverTuning }
+  private _serverTuning: ServerTuningTable = new ServerTuningTable()
 
-    /**
-     * Read all tables asynchronously.
-     *
-     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
-     * data files were renamed after export.
-     */
-    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
-        const testFieldTypes = new TestFieldTypesTable()
-        await testFieldTypes.read(path.join(basePath, `TestFieldTypes${fileExtension}`))
-        const itemCategory = new ItemCategoryTable()
-        await itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
-        const item = new ItemTable()
-        await item.read(path.join(basePath, `Item${fileExtension}`))
-        const localization = new LocalizationTable()
-        await localization.read(path.join(basePath, `Localization${fileExtension}`))
-        const arrayTypes = new ArrayTypesTable()
-        await arrayTypes.read(path.join(basePath, `ArrayTypes${fileExtension}`))
-        const serverTuning = new ServerTuningTable()
-        await serverTuning.read(path.join(basePath, `ServerTuning${fileExtension}`))
+  /**
+   * Read all tables asynchronously.
+   *
+   * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+   * data files were renamed after export.
+   */
+  public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+    const testFieldTypes = new TestFieldTypesTable()
+    await testFieldTypes.read(path.join(basePath, `TestFieldTypes${fileExtension}`))
+    const itemCategory = new ItemCategoryTable()
+    await itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
+    const item = new ItemTable()
+    await item.read(path.join(basePath, `Item${fileExtension}`))
+    const localization = new LocalizationTable()
+    await localization.read(path.join(basePath, `Localization${fileExtension}`))
+    const arrayTypes = new ArrayTypesTable()
+    await arrayTypes.read(path.join(basePath, `ArrayTypes${fileExtension}`))
+    const serverTuning = new ServerTuningTable()
+    await serverTuning.read(path.join(basePath, `ServerTuning${fileExtension}`))
 
-        this.publish(testFieldTypes, itemCategory, item, localization, arrayTypes, serverTuning)
-    }
+    this.publish(testFieldTypes, itemCategory, item, localization, arrayTypes, serverTuning)
+  }
 
-    /** Read all tables synchronously. */
-    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
-        const testFieldTypes = new TestFieldTypesTable()
-        testFieldTypes.readSync(path.join(basePath, `TestFieldTypes${fileExtension}`))
-        const itemCategory = new ItemCategoryTable()
-        itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
-        const item = new ItemTable()
-        item.readSync(path.join(basePath, `Item${fileExtension}`))
-        const localization = new LocalizationTable()
-        localization.readSync(path.join(basePath, `Localization${fileExtension}`))
-        const arrayTypes = new ArrayTypesTable()
-        arrayTypes.readSync(path.join(basePath, `ArrayTypes${fileExtension}`))
-        const serverTuning = new ServerTuningTable()
-        serverTuning.readSync(path.join(basePath, `ServerTuning${fileExtension}`))
+  /** Read all tables synchronously. */
+  public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+    const testFieldTypes = new TestFieldTypesTable()
+    testFieldTypes.readSync(path.join(basePath, `TestFieldTypes${fileExtension}`))
+    const itemCategory = new ItemCategoryTable()
+    itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
+    const item = new ItemTable()
+    item.readSync(path.join(basePath, `Item${fileExtension}`))
+    const localization = new LocalizationTable()
+    localization.readSync(path.join(basePath, `Localization${fileExtension}`))
+    const arrayTypes = new ArrayTypesTable()
+    arrayTypes.readSync(path.join(basePath, `ArrayTypes${fileExtension}`))
+    const serverTuning = new ServerTuningTable()
+    serverTuning.readSync(path.join(basePath, `ServerTuning${fileExtension}`))
 
-        this.publish(testFieldTypes, itemCategory, item, localization, arrayTypes, serverTuning)
-    }
+    this.publish(testFieldTypes, itemCategory, item, localization, arrayTypes, serverTuning)
+  }
 
-    /**
-     * Publishes one whole load.
-     *
-     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
-     * here only once every file has been read. A failure anywhere leaves every table holding
-     * what it held, which is the answer a running program wants: the data it already had, and
-     * an exception saying why the new data was not taken.
-     */
-    private publish(testFieldTypes: TestFieldTypesTable, itemCategory: ItemCategoryTable, item: ItemTable, localization: LocalizationTable, arrayTypes: ArrayTypesTable, serverTuning: ServerTuningTable): void {
-        this._testFieldTypes = testFieldTypes
-        this._itemCategory = itemCategory
-        this._item = item
-        this._localization = localization
-        this._arrayTypes = arrayTypes
-        this._serverTuning = serverTuning
+  /**
+   * Publishes one whole load.
+   *
+   * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+   * here only once every file has been read. A failure anywhere leaves every table holding
+   * what it held, which is the answer a running program wants: the data it already had, and
+   * an exception saying why the new data was not taken.
+   */
+  private publish(testFieldTypes: TestFieldTypesTable, itemCategory: ItemCategoryTable, item: ItemTable, localization: LocalizationTable, arrayTypes: ArrayTypesTable, serverTuning: ServerTuningTable): void {
+    this._testFieldTypes = testFieldTypes
+    this._itemCategory = itemCategory
+    this._item = item
+    this._localization = localization
+    this._arrayTypes = arrayTypes
+    this._serverTuning = serverTuning
 
-        this.solveCrossReferences()
-    }
+    this.solveCrossReferences()
+  }
 
-    private solveCrossReferences(): void {
-    }
+  private solveCrossReferences(): void {
+  }
 }

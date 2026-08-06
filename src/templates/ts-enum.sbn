@@ -7,12 +7,12 @@
 export enum {{ name }} {
 {{~ for label in labels ~}}
 {{~ for line in label.comment ~}}
-    {{ line }}
+  {{ line }}
 {{~ end ~}}
 {{~ if label.is_last ~}}
-    {{ label.name }} = {{ label.value }}
+  {{ label.name }} = {{ label.value }}
 {{~ else ~}}
-    {{ label.name }} = {{ label.value }},
+  {{ label.name }} = {{ label.value }},
 {{~ end ~}}
 {{~ end ~}}
 }

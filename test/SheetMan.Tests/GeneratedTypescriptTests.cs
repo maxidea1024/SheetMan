@@ -100,6 +100,12 @@ namespace SheetMan.Tests
             // requiring an npm install of @types/node on every run.
             File.WriteAllText(Path.Combine(checkDir, "ambient.d.ts"), @"declare module 'fs'
 declare module 'path'
+declare module 'crypto'
+declare function fetch(url: string, init?: any): Promise<any>
+declare function setTimeout(handler: any, timeout?: number): any
+declare function clearTimeout(handle: any): void
+declare class AbortController { signal: any; abort(): void }
+declare class TextDecoder { decode(input?: any): string }
 ");
 
             string generated = generatedDir.Replace('\\', '/');

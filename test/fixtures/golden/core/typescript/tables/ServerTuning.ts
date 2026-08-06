@@ -12,203 +12,203 @@ import * as sheetman from '../sheetman/lite_binary_reader'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
-    index: number
-    key: string
-    amount: number
+  index: number
+  key: string
+  amount: number
 }
 
 // Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
 /** Server-only table. Must not appear in client output. */
 export class ServerTuningRecord {
-    /** Default constructor */
-    constructor() {
-    }
+  /** Default constructor */
+  constructor() {
+  }
 
-    /** primary index */
-    public get index(): number { return this._index }
+  /** primary index */
+  public get index(): number { return this._index }
 
-    /** tuning key */
-    public get key(): string { return this._key }
+  /** tuning key */
+  public get key(): string { return this._key }
 
-    /** tuning amount */
-    public get amount(): number { return this._amount }
+  /** tuning amount */
+  public get amount(): number { return this._amount }
 
-    public _index: number = 0
-    public _key: string = ''
-    public _amount: number = 0
+  public _index: number = 0
+  public _key: string = ''
+  public _amount: number = 0
 
-    /** Populate field values. */
-    public populateFieldValues(dataRow: IDataRow): void {
-        this._index = dataRow.index
-        this._key = dataRow.key
-        this._amount = dataRow.amount
-    }
+  /** Populate field values. */
+  public populateFieldValues(dataRow: IDataRow): void {
+    this._index = dataRow.index
+    this._key = dataRow.key
+    this._amount = dataRow.amount
+  }
 
-    /** Populate field values. */
-    public populateFieldValuesCompact(dataRow: any[]): void {
-        let offset = 0
-        this._index = dataRow[offset++]
-        this._key = dataRow[offset++]
-        this._amount = dataRow[offset++]
-    }
+  /** Populate field values. */
+  public populateFieldValuesCompact(dataRow: any[]): void {
+    let offset = 0
+    this._index = dataRow[offset++]
+    this._key = dataRow[offset++]
+    this._amount = dataRow[offset++]
+  }
 }
 
 // Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
 /** Server-only table. Must not appear in client output. */
 export class ServerTuningTable {
-    /** Default constructor. */
-    constructor() {
+  /** Default constructor. */
+  constructor() {
+  }
+
+  /** All records. */
+  public get records(): ServerTuningRecord[] { return this._records }
+  private _records: ServerTuningRecord[] = []
+
+  // Indexing by 'index'
+  public get recordsByIndex(): Map<number, ServerTuningRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, ServerTuningRecord> = new Map<number, ServerTuningRecord>()
+
+  /** Gets the value associated with the specified key. throw Error if not found. */
+  public getByIndex(key: number): ServerTuningRecord {
+    const found = this._recordsByIndex.get(key)
+    if (!found)
+      throw new Error(`There is no record in table "ServerTuning" that corresponds to field "index" value ${key}`)
+
+    return found
+  }
+
+  /** Gets the value associated with the specified key. */
+  public tryGetByIndex(key: number): ServerTuningRecord | undefined {
+    return this._recordsByIndex.get(key)
+  }
+
+  /** Determines whether the table contains the specified key. */
+  public containsIndex(key: number): boolean {
+    return !!this._recordsByIndex.has(key)
+  }
+
+  /** Read a table from specified file. */
+  public async read(filename: string): Promise<void> {
+    const json = await fs.promises.readFile(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  /** Read a table from specified file synchronously. */
+  public readSync(filename: string): void {
+    const json = fs.readFileSync(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  private readFromJson(json: string): void {
+    const dataRows: any[] = JSON.parse(json)
+    const records: ServerTuningRecord[] = []
+
+    if (this.isCompactRowFormatted(dataRows)) {
+      for (const dataRow of dataRows) {
+        const record = new ServerTuningRecord()
+        record.populateFieldValuesCompact(dataRow)
+        records.push(record)
+      }
+    } else {
+      for (const dataRow of dataRows as IDataRow[]) {
+        const record = new ServerTuningRecord()
+        record.populateFieldValues(dataRow)
+        records.push(record)
+      }
     }
 
-    /** All records. */
-    public get records(): ServerTuningRecord[] { return this._records }
-    private _records: ServerTuningRecord[] = []
+    this.publish(records)
+  }
 
-    // Indexing by 'index'
-    public get recordsByIndex(): Map<number, ServerTuningRecord> { return this._recordsByIndex }
-    private _recordsByIndex: Map<number, ServerTuningRecord> = new Map<number, ServerTuningRecord>()
+  private isCompactRowFormatted(rows: any[]): boolean {
+    return rows.length > 0 && Array.isArray(rows[0])
+  }
 
-    /** Gets the value associated with the specified key. throw Error if not found. */
-    public getByIndex(key: number): ServerTuningRecord {
-        const found = this._recordsByIndex.get(key)
-        if (!found)
-            throw new Error(`There is no record in table "ServerTuning" that corresponds to field "index" value ${key}`)
+  /** Read a table from a binary .table file. */
+  public readBinarySync(filename: string): void
+  {
+    this.readBinaryFrom(sheetman.readAllBytes(filename))
+  }
 
-        return found
-    }
+  /**
+   * Read a table from binary data already in memory.
+   *
+   * Column by column, matched by tag rather than position: a column this build does not
+   * know is skipped by its block length, and one whose type changed incompatibly fails
+   * naming the field.
+   */
+  public readBinaryFrom(data: Uint8Array): void
+  {
+    const reader = new sheetman.LiteBinaryReader(data)
+    const { rowCount, columns } = sheetman.readTableHeader(reader)
 
-    /** Gets the value associated with the specified key. */
-    public tryGetByIndex(key: number): ServerTuningRecord | undefined {
-        return this._recordsByIndex.get(key)
-    }
+    // Built here and published at the end, so a file that turns out to be truncated - or
+    // a column this build cannot read - leaves the rows already loaded exactly as they are.
+    const records: ServerTuningRecord[] = []
+    for (let i = 0; i < rowCount; ++i)
+      records.push(new ServerTuningRecord())
 
-    /** Determines whether the table contains the specified key. */
-    public containsIndex(key: number): boolean {
-        return !!this._recordsByIndex.has(key)
-    }
-
-    /** Read a table from specified file. */
-    public async read(filename: string): Promise<void> {
-        const json = await fs.promises.readFile(filename, "utf8")
-        this.readFromJson(json)
-    }
-
-    /** Read a table from specified file synchronously. */
-    public readSync(filename: string): void {
-        const json = fs.readFileSync(filename, "utf8")
-        this.readFromJson(json)
-    }
-
-    private readFromJson(json: string): void {
-        const dataRows: any[] = JSON.parse(json)
-        const records: ServerTuningRecord[] = []
-
-        if (this.isCompactRowFormatted(dataRows)) {
-            for (const dataRow of dataRows) {
-                const record = new ServerTuningRecord()
-                record.populateFieldValuesCompact(dataRow)
-                records.push(record)
-            }
-        } else {
-            for (const dataRow of dataRows as IDataRow[]) {
-                const record = new ServerTuningRecord()
-                record.populateFieldValues(dataRow)
-                records.push(record)
-            }
-        }
-
-        this.publish(records)
-    }
-
-    private isCompactRowFormatted(rows: any[]): boolean {
-        return rows.length > 0 && Array.isArray(rows[0])
-    }
-
-    /** Read a table from a binary .table file. */
-    public readBinarySync(filename: string): void
+    for (const column of columns)
     {
-        this.readBinaryFrom(sheetman.readAllBytes(filename))
+      const blockEnd = reader.position + column.byteLength
+
+      switch (column.tag)
+      {
+        case 1:
+          sheetman.checkColumn(column, 'ServerTuning.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._index = reader.readI32As(column.element)
+          }
+          break
+        case 2:
+          sheetman.checkColumn(column, 'ServerTuning.Key', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._key = reader.readString()
+          }
+          break
+        case 3:
+          sheetman.checkColumn(column, 'ServerTuning.Amount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._amount = reader.readI32As(column.element)
+          }
+          break
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byteLength)
+          break
+      }
+
+      sheetman.checkBlockEnd(reader, column, blockEnd)
     }
 
-    /**
-     * Read a table from binary data already in memory.
-     *
-     * Column by column, matched by tag rather than position: a column this build does not
-     * know is skipped by its block length, and one whose type changed incompatibly fails
-     * naming the field.
-     */
-    public readBinaryFrom(data: Uint8Array): void
+    this.publish(records)
+  }
+
+  /** Index mapping. */
+  /**
+   * Publishes one whole load: the rows and the lookups built from them, together.
+   *
+   * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
+   * consumers were holding: the rows were appended to or emptied first, so a read that threw
+   * partway left the table holding some of the new data and none of the old. Everything above
+   * builds its own arrays and gets here only if it finished, and this replaces the references
+   * in one step. Whoever took `records` before still has the previous load, whole.
+   */
+  private publish(records: ServerTuningRecord[]): void {
+    const recordsByIndex = new Map<number, ServerTuningRecord>()
+
+    for (const record of records)
     {
-        const reader = new sheetman.LiteBinaryReader(data)
-        const { rowCount, columns } = sheetman.readTableHeader(reader)
-
-        // Built here and published at the end, so a file that turns out to be truncated - or
-        // a column this build cannot read - leaves the rows already loaded exactly as they are.
-        const records: ServerTuningRecord[] = []
-        for (let i = 0; i < rowCount; ++i)
-            records.push(new ServerTuningRecord())
-
-        for (const column of columns)
-        {
-            const blockEnd = reader.position + column.byteLength
-
-            switch (column.tag)
-            {
-                case 1:
-                    sheetman.checkColumn(column, 'ServerTuning.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._index = reader.readI32As(column.element)
-                    }
-                    break
-                case 2:
-                    sheetman.checkColumn(column, 'ServerTuning.Key', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._key = reader.readString()
-                    }
-                    break
-                case 3:
-                    sheetman.checkColumn(column, 'ServerTuning.Amount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._amount = reader.readI32As(column.element)
-                    }
-                    break
-                default:
-                    // A column added after this code was generated.
-                    reader.skip(column.byteLength)
-                    break
-            }
-
-            sheetman.checkBlockEnd(reader, column, blockEnd)
-        }
-
-        this.publish(records)
+      recordsByIndex.set(record.index, record)
     }
 
-    /** Index mapping. */
-    /**
-     * Publishes one whole load: the rows and the lookups built from them, together.
-     *
-     * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
-     * consumers were holding: the rows were appended to or emptied first, so a read that threw
-     * partway left the table holding some of the new data and none of the old. Everything above
-     * builds its own arrays and gets here only if it finished, and this replaces the references
-     * in one step. Whoever took `records` before still has the previous load, whole.
-     */
-    private publish(records: ServerTuningRecord[]): void {
-        const recordsByIndex = new Map<number, ServerTuningRecord>()
-
-        for (const record of records)
-        {
-            recordsByIndex.set(record.index, record)
-        }
-
-        this._records = records
-        this._recordsByIndex = recordsByIndex
-    }
+    this._records = records
+    this._recordsByIndex = recordsByIndex
+  }
 }

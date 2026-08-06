@@ -57,7 +57,8 @@
     },
     {
       "Type": "typescript",
-      "Path": "test/fixtures/output/core-dynamic/typescript"
+      "Path": "test/fixtures/output/core-dynamic/typescript",
+      "WriteUpdater": true
     },
     {
       "Type": "html",

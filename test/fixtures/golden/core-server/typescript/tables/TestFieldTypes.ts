@@ -15,308 +15,308 @@ import { ValueType } from '../enums/ValueType'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
-    index: number
-    stringField: string
-    intField: number
-    bigIntField: string
-    floatField: number
-    doubleField: number
-    datetimeField: string
-    timespanField: string
-    uuidField: string
-    valueTypeField: ValueType
+  index: number
+  stringField: string
+  intField: number
+  bigIntField: string
+  floatField: number
+  doubleField: number
+  datetimeField: string
+  timespanField: string
+  uuidField: string
+  valueTypeField: ValueType
 }
 
 // Generated from test/fixtures/xlsx/core\core.xlsx : Types : B2
 /** One column per supported primitive type. */
 export class TestFieldTypesRecord {
-    /** Default constructor */
-    constructor() {
-    }
+  /** Default constructor */
+  constructor() {
+  }
 
-    /** primary index */
-    public get index(): number { return this._index }
+  /** primary index */
+  public get index(): number { return this._index }
 
-    /** utf8 text */
-    public get stringField(): string { return this._stringField }
+  /** utf8 text */
+  public get stringField(): string { return this._stringField }
 
-    /** 32 bit integer */
-    public get intField(): number { return this._intField }
+  /** 32 bit integer */
+  public get intField(): number { return this._intField }
 
-    /** 64 bit integer */
-    public get bigIntField(): bigint { return this._bigIntField }
+  /** 64 bit integer */
+  public get bigIntField(): bigint { return this._bigIntField }
 
-    /** single precision */
-    public get floatField(): number { return this._floatField }
+  /** single precision */
+  public get floatField(): number { return this._floatField }
 
-    /** double precision */
-    public get doubleField(): number { return this._doubleField }
+  /** double precision */
+  public get doubleField(): number { return this._doubleField }
 
-    /** date and time */
-    public get datetimeField(): string { return this._datetimeField }
+  /** date and time */
+  public get datetimeField(): string { return this._datetimeField }
 
-    /** time interval */
-    public get timespanField(): string { return this._timespanField }
+  /** time interval */
+  public get timespanField(): string { return this._timespanField }
 
-    /** globally unique id */
-    public get uuidField(): string { return this._uuidField }
+  /** globally unique id */
+  public get uuidField(): string { return this._uuidField }
 
-    /** enum reference */
-    public get valueTypeField(): ValueType { return this._valueTypeField }
+  /** enum reference */
+  public get valueTypeField(): ValueType { return this._valueTypeField }
 
-    public _index: number = 0
-    public _stringField: string = ''
-    public _intField: number = 0
-    public _bigIntField: bigint = 0n
-    public _floatField: number = 0
-    public _doubleField: number = 0
-    public _datetimeField: string = ''
-    public _timespanField: string = ''
-    public _uuidField: string = ''
-    public _valueTypeField: ValueType = 0 as ValueType
+  public _index: number = 0
+  public _stringField: string = ''
+  public _intField: number = 0
+  public _bigIntField: bigint = 0n
+  public _floatField: number = 0
+  public _doubleField: number = 0
+  public _datetimeField: string = ''
+  public _timespanField: string = ''
+  public _uuidField: string = ''
+  public _valueTypeField: ValueType = 0 as ValueType
 
-    /** Populate field values. */
-    public populateFieldValues(dataRow: IDataRow): void {
-        this._index = dataRow.index
-        this._stringField = dataRow.stringField
-        this._intField = dataRow.intField
-        this._bigIntField = BigInt(dataRow.bigIntField)
-        this._floatField = Math.fround(dataRow.floatField)
-        this._doubleField = dataRow.doubleField
-        this._datetimeField = dataRow.datetimeField
-        this._timespanField = dataRow.timespanField
-        this._uuidField = dataRow.uuidField
-        this._valueTypeField = dataRow.valueTypeField
-    }
+  /** Populate field values. */
+  public populateFieldValues(dataRow: IDataRow): void {
+    this._index = dataRow.index
+    this._stringField = dataRow.stringField
+    this._intField = dataRow.intField
+    this._bigIntField = BigInt(dataRow.bigIntField)
+    this._floatField = Math.fround(dataRow.floatField)
+    this._doubleField = dataRow.doubleField
+    this._datetimeField = dataRow.datetimeField
+    this._timespanField = dataRow.timespanField
+    this._uuidField = dataRow.uuidField
+    this._valueTypeField = dataRow.valueTypeField
+  }
 
-    /** Populate field values. */
-    public populateFieldValuesCompact(dataRow: any[]): void {
-        let offset = 0
-        this._index = dataRow[offset++]
-        this._stringField = dataRow[offset++]
-        this._intField = dataRow[offset++]
-        this._bigIntField = BigInt(dataRow[offset++])
-        this._floatField = Math.fround(dataRow[offset++])
-        this._doubleField = dataRow[offset++]
-        this._datetimeField = dataRow[offset++]
-        this._timespanField = dataRow[offset++]
-        this._uuidField = dataRow[offset++]
-        this._valueTypeField = dataRow[offset++]
-    }
+  /** Populate field values. */
+  public populateFieldValuesCompact(dataRow: any[]): void {
+    let offset = 0
+    this._index = dataRow[offset++]
+    this._stringField = dataRow[offset++]
+    this._intField = dataRow[offset++]
+    this._bigIntField = BigInt(dataRow[offset++])
+    this._floatField = Math.fround(dataRow[offset++])
+    this._doubleField = dataRow[offset++]
+    this._datetimeField = dataRow[offset++]
+    this._timespanField = dataRow[offset++]
+    this._uuidField = dataRow[offset++]
+    this._valueTypeField = dataRow[offset++]
+  }
 }
 
 // Generated from test/fixtures/xlsx/core\core.xlsx : Types : B2
 /** One column per supported primitive type. */
 export class TestFieldTypesTable {
-    /** Default constructor. */
-    constructor() {
+  /** Default constructor. */
+  constructor() {
+  }
+
+  /** All records. */
+  public get records(): TestFieldTypesRecord[] { return this._records }
+  private _records: TestFieldTypesRecord[] = []
+
+  // Indexing by 'index'
+  public get recordsByIndex(): Map<number, TestFieldTypesRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, TestFieldTypesRecord> = new Map<number, TestFieldTypesRecord>()
+
+  /** Gets the value associated with the specified key. throw Error if not found. */
+  public getByIndex(key: number): TestFieldTypesRecord {
+    const found = this._recordsByIndex.get(key)
+    if (!found)
+      throw new Error(`There is no record in table "TestFieldTypes" that corresponds to field "index" value ${key}`)
+
+    return found
+  }
+
+  /** Gets the value associated with the specified key. */
+  public tryGetByIndex(key: number): TestFieldTypesRecord | undefined {
+    return this._recordsByIndex.get(key)
+  }
+
+  /** Determines whether the table contains the specified key. */
+  public containsIndex(key: number): boolean {
+    return !!this._recordsByIndex.has(key)
+  }
+
+  /** Read a table from specified file. */
+  public async read(filename: string): Promise<void> {
+    const json = await fs.promises.readFile(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  /** Read a table from specified file synchronously. */
+  public readSync(filename: string): void {
+    const json = fs.readFileSync(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  private readFromJson(json: string): void {
+    const dataRows: any[] = JSON.parse(json)
+    const records: TestFieldTypesRecord[] = []
+
+    if (this.isCompactRowFormatted(dataRows)) {
+      for (const dataRow of dataRows) {
+        const record = new TestFieldTypesRecord()
+        record.populateFieldValuesCompact(dataRow)
+        records.push(record)
+      }
+    } else {
+      for (const dataRow of dataRows as IDataRow[]) {
+        const record = new TestFieldTypesRecord()
+        record.populateFieldValues(dataRow)
+        records.push(record)
+      }
     }
 
-    /** All records. */
-    public get records(): TestFieldTypesRecord[] { return this._records }
-    private _records: TestFieldTypesRecord[] = []
+    this.publish(records)
+  }
 
-    // Indexing by 'index'
-    public get recordsByIndex(): Map<number, TestFieldTypesRecord> { return this._recordsByIndex }
-    private _recordsByIndex: Map<number, TestFieldTypesRecord> = new Map<number, TestFieldTypesRecord>()
+  private isCompactRowFormatted(rows: any[]): boolean {
+    return rows.length > 0 && Array.isArray(rows[0])
+  }
 
-    /** Gets the value associated with the specified key. throw Error if not found. */
-    public getByIndex(key: number): TestFieldTypesRecord {
-        const found = this._recordsByIndex.get(key)
-        if (!found)
-            throw new Error(`There is no record in table "TestFieldTypes" that corresponds to field "index" value ${key}`)
+  /** Read a table from a binary .table file. */
+  public readBinarySync(filename: string): void
+  {
+    this.readBinaryFrom(sheetman.readAllBytes(filename))
+  }
 
-        return found
-    }
+  /**
+   * Read a table from binary data already in memory.
+   *
+   * Column by column, matched by tag rather than position: a column this build does not
+   * know is skipped by its block length, and one whose type changed incompatibly fails
+   * naming the field.
+   */
+  public readBinaryFrom(data: Uint8Array): void
+  {
+    const reader = new sheetman.LiteBinaryReader(data)
+    const { rowCount, columns } = sheetman.readTableHeader(reader)
 
-    /** Gets the value associated with the specified key. */
-    public tryGetByIndex(key: number): TestFieldTypesRecord | undefined {
-        return this._recordsByIndex.get(key)
-    }
+    // Built here and published at the end, so a file that turns out to be truncated - or
+    // a column this build cannot read - leaves the rows already loaded exactly as they are.
+    const records: TestFieldTypesRecord[] = []
+    for (let i = 0; i < rowCount; ++i)
+      records.push(new TestFieldTypesRecord())
 
-    /** Determines whether the table contains the specified key. */
-    public containsIndex(key: number): boolean {
-        return !!this._recordsByIndex.has(key)
-    }
-
-    /** Read a table from specified file. */
-    public async read(filename: string): Promise<void> {
-        const json = await fs.promises.readFile(filename, "utf8")
-        this.readFromJson(json)
-    }
-
-    /** Read a table from specified file synchronously. */
-    public readSync(filename: string): void {
-        const json = fs.readFileSync(filename, "utf8")
-        this.readFromJson(json)
-    }
-
-    private readFromJson(json: string): void {
-        const dataRows: any[] = JSON.parse(json)
-        const records: TestFieldTypesRecord[] = []
-
-        if (this.isCompactRowFormatted(dataRows)) {
-            for (const dataRow of dataRows) {
-                const record = new TestFieldTypesRecord()
-                record.populateFieldValuesCompact(dataRow)
-                records.push(record)
-            }
-        } else {
-            for (const dataRow of dataRows as IDataRow[]) {
-                const record = new TestFieldTypesRecord()
-                record.populateFieldValues(dataRow)
-                records.push(record)
-            }
-        }
-
-        this.publish(records)
-    }
-
-    private isCompactRowFormatted(rows: any[]): boolean {
-        return rows.length > 0 && Array.isArray(rows[0])
-    }
-
-    /** Read a table from a binary .table file. */
-    public readBinarySync(filename: string): void
+    for (const column of columns)
     {
-        this.readBinaryFrom(sheetman.readAllBytes(filename))
+      const blockEnd = reader.position + column.byteLength
+
+      switch (column.tag)
+      {
+        case 1:
+          sheetman.checkColumn(column, 'TestFieldTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._index = reader.readI32As(column.element)
+          }
+          break
+        case 2:
+          sheetman.checkColumn(column, 'TestFieldTypes.StringField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._stringField = reader.readString()
+          }
+          break
+        case 4:
+          sheetman.checkColumn(column, 'TestFieldTypes.IntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._intField = reader.readI32As(column.element)
+          }
+          break
+        case 5:
+          sheetman.checkColumn(column, 'TestFieldTypes.BigIntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._bigIntField = reader.readI64As(column.element)
+          }
+          break
+        case 6:
+          sheetman.checkColumn(column, 'TestFieldTypes.FloatField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._floatField = reader.readFloat()
+          }
+          break
+        case 7:
+          sheetman.checkColumn(column, 'TestFieldTypes.DoubleField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F64, sheetman.ELEMENT_F32, sheetman.ELEMENT_I32])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._doubleField = reader.readF64As(column.element)
+          }
+          break
+        case 8:
+          sheetman.checkColumn(column, 'TestFieldTypes.DatetimeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._datetimeField = reader.readDateTime()
+          }
+          break
+        case 9:
+          sheetman.checkColumn(column, 'TestFieldTypes.TimespanField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._timespanField = reader.readTimeSpan()
+          }
+          break
+        case 10:
+          sheetman.checkColumn(column, 'TestFieldTypes.UuidField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_UUID])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._uuidField = reader.readUuid()
+          }
+          break
+        case 11:
+          sheetman.checkColumn(column, 'TestFieldTypes.ValueTypeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._valueTypeField = reader.readEnum() as ValueType
+          }
+          break
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byteLength)
+          break
+      }
+
+      sheetman.checkBlockEnd(reader, column, blockEnd)
     }
 
-    /**
-     * Read a table from binary data already in memory.
-     *
-     * Column by column, matched by tag rather than position: a column this build does not
-     * know is skipped by its block length, and one whose type changed incompatibly fails
-     * naming the field.
-     */
-    public readBinaryFrom(data: Uint8Array): void
+    this.publish(records)
+  }
+
+  /** Index mapping. */
+  /**
+   * Publishes one whole load: the rows and the lookups built from them, together.
+   *
+   * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
+   * consumers were holding: the rows were appended to or emptied first, so a read that threw
+   * partway left the table holding some of the new data and none of the old. Everything above
+   * builds its own arrays and gets here only if it finished, and this replaces the references
+   * in one step. Whoever took `records` before still has the previous load, whole.
+   */
+  private publish(records: TestFieldTypesRecord[]): void {
+    const recordsByIndex = new Map<number, TestFieldTypesRecord>()
+
+    for (const record of records)
     {
-        const reader = new sheetman.LiteBinaryReader(data)
-        const { rowCount, columns } = sheetman.readTableHeader(reader)
-
-        // Built here and published at the end, so a file that turns out to be truncated - or
-        // a column this build cannot read - leaves the rows already loaded exactly as they are.
-        const records: TestFieldTypesRecord[] = []
-        for (let i = 0; i < rowCount; ++i)
-            records.push(new TestFieldTypesRecord())
-
-        for (const column of columns)
-        {
-            const blockEnd = reader.position + column.byteLength
-
-            switch (column.tag)
-            {
-                case 1:
-                    sheetman.checkColumn(column, 'TestFieldTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._index = reader.readI32As(column.element)
-                    }
-                    break
-                case 2:
-                    sheetman.checkColumn(column, 'TestFieldTypes.StringField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._stringField = reader.readString()
-                    }
-                    break
-                case 4:
-                    sheetman.checkColumn(column, 'TestFieldTypes.IntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._intField = reader.readI32As(column.element)
-                    }
-                    break
-                case 5:
-                    sheetman.checkColumn(column, 'TestFieldTypes.BigIntField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._bigIntField = reader.readI64As(column.element)
-                    }
-                    break
-                case 6:
-                    sheetman.checkColumn(column, 'TestFieldTypes.FloatField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._floatField = reader.readFloat()
-                    }
-                    break
-                case 7:
-                    sheetman.checkColumn(column, 'TestFieldTypes.DoubleField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F64, sheetman.ELEMENT_F32, sheetman.ELEMENT_I32])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._doubleField = reader.readF64As(column.element)
-                    }
-                    break
-                case 8:
-                    sheetman.checkColumn(column, 'TestFieldTypes.DatetimeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._datetimeField = reader.readDateTime()
-                    }
-                    break
-                case 9:
-                    sheetman.checkColumn(column, 'TestFieldTypes.TimespanField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._timespanField = reader.readTimeSpan()
-                    }
-                    break
-                case 10:
-                    sheetman.checkColumn(column, 'TestFieldTypes.UuidField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_UUID])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._uuidField = reader.readUuid()
-                    }
-                    break
-                case 11:
-                    sheetman.checkColumn(column, 'TestFieldTypes.ValueTypeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._valueTypeField = reader.readEnum() as ValueType
-                    }
-                    break
-                default:
-                    // A column added after this code was generated.
-                    reader.skip(column.byteLength)
-                    break
-            }
-
-            sheetman.checkBlockEnd(reader, column, blockEnd)
-        }
-
-        this.publish(records)
+      recordsByIndex.set(record.index, record)
     }
 
-    /** Index mapping. */
-    /**
-     * Publishes one whole load: the rows and the lookups built from them, together.
-     *
-     * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
-     * consumers were holding: the rows were appended to or emptied first, so a read that threw
-     * partway left the table holding some of the new data and none of the old. Everything above
-     * builds its own arrays and gets here only if it finished, and this replaces the references
-     * in one step. Whoever took `records` before still has the previous load, whole.
-     */
-    private publish(records: TestFieldTypesRecord[]): void {
-        const recordsByIndex = new Map<number, TestFieldTypesRecord>()
-
-        for (const record of records)
-        {
-            recordsByIndex.set(record.index, record)
-        }
-
-        this._records = records
-        this._recordsByIndex = recordsByIndex
-    }
+    this._records = records
+    this._recordsByIndex = recordsByIndex
+  }
 }

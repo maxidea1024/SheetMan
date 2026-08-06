@@ -13,45 +13,45 @@ import { TemplateTable } from './tables/Template'
 
 /** Tables */
 export class Tables {
-    /** Peroperty for table Template */
-    public get template(): TemplateTable { return this._template }
-    private _template: TemplateTable = new TemplateTable()
+  /** Peroperty for table Template */
+  public get template(): TemplateTable { return this._template }
+  private _template: TemplateTable = new TemplateTable()
 
-    /**
-     * Read all tables asynchronously.
-     *
-     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
-     * data files were renamed after export.
-     */
-    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
-        const template = new TemplateTable()
-        await template.read(path.join(basePath, `Template${fileExtension}`))
+  /**
+   * Read all tables asynchronously.
+   *
+   * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+   * data files were renamed after export.
+   */
+  public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+    const template = new TemplateTable()
+    await template.read(path.join(basePath, `Template${fileExtension}`))
 
-        this.publish(template)
-    }
+    this.publish(template)
+  }
 
-    /** Read all tables synchronously. */
-    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
-        const template = new TemplateTable()
-        template.readSync(path.join(basePath, `Template${fileExtension}`))
+  /** Read all tables synchronously. */
+  public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+    const template = new TemplateTable()
+    template.readSync(path.join(basePath, `Template${fileExtension}`))
 
-        this.publish(template)
-    }
+    this.publish(template)
+  }
 
-    /**
-     * Publishes one whole load.
-     *
-     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
-     * here only once every file has been read. A failure anywhere leaves every table holding
-     * what it held, which is the answer a running program wants: the data it already had, and
-     * an exception saying why the new data was not taken.
-     */
-    private publish(template: TemplateTable): void {
-        this._template = template
+  /**
+   * Publishes one whole load.
+   *
+   * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+   * here only once every file has been read. A failure anywhere leaves every table holding
+   * what it held, which is the answer a running program wants: the data it already had, and
+   * an exception saying why the new data was not taken.
+   */
+  private publish(template: TemplateTable): void {
+    this._template = template
 
-        this.solveCrossReferences()
-    }
+    this.solveCrossReferences()
+  }
 
-    private solveCrossReferences(): void {
-    }
+  private solveCrossReferences(): void {
+  }
 }

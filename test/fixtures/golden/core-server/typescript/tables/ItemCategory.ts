@@ -12,203 +12,203 @@ import * as sheetman from '../sheetman/lite_binary_reader'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
-    index: number
-    name: string
-    description: string
+  index: number
+  name: string
+  description: string
 }
 
 // Generated from test/fixtures/xlsx/core\core.xlsx : Refs : B2
 /** Referenced by Item.CategoryId. */
 export class ItemCategoryRecord {
-    /** Default constructor */
-    constructor() {
-    }
+  /** Default constructor */
+  constructor() {
+  }
 
-    /** primary index */
-    public get index(): number { return this._index }
+  /** primary index */
+  public get index(): number { return this._index }
 
-    /** category name */
-    public get name(): string { return this._name }
+  /** category name */
+  public get name(): string { return this._name }
 
-    /** human readable description */
-    public get description(): string { return this._description }
+  /** human readable description */
+  public get description(): string { return this._description }
 
-    public _index: number = 0
-    public _name: string = ''
-    public _description: string = ''
+  public _index: number = 0
+  public _name: string = ''
+  public _description: string = ''
 
-    /** Populate field values. */
-    public populateFieldValues(dataRow: IDataRow): void {
-        this._index = dataRow.index
-        this._name = dataRow.name
-        this._description = dataRow.description
-    }
+  /** Populate field values. */
+  public populateFieldValues(dataRow: IDataRow): void {
+    this._index = dataRow.index
+    this._name = dataRow.name
+    this._description = dataRow.description
+  }
 
-    /** Populate field values. */
-    public populateFieldValuesCompact(dataRow: any[]): void {
-        let offset = 0
-        this._index = dataRow[offset++]
-        this._name = dataRow[offset++]
-        this._description = dataRow[offset++]
-    }
+  /** Populate field values. */
+  public populateFieldValuesCompact(dataRow: any[]): void {
+    let offset = 0
+    this._index = dataRow[offset++]
+    this._name = dataRow[offset++]
+    this._description = dataRow[offset++]
+  }
 }
 
 // Generated from test/fixtures/xlsx/core\core.xlsx : Refs : B2
 /** Referenced by Item.CategoryId. */
 export class ItemCategoryTable {
-    /** Default constructor. */
-    constructor() {
+  /** Default constructor. */
+  constructor() {
+  }
+
+  /** All records. */
+  public get records(): ItemCategoryRecord[] { return this._records }
+  private _records: ItemCategoryRecord[] = []
+
+  // Indexing by 'index'
+  public get recordsByIndex(): Map<number, ItemCategoryRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, ItemCategoryRecord> = new Map<number, ItemCategoryRecord>()
+
+  /** Gets the value associated with the specified key. throw Error if not found. */
+  public getByIndex(key: number): ItemCategoryRecord {
+    const found = this._recordsByIndex.get(key)
+    if (!found)
+      throw new Error(`There is no record in table "ItemCategory" that corresponds to field "index" value ${key}`)
+
+    return found
+  }
+
+  /** Gets the value associated with the specified key. */
+  public tryGetByIndex(key: number): ItemCategoryRecord | undefined {
+    return this._recordsByIndex.get(key)
+  }
+
+  /** Determines whether the table contains the specified key. */
+  public containsIndex(key: number): boolean {
+    return !!this._recordsByIndex.has(key)
+  }
+
+  /** Read a table from specified file. */
+  public async read(filename: string): Promise<void> {
+    const json = await fs.promises.readFile(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  /** Read a table from specified file synchronously. */
+  public readSync(filename: string): void {
+    const json = fs.readFileSync(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  private readFromJson(json: string): void {
+    const dataRows: any[] = JSON.parse(json)
+    const records: ItemCategoryRecord[] = []
+
+    if (this.isCompactRowFormatted(dataRows)) {
+      for (const dataRow of dataRows) {
+        const record = new ItemCategoryRecord()
+        record.populateFieldValuesCompact(dataRow)
+        records.push(record)
+      }
+    } else {
+      for (const dataRow of dataRows as IDataRow[]) {
+        const record = new ItemCategoryRecord()
+        record.populateFieldValues(dataRow)
+        records.push(record)
+      }
     }
 
-    /** All records. */
-    public get records(): ItemCategoryRecord[] { return this._records }
-    private _records: ItemCategoryRecord[] = []
+    this.publish(records)
+  }
 
-    // Indexing by 'index'
-    public get recordsByIndex(): Map<number, ItemCategoryRecord> { return this._recordsByIndex }
-    private _recordsByIndex: Map<number, ItemCategoryRecord> = new Map<number, ItemCategoryRecord>()
+  private isCompactRowFormatted(rows: any[]): boolean {
+    return rows.length > 0 && Array.isArray(rows[0])
+  }
 
-    /** Gets the value associated with the specified key. throw Error if not found. */
-    public getByIndex(key: number): ItemCategoryRecord {
-        const found = this._recordsByIndex.get(key)
-        if (!found)
-            throw new Error(`There is no record in table "ItemCategory" that corresponds to field "index" value ${key}`)
+  /** Read a table from a binary .table file. */
+  public readBinarySync(filename: string): void
+  {
+    this.readBinaryFrom(sheetman.readAllBytes(filename))
+  }
 
-        return found
-    }
+  /**
+   * Read a table from binary data already in memory.
+   *
+   * Column by column, matched by tag rather than position: a column this build does not
+   * know is skipped by its block length, and one whose type changed incompatibly fails
+   * naming the field.
+   */
+  public readBinaryFrom(data: Uint8Array): void
+  {
+    const reader = new sheetman.LiteBinaryReader(data)
+    const { rowCount, columns } = sheetman.readTableHeader(reader)
 
-    /** Gets the value associated with the specified key. */
-    public tryGetByIndex(key: number): ItemCategoryRecord | undefined {
-        return this._recordsByIndex.get(key)
-    }
+    // Built here and published at the end, so a file that turns out to be truncated - or
+    // a column this build cannot read - leaves the rows already loaded exactly as they are.
+    const records: ItemCategoryRecord[] = []
+    for (let i = 0; i < rowCount; ++i)
+      records.push(new ItemCategoryRecord())
 
-    /** Determines whether the table contains the specified key. */
-    public containsIndex(key: number): boolean {
-        return !!this._recordsByIndex.has(key)
-    }
-
-    /** Read a table from specified file. */
-    public async read(filename: string): Promise<void> {
-        const json = await fs.promises.readFile(filename, "utf8")
-        this.readFromJson(json)
-    }
-
-    /** Read a table from specified file synchronously. */
-    public readSync(filename: string): void {
-        const json = fs.readFileSync(filename, "utf8")
-        this.readFromJson(json)
-    }
-
-    private readFromJson(json: string): void {
-        const dataRows: any[] = JSON.parse(json)
-        const records: ItemCategoryRecord[] = []
-
-        if (this.isCompactRowFormatted(dataRows)) {
-            for (const dataRow of dataRows) {
-                const record = new ItemCategoryRecord()
-                record.populateFieldValuesCompact(dataRow)
-                records.push(record)
-            }
-        } else {
-            for (const dataRow of dataRows as IDataRow[]) {
-                const record = new ItemCategoryRecord()
-                record.populateFieldValues(dataRow)
-                records.push(record)
-            }
-        }
-
-        this.publish(records)
-    }
-
-    private isCompactRowFormatted(rows: any[]): boolean {
-        return rows.length > 0 && Array.isArray(rows[0])
-    }
-
-    /** Read a table from a binary .table file. */
-    public readBinarySync(filename: string): void
+    for (const column of columns)
     {
-        this.readBinaryFrom(sheetman.readAllBytes(filename))
+      const blockEnd = reader.position + column.byteLength
+
+      switch (column.tag)
+      {
+        case 1:
+          sheetman.checkColumn(column, 'ItemCategory.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._index = reader.readI32As(column.element)
+          }
+          break
+        case 2:
+          sheetman.checkColumn(column, 'ItemCategory.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._name = reader.readString()
+          }
+          break
+        case 3:
+          sheetman.checkColumn(column, 'ItemCategory.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._description = reader.readString()
+          }
+          break
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byteLength)
+          break
+      }
+
+      sheetman.checkBlockEnd(reader, column, blockEnd)
     }
 
-    /**
-     * Read a table from binary data already in memory.
-     *
-     * Column by column, matched by tag rather than position: a column this build does not
-     * know is skipped by its block length, and one whose type changed incompatibly fails
-     * naming the field.
-     */
-    public readBinaryFrom(data: Uint8Array): void
+    this.publish(records)
+  }
+
+  /** Index mapping. */
+  /**
+   * Publishes one whole load: the rows and the lookups built from them, together.
+   *
+   * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
+   * consumers were holding: the rows were appended to or emptied first, so a read that threw
+   * partway left the table holding some of the new data and none of the old. Everything above
+   * builds its own arrays and gets here only if it finished, and this replaces the references
+   * in one step. Whoever took `records` before still has the previous load, whole.
+   */
+  private publish(records: ItemCategoryRecord[]): void {
+    const recordsByIndex = new Map<number, ItemCategoryRecord>()
+
+    for (const record of records)
     {
-        const reader = new sheetman.LiteBinaryReader(data)
-        const { rowCount, columns } = sheetman.readTableHeader(reader)
-
-        // Built here and published at the end, so a file that turns out to be truncated - or
-        // a column this build cannot read - leaves the rows already loaded exactly as they are.
-        const records: ItemCategoryRecord[] = []
-        for (let i = 0; i < rowCount; ++i)
-            records.push(new ItemCategoryRecord())
-
-        for (const column of columns)
-        {
-            const blockEnd = reader.position + column.byteLength
-
-            switch (column.tag)
-            {
-                case 1:
-                    sheetman.checkColumn(column, 'ItemCategory.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._index = reader.readI32As(column.element)
-                    }
-                    break
-                case 2:
-                    sheetman.checkColumn(column, 'ItemCategory.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._name = reader.readString()
-                    }
-                    break
-                case 3:
-                    sheetman.checkColumn(column, 'ItemCategory.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._description = reader.readString()
-                    }
-                    break
-                default:
-                    // A column added after this code was generated.
-                    reader.skip(column.byteLength)
-                    break
-            }
-
-            sheetman.checkBlockEnd(reader, column, blockEnd)
-        }
-
-        this.publish(records)
+      recordsByIndex.set(record.index, record)
     }
 
-    /** Index mapping. */
-    /**
-     * Publishes one whole load: the rows and the lookups built from them, together.
-     *
-     * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
-     * consumers were holding: the rows were appended to or emptied first, so a read that threw
-     * partway left the table holding some of the new data and none of the old. Everything above
-     * builds its own arrays and gets here only if it finished, and this replaces the references
-     * in one step. Whoever took `records` before still has the previous load, whole.
-     */
-    private publish(records: ItemCategoryRecord[]): void {
-        const recordsByIndex = new Map<number, ItemCategoryRecord>()
-
-        for (const record of records)
-        {
-            recordsByIndex.set(record.index, record)
-        }
-
-        this._records = records
-        this._recordsByIndex = recordsByIndex
-    }
+    this._records = records
+    this._recordsByIndex = recordsByIndex
+  }
 }

@@ -13,9 +13,12 @@ public class X : ModuleRules
         // UBlueprintFunctionLibrary, which is what makes the rows reachable
         // from a Blueprint graph at all.
         //
-        // Nothing else, and no bEnableExceptions: the reader reports a malformed
-        // file by returning false, so this module builds with the engine's defaults.
+        // No bEnableExceptions: the reader reports a malformed file by returning
+        // false, so this module builds with the engine's defaults.
+        //
+        // HTTP is here because the updater is: it fetches the manifest and the
+        // changed data files. Turn WriteUpdater off and this goes with it.
         PublicDependencyModuleNames.AddRange(
-            new string[] { "Core", "CoreUObject", "Engine" });
+            new string[] { "Core", "CoreUObject", "Engine", "HTTP" });
     }
 }

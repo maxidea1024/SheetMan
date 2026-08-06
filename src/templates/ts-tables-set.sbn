@@ -11,52 +11,52 @@ export class Tables {
 {{~ for table in tables ~}}
 {{~ if !for.first }}
 {{ end ~}}
-    /** Peroperty for table {{ table.name }} */
-    public get {{ table.member }}(): {{ table.name }}Table { return this._{{ table.member }} }
-    private _{{ table.member }}: {{ table.name }}Table = new {{ table.name }}Table()
+  /** Peroperty for table {{ table.name }} */
+  public get {{ table.member }}(): {{ table.name }}Table { return this._{{ table.member }} }
+  private _{{ table.member }}: {{ table.name }}Table = new {{ table.name }}Table()
 {{~ end ~}}
 
-    /**
-     * Read all tables asynchronously.
-     *
-     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
-     * data files were renamed after export.
-     */
-    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+  /**
+   * Read all tables asynchronously.
+   *
+   * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+   * data files were renamed after export.
+   */
+  public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
 {{~ for table in tables ~}}
-        const {{ table.member }} = new {{ table.name }}Table()
-        await {{ table.member }}.read(path.join(basePath, `{{ table.name }}${fileExtension}`))
+    const {{ table.member }} = new {{ table.name }}Table()
+    await {{ table.member }}.read(path.join(basePath, `{{ table.name }}${fileExtension}`))
 {{~ end ~}}
 
-        this.publish({{ for table in tables }}{{ if !for.first }}, {{ end }}{{ table.member }}{{ end }})
-    }
+    this.publish({{ for table in tables }}{{ if !for.first }}, {{ end }}{{ table.member }}{{ end }})
+  }
 
-    /** Read all tables synchronously. */
-    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+  /** Read all tables synchronously. */
+  public readAllSync(basePath: string, fileExtension: string = '.json'): void {
 {{~ for table in tables ~}}
-        const {{ table.member }} = new {{ table.name }}Table()
-        {{ table.member }}.readSync(path.join(basePath, `{{ table.name }}${fileExtension}`))
+    const {{ table.member }} = new {{ table.name }}Table()
+    {{ table.member }}.readSync(path.join(basePath, `{{ table.name }}${fileExtension}`))
 {{~ end ~}}
 
-        this.publish({{ for table in tables }}{{ if !for.first }}, {{ end }}{{ table.member }}{{ end }})
-    }
+    this.publish({{ for table in tables }}{{ if !for.first }}, {{ end }}{{ table.member }}{{ end }})
+  }
 
-    /**
-     * Publishes one whole load.
-     *
-     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
-     * here only once every file has been read. A failure anywhere leaves every table holding
-     * what it held, which is the answer a running program wants: the data it already had, and
-     * an exception saying why the new data was not taken.
-     */
-    private publish({{ for table in tables }}{{ if !for.first }}, {{ end }}{{ table.member }}: {{ table.name }}Table{{ end }}): void {
+  /**
+   * Publishes one whole load.
+   *
+   * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+   * here only once every file has been read. A failure anywhere leaves every table holding
+   * what it held, which is the answer a running program wants: the data it already had, and
+   * an exception saying why the new data was not taken.
+   */
+  private publish({{ for table in tables }}{{ if !for.first }}, {{ end }}{{ table.member }}: {{ table.name }}Table{{ end }}): void {
 {{~ for table in tables ~}}
-        this._{{ table.member }} = {{ table.member }}
+    this._{{ table.member }} = {{ table.member }}
 {{~ end ~}}
 
-        this.solveCrossReferences()
-    }
+    this.solveCrossReferences()
+  }
 
-    private solveCrossReferences(): void {
-    }
+  private solveCrossReferences(): void {
+  }
 }

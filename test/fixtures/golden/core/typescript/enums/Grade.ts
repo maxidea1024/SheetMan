@@ -10,12 +10,12 @@
 // Generated from test/fixtures/xlsx/core\core.xlsx : Enums : G2
 /** Item grade. Deliberately omits a zero entry. */
 export enum Grade {
-    /** None (automatically inserted by SheetMan) */
-    None = 0,
-    /** common grade */
-    Common = 1,
-    /** rare grade */
-    Rare = 2,
-    /** epic grade */
-    Epic = 3
+  /** None (automatically inserted by SheetMan) */
+  None = 0,
+  /** common grade */
+  Common = 1,
+  /** rare grade */
+  Rare = 2,
+  /** epic grade */
+  Epic = 3
 }

@@ -1,13 +1,13 @@
 {{~##
-   One module per table: the row interface the JSON is parsed into, the record class, and
-   the table class with both read paths.
+ One module per table: the row interface the JSON is parsed into, the record class, and
+ the table class with both read paths.
 
-   Both a JSON and a binary path are generated so a consumer picks per deployment rather
-   than per build - JSON where the data is inspected by hand or served as text, binary
-   where size and parse time matter. The two produce identical values, which is why the
-   reader formats dates and durations as the strings the JSON export writes.
+ Both a JSON and a binary path are generated so a consumer picks per deployment rather
+ than per build - JSON where the data is inspected by hand or served as text, binary
+ where size and parse time matter. The two produce identical values, which is why the
+ reader formats dates and durations as the strings the JSON export writes.
 
-   Anything needing the model arrives already rendered from TsView.
+ Anything needing the model arrives already rendered from TsView.
 ##~}}
 {{ include 'ts-head.sbn' ~}}
 import * as fs from 'fs'
@@ -24,9 +24,9 @@ import * as sheetman from '../sheetman/lite_binary_reader'
 interface IDataRow {
 {{~ for field in fields ~}}
 {{~ if field.is_array ~}}
-    {{ field.prop_name }}: {{ field.json_wire_type }}[]
+  {{ field.prop_name }}: {{ field.json_wire_type }}[]
 {{~ else ~}}
-    {{ field.prop_name }}: {{ field.json_wire_type }}
+  {{ field.prop_name }}: {{ field.json_wire_type }}
 {{~ end ~}}
 {{~ end ~}}
 }
@@ -36,73 +36,73 @@ interface IDataRow {
 {{ line }}
 {{~ end ~}}
 export class {{ name }}Record {
-    /** Default constructor */
-    constructor() {
-    }
+  /** Default constructor */
+  constructor() {
+  }
 {{~## The readable surface first, and the storage below it. A getter and its
-      backing field on adjacent lines reads as noise where the field is never the
-      thing a consumer wants; grouped, the top of the record is what it holds and
-      the bottom is how. ##~}}
+   backing field on adjacent lines reads as noise where the field is never the
+   thing a consumer wants; grouped, the top of the record is what it holds and
+   the bottom is how. ##~}}
 {{~ for field in fields }}
 {{~ for line in field.comment ~}}
-    {{ line }}
+  {{ line }}
 {{~ end ~}}
 {{~ if field.is_array ~}}
-    public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
+  public get {{ field.prop_name }}(): {{ field.field_type }}[] { return this.{{ field.field_name }} }
 {{~ if field.kind == 'array_ref' || field.kind == 'array' ~}}
-    public static readonly {{ field.prop_name }}_N: number = {{ field.element_count }}
+  public static readonly {{ field.prop_name }}_N: number = {{ field.element_count }}
 {{~ end ~}}
 {{~ else ~}}
-    public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
+  public get {{ field.prop_name }}(): {{ field.field_type }} { return this.{{ field.field_name }} }
 {{~ end ~}}
 {{~ end ~}}
 {{~## Called by the accessor once every table is read, and by nothing else. Kept away
-      from the getters above because a consumer never calls one. ##~}}
+   from the getters above because a consumer never calls one. ##~}}
 {{~ if reference_fields | array.size > 0 ~}}
 
 {{~ for field in fields ~}}
 {{~ if field.kind == 'array_ref' ~}}
-    public setReference_{{ field.prop_name }}_INTERNAL(index: number, value: {{ field.reference_setter_type }}): void { this.{{ field.field_name }}[index] = value; }
+  public setReference_{{ field.prop_name }}_INTERNAL(index: number, value: {{ field.reference_setter_type }}): void { this.{{ field.field_name }}[index] = value; }
 {{~ else if field.kind == 'scalar_ref' ~}}
 {{~ if field.reference_is_record ~}}
-    public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value; }
+  public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value; }
 {{~ else ~}}
-    public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value }
+  public setReference_{{ field.prop_name }}_INTERNAL(value: {{ field.reference_setter_type }}) { this.{{ field.field_name }} = value }
 {{~ end ~}}
 {{~ end ~}}
 {{~ end ~}}
 {{~ end ~}}
 {{~## Public rather than private: the enclosing table writes them as it reads, and
-      the accessor writes the reference members as it resolves them. ##~}}
+   the accessor writes the reference members as it resolves them. ##~}}
 
 {{~ for field in fields ~}}
 {{~ if field.kind == 'array_ref' || field.kind == 'var_array' || field.kind == 'array' ~}}
-    public {{ field.field_name }}: {{ field.field_type }}[] = []
+  public {{ field.field_name }}: {{ field.field_type }}[] = []
 {{~ else if field.kind == 'scalar_ref' ~}}
-    public {{ field.field_name }}: {{ field.field_type }}
-    public {{ field.field_name }}_{{ field.ref_table }}_index: number = 0
-    public {{ field.field_name }}_F: boolean = false
+  public {{ field.field_name }}: {{ field.field_type }}
+  public {{ field.field_name }}_{{ field.ref_table }}_index: number = 0
+  public {{ field.field_name }}_F: boolean = false
 {{~ else ~}}
-    public {{ field.field_name }}: {{ field.field_type }} = {{ field.default_value }}
+  public {{ field.field_name }}: {{ field.field_type }} = {{ field.default_value }}
 {{~ end ~}}
 {{~ end ~}}
 
-    /** Populate field values. */
-    public populateFieldValues(dataRow: IDataRow): void {
+  /** Populate field values. */
+  public populateFieldValues(dataRow: IDataRow): void {
 {{~ for field in fields ~}}
-        {{ field.from_named_row }}
+    {{ field.from_named_row }}
 {{~ end ~}}
-    }
+  }
 
-    /** Populate field values. */
-    public populateFieldValuesCompact(dataRow: any[]): void {
-        let offset = 0
+  /** Populate field values. */
+  public populateFieldValuesCompact(dataRow: any[]): void {
+    let offset = 0
 {{~ for field in fields ~}}
 {{~ for line in field.from_compact_row ~}}
-        {{ line }}
+    {{ line }}
 {{~ end ~}}
 {{~ end ~}}
-    }
+  }
 }
 
 // Generated from {{ location }}
@@ -110,172 +110,172 @@ export class {{ name }}Record {
 {{ line }}
 {{~ end ~}}
 export class {{ name }}Table {
-    /** Default constructor. */
-    constructor() {
-    }
+  /** Default constructor. */
+  constructor() {
+  }
 
-    /** All records. */
-    public get records(): {{ name }}Record[] { return this._records }
-    private _records: {{ name }}Record[] = []
+  /** All records. */
+  public get records(): {{ name }}Record[] { return this._records }
+  private _records: {{ name }}Record[] = []
 {{~ for field in indexed_fields }}
-    // Indexing by '{{ field.prop_name }}'
-    public get recordsBy{{ field.pascal_name }}(): Map<{{ field.field_type }}, {{ name }}Record> { return this._recordsBy{{ field.pascal_name }} }
-    private _recordsBy{{ field.pascal_name }}: Map<{{ field.field_type }}, {{ name }}Record> = new Map<{{ field.field_type }}, {{ name }}Record>()
+  // Indexing by '{{ field.prop_name }}'
+  public get recordsBy{{ field.pascal_name }}(): Map<{{ field.field_type }}, {{ name }}Record> { return this._recordsBy{{ field.pascal_name }} }
+  private _recordsBy{{ field.pascal_name }}: Map<{{ field.field_type }}, {{ name }}Record> = new Map<{{ field.field_type }}, {{ name }}Record>()
 
-    /** Gets the value associated with the specified key. throw Error if not found. */
-    public getBy{{ field.pascal_name }}(key: {{ field.field_type }}): {{ name }}Record {
-        const found = this._recordsBy{{ field.pascal_name }}.get(key)
-        if (!found)
-            throw new Error(`There is no record in table "{{ name }}" that corresponds to field "{{ field.prop_name }}" value ${key}`)
+  /** Gets the value associated with the specified key. throw Error if not found. */
+  public getBy{{ field.pascal_name }}(key: {{ field.field_type }}): {{ name }}Record {
+    const found = this._recordsBy{{ field.pascal_name }}.get(key)
+    if (!found)
+      throw new Error(`There is no record in table "{{ name }}" that corresponds to field "{{ field.prop_name }}" value ${key}`)
 
-        return found
-    }
+    return found
+  }
 
-    /** Gets the value associated with the specified key. */
-    public tryGetBy{{ field.pascal_name }}(key: {{ field.field_type }}): {{ name }}Record | undefined {
-        return this._recordsBy{{ field.pascal_name }}.get(key)
-    }
+  /** Gets the value associated with the specified key. */
+  public tryGetBy{{ field.pascal_name }}(key: {{ field.field_type }}): {{ name }}Record | undefined {
+    return this._recordsBy{{ field.pascal_name }}.get(key)
+  }
 
-    /** Determines whether the table contains the specified key. */
-    public contains{{ field.pascal_name }}(key: {{ field.field_type }}): boolean {
-        return !!this._recordsBy{{ field.pascal_name }}.has(key)
-    }
+  /** Determines whether the table contains the specified key. */
+  public contains{{ field.pascal_name }}(key: {{ field.field_type }}): boolean {
+    return !!this._recordsBy{{ field.pascal_name }}.has(key)
+  }
 {{~ end ~}}
 
-    /** Read a table from specified file. */
-    public async read(filename: string): Promise<void> {
-        const json = await fs.promises.readFile(filename, "utf8")
-        this.readFromJson(json)
+  /** Read a table from specified file. */
+  public async read(filename: string): Promise<void> {
+    const json = await fs.promises.readFile(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  /** Read a table from specified file synchronously. */
+  public readSync(filename: string): void {
+    const json = fs.readFileSync(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  private readFromJson(json: string): void {
+    const dataRows: any[] = JSON.parse(json)
+    const records: {{ name }}Record[] = []
+
+    if (this.isCompactRowFormatted(dataRows)) {
+      for (const dataRow of dataRows) {
+        const record = new {{ name }}Record()
+        record.populateFieldValuesCompact(dataRow)
+        records.push(record)
+      }
+    } else {
+      for (const dataRow of dataRows as IDataRow[]) {
+        const record = new {{ name }}Record()
+        record.populateFieldValues(dataRow)
+        records.push(record)
+      }
     }
 
-    /** Read a table from specified file synchronously. */
-    public readSync(filename: string): void {
-        const json = fs.readFileSync(filename, "utf8")
-        this.readFromJson(json)
-    }
+    this.publish(records)
+  }
 
-    private readFromJson(json: string): void {
-        const dataRows: any[] = JSON.parse(json)
-        const records: {{ name }}Record[] = []
+  private isCompactRowFormatted(rows: any[]): boolean {
+    return rows.length > 0 && Array.isArray(rows[0])
+  }
 
-        if (this.isCompactRowFormatted(dataRows)) {
-            for (const dataRow of dataRows) {
-                const record = new {{ name }}Record()
-                record.populateFieldValuesCompact(dataRow)
-                records.push(record)
-            }
-        } else {
-            for (const dataRow of dataRows as IDataRow[]) {
-                const record = new {{ name }}Record()
-                record.populateFieldValues(dataRow)
-                records.push(record)
-            }
-        }
+  /** Read a table from a binary .table file. */
+  public readBinarySync(filename: string): void
+  {
+    this.readBinaryFrom(sheetman.readAllBytes(filename))
+  }
 
-        this.publish(records)
-    }
+  /**
+   * Read a table from binary data already in memory.
+   *
+   * Column by column, matched by tag rather than position: a column this build does not
+   * know is skipped by its block length, and one whose type changed incompatibly fails
+   * naming the field.
+   */
+  public readBinaryFrom(data: Uint8Array): void
+  {
+    const reader = new sheetman.LiteBinaryReader(data)
+    const { rowCount, columns } = sheetman.readTableHeader(reader)
 
-    private isCompactRowFormatted(rows: any[]): boolean {
-        return rows.length > 0 && Array.isArray(rows[0])
-    }
+    // Built here and published at the end, so a file that turns out to be truncated - or
+    // a column this build cannot read - leaves the rows already loaded exactly as they are.
+    const records: {{ name }}Record[] = []
+    for (let i = 0; i < rowCount; ++i)
+      records.push(new {{ name }}Record())
 
-    /** Read a table from a binary .table file. */
-    public readBinarySync(filename: string): void
+    for (const column of columns)
     {
-        this.readBinaryFrom(sheetman.readAllBytes(filename))
-    }
+      const blockEnd = reader.position + column.byteLength
 
-    /**
-     * Read a table from binary data already in memory.
-     *
-     * Column by column, matched by tag rather than position: a column this build does not
-     * know is skipped by its block length, and one whose type changed incompatibly fails
-     * naming the field.
-     */
-    public readBinaryFrom(data: Uint8Array): void
-    {
-        const reader = new sheetman.LiteBinaryReader(data)
-        const { rowCount, columns } = sheetman.readTableHeader(reader)
-
-        // Built here and published at the end, so a file that turns out to be truncated - or
-        // a column this build cannot read - leaves the rows already loaded exactly as they are.
-        const records: {{ name }}Record[] = []
-        for (let i = 0; i < rowCount; ++i)
-            records.push(new {{ name }}Record())
-
-        for (const column of columns)
-        {
-            const blockEnd = reader.position + column.byteLength
-
-            switch (column.tag)
-            {
+      switch (column.tag)
+      {
 {{~ for field in fields ~}}
-                case {{ field.tag }}:
-                    {{ field.column_check }}
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
+        case {{ field.tag }}:
+          {{ field.column_check }}
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
 {{~ if field.kind == 'var_array' ~}}
-                        const elementCount = reader.readCounter32()
-                        record.{{ field.field_name }} = []
-                        for (let j = 0; j < elementCount; ++j)
-                            record.{{ field.field_name }}.push({{ field.binary_read }})
+            const elementCount = reader.readCounter32()
+            record.{{ field.field_name }} = []
+            for (let j = 0; j < elementCount; ++j)
+              record.{{ field.field_name }}.push({{ field.binary_read }})
 {{~ else if field.kind == 'array_ref' ~}}
-                        record.{{ field.field_name }} = []
-                        record.{{ field.field_name }}_{{ field.ref_table }}_index = []
-                        for (let j = 0; j < {{ field.element_count }}; ++j)
-                            record.{{ field.field_name }}_{{ field.ref_table }}_index.push(reader.readInt32())
+            record.{{ field.field_name }} = []
+            record.{{ field.field_name }}_{{ field.ref_table }}_index = []
+            for (let j = 0; j < {{ field.element_count }}; ++j)
+              record.{{ field.field_name }}_{{ field.ref_table }}_index.push(reader.readInt32())
 {{~ else if field.kind == 'array' ~}}
-                        record.{{ field.field_name }} = []
-                        for (let j = 0; j < {{ field.element_count }}; ++j)
-                            record.{{ field.field_name }}.push({{ field.binary_read }})
+            record.{{ field.field_name }} = []
+            for (let j = 0; j < {{ field.element_count }}; ++j)
+              record.{{ field.field_name }}.push({{ field.binary_read }})
 {{~ else if field.kind == 'scalar_ref' ~}}
-                        record.{{ field.field_name }}_{{ field.ref_table }}_index = reader.readInt32()
+            record.{{ field.field_name }}_{{ field.ref_table }}_index = reader.readInt32()
 {{~ else ~}}
-                        record.{{ field.field_name }} = {{ field.binary_read }}
+            record.{{ field.field_name }} = {{ field.binary_read }}
 {{~ end ~}}
-                    }
-                    break
+          }
+          break
 {{~ end ~}}
-                default:
-                    // A column added after this code was generated.
-                    reader.skip(column.byteLength)
-                    break
-            }
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byteLength)
+          break
+      }
 
-            sheetman.checkBlockEnd(reader, column, blockEnd)
-        }
-
-        this.publish(records)
+      sheetman.checkBlockEnd(reader, column, blockEnd)
     }
 
-    /** Index mapping. */
-    /**
-     * Publishes one whole load: the rows and the lookups built from them, together.
-     *
-     * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
-     * consumers were holding: the rows were appended to or emptied first, so a read that threw
-     * partway left the table holding some of the new data and none of the old. Everything above
-     * builds its own arrays and gets here only if it finished, and this replaces the references
-     * in one step. Whoever took `records` before still has the previous load, whole.
-     */
-    private publish(records: {{ name }}Record[]): void {
+    this.publish(records)
+  }
+
+  /** Index mapping. */
+  /**
+   * Publishes one whole load: the rows and the lookups built from them, together.
+   *
+   * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
+   * consumers were holding: the rows were appended to or emptied first, so a read that threw
+   * partway left the table holding some of the new data and none of the old. Everything above
+   * builds its own arrays and gets here only if it finished, and this replaces the references
+   * in one step. Whoever took `records` before still has the previous load, whole.
+   */
+  private publish(records: {{ name }}Record[]): void {
 {{~ for field in indexed_fields ~}}
-        const recordsBy{{ field.pascal_name }} = new Map<{{ field.field_type }}, {{ name }}Record>()
+    const recordsBy{{ field.pascal_name }} = new Map<{{ field.field_type }}, {{ name }}Record>()
 {{~ end ~}}
 {{~ if indexed_fields | array.size > 0 ~}}
 
-        for (const record of records)
-        {
+    for (const record of records)
+    {
 {{~ for field in indexed_fields ~}}
-            recordsBy{{ field.pascal_name }}.set(record.{{ field.prop_name }}, record)
-{{~ end ~}}
-        }
-
-{{~ end ~}}
-        this._records = records
-{{~ for field in indexed_fields ~}}
-        this._recordsBy{{ field.pascal_name }} = recordsBy{{ field.pascal_name }}
+      recordsBy{{ field.pascal_name }}.set(record.{{ field.prop_name }}, record)
 {{~ end ~}}
     }
+
+{{~ end ~}}
+    this._records = records
+{{~ for field in indexed_fields ~}}
+    this._recordsBy{{ field.pascal_name }} = recordsBy{{ field.pascal_name }}
+{{~ end ~}}
+  }
 }

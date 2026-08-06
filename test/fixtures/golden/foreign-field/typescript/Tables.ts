@@ -14,54 +14,54 @@ import { ItemTable } from './tables/Item'
 
 /** Tables */
 export class Tables {
-    /** Peroperty for table ItemCategory */
-    public get itemCategory(): ItemCategoryTable { return this._itemCategory }
-    private _itemCategory: ItemCategoryTable = new ItemCategoryTable()
+  /** Peroperty for table ItemCategory */
+  public get itemCategory(): ItemCategoryTable { return this._itemCategory }
+  private _itemCategory: ItemCategoryTable = new ItemCategoryTable()
 
-    /** Peroperty for table Item */
-    public get item(): ItemTable { return this._item }
-    private _item: ItemTable = new ItemTable()
+  /** Peroperty for table Item */
+  public get item(): ItemTable { return this._item }
+  private _item: ItemTable = new ItemTable()
 
-    /**
-     * Read all tables asynchronously.
-     *
-     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
-     * data files were renamed after export.
-     */
-    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
-        const itemCategory = new ItemCategoryTable()
-        await itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
-        const item = new ItemTable()
-        await item.read(path.join(basePath, `Item${fileExtension}`))
+  /**
+   * Read all tables asynchronously.
+   *
+   * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+   * data files were renamed after export.
+   */
+  public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+    const itemCategory = new ItemCategoryTable()
+    await itemCategory.read(path.join(basePath, `ItemCategory${fileExtension}`))
+    const item = new ItemTable()
+    await item.read(path.join(basePath, `Item${fileExtension}`))
 
-        this.publish(itemCategory, item)
-    }
+    this.publish(itemCategory, item)
+  }
 
-    /** Read all tables synchronously. */
-    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
-        const itemCategory = new ItemCategoryTable()
-        itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
-        const item = new ItemTable()
-        item.readSync(path.join(basePath, `Item${fileExtension}`))
+  /** Read all tables synchronously. */
+  public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+    const itemCategory = new ItemCategoryTable()
+    itemCategory.readSync(path.join(basePath, `ItemCategory${fileExtension}`))
+    const item = new ItemTable()
+    item.readSync(path.join(basePath, `Item${fileExtension}`))
 
-        this.publish(itemCategory, item)
-    }
+    this.publish(itemCategory, item)
+  }
 
-    /**
-     * Publishes one whole load.
-     *
-     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
-     * here only once every file has been read. A failure anywhere leaves every table holding
-     * what it held, which is the answer a running program wants: the data it already had, and
-     * an exception saying why the new data was not taken.
-     */
-    private publish(itemCategory: ItemCategoryTable, item: ItemTable): void {
-        this._itemCategory = itemCategory
-        this._item = item
+  /**
+   * Publishes one whole load.
+   *
+   * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+   * here only once every file has been read. A failure anywhere leaves every table holding
+   * what it held, which is the answer a running program wants: the data it already had, and
+   * an exception saying why the new data was not taken.
+   */
+  private publish(itemCategory: ItemCategoryTable, item: ItemTable): void {
+    this._itemCategory = itemCategory
+    this._item = item
 
-        this.solveCrossReferences()
-    }
+    this.solveCrossReferences()
+  }
 
-    private solveCrossReferences(): void {
-    }
+  private solveCrossReferences(): void {
+  }
 }

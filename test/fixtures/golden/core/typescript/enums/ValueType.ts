@@ -10,12 +10,12 @@
 // Generated from test/fixtures/xlsx/core\core.xlsx : Enums : B2
 /** Value types used by the test tables. */
 export enum ValueType {
-    /** no value */
-    None = 0,
-    /** 32 bit integer */
-    Int32 = 1,
-    /** 64 bit integer */
-    Int64 = 2,
-    /** single precision float */
-    Float = 3
+  /** no value */
+  None = 0,
+  /** 32 bit integer */
+  Int32 = 1,
+  /** 64 bit integer */
+  Int64 = 2,
+  /** single precision float */
+  Float = 3
 }

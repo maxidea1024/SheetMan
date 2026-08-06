@@ -15,264 +15,264 @@ import { Grade } from '../enums/Grade'
 
 /** A type for handling rows when parsing .json. */
 interface IDataRow {
-    index: number
-    tags: string[]
-    costs: number[]
-    weights: number[]
-    grades: Grade[]
-    slotArray: number[]
+  index: number
+  tags: string[]
+  costs: number[]
+  weights: number[]
+  grades: Grade[]
+  slotArray: number[]
 }
 
 // Generated from test/fixtures/xlsx/core\core.xlsx : Arrays : B2
 /** One cell holding several delimited values, length varying per row. */
 export class ArrayTypesRecord {
-    /** Default constructor */
-    constructor() {
-    }
+  /** Default constructor */
+  constructor() {
+  }
 
-    /** primary index */
-    public get index(): number { return this._index }
+  /** primary index */
+  public get index(): number { return this._index }
 
-    /** free-form tags */
-    public get tags(): string[] { return this._tags }
+  /** free-form tags */
+  public get tags(): string[] { return this._tags }
 
-    /** cost per level */
-    public get costs(): number[] { return this._costs }
+  /** cost per level */
+  public get costs(): number[] { return this._costs }
 
-    /** drop weights */
-    public get weights(): number[] { return this._weights }
+  /** drop weights */
+  public get weights(): number[] { return this._weights }
 
-    /** allowed grades */
-    public get grades(): Grade[] { return this._grades }
+  /** allowed grades */
+  public get grades(): Grade[] { return this._grades }
 
-    /** fixed slot 1 */
-    public get slotArray(): number[] { return this._slotArray }
-    public static readonly slotArray_N: number = 2
+  /** fixed slot 1 */
+  public get slotArray(): number[] { return this._slotArray }
+  public static readonly slotArray_N: number = 2
 
-    public _index: number = 0
-    public _tags: string[] = []
-    public _costs: number[] = []
-    public _weights: number[] = []
-    public _grades: Grade[] = []
-    public _slotArray: number[] = []
+  public _index: number = 0
+  public _tags: string[] = []
+  public _costs: number[] = []
+  public _weights: number[] = []
+  public _grades: Grade[] = []
+  public _slotArray: number[] = []
 
-    /** Populate field values. */
-    public populateFieldValues(dataRow: IDataRow): void {
-        this._index = dataRow.index
-        this._tags = dataRow.tags
-        this._costs = dataRow.costs
-        this._weights = dataRow.weights.map(v => Math.fround(v))
-        this._grades = dataRow.grades
-        this._slotArray = dataRow.slotArray
-    }
+  /** Populate field values. */
+  public populateFieldValues(dataRow: IDataRow): void {
+    this._index = dataRow.index
+    this._tags = dataRow.tags
+    this._costs = dataRow.costs
+    this._weights = dataRow.weights.map(v => Math.fround(v))
+    this._grades = dataRow.grades
+    this._slotArray = dataRow.slotArray
+  }
 
-    /** Populate field values. */
-    public populateFieldValuesCompact(dataRow: any[]): void {
-        let offset = 0
-        this._index = dataRow[offset++]
-        this._tags = dataRow[offset++]
-        this._costs = dataRow[offset++]
-        this._weights = dataRow[offset++].map(v => Math.fround(v))
-        this._grades = dataRow[offset++]
-        this._slotArray = dataRow.slice(offset, offset + 2)
-        offset += 2
-    }
+  /** Populate field values. */
+  public populateFieldValuesCompact(dataRow: any[]): void {
+    let offset = 0
+    this._index = dataRow[offset++]
+    this._tags = dataRow[offset++]
+    this._costs = dataRow[offset++]
+    this._weights = dataRow[offset++].map(v => Math.fround(v))
+    this._grades = dataRow[offset++]
+    this._slotArray = dataRow.slice(offset, offset + 2)
+    offset += 2
+  }
 }
 
 // Generated from test/fixtures/xlsx/core\core.xlsx : Arrays : B2
 /** One cell holding several delimited values, length varying per row. */
 export class ArrayTypesTable {
-    /** Default constructor. */
-    constructor() {
+  /** Default constructor. */
+  constructor() {
+  }
+
+  /** All records. */
+  public get records(): ArrayTypesRecord[] { return this._records }
+  private _records: ArrayTypesRecord[] = []
+
+  // Indexing by 'index'
+  public get recordsByIndex(): Map<number, ArrayTypesRecord> { return this._recordsByIndex }
+  private _recordsByIndex: Map<number, ArrayTypesRecord> = new Map<number, ArrayTypesRecord>()
+
+  /** Gets the value associated with the specified key. throw Error if not found. */
+  public getByIndex(key: number): ArrayTypesRecord {
+    const found = this._recordsByIndex.get(key)
+    if (!found)
+      throw new Error(`There is no record in table "ArrayTypes" that corresponds to field "index" value ${key}`)
+
+    return found
+  }
+
+  /** Gets the value associated with the specified key. */
+  public tryGetByIndex(key: number): ArrayTypesRecord | undefined {
+    return this._recordsByIndex.get(key)
+  }
+
+  /** Determines whether the table contains the specified key. */
+  public containsIndex(key: number): boolean {
+    return !!this._recordsByIndex.has(key)
+  }
+
+  /** Read a table from specified file. */
+  public async read(filename: string): Promise<void> {
+    const json = await fs.promises.readFile(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  /** Read a table from specified file synchronously. */
+  public readSync(filename: string): void {
+    const json = fs.readFileSync(filename, "utf8")
+    this.readFromJson(json)
+  }
+
+  private readFromJson(json: string): void {
+    const dataRows: any[] = JSON.parse(json)
+    const records: ArrayTypesRecord[] = []
+
+    if (this.isCompactRowFormatted(dataRows)) {
+      for (const dataRow of dataRows) {
+        const record = new ArrayTypesRecord()
+        record.populateFieldValuesCompact(dataRow)
+        records.push(record)
+      }
+    } else {
+      for (const dataRow of dataRows as IDataRow[]) {
+        const record = new ArrayTypesRecord()
+        record.populateFieldValues(dataRow)
+        records.push(record)
+      }
     }
 
-    /** All records. */
-    public get records(): ArrayTypesRecord[] { return this._records }
-    private _records: ArrayTypesRecord[] = []
+    this.publish(records)
+  }
 
-    // Indexing by 'index'
-    public get recordsByIndex(): Map<number, ArrayTypesRecord> { return this._recordsByIndex }
-    private _recordsByIndex: Map<number, ArrayTypesRecord> = new Map<number, ArrayTypesRecord>()
+  private isCompactRowFormatted(rows: any[]): boolean {
+    return rows.length > 0 && Array.isArray(rows[0])
+  }
 
-    /** Gets the value associated with the specified key. throw Error if not found. */
-    public getByIndex(key: number): ArrayTypesRecord {
-        const found = this._recordsByIndex.get(key)
-        if (!found)
-            throw new Error(`There is no record in table "ArrayTypes" that corresponds to field "index" value ${key}`)
+  /** Read a table from a binary .table file. */
+  public readBinarySync(filename: string): void
+  {
+    this.readBinaryFrom(sheetman.readAllBytes(filename))
+  }
 
-        return found
-    }
+  /**
+   * Read a table from binary data already in memory.
+   *
+   * Column by column, matched by tag rather than position: a column this build does not
+   * know is skipped by its block length, and one whose type changed incompatibly fails
+   * naming the field.
+   */
+  public readBinaryFrom(data: Uint8Array): void
+  {
+    const reader = new sheetman.LiteBinaryReader(data)
+    const { rowCount, columns } = sheetman.readTableHeader(reader)
 
-    /** Gets the value associated with the specified key. */
-    public tryGetByIndex(key: number): ArrayTypesRecord | undefined {
-        return this._recordsByIndex.get(key)
-    }
+    // Built here and published at the end, so a file that turns out to be truncated - or
+    // a column this build cannot read - leaves the rows already loaded exactly as they are.
+    const records: ArrayTypesRecord[] = []
+    for (let i = 0; i < rowCount; ++i)
+      records.push(new ArrayTypesRecord())
 
-    /** Determines whether the table contains the specified key. */
-    public containsIndex(key: number): boolean {
-        return !!this._recordsByIndex.has(key)
-    }
-
-    /** Read a table from specified file. */
-    public async read(filename: string): Promise<void> {
-        const json = await fs.promises.readFile(filename, "utf8")
-        this.readFromJson(json)
-    }
-
-    /** Read a table from specified file synchronously. */
-    public readSync(filename: string): void {
-        const json = fs.readFileSync(filename, "utf8")
-        this.readFromJson(json)
-    }
-
-    private readFromJson(json: string): void {
-        const dataRows: any[] = JSON.parse(json)
-        const records: ArrayTypesRecord[] = []
-
-        if (this.isCompactRowFormatted(dataRows)) {
-            for (const dataRow of dataRows) {
-                const record = new ArrayTypesRecord()
-                record.populateFieldValuesCompact(dataRow)
-                records.push(record)
-            }
-        } else {
-            for (const dataRow of dataRows as IDataRow[]) {
-                const record = new ArrayTypesRecord()
-                record.populateFieldValues(dataRow)
-                records.push(record)
-            }
-        }
-
-        this.publish(records)
-    }
-
-    private isCompactRowFormatted(rows: any[]): boolean {
-        return rows.length > 0 && Array.isArray(rows[0])
-    }
-
-    /** Read a table from a binary .table file. */
-    public readBinarySync(filename: string): void
+    for (const column of columns)
     {
-        this.readBinaryFrom(sheetman.readAllBytes(filename))
+      const blockEnd = reader.position + column.byteLength
+
+      switch (column.tag)
+      {
+        case 1:
+          sheetman.checkColumn(column, 'ArrayTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._index = reader.readI32As(column.element)
+          }
+          break
+        case 2:
+          sheetman.checkColumn(column, 'ArrayTypes.Tags', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_STRING])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            const elementCount = reader.readCounter32()
+            record._tags = []
+            for (let j = 0; j < elementCount; ++j)
+              record._tags.push(reader.readString())
+          }
+          break
+        case 3:
+          sheetman.checkColumn(column, 'ArrayTypes.Costs', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            const elementCount = reader.readCounter32()
+            record._costs = []
+            for (let j = 0; j < elementCount; ++j)
+              record._costs.push(reader.readI32As(column.element))
+          }
+          break
+        case 4:
+          sheetman.checkColumn(column, 'ArrayTypes.Weights', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_F32])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            const elementCount = reader.readCounter32()
+            record._weights = []
+            for (let j = 0; j < elementCount; ++j)
+              record._weights.push(reader.readFloat())
+          }
+          break
+        case 5:
+          sheetman.checkColumn(column, 'ArrayTypes.Grades', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            const elementCount = reader.readCounter32()
+            record._grades = []
+            for (let j = 0; j < elementCount; ++j)
+              record._grades.push(reader.readEnum() as Grade)
+          }
+          break
+        case 6:
+          sheetman.checkColumn(column, 'ArrayTypes.Slot_array', sheetman.KIND_FIXED_ARRAY, 2, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          for (let i = 0; i < rowCount; ++i)
+          {
+            const record = records[i]
+            record._slotArray = []
+            for (let j = 0; j < 2; ++j)
+              record._slotArray.push(reader.readI32As(column.element))
+          }
+          break
+        default:
+          // A column added after this code was generated.
+          reader.skip(column.byteLength)
+          break
+      }
+
+      sheetman.checkBlockEnd(reader, column, blockEnd)
     }
 
-    /**
-     * Read a table from binary data already in memory.
-     *
-     * Column by column, matched by tag rather than position: a column this build does not
-     * know is skipped by its block length, and one whose type changed incompatibly fails
-     * naming the field.
-     */
-    public readBinaryFrom(data: Uint8Array): void
+    this.publish(records)
+  }
+
+  /** Index mapping. */
+  /**
+   * Publishes one whole load: the rows and the lookups built from them, together.
+   *
+   * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
+   * consumers were holding: the rows were appended to or emptied first, so a read that threw
+   * partway left the table holding some of the new data and none of the old. Everything above
+   * builds its own arrays and gets here only if it finished, and this replaces the references
+   * in one step. Whoever took `records` before still has the previous load, whole.
+   */
+  private publish(records: ArrayTypesRecord[]): void {
+    const recordsByIndex = new Map<number, ArrayTypesRecord>()
+
+    for (const record of records)
     {
-        const reader = new sheetman.LiteBinaryReader(data)
-        const { rowCount, columns } = sheetman.readTableHeader(reader)
-
-        // Built here and published at the end, so a file that turns out to be truncated - or
-        // a column this build cannot read - leaves the rows already loaded exactly as they are.
-        const records: ArrayTypesRecord[] = []
-        for (let i = 0; i < rowCount; ++i)
-            records.push(new ArrayTypesRecord())
-
-        for (const column of columns)
-        {
-            const blockEnd = reader.position + column.byteLength
-
-            switch (column.tag)
-            {
-                case 1:
-                    sheetman.checkColumn(column, 'ArrayTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._index = reader.readI32As(column.element)
-                    }
-                    break
-                case 2:
-                    sheetman.checkColumn(column, 'ArrayTypes.Tags', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_STRING])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        const elementCount = reader.readCounter32()
-                        record._tags = []
-                        for (let j = 0; j < elementCount; ++j)
-                            record._tags.push(reader.readString())
-                    }
-                    break
-                case 3:
-                    sheetman.checkColumn(column, 'ArrayTypes.Costs', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        const elementCount = reader.readCounter32()
-                        record._costs = []
-                        for (let j = 0; j < elementCount; ++j)
-                            record._costs.push(reader.readI32As(column.element))
-                    }
-                    break
-                case 4:
-                    sheetman.checkColumn(column, 'ArrayTypes.Weights', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_F32])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        const elementCount = reader.readCounter32()
-                        record._weights = []
-                        for (let j = 0; j < elementCount; ++j)
-                            record._weights.push(reader.readFloat())
-                    }
-                    break
-                case 5:
-                    sheetman.checkColumn(column, 'ArrayTypes.Grades', sheetman.KIND_VAR_ARRAY, 0, [sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        const elementCount = reader.readCounter32()
-                        record._grades = []
-                        for (let j = 0; j < elementCount; ++j)
-                            record._grades.push(reader.readEnum() as Grade)
-                    }
-                    break
-                case 6:
-                    sheetman.checkColumn(column, 'ArrayTypes.Slot_array', sheetman.KIND_FIXED_ARRAY, 2, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
-                    for (let i = 0; i < rowCount; ++i)
-                    {
-                        const record = records[i]
-                        record._slotArray = []
-                        for (let j = 0; j < 2; ++j)
-                            record._slotArray.push(reader.readI32As(column.element))
-                    }
-                    break
-                default:
-                    // A column added after this code was generated.
-                    reader.skip(column.byteLength)
-                    break
-            }
-
-            sheetman.checkBlockEnd(reader, column, blockEnd)
-        }
-
-        this.publish(records)
+      recordsByIndex.set(record.index, record)
     }
 
-    /** Index mapping. */
-    /**
-     * Publishes one whole load: the rows and the lookups built from them, together.
-     *
-     * Reading a table that is already loaded - a refresh, a patched file - used to mutate what
-     * consumers were holding: the rows were appended to or emptied first, so a read that threw
-     * partway left the table holding some of the new data and none of the old. Everything above
-     * builds its own arrays and gets here only if it finished, and this replaces the references
-     * in one step. Whoever took `records` before still has the previous load, whole.
-     */
-    private publish(records: ArrayTypesRecord[]): void {
-        const recordsByIndex = new Map<number, ArrayTypesRecord>()
-
-        for (const record of records)
-        {
-            recordsByIndex.set(record.index, record)
-        }
-
-        this._records = records
-        this._recordsByIndex = recordsByIndex
-    }
+    this._records = records
+    this._recordsByIndex = recordsByIndex
+  }
 }

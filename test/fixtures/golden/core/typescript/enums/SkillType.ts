@@ -10,10 +10,10 @@
 // Generated from test/fixtures/xlsx/core\core.xlsx : Enums : L2
 /** Declared in snake_case on purpose. */
 export enum SkillType {
-    /** no skill */
-    None = 0,
-    /** throws a fireball */
-    FireBall = 1,
-    /** throws an ice shard */
-    IceShard = 2
+  /** no skill */
+  None = 0,
+  /** throws a fireball */
+  FireBall = 1,
+  /** throws an ice shard */
+  IceShard = 2
 }

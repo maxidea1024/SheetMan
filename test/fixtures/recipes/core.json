@@ -75,7 +75,10 @@
     ],
     "Typescript": [
       {
-        "Path": "test/fixtures/output/core/typescript"
+        "Path": "test/fixtures/output/core/typescript",
+
+        // On here so the updater is type-checked and compiled by the TypeScript gates.
+        "WriteUpdater": true
       }
     ],
     "Html": [

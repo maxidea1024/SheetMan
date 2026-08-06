@@ -444,6 +444,16 @@ namespace SheetMan.Recipe
                 public string BinaryTableFileExtension { get; set; } = ".table";
 
                 /// <summary>
+                /// Whether to write the data updater beside the reader.
+                ///
+                /// It fetches the manifest and the changed data files over HTTP and keeps a
+                /// local copy current, so a build can take new data without shipping a new
+                /// one. Off by default: a project that ships its data alongside its code has
+                /// no use for it, and a file nobody calls is a file to explain.
+                /// </summary>
+                public bool WriteUpdater { get; set; } = false;
+
+                /// <summary>
                 /// Whether generated files this run did not write are removed from
                 /// <see cref="Path"/>.
                 /// </summary>

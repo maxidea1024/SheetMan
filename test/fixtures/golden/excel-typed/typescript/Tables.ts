@@ -13,45 +13,45 @@ import { ExcelTypedTable } from './tables/ExcelTyped'
 
 /** Tables */
 export class Tables {
-    /** Peroperty for table ExcelTyped */
-    public get excelTyped(): ExcelTypedTable { return this._excelTyped }
-    private _excelTyped: ExcelTypedTable = new ExcelTypedTable()
+  /** Peroperty for table ExcelTyped */
+  public get excelTyped(): ExcelTypedTable { return this._excelTyped }
+  private _excelTyped: ExcelTypedTable = new ExcelTypedTable()
 
-    /**
-     * Read all tables asynchronously.
-     *
-     * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
-     * data files were renamed after export.
-     */
-    public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
-        const excelTyped = new ExcelTypedTable()
-        await excelTyped.read(path.join(basePath, `ExcelTyped${fileExtension}`))
+  /**
+   * Read all tables asynchronously.
+   *
+   * `fileExtension` defaults to what the JSON exporter writes. Pass a different one when the
+   * data files were renamed after export.
+   */
+  public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
+    const excelTyped = new ExcelTypedTable()
+    await excelTyped.read(path.join(basePath, `ExcelTyped${fileExtension}`))
 
-        this.publish(excelTyped)
-    }
+    this.publish(excelTyped)
+  }
 
-    /** Read all tables synchronously. */
-    public readAllSync(basePath: string, fileExtension: string = '.json'): void {
-        const excelTyped = new ExcelTypedTable()
-        excelTyped.readSync(path.join(basePath, `ExcelTyped${fileExtension}`))
+  /** Read all tables synchronously. */
+  public readAllSync(basePath: string, fileExtension: string = '.json'): void {
+    const excelTyped = new ExcelTypedTable()
+    excelTyped.readSync(path.join(basePath, `ExcelTyped${fileExtension}`))
 
-        this.publish(excelTyped)
-    }
+    this.publish(excelTyped)
+  }
 
-    /**
-     * Publishes one whole load.
-     *
-     * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
-     * here only once every file has been read. A failure anywhere leaves every table holding
-     * what it held, which is the answer a running program wants: the data it already had, and
-     * an exception saying why the new data was not taken.
-     */
-    private publish(excelTyped: ExcelTypedTable): void {
-        this._excelTyped = excelTyped
+  /**
+   * Publishes one whole load.
+   *
+   * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
+   * here only once every file has been read. A failure anywhere leaves every table holding
+   * what it held, which is the answer a running program wants: the data it already had, and
+   * an exception saying why the new data was not taken.
+   */
+  private publish(excelTyped: ExcelTypedTable): void {
+    this._excelTyped = excelTyped
 
-        this.solveCrossReferences()
-    }
+    this.solveCrossReferences()
+  }
 
-    private solveCrossReferences(): void {
-    }
+  private solveCrossReferences(): void {
+  }
 }

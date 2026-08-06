@@ -45,7 +45,7 @@
     { "Type": "kotlin", "Path": "OUT/kotlin", "PackageName": "x", "AccessorName": "A" },
     { "Type": "ruby", "Path": "OUT/ruby", "ModuleName": "X", "AccessorName": "a" },
     { "Type": "dart", "Path": "OUT/dart", "AccessorName": "a" },
-    { "Type": "unreal", "Path": "OUT/unreal", "ModuleName": "X", "AccessorName": "A" },
+    { "Type": "unreal", "Path": "OUT/unreal", "ModuleName": "X", "AccessorName": "A", "WriteUpdater": true },
     { "Type": "c", "Path": "OUT/c", "AccessorName": "A" },
     { "Type": "php", "Path": "OUT/php", "Namespace": "X", "AccessorName": "A" }
   ],
@@ -60,10 +60,10 @@
       }
     ],
     "CSharp": [
-      { "Path": "OUT/csharp", "Namespace": "X", "AccessorName": "A" }
+      { "Path": "OUT/csharp", "Namespace": "X", "AccessorName": "A", "WriteUpdater": true }
     ],
     "Typescript": [
-      { "Path": "OUT/ts" }
+      { "Path": "OUT/ts", "WriteUpdater": true }
     ],
     "Html": [
       { "Path": "OUT/html" }

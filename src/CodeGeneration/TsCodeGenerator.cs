@@ -118,6 +118,15 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Ts.lite_binary_reader.ts",
                 GetTsFilename("sheetman/lite_binary_reader.ts"));
+
+            // Asked for rather than assumed. It reaches the network and it is of no use to a
+            // project that ships its data with its code.
+            if (_typescriptRecipe.WriteUpdater)
+            {
+                WriteBinaryReaderRuntime(
+                    "SheetMan.Runtime.Ts.updater.ts",
+                    GetTsFilename("sheetman/updater.ts"));
+            }
         }
 
         // --------------------------------------------------------------- view
