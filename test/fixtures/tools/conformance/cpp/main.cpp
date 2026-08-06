@@ -84,8 +84,8 @@ int main(int argc, char** argv) {
     json << "\"double_val\":" << number(r.double_val) << ',';
     json << "\"text\":" << quote(r.text) << ',';
     json << "\"flag\":" << (r.flag ? "true" : "false") << ',';
-    json << "\"when\":\"" << r.when.ticks << "\",";
-    json << "\"span\":\"" << r.span.ticks << "\",";
+    json << "\"when\":\"" << sheetman::to_net_ticks(r.when) << "\",";
+    json << "\"span\":\"" << r.span.count() << "\",";
     json << "\"uid\":\"" << r.uid.to_string() << "\",";
     json << "\"label\":" << static_cast<std::int32_t>(r.label) << ',';
 

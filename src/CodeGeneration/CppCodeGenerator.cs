@@ -601,11 +601,16 @@ namespace SheetMan.CodeGeneration
                 case ValueType.Double:
                     return ((double)constant.Value).ToString("R", CultureInfo.InvariantCulture);
 
+                // A time_point and a duration, built from the tick counts the sheet holds.
+                // from_net_ticks does the epoch shift, so a constant and a column read from
+                // a file are the same value.
                 case ValueType.DateTime:
-                    return $"sheetman::DateTime{{ {((DateTime)constant.Value).Ticks.ToString(CultureInfo.InvariantCulture)}LL }}";
+                    return "sheetman::from_net_ticks(" +
+                           ((DateTime)constant.Value).Ticks.ToString(CultureInfo.InvariantCulture) + "LL)";
 
                 case ValueType.TimeSpan:
-                    return $"sheetman::TimeSpan{{ {((TimeSpan)constant.Value).Ticks.ToString(CultureInfo.InvariantCulture)}LL }}";
+                    return "sheetman::TimeSpan(" +
+                           ((TimeSpan)constant.Value).Ticks.ToString(CultureInfo.InvariantCulture) + "LL)";
 
                 case ValueType.Uuid:
                     return RenderUuidLiteral((Guid)constant.Value);

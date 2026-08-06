@@ -66,6 +66,30 @@ for (const auto& row : tables.item().records()) { /* ... */ }
 tables.read_all("./data", ".bytes");
 ```
 
+## 시간 타입은 `std::chrono`입니다
+
+시트의 `datetime`과 `timespan`은 표준 시간 타입으로 나옵니다. 틱 정수를 들고 다니며 직접 환산할 일이 없습니다.
+
+|시트 타입|C++ 타입|
+|--|--|
+|`timespan`|`sheetman::TimeSpan` = `std::chrono::duration<int64_t, std::ratio<1, 10'000'000>>`|
+|`datetime`|`sheetman::DateTime` = `std::chrono::time_point<std::chrono::system_clock, sheetman::TimeSpan>`|
+
+```cpp
+const auto* item = data.item().find(1);
+
+// 원하는 단위로 변환은 chrono가 합니다. 손실이 생기는 변환은 컴파일러가 막습니다.
+auto seconds = std::chrono::duration_cast<std::chrono::seconds>(item->cooldown);
+
+// 표준 라이브러리와 바로 이어집니다.
+std::time_t when = std::chrono::system_clock::to_time_t(
+    std::chrono::time_point_cast<std::chrono::system_clock::duration>(item->released_at));
+```
+
+**기간 단위가 100나노초(.NET 틱)인 이유**는 그것이 파일에 실린 단위라 아무것도 잃지 않기 때문입니다. `std::chrono::nanoseconds`로 두면 `TimeSpan`의 최대값(9.2e18틱)이 64비트를 넘칩니다.
+
+**에폭은 유닉스 에폭입니다.** 파일은 .NET 기준(0001-01-01)으로 실려 오고, 리더가 읽는 순간 한 번 옮깁니다 — C++의 모든 시계와 C 라이브러리가 합의한 기준이 그쪽이기 때문입니다. .NET 쪽과 틱으로 이야기해야 한다면 `sheetman::to_net_ticks(value)`와 `sheetman::from_net_ticks(ticks)`가 있습니다.
+
 ## 주의사항
 
 **테이블 헤더는 서로를 include하지 않습니다.** 두 테이블이 서로를 참조하는 것은 시트에서 흔하고, 그러면 include 순환이 됩니다. 포인터 멤버는 불완전 타입만 있으면 되므로 모든 레코드는 `<AccessorName>_forward.h`에 전방선언되어 있고 테이블 헤더는 그것을 include합니다.

@@ -29,6 +29,7 @@
 #define SHEETMAN_LITE_BINARY_READER_H
 
 #include <array>
+#include <chrono>
 #include <cstdint>
 #include <cstring>
 #include <fstream>
@@ -44,31 +45,41 @@ class LiteBinaryError : public std::runtime_error {
   explicit LiteBinaryError(const std::string& what) : std::runtime_error(what) {}
 };
 
-/// A .NET DateTime, kept as ticks so no precision is lost in transit.
+/// A duration of .NET ticks: one tick is 100 nanoseconds.
 ///
-/// One tick is 100 nanoseconds and the epoch is 0001-01-01T00:00:00. Conversion
-/// to a std::chrono clock is left to the caller because the sensible target
-/// depends on what the value means.
-struct DateTime {
-  std::int64_t ticks = 0;
+/// The wire carries ticks, so this is the period that loses nothing. std::chrono
+/// converts to anything coarser for free - `std::chrono::duration_cast<std::chrono::
+/// seconds>(row.cooldown)` - and refuses the conversions that would silently round,
+/// which is the reason for using it rather than a bare integer.
+///
+/// Not std::chrono::nanoseconds: TimeSpan's own maximum is 9.2e18 ticks, and that
+/// many nanoseconds overflows a 64-bit count.
+using TimeSpan = std::chrono::duration<std::int64_t, std::ratio<1, 10000000>>;
 
-  /// Seconds since the Unix epoch. 621355968000000000 is the tick count of
-  /// 1970-01-01 in .NET's epoch.
-  std::int64_t unix_seconds() const { return (ticks - 621355968000000000LL) / 10000000LL; }
+/// A point in time, in ticks, on the system clock.
+///
+/// The wire carries .NET ticks since 0001-01-01; this counts from the Unix epoch,
+/// which is what every C++ clock and every C library function agrees on. The shift
+/// happens once, in the reader.
+///
+/// It converts to `std::chrono::system_clock::time_point` with a `time_point_cast`,
+/// so `std::chrono::system_clock::to_time_t` and the rest of the standard library
+/// are one call away.
+using DateTime = std::chrono::time_point<std::chrono::system_clock, TimeSpan>;
 
-  friend bool operator==(const DateTime& a, const DateTime& b) { return a.ticks == b.ticks; }
-  friend bool operator!=(const DateTime& a, const DateTime& b) { return !(a == b); }
-};
+/// Ticks between 0001-01-01 and the Unix epoch, which is the whole of the
+/// difference between .NET's zero and everybody else's.
+constexpr std::int64_t kUnixEpochTicks = 621355968000000000LL;
 
-/// A .NET TimeSpan, kept as ticks of 100 nanoseconds.
-struct TimeSpan {
-  std::int64_t ticks = 0;
+/// The .NET tick count of a DateTime, for talking back to something that wants one.
+inline std::int64_t to_net_ticks(DateTime value) {
+  return value.time_since_epoch().count() + kUnixEpochTicks;
+}
 
-  std::int64_t total_milliseconds() const { return ticks / 10000LL; }
-
-  friend bool operator==(const TimeSpan& a, const TimeSpan& b) { return a.ticks == b.ticks; }
-  friend bool operator!=(const TimeSpan& a, const TimeSpan& b) { return !(a == b); }
-};
+/// And the other way, for a caller building a value rather than reading one.
+inline DateTime from_net_ticks(std::int64_t ticks) {
+  return DateTime(TimeSpan(ticks - kUnixEpochTicks));
+}
 
 /// A 128 bit identifier, stored in .NET Guid byte order.
 ///
@@ -253,8 +264,14 @@ class LiteBinaryReader {
     position_ += static_cast<std::size_t>(length);
   }
 
-  void read(DateTime& value) { value.ticks = static_cast<std::int64_t>(read_fixed64()); }
-  void read(TimeSpan& value) { value.ticks = static_cast<std::int64_t>(read_fixed64()); }
+  /// Ticks off the wire, shifted onto the Unix epoch as they arrive.
+  void read(DateTime& value) {
+    value = from_net_ticks(static_cast<std::int64_t>(read_fixed64()));
+  }
+
+  void read(TimeSpan& value) {
+    value = TimeSpan(static_cast<std::int64_t>(read_fixed64()));
+  }
 
   void read(Uuid& value) {
     require(16);
