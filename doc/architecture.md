@@ -81,12 +81,12 @@ dotnet test            # 전체 회귀 스위트
 SHEETMAN_UPDATE_GOLDEN=1 dotnet test
 ```
 
-**전 언어 산출물 비교.** [OUT/](../OUT/)에 `reserved-words` 픽스처를 **열세 개 생성기 전부로** 만든 결과가 커밋되어 있습니다. 게이트가 아니라 읽기 위한 것입니다 — 스위트는 전부 컴파일해 주지만, 열한 개가 무엇을 뱉는지 나란히 놓고 보여주지는 못합니다. 그 차이가 실제로 문제를 잡습니다: Unreal 타깃이 일반 C++ 리더를 싣고 있던 것도, Dart가 `int int = 0;`을 내던 것도 여기서 드러났습니다.
+**전 언어 산출물 비교.** [Showcases/](../Showcases/)에 `reserved-words` 픽스처를 **열세 개 생성기 전부로** 만든 결과가 커밋되어 있습니다. 게이트가 아니라 읽기 위한 것입니다 — 스위트는 전부 컴파일해 주지만, 열한 개가 무엇을 뱉는지 나란히 놓고 보여주지는 못합니다. 그 차이가 실제로 문제를 잡습니다: Unreal 타깃이 일반 C++ 리더를 싣고 있던 것도, Dart가 `int int = 0;`을 내던 것도 여기서 드러났습니다.
 
 제너레이터·템플릿·리더를 건드렸다면 다시 만들고 diff를 리뷰하세요.
 
 ```
-dotnet run --project src/SheetMan.csproj -- --recipe OUT/showcase.json --silent
+dotnet run --project src/SheetMan.csproj -- --recipe Showcases/showcase.json --silent
 ```
 
 픽스처 `.xlsx`는 [test/fixtures/tools/FixtureGen](../test/fixtures/tools/FixtureGen)이 생성합니다. 불투명한 바이너리가 아니라 코드로 리뷰할 수 있게 하기 위함입니다. 생성기를 수정했다면 다시 돌려서 커밋하세요.

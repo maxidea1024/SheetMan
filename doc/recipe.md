@@ -381,10 +381,10 @@ sheetman --recipe ci-recipe.json --commit $GITHUB_SHA
 
 ### 8. 전부 — 열세 개 언어를 한 번에
 
-`OUT/showcase.json`이 저장소에 있고, 실제로 매번 실행되어 [OUT/](../OUT/)에 결과가 커밋됩니다. 언어별 출력이 어떻게 생겼는지 나란히 볼 수 있습니다.
+`Showcases/showcase.json`이 저장소에 있고, 실제로 매번 실행되어 [Showcases/](../Showcases/)에 결과가 커밋됩니다. 언어별 출력이 어떻게 생겼는지 나란히 볼 수 있습니다.
 
 ```
-dotnet run --project src/SheetMan.csproj -- --recipe OUT/showcase.json
+dotnet run --project src/SheetMan.csproj -- --recipe Showcases/showcase.json
 ```
 
 ### 실제로 돌아가는 recipe들
