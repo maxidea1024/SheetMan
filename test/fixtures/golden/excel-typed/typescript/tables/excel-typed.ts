@@ -82,8 +82,23 @@ export class ExcelTypedTable {
   public get recordsByIndex(): Map<number, ExcelTypedRecord> { return this._recordsByIndex }
   private _recordsByIndex: Map<number, ExcelTypedRecord> = new Map<number, ExcelTypedRecord>()
 
-  /** Gets the value associated with the specified key. throw Error if not found. */
-  public getByIndex(key: number): ExcelTypedRecord {
+  /**
+   * The row with this index, or undefined when the table has none.
+   *
+   * The lookup to reach for when a missing row is an ordinary answer.
+   */
+  public findByIndex(key: number): ExcelTypedRecord | undefined {
+    return this._recordsByIndex.get(key)
+  }
+
+  /**
+   * The row with this index, or a thrown Error naming what was missing.
+   *
+   * For a key that has to be there. The name says it throws, because a caller reading
+   * `getByIndex(id).name` at a glance cannot otherwise tell whether the
+   * next line is a check or a catch.
+   */
+  public getByIndexOrThrow(key: number): ExcelTypedRecord {
     const found = this._recordsByIndex.get(key)
     if (!found)
       throw new Error(`There is no record in table "ExcelTyped" that corresponds to field "index" value ${key}`)
@@ -91,14 +106,9 @@ export class ExcelTypedTable {
     return found
   }
 
-  /** Gets the value associated with the specified key. */
-  public tryGetByIndex(key: number): ExcelTypedRecord | undefined {
-    return this._recordsByIndex.get(key)
-  }
-
-  /** Determines whether the table contains the specified key. */
+  /** Whether the table holds a row with this index. */
   public containsIndex(key: number): boolean {
-    return !!this._recordsByIndex.has(key)
+    return this._recordsByIndex.has(key)
   }
 
   /** Read a table from specified file. */

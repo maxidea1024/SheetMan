@@ -101,24 +101,34 @@ namespace SheetMan.Fixtures.Core
         private Dictionary<int, Record> _recordsByIndex = new Dictionary<int, Record>();
 
         /// <summary>
-        /// Gets the value associated with the specified key. throw SheetManException if not found.
+        /// The row with this `Index`, or null when the table has none.
         /// </summary>
-        public Record GetByIndex(int key)
+        /// <remarks>
+        /// The lookup to reach for when a missing row is an ordinary answer - an optional
+        /// reference, a key that came from user input. Every language SheetMan generates has
+        /// this one under the same name.
+        /// </remarks>
+        public Record FindByIndex(int key)
+            => _recordsByIndex.TryGetValue(key, out Record record) ? record : null;
+
+        /// <summary>
+        /// The row with this `Index`, or a thrown exception naming what was
+        /// missing.
+        /// </summary>
+        /// <remarks>
+        /// For a key that has to be there - one from another table, or a constant. The name
+        /// says it throws, because a caller reading `GetByIndex(id).Name` at
+        /// a glance cannot otherwise tell whether the next line is a null check or a catch.
+        /// </remarks>
+        public Record GetByIndexOrThrow(int key)
         {
-            if (!TryGetByIndex(key, out Record record))
+            if (!_recordsByIndex.TryGetValue(key, out Record record))
                 throw new SheetManException($"There is no record in table `ItemCategory` that corresponds to field `Index` value {key}");
 
             return record;
         }
 
-        /// <summary>
-        /// Gets the value associated with the specified key.
-        /// </summary>
-        public bool TryGetByIndex(int key, out Record result) => _recordsByIndex.TryGetValue(key, out result);
-
-        /// <summary>
-        /// Determines whether the table contains the specified key.
-        /// </summary>
+        /// <summary>Whether the table holds a row with this `Index`.</summary>
         public bool ContainsIndex(int key) => _recordsByIndex.ContainsKey(key);
         #endregion // Indexing by `Index`
 

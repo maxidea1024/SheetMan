@@ -122,8 +122,23 @@ export class {{ name }}Table {
   public get recordsBy{{ field.pascal_name }}(): Map<{{ field.field_type }}, {{ name }}Record> { return this._recordsBy{{ field.pascal_name }} }
   private _recordsBy{{ field.pascal_name }}: Map<{{ field.field_type }}, {{ name }}Record> = new Map<{{ field.field_type }}, {{ name }}Record>()
 
-  /** Gets the value associated with the specified key. throw Error if not found. */
-  public getBy{{ field.pascal_name }}(key: {{ field.field_type }}): {{ name }}Record {
+  /**
+   * The row with this {{ field.prop_name }}, or undefined when the table has none.
+   *
+   * The lookup to reach for when a missing row is an ordinary answer.
+   */
+  public findBy{{ field.pascal_name }}(key: {{ field.field_type }}): {{ name }}Record | undefined {
+    return this._recordsBy{{ field.pascal_name }}.get(key)
+  }
+
+  /**
+   * The row with this {{ field.prop_name }}, or a thrown Error naming what was missing.
+   *
+   * For a key that has to be there. The name says it throws, because a caller reading
+   * `getBy{{ field.pascal_name }}(id).name` at a glance cannot otherwise tell whether the
+   * next line is a check or a catch.
+   */
+  public getBy{{ field.pascal_name }}OrThrow(key: {{ field.field_type }}): {{ name }}Record {
     const found = this._recordsBy{{ field.pascal_name }}.get(key)
     if (!found)
       throw new Error(`There is no record in table "{{ name }}" that corresponds to field "{{ field.prop_name }}" value ${key}`)
@@ -131,14 +146,9 @@ export class {{ name }}Table {
     return found
   }
 
-  /** Gets the value associated with the specified key. */
-  public tryGetBy{{ field.pascal_name }}(key: {{ field.field_type }}): {{ name }}Record | undefined {
-    return this._recordsBy{{ field.pascal_name }}.get(key)
-  }
-
-  /** Determines whether the table contains the specified key. */
+  /** Whether the table holds a row with this {{ field.prop_name }}. */
   public contains{{ field.pascal_name }}(key: {{ field.field_type }}): boolean {
-    return !!this._recordsBy{{ field.pascal_name }}.has(key)
+    return this._recordsBy{{ field.pascal_name }}.has(key)
   }
 {{~ end ~}}
 

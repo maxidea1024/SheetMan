@@ -182,7 +182,7 @@ namespace SheetMan.Fixtures.X
             {
                 if (record._categoryName_ItemCategory_index > 0)
                 {
-                    record.SetReference_CategoryName_INTERNAL(snapshot.ItemCategory.GetByIndex(record._categoryName_ItemCategory_index).Name);
+                    record.SetReference_CategoryName_INTERNAL(snapshot.ItemCategory.GetByIndexOrThrow(record._categoryName_ItemCategory_index).Name);
                     record._categoryName_F = true;
                 }
             }

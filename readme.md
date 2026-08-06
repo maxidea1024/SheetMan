@@ -98,21 +98,21 @@ sheetman --recipe my-recipe.json                        # 변환
 ```csharp
 // C# — 정적입니다
 await GameData.ReadAllAsync("./data");
-var sword = GameData.Item.Find(1);
+var sword = GameData.Item.FindByIndex(1);
 ```
 
 ```typescript
 // TypeScript
 const tables = new Tables()
 tables.readAllSync('./data')
-const sword = tables.item.find(1)
+const sword = tables.item.findByIndex(1)
 ```
 
 ```python
 # Python
 tables = Tables()
 tables.read_all("./data")
-sword = tables.item.find(1)
+sword = tables.item.find_by_index(1)
 ```
 
 **참조는 로드 후 자동으로 연결됩니다.** `foreign` 필드는 파일에 인덱스로 저장되고, `readAll`이 모든 테이블을 읽은 뒤 실제 레코드 참조로 바꿔줍니다. (Rust만 예외 — [이유](doc/languages/rust.md#주의사항))
