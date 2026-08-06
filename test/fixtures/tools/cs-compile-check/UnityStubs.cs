@@ -24,6 +24,13 @@ namespace UnityEngine
     {
         public bool isDone => throw new NotImplementedException("A stub, for compiling only.");
     }
+
+    /// <summary>The updater writes its cache under persistentDataPath.</summary>
+    public static class Application
+    {
+        public static string persistentDataPath
+            => throw new NotImplementedException("A stub, for compiling only.");
+    }
 }
 
 namespace UnityEngine.Networking
@@ -57,6 +64,14 @@ namespace UnityEngine.Networking
         public bool isHttpError => throw new NotImplementedException("A stub, for compiling only.");
 
         public string error => throw new NotImplementedException("A stub, for compiling only.");
+
+        // What the updater needs beyond a plain read: a bound on how long a request may
+        // take, the status code behind a failure, and a way to stop one that was cancelled.
+        public int timeout { get; set; }
+
+        public long responseCode => throw new NotImplementedException("A stub, for compiling only.");
+
+        public void Abort() { }
 
         public DownloadHandler downloadHandler
             => throw new NotImplementedException("A stub, for compiling only.");

@@ -65,6 +65,10 @@
     "CSharp": [
       {
         "Path": "test/fixtures/output/core/csharp",
+
+        // On here so the regression suite compiles it - including the Unity branches, which
+        // reach UnityWebRequest and are the ones no plain build ever sees.
+        "WriteUpdater": true,
         "Namespace": "SheetMan.Fixtures.Core",
         "AccessorName": "CoreAccessor"
       }

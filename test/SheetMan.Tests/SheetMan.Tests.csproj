@@ -19,6 +19,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!--
+      The shipped updater, compiled into the suite and exercised directly against a local
+      HTTP server. It is a fixed runtime file rather than generated output - it reads only
+      the manifest and knows nothing of the schema - so testing the file itself tests what
+      consumers get, without a harness process in between.
+    -->
+    <Compile Include="..\..\lib\cs\sheetman\SheetManUpdater.cs"
+             Link="Shipped\SheetManUpdater.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- The database tests query the servers directly to confirm what the exporters
          actually wrote, rather than trusting the exporters' own reports. -->
     <PackageReference Include="MySqlConnector" Version="2.6.1" />

@@ -10,7 +10,6 @@
 <Path>/
   index.ts                       전부 재수출
   Tables.ts                      접근자 — 테이블 게터, readAll, 참조 연결
-  Updater.ts                     자동 갱신 (작성중)
   tables/<Table>.ts              테이블당 하나
   enums/<Enum>.ts                enum당 하나
   constants/<Set>.ts             상수 세트당 하나

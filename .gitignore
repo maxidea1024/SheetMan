@@ -85,10 +85,6 @@ lerna-debug.log*
 src/.vs/*
 src/bin/*
 src/obj/*
-lib/Unity/SheetManForUnity/Library
-lib/Unity/SheetManForUnity/Logs
-lib/Unity/SheetManForUnity/Temp
-lib/Unity/SheetManForUnity/obj
 
 # Published CLI binaries. These used to be committed (~162MB of the repo);
 # they belong on a GitHub Release, not in history.

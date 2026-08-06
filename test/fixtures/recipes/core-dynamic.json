@@ -48,7 +48,12 @@
       "Type": "csharp",
       "Path": "test/fixtures/output/core-dynamic/csharp",
       "Namespace": "SheetMan.Fixtures.Core",
-      "AccessorName": "CoreAccessor"
+      "AccessorName": "CoreAccessor",
+
+      // Same as core.json's section, because the two are compared tree against tree - and
+      // it is the one place a setting reached through `Targets` is checked to behave the
+      // same as one written in its own section.
+      "WriteUpdater": true
     },
     {
       "Type": "typescript",

@@ -77,7 +77,6 @@ namespace SheetMan.CodeGeneration
                     }).ToList(),
                 });
 
-                Write("Updater.ts", "ts-updater.sbn", new TsUpdaterView());
             }
 
             if (_model.ConstantSets.Count > 0)

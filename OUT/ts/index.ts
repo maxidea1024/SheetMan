@@ -13,4 +13,3 @@ export { TemplateRecord } from './tables/Template'
 export { TemplateTable } from './tables/Template'
 
 export { Tables } from './Tables'
-export { Updater } from './Updater'

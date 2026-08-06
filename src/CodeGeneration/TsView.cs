@@ -35,10 +35,6 @@ namespace SheetMan.CodeGeneration
         public string Name { get; set; }
     }
 
-    internal sealed class TsUpdaterView
-    {
-    }
-
     internal sealed class TsEnumView
     {
         public string Name { get; set; }

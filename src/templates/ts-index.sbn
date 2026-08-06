@@ -23,7 +23,6 @@ export { {{ name }} } from './constants/{{ name }}'
 {{~ end ~}}
 {{~ end }}
 export { Tables } from './Tables'
-export { Updater } from './Updater'
 {{~ if namespace_close != '' }}
 {{ namespace_close }}
 {{~ end ~}}

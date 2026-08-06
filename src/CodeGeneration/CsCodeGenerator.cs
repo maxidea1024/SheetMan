@@ -69,6 +69,15 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Cs.LiteBinaryReader.cs",
                 Path.Combine(_csharpReceipe.Path, "SheetManBinaryReader.cs"));
+
+            // Asked for rather than assumed. It reaches the network and it is of no use to a
+            // project that ships its data inside the build.
+            if (_csharpReceipe.WriteUpdater)
+            {
+                WriteBinaryReaderRuntime(
+                    "SheetMan.Runtime.Cs.SheetManUpdater.cs",
+                    Path.Combine(_csharpReceipe.Path, "SheetManUpdater.cs"));
+            }
         }
 
         /// <summary>

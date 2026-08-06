@@ -54,7 +54,6 @@ namespace SheetMan.Tests
             // the values, and the dedicated tsc gate does the type checking.
             File.WriteAllText(Path.Combine(workDir, "ambient.d.ts"), @"declare module 'fs'
 declare module 'path'
-declare module 'axios'
 declare const process: any
 declare function require(name: string): any
 ");

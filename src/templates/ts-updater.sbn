@@ -1,7 +1,0 @@
-{{~## Reserved for the incremental-update feature; not implemented. ##~}}
-{{ include 'ts-head.sbn' ~}}
-import * as axios from 'axios'
-
-export class Updater {
-    //TODO
-}

@@ -31,4 +31,3 @@ export { ClientStringsTable } from './tables/ClientStrings'
 export { GameConfig } from './constants/GameConfig'
 
 export { Tables } from './Tables'
-export { Updater } from './Updater'

@@ -54,6 +54,8 @@
                       LogicalName="SheetMan.Runtime.Ts.lite_binary_reader.ts" />
     <EmbeddedResource Include="..\lib\cs\sheetman\LiteBinaryReader.cs"
                       LogicalName="SheetMan.Runtime.Cs.LiteBinaryReader.cs" />
+    <EmbeddedResource Include="..\lib\cs\sheetman\SheetManUpdater.cs"
+                      LogicalName="SheetMan.Runtime.Cs.SheetManUpdater.cs" />
     <EmbeddedResource Include="..\lib\cpp\sheetman\lite_binary_reader.h"
                       LogicalName="SheetMan.Runtime.Cpp.lite_binary_reader.h" />
     <EmbeddedResource Include="..\lib\go\sheetman\lite_binary_reader.go"

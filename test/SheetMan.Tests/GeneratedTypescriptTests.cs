@@ -94,13 +94,12 @@ namespace SheetMan.Tests
             string checkDir = Path.Combine(RepoLayout.OutputDir("_tscheck"));
             Directory.CreateDirectory(checkDir);
 
-            // The generated code imports `fs`, `path` and `axios`. Declaring them as
+            // The generated code imports `fs` and `path`. Declaring them as
             // opaque modules keeps the gate pointed at the generated code's own
             // correctness - unresolved names, bad syntax, wrong types - without
-            // requiring an npm install of @types/node and axios on every run.
+            // requiring an npm install of @types/node on every run.
             File.WriteAllText(Path.Combine(checkDir, "ambient.d.ts"), @"declare module 'fs'
 declare module 'path'
-declare module 'axios'
 ");
 
             string generated = generatedDir.Replace('\\', '/');
@@ -152,7 +151,6 @@ declare module 'axios'
 
             File.WriteAllText(Path.Combine(generatedDir, "sheetman-ambient.d.ts"), @"declare module 'fs'
 declare module 'path'
-declare module 'axios'
 ");
 
             string config = Path.Combine(generatedDir, "tsconfig.conformance.json");

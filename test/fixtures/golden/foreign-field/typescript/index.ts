@@ -15,4 +15,3 @@ export { ItemRecord } from './tables/Item'
 export { ItemTable } from './tables/Item'
 
 export { Tables } from './Tables'
-export { Updater } from './Updater'

@@ -13,4 +13,3 @@ export { ExcelTypedRecord } from './tables/ExcelTyped'
 export { ExcelTypedTable } from './tables/ExcelTyped'
 
 export { Tables } from './Tables'
-export { Updater } from './Updater'
