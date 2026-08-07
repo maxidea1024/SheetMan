@@ -47,7 +47,12 @@
     { "Type": "dart", "Path": "showcases/dart", "AccessorName": "a", "WriteUpdater": true },
     { "Type": "unreal", "Path": "showcases/unreal", "ModuleName": "X", "AccessorName": "A", "WriteUpdater": true },
     { "Type": "c", "Path": "showcases/c", "AccessorName": "A", "WriteUpdater": true },
-    { "Type": "php", "Path": "showcases/php", "Namespace": "X", "AccessorName": "A", "WriteUpdater": true }
+    { "Type": "php", "Path": "showcases/php", "Namespace": "X", "AccessorName": "A", "WriteUpdater": true },
+
+    // The document every other view renders from, in the same diff as the views.
+    // `Author: none` because this file is committed: a name and an e-mail address
+    // are personal data, and nothing here needs them.
+    { "Type": "summary", "Path": "showcases/summary", "Author": "none" }
   ],
 
   "CodeGenerations": {

@@ -154,7 +154,13 @@
     { "Type": "dart", "Path": "project-rescue-xlsxs/out/dart", "AccessorName": "tables", "WriteUpdater": true },
     { "Type": "unreal", "Path": "project-rescue-xlsxs/out/unreal", "ModuleName": "RescueData", "AccessorName": "FRescueData", "WriteUpdater": true },
     { "Type": "c", "Path": "project-rescue-xlsxs/out/c", "AccessorName": "Rescue", "WriteUpdater": true },
-    { "Type": "php", "Path": "project-rescue-xlsxs/out/php", "Namespace": "Rescue", "AccessorName": "Tables", "WriteUpdater": true }
+    { "Type": "php", "Path": "project-rescue-xlsxs/out/php", "Namespace": "Rescue", "AccessorName": "Tables", "WriteUpdater": true },
+
+    // What this conversion produced, as one reviewable document: tables, columns,
+    // row counts, and what changed since the last run. `Author: none` because the
+    // output is committed and handed around: a name and an e-mail address are
+    // personal data, and nothing in this document needs them.
+    { "Type": "summary", "Path": "project-rescue-xlsxs/out/summary", "Author": "none" }
   ],
 
   "CodeGenerations": {

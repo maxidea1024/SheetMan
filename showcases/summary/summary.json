@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 1,
+  "run": {
+    "generatedAt": "2026-08-07T23:56:38.8930552+09:00",
+    "toolVersion": "0.0.0.0",
+    "recipe": "showcase.json",
+    "requestedTargetSide": "cs",
+    "commit": {
+      "hash": "60abfb74a87dae03cbc161ce02eceb52fc8e8afd",
+      "shortHash": "60abfb74a87d",
+      "branch": "main",
+      "authorName": null,
+      "authorEmail": null,
+      "committedAt": "2026-08-07T23:40:57.0000000+09:00",
+      "subject": "Call the file of sheets a workbook, as the rest of the docs already do",
+      "origin": "git",
+      "dirty": true,
+      "attributable": false
+    }
+  },
+  "data": {
+    "hash": "8f04fb8be45d2c7fe776c0c053e18e9c27054ac6cb48a9cf532064d826e3f007",
+    "totals": {
+      "tables": 1,
+      "rows": 2,
+      "fields": 8,
+      "cells": 16,
+      "emptyCells": 0,
+      "contentBytes": 64,
+      "enums": 0,
+      "enumLabels": 0,
+      "constantSets": 0,
+      "constants": 0,
+      "referenceFields": 0,
+      "arrayFields": 0
+    },
+    "fieldTypes": {
+      "bool": 1,
+      "int": 2,
+      "string": 5
+    },
+    "fieldTargetSides": {
+      "cs": 8
+    },
+    "sources": [
+      {
+        "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+        "sheets": 1,
+        "tables": 1,
+        "rows": 2
+      }
+    ],
+    "tables": [
+      {
+        "name": "Template",
+        "rawName": "Template",
+        "hash": "da13fca3ffa5b33a66af6c3903417ff07a2a381c20335a415233565ea519f339",
+        "schemaHash": "4b57a283a06dd0927727a7bdf428a6710d198608a9aadfca1f380531870f207e",
+        "targetSide": "cs",
+        "comment": "Named after a C++ keyword.",
+        "location": {
+          "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+          "sheet": "Data",
+          "cell": "B2",
+          "url": null
+        },
+        "rowCount": 2,
+        "fieldCount": 8,
+        "cellCount": 16,
+        "emptyCellCount": 0,
+        "contentBytes": 64,
+        "fields": [
+          {
+            "name": "Index",
+            "rawName": "index",
+            "typeName": "int",
+            "type": "Int32",
+            "targetSide": "cs",
+            "comment": "primary index",
+            "location": {
+              "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+              "sheet": "Data",
+              "cell": "B4",
+              "url": null
+            },
+            "isIndex": true,
+            "isArray": false,
+            "isReference": false,
+            "refTable": null,
+            "refField": null,
+            "emptyCount": 0,
+            "distinctCount": 2,
+            "distinctCapped": false,
+            "maxLength": null
+          },
+          {
+            "name": "Class",
+            "rawName": "Class",
+            "typeName": "string",
+            "type": "String",
+            "targetSide": "cs",
+            "comment": "class: keyword in C++ and C#",
+            "location": {
+              "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+              "sheet": "Data",
+              "cell": "C4",
+              "url": null
+            },
+            "isIndex": false,
+            "isArray": false,
+            "isReference": false,
+            "refTable": null,
+            "refField": null,
+            "emptyCount": 0,
+            "distinctCount": 2,
+            "distinctCapped": false,
+            "maxLength": 6
+          },
+          {
+            "name": "Int",
+            "rawName": "Int",
+            "typeName": "int",
+            "type": "Int32",
+            "targetSide": "cs",
+            "comment": "int: keyword in C++ and C#",
+            "location": {
+              "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+              "sheet": "Data",
+              "cell": "D4",
+              "url": null
+            },
+            "isIndex": false,
+            "isArray": false,
+            "isReference": false,
+            "refTable": null,
+            "refField": null,
+            "emptyCount": 0,
+            "distinctCount": 2,
+            "distinctCapped": false,
+            "maxLength": null
+          },
+          {
+            "name": "Delete",
+            "rawName": "Delete",
+            "typeName": "bool",
+            "type": "Bool",
+            "targetSide": "cs",
+            "comment": "delete: keyword in C++",
+            "location": {
+              "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+              "sheet": "Data",
+              "cell": "E4",
+              "url": null
+            },
+            "isIndex": false,
+            "isArray": false,
+            "isReference": false,
+            "refTable": null,
+            "refField": null,
+            "emptyCount": 0,
+            "distinctCount": 2,
+            "distinctCapped": false,
+            "maxLength": null
+          },
+          {
+            "name": "Operator",
+            "rawName": "*Operator",
+            "typeName": "string",
+            "type": "String",
+            "targetSide": "cs",
+            "comment": "operator: keyword in C++, and a secondary index",
+            "location": {
+              "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+              "sheet": "Data",
+              "cell": "F4",
+              "url": null
+            },
+            "isIndex": false,
+            "isArray": false,
+            "isReference": false,
+            "refTable": null,
+            "refField": null,
+            "emptyCount": 0,
+            "distinctCount": 2,
+            "distinctCapped": false,
+            "maxLength": 5
+          },
+          {
+            "name": "Namespace",
+            "rawName": "Namespace",
+            "typeName": "string",
+            "type": "String",
+            "targetSide": "cs",
+            "comment": "namespace: keyword in C++ and C#",
+            "location": {
+              "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+              "sheet": "Data",
+              "cell": "G4",
+              "url": null
+            },
+            "isIndex": false,
+            "isArray": false,
+            "isReference": false,
+            "refTable": null,
+            "refField": null,
+            "emptyCount": 0,
+            "distinctCount": 2,
+            "distinctCapped": false,
+            "maxLength": 5
+          },
+          {
+            "name": "Constructor",
+            "rawName": "Constructor",
+            "typeName": "string",
+            "type": "String",
+            "targetSide": "cs",
+            "comment": "constructor: special member in TypeScript",
+            "location": {
+              "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+              "sheet": "Data",
+              "cell": "H4",
+              "url": null
+            },
+            "isIndex": false,
+            "isArray": false,
+            "isReference": false,
+            "refTable": null,
+            "refField": null,
+            "emptyCount": 0,
+            "distinctCount": 2,
+            "distinctCapped": false,
+            "maxLength": 6
+          },
+          {
+            "name": "Function",
+            "rawName": "Function",
+            "typeName": "string",
+            "type": "String",
+            "targetSide": "cs",
+            "comment": "function: keyword in TypeScript",
+            "location": {
+              "file": "test/fixtures/xlsx/reserved-words/reserved-words.xlsx",
+              "sheet": "Data",
+              "cell": "I4",
+              "url": null
+            },
+            "isIndex": false,
+            "isArray": false,
+            "isReference": false,
+            "refTable": null,
+            "refField": null,
+            "emptyCount": 0,
+            "distinctCount": 2,
+            "distinctCapped": false,
+            "maxLength": 4
+          }
+        ],
+        "references": [],
+        "referencedBy": []
+      }
+    ],
+    "enums": [],
+    "constantSets": []
+  }
+}
