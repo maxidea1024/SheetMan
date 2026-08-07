@@ -140,13 +140,43 @@
     ]
   },
 
+  // Every language, so this doubles as the answer to "what would our data look like
+  // over there" for a team deciding where to take it. The updater is on everywhere:
+  // a converted project is exactly the case that wants to patch data without shipping
+  // a build.
+  "Targets": [
+    { "Type": "go", "Path": "project-rescue-xlsxs/out/go", "PackageName": "rescue", "ModulePath": "rescue", "WriteUpdater": true },
+    { "Type": "rust", "Path": "project-rescue-xlsxs/out/rust", "CrateName": "rescue", "WriteUpdater": true },
+    { "Type": "python", "Path": "project-rescue-xlsxs/out/python", "PackageName": "rescue", "WriteUpdater": true },
+    { "Type": "java", "Path": "project-rescue-xlsxs/out/java", "PackageName": "rescue", "AccessorName": "Tables", "WriteUpdater": true },
+    { "Type": "kotlin", "Path": "project-rescue-xlsxs/out/kotlin", "PackageName": "rescue", "AccessorName": "Tables", "WriteUpdater": true },
+    { "Type": "ruby", "Path": "project-rescue-xlsxs/out/ruby", "ModuleName": "Rescue", "AccessorName": "tables", "WriteUpdater": true },
+    { "Type": "dart", "Path": "project-rescue-xlsxs/out/dart", "AccessorName": "tables", "WriteUpdater": true },
+    { "Type": "unreal", "Path": "project-rescue-xlsxs/out/unreal", "ModuleName": "RescueData", "AccessorName": "FRescueData", "WriteUpdater": true },
+    { "Type": "c", "Path": "project-rescue-xlsxs/out/c", "AccessorName": "Rescue", "WriteUpdater": true },
+    { "Type": "php", "Path": "project-rescue-xlsxs/out/php", "Namespace": "Rescue", "AccessorName": "Tables", "WriteUpdater": true }
+  ],
+
   "CodeGenerations": {
     "CSharp": [
       {
         "Path": "project-rescue-xlsxs/out/cs",
         "Namespace": "Rescue.Tables",
-        "AccessorName": "Tables"
+        "AccessorName": "Tables",
+        "WriteUpdater": true
       }
+    ],
+    "Cpp": [
+      {
+        "Path": "project-rescue-xlsxs/out/cpp",
+        "Namespace": "rescue",
+        "AccessorName": "Tables",
+        "BinaryTableFileExtension": ".table",
+        "WriteUpdater": true
+      }
+    ],
+    "Typescript": [
+      { "Path": "project-rescue-xlsxs/out/ts", "WriteUpdater": true }
     ],
 
     // For reading: what came out, table by table, without opening a binary.

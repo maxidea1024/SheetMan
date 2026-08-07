@@ -123,7 +123,8 @@ namespace SheetMan.Extensions
                         return new char[] { char.ToLowerInvariant(s) };
 
                     return new char[] { '-', char.ToLowerInvariant(s) };
-                });
+                },
+                Lower);
         }
 
         public static string ToSnakeCase(this string source)
@@ -142,7 +143,8 @@ namespace SheetMan.Extensions
                         return new char[] { char.ToLowerInvariant(s) };
 
                     return new char[] { '_', char.ToLowerInvariant(s) };
-                });
+                },
+                Lower);
         }
 
         public static string ToTrainCase(this string source)
@@ -161,7 +163,8 @@ namespace SheetMan.Extensions
                         return new char[] { char.ToUpperInvariant(s) };
 
                     return new char[] { '-', char.ToUpperInvariant(s) };
-                });
+                },
+                Keep);
         }
 
         public static string ToSentenceCase(this string source)
@@ -203,7 +206,24 @@ namespace SheetMan.Extensions
 
         private static readonly char[] Delimeters = { ' ', '-', '_' };
 
-        private static string SymbolsPipe(string source, char mainDelimeter, Func<char, bool, char[]> newWordSymbolHandler)
+        /// <summary>
+        /// What happens to a character that continues the word it is in, rather than opening
+        /// one.
+        /// </summary>
+        /// <remarks>
+        /// Only the first character of each word reaches
+        /// <c>newWordSymbolHandler</c>; the rest used to be copied through untouched, which is
+        /// right when the input is Pascal case because everything after the first letter is
+        /// already lowercase. It stops being right inside an acronym: `HP` gave `hP`, because
+        /// only the `H` was ever lowered. The casing forms that flatten a name say so here.
+        /// </remarks>
+        private static char Keep(char symbol) => symbol;
+        private static char Lower(char symbol) => char.ToLowerInvariant(symbol);
+        private static char Upper(char symbol) => char.ToUpperInvariant(symbol);
+
+        private static string SymbolsPipe(
+            string source, char mainDelimeter, Func<char, bool, char[]> newWordSymbolHandler,
+            Func<char, char> continuationHandler = null)
         {
             if (string.IsNullOrEmpty(source))
                 return source;
@@ -274,7 +294,7 @@ namespace SheetMan.Extensions
                 }
                 else
                 {
-                    if (nextSymbolStartsNewWord || char.IsUpper(symbol))
+                    if (nextSymbolStartsNewWord || StartsNewWord(source, i))
                     {
                         builder.Append(newWordSymbolHandler(symbol, disableFrontDelimeter));
                         disableFrontDelimeter = false;
@@ -282,12 +302,43 @@ namespace SheetMan.Extensions
                     }
                     else
                     {
-                        builder.Append(symbol);
+                        builder.Append(continuationHandler == null ? symbol : continuationHandler(symbol));
                     }
                 }
             }
 
             return headUnderscores + builder.ToString() + tailUnderscores;
+        }
+
+        /// <summary>
+        /// Whether the character at <paramref name="index"/> begins a word.
+        /// </summary>
+        /// <remarks>
+        /// A run of capitals is one word, not one word per letter. Every uppercase character
+        /// used to start one, which is invisible in Pascal case - `SFXCategoryType` comes back
+        /// out as itself either way - and wrong everywhere else: the snake-case languages were
+        /// given `enum_s_f_x_category_type.py`, and fields written `ATK_Growth` or `Name_KR` in
+        /// the sheet reached Python as `a_t_k_growth` and `name_k_r`.
+        ///
+        /// So a capital opens a word when the character before it is not one, and a capital
+        /// inside a run opens one only when the character after it is lowercase - that being
+        /// where the acronym stops and the next word starts. `SFXCategoryType` is SFX, Category
+        /// and Type; `HTTPServer` is HTTP and Server; `HP` and `KR` stay whole.
+        /// </remarks>
+        private static bool StartsNewWord(string source, int index)
+        {
+            if (!char.IsUpper(source[index]))
+                return false;
+
+            // The caller has already said yes for the first character, and for anything
+            // following a delimiter.
+            if (index == 0)
+                return true;
+
+            if (!char.IsUpper(source[index - 1]))
+                return true;
+
+            return index + 1 < source.Length && char.IsLower(source[index + 1]);
         }
 
         #endregion

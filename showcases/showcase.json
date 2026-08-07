@@ -38,16 +38,16 @@
   },
 
   "Targets": [
-    { "Type": "go", "Path": "showcases/go", "PackageName": "x", "ModulePath": "x" , "WriteUpdater": true },
-    { "Type": "rust", "Path": "showcases/rust", "CrateName": "x" },
-    { "Type": "python", "Path": "showcases/python", "PackageName": "x" , "WriteUpdater": true },
-    { "Type": "java", "Path": "showcases/java", "PackageName": "x", "AccessorName": "A" },
-    { "Type": "kotlin", "Path": "showcases/kotlin", "PackageName": "x", "AccessorName": "A" },
-    { "Type": "ruby", "Path": "showcases/ruby", "ModuleName": "X", "AccessorName": "a" },
-    { "Type": "dart", "Path": "showcases/dart", "AccessorName": "a" },
+    { "Type": "go", "Path": "showcases/go", "PackageName": "x", "ModulePath": "x", "WriteUpdater": true },
+    { "Type": "rust", "Path": "showcases/rust", "CrateName": "x", "WriteUpdater": true },
+    { "Type": "python", "Path": "showcases/python", "PackageName": "x", "WriteUpdater": true },
+    { "Type": "java", "Path": "showcases/java", "PackageName": "x", "AccessorName": "A", "WriteUpdater": true },
+    { "Type": "kotlin", "Path": "showcases/kotlin", "PackageName": "x", "AccessorName": "A", "WriteUpdater": true },
+    { "Type": "ruby", "Path": "showcases/ruby", "ModuleName": "X", "AccessorName": "a", "WriteUpdater": true },
+    { "Type": "dart", "Path": "showcases/dart", "AccessorName": "a", "WriteUpdater": true },
     { "Type": "unreal", "Path": "showcases/unreal", "ModuleName": "X", "AccessorName": "A", "WriteUpdater": true },
-    { "Type": "c", "Path": "showcases/c", "AccessorName": "A" },
-    { "Type": "php", "Path": "showcases/php", "Namespace": "X", "AccessorName": "A" }
+    { "Type": "c", "Path": "showcases/c", "AccessorName": "A", "WriteUpdater": true },
+    { "Type": "php", "Path": "showcases/php", "Namespace": "X", "AccessorName": "A", "WriteUpdater": true }
   ],
 
   "CodeGenerations": {
@@ -56,7 +56,8 @@
         "Path": "showcases/cpp",
         "Namespace": "x",
         "AccessorName": "A",
-        "BinaryTableFileExtension": ".table"
+        "BinaryTableFileExtension": ".table",
+        "WriteUpdater": true
       }
     ],
     "CSharp": [
