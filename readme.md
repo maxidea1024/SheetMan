@@ -50,6 +50,7 @@ SheetMan이 그 사이를 맡습니다. 시트에서 **읽는 코드와 데이�
 |[Recipe 파일](doc/recipe.md)|무엇을 어디서 읽어 어디로 내보낼지 적는 파일|
 |[내보내기](doc/exports.md)|바이너리·JSON 파일과 MySQL / PostgreSQL / MongoDB / Redis 적재. **바이너리를 쓰는 이유**|
 |[바이너리 형식](doc/binary-format.md)|`.scb` 파일의 레이아웃과 **스키마가 바뀌었을 때의 보장** — 컬럼 태그, 타입 승격, 배포 전 검사. **프로토버프 와이어 포맷에서 가져온 것과 바꾼 것**|
+|[벤치마크](doc/benchmark.md)|실제 게임 데이터 67개 테이블 109,218행을 JSON·compact JSON·바이너리로 실었을 때의 **크기·로드 시간·CPU·메모리 실측**|
 |[**언어별 가이드**](doc/languages/readme.md)|생성된 코드를 프로젝트에 넣고 쓰는 법. 언어마다 준비물·주의사항·트러블슈팅이 다릅니다|
 |[**트러블슈팅**](doc/troubleshooting.md)|변환이 실패했을 때 어디를 볼 것인가. 도구가 실제로 출력하는 메시지별로|
 |[Summary와 히스토리](doc/history.md)|누가 언제 무엇을 바꿨는지 셀 단위로 추적하고 브라우저로 확인하기|

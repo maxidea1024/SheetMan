@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/bench/">
+    <Project Path="bench/SheetMan.Bench.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/SheetMan.csproj" />
   </Folder>
