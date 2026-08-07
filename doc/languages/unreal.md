@@ -34,7 +34,7 @@
     "ModuleName": "GameData",          // 폴더 이름이자 모듈 이름
     "AccessorName": "FGameData",       // 정적 접근자 클래스
     "WriteBuildFile": true,
-    "BinaryTableFileExtension": ".table",
+    "BinaryTableFileExtension": ".scb",
     "Sweep": true,
     "TargetSide": "c"
   }
@@ -115,7 +115,7 @@ FSheetManUpdater::Update(
         }
 
         // 실패했더라도 이전 데이터가 남아 있으므로 읽을 것은 있습니다.
-        FGameData::ReadAll(Result.LocalPath, TEXT(".table"));
+        FGameData::ReadAll(Result.LocalPath, TEXT(".scb"));
     }));
 ```
 
@@ -131,7 +131,7 @@ FSheetManUpdater::Update(
 
 ### 패키징 — 데이터가 빌드에 들어가는가
 
-`.table`은 애셋이 아니므로 언리얼이 그냥 무시합니다. **Project Settings → Packaging → "Additional Non-Asset Directories to Package"** 에 데이터 폴더를 반드시 등록하세요.
+`.scb`는 애셋이 아니므로 언리얼이 그냥 무시합니다. **Project Settings → Packaging → "Additional Non-Asset Directories to Package"** 에 데이터 폴더를 반드시 등록하세요.
 
 등록하면 `.pak`에 들어가고, 생성 코드가 쓰는 `FFileHelper`는 `IPlatformFile`을 거치므로 **pak 안을 로컬 파일처럼 읽습니다** (안드로이드 `.obb`도 동일). 등록하지 않으면 에디터에서는 되고 패키징한 빌드에서만 파일이 없습니다 — 생성된 로더가 그 설정 이름을 로그에 그대로 적으니 메시지를 보면 바로 알 수 있습니다.
 

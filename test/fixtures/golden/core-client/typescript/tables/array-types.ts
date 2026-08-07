@@ -160,7 +160,7 @@ export class ArrayTypesTable {
     return rows.length > 0 && Array.isArray(rows[0])
   }
 
-  /** Read a table from a binary .table file. */
+  /** Read a table from a binary .scb file. */
   public readBinarySync(filename: string): void {
     this.readBinaryFrom(sheetman.readAllBytes(filename))
   }

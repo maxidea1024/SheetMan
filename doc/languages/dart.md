@@ -33,7 +33,7 @@
     "Type": "dart",
     "Path": "lib/gamedata",
     "AccessorName": "game_data",   // 라이브러리 파일 이름
-    "BinaryTableFileExtension": ".table",
+    "BinaryTableFileExtension": ".scb",
     "WriteUpdater": false,           // CDN에서 데이터를 갱신할 거라면 true
     "Sweep": true,
     "TargetSide": "c"

@@ -4,13 +4,13 @@
   "TotalSize": 97,
   "Items": [
     {
-      "Name": "OffsetTable.table",
+      "Name": "OffsetTable.scb",
       "Size": 55,
       "Hash": "098b8cc1c35e80ef1ea1d736d919bcf4",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
-      "Name": "SecondTable.table",
+      "Name": "SecondTable.scb",
       "Size": 42,
       "Hash": "f08b0c412115bf825de17524ae80010a",
       "LastUpdatedDate": "<TIMESTAMP>"

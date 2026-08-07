@@ -37,7 +37,7 @@
     "WriteGoMod": true,            // 이미 모듈 안에 넣는다면 false
     "GoVersion": "1.21",
     "AccessorName": "sheetman_data",
-    "BinaryTableFileExtension": ".table",
+    "BinaryTableFileExtension": ".scb",
     "Sweep": true,
     "TargetSide": "s"
   }

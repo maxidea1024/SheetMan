@@ -9,8 +9,8 @@ namespace SheetMan.Tests;
 /// <summary>
 /// That the extension of the data files is a setting, and that the generated readers read it.
 ///
-/// Every other recipe leaves it at `.table`, so nothing ever read the setting back out. The C#
-/// accessor had a `".table"` literal where the recipe's value belonged: a recipe that set the
+/// Every other recipe leaves it at `.scb`, so nothing ever read the setting back out. The C#
+/// accessor had a `".scb"` literal where the recipe's value belonged: a recipe that set the
 /// extension on both the export and the target got the right file names out of the exporter
 /// and a reader that looked for the default anyway. Nothing failed - the generated code simply
 /// did not find its data, in somebody else's project.
@@ -141,9 +141,9 @@ public class TableExtensionTests
     /// </summary>
     /// <remarks>
     /// The one that finds a literal somewhere new. The list above names the twelve accessors,
-    /// and a thirteenth place hard-coding `.table` - a table's own read, say - would not be in
+    /// and a thirteenth place hard-coding `.scb` - a table's own read, say - would not be in
     /// it. Comments are excluded because the readers describe the format they read and say
-    /// `.table` while doing it, which is prose about the tool rather than a path.
+    /// `.scb` while doing it, which is prose about the tool rather than a path.
     /// </remarks>
     [Fact]
     public void Nothing_generated_still_names_the_default_extension()
@@ -168,20 +168,22 @@ public class TableExtensionTests
         }
 
         Assert.True(offenders.Count == 0,
-            $"Generated code names `.table` where the recipe set `{Extension}`:" +
+            $"Generated code names `.scb` where the recipe set `{Extension}`:" +
             $"{Environment.NewLine}{string.Join(Environment.NewLine, offenders)}");
     }
 
     /// <summary>
-    /// `.table` where a file name ends, and not where one merely starts with it.
+    /// `.scb` where a file name ends, and not where one merely starts with it.
     /// </summary>
     /// <remarks>
-    /// A plain substring search matched Python's `from .tables import Tables`, which is the
-    /// module holding the accessor and has nothing to do with the extension. The boundary is
-    /// what makes it an extension rather than the start of a longer word.
+    /// The boundary is what makes it an extension rather than the start of a longer word. It
+    /// went in when the extension was `.table` and a plain substring search matched Python's
+    /// `from .tables import Tables` - the module holding the accessor, nothing to do with the
+    /// extension. Nothing in the output happens to start with `.scb` today, which is luck
+    /// rather than a reason to search for a bare prefix.
     /// </remarks>
     private static readonly System.Text.RegularExpressions.Regex Literal =
-        new System.Text.RegularExpressions.Regex(@"\.table(?![A-Za-z0-9_])");
+        new System.Text.RegularExpressions.Regex(@"\.scb(?![A-Za-z0-9_])");
 
     /// <summary>
     /// A comment in any of the twelve languages, near enough.

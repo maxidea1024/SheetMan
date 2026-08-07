@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 128" width="104" height="128"
+     role="img" aria-label="확장자 .scb 파일 아이콘 — 값이 컬럼별 블록으로 모여 있고 그 앞에 디스크립터가 있는 파일">
+  <title>.scb — SheetMan Compiled Binary</title>
+  <desc>파일 모양 안에 컬럼 디스크립터 한 줄과 폭이 서로 다른 컬럼 블록 셋이 있습니다. 이 형식이 행이 아니라 컬럼 단위로 모여 있고, 각 블록의 길이를 앞에서 먼저 적는다는 것을 나타냅니다.</desc>
+
+  <style>
+    /*
+      An extension needs a mark before people will say it out loud, and the mark may as
+      well say what is inside: not a row-oriented dump but columns, each block's length
+      declared ahead of it. Colours are GitHub's own, with a dark override - served as an
+      image, so the query follows the viewer's system theme.
+    */
+    .page  { fill: #ffffff; stroke: #d1d9e0; stroke-width: 2; }
+    .fold  { fill: #f6f8fa; stroke: #d1d9e0; stroke-width: 2; }
+    .desc  { fill: #d1d9e0; }
+    .col1  { fill: #0969da; }
+    .col2  { fill: #54aeff; }
+    .col3  { fill: #b6e3ff; }
+    .name  { fill: #1f2328; font-weight: 700; }
+
+    @media (prefers-color-scheme: dark) {
+      .page { fill: #151b23; stroke: #3d444d; }
+      .fold { fill: #0d1117; stroke: #3d444d; }
+      .desc { fill: #3d444d; }
+      .col1 { fill: #4493f8; }
+      .col2 { fill: #316dca; }
+      .col3 { fill: #1b4b91; }
+      .name { fill: #f0f6fc; }
+    }
+
+    text {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+                   "Liberation Mono", monospace;
+    }
+  </style>
+
+  <!-- The sheet, with the corner cut away so it reads as a file and not a card. -->
+  <path class="page" d="M 15 3 H 68 L 101 36 V 119 A 6 6 0 0 1 95 125 H 15 A 6 6 0 0 1 9 119 V 9 A 6 6 0 0 1 15 3 Z"/>
+  <path class="fold" d="M 68 3 L 101 36 H 74 A 6 6 0 0 1 68 30 Z"/>
+
+  <!-- The column descriptors, which is what a reader consults before touching a value. -->
+  <rect class="desc" x="21" y="48" width="64" height="5" rx="2.5"/>
+
+  <!--
+    Three columns rather than three rows, in widths that differ: the encoding is sized to
+    the value, so no two columns are the same number of bytes.
+  -->
+  <rect class="col1" x="21" y="59" width="18" height="26" rx="2"/>
+  <rect class="col2" x="43" y="59" width="12" height="26" rx="2"/>
+  <rect class="col3" x="59" y="59" width="26" height="26" rx="2"/>
+
+  <text class="name" x="53" y="112" font-size="21" text-anchor="middle">.scb</text>
+</svg>

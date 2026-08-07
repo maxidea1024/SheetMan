@@ -12,7 +12,7 @@
 /*
  * SheetMan LiteBinary reader for PHP 8.1 and above.
  *
- * Reads the .table files produced by SheetMan's binary exporter. The format is
+ * Reads the .scb files produced by SheetMan's binary exporter. The format is
  * defined by the C# writer in src/Exporters/LiteBinaryWriter.cs, and this is a
  * deliberate re-implementation of the reading half of it:
  *

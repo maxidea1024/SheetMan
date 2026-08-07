@@ -26,7 +26,7 @@ class Tables {
   /// Safe to call on a loaded accessor. Every file is read into a table of its own and the
   /// references are linked among those, so a read that throws part way through leaves every
   /// table holding the load it already had, and no row points at a row from it.
-  void read_all(const std::string& base_path, const std::string& file_extension = ".table") {
+  void read_all(const std::string& base_path, const std::string& file_extension = ".scb") {
     TemplateTable loaded_sm_template;
     loaded_sm_template.read(base_path + "/Template" + file_extension);
 

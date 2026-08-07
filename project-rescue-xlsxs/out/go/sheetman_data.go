@@ -87,7 +87,7 @@ type Tables struct {
 // The data files are expected to carry the extension the recipe told the exporter to write.
 // Use ReadAllWithExtension to name a different one.
 func (t *Tables) ReadAll(basePath string) error {
-	return t.ReadAllWithExtension(basePath, ".table")
+	return t.ReadAllWithExtension(basePath, ".scb")
 }
 
 // ReadAllWithExtension is ReadAll for data files that carry some other extension.

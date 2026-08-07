@@ -31,7 +31,7 @@ public class GeneratedFileMarkerTests
     /// </summary>
     private static readonly string[] NotSourceExtensions =
     [
-        ".table", ".json", ".bin", ".png", ".lock",
+        ".scb", ".json", ".bin", ".png", ".lock",
     ];
 
     [Fact]

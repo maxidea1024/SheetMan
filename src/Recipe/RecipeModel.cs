@@ -118,7 +118,7 @@ public class RecipeModel
             /// Extension of each table file. Must match the extension the code
             /// generators are told to expect.
             /// </summary>
-            public string FileExtension { get; set; } = ".table";
+            public string FileExtension { get; set; } = ".scb";
 
             /// <summary>
             /// Reserved. Not implemented: the format writes a reserved byte where a
@@ -323,7 +323,7 @@ public class RecipeModel
             /// Extension the generated reader expects on table files. Must match the
             /// binary export's FileExtension.
             /// </summary>
-            public string BinaryTableFileExtension { get; set; } = ".table";
+            public string BinaryTableFileExtension { get; set; } = ".scb";
 
             /// <summary>
             /// Whether to write the data updater beside the reader.
@@ -392,7 +392,7 @@ public class RecipeModel
             /// Extension the generated reader expects on table files. Must match the
             /// binary export's FileExtension.
             /// </summary>
-            public string BinaryTableFileExtension { get; set; } = ".table";
+            public string BinaryTableFileExtension { get; set; } = ".scb";
 
             /// <summary>
             /// Whether to write the data updater beside the reader.
@@ -456,7 +456,7 @@ public class RecipeModel
             /// Extension the generated reader expects on table files. Must match the
             /// binary export's FileExtension.
             /// </summary>
-            public string BinaryTableFileExtension { get; set; } = ".table";
+            public string BinaryTableFileExtension { get; set; } = ".scb";
 
             /// <summary>
             /// Whether to write the data updater beside the reader.

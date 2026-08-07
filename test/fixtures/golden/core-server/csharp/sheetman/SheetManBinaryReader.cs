@@ -15,7 +15,7 @@
 // installed. Edit it in the SheetMan repository.
 //
 //
-// Reads the .table files SheetMan's binary exporter writes:
+// Reads the .scb files SheetMan's binary exporter writes:
 //
 //   fixed8      one byte
 //   fixed32     four bytes, little endian

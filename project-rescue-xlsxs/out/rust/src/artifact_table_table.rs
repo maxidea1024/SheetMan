@@ -86,7 +86,7 @@ impl ArtifactTableTable {
         self.by_id.contains_key(&key)
     }
 
-    /// Loads the table from a .table file written by SheetMan.
+    /// Loads the table from a .scb file written by SheetMan.
     pub fn read(&mut self, filename: &Path) -> sheetman::Result<()> {
         let data = sheetman::read_all_bytes(filename)?;
         let mut reader = sheetman::Reader::new(&data);

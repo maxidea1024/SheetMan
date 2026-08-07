@@ -152,7 +152,7 @@ class Tables:
         self.cost_curve_table = CostCurveTableTable()
         self.cost_curve_range_table = CostCurveRangeTableTable()
 
-    def read_all(self, base_path, file_extension=".table"):
+    def read_all(self, base_path, file_extension=".scb"):
         """Reads every table from base_path, then links the references between them.
 
         file_extension defaults to what the recipe told the exporter to write. Pass a

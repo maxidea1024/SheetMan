@@ -1,6 +1,6 @@
 // Skew harness for the generated C# reader.
 //
-// Reads one table out of a directory of .table files and prints what came back. The point
+// Reads one table out of a directory of .scb files and prints what came back. The point
 // is that the directory need not have been written by the schema this was generated from:
 // a column added since is skipped, a column removed since keeps its default, a widened
 // type is promoted, and an incompatible one is refused by name.
@@ -50,7 +50,7 @@ internal static class Program
             return await Refresh(args[1], args[2], args[3]);
         }
 
-        string filename = Path.Combine(args[0], args[1] + ".table");
+        string filename = Path.Combine(args[0], args[1] + ".scb");
 
         try
         {
@@ -95,14 +95,14 @@ internal static class Program
     {
         object loaded = Table(table);
 
-        await Read(loaded, Path.Combine(firstDir, table + ".table"));
+        await Read(loaded, Path.Combine(firstDir, table + ".scb"));
 
         var json = new StringBuilder("{\"first\":");
         Rows(loaded, json);
 
         try
         {
-            await Read(loaded, Path.Combine(secondDir, table + ".table"));
+            await Read(loaded, Path.Combine(secondDir, table + ".scb"));
 
             json.Append(",\"second\":");
             Rows(loaded, json);

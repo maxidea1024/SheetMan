@@ -295,7 +295,7 @@ module Rescue
     # Safe to call on a loaded accessor. Every file is read into a table of its own and
     # the references are linked among those, so a failure part way through leaves every
     # table holding the load it already had, and no row points at a row from it.
-    def read_all(base_path, file_extension = '.table')
+    def read_all(base_path, file_extension = '.scb')
       loaded_collection_group_table = CollectionGroupTableTable.new
       loaded_collection_group_table.read(File.join(base_path, "CollectionGroupTable#{file_extension}"))
       loaded_collection_table = CollectionTableTable.new

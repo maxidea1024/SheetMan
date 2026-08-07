@@ -39,7 +39,7 @@
 
     // 크기와 파싱 시간이 중요할 때. 이름 있는 JSON의 3분의 1 안팎입니다.
     "Binary": [
-      { "Path": "./public/data", "FileExtension": ".table" }
+      { "Path": "./public/data", "FileExtension": ".scb" }
     ]
   },
 
@@ -53,7 +53,7 @@
         // 디버거와 로그에서 읽히지만 파일에 저장된 정수와는 어긋납니다.
         "UseStringEnum": false,
 
-        "BinaryTableFileExtension": ".table"
+        "BinaryTableFileExtension": ".scb"
       }
     ],
 

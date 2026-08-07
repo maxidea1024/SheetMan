@@ -30,7 +30,7 @@
   },
 
   // No binary export here. It is the runtime format and it is covered by the golden
-  // tree; what it is not is reviewable - a .table in a diff says nothing to anybody.
+  // tree; what it is not is reviewable - a .scb in a diff says nothing to anybody.
   "Exports": {
     "Json": [
       { "Path": "showcases/json", "UseCompactRowFormat": false, "Indented": true }
@@ -56,7 +56,7 @@
         "Path": "showcases/cpp",
         "Namespace": "x",
         "AccessorName": "A",
-        "BinaryTableFileExtension": ".table",
+        "BinaryTableFileExtension": ".scb",
         "WriteUpdater": true
       }
     ],

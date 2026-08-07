@@ -12,7 +12,7 @@
 
 |대상|설명|
 |--|--|
-|Binary|자체 포맷(LiteBinary) 바이너리 파일|
+|Binary|자체 포맷(LiteBinary) 바이너리 파일. 확장자는 `.scb` — SheetMan Compiled Binary|
 |Json|`.json` 파일. 이름 있는 형식과 배열만 담는 compact 형식을 선택할 수 있습니다.|
 |MySql|MySQL로 직접 적재합니다.|
 |PostgreSql|PostgreSQL로 직접 적재합니다.|
@@ -91,7 +91,7 @@ JSON을 읽는 쪽은 이런 일을 합니다.
 |`string`|`counter32` 바이트 길이, 그다음 그만큼의 UTF-8 바이트|
 |`uuid`|16바이트, .NET `Guid` 배치 (앞 세 구성요소만 리틀엔디안)|
 
-**`varint32`는 프로토콜 버퍼의 base-128 varint와 같은 것입니다.** 값을 7비트씩 나눠 담고, 뒤에 더 있으면 각 바이트의 최상위 비트를 세웁니다. 그래서 작은 수는 작게 듭니다.
+**`varint32`는 프로토콜 버퍼의 [base-128 varint](https://protobuf.dev/programming-guides/encoding/#varints)와 같은 것입니다.** 값을 7비트씩 나눠 담고, 뒤에 더 있으면 각 바이트의 최상위 비트를 세웁니다. 그래서 작은 수는 작게 듭니다. 이 형식이 프로토버프에서 무엇을 가져오고 무엇을 바꿨는지는 [바이너리 형식](binary-format.md#어디서-가져온-아이디어인가)에 있습니다.
 
 |값|varint32 바이트 수|
 |--|--|
@@ -183,7 +183,7 @@ index@1    Name@2    Price@3    #OldColor@4
   "MasterHash": "117f8189875ff7e11d813749b3d0da46",
   "TotalSize": 1082,
   "Items": [
-    { "Name": "Item.table", "Size": 232, "Hash": "f76019ff...", "LastUpdatedDate": "..." }
+    { "Name": "Item.scb", "Size": 232, "Hash": "f76019ff...", "LastUpdatedDate": "..." }
   ]
 }
 ```
@@ -194,7 +194,7 @@ index@1    Name@2    Price@3    #OldColor@4
 
 ## 바이너리라서 못 보는 것, 그리고 그 대신
 
-바이너리의 단 하나의 대가는 **열어봐도 안 보인다는 것**입니다. `.table`을 텍스트 편집기로 열면 읽을 수 없고, `grep`도 안 됩니다.
+바이너리의 단 하나의 대가는 **열어봐도 안 보인다는 것**입니다. `.scb`를 텍스트 편집기로 열면 읽을 수 없고, `grep`도 안 됩니다.
 
 그래서 열어볼 필요가 없도록 다른 수단을 함께 냅니다. 데이터를 눈으로 확인하는 일은 원래 바이너리를 들여다보는 일이 아니라 **다른 네 가지 질문**입니다.
 

@@ -27,7 +27,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/core-server/binary",
-        "FileExtension": ".table",
+        "FileExtension": ".scb",
         "TargetSide": "s"
       }
     ],

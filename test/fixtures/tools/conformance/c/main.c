@@ -1,6 +1,6 @@
 ﻿/* Conformance harness for the generated C reader.
  *
- * Reads Vectors.table through the generated accessor and prints each row in the
+ * Reads Vectors.scb through the generated accessor and prints each row in the
  * canonical form described in ../README.md. No parsing here: the generated
  * reader does that, and this only prints.
  *

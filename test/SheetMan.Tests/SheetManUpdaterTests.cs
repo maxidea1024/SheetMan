@@ -60,7 +60,7 @@ public class SheetManUpdaterTests : IDisposable
         Assert.True(result.Succeeded, result.Error);
         Assert.False(result.UpToDate);
 
-        foreach (string path in Directory.GetFiles(served, "*.table"))
+        foreach (string path in Directory.GetFiles(served, "*.scb"))
         {
             string local = Path.Combine(cache, Path.GetFileName(path));
 
@@ -68,7 +68,7 @@ public class SheetManUpdaterTests : IDisposable
             Assert.Equal(File.ReadAllBytes(path), File.ReadAllBytes(local));
         }
 
-        Assert.Equal(Directory.GetFiles(served, "*.table").Length, result.DownloadedCount);
+        Assert.Equal(Directory.GetFiles(served, "*.scb").Length, result.DownloadedCount);
 
         // The manifest is cached too - it is what the next run compares against.
         Assert.True(File.Exists(Path.Combine(cache, "manifest-binary.json")));
@@ -109,7 +109,7 @@ public class SheetManUpdaterTests : IDisposable
 
         Assert.True((await SheetManUpdater.UpdateAsync(server.BaseUrl, cache)).Succeeded);
 
-        Republish(served, "Item.table", Encoding.UTF8.GetBytes("a different Item table"));
+        Republish(served, "Item.scb", Encoding.UTF8.GetBytes("a different Item table"));
         server.Requests.Clear();
 
         var second = await SheetManUpdater.UpdateAsync(server.BaseUrl, cache);
@@ -118,11 +118,11 @@ public class SheetManUpdaterTests : IDisposable
         Assert.Equal(1, second.DownloadedCount);
 
         Assert.Equal("a different Item table",
-            File.ReadAllText(Path.Combine(cache, "Item.table")));
+            File.ReadAllText(Path.Combine(cache, "Item.scb")));
 
         // The manifest and that one file.
         Assert.Equal(2, server.Requests.Count);
-        Assert.Contains(server.Requests, path => path.EndsWith("Item.table", StringComparison.Ordinal));
+        Assert.Contains(server.Requests, path => path.EndsWith("Item.scb", StringComparison.Ordinal));
     }
 
     /// <summary>
@@ -136,15 +136,15 @@ public class SheetManUpdaterTests : IDisposable
         string cache = TemporaryDirectory("cache");
 
         Assert.True((await SheetManUpdater.UpdateAsync(server.BaseUrl, cache)).Succeeded);
-        Assert.True(File.Exists(Path.Combine(cache, "Item.table")));
+        Assert.True(File.Exists(Path.Combine(cache, "Item.scb")));
 
-        Unpublish(served, "Item.table");
+        Unpublish(served, "Item.scb");
 
         var second = await SheetManUpdater.UpdateAsync(server.BaseUrl, cache);
 
         Assert.True(second.Succeeded, second.Error);
         Assert.Equal(1, second.DeletedCount);
-        Assert.False(File.Exists(Path.Combine(cache, "Item.table")));
+        Assert.False(File.Exists(Path.Combine(cache, "Item.scb")));
     }
 
     /// <summary>
@@ -159,13 +159,13 @@ public class SheetManUpdaterTests : IDisposable
 
         Assert.True((await SheetManUpdater.UpdateAsync(server.BaseUrl, cache)).Succeeded);
 
-        File.Delete(Path.Combine(cache, "Item.table"));
+        File.Delete(Path.Combine(cache, "Item.scb"));
 
         var second = await SheetManUpdater.UpdateAsync(server.BaseUrl, cache);
 
         Assert.True(second.Succeeded, second.Error);
         Assert.Equal(1, second.DownloadedCount);
-        Assert.True(File.Exists(Path.Combine(cache, "Item.table")));
+        Assert.True(File.Exists(Path.Combine(cache, "Item.scb")));
     }
 
     // ------------------------------------------------------------------ going wrong
@@ -189,13 +189,13 @@ public class SheetManUpdaterTests : IDisposable
 
         // The manifest says one thing and the file says another, which is what a
         // half-finished upload looks like from a client.
-        Republish(served, "Item.table", Encoding.UTF8.GetBytes("new"));
-        File.WriteAllBytes(Path.Combine(served, "Item.table"), Encoding.UTF8.GetBytes("corrupt"));
+        Republish(served, "Item.scb", Encoding.UTF8.GetBytes("new"));
+        File.WriteAllBytes(Path.Combine(served, "Item.scb"), Encoding.UTF8.GetBytes("corrupt"));
 
         var second = await SheetManUpdater.UpdateAsync(server.BaseUrl, cache);
 
         Assert.False(second.Succeeded);
-        Assert.Contains("Item.table", second.Error);
+        Assert.Contains("Item.scb", second.Error);
         Assert.Contains("manifest says", second.Error);
 
         Assert.Equal(before, Snapshot(cache));
@@ -308,10 +308,10 @@ public class SheetManUpdaterTests : IDisposable
         Assert.NotEmpty(manifest.MasterHash);
         Assert.NotEmpty(manifest.Entries);
 
-        var item = manifest.Find("Item.table");
+        var item = manifest.Find("Item.scb");
 
         Assert.NotNull(item);
-        Assert.Equal(new FileInfo(Path.Combine(Path.GetDirectoryName(path), "Item.table")).Length, item.Size);
+        Assert.Equal(new FileInfo(Path.Combine(Path.GetDirectoryName(path), "Item.scb")).Length, item.Size);
         Assert.Equal(32, item.Hash.Length);
     }
 
@@ -366,7 +366,7 @@ public class SheetManUpdaterTests : IDisposable
 
         bool first = true;
 
-        foreach (string path in Directory.GetFiles(served, "*.table"))
+        foreach (string path in Directory.GetFiles(served, "*.scb"))
         {
             byte[] bytes = File.ReadAllBytes(path);
 

@@ -77,10 +77,10 @@ public class SummaryTests
         Assert.Contains("ClientStrings", expected);
 
         Assert.False(File.Exists(Path.Combine(
-            RepoLayout.OutputDir("core-client"), "binary", "ServerTuning.table")));
+            RepoLayout.OutputDir("core-client"), "binary", "ServerTuning.scb")));
 
         Assert.False(File.Exists(Path.Combine(
-            RepoLayout.OutputDir("core-server"), "binary", "ClientStrings.table")));
+            RepoLayout.OutputDir("core-server"), "binary", "ClientStrings.scb")));
     }
 
     /// <summary>

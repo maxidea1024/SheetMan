@@ -155,7 +155,7 @@ public class SchemaBaselineTests
         Assert.Equal(0, Convert(Recipe(dir, "evolution-v1")).ExitCode);
 
         string before = File.ReadAllText(BaselinePath(dir));
-        string data = Path.Combine(dir, "binary", "Promoted.table");
+        string data = Path.Combine(dir, "binary", "Promoted.scb");
         byte[] dataBefore = File.ReadAllBytes(data);
 
         Assert.NotEqual(0, Convert(Recipe(dir, "evolution-v2")).ExitCode);

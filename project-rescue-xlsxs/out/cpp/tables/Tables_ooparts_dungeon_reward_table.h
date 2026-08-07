@@ -80,7 +80,7 @@ class OopartsDungeonRewardTableTable {
     return by_id_.find(key) != by_id_.end();
   }
 
-  /// Loads the table from a .table file written by SheetMan.
+  /// Loads the table from a .scb file written by SheetMan.
   void read(const std::string& filename) {
     const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
     sheetman::LiteBinaryReader reader(buffer);

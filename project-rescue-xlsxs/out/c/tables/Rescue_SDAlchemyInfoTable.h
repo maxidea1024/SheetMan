@@ -68,7 +68,7 @@ typedef struct Rescue_SDAlchemyInfoTableTable_t {
   sm_arena arena;
 } Rescue_SDAlchemyInfoTableTable_t;
 
-/* Loads the table from a .table file written by SheetMan.
+/* Loads the table from a .scb file written by SheetMan.
  *
  * Returns false and leaves the table empty when the file is missing, truncated
  * or malformed; the reason goes to `error` when one is passed. */

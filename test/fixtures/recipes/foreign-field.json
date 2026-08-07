@@ -24,7 +24,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/foreign-field/binary",
-        "FileExtension": ".table"
+        "FileExtension": ".scb"
       }
     ],
     "Json": [

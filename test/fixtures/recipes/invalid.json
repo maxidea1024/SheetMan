@@ -24,7 +24,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/invalid/binary",
-        "FileExtension": ".table"
+        "FileExtension": ".scb"
       }
     ],
     "Json": [

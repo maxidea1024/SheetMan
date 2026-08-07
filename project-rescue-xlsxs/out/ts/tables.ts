@@ -639,7 +639,7 @@ export class Tables {
    * table on its own with `readBinarySync` leaves its references unlinked, because linking
    * needs every table. Both formats produce the same values.
    */
-  public readAllBinarySync(basePath: string, fileExtension: string = '.table'): void {
+  public readAllBinarySync(basePath: string, fileExtension: string = '.scb'): void {
     const collectionGroupTable = new CollectionGroupTableTable()
     collectionGroupTable.readBinarySync(path.join(basePath, `CollectionGroupTable${fileExtension}`))
     const collectionTable = new CollectionTableTable()

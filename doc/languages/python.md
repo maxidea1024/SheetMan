@@ -38,7 +38,7 @@
     "Path": "src",
     "PackageName": "gamedata",   // 폴더 이름이자 import 이름
     "ModuleName": "tables",      // 접근자가 든 모듈
-    "BinaryTableFileExtension": ".table",
+    "BinaryTableFileExtension": ".scb",
     "Sweep": true,
     "TargetSide": "s"
   }

@@ -92,7 +92,7 @@ class TemplateTable {
   /// Whether the table holds a row with this Operator.
   bool containsOperator(String key) => _byOperator.containsKey(key);
 
-  /// Loads the table from a .table file written by SheetMan.
+  /// Loads the table from a .scb file written by SheetMan.
   /// Column by column, matched by tag rather than position: a column this build does
   /// not know is skipped by its block length, and one whose type changed incompatibly
   /// fails naming the field.

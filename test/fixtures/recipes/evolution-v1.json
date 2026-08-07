@@ -19,7 +19,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/evolution-v1/binary",
-        "FileExtension": ".table"
+        "FileExtension": ".scb"
       }
     ],
     "Json": [

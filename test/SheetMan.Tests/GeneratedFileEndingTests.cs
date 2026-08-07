@@ -31,7 +31,7 @@ public class GeneratedFileEndingTests
     /// <summary>
     /// Extensions worth checking: text a person or a compiler reads.
     ///
-    /// A `.table` is binary and a `.map` is a generated artefact of a generated artefact.
+    /// A `.scb` is binary and a `.map` is a generated artefact of a generated artefact.
     /// Everything else the tool writes is source or documentation.
     /// </summary>
     private static readonly HashSet<string> TextExtensions = new HashSet<string>(

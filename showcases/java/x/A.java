@@ -20,7 +20,7 @@ public final class A {
      * write. Use the overload to name a different one.
      */
     public void readAll(String basePath) {
-        readAll(basePath, ".table");
+        readAll(basePath, ".scb");
     }
 
     /**

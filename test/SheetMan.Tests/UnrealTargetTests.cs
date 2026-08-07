@@ -258,7 +258,7 @@ public class UnrealTargetTests
     /// <summary>
     /// A failed load names the packaging setting that is usually the reason.
     ///
-    /// A `.table` is not an asset, so Unreal ignores it unless the project lists its
+    /// A `.scb` is not an asset, so Unreal ignores it unless the project lists its
     /// directory under Packaging -> "Additional Non-Asset Directories to Package". Miss
     /// that and everything works in the editor and the file is simply absent from the
     /// build - which reads as "the loader is broken" to whoever finds it.

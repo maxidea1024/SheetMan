@@ -31,7 +31,7 @@ bool FCollectionGroupTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -198,7 +198,7 @@ bool FCollectionTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -425,7 +425,7 @@ bool FConditionTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -592,7 +592,7 @@ bool FDailyDungeonInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -869,7 +869,7 @@ bool FGoldDungeonStageTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -1196,7 +1196,7 @@ bool FGoldDungeonRewardTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -1403,7 +1403,7 @@ bool FExpDungeonStageTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -1730,7 +1730,7 @@ bool FExpDungeonRewardTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -1937,7 +1937,7 @@ bool FTraitDungeonStageTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -2264,7 +2264,7 @@ bool FTraitDungeonRewardTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -2471,7 +2471,7 @@ bool FRelicDungeonStageTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -2798,7 +2798,7 @@ bool FRelicDungeonRewardTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -3005,7 +3005,7 @@ bool FOopartsDungeonStageTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -3332,7 +3332,7 @@ bool FOopartsDungeonRewardTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -3539,7 +3539,7 @@ bool FGachaInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -3876,7 +3876,7 @@ bool FGachaCharacterListTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -4093,7 +4093,7 @@ bool FGachaArtifactInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -4430,7 +4430,7 @@ bool FGachaArtifactListTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -4627,7 +4627,7 @@ bool FGachaRateTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -4794,7 +4794,7 @@ bool FCurrencyTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -5051,7 +5051,7 @@ bool FMaterialTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -5298,7 +5298,7 @@ bool FPackageTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -5615,7 +5615,7 @@ bool FClassUpCurrencyListTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -5812,7 +5812,7 @@ bool FEquipItemLevelTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -6109,7 +6109,7 @@ bool FEquipItemClassTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -6416,7 +6416,7 @@ bool FEquipTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -6653,7 +6653,7 @@ bool FEquipItemGradeTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -6950,7 +6950,7 @@ bool FCharacterTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -7427,7 +7427,7 @@ bool FSkillTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -7674,7 +7674,7 @@ bool FBuffTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -7961,7 +7961,7 @@ bool FCharacterLevelTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -8158,7 +8158,7 @@ bool FCharacterTranscendenceTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -8365,7 +8365,7 @@ bool FArtifactTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -8602,7 +8602,7 @@ bool FArtifactLevelTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -8799,7 +8799,7 @@ bool FArtifactTranscendenceTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -9006,7 +9006,7 @@ bool FBuffSelectTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -9183,7 +9183,7 @@ bool FShortCutTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -9340,7 +9340,7 @@ bool FStageTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -9668,7 +9668,7 @@ bool FConfigTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -9840,7 +9840,7 @@ bool FDropGroupTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -10067,7 +10067,7 @@ bool FAttributeTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -10254,7 +10254,7 @@ bool FSDContensInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -10471,7 +10471,7 @@ bool FSDAgencyInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -10718,7 +10718,7 @@ bool FSDAgencyTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -11035,7 +11035,7 @@ bool FSDPubInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -11212,7 +11212,7 @@ bool FSDTrainingInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -11439,7 +11439,7 @@ bool FSDTrainingLevelTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -11646,7 +11646,7 @@ bool FSDDungeonInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -11883,7 +11883,7 @@ bool FSDDungeonCardTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -12060,7 +12060,7 @@ bool FSDDungeonRewardTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -12367,7 +12367,7 @@ bool FSDAlchemyInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -12634,7 +12634,7 @@ bool FSDAlchemyStepTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -12801,7 +12801,7 @@ bool FSDAlchemyLevelTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -13068,7 +13068,7 @@ bool FShopInfoTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -13265,7 +13265,7 @@ bool FMainShopTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -13532,7 +13532,7 @@ bool FPackageShopTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -13799,7 +13799,7 @@ bool FSeasonShopTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -14066,7 +14066,7 @@ bool FCashShopTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -14333,7 +14333,7 @@ bool FBGMSoundTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -14500,7 +14500,7 @@ bool FSFXSoundTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -14667,7 +14667,7 @@ bool FInfoGrowthTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -14914,7 +14914,7 @@ bool FStatGrowthTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -15111,7 +15111,7 @@ bool FTraitTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -15298,7 +15298,7 @@ bool FRelicTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -15555,7 +15555,7 @@ bool FStarNodeTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -15772,7 +15772,7 @@ bool FCostCurveTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody
@@ -15929,7 +15929,7 @@ bool FCostCurveRangeTableTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody

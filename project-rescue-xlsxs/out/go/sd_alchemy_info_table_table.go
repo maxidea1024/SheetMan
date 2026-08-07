@@ -93,7 +93,7 @@ func (t *SDAlchemyInfoTableTable) ContainsId(key int32) bool {
 	return found
 }
 
-// Read loads the table from a .table file written by SheetMan.
+// Read loads the table from a .scb file written by SheetMan.
 func (t *SDAlchemyInfoTableTable) Read(filename string) error {
 	data, err := sheetman.ReadAllBytes(filename)
 	if err != nil {

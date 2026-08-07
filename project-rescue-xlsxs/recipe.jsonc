@@ -171,7 +171,7 @@
         "Path": "project-rescue-xlsxs/out/cpp",
         "Namespace": "rescue",
         "AccessorName": "Tables",
-        "BinaryTableFileExtension": ".table",
+        "BinaryTableFileExtension": ".scb",
         "WriteUpdater": true
       }
     ],

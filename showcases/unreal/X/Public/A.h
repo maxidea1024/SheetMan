@@ -88,7 +88,7 @@ public:
     /** Whether the table holds a row with this Operator. */
     bool ContainsOperator(const FString& Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -117,7 +117,7 @@ public:
      * since some platforms only cook what carries an extension they recognise.
      */
     static bool ReadAll(const FString& BasePath,
-                        const FString& FileExtension = TEXT(".table"));
+                        const FString& FileExtension = TEXT(".scb"));
 
 private:
     static FTemplateTable TemplateStorage;
@@ -179,5 +179,5 @@ public:
     UFUNCTION(BlueprintCallable, Category = "SheetMan",
               meta = (DisplayName = "Load All SheetMan Tables"))
     static bool ReadAll(const FString& BasePath,
-                        const FString& FileExtension = TEXT(".table"));
+                        const FString& FileExtension = TEXT(".scb"));
 };

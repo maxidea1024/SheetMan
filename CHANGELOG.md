@@ -12,6 +12,24 @@
 
 ## [Unreleased]
 
+### 변경
+
+- **바이너리 데이터 파일의 기본 확장자가 `.table`에서 `.scb`로 바뀌었습니다.**
+  SheetMan Compiled Binary의 약자입니다. `.table`은 어느 도구의 파일인지 말해주지 않는
+  이름이었고, 실제로 다른 도구들과 겹칩니다.
+
+  **파일 안의 바이트는 달라지지 않았습니다** — 이름만 바뀝니다. 이미 배포한 데이터를
+  그대로 쓰려면 recipe에서 확장자를 되돌리면 됩니다. 익스포터와 코드 생성 쪽 **둘 다**
+  바꿔야 합니다.
+
+  ```jsonc
+  "Export":  { "Binary": [{ "Path": "./out/data", "FileExtension": ".table" }] },
+  "CSharp":  [{ "Path": "./out/cs", "BinaryTableFileExtension": ".table" }]
+  ```
+
+  되돌리지 않고 올린다면, 생성된 코드를 데이터와 **함께** 배포하세요. 새 코드가 찾는
+  이름과 CDN에 올라가 있는 이름이 다르면 테이블 리더가 파일을 찾지 못합니다.
+
 ## [0.1.0] - 2026-08-07
 
 첫 배포입니다. 그동안은 소스에서 빌드해야 했고, 이제 [릴리즈](https://github.com/maxidea1024/SheetMan/releases)에서

@@ -193,7 +193,7 @@ class Tables {
   /// the references are linked among those, so a failure part way through leaves every
   /// table holding the load it already had.
   void readAll(String basePath,
-      [String fileExtension = '.table']) {
+      [String fileExtension = '.scb']) {
     final loadedCollectionGroupTableTable = CollectionGroupTableTable();
     loadedCollectionGroupTableTable.read('$basePath${Platform.pathSeparator}CollectionGroupTable$fileExtension');
     final loadedCollectionTableTable = CollectionTableTable();

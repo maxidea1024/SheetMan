@@ -24,7 +24,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/excel-typed/binary",
-        "FileExtension": ".table"
+        "FileExtension": ".scb"
       }
     ],
     "Json": [

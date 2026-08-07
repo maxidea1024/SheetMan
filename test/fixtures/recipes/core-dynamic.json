@@ -23,7 +23,7 @@
     {
       "Type": "binary",
       "Path": "test/fixtures/output/core-dynamic/binary",
-      "FileExtension": ".table"
+      "FileExtension": ".scb"
     },
     {
       "Type": "json",
@@ -42,7 +42,7 @@
       "Path": "test/fixtures/output/core-dynamic/cpp",
       "Namespace": "sheetman_fixtures::core",
       "AccessorName": "CoreAccessor",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
     {
       "Type": "csharp",

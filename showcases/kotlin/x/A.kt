@@ -38,7 +38,7 @@ object A {
      *
      * Safe to call on a loaded accessor. Every file is read into a set of its own and the references are linked among those, so nothing here is visible until all of it is: a failure part way through leaves the tables holding the load they already had, and no row ever points at a row from it.
      */
-    fun readAll(basePath: String, fileExtension: String = ".table") {
+    fun readAll(basePath: String, fileExtension: String = ".scb") {
         val loadedTemplateTable = TemplateTable()
         loadedTemplateTable.read(File(basePath, "Template$fileExtension").path)
 

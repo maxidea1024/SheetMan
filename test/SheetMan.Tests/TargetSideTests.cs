@@ -78,15 +78,15 @@ public class TargetSideTests
     public void Binary_tables_reflect_the_filtered_column_set()
     {
         SheetManRunner.Convert("core");
-        long both = new FileInfo(Path.Combine(RepoLayout.OutputDir("core"), "binary", "TestFieldTypes.table")).Length;
+        long both = new FileInfo(Path.Combine(RepoLayout.OutputDir("core"), "binary", "TestFieldTypes.scb")).Length;
 
         SheetManRunner.Convert("core-client");
-        long client = new FileInfo(Path.Combine(RepoLayout.OutputDir("core-client"), "binary", "TestFieldTypes.table")).Length;
+        long client = new FileInfo(Path.Combine(RepoLayout.OutputDir("core-client"), "binary", "TestFieldTypes.scb")).Length;
 
         Assert.True(client < both,
             $"Client binary ({client} bytes) should be smaller than the unfiltered one ({both} bytes).");
 
-        Assert.False(File.Exists(Path.Combine(RepoLayout.OutputDir("core-client"), "binary", "ServerTuning.table")),
+        Assert.False(File.Exists(Path.Combine(RepoLayout.OutputDir("core-client"), "binary", "ServerTuning.scb")),
             "A server-only table was written into the client build.");
     }
 

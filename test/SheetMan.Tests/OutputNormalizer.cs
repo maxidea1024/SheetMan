@@ -92,5 +92,5 @@ internal static class OutputNormalizer
     /// Files compared byte for byte rather than as normalized text.
     /// </summary>
     public static bool IsBinary(string relativePath)
-        => relativePath.EndsWith(".table");
+        => relativePath.EndsWith(".scb");
 }

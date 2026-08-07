@@ -24,7 +24,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/side-dangling-both/binary",
-        "FileExtension": ".table"
+        "FileExtension": ".scb"
       }
     ],
     "Json": [

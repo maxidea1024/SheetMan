@@ -2,7 +2,7 @@
   // A `Targets` entry with a misspelled setting.
   //
   // `FileExtention` is not a field of the binary target. Taking the default instead
-  // would write `.table` files for a recipe that asked for `.bytes` and say nothing,
+  // would write `.scb` files for a recipe that asked for `.bytes` and say nothing,
   // so the entry is rejected and the field is named.
 
   "Sources": {

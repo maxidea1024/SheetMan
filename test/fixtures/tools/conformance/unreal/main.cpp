@@ -1,6 +1,6 @@
 // Conformance harness for the generated Unreal reader.
 //
-// Reads Vectors.table through the generated accessor and prints each row in the canonical form
+// Reads Vectors.scb through the generated accessor and prints each row in the canonical form
 // described in ../README.md. No parsing here: the generated reader does that.
 //
 // This one is built against the stubs in ../../unreal-stubs rather than against an engine, which

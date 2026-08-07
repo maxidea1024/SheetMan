@@ -4,13 +4,13 @@
   "TotalSize": 154,
   "Items": [
     {
-      "Name": "ItemCategory.table",
+      "Name": "ItemCategory.scb",
       "Size": 84,
       "Hash": "0c74d68d16b3d10cd7e295c655beb979",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
-      "Name": "Item.table",
+      "Name": "Item.scb",
       "Size": 70,
       "Hash": "3afd5635fc13835dc66edf24861e43cf",
       "LastUpdatedDate": "<TIMESTAMP>"

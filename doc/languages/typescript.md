@@ -64,7 +64,7 @@ for (const row of tables.item.records) { /* ... */ }
 tables.readAllBinarySync('./data/binary')
 
 // 테이블 하나만 (참조는 연결되지 않습니다)
-tables.item.readBinarySync('./data/binary/Item.table')
+tables.item.readBinarySync('./data/binary/Item.scb')
 
 // 파일 시스템이 없는 환경에서는 바이트를 직접
 const bytes = new Uint8Array(await (await fetch(url)).arrayBuffer())

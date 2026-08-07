@@ -86,7 +86,7 @@ public class SourceRegistryTests
             // Every list carries a filled-in entry rather than being `[]`, which is what
             // made the previous skeleton useless: it named the sections and nothing else.
             Assert.Contains("\"FileExtensionPatterns\": \".xls;.xlsx\"", skeleton);
-            Assert.Contains("\"FileExtension\": \".table\"", skeleton);
+            Assert.Contains("\"FileExtension\": \".scb\"", skeleton);
             Assert.DoesNotContain("\"Binary\": []", skeleton);
 
             var ran = SheetManRunner.Invoke("--recipe", filename, "--debug");

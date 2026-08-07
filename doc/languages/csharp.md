@@ -159,7 +159,7 @@ var result = await SheetManUpdater.UpdateAsync(baseUrl, cacheDirectory: null, op
 
 **WebGL에는 스레드가 없습니다.** WebGL 빌드에서는 `File.ReadAllBytes`를 동기로 부릅니다 — `Task.Run`이 동작하지 않기 때문입니다. 에디터에서는 그렇지 않으므로 `UNITY_WEBGL && !UNITY_EDITOR`로 갈립니다.
 
-**확장자.** 유니티는 `.bytes`인 파일만 TextAsset으로 포함합니다. `Resources/`나 Addressables로 배포한다면 recipe에서 `"BinaryTableFileExtension": ".bytes"`로 두세요. StreamingAssets은 확장자를 가리지 않으므로 `.table` 그대로도 됩니다.
+**확장자.** 유니티는 `.bytes`인 파일만 TextAsset으로 포함합니다. `Resources/`나 Addressables로 배포한다면 recipe에서 `"BinaryTableFileExtension": ".bytes"`로 두세요. StreamingAssets은 확장자를 가리지 않으므로 `.scb` 그대로도 됩니다.
 
 ## 트러블슈팅
 

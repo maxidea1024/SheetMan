@@ -21,7 +21,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/conformance/binary",
-        "FileExtension": ".table"
+        "FileExtension": ".scb"
       }
     ],
     "Json": [
@@ -52,60 +52,60 @@
       "PackageName": "conformance",
       "ModulePath": "conformance",
       "AccessorName": "conformance_data",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
     {
       "Type": "rust",
       "Path": "test/fixtures/output/conformance/rust",
       "CrateName": "conformance",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
     {
       "Type": "python",
       "Path": "test/fixtures/output/conformance/python",
       "WriteUpdater": true,
       "PackageName": "conformance",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
     {
       "Type": "java",
       "Path": "test/fixtures/output/conformance/java",
       "PackageName": "conformance",
       "AccessorName": "ConformanceData",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
     {
       "Type": "kotlin",
       "Path": "test/fixtures/output/conformance/kotlin",
       "PackageName": "conformance",
       "AccessorName": "ConformanceData",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
     {
       "Type": "ruby",
       "Path": "test/fixtures/output/conformance/ruby",
       "ModuleName": "Conformance",
       "AccessorName": "conformance_data",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
     {
       "Type": "dart",
       "Path": "test/fixtures/output/conformance/dart",
       "AccessorName": "conformance_data",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
     {
       "Type": "c",
       "Path": "test/fixtures/output/conformance/c",
       "AccessorName": "ConformanceData",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
     {
       "Type": "php",
       "Path": "test/fixtures/output/conformance/php",
       "Namespace": "Conformance",
       "AccessorName": "ConformanceData",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     },
 
     // Read off-engine, against the stubs in tools/unreal-stubs. The engine is not something a
@@ -116,7 +116,7 @@
       "Path": "test/fixtures/output/conformance/unreal",
       "ModuleName": "Conformance",
       "AccessorName": "ConformanceData",
-      "BinaryTableFileExtension": ".table"
+      "BinaryTableFileExtension": ".scb"
     }
   ],
 
@@ -126,7 +126,7 @@
         "Path": "test/fixtures/output/conformance/cpp",
         "Namespace": "sheetman_conformance",
         "AccessorName": "ConformanceAccessor",
-        "BinaryTableFileExtension": ".table"
+        "BinaryTableFileExtension": ".scb"
       }
     ],
     "CSharp": [

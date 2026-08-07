@@ -23,7 +23,7 @@
 //   A transient failure is retried with a doubling backoff, and a permanent one is not.
 //
 // Reading is somebody else's job. This produces a directory, and the generated tables
-// read it: `tables.readAllSync(result.localPath, '.table')`.
+// read it: `tables.readAllSync(result.localPath, '.scb')`.
 //
 // Node, because the generated reader is: it opens files. `fetch` is global from Node 18.
 // ---------------------------------------------------------------------------

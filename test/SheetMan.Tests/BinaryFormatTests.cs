@@ -10,14 +10,14 @@ namespace SheetMan.Tests;
 /// <summary>
 /// The binary format, pinned byte for byte.
 ///
-/// The golden trees already compare every exported .table byte for byte, but they are
+/// The golden trees already compare every exported .scb byte for byte, but they are
 /// recorded from the converter's own output: a change to the layout re-records them and
 /// the thirteen readers are regenerated to match, so the whole gate can move together
 /// and still agree with itself. The expectation below is written out here instead, from
 /// the specification rather than from the output, and moving it means editing this file
 /// on purpose.
 ///
-/// What that protects is not this repository. It is every .table file already written by
+/// What that protects is not this repository. It is every .scb file already written by
 /// a build that shipped: they are read by the layout this test spells out, and a silent
 /// change to it is a silent change to what those files mean.
 /// </summary>
@@ -88,7 +88,7 @@ public class BinaryFormatTests
         expected.Add("amount block: row 1", 0x1e, 0x00, 0x00, 0x00);
 
         byte[] produced = File.ReadAllBytes(Path.Combine(
-            RepoLayout.OutputDir(Scenario), "binary", "SecondTable.table"));
+            RepoLayout.OutputDir(Scenario), "binary", "SecondTable.scb"));
 
         expected.AssertMatches(produced);
     }
@@ -107,7 +107,7 @@ public class BinaryFormatTests
     {
         var tables = Directory
             .EnumerateFiles(Path.Combine(RepoLayout.Root, "test", "fixtures", "golden"),
-                "*.table", SearchOption.AllDirectories)
+                "*.scb", SearchOption.AllDirectories)
             .OrderBy(path => path, StringComparer.Ordinal)
             .ToList();
 

@@ -35,7 +35,7 @@ public sealed class RubyRecipe : IOutputRecipe
     /// Extension of the table files the generated reader opens. Must match what the
     /// binary exporter was told to write.
     /// </summary>
-    public string BinaryTableFileExtension { get; set; } = ".table";
+    public string BinaryTableFileExtension { get; set; } = ".scb";
 
     /// <summary>
     /// Whether to write the data updater beside the reader.

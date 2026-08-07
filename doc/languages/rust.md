@@ -42,7 +42,7 @@
     "Edition": "2021",
     "WriteUpdater": false,    // CDN에서 데이터를 갱신할 거라면 true
     "UreqVersion": "2",       // 그럴 때 Cargo.toml에 적힐 요구 버전
-    "BinaryTableFileExtension": ".table",
+    "BinaryTableFileExtension": ".scb",
     "Sweep": true,
     "TargetSide": "s"
   }

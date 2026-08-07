@@ -1,6 +1,6 @@
 // Round-trip check for the C++ generator.
 //
-// Compiles the generated header, loads the .table files the binary exporter wrote,
+// Compiles the generated header, loads the .scb files the binary exporter wrote,
 // and prints what it read as JSON on stdout. The test harness compares that against
 // the JSON exporter's output for the same workbook.
 //

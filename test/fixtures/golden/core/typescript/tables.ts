@@ -99,7 +99,7 @@ export class Tables {
    * table on its own with `readBinarySync` leaves its references unlinked, because linking
    * needs every table. Both formats produce the same values.
    */
-  public readAllBinarySync(basePath: string, fileExtension: string = '.table'): void {
+  public readAllBinarySync(basePath: string, fileExtension: string = '.scb'): void {
     const testFieldTypes = new TestFieldTypesTable()
     testFieldTypes.readBinarySync(path.join(basePath, `TestFieldTypes${fileExtension}`))
     const itemCategory = new ItemCategoryTable()

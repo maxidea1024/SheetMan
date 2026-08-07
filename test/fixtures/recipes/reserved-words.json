@@ -18,7 +18,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/reserved-words/binary",
-        "FileExtension": ".table"
+        "FileExtension": ".scb"
       }
     ],
     "Json": [
@@ -77,7 +77,7 @@
         "Path": "test/fixtures/output/reserved-words/cpp",
         "Namespace": "sheetman_fixtures::reserved",
         "AccessorName": "ReservedAccessor",
-        "BinaryTableFileExtension": ".table"
+        "BinaryTableFileExtension": ".scb"
       }
     ],
     "CSharp": [

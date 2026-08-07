@@ -55,7 +55,7 @@ public class PhpUpdaterTests : IDisposable
         Assert.True(first.GetProperty("succeeded").GetBoolean(),
             first.GetProperty("error").ToString());
 
-        foreach (string path in Directory.GetFiles(served, "*.table"))
+        foreach (string path in Directory.GetFiles(served, "*.scb"))
         {
             string local = Path.Combine(cache, Path.GetFileName(path));
 
@@ -90,13 +90,13 @@ public class PhpUpdaterTests : IDisposable
 
         var before = Snapshot(cache);
 
-        Republish(served, "Item.table", Encoding.UTF8.GetBytes("new"));
-        File.WriteAllBytes(Path.Combine(served, "Item.table"), Encoding.UTF8.GetBytes("corrupt"));
+        Republish(served, "Item.scb", Encoding.UTF8.GetBytes("new"));
+        File.WriteAllBytes(Path.Combine(served, "Item.scb"), Encoding.UTF8.GetBytes("corrupt"));
 
         var second = Run(work, server.BaseUrl, cache);
 
         Assert.False(second.GetProperty("succeeded").GetBoolean());
-        Assert.Contains("Item.table", second.GetProperty("error").GetString());
+        Assert.Contains("Item.scb", second.GetProperty("error").GetString());
 
         Assert.Equal(before, Snapshot(cache));
     }
@@ -211,7 +211,7 @@ public class PhpUpdaterTests : IDisposable
         var json = new StringBuilder("{\n  \"MasterHash\": \"" + Guid.NewGuid().ToString("N") + "\",\n  \"Items\": [\n");
         bool first = true;
 
-        foreach (string path in Directory.GetFiles(served, "*.table"))
+        foreach (string path in Directory.GetFiles(served, "*.scb"))
         {
             byte[] content = File.ReadAllBytes(path);
 

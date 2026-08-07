@@ -38,7 +38,7 @@
     "Type": "c",
     "Path": "src/generated",
     "AccessorName": "GameData",     // 모든 타입·함수 이름의 접두사가 됩니다
-    "BinaryTableFileExtension": ".table",
+    "BinaryTableFileExtension": ".scb",
     "WriteUpdater": false,                 // CDN에서 데이터를 갱신할 거라면 true
     "Sweep": true,
     "TargetSide": "s"

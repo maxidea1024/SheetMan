@@ -18,7 +18,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/unreal/binary",
-        "FileExtension": ".table"
+        "FileExtension": ".scb"
       }
     ]
   },
@@ -29,7 +29,7 @@
       "Path": "test/fixtures/output/unreal/Source",
       "ModuleName": "SheetManCore",
       "AccessorName": "FSheetManCore",
-      "BinaryTableFileExtension": ".table",
+      "BinaryTableFileExtension": ".scb",
 
       // On here so the updater is compiled by something. The gate that builds it is the
       // only thing in this repository that compiles Unreal C++ the way Unreal does.

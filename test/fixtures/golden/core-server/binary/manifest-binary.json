@@ -4,37 +4,37 @@
   "TotalSize": 1010,
   "Items": [
     {
-      "Name": "TestFieldTypes.table",
+      "Name": "TestFieldTypes.scb",
       "Size": 274,
       "Hash": "6474d151e2db565954095a7c4922b9dc",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
-      "Name": "ItemCategory.table",
+      "Name": "ItemCategory.scb",
       "Size": 112,
       "Hash": "abe0486be7d635895d20f251097aa770",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
-      "Name": "Item.table",
+      "Name": "Item.scb",
       "Size": 232,
       "Hash": "f76019ffc1e22b4f169a4048a4393aab",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
-      "Name": "Localization.table",
+      "Name": "Localization.scb",
       "Size": 131,
       "Hash": "4cff3527887d1b608dfd9b153fa00810",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
-      "Name": "ArrayTypes.table",
+      "Name": "ArrayTypes.scb",
       "Size": 196,
       "Hash": "f8c33409a1ca7b8fdfc92323f43544e4",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
-      "Name": "ServerTuning.table",
+      "Name": "ServerTuning.scb",
       "Size": 65,
       "Hash": "88ccf82351e9f85572217b011bece178",
       "LastUpdatedDate": "<TIMESTAMP>"

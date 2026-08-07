@@ -19,7 +19,7 @@ internal sealed class CsFileView
     /// defaults to.
     /// </summary>
     /// <remarks>
-    /// It was a `".table"` literal in the template until this existed - so a recipe that set
+    /// It was a `".scb"` literal in the template until this existed - so a recipe that set
     /// the extension on both the export and this target got the right file names out of the
     /// exporter and a reader that looked for the default anyway.
     /// </remarks>

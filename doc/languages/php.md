@@ -33,7 +33,7 @@
     "Path": "src/GameData",
     "Namespace": "MyGame\Data",
     "AccessorName": "GameData",
-    "BinaryTableFileExtension": ".table",
+    "BinaryTableFileExtension": ".scb",
     "WriteUpdater": false,           // CDN에서 데이터를 갱신할 거라면 true
     "Sweep": true,
     "TargetSide": "s"

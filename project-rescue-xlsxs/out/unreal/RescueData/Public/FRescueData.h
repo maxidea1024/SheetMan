@@ -4996,7 +4996,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5022,7 +5022,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5048,7 +5048,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5074,7 +5074,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5100,7 +5100,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5126,7 +5126,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5152,7 +5152,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5178,7 +5178,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5204,7 +5204,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5230,7 +5230,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5256,7 +5256,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5282,7 +5282,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5308,7 +5308,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5334,7 +5334,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5360,7 +5360,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5386,7 +5386,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5412,7 +5412,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5438,7 +5438,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5464,7 +5464,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5490,7 +5490,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5516,7 +5516,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5542,7 +5542,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5568,7 +5568,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5594,7 +5594,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5620,7 +5620,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5646,7 +5646,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5672,7 +5672,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5698,7 +5698,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5724,7 +5724,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5750,7 +5750,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5776,7 +5776,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5802,7 +5802,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5828,7 +5828,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5854,7 +5854,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5880,7 +5880,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5906,7 +5906,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5932,7 +5932,7 @@ public:
     /** Whether the table holds a row with this ID. */
     bool ContainsID(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5958,7 +5958,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -5995,7 +5995,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(const FString& Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6022,7 +6022,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6048,7 +6048,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6074,7 +6074,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6100,7 +6100,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6126,7 +6126,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6152,7 +6152,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6178,7 +6178,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6204,7 +6204,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6230,7 +6230,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6256,7 +6256,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6282,7 +6282,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6308,7 +6308,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6334,7 +6334,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6360,7 +6360,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6386,7 +6386,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6412,7 +6412,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6438,7 +6438,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6464,7 +6464,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6490,7 +6490,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6516,7 +6516,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6542,7 +6542,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6568,7 +6568,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6594,7 +6594,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6620,7 +6620,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6646,7 +6646,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6672,7 +6672,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6698,7 +6698,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6724,7 +6724,7 @@ public:
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
 
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
@@ -6818,7 +6818,7 @@ public:
      * since some platforms only cook what carries an extension they recognise.
      */
     static bool ReadAll(const FString& BasePath,
-                        const FString& FileExtension = TEXT(".table"));
+                        const FString& FileExtension = TEXT(".scb"));
 
 private:
     static FCollectionGroupTableTable CollectionGroupTableStorage;
@@ -8794,5 +8794,5 @@ public:
     UFUNCTION(BlueprintCallable, Category = "SheetMan",
               meta = (DisplayName = "Load All SheetMan Tables"))
     static bool ReadAll(const FString& BasePath,
-                        const FString& FileExtension = TEXT(".table"));
+                        const FString& FileExtension = TEXT(".scb"));
 };

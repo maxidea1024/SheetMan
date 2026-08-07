@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // SheetMan LiteBinary reader for TypeScript.
 //
-// Reads the .table files produced by SheetMan's binary exporter. The format is
+// Reads the .scb files produced by SheetMan's binary exporter. The format is
 // defined by the C# writer in
 // lib/Unity/SheetManForUnity/Assets/Plugins/SheetMan.Runtime, and this is the
 // third implementation of the reading half of it, alongside the C# original and

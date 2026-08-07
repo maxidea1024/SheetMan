@@ -153,7 +153,7 @@ impl Tables {
     /// The data files are expected to carry the extension the recipe told the exporter to
     /// write. Use `read_all_with_extension` to name a different one.
     pub fn read_all(&mut self, base_path: &Path) -> sheetman::Result<()> {
-        self.read_all_with_extension(base_path, ".table")
+        self.read_all_with_extension(base_path, ".scb")
     }
 
     /// The same, for data files that carry some other extension.

@@ -24,7 +24,7 @@
     "Binary": [
       {
         "Path": "test/fixtures/output/formula-error/binary",
-        "FileExtension": ".table"
+        "FileExtension": ".scb"
       }
     ],
     "Json": [
@@ -49,7 +49,7 @@
         "Path": "test/fixtures/output/formula-error/cpp",
         "Namespace": "sheetman_fixtures::core",
         "AccessorName": "XAccessor",
-        "BinaryTableFileExtension": ".table"
+        "BinaryTableFileExtension": ".scb"
       }
     ],
     "CSharp": [

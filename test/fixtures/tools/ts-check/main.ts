@@ -59,7 +59,7 @@ function main(): number {
         fromJson.readSync(`${jsonDir}/TestFieldTypes.json`)
 
         const fromBinary = new TestFieldTypesTable()
-        fromBinary.readBinarySync(`${binaryDir}/TestFieldTypes.table`)
+        fromBinary.readBinarySync(`${binaryDir}/TestFieldTypes.scb`)
 
         for (let i = 0; i < fromJson.records.length; i++) {
             const j = fromJson.records[i]
@@ -92,7 +92,7 @@ function main(): number {
         fromJson.readSync(`${jsonDir}/ArrayTypes.json`)
 
         const fromBinary = new ArrayTypesTable()
-        fromBinary.readBinarySync(`${binaryDir}/ArrayTypes.table`)
+        fromBinary.readBinarySync(`${binaryDir}/ArrayTypes.scb`)
 
         for (let i = 0; i < fromJson.records.length; i++) {
             const j = fromJson.records[i]
@@ -112,7 +112,7 @@ function main(): number {
         fromJson.readSync(`${jsonDir}/Localization.json`)
 
         const fromBinary = new LocalizationTable()
-        fromBinary.readBinarySync(`${binaryDir}/Localization.table`)
+        fromBinary.readBinarySync(`${binaryDir}/Localization.scb`)
 
         for (let i = 0; i < fromJson.records.length; i++) {
             compare('Localization', i, 'textEnArray',
@@ -128,7 +128,7 @@ function main(): number {
     // what the accessor below is for.
     {
         const fromBinary = new ItemTable()
-        fromBinary.readBinarySync(`${binaryDir}/Item.table`)
+        fromBinary.readBinarySync(`${binaryDir}/Item.scb`)
 
         console.log(JSON.stringify({
             itemNames: fromBinary.records.map(r => r.name),

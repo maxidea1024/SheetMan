@@ -36,7 +36,7 @@
       "Path": "src/generated",
       "Namespace": "mygame::data",   // 비우면 전역 네임스페이스
       "AccessorName": "GameData",
-      "BinaryTableFileExtension": ".table",
+      "BinaryTableFileExtension": ".scb",
       "WriteUpdater": false,          // CDN에서 데이터를 갱신할 거라면 true
       "Sweep": true,
       "TargetSide": "s"

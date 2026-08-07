@@ -20,12 +20,12 @@ INT32_MAIN_INT32_ARGC_TCHAR_ARGV()
 
 	// The manifest reader, over the shape the exporter writes.
 	const FString Manifest = TEXT(
-		"{\"MasterHash\":\"abc\",\"Items\":[{\"Name\":\"Item.table\",\"Size\":232,\"Hash\":\"f76019ff\"}]}");
+		"{\"MasterHash\":\"abc\",\"Items\":[{\"Name\":\"Item.scb\",\"Size\":232,\"Hash\":\"f76019ff\"}]}");
 
 	TArray<FSheetManManifestEntry> Entries;
 	FSheetManUpdater::ParseManifest(Manifest, Entries);
 
-	if (Entries.Num() != 1 || Entries[0].Name != TEXT("Item.table") || Entries[0].Size != 232)
+	if (Entries.Num() != 1 || Entries[0].Name != TEXT("Item.scb") || Entries[0].Size != 232)
 	{
 		UE_LOG(LogSheetManUpdaterCheck, Error, TEXT("The manifest parser did not read what it was given."));
 		FEngineLoop::AppExit();

@@ -32,7 +32,7 @@
     "Path": "lib/gamedata",
     "ModuleName": "GameData",       // 감싸는 모듈
     "AccessorName": "sheetman_data",// 접근자 파일 이름
-    "BinaryTableFileExtension": ".table",
+    "BinaryTableFileExtension": ".scb",
     "WriteUpdater": false,          // CDN에서 데이터를 갱신할 거라면 true
     "Sweep": true,
     "TargetSide": "s"

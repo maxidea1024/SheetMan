@@ -27,7 +27,7 @@
       // 서버 몫
       {
         "Path": "./build/server/data",
-        "FileExtension": ".table",
+        "FileExtension": ".scb",
         "TargetSide": "s"
       }
     ]

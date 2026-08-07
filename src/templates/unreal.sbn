@@ -99,7 +99,7 @@ public:
     /** Whether the table holds a row with this {{ index.field_name }}. */
     bool Contains{{ index.suffix }}({{ index.key_param }} Key) const;
 {{~ end }}
-    /** Loads the table from a .table file written by SheetMan. */
+    /** Loads the table from a .scb file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:

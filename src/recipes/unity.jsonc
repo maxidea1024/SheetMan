@@ -28,7 +28,7 @@
 
         // .bytes 인 이유: 유니티는 이 확장자만 TextAsset으로 포함합니다.
         // Resources/ 나 Addressables로 배포한다면 반드시 이 값이어야 합니다.
-        // StreamingAssets만 쓴다면 .table 그대로도 됩니다.
+        // StreamingAssets만 쓴다면 .scb 그대로도 됩니다.
         "FileExtension": ".bytes",
 
         // "c" = 클라이언트 빌드. 서버 전용으로 표시된 엔티티와 필드가 빠집니다.

@@ -24,7 +24,7 @@ class Tables {
   /// the references are linked among those, so a failure part way through leaves every
   /// table holding the load it already had.
   void readAll(String basePath,
-      [String fileExtension = '.table']) {
+      [String fileExtension = '.scb']) {
     final loadedTemplateTable = TemplateTable();
     loadedTemplateTable.read('$basePath${Platform.pathSeparator}Template$fileExtension');
 

@@ -15,7 +15,7 @@ namespace SheetMan.Tests;
 /// the kind of thing that drifts silently, and the only way to know they still
 /// agree is to write with one and read with the other.
 ///
-/// So this loads the .table files the exporter produced, through the generated
+/// So this loads the .scb files the exporter produced, through the generated
 /// header, and compares the result against the JSON exporter's view of the same
 /// workbook.
 /// </summary>

@@ -36,7 +36,7 @@ Java는 public 타입이 자기 이름과 같은 파일에 혼자 있어야 하�
     "Path": "src/main/java",
     "PackageName": "com.mygame.data",
     "AccessorName": "GameData",
-    "BinaryTableFileExtension": ".table",
+    "BinaryTableFileExtension": ".scb",
     "WriteUpdater": false,          // CDN에서 데이터를 갱신할 거라면 true
     "Sweep": true,
     "TargetSide": "s"

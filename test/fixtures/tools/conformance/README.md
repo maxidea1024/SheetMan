@@ -1,6 +1,6 @@
 # Conformance harnesses
 
-One per output language. Each reads `Vectors.table` through that language's generated
+One per output language. Each reads `Vectors.scb` through that language's generated
 accessor and prints what it found; the suite compares the result against what the JSON
 exporter wrote from the same cells.
 

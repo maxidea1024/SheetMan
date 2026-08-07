@@ -1,6 +1,6 @@
 // Round-trip check for the generated C# and its emitted binary reader.
 //
-// Compiles against the generated accessor, loads the .table files the binary exporter
+// Compiles against the generated accessor, loads the .scb files the binary exporter
 // wrote, and prints what it read as JSON on stdout. The harness compares that against
 // the JSON exporter's output for the same workbook.
 //

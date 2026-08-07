@@ -67,7 +67,7 @@ public class DynamicTargetTests
     /// <summary>
     /// A misspelled setting has to fail rather than fall back to the default.
     ///
-    /// `FileExtention` for `FileExtension` would otherwise write `.table` files for a
+    /// `FileExtention` for `FileExtension` would otherwise write `.scb` files for a
     /// recipe that asked for `.bytes`, and the only symptom would be the setting
     /// appearing to do nothing.
     /// </summary>

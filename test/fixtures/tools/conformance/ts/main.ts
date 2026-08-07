@@ -1,6 +1,6 @@
 // Conformance harness for the generated TypeScript reader.
 //
-// Reads Vectors.table through the generated table class and prints each row in the
+// Reads Vectors.scb through the generated table class and prints each row in the
 // canonical form described in ../README.md. No parsing here: the generated reader does
 // that.
 
@@ -18,7 +18,7 @@ if (!binaryDir) {
 }
 
 const table = new VectorsTable()
-table.readBinarySync(path.join(binaryDir, 'Vectors.table'))
+table.readBinarySync(path.join(binaryDir, 'Vectors.scb'))
 
 // Ticks rather than the reader's formatted strings: the contract asks for the exact
 // value, and a tick count has no formatting to disagree about.

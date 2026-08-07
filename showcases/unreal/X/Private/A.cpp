@@ -42,7 +42,7 @@ bool FTemplateTable::Read(const FString& Filename)
     // out of it as though the file were loose on disk. The same call therefore works in the
     // editor, in a cooked build, and inside an Android .obb.
     //
-    // What it cannot do is find a file the packaging step never took. A .table is not an
+    // What it cannot do is find a file the packaging step never took. A .scb is not an
     // asset, so Unreal ignores it unless the project lists its directory under
     // Project Settings -> Packaging -> "Additional Non-Asset Directories to Package".
     // Miss that and this works in the editor and reports a missing file the moment anybody

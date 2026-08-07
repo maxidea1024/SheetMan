@@ -146,7 +146,7 @@ namespace X
         /// has been read and linked.
         /// </remarks>
         public static async Task ReadAllAsync(
-            string basePath, string fileExtension = ".table")
+            string basePath, string fileExtension = ".scb")
         {
             var snapshot = new Snapshot();
             var tasks = new List<Task>();

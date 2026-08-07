@@ -34,7 +34,7 @@ final class A
      * references are linked among those, so a failure part way through leaves every table
      * holding the load it already had, and no row points at a row from it.
      */
-    public function readAll(string $basePath, string $fileExtension = '.table'): void
+    public function readAll(string $basePath, string $fileExtension = '.scb'): void
     {
         $loadedTemplateTable = new TemplateTable();
         $loadedTemplateTable->read($basePath . \DIRECTORY_SEPARATOR . 'Template' . $fileExtension);

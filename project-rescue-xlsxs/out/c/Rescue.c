@@ -15,7 +15,7 @@
 bool Rescue_LoadAll(Rescue_t* data, const char* base_path,
                  char* error, size_t error_size) {
   return Rescue_LoadAllWithExtension(
-    data, base_path, ".table", error, error_size);
+    data, base_path, ".scb", error, error_size);
 }
 
 bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
