@@ -313,6 +313,108 @@ namespace SheetMan.Tests
             }
         }
 
+        /// <summary>
+        /// Runs a Ruby script from a directory of the caller's choosing.
+        /// </summary>
+        /// <remarks>
+        /// For the updater gate, whose work directory is neither a scenario's output nor a
+        /// conformance harness - it holds the shipped updater and a driver, and nothing
+        /// generated at all.
+        /// </remarks>
+        public static ToolResult RunRubyScript(string workingDirectory, string script, params string[] args)
+        {
+            var arguments = new List<string> { script };
+            arguments.AddRange(args);
+
+            return Execute(RubyExecutable, workingDirectory, arguments.ToArray());
+        }
+
+        /// <summary>
+        /// Compiles every Java source under a directory into `classes` beside them.
+        /// </summary>
+        /// <remarks>
+        /// For the updater gate, whose work directory holds the shipped updater and a
+        /// driver rather than anything generated.
+        /// </remarks>
+        public static ToolResult CompileJavaSources(string root)
+        {
+            var arguments = new List<string> { "-encoding", "UTF-8", "-d", Path.Combine(root, "classes") };
+            arguments.AddRange(Directory.EnumerateFiles(root, "*.java", SearchOption.AllDirectories));
+
+            return Execute("javac", root, arguments.ToArray());
+        }
+
+        /// <summary>Runs the `Main` class compiled by <see cref="CompileJavaSources"/>.</summary>
+        public static ToolResult RunJavaMain(string root, params string[] args)
+        {
+            var arguments = new List<string> { "-cp", Path.Combine(root, "classes"), "Main" };
+            arguments.AddRange(args);
+
+            return Execute("java", root, arguments.ToArray());
+        }
+
+        /// <summary>
+        /// Compiles every Kotlin source under a directory into a runnable jar.
+        /// </summary>
+        /// <remarks>
+        /// A fat jar (`-include-runtime`), so running it needs nothing but a JVM - the same
+        /// shape the conformance harness uses, for the same reason.
+        /// </remarks>
+        public static ToolResult CompileKotlinJar(string root, string jarName)
+        {
+            var arguments = new List<string>
+            {
+                "-jar", KotlinCompilerJar(),
+                "-nowarn",
+                "-include-runtime",
+                "-d", Path.Combine(root, jarName),
+            };
+
+            arguments.AddRange(Directory.EnumerateFiles(root, "*.kt", SearchOption.AllDirectories));
+
+            return Execute("java", root, arguments.ToArray());
+        }
+
+        /// <summary>Runs a jar built by <see cref="CompileKotlinJar"/>.</summary>
+        public static ToolResult RunJar(string root, string jarName, params string[] args)
+        {
+            var arguments = new List<string> { "-jar", Path.Combine(root, jarName) };
+            arguments.AddRange(args);
+
+            return Execute("java", root, arguments.ToArray());
+        }
+
+        /// <summary>Builds a crate in a directory of the caller's choosing.</summary>
+        public static ToolResult CargoBuild(string crateDir)
+            => Execute("cargo", crateDir, "build", "--quiet");
+
+        /// <summary>Runs a binary of a crate built by <see cref="CargoBuild"/>.</summary>
+        public static ToolResult CargoRun(string crateDir, string binary, params string[] args)
+        {
+            var arguments = new List<string> { "run", "--quiet", "--bin", binary, "--" };
+            arguments.AddRange(args);
+
+            return Execute("cargo", crateDir, arguments.ToArray());
+        }
+
+        /// <summary>Runs a PHP script from a directory of the caller's choosing.</summary>
+        public static ToolResult RunPhpScript(string workingDirectory, string script, params string[] args)
+        {
+            var arguments = new List<string> { script };
+            arguments.AddRange(args);
+
+            return Execute(PhpExecutable, workingDirectory, arguments.ToArray());
+        }
+
+        /// <summary>Runs a Dart program from a directory of the caller's choosing.</summary>
+        public static ToolResult RunDartScript(string workingDirectory, string script, params string[] args)
+        {
+            var arguments = new List<string> { "run", script };
+            arguments.AddRange(args);
+
+            return Execute(DartExecutable, workingDirectory, arguments.ToArray());
+        }
+
         public static ToolResult RunRuby(string scenario)
         {
             // Beside the generated file, because `require_relative` resolves against the
@@ -351,7 +453,8 @@ namespace SheetMan.Tests
                 includeDir: generated,
                 source: Path.Combine(HarnessDir("c"), "main.c"),
                 accessorHeader: "ConformanceData.h",
-                sources: Directory.GetFiles(generated, "*.c").OrderBy(path => path).ToArray(),
+                sources: Directory.GetFiles(generated, "*.c", SearchOption.AllDirectories)
+                                  .OrderBy(path => path).ToArray(),
                 exeName: "conformance-c");
 
             if (!build.Succeeded)
@@ -497,7 +600,8 @@ namespace SheetMan.Tests
             return CToolchain.CompileOnly(
                 Path.Combine(WorkDir(scenario, "c"), "compile-only"),
                 includeDir: root,
-                sources: Directory.GetFiles(root, "*.c").OrderBy(path => path).ToArray(),
+                sources: Directory.GetFiles(root, "*.c", SearchOption.AllDirectories)
+                                  .OrderBy(path => path).ToArray(),
                 accessorHeader: accessorName + ".h");
         }
 
@@ -518,13 +622,17 @@ namespace SheetMan.Tests
         {
             string root = Generated(scenario, "c");
 
-            foreach (var header in Directory.GetFiles(root, "*.h").OrderBy(path => path))
+            foreach (var header in Directory.GetFiles(root, "*.h", SearchOption.AllDirectories)
+                                            .OrderBy(path => path))
             {
-                string name = Path.GetFileName(header);
+                // The path relative to the output, because that is how the umbrella includes
+                // a header now that they sit in `tables/`, `enums/` and `constants/`.
+                string name = Path.GetRelativePath(root, header).Replace('\\', '/');
 
                 // No sources, so the translation unit is the one include and nothing else.
                 var result = CToolchain.CompileOnly(
-                    Path.Combine(WorkDir(scenario, "c"), "alone", Path.GetFileNameWithoutExtension(name)),
+                    Path.Combine(WorkDir(scenario, "c"), "alone",
+                                 Path.GetFileNameWithoutExtension(name).Replace('/', '-')),
                     includeDir: root,
                     sources: Array.Empty<string>(),
                     accessorHeader: name);
@@ -798,13 +906,28 @@ namespace SheetMan.Tests
 
             using var process = new Process { StartInfo = psi };
 
+            // Two streams, two threads, one StringBuilder. Locked because it is not safe
+            // for that, and the failure is not a garbled line - it is an exception from
+            // inside AppendLine, on a thread pool worker where nothing catches it.
+            var writing = new object();
+
             process.OutputDataReceived += (_, e) =>
             {
                 if (e.Data == null) return;
-                stdout.AppendLine(e.Data);
-                combined.AppendLine(e.Data);
+
+                lock (writing)
+                {
+                    stdout.AppendLine(e.Data);
+                    combined.AppendLine(e.Data);
+                }
             };
-            process.ErrorDataReceived += (_, e) => { if (e.Data != null) combined.AppendLine(e.Data); };
+            process.ErrorDataReceived += (_, e) =>
+            {
+                if (e.Data == null) return;
+
+                lock (writing)
+                    combined.AppendLine(e.Data);
+            };
 
             process.Start();
             process.BeginOutputReadLine();

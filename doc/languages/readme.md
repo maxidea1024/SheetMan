@@ -92,9 +92,9 @@ Rust만 예외로 **참조를 인덱스 그대로 둡니다.** 레코드가 서�
 
 C는 구조체를 `= {0}`으로 선언해야 하고(첫 호출에서 해제할 것이 없어야 하므로), 교체가 성공한 뒤에는 옛 아레나를 가리키던 포인터를 쓰지 마세요. [C 가이드](c.md)에 적어두었습니다.
 
-## 레코드 조회 — 세 함수, 모든 언어에서 같은 이름
+## 레코드 조회 — 같은 세 함수, 13개 언어에서 같은 이름
 
-인덱싱된 필드마다 세 개가 나옵니다. 시트의 `index`(기본)와 `*`를 붙인 보조 인덱스 전부입니다.
+인덱싱된 필드마다 세 개가 나옵니다. 시트의 `index`(기본)와 `*`를 붙인 보조 인덱스 전부입니다. (던질 것이 없는 C와 Unreal은 두 개입니다 — 아래 참조.)
 
 |함수|없을 때|언제 쓰나|
 |--|--|--|
@@ -104,9 +104,22 @@ C는 구조체를 `= {0}`으로 선언해야 하고(첫 호출에서 해제할 �
 
 `Index` 자리에는 필드 이름이 들어갑니다 — `*Name` 필드가 있으면 `FindByName` / `GetByNameOrThrow` / `ContainsName`이 함께 나옵니다.
 
-표기는 언어 관례를 따릅니다: C#·Go·Unreal은 `FindByIndex`, TypeScript·Java·Kotlin·Dart는 `findByIndex`, C++·Python·Ruby·Rust는 `find_by_index`, C는 `<Accessor>_<Table>FindByIndex`.
+**키 타입은 그 컬럼의 타입입니다.** `*Code`가 `string`이면 `FindByCode(string)`이 나옵니다. `float`·`double` 컬럼은 인덱스가 될 수 없고 변환 단계에서 거부됩니다 — 같아 보이는 두 값이 다른 키가 되어 조회가 **실패하지 않고 빗나가기** 때문입니다.
 
-**예외가 없는 언어는 이름이 사실대로 바뀝니다.** Go는 `GetByIndexOrError`가 `(*Record, error)`를, Rust는 `Result`를 돌려주고, C는 던질 것이 없으므로 `Find`와 `Contains`만 냅니다.
+표기는 언어 관례를 따릅니다.
+
+|표기|언어|
+|--|--|
+|`FindByIndex`|C# · Go · Unreal|
+|`findByIndex`|TypeScript · Java · Kotlin · Dart · PHP|
+|`find_by_index`|C++ · Python · Ruby · Rust|
+|`<Accessor>_<Table>FindByIndex`|C|
+
+Ruby의 존재 확인만 `contains_index?`입니다. 물음표가 술어 메서드의 표기이기 때문입니다.
+
+**예외가 없는 언어는 이름이 사실대로 바뀝니다.** Go는 `GetByIndexOrError`가 `(*Record, error)`를, Rust는 `get_by_index_or_error`가 `Result`를 돌려줍니다. **C와 Unreal은 `Find`와 `Contains`만 냅니다** — C에는 던질 것이 없고, 언리얼 모듈은 `Build.cs`가 따로 요청하지 않는 한 **예외 비활성**으로 빌드되므로 `throw`가 프로세스를 끝냅니다. 없으면 안 되는 키는 두 언어에서 `NULL`/`nullptr` 검사로 확인합니다.
+
+**던지는 쪽은 전용 예외입니다.** 파일이 잘못된 것이 아니라 키가 없는 것이므로, 리더의 형식 오류와 같은 타입이 아닙니다 — Python `sheetman.RecordNotFoundError`, Ruby `Sheetman::RecordNotFoundError`, Java·Kotlin `RecordNotFoundException`, Dart·PHP `RecordNotFoundException`, C++ `sheetman::RecordNotFound`, Rust `sheetman::Error::RecordNotFound`. C#은 `SheetManException`, TypeScript는 `Error`입니다.
 
 ### 왜 이름이 이렇게 긴가
 
@@ -141,9 +154,9 @@ var name = data.Item.GetByIndexOrThrow(id).Name;   // 없으면 던진다. 그�
 
 ## 리더가 어긋나지 않는다는 근거
 
-리더는 언어마다 **별도 구현**입니다. 포맷을 정의하는 건 익스포터의 writer 하나이고, 열세 개의 리더는 그 하나를 각자 구현한 것이라 어긋날 수 있습니다.
+리더는 언어마다 **별도 구현**입니다. 포맷을 정의하는 건 익스포터의 writer 하나이고, 13개의 리더는 그 하나를 각자 구현한 것이라 어긋날 수 있습니다.
 
-그래서 **적합성 코퍼스**가 있습니다. `test/fixtures/xlsx/conformance`가 경계값을 담은 테이블 하나입니다 — 2^53+1, float32의 0.1, varint 1~5바이트, 빈 문자열·빈 배열·비ASCII, .NET 바이트 순서의 uuid, 지그재그 enum, 다른 테이블의 행과 필드를 가리키는 참조 두 개. 회귀 스위트가 이것을 **열두 개 언어로 각각 컴파일·실행해서 읽고** 익스포터 JSON과 필드 단위로 대조합니다.
+그래서 **적합성 코퍼스**가 있습니다. `test/fixtures/xlsx/conformance`가 경계값을 담은 테이블 하나입니다 — 2^53+1, float32의 0.1, varint 1~5바이트, 빈 문자열·빈 배열·비ASCII, .NET 바이트 순서의 uuid, 지그재그 enum, 다른 테이블의 행과 필드를 가리키는 참조 두 개. 회귀 스위트가 이것을 **12개 언어로 각각 컴파일·실행해서 읽고** 익스포터 JSON과 필드 단위로 대조합니다.
 
 실제로 이 방식이 `long`을 32비트로 잘라내던 writer 버그를 찾아냈습니다. 언어를 추가하는 비용이 전용 게이트가 아니라 50줄짜리 하네스인 이유이기도 합니다.
 

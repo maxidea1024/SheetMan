@@ -153,13 +153,50 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
 
-        /// <summary>Name of the primary index member.</summary>
-        public string IndexField { get; set; }
+        /// <summary>
+        /// The indexed fields: the sheet's first column plus every one marked with `*`.
+        /// </summary>
+        public IReadOnlyList<CIndexView> Indexes { get; set; }
 
         /// <summary>Whether any member holds strings, and so needs the pre-read pass.</summary>
         public bool HasStringFields { get; set; }
 
         public IReadOnlyList<CFieldView> Fields { get; set; }
+    }
+
+    /// <summary>
+    /// One indexed field, and the lookups generated for it.
+    /// </summary>
+    /// <remarks>
+    /// Two lookups rather than the three every other target gets. C has nothing to throw,
+    /// so there is no honest `GetBy...OrThrow` to generate - a caller that needs the row
+    /// to be there checks the NULL, which is the same check it would write anyway.
+    /// </remarks>
+    internal sealed class CIndexView
+    {
+        /// <summary>The record member holding the key, escaped.</summary>
+        public string Member { get; set; }
+
+        /// <summary>What the lookup names end in - `Index` gives `...FindByIndex`.</summary>
+        public string Suffix { get; set; }
+
+        /// <summary>The key's type, as a parameter declaration.</summary>
+        public string KeyType { get; set; }
+
+        /// <summary>The runtime's entry type for this key: `sm_index_entry` and its kin.</summary>
+        public string EntryType { get; set; }
+
+        /// <summary>The runtime's sort for this key.</summary>
+        public string SortCall { get; set; }
+
+        /// <summary>The runtime's bisection for this key.</summary>
+        public string FindCall { get; set; }
+
+        /// <summary>The table member holding the sorted entries.</summary>
+        public string ArrayName { get; set; }
+
+        /// <summary>The field as the sheet spells it, for the doc comment.</summary>
+        public string FieldName { get; set; }
     }
 
     internal sealed class CFieldView
@@ -260,6 +297,12 @@ namespace SheetMan.CodeGeneration
         public string Name { get; set; }
         public string RefTable { get; set; }
         public string RefFunctionPrefix { get; set; }
+
+        /// <summary>
+        /// The referenced table's primary lookup, prefix and all, which is what a key
+        /// resolves through.
+        /// </summary>
+        public string RefLookup { get; set; }
 
         /// <summary>The referenced record's struct, which the resolved member points at.</summary>
         public string RefRecordName { get; set; }

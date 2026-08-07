@@ -339,9 +339,35 @@ namespace SheetMan.CodeGeneration
             TableName = table.Name.ToPascalCase() + "Table",
             Location = table.Location.ToString(),
             Comment = CommentLines(table.Comment),
-            IndexField = GoName(table.Fields[0].Name),
+            Indexes = Indexes(table),
             Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
+
+        /// <summary>
+        /// The indexed fields of a table: the sheet's first column, plus every one marked
+        /// with a `*`.
+        /// </summary>
+        private IReadOnlyList<GoIndexView> Indexes(Table table)
+            => table.SerialFields.Where(sf => sf.IsIndexer).Select(sf => new GoIndexView
+            {
+                Member = GoName(sf.Name),
+                Suffix = sf.Name.ToPascalCase(),
+                KeyType = ResolvedElementType(sf),
+                MapName = "by" + sf.Name.ToPascalCase(),
+                FieldName = sf.Name.ToPascalCase(),
+            }).ToList();
+
+        /// <summary>
+        /// The lookup a reference is resolved through: the referenced table's primary index,
+        /// which is the key a `foreign` column carries.
+        /// </summary>
+        /// <remarks>
+        /// Read off the referenced table rather than assumed to be `FindByIndex`. The primary
+        /// index is whatever the sheet put in the first column, and a sheet that calls it `Id`
+        /// generates `FindById`.
+        /// </remarks>
+        private static string PrimaryLookup(Table refTable)
+            => "FindBy" + refTable.SerialFields.First(sf => sf.IsIndexer).Name.ToPascalCase();
 
         private GoFieldView BuildField(Table table, SerialField sf)
         {
@@ -466,6 +492,7 @@ namespace SheetMan.CodeGeneration
                     {
                         Name = GoName(sf.Name),
                         RefTable = GoName(sf.FirstField.ResolvedRefTable.Name),
+                        RefLookup = PrimaryLookup(sf.FirstField.ResolvedRefTable),
                         Value = ReferenceValueExpression(sf),
                         IsArray = sf.IsArray,
                     }).ToList(),

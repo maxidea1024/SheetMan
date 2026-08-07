@@ -48,11 +48,11 @@ object {{ accessor_name }} {
 {{~ if field.is_array ~}}
             record.{{ field.name }} = ArrayList(record.{{ field.name }}Index.size)
             for (index in record.{{ field.name }}Index) {
-                val target = {{ field.ref_table }}.find(index) ?: continue
+                val target = {{ field.ref_table }}.{{ field.ref_lookup }}(index) ?: continue
                 record.{{ field.name }}.add({{ field.value }})
             }
 {{~ else ~}}
-            {{ field.ref_table }}.find(record.{{ field.name }}Index)?.let { target ->
+            {{ field.ref_table }}.{{ field.ref_lookup }}(record.{{ field.name }}Index)?.let { target ->
                 record.{{ field.name }} = {{ field.value }}
             }
 {{~ end ~}}

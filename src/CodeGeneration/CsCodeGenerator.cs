@@ -68,7 +68,7 @@ namespace SheetMan.CodeGeneration
         {
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Cs.LiteBinaryReader.cs",
-                Path.Combine(_csharpReceipe.Path, "SheetManBinaryReader.cs"));
+                Path.Combine(_csharpReceipe.Path, "sheetman", "SheetManBinaryReader.cs"));
 
             // Asked for rather than assumed. It reaches the network and it is of no use to a
             // project that ships its data inside the build.
@@ -76,7 +76,7 @@ namespace SheetMan.CodeGeneration
             {
                 WriteBinaryReaderRuntime(
                     "SheetMan.Runtime.Cs.SheetManUpdater.cs",
-                    Path.Combine(_csharpReceipe.Path, "SheetManUpdater.cs"));
+                    Path.Combine(_csharpReceipe.Path, "sheetman", "SheetManUpdater.cs"));
             }
         }
 
@@ -99,7 +99,7 @@ namespace SheetMan.CodeGeneration
             Log.Information($"Generating codes for CSharp into `{Path.GetFullPath(_csharpReceipe.Path)}`");
 
             Write(_csharpReceipe.AccessorName + ".cs", "csharp-accessor.sbn", view);
-            Write("SheetManHelpers.cs", "csharp-helpers.sbn", Part());
+            Write(Path.Combine("sheetman", "SheetManHelpers.cs"), "csharp-helpers.sbn", Part());
 
             foreach (var table in view.Tables)
                 Write(Path.Combine("tables", table.Name + "Table.cs"), "csharp-table.sbn", Part(table: table));
@@ -206,6 +206,20 @@ namespace SheetMan.CodeGeneration
             };
         }
 
+        /// <summary>
+        /// The lookup a reference is resolved through: the referenced table's primary index,
+        /// which is the key a `foreign` column carries.
+        /// </summary>
+        /// <remarks>
+        /// The name of that index is not fixed - only its type is - so this reads it off the
+        /// table being pointed at. A non-reference field has no table to read, and the value
+        /// is never rendered for one.
+        /// </remarks>
+        private static string PrimaryLookup(Table refTable)
+            => refTable == null
+                ? ""
+                : "GetBy" + refTable.SerialFields.First(sf => sf.IsIndexer).Name.ToPascalCase() + "OrThrow";
+
         private CsFieldView BuildField(Table table, SerialField sf)
         {
             string fieldType = ToCSharpTypeName(sf.FirstField);
@@ -221,6 +235,7 @@ namespace SheetMan.CodeGeneration
                 Initializer = Initializer(sf),
                 ElementCount = sf.Fields.Count,
                 RefTable = refTable,
+                RefLookup = PrimaryLookup(sf.FirstField.ResolvedRefTable),
                 RefField = sf.FirstField.RefFieldName.ToPascalCase(),
                 Kind = DeclarationKind(sf),
                 ReadKind = ReadKind(sf),

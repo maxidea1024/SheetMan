@@ -19,6 +19,7 @@ import sheetman.LiteBinaryReader;
 public final class TemplateTable {
     private List<TemplateRecord> records = new ArrayList<>();
     private Map<Integer, TemplateRecord> byIndex = new HashMap<>();
+    private Map<String, TemplateRecord> byOperator = new HashMap<>();
 
     /**
      * Every row, in the order the sheet declared them.
@@ -30,9 +31,72 @@ public final class TemplateTable {
         return records;
     }
 
-    /** The row with the given primary index, or null when there is none. */
-    public TemplateRecord find(int index) {
-        return byIndex.get(index);
+    /**
+     * The row with this Index, or null when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    public TemplateRecord findByIndex(int key) {
+        return byIndex.get(key);
+    }
+
+    /**
+     * The row with this Index, or a thrown exception naming what was missing.
+     *
+     * For a key that has to be there - one from another table, or a constant. The name says
+     * it throws, because a caller reading getByIndex(key).name() at a glance
+     * cannot otherwise tell whether the next line is a null check or a catch.
+     */
+    public TemplateRecord getByIndexOrThrow(int key) {
+        TemplateRecord record = byIndex.get(key);
+
+        if (record == null) {
+            throw new LiteBinaryReader.RecordNotFoundException(
+                "there is no record in table `Template` that corresponds to field "
+                + "`Index` value " + key);
+        }
+
+        return record;
+    }
+
+    /** Whether the table holds a row with this Index. */
+    public boolean containsIndex(int key) {
+        return byIndex.containsKey(key);
+    }
+
+    /**
+     * The row with this Operator, or null when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    public TemplateRecord findByOperator(String key) {
+        return byOperator.get(key);
+    }
+
+    /**
+     * The row with this Operator, or a thrown exception naming what was missing.
+     *
+     * For a key that has to be there - one from another table, or a constant. The name says
+     * it throws, because a caller reading getByOperator(key).name() at a glance
+     * cannot otherwise tell whether the next line is a null check or a catch.
+     */
+    public TemplateRecord getByOperatorOrThrow(String key) {
+        TemplateRecord record = byOperator.get(key);
+
+        if (record == null) {
+            throw new LiteBinaryReader.RecordNotFoundException(
+                "there is no record in table `Template` that corresponds to field "
+                + "`Operator` value " + key);
+        }
+
+        return record;
+    }
+
+    /** Whether the table holds a row with this Operator. */
+    public boolean containsOperator(String key) {
+        return byOperator.containsKey(key);
     }
 
     /** Loads the table from a .table file written by SheetMan. */
@@ -49,6 +113,7 @@ public final class TemplateTable {
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<TemplateRecord> loaded = new ArrayList<>(count);
         Map<Integer, TemplateRecord> loadedByIndex = new HashMap<>(count * 2);
+        Map<String, TemplateRecord> loadedByOperator = new HashMap<>(count * 2);
 
         for (int i = 0; i < count; i++) {
             loaded.add(new TemplateRecord());
@@ -125,10 +190,12 @@ public final class TemplateTable {
 
         for (TemplateRecord record : loaded) {
             loadedByIndex.put(record.index, record);
+            loadedByOperator.put(record.operator, record);
         }
 
         // Published, now that every column read.
         records = loaded;
         byIndex = loadedByIndex;
+        byOperator = loadedByOperator;
     }
 }

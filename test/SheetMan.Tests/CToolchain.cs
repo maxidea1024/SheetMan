@@ -99,6 +99,128 @@ namespace SheetMan.Tests
                 workDir, includeDir, source, accessorName, "include-from-cpp");
         }
 
+        /// <summary>
+        /// Where libcurl's headers and import library are, when they are not where the
+        /// compiler already looks.
+        /// </summary>
+        /// <remarks>
+        /// The updater is the one emitted file that links against something, so it is the
+        /// one gate that has to find it. On Linux the distribution's `libcurl4-openssl-dev`
+        /// puts both where gcc looks and `-lcurl` is the whole of it; on Windows there is
+        /// no such place, so `SHEETMAN_LIBCURL_ROOT` names a prefix holding `include` and
+        /// `lib` - a vcpkg install being the usual one, and the default below.
+        /// </remarks>
+        internal static string LibcurlRoot
+            => Environment.GetEnvironmentVariable("SHEETMAN_LIBCURL_ROOT")
+               ?? @"C:\vcpkg\installed\x64-windows";
+
+        /// <summary>Whether the updater's one dependency can be found.</summary>
+        public static bool LibcurlIsAvailable(out string reason)
+        {
+            if (!IsAvailable(out reason))
+                return false;
+
+            if (!OnWindows)
+            {
+                // gcc finds a system libcurl by itself, and says so plainly if it cannot.
+                reason = null;
+                return true;
+            }
+
+            string header = Path.Combine(LibcurlRoot, "include", "curl", "curl.h");
+
+            if (!File.Exists(header))
+            {
+                reason = $"libcurl was not found at `{LibcurlRoot}`. Install it "
+                         + "(`vcpkg install curl:x64-windows`) or point SHEETMAN_LIBCURL_ROOT "
+                         + "at a prefix holding include/ and lib/.";
+                return false;
+            }
+
+            reason = null;
+            return true;
+        }
+
+        /// <summary>
+        /// Builds a harness for the updater: the same C build, plus libcurl.
+        /// </summary>
+        /// <remarks>
+        /// The runtime directory is on the include path as `sheetman/...`, because that is
+        /// how a consumer includes it and the updater includes the reader beside it by that
+        /// same path.
+        /// </remarks>
+        public static ToolResult CompileUpdaterHarness(string workDir, string source, string exeName)
+        {
+            Directory.CreateDirectory(workDir);
+
+            string runtimeParent = Path.Combine(RepoLayout.Root, "lib", "c");
+            string exe = Path.Combine(workDir, OnWindows ? exeName + ".exe" : exeName);
+
+            string implementation = Path.Combine(workDir, "sheetman-implementation.c");
+
+            // The one translation unit that carries both runtimes, written here for the
+            // same reason the generator writes one: the macros have to be defined exactly
+            // once, and a harness that forgot would fail at link with nothing to read.
+            File.WriteAllText(implementation, string.Join(Environment.NewLine, new[]
+            {
+                "/* Written by the test suite. */",
+                "#define SHEETMAN_LITE_BINARY_IMPLEMENTATION",
+                "#include \"sheetman/sheetman_lite_binary_reader.h\"",
+                "#define SHEETMAN_UPDATER_IMPLEMENTATION",
+                "#include \"sheetman/sheetman_updater.h\"",
+                "",
+            }));
+
+            var sources = new List<string> { source, implementation };
+
+            if (!OnWindows)
+            {
+                var arguments = new List<string>
+                {
+                    "-std=c99", "-Wall", "-Wextra", "-Werror", "-pedantic",
+                    "-I", runtimeParent,
+                };
+
+                arguments.AddRange(sources);
+                arguments.Add("-o");
+                arguments.Add(exe);
+                arguments.Add("-lcurl");
+
+                return Execute("gcc", workDir, arguments.ToArray());
+            }
+
+            string script = Path.Combine(workDir, "build-updater.bat");
+            string quoted = string.Join(" ", sources.Select(path => $"\"{path}\""));
+
+            File.WriteAllText(script, string.Join(Environment.NewLine, new[]
+            {
+                "@echo off",
+                $"call \"{FindVcVars()}\" >nul",
+                $"cd /d \"{workDir}\"",
+                $"cl /nologo /TC /W4 /WX /utf-8 /I \"{runtimeParent}\" " +
+                $"/I \"{Path.Combine(LibcurlRoot, "include")}\" {quoted} /Fe\"{exe}\" " +
+                $"/link \"{Path.Combine(LibcurlRoot, "lib", "libcurl.lib")}\"",
+                "exit /b %ERRORLEVEL%",
+            }));
+
+            var built = Execute("cmd.exe", workDir, "/c", script);
+
+            if (!built.Succeeded)
+                return built;
+
+            // The DLLs go beside the executable, because a vcpkg libcurl is not on the
+            // path and a run that cannot start says so with a dialog rather than a line.
+            foreach (var dll in Directory.EnumerateFiles(Path.Combine(LibcurlRoot, "bin"), "*.dll"))
+                File.Copy(dll, Path.Combine(workDir, Path.GetFileName(dll)), overwrite: true);
+
+            return built;
+        }
+
+        /// <summary>Runs an executable built by <see cref="CompileUpdaterHarness"/>.</summary>
+        public static ToolResult RunHarness(string workDir, string exeName, params string[] args)
+            => Execute(Path.Combine(workDir, OnWindows ? exeName + ".exe" : exeName),
+                       workDir, args);
+
         private static ToolResult Build(
             string workDir, string includeDir, IReadOnlyList<string> sources,
             string accessorHeader, string exe)

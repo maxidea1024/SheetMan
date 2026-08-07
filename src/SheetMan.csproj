@@ -60,28 +60,44 @@
                       LogicalName="SheetMan.Runtime.Cs.SheetManUpdater.cs" />
     <EmbeddedResource Include="..\lib\cpp\sheetman\lite_binary_reader.h"
                       LogicalName="SheetMan.Runtime.Cpp.lite_binary_reader.h" />
+    <EmbeddedResource Include="..\lib\cpp\sheetman\updater.h"
+                      LogicalName="SheetMan.Runtime.Cpp.updater.h" />
     <EmbeddedResource Include="..\lib\go\sheetman\lite_binary_reader.go"
                       LogicalName="SheetMan.Runtime.Go.lite_binary_reader.go" />
     <EmbeddedResource Include="..\lib\go\sheetman\updater.go"
                       LogicalName="SheetMan.Runtime.Go.updater.go" />
     <EmbeddedResource Include="..\lib\rust\sheetman\lite_binary_reader.rs"
                       LogicalName="SheetMan.Runtime.Rust.lite_binary_reader.rs" />
+    <EmbeddedResource Include="..\lib\rust\sheetman\updater.rs"
+                      LogicalName="SheetMan.Runtime.Rust.updater.rs" />
     <EmbeddedResource Include="..\lib\python\sheetman\lite_binary_reader.py"
                       LogicalName="SheetMan.Runtime.Python.lite_binary_reader.py" />
     <EmbeddedResource Include="..\lib\python\sheetman\updater.py"
                       LogicalName="SheetMan.Runtime.Python.updater.py" />
     <EmbeddedResource Include="..\lib\java\sheetman\LiteBinaryReader.java"
                       LogicalName="SheetMan.Runtime.Java.LiteBinaryReader.java" />
+    <EmbeddedResource Include="..\lib\java\sheetman\SheetManUpdater.java"
+                      LogicalName="SheetMan.Runtime.Java.SheetManUpdater.java" />
     <EmbeddedResource Include="..\lib\kotlin\sheetman\LiteBinaryReader.kt"
                       LogicalName="SheetMan.Runtime.Kotlin.LiteBinaryReader.kt" />
+    <EmbeddedResource Include="..\lib\kotlin\sheetman\SheetManUpdater.kt"
+                      LogicalName="SheetMan.Runtime.Kotlin.SheetManUpdater.kt" />
     <EmbeddedResource Include="..\lib\ruby\sheetman\lite_binary_reader.rb"
                       LogicalName="SheetMan.Runtime.Ruby.lite_binary_reader.rb" />
+    <EmbeddedResource Include="..\lib\ruby\sheetman\updater.rb"
+                      LogicalName="SheetMan.Runtime.Ruby.updater.rb" />
     <EmbeddedResource Include="..\lib\dart\sheetman\lite_binary_reader.dart"
                       LogicalName="SheetMan.Runtime.Dart.lite_binary_reader.dart" />
+    <EmbeddedResource Include="..\lib\dart\sheetman\updater.dart"
+                      LogicalName="SheetMan.Runtime.Dart.updater.dart" />
     <EmbeddedResource Include="..\lib\c\sheetman\sheetman_lite_binary_reader.h"
                       LogicalName="SheetMan.Runtime.C.sheetman_lite_binary_reader.h" />
+    <EmbeddedResource Include="..\lib\c\sheetman\sheetman_updater.h"
+                      LogicalName="SheetMan.Runtime.C.sheetman_updater.h" />
     <EmbeddedResource Include="..\lib\php\sheetman\LiteBinaryReader.php"
                       LogicalName="SheetMan.Runtime.Php.LiteBinaryReader.php" />
+    <EmbeddedResource Include="..\lib\php\sheetman\SheetManUpdater.php"
+                      LogicalName="SheetMan.Runtime.Php.SheetManUpdater.php" />
 
     <!--
       Unreal gets its own rather than the C++ one, because the engine already has every

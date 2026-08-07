@@ -132,6 +132,17 @@ namespace SheetMan.CodeGeneration
         /// <summary>Referenced table's class name, without the `Table` suffix.</summary>
         public string RefTable { get; set; }
 
+        /// <summary>
+        /// The referenced table's throwing lookup, which is what a key resolves through.
+        /// </summary>
+        /// <remarks>
+        /// Read off the referenced table rather than assumed to be `GetByIndexOrThrow`. The
+        /// primary index is whatever the sheet put in the first column - its type is checked
+        /// to be `int`, but its name is not - so a sheet that calls it `Id` generates
+        /// `GetByIdOrThrow`, and the accessor is the only place that has to know.
+        /// </remarks>
+        public string RefLookup { get; set; }
+
         /// <summary>Referenced field's property name, empty when the reference names a whole row.</summary>
         public string RefField { get; set; }
 

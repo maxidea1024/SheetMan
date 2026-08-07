@@ -8,12 +8,16 @@
 
 ```
 <Path>/<PackageName>/
-  __init__.py           전부 재수출 (__all__ 포함)
-  <ModuleName>.py       접근자 (기본 tables.py)
-  <table>_table.py      테이블당 하나
-  enum_<enum>.py        enum당 하나
-  const_<set>.py        상수 세트당 하나
-  sheetman.py           바이너리 리더 (함께 생성됩니다)
+  __init__.py                     전부 재수출 (__all__ 포함)
+  <ModuleName>.py                 접근자 (기본 tables.py)
+  <table>_table.py                테이블당 하나
+  enum_<enum>.py                  enum당 하나
+  const_<set>.py                  상수 세트당 하나
+  sheetman/lite_binary_reader.py  바이너리 리더 (함께 생성됩니다)
+  sheetman/updater.py             데이터 갱신 (WriteUpdater를 켰을 때만)
+  sheetman/__init__.py            위 둘을 재수출
+
+타입 파일이 `tables/`·`enums/`·`constants/`로 나뉘지 않는 이유는 언어입니다 — 파이썬의 하위 디렉터리는 하위 **패키지**라 임포트가 한 겹 깊어지고, 무엇보다 `ModuleName`의 기본값이 `tables`라서 `tables/` 패키지가 접근자 `tables.py`를 **가려버립니다.** Go·Rust·Java도 같은 이유로 평평합니다.
 ```
 
 패키지 안은 평평합니다. 하위 폴더는 서브패키지가 되어 각각 `__init__`이 필요하고, 무엇보다 `tables/`가 `tables.py` 옆에 있으면 import가 패키지 쪽으로 가서 접근자가 조용히 사라집니다.
@@ -49,7 +53,7 @@ from gamedata import Tables
 tables = Tables()
 tables.read_all("./data")
 
-sword = tables.item.find(1)
+sword = tables.item.find_by_index(1)
 if sword is not None:
     # 참조는 로드 후 실제 레코드로 연결됩니다.
     print(sword.name, sword.category_id.name)

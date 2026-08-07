@@ -13,6 +13,7 @@
   enums/<Enum>.php                 enum당 하나 (PHP 8.1 backed enum)
   constants/<Set>.php              상수 세트당 하나
   sheetman/LiteBinaryReader.php    바이너리 리더 (함께 생성됩니다)
+  sheetman/SheetManUpdater.php     데이터 갱신 (WriteUpdater를 켰을 때만)
 ```
 
 ## 필요한 것
@@ -33,6 +34,7 @@
     "Namespace": "MyGame\Data",
     "AccessorName": "GameData",
     "BinaryTableFileExtension": ".table",
+    "WriteUpdater": false,           // CDN에서 데이터를 갱신할 거라면 true
     "Sweep": true,
     "TargetSide": "s"
   }
@@ -51,7 +53,7 @@ use MyGame\Data\GameData;
 $data = new GameData();
 $data->readAll('./data');
 
-$sword = $data->item->find(1);
+$sword = $data->item->findByIndex(1);
 if ($sword !== null) {
     // 참조는 로드 후 실제 레코드로 연결됩니다.
     echo $sword->name . ' / ' . $sword->categoryId->name;
@@ -65,6 +67,33 @@ foreach ($data->item->records as $row) { /* ... */ }
 ```php
 $data->readAll('./data', '.bytes');
 ```
+
+## 데이터만 갱신하기 (`WriteUpdater`)
+
+recipe에 `"WriteUpdater": true`를 적으면 `sheetman/SheetManUpdater.php`가 함께 나옵니다. CDN이나 버킷에 올려둔 데이터를 받아 로컬 사본을 최신으로 유지하는 코드이고, **배포를 다시 하지 않고 데이터만 패치**하기 위한 것입니다. 기본값이 `false`인 이유는 네트워크를 쓰는 유일한 생성물이기 때문입니다.
+
+**확장은 필요 없고, 설정 하나를 봅니다.** 전송은 PHP의 HTTP 스트림 래퍼라 `allow_url_fopen`이 켜져 있어야 합니다(기본값 On). `ext-curl`을 쓰지 않은 이유는 그쪽이 항상 컴파일되어 있지 않기 때문입니다 — 처음엔 curl로 썼고, 게이트를 돌린 인터프리터가 `Call to undefined function curl_init()`로 답했습니다.
+
+```php
+require_once __DIR__ . '/gamedata/sheetman/SheetManUpdater.php';
+
+use SheetMan\SheetManUpdater;
+use SheetMan\UpdateOptions;
+
+$options = new UpdateOptions();
+$options->log = static fn (string $m) => \error_log($m);
+
+$result = SheetManUpdater::update('https://cdn.example.com/data', './data', $options);
+
+if ($result->succeeded) {
+    $data->readAll($result->localPath);
+} else {
+    // 이전 데이터가 그대로 있습니다. 그것으로 계속해도 됩니다.
+    \error_log($result->error);
+}
+```
+
+예외를 던지지 않습니다. 네트워크·디스크·손상된 파일은 모두 호출한 쪽이 다뤄야 할 상황이지 결함이 아니기 때문입니다. 실패하면 결과의 `error`에 이유가 들어있고, **디스크의 이전 데이터는 손대지 않은 상태**입니다. 받은 파일은 전부 매니페스트의 MD5와 대조하고, `.staging`을 거쳐 마지막에 한 번에 옮깁니다.
 
 ## 주의사항
 

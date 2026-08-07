@@ -116,3 +116,17 @@ target/
 # using it and wrong for this repository: RecipeTemplateTests converts every template
 # for real, from the repository root, so the file lands here. A user commits theirs.
 /schema-baseline.json
+
+# Byte-compiled Python, which the language gate produces inside whatever package it
+# just checked - including showcases/, which is a committed directory.
+__pycache__/
+*.py[cod]
+
+# Compiled JVM output, for the same reason: the Java and Kotlin gates compile into
+# `classes` beside the sources they were given.
+classes/
+*.class
+
+# Cargo's lockfile in a generated crate. The crate is generated, so a lockfile
+# committed here would be one nobody chose and nobody updates.
+/showcases/rust/Cargo.lock

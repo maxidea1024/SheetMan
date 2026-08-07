@@ -110,10 +110,42 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
 
-        /// <summary>Name of the primary index member, escaped.</summary>
-        public string IndexField { get; set; }
+        /// <summary>
+        /// The indexed fields: the sheet's first column plus every one marked with `*`.
+        /// </summary>
+        public IReadOnlyList<CppIndexView> Indexes { get; set; }
 
         public IReadOnlyList<CppFieldView> Fields { get; set; }
+    }
+
+    /// <summary>
+    /// One indexed field, and the lookups generated for it.
+    /// </summary>
+    internal sealed class CppIndexView
+    {
+        /// <summary>The record member holding the key, escaped.</summary>
+        public string Member { get; set; }
+
+        /// <summary>What the lookup names end in - `index` gives `find_by_index`.</summary>
+        public string Suffix { get; set; }
+
+        /// <summary>The map's key type.</summary>
+        public string KeyType { get; set; }
+
+        /// <summary>
+        /// The type the lookups take: a const reference where a copy would cost, the value
+        /// itself where it would not.
+        /// </summary>
+        public string KeyParam { get; set; }
+
+        /// <summary>The member holding the map from key to row position.</summary>
+        public string MapName { get; set; }
+
+        /// <summary>How the key reaches the message, since a std::string concatenates and a number does not.</summary>
+        public string KeyText { get; set; }
+
+        /// <summary>The field as the sheet spells it, for the exception message.</summary>
+        public string FieldName { get; set; }
     }
 
     /// <summary>
@@ -197,6 +229,9 @@ namespace SheetMan.CodeGeneration
 
         /// <summary>Escaped accessor member of the table being pointed at.</summary>
         public string RefTable { get; set; }
+
+        /// <summary>The referenced table's primary lookup, which is what a key resolves through.</summary>
+        public string RefLookup { get; set; }
 
         /// <summary>What the resolved reference yields - the record, or one of its fields.</summary>
         public string Value { get; set; }

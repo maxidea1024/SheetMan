@@ -313,6 +313,8 @@ public:
         return Found == Storage.end() ? nullptr : &Found->second;
     }
 
+    bool Contains(const TKey& Key) const { return Storage.find(Key) != Storage.end(); }
+
     void Empty(int32 Slack = 0)
     {
         Storage.clear();

@@ -53,11 +53,11 @@ class Tables:
 {{~ for field in reference.fields ~}}
 {{~ if field.is_array ~}}
             for position, index in enumerate(record.{{ field.name }}_index):
-                target = {{ field.ref_table }}.find(index)
+                target = {{ field.ref_table }}.{{ field.ref_lookup }}(index)
                 if target is not None:
                     record.{{ field.name }}[position] = {{ field.value }}
 {{~ else ~}}
-            target = {{ field.ref_table }}.find(record.{{ field.name }}_index)
+            target = {{ field.ref_table }}.{{ field.ref_lookup }}(record.{{ field.name }}_index)
             if target is not None:
                 record.{{ field.name }} = {{ field.value }}
 {{~ end ~}}

@@ -45,6 +45,18 @@ class LiteBinaryError : public std::runtime_error {
   explicit LiteBinaryError(const std::string& what) : std::runtime_error(what) {}
 };
 
+/// Thrown by a lookup for a key no row carries.
+///
+/// Raised by the generated get_by_*_or_throw lookups, which is where a caller has said
+/// the key has to be there. find_by_* answers the same question with nullptr.
+///
+/// Its own type rather than LiteBinaryError: nothing is wrong with the file, and a
+/// caller catching one of these is not catching the other.
+class RecordNotFound : public std::runtime_error {
+ public:
+  explicit RecordNotFound(const std::string& what) : std::runtime_error(what) {}
+};
+
 /// A duration of .NET ticks: one tick is 100 nanoseconds.
 ///
 /// The wire carries ticks, so this is the period that loses nothing. std::chrono

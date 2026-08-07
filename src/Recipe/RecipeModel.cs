@@ -326,6 +326,21 @@ namespace SheetMan.Recipe
                 public string BinaryTableFileExtension { get; set; } = ".table";
 
                 /// <summary>
+                /// Whether to write the data updater beside the reader.
+                /// </summary>
+                /// <remarks>
+                /// It fetches the manifest and the changed data files over HTTP and keeps
+                /// a local copy current, so a program can take new data without being
+                /// redeployed.
+                ///
+                /// Off by default, and here that means more than elsewhere: C++ has no
+                /// HTTP client in its standard library, so this is the only emitted file
+                /// that links against anything - libcurl, and nothing else. Leave it off
+                /// and the generated C++ depends on the standard library alone.
+                /// </remarks>
+                public bool WriteUpdater { get; set; } = false;
+
+                /// <summary>
                 /// Whether generated files this run did not write are removed from
                 /// <see cref="Path"/>.
                 /// </summary>

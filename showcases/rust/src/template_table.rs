@@ -21,7 +21,7 @@ pub struct TemplateRecord {
     pub int: i32,
     /// delete: keyword in C++
     pub delete: bool,
-    /// operator: keyword in C++
+    /// operator: keyword in C++, and a secondary index
     pub operator: String,
     /// namespace: keyword in C++ and C#
     pub namespace: String,
@@ -39,6 +39,7 @@ impl TemplateRecord {
 pub struct TemplateTable {
     records: Vec<TemplateRecord>,
     by_index: HashMap<i32, usize>,
+    by_operator: HashMap<String, usize>,
 }
 
 impl TemplateTable {
@@ -47,9 +48,62 @@ impl TemplateTable {
         &self.records
     }
 
-    /// The row with the given primary index, or None when there is none.
-    pub fn find(&self, index: i32) -> Option<&TemplateRecord> {
-        self.by_index.get(&index).map(|position| &self.records[*position])
+    /// The row with this Index, or None when the table has none.
+    ///
+    /// The lookup to reach for when a missing row is an ordinary answer - an optional
+    /// reference, a key that came from user input.
+    pub fn find_by_index(&self, key: i32) -> Option<&TemplateRecord> {
+        self.by_index.get(&key).map(|position| &self.records[*position])
+    }
+
+    /// The row with this Index, or an error naming what was missing.
+    ///
+    /// For a key that has to be there - one from another table, or a constant. Rust has no
+    /// exception to throw, so where the other languages name a throw this one names the
+    /// error it returns.
+    pub fn get_by_index_or_error(&self, key: i32) -> sheetman::Result<&TemplateRecord> {
+        self.by_index
+            .get(&key)
+            .map(|position| &self.records[*position])
+            .ok_or_else(|| sheetman::Error::RecordNotFound {
+                table: "Template",
+                field: "Index",
+                key: format!("{:?}", key),
+            })
+    }
+
+    /// Whether the table holds a row with this Index.
+    pub fn contains_index(&self, key: i32) -> bool {
+        self.by_index.contains_key(&key)
+    }
+
+    /// The row with this Operator, or None when the table has none.
+    ///
+    /// The lookup to reach for when a missing row is an ordinary answer - an optional
+    /// reference, a key that came from user input.
+    pub fn find_by_operator(&self, key: &str) -> Option<&TemplateRecord> {
+        self.by_operator.get(key).map(|position| &self.records[*position])
+    }
+
+    /// The row with this Operator, or an error naming what was missing.
+    ///
+    /// For a key that has to be there - one from another table, or a constant. Rust has no
+    /// exception to throw, so where the other languages name a throw this one names the
+    /// error it returns.
+    pub fn get_by_operator_or_error(&self, key: &str) -> sheetman::Result<&TemplateRecord> {
+        self.by_operator
+            .get(key)
+            .map(|position| &self.records[*position])
+            .ok_or_else(|| sheetman::Error::RecordNotFound {
+                table: "Template",
+                field: "Operator",
+                key: format!("{:?}", key),
+            })
+    }
+
+    /// Whether the table holds a row with this Operator.
+    pub fn contains_operator(&self, key: &str) -> bool {
+        self.by_operator.contains_key(key)
     }
 
     /// Loads the table from a .table file written by SheetMan.
@@ -132,12 +186,19 @@ impl TemplateTable {
         let by_index = records
             .iter()
             .enumerate()
-            .map(|(position, record)| (record.index, position))
+            .map(|(position, record)| (record.index.clone(), position))
+            .collect();
+
+        let by_operator = records
+            .iter()
+            .enumerate()
+            .map(|(position, record)| (record.operator.clone(), position))
             .collect();
 
         // Published, now that every column read.
         self.records = records;
         self.by_index = by_index;
+        self.by_operator = by_operator;
 
         Ok(())
     }

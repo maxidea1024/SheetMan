@@ -85,8 +85,16 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
 
-        /// <summary>Name of the primary index attribute.</summary>
-        public string IndexField { get; set; }
+        /// <summary>
+        /// The indexed fields: the sheet's first column plus every one marked with `*`.
+        /// </summary>
+        public IReadOnlyList<PythonIndexView> Indexes { get; set; }
+
+        /// <summary>
+        /// The table class's `__slots__`: the rows and one map per index, already quoted
+        /// and comma separated.
+        /// </summary>
+        public string TableSlotNames { get; set; }
 
         /// <summary>
         /// The `__slots__` tuple's contents, already quoted and comma separated.
@@ -104,6 +112,24 @@ namespace SheetMan.CodeGeneration
         public string ReprValues { get; set; }
 
         public IReadOnlyList<PythonFieldView> Fields { get; set; }
+    }
+
+    /// <summary>
+    /// One indexed field, and the lookups generated for it.
+    /// </summary>
+    internal sealed class PythonIndexView
+    {
+        /// <summary>The record attribute holding the key.</summary>
+        public string Member { get; set; }
+
+        /// <summary>What the lookup names end in - `index` gives `find_by_index`.</summary>
+        public string Suffix { get; set; }
+
+        /// <summary>The table attribute holding the map from key to row.</summary>
+        public string MapName { get; set; }
+
+        /// <summary>The field as the sheet spells it, for the error message.</summary>
+        public string FieldName { get; set; }
     }
 
     internal sealed class PythonFieldView
@@ -165,6 +191,10 @@ namespace SheetMan.CodeGeneration
     {
         public string Name { get; set; }
         public string RefTable { get; set; }
+
+        /// <summary>The referenced table's primary lookup, which is what a key resolves through.</summary>
+        public string RefLookup { get; set; }
+
         public string Value { get; set; }
         public bool IsArray { get; set; }
     }

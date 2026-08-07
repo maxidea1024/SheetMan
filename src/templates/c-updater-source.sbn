@@ -1,0 +1,12 @@
+{{~##
+ The one translation unit that carries the updater's implementation.
+
+ Its own file for the same reason the reader's is: the macro has to be defined in exactly
+ one translation unit, and no generated source should be quietly special.
+
+ This is the only file in a C output that links against anything. See the header for the
+ one flag it needs.
+##~}}
+{{ include 'c-file-head.sbn' }}
+#define SHEETMAN_UPDATER_IMPLEMENTATION
+#include "sheetman/sheetman_updater.h"

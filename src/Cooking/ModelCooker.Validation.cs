@@ -42,6 +42,14 @@ namespace SheetMan.Cooking
                 if (!field.Indexing)
                     continue;
 
+                if (!CanBeIndexKey(field, out string why))
+                {
+                    diagnostics.Error(field.TypeLocation,
+                        $"Index field `{table.Name}.{field.Name}` is `{field.ElementType}`, {why} " +
+                        $"Use a whole-number, string, uuid or enum column as an index.");
+                    continue;
+                }
+
                 // Keyed lookup rather than comparing every row against every other.
                 // The original shape was quadratic, which on a table of any size is
                 // the slowest thing the converter does.
@@ -64,6 +72,35 @@ namespace SheetMan.Cooking
 
                     seen.Add(cell.Value, cell.RawCell.Location);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Whether a column's type can carry a lookup key.
+        /// </summary>
+        /// <remarks>
+        /// Asked here rather than left to the generators, because the answer only shows up
+        /// there as somebody else's compiler: an index becomes a hash map in most targets
+        /// and a sorted array in C, and a float key hashes and compares by a bit pattern
+        /// nobody wrote down. `1.1` from the sheet and `1.1` from a caller's arithmetic are
+        /// then two different keys, and the lookup misses without failing.
+        ///
+        /// An array cannot be one either, but that is not reachable from here: a folded
+        /// serial field is never an indexer.
+        /// </remarks>
+        private static bool CanBeIndexKey(Field field, out string why)
+        {
+            switch (field.ElementType)
+            {
+                case Models.ValueType.Float:
+                case Models.ValueType.Double:
+                    why = "and a lookup keyed by a floating point value misses on values " +
+                          "that look equal but are not.";
+                    return false;
+
+                default:
+                    why = null;
+                    return true;
             }
         }
 

@@ -14,7 +14,7 @@ import * as sheetman from '../sheetman/lite-binary-reader'
 interface IDataRow {
   index: number
   name: string
-  categoryName: string
+  categoryName: number
 }
 
 // Generated from test/fixtures/xlsx/foreign-field\foreign-field.xlsx : Refs : I2
@@ -45,7 +45,7 @@ export class ItemRecord {
   public populateFieldValues(dataRow: IDataRow): void {
     this._index = dataRow.index
     this._name = dataRow.name
-    this._categoryName = dataRow.categoryName
+    this._categoryName_ItemCategory_index = dataRow.categoryName
   }
 
   /** Populate field values. */
@@ -53,7 +53,7 @@ export class ItemRecord {
     let offset = 0
     this._index = dataRow[offset++]
     this._name = dataRow[offset++]
-    this._categoryName = dataRow[offset++]
+    this._categoryName_ItemCategory_index = dataRow[offset++]
   }
 }
 

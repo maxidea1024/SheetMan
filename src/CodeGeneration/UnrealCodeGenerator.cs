@@ -259,6 +259,10 @@ namespace SheetMan.CodeGeneration
                     TableName = TableName(table),
                     RecordName = RecordName(table),
                     RawName = table.Name,
+                    PrimaryLookup = "FindBy" + PrimaryIndex(table).Name.ToPascalCase(),
+                    PrimaryKeyType = Indexes(table)[0].KeyType,
+                    PrimaryKeyParam = Indexes(table)[0].KeyParam,
+                    PrimaryFieldName = PrimaryIndex(table).Name.ToPascalCase(),
 
                     // Unescaped: this one names the file the exporter wrote.
                     DataFileName = table.Name,
@@ -321,7 +325,7 @@ namespace SheetMan.CodeGeneration
                 TableName = TableName(table),
                 Location = table.Location.ToString(),
                 Comment = CommentLines(table.Comment),
-                IndexField = MemberName(table.Fields[0]),
+                Indexes = Indexes(table),
                 Fields = table.SerialFields.Select(sf => BuildField(table, sf, members)).ToList(),
             };
         }
@@ -583,6 +587,32 @@ namespace SheetMan.CodeGeneration
 
         /// <summary>The table class is a plain C++ class, which Unreal also prefixes with F.</summary>
         private static string TableName(Table table) => "F" + table.Name.ToPascalCase() + "Table";
+
+        /// <summary>
+        /// The indexed fields of a table: the sheet's first column, plus every one marked
+        /// with a `*`.
+        /// </summary>
+        private IReadOnlyList<UnrealIndexView> Indexes(Table table)
+            => table.SerialFields.Where(sf => sf.IsIndexer).Select(sf =>
+            {
+                string keyType = ToUnrealTypeName(sf.FirstField.ElementType, sf.FirstField.EnumOrNull);
+                bool copyCosts = keyType == "FString";
+
+                return new UnrealIndexView
+                {
+                    Member = MemberName(sf.FirstField, sf.Name),
+                    Suffix = sf.Name.ToPascalCase(),
+                    KeyType = keyType,
+                    KeyParam = copyCosts ? "const " + keyType + "&" : keyType,
+                    MapName = "By" + sf.Name.ToPascalCase(),
+                    LocalName = "LoadedBy" + sf.Name.ToPascalCase(),
+                    FieldName = sf.Name.ToPascalCase(),
+                };
+            }).ToList();
+
+        /// <summary>The field a `foreign` column's key is looked up in: the first index.</summary>
+        private static SerialField PrimaryIndex(Table table)
+            => table.SerialFields.First(sf => sf.IsIndexer);
 
         private static string MemberName(Field field) => MemberName(field, field.Name);
 

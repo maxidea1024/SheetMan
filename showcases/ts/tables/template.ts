@@ -41,7 +41,7 @@ export class TemplateRecord {
   /** delete: keyword in C++ */
   public get delete(): boolean { return this._delete }
 
-  /** operator: keyword in C++ */
+  /** operator: keyword in C++, and a secondary index */
   public get operator(): string { return this._operator }
 
   /** namespace: keyword in C++ and C# */
@@ -130,6 +130,39 @@ export class TemplateTable {
   /** Whether the table holds a row with this index. */
   public containsIndex(key: number): boolean {
     return this._recordsByIndex.has(key)
+  }
+
+  // Indexing by 'operator'
+  public get recordsByOperator(): Map<string, TemplateRecord> { return this._recordsByOperator }
+  private _recordsByOperator: Map<string, TemplateRecord> = new Map<string, TemplateRecord>()
+
+  /**
+   * The row with this operator, or undefined when the table has none.
+   *
+   * The lookup to reach for when a missing row is an ordinary answer.
+   */
+  public findByOperator(key: string): TemplateRecord | undefined {
+    return this._recordsByOperator.get(key)
+  }
+
+  /**
+   * The row with this operator, or a thrown Error naming what was missing.
+   *
+   * For a key that has to be there. The name says it throws, because a caller reading
+   * `getByOperator(id).name` at a glance cannot otherwise tell whether the
+   * next line is a check or a catch.
+   */
+  public getByOperatorOrThrow(key: string): TemplateRecord {
+    const found = this._recordsByOperator.get(key)
+    if (!found)
+      throw new Error(`There is no record in table "Template" that corresponds to field "operator" value ${key}`)
+
+    return found
+  }
+
+  /** Whether the table holds a row with this operator. */
+  public containsOperator(key: string): boolean {
+    return this._recordsByOperator.has(key)
   }
 
   /** Read a table from specified file. */
@@ -275,12 +308,15 @@ export class TemplateTable {
    */
   private publish(records: TemplateRecord[]): void {
     const recordsByIndex = new Map<number, TemplateRecord>()
+    const recordsByOperator = new Map<string, TemplateRecord>()
 
     for (const record of records) {
       recordsByIndex.set(record.index, record)
+      recordsByOperator.set(record.operator, record)
     }
 
     this._records = records
     this._recordsByIndex = recordsByIndex
+    this._recordsByOperator = recordsByOperator
   }
 }

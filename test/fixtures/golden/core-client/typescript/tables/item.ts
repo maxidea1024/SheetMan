@@ -19,7 +19,7 @@ import { SkillType } from '../enums/skill-type'
 interface IDataRow {
   index: number
   name: string
-  categoryId: ItemCategoryRecord
+  categoryId: number
   gradeField: Grade
   skillField: SkillType
   description: string
@@ -65,7 +65,7 @@ export class ItemRecord {
   public populateFieldValues(dataRow: IDataRow): void {
     this._index = dataRow.index
     this._name = dataRow.name
-    this._categoryId = dataRow.categoryId
+    this._categoryId_ItemCategory_index = dataRow.categoryId
     this._gradeField = dataRow.gradeField
     this._skillField = dataRow.skillField
     this._description = dataRow.description
@@ -76,7 +76,7 @@ export class ItemRecord {
     let offset = 0
     this._index = dataRow[offset++]
     this._name = dataRow[offset++]
-    this._categoryId = dataRow[offset++]
+    this._categoryId_ItemCategory_index = dataRow[offset++]
     this._gradeField = dataRow[offset++]
     this._skillField = dataRow[offset++]
     this._description = dataRow[offset++]

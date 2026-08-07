@@ -85,13 +85,33 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
 
-        /// <summary>Name of the primary index accessor.</summary>
-        public string IndexField { get; set; }
+        /// <summary>
+        /// The indexed fields: the sheet's first column plus every one marked with `*`.
+        /// </summary>
+        public IReadOnlyList<RubyIndexView> Indexes { get; set; }
 
         /// <summary>The `attr_accessor` list, already as symbols and comma separated.</summary>
         public string AccessorNames { get; set; }
 
         public IReadOnlyList<RubyFieldView> Fields { get; set; }
+    }
+
+    /// <summary>
+    /// One indexed field, and the lookups generated for it.
+    /// </summary>
+    internal sealed class RubyIndexView
+    {
+        /// <summary>The record accessor holding the key.</summary>
+        public string Member { get; set; }
+
+        /// <summary>What the lookup names end in - `index` gives `find_by_index`.</summary>
+        public string Suffix { get; set; }
+
+        /// <summary>The instance variable holding the map from key to row.</summary>
+        public string MapName { get; set; }
+
+        /// <summary>The field as the sheet spells it, for the error message.</summary>
+        public string FieldName { get; set; }
     }
 
     internal sealed class RubyFieldView
@@ -153,6 +173,10 @@ namespace SheetMan.CodeGeneration
     {
         public string Name { get; set; }
         public string RefTable { get; set; }
+
+        /// <summary>The referenced table's primary lookup, which is what a key resolves through.</summary>
+        public string RefLookup { get; set; }
+
         public string Value { get; set; }
         public bool IsArray { get; set; }
     }

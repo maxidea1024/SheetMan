@@ -74,6 +74,22 @@ class Header {
   final List<Column> columns;
 }
 
+/// A lookup for a key no row carries.
+///
+/// Thrown by the generated getBy*OrThrow lookups, which is where a caller has said the
+/// key has to be there. findBy* answers the same question with null.
+///
+/// Its own type rather than LiteBinaryException: nothing is wrong with the file, and a
+/// caller catching one of these is not catching the other.
+class RecordNotFoundException implements Exception {
+  RecordNotFoundException(this.message);
+
+  final String message;
+
+  @override
+  String toString() => 'RecordNotFoundException: $message';
+}
+
 /// A table file is truncated, malformed, or not a table file.
 class LiteBinaryException implements Exception {
   LiteBinaryException(this.message);

@@ -23,7 +23,9 @@ impl {{ table.record_name }} {
 #[derive(Clone, Debug, Default)]
 pub struct {{ table.table_name }} {
     records: Vec<{{ table.record_name }}>,
-    by_index: HashMap<i32, usize>,
+{{~ for index in table.indexes ~}}
+    {{ index.map_name }}: HashMap<{{ index.key_type }}, usize>,
+{{~ end ~}}
 }
 
 impl {{ table.table_name }} {
@@ -31,11 +33,36 @@ impl {{ table.table_name }} {
     pub fn records(&self) -> &[{{ table.record_name }}] {
         &self.records
     }
-
-    /// The row with the given primary index, or None when there is none.
-    pub fn find(&self, index: i32) -> Option<&{{ table.record_name }}> {
-        self.by_index.get(&index).map(|position| &self.records[*position])
+{{~ for index in table.indexes }}
+    /// The row with this {{ index.field_name }}, or None when the table has none.
+    ///
+    /// The lookup to reach for when a missing row is an ordinary answer - an optional
+    /// reference, a key that came from user input.
+    pub fn find_by_{{ index.suffix }}(&self, key: {{ index.key_param }}) -> Option<&{{ table.record_name }}> {
+        self.{{ index.map_name }}.get({{ index.key_borrow }}).map(|position| &self.records[*position])
     }
+
+    /// The row with this {{ index.field_name }}, or an error naming what was missing.
+    ///
+    /// For a key that has to be there - one from another table, or a constant. Rust has no
+    /// exception to throw, so where the other languages name a throw this one names the
+    /// error it returns.
+    pub fn get_by_{{ index.suffix }}_or_error(&self, key: {{ index.key_param }}) -> sheetman::Result<&{{ table.record_name }}> {
+        self.{{ index.map_name }}
+            .get({{ index.key_borrow }})
+            .map(|position| &self.records[*position])
+            .ok_or_else(|| sheetman::Error::RecordNotFound {
+                table: "{{ table.raw_name }}",
+                field: "{{ index.field_name }}",
+                key: format!("{:?}", key),
+            })
+    }
+
+    /// Whether the table holds a row with this {{ index.field_name }}.
+    pub fn contains_{{ index.suffix }}(&self, key: {{ index.key_param }}) -> bool {
+        self.{{ index.map_name }}.contains_key({{ index.key_borrow }})
+    }
+{{~ end ~}}
 
     /// Loads the table from a .table file written by SheetMan.
     pub fn read(&mut self, filename: &Path) -> sheetman::Result<()> {
@@ -94,15 +121,19 @@ impl {{ table.table_name }} {
             sheetman::check_block_end(&reader, column, block_end)?;
         }
 
-        let by_index = records
+{{~ for index in table.indexes ~}}
+        let {{ index.map_name }} = records
             .iter()
             .enumerate()
-            .map(|(position, record)| (record.{{ table.index_field }}, position))
+            .map(|(position, record)| (record.{{ index.member }}.clone(), position))
             .collect();
 
+{{~ end ~}}
         // Published, now that every column read.
         self.records = records;
-        self.by_index = by_index;
+{{~ for index in table.indexes ~}}
+        self.{{ index.map_name }} = {{ index.map_name }};
+{{~ end ~}}
 
         Ok(())
     }

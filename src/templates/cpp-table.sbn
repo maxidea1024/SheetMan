@@ -22,12 +22,39 @@ class {{ table.table_name }} {
  public:
   const std::vector<{{ table.record_name }}>& records() const { return records_; }
 
-  /// Record with the given primary index, or nullptr when there is none.
-  const {{ table.record_name }}* find(std::int32_t index) const {
-    const auto it = by_index_.find(index);
-    return it == by_index_.end() ? nullptr : &records_[it->second];
+{{~ for index in table.indexes ~}}
+  /// The row with this {{ index.field_name }}, or nullptr when the table has none.
+  ///
+  /// The lookup to reach for when a missing row is an ordinary answer - an optional
+  /// reference, a key that came from user input.
+  const {{ table.record_name }}* find_by_{{ index.suffix }}({{ index.key_param }} key) const {
+    const auto it = {{ index.map_name }}.find(key);
+    return it == {{ index.map_name }}.end() ? nullptr : &records_[it->second];
   }
 
+  /// The row with this {{ index.field_name }}, or a thrown exception naming what was missing.
+  ///
+  /// For a key that has to be there - one from another table, or a constant. The name says
+  /// it throws, because a caller reading `get_by_{{ index.suffix }}(key)->name` at a glance
+  /// cannot otherwise tell whether the next line is a null check or a catch.
+  const {{ table.record_name }}& get_by_{{ index.suffix }}_or_throw({{ index.key_param }} key) const {
+    const {{ table.record_name }}* found = find_by_{{ index.suffix }}(key);
+
+    if (found == nullptr) {
+      throw sheetman::RecordNotFound(
+        std::string("there is no record in table `{{ table.raw_name }}` that corresponds to "
+                    "field `{{ index.field_name }}` value ") + {{ index.key_text }});
+    }
+
+    return *found;
+  }
+
+  /// Whether the table holds a row with this {{ index.field_name }}.
+  bool contains_{{ index.suffix }}({{ index.key_param }} key) const {
+    return {{ index.map_name }}.find(key) != {{ index.map_name }}.end();
+  }
+
+{{~ end ~}}
   /// Loads the table from a .table file written by SheetMan.
   void read(const std::string& filename) {
     const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
@@ -97,21 +124,27 @@ class {{ table.table_name }} {
 
   /// One whole load, in place of the previous one.
   ///
-  /// The index is built here rather than by the caller, because the two have to arrive
-  /// together: a table holding this load's rows and the last one's index would answer
-  /// `find` with a row that is no longer at that position.
+  /// The indexes are built here rather than by the caller, because they have to arrive
+  /// with the rows: a table holding this load's rows and the last one's index would
+  /// answer a lookup with a row that is no longer at that position.
   void publish(std::vector<{{ table.record_name }}>&& records) {
-    std::unordered_map<std::int32_t, std::size_t> by_index;
-    by_index.reserve(records.size());
+{{~ for index in table.indexes ~}}
+    std::unordered_map<{{ index.key_type }}, std::size_t> {{ index.suffix }}_map;
+    {{ index.suffix }}_map.reserve(records.size());
     for (std::size_t i = 0; i < records.size(); ++i) {
-      by_index.emplace(records[i].{{ table.index_field }}, i);
+      {{ index.suffix }}_map.emplace(records[i].{{ index.member }}, i);
     }
 
+{{~ end ~}}
     records_ = std::move(records);
-    by_index_ = std::move(by_index);
+{{~ for index in table.indexes ~}}
+    {{ index.map_name }} = std::move({{ index.suffix }}_map);
+{{~ end ~}}
   }
 
   std::vector<{{ table.record_name }}> records_;
-  std::unordered_map<std::int32_t, std::size_t> by_index_;
+{{~ for index in table.indexes ~}}
+  std::unordered_map<{{ index.key_type }}, std::size_t> {{ index.map_name }};
+{{~ end ~}}
 };
 {{ include 'cpp-file-foot.sbn' ~}}

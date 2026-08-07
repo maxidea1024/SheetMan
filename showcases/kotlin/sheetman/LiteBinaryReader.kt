@@ -67,6 +67,17 @@ class Header(val rowCount: Int, val columns: List<Column>)
 class LiteBinaryException(message: String) : RuntimeException(message)
 
 /**
+ * A lookup for a key no row carries.
+ *
+ * Thrown by the generated getBy*OrThrow lookups, which is where a caller has said the key
+ * has to be there. findBy* answers the same question with null.
+ *
+ * Its own type rather than LiteBinaryException: nothing is wrong with the file, and a
+ * caller catching one of these is not catching the other.
+ */
+class RecordNotFoundException(message: String) : RuntimeException(message)
+
+/**
  * A 128 bit identifier, stored in .NET Guid byte order.
  *
  * That order is not plain big-endian: the first three components are little endian and

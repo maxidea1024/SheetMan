@@ -11,6 +11,7 @@ package x
 
 import java.io.File
 import sheetman.LiteBinaryReader
+import sheetman.RecordNotFoundException
 import sheetman.Uuid
 import sheetman.readAllBytes
 import sheetman.readTableHeader

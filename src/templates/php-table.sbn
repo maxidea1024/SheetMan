@@ -28,15 +28,50 @@ final class {{ table.table_name }}
     /** @var list<{{ table.record_name }}> */
     public array $records = [];
 
-    /** @var array<int, {{ table.record_name }}> */
-    private array $byIndex = [];
+{{~ for index in table.indexes ~}}
+    /** @var array<{{ index.key_doc_type }}, {{ table.record_name }}> */
+    private array ${{ index.map_name }} = [];
 
-    /** The row with the given primary index, or null when there is none. */
-    public function find(int $index): ?{{ table.record_name }}
+{{~ end ~}}
+{{~ for index in table.indexes ~}}
+    /**
+     * The row with this {{ index.field_name }}, or null when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    public function findBy{{ index.suffix }}({{ index.key_type }} $key): ?{{ table.record_name }}
     {
-        return $this->byIndex[$index] ?? null;
+        return $this->{{ index.map_name }}[$key] ?? null;
     }
 
+    /**
+     * The row with this {{ index.field_name }}, or a thrown exception naming what was missing.
+     *
+     * For a key that has to be there - one from another table, or a constant. The name says
+     * it throws, because a caller reading getBy{{ index.suffix }}($key)->name at a glance
+     * cannot otherwise tell whether the next line is a null check or a catch.
+     */
+    public function getBy{{ index.suffix }}OrThrow({{ index.key_type }} $key): {{ table.record_name }}
+    {
+        $record = $this->{{ index.map_name }}[$key] ?? null;
+
+        if ($record === null) {
+            throw new RecordNotFoundException(
+                "There is no record in table `{{ table.raw_name }}` that corresponds to " .
+                "field `{{ index.field_name }}` value {$key}.");
+        }
+
+        return $record;
+    }
+
+    /** Whether the table holds a row with this {{ index.field_name }}. */
+    public function contains{{ index.suffix }}({{ index.key_type }} $key): bool
+    {
+        return isset($this->{{ index.map_name }}[$key]);
+    }
+
+{{~ end ~}}
     /** Loads the table from a .table file written by SheetMan. */
     /**
      * Column by column, matched by tag rather than position: a column this build does not
@@ -50,7 +85,9 @@ final class {{ table.table_name }}
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         $records = [];
-        $byIndex = [];
+{{~ for index in table.indexes ~}}
+        {{ index.local_name }} = [];
+{{~ end ~}}
 
         for ($i = 0; $i < $count; $i++) {
             $records[] = new {{ table.record_name }}();
@@ -100,11 +137,15 @@ final class {{ table.table_name }}
         }
 
         foreach ($records as $record) {
-            $byIndex[$record->{{ table.index_field }}] = $record;
+{{~ for index in table.indexes ~}}
+            {{ index.local_name }}[$record->{{ index.member }}] = $record;
+{{~ end ~}}
         }
 
         // Published, now that every column read.
         $this->records = $records;
-        $this->byIndex = $byIndex;
+{{~ for index in table.indexes ~}}
+        $this->{{ index.map_name }} = {{ index.local_name }};
+{{~ end ~}}
     }
 }

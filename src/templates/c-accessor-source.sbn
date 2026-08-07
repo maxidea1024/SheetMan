@@ -16,7 +16,7 @@ static void {{ accessor.name }}_SolveCrossReferences({{ accessor.type_name }}* d
       int32_t element;
 
       for (element = 0; element < {{ field.count_expression }}; ++element) {
-        const {{ field.ref_record_name }}* target = {{ field.ref_function_prefix }}Find(
+        const {{ field.ref_record_name }}* target = {{ field.ref_lookup }}(
           &data->{{ field.ref_table }}, record->{{ field.name }}_index[element]);
 
         if (target != NULL)
@@ -25,7 +25,7 @@ static void {{ accessor.name }}_SolveCrossReferences({{ accessor.type_name }}* d
     }
 {{~ else }}
     {
-      const {{ field.ref_record_name }}* target = {{ field.ref_function_prefix }}Find(
+      const {{ field.ref_record_name }}* target = {{ field.ref_lookup }}(
         &data->{{ field.ref_table }}, record->{{ field.name }}_index);
 
       if (target != NULL)
@@ -89,7 +89,7 @@ bool {{ accessor.name }}_LoadAllWithExtension({{ accessor.type_name }}* data, co
 
   /* The previous load goes now, and not before. */
   {{ accessor.name }}_Free(data);
-   *data = loaded;
+  *data = loaded;
 
   return true;
 {{~ end ~}}

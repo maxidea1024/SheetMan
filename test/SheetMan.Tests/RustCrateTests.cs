@@ -237,11 +237,19 @@ namespace SheetMan.Tests
                 {
                     Name = scenario,
                     Lib = File.ReadAllText(Path.Combine(source, "lib.rs")),
+                    // A module is `src/<name>.rs` or `src/<name>/mod.rs` - both are how Rust
+                    // spells one, and the runtime is the second kind now that the reader and
+                    // the updater sit together under `sheetman/`.
                     Modules = Directory.GetFiles(source, "*.rs")
                         .Where(path => Path.GetFileName(path) != "lib.rs")
+                        .Select(path => (Name: Path.GetFileNameWithoutExtension(path), Path: path))
+                        .Concat(Directory.GetDirectories(source)
+                            .Select(directory => (Name: Path.GetFileName(directory),
+                                                  Path: Path.Combine(directory, "mod.rs")))
+                            .Where(module => File.Exists(module.Path)))
                         .ToDictionary(
-                            path => Path.GetFileNameWithoutExtension(path),
-                            path => File.ReadAllText(path)),
+                            module => module.Name,
+                            module => File.ReadAllText(module.Path)),
                 });
             }
 

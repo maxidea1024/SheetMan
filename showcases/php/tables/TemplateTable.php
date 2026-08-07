@@ -14,6 +14,7 @@ namespace X;
 require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
 
 use SheetMan\LiteBinaryReader;
+use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
@@ -31,7 +32,7 @@ final class TemplateRecord
     public int $int = 0;
     /** delete: keyword in C++ */
     public bool $delete = false;
-    /** operator: keyword in C++ */
+    /** operator: keyword in C++, and a secondary index */
     public string $operator = '';
     /** namespace: keyword in C++ and C# */
     public string $namespace = '';
@@ -50,10 +51,81 @@ final class TemplateTable
     /** @var array<int, TemplateRecord> */
     private array $byIndex = [];
 
-    /** The row with the given primary index, or null when there is none. */
-    public function find(int $index): ?TemplateRecord
+    /** @var array<string, TemplateRecord> */
+    private array $byOperator = [];
+
+    /**
+     * The row with this Index, or null when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    public function findByIndex(int $key): ?TemplateRecord
     {
-        return $this->byIndex[$index] ?? null;
+        return $this->byIndex[$key] ?? null;
+    }
+
+    /**
+     * The row with this Index, or a thrown exception naming what was missing.
+     *
+     * For a key that has to be there - one from another table, or a constant. The name says
+     * it throws, because a caller reading getByIndex($key)->name at a glance
+     * cannot otherwise tell whether the next line is a null check or a catch.
+     */
+    public function getByIndexOrThrow(int $key): TemplateRecord
+    {
+        $record = $this->byIndex[$key] ?? null;
+
+        if ($record === null) {
+            throw new RecordNotFoundException(
+                "There is no record in table `Template` that corresponds to " .
+                "field `Index` value {$key}.");
+        }
+
+        return $record;
+    }
+
+    /** Whether the table holds a row with this Index. */
+    public function containsIndex(int $key): bool
+    {
+        return isset($this->byIndex[$key]);
+    }
+
+    /**
+     * The row with this Operator, or null when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    public function findByOperator(string $key): ?TemplateRecord
+    {
+        return $this->byOperator[$key] ?? null;
+    }
+
+    /**
+     * The row with this Operator, or a thrown exception naming what was missing.
+     *
+     * For a key that has to be there - one from another table, or a constant. The name says
+     * it throws, because a caller reading getByOperator($key)->name at a glance
+     * cannot otherwise tell whether the next line is a null check or a catch.
+     */
+    public function getByOperatorOrThrow(string $key): TemplateRecord
+    {
+        $record = $this->byOperator[$key] ?? null;
+
+        if ($record === null) {
+            throw new RecordNotFoundException(
+                "There is no record in table `Template` that corresponds to " .
+                "field `Operator` value {$key}.");
+        }
+
+        return $record;
+    }
+
+    /** Whether the table holds a row with this Operator. */
+    public function containsOperator(string $key): bool
+    {
+        return isset($this->byOperator[$key]);
     }
 
     /** Loads the table from a .table file written by SheetMan. */
@@ -70,6 +142,7 @@ final class TemplateTable
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         $records = [];
         $byIndex = [];
+        $byOperator = [];
 
         for ($i = 0; $i < $count; $i++) {
             $records[] = new TemplateRecord();
@@ -146,10 +219,12 @@ final class TemplateTable
 
         foreach ($records as $record) {
             $byIndex[$record->index] = $record;
+            $byOperator[$record->operator] = $record;
         }
 
         // Published, now that every column read.
         $this->records = $records;
         $this->byIndex = $byIndex;
+        $this->byOperator = $byOperator;
     }
 }

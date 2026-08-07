@@ -84,6 +84,30 @@ export class Tables {
   }
 
   /**
+   * Read all tables from the binary export.
+   *
+   * The counterpart of `readAllSync`, and the one to use when the data is binary: reading a
+   * table on its own with `readBinarySync` leaves its references unlinked, because linking
+   * needs every table. Both formats produce the same values.
+   */
+  public readAllBinarySync(basePath: string, fileExtension: string = '.table'): void {
+    const testFieldTypes = new TestFieldTypesTable()
+    testFieldTypes.readBinarySync(path.join(basePath, `TestFieldTypes${fileExtension}`))
+    const itemCategory = new ItemCategoryTable()
+    itemCategory.readBinarySync(path.join(basePath, `ItemCategory${fileExtension}`))
+    const item = new ItemTable()
+    item.readBinarySync(path.join(basePath, `Item${fileExtension}`))
+    const localization = new LocalizationTable()
+    localization.readBinarySync(path.join(basePath, `Localization${fileExtension}`))
+    const arrayTypes = new ArrayTypesTable()
+    arrayTypes.readBinarySync(path.join(basePath, `ArrayTypes${fileExtension}`))
+    const clientStrings = new ClientStringsTable()
+    clientStrings.readBinarySync(path.join(basePath, `ClientStrings${fileExtension}`))
+
+    this.publish(testFieldTypes, itemCategory, item, localization, arrayTypes, clientStrings)
+  }
+
+  /**
    * Publishes one whole load.
    *
    * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
@@ -102,6 +126,21 @@ export class Tables {
     this.solveCrossReferences()
   }
 
+  /**
+   * Turns the stored keys into the rows they name, once every table is in memory.
+   *
+   * A `foreign` column travels as the target row's primary key, so a table read on its own
+   * has the key and not the row - which is why this runs from `publish` and not from a
+   * table's own read. A zero means the sheet left the cell empty and is left unresolved.
+   */
   private solveCrossReferences(): void {
+    for (const record of this._item.records) {
+      if (record._categoryId_ItemCategory_index > 0) {
+        const target = this._itemCategory.getByIndexOrThrow(
+          record._categoryId_ItemCategory_index)
+        record.setReference_categoryId_INTERNAL(target)
+        record._categoryId_F = true
+      }
+    }
   }
 }

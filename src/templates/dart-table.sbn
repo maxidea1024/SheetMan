@@ -25,10 +25,36 @@ class {{ table.table_name }} {
   List<{{ table.record_name }}> get records => _records;
   List<{{ table.record_name }}> _records = [];
 
-  Map<int, {{ table.record_name }}> _byIndex = {};
+{{~ for index in table.indexes ~}}
+  Map<{{ index.key_type }}, {{ table.record_name }}> {{ index.map_name }} = {};
+{{~ end ~}}
+{{~ for index in table.indexes }}
+  /// The row with this {{ index.field_name }}, or null when the table has none.
+  ///
+  /// The lookup to reach for when a missing row is an ordinary answer - an optional
+  /// reference, a key that came from user input.
+  {{ table.record_name }}? findBy{{ index.suffix }}({{ index.key_type }} key) => {{ index.map_name }}[key];
 
-  /// The row with the given primary index, or null when there is none.
-  {{ table.record_name }}? find(int index) => _byIndex[index];
+  /// The row with this {{ index.field_name }}, or a thrown exception naming what was missing.
+  ///
+  /// For a key that has to be there - one from another table, or a constant. The name says
+  /// it throws, because a caller reading getBy{{ index.suffix }}(key).name at a glance
+  /// cannot otherwise tell whether the next line is a null check or a catch.
+  {{ table.record_name }} getBy{{ index.suffix }}OrThrow({{ index.key_type }} key) {
+    final record = {{ index.map_name }}[key];
+
+    if (record == null) {
+      throw RecordNotFoundException(
+          'there is no record in table `{{ table.raw_name }}` that corresponds to '
+          'field `{{ index.field_name }}` value $key');
+    }
+
+    return record;
+  }
+
+  /// Whether the table holds a row with this {{ index.field_name }}.
+  bool contains{{ index.suffix }}({{ index.key_type }} key) => {{ index.map_name }}.containsKey(key);
+{{~ end ~}}
 
   /// Loads the table from a .table file written by SheetMan.
   /// Column by column, matched by tag rather than position: a column this build does
@@ -41,7 +67,9 @@ class {{ table.table_name }} {
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <{{ table.record_name }}>[];
-    final loadedByIndex = <int, {{ table.record_name }}>{};
+{{~ for index in table.indexes ~}}
+    final loadedBy{{ index.suffix }} = <{{ index.key_type }}, {{ table.record_name }}>{};
+{{~ end ~}}
 
     for (var i = 0; i < count; i++) {
       loaded.add({{ table.record_name }}());
@@ -80,11 +108,15 @@ class {{ table.table_name }} {
     }
 
     for (final record in loaded) {
-      loadedByIndex[record.{{ table.index_field }}] = record;
+{{~ for index in table.indexes ~}}
+      loadedBy{{ index.suffix }}[record.{{ index.member }}] = record;
+{{~ end ~}}
     }
 
     // Published, now that every column read.
     _records = loaded;
-    _byIndex = loadedByIndex;
+{{~ for index in table.indexes ~}}
+    {{ index.map_name }} = loadedBy{{ index.suffix }};
+{{~ end ~}}
   }
 }

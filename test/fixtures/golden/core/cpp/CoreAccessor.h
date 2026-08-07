@@ -13,17 +13,17 @@
 #include <cstddef>
 #include <string>
 
-#include "CoreAccessor_enum_value_type.h"
-#include "CoreAccessor_enum_grade.h"
-#include "CoreAccessor_enum_skill_type.h"
-#include "CoreAccessor_const_game_config.h"
-#include "CoreAccessor_test_field_types.h"
-#include "CoreAccessor_item_category.h"
-#include "CoreAccessor_item.h"
-#include "CoreAccessor_localization.h"
-#include "CoreAccessor_array_types.h"
-#include "CoreAccessor_server_tuning.h"
-#include "CoreAccessor_client_strings.h"
+#include "enums/CoreAccessor_enum_value_type.h"
+#include "enums/CoreAccessor_enum_grade.h"
+#include "enums/CoreAccessor_enum_skill_type.h"
+#include "constants/CoreAccessor_const_game_config.h"
+#include "tables/CoreAccessor_test_field_types.h"
+#include "tables/CoreAccessor_item_category.h"
+#include "tables/CoreAccessor_item.h"
+#include "tables/CoreAccessor_localization.h"
+#include "tables/CoreAccessor_array_types.h"
+#include "tables/CoreAccessor_server_tuning.h"
+#include "tables/CoreAccessor_client_strings.h"
 
 namespace sheetman_fixtures {
 namespace core {
@@ -76,7 +76,7 @@ class Tables {
   void solve_cross_references(TestFieldTypesTable& loaded_test_field_types, ItemCategoryTable& loaded_item_category, ItemTable& loaded_item, LocalizationTable& loaded_localization, ArrayTypesTable& loaded_array_types, ServerTuningTable& loaded_server_tuning, ClientStringsTable& loaded_client_strings) {
     for (auto& record : loaded_item.records_) {
       {
-        const auto* target = loaded_item_category.find(record.category_id_index);
+        const auto* target = loaded_item_category.find_by_index(record.category_id_index);
         if (target != nullptr) record.category_id = target;
       }
     }

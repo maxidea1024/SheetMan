@@ -15,6 +15,7 @@
   <Set>.java              상수 세트당 하나
 <Path>/sheetman/
   LiteBinaryReader.java   바이너리 리더 (함께 생성됩니다)
+  SheetManUpdater.java    데이터 갱신 (WriteUpdater를 켰을 때만)
 ```
 
 Java는 public 타입이 자기 이름과 같은 파일에 혼자 있어야 하므로 **테이블당 파일이 둘**입니다. 레코드를 테이블 안에 중첩해 `ItemTable.Record`로 부르는 대안도 있었지만, 이름이 나빠지는 값으로 파일 하나를 아끼는 것은 남는 장사가 아닙니다.
@@ -36,6 +37,7 @@ Java는 public 타입이 자기 이름과 같은 파일에 혼자 있어야 하�
     "PackageName": "com.mygame.data",
     "AccessorName": "GameData",
     "BinaryTableFileExtension": ".table",
+    "WriteUpdater": false,          // CDN에서 데이터를 갱신할 거라면 true
     "Sweep": true,
     "TargetSide": "s"
   }
@@ -53,7 +55,7 @@ import com.mygame.data.ItemRecord;
 GameData data = new GameData();
 data.readAll("./data");
 
-ItemRecord sword = data.item.find(1);
+ItemRecord sword = data.item.findByIndex(1);
 if (sword != null) {
     // 참조는 로드 후 실제 레코드로 연결됩니다.
     System.out.println(sword.name + " / " + sword.categoryId.name);
@@ -67,6 +69,31 @@ Java에는 기본 인자가 없으므로 확장자는 오버로드입니다.
 ```java
 data.readAll("./data", ".bytes");
 ```
+
+## 데이터만 갱신하기 (`WriteUpdater`)
+
+recipe에 `"WriteUpdater": true`를 적으면 `sheetman/SheetManUpdater.java`가 함께 나옵니다. CDN이나 버킷에 올려둔 데이터를 받아 로컬 사본을 최신으로 유지하는 코드이고, **배포를 다시 하지 않고 데이터만 패치**하기 위한 것입니다. 기본값이 `false`인 이유는 네트워크를 쓰는 유일한 생성물이기 때문입니다.
+
+**의존성은 여전히 없습니다.** 전송은 `java.net.http`, 해시는 `MessageDigest`, 매니페스트 JSON은 그 파일 안의 작은 파서입니다 — JDK에 JSON이 없기 때문입니다.
+
+```java
+import sheetman.SheetManUpdater;
+
+var options = new SheetManUpdater.Options();
+options.log = System.out::println;
+
+var result = SheetManUpdater.update("https://cdn.example.com/data",
+                                    Path.of("./data"), options);
+
+if (result.succeeded) {
+    data.readAll(result.localPath.toString());
+} else {
+    // 이전 데이터가 그대로 있습니다. 그것으로 계속해도 됩니다.
+    System.err.println(result.error);
+}
+```
+
+예외를 던지지 않습니다. 네트워크·디스크·손상된 파일은 모두 호출한 쪽이 다뤄야 할 상황이지 결함이 아니기 때문입니다. 실패하면 결과의 `error`에 이유가 들어있고, **디스크의 이전 데이터는 손대지 않은 상태**입니다. 받은 파일은 전부 매니페스트의 MD5와 대조하고, `.staging`을 거쳐 마지막에 한 번에 옮깁니다.
 
 ## 주의사항
 

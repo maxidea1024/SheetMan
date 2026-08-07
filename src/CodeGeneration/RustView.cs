@@ -94,10 +94,42 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
 
-        /// <summary>Name of the primary index member.</summary>
-        public string IndexField { get; set; }
+        /// <summary>
+        /// The indexed fields: the sheet's first column plus every one marked with `*`.
+        /// </summary>
+        public IReadOnlyList<RustIndexView> Indexes { get; set; }
 
         public IReadOnlyList<RustFieldView> Fields { get; set; }
+    }
+
+    /// <summary>
+    /// One indexed field, and the lookups generated for it.
+    /// </summary>
+    internal sealed class RustIndexView
+    {
+        /// <summary>The record member holding the key.</summary>
+        public string Member { get; set; }
+
+        /// <summary>What the lookup names end in - `index` gives `find_by_index`.</summary>
+        public string Suffix { get; set; }
+
+        /// <summary>The map's key type.</summary>
+        public string KeyType { get; set; }
+
+        /// <summary>
+        /// The type the lookups take. `&amp;str` where the map is keyed by `String`, so a
+        /// caller with a literal does not have to build one to ask a question.
+        /// </summary>
+        public string KeyParam { get; set; }
+
+        /// <summary>The key as the map wants it: `key` when already a borrow, `&amp;key` otherwise.</summary>
+        public string KeyBorrow { get; set; }
+
+        /// <summary>The table member holding the map from key to row position.</summary>
+        public string MapName { get; set; }
+
+        /// <summary>The field as the sheet spells it, for the error message.</summary>
+        public string FieldName { get; set; }
     }
 
     internal sealed class RustFieldView

@@ -36,15 +36,68 @@ class TemplateRecord:
 class TemplateTable:
     """Every row of Template."""
 
-    __slots__ = ("records", "by_index")
+    __slots__ = ("records", "by_index", "by_operator")
 
     def __init__(self):
         self.records = []
         self.by_index = {}
+        self.by_operator = {}
 
-    def find(self, index):
-        """The row with the given primary index, or None when there is none."""
-        return self.by_index.get(index)
+    def find_by_index(self, key):
+        """The row with this Index, or None when the table has none.
+
+        The lookup to reach for when a missing row is an ordinary answer - an optional
+        reference, a key that came from user input.
+        """
+        return self.by_index.get(key)
+
+    def get_by_index_or_throw(self, key):
+        """The row with this Index, or a raised error naming what was missing.
+
+        For a key that has to be there - one from another table, or a constant. The name
+        says it raises, because a caller reading `get_by_index(key).name` at a
+        glance cannot otherwise tell whether the next line is a check or a try.
+        """
+        record = self.by_index.get(key)
+
+        if record is None:
+            raise sheetman.RecordNotFoundError(
+                "there is no record in table `Template` that corresponds to "
+                "field `Index` value %r" % (key,))
+
+        return record
+
+    def contains_index(self, key):
+        """Whether the table holds a row with this Index."""
+        return key in self.by_index
+
+    def find_by_operator(self, key):
+        """The row with this Operator, or None when the table has none.
+
+        The lookup to reach for when a missing row is an ordinary answer - an optional
+        reference, a key that came from user input.
+        """
+        return self.by_operator.get(key)
+
+    def get_by_operator_or_throw(self, key):
+        """The row with this Operator, or a raised error naming what was missing.
+
+        For a key that has to be there - one from another table, or a constant. The name
+        says it raises, because a caller reading `get_by_operator(key).name` at a
+        glance cannot otherwise tell whether the next line is a check or a try.
+        """
+        record = self.by_operator.get(key)
+
+        if record is None:
+            raise sheetman.RecordNotFoundError(
+                "there is no record in table `Template` that corresponds to "
+                "field `Operator` value %r" % (key,))
+
+        return record
+
+    def contains_operator(self, key):
+        """Whether the table holds a row with this Operator."""
+        return key in self.by_operator
 
     def read(self, filename):
         """Loads the table from a .table file written by SheetMan.
@@ -100,7 +153,9 @@ class TemplateTable:
             sheetman.check_block_end(reader, column, block_end)
 
         by_index = {record.index: record for record in records}
+        by_operator = {record.operator: record for record in records}
 
         # Published, now that every column read.
         self.records = records
         self.by_index = by_index
+        self.by_operator = by_operator

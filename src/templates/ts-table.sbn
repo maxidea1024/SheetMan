@@ -76,7 +76,11 @@ export class {{ name }}Record {
    the accessor writes the reference members as it resolves them. ##~}}
 
 {{~ for field in fields ~}}
-{{~ if field.kind == 'array_ref' || field.kind == 'var_array' || field.kind == 'array' ~}}
+{{~ if field.kind == 'array_ref' ~}}
+  public {{ field.field_name }}: {{ field.field_type }}[] = []
+  public {{ field.field_name }}_{{ field.ref_table }}_index: number[] = []
+  public {{ field.field_name }}_F: boolean[] = []
+{{~ else if field.kind == 'var_array' || field.kind == 'array' ~}}
   public {{ field.field_name }}: {{ field.field_type }}[] = []
 {{~ else if field.kind == 'scalar_ref' ~}}
   public {{ field.field_name }}: {{ field.field_type }}

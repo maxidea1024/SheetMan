@@ -17,7 +17,7 @@ class TemplateRecord {
   int int_ = 0;
   /// delete: keyword in C++
   bool delete = false;
-  /// operator: keyword in C++
+  /// operator: keyword in C++, and a secondary index
   String operator = '';
   /// namespace: keyword in C++ and C#
   String namespace = '';
@@ -38,9 +38,59 @@ class TemplateTable {
   List<TemplateRecord> _records = [];
 
   Map<int, TemplateRecord> _byIndex = {};
+  Map<String, TemplateRecord> _byOperator = {};
 
-  /// The row with the given primary index, or null when there is none.
-  TemplateRecord? find(int index) => _byIndex[index];
+  /// The row with this Index, or null when the table has none.
+  ///
+  /// The lookup to reach for when a missing row is an ordinary answer - an optional
+  /// reference, a key that came from user input.
+  TemplateRecord? findByIndex(int key) => _byIndex[key];
+
+  /// The row with this Index, or a thrown exception naming what was missing.
+  ///
+  /// For a key that has to be there - one from another table, or a constant. The name says
+  /// it throws, because a caller reading getByIndex(key).name at a glance
+  /// cannot otherwise tell whether the next line is a null check or a catch.
+  TemplateRecord getByIndexOrThrow(int key) {
+    final record = _byIndex[key];
+
+    if (record == null) {
+      throw RecordNotFoundException(
+          'there is no record in table `Template` that corresponds to '
+          'field `Index` value $key');
+    }
+
+    return record;
+  }
+
+  /// Whether the table holds a row with this Index.
+  bool containsIndex(int key) => _byIndex.containsKey(key);
+
+  /// The row with this Operator, or null when the table has none.
+  ///
+  /// The lookup to reach for when a missing row is an ordinary answer - an optional
+  /// reference, a key that came from user input.
+  TemplateRecord? findByOperator(String key) => _byOperator[key];
+
+  /// The row with this Operator, or a thrown exception naming what was missing.
+  ///
+  /// For a key that has to be there - one from another table, or a constant. The name says
+  /// it throws, because a caller reading getByOperator(key).name at a glance
+  /// cannot otherwise tell whether the next line is a null check or a catch.
+  TemplateRecord getByOperatorOrThrow(String key) {
+    final record = _byOperator[key];
+
+    if (record == null) {
+      throw RecordNotFoundException(
+          'there is no record in table `Template` that corresponds to '
+          'field `Operator` value $key');
+    }
+
+    return record;
+  }
+
+  /// Whether the table holds a row with this Operator.
+  bool containsOperator(String key) => _byOperator.containsKey(key);
 
   /// Loads the table from a .table file written by SheetMan.
   /// Column by column, matched by tag rather than position: a column this build does
@@ -54,6 +104,7 @@ class TemplateTable {
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <TemplateRecord>[];
     final loadedByIndex = <int, TemplateRecord>{};
+    final loadedByOperator = <String, TemplateRecord>{};
 
     for (var i = 0; i < count; i++) {
       loaded.add(TemplateRecord());
@@ -122,10 +173,12 @@ class TemplateTable {
 
     for (final record in loaded) {
       loadedByIndex[record.index] = record;
+      loadedByOperator[record.operator] = record;
     }
 
     // Published, now that every column read.
     _records = loaded;
     _byIndex = loadedByIndex;
+    _byOperator = loadedByOperator;
   }
 }

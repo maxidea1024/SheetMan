@@ -62,14 +62,14 @@ final class {{ accessor.name }}
 {{~ for field in reference.fields ~}}
 {{~ if field.is_array ~}}
             foreach ($record->{{ field.name }}Index as $position => $index) {
-                $target = ${{ field.ref_table }}->find($index);
+                $target = ${{ field.ref_table }}->{{ field.ref_lookup }}($index);
 
                 if ($target !== null) {
                     $record->{{ field.name }}[$position] = {{ field.value }};
                 }
             }
 {{~ else ~}}
-            $target = ${{ field.ref_table }}->find($record->{{ field.name }}Index);
+            $target = ${{ field.ref_table }}->{{ field.ref_lookup }}($record->{{ field.name }}Index);
 
             if ($target !== null) {
                 $record->{{ field.name }} = {{ field.value }};

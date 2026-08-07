@@ -11,6 +11,7 @@ import { ArrayTypesTable } from './generated/tables/array-types'
 import { ItemTable } from './generated/tables/item'
 import { LocalizationTable } from './generated/tables/localization'
 import { TestFieldTypesTable } from './generated/tables/test-field-types'
+import { Tables } from './generated/tables'
 
 /** A single disagreement between the two read paths. */
 interface Mismatch {
@@ -121,7 +122,10 @@ function main(): number {
         }
     }
 
-    // --- references, stored as the target's index -----------------------------
+    // --- references, read one table at a time ---------------------------------
+    //
+    // Unlinked on purpose: a table read on its own has the key and not the row, which is
+    // what the accessor below is for.
     {
         const fromBinary = new ItemTable()
         fromBinary.readBinarySync(`${binaryDir}/Item.table`)
@@ -129,6 +133,38 @@ function main(): number {
         console.log(JSON.stringify({
             itemNames: fromBinary.records.map(r => r.name),
             categoryIndices: fromBinary.records.map(r => r._categoryId_ItemCategory_index),
+        }))
+    }
+
+    // --- references, linked by the accessor -----------------------------------
+    //
+    // Through `Tables` rather than one table at a time, because linking needs every table
+    // and only the accessor has them. Both formats go through it, so this asks the same
+    // question of references that the loops above ask of values: do the two paths agree.
+    //
+    // They did not. `solveCrossReferences` was generated empty, so nothing ever called the
+    // `setReference_*_INTERNAL` methods: the binary path left `categoryId` undefined and
+    // the JSON path assigned the raw key into it - a number in a member typed as a row.
+    {
+        const fromJson = new Tables()
+        fromJson.readAllSync(jsonDir)
+
+        const fromBinary = new Tables()
+        fromBinary.readAllBinarySync(binaryDir)
+
+        for (let i = 0; i < fromJson.item.records.length; i++) {
+            const j = fromJson.item.records[i]
+            const b = fromBinary.item.records[i]
+
+            // The row a reference resolves to, named by a field only the row has.
+            compare('Item', i, 'categoryId.name', j.categoryId?.name, b.categoryId?.name)
+            compare('Item', i, 'categoryId(key)',
+                j._categoryId_ItemCategory_index, b._categoryId_ItemCategory_index)
+            compare('Item', i, 'categoryId(linked)', j._categoryId_F, b._categoryId_F)
+        }
+
+        console.log(JSON.stringify({
+            linkedCategoryNames: fromBinary.item.records.map(r => r.categoryId?.name ?? null),
         }))
     }
 

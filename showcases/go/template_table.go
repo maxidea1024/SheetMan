@@ -24,7 +24,7 @@ type TemplateRecord struct {
 	Int int32
 	// delete: keyword in C++
 	Delete bool
-	// operator: keyword in C++
+	// operator: keyword in C++, and a secondary index
 	Operator string
 	// namespace: keyword in C++ and C#
 	Namespace string
@@ -34,25 +34,84 @@ type TemplateRecord struct {
 	Function string
 }
 
-// read fills the record from the reader, in the exact field order the exporter wrote.
-
 // TemplateTable holds every row of Template.
 type TemplateTable struct {
 	records []TemplateRecord
 	byIndex map[int32]int
+	byOperator map[string]int
 }
 
 // Records returns every row, in the order the sheet declared them.
 func (t *TemplateTable) Records() []TemplateRecord { return t.records }
 
-// Find returns the row with the given primary index, or nil when there is none.
-func (t *TemplateTable) Find(index int32) *TemplateRecord {
-	position, found := t.byIndex[index]
+// FindByIndex returns the row with this Index, or nil when the table has none.
+//
+// The lookup to reach for when a missing row is an ordinary answer - an optional
+// reference, a key that came from user input.
+func (t *TemplateTable) FindByIndex(key int32) *TemplateRecord {
+	position, found := t.byIndex[key]
 	if !found {
 		return nil
 	}
 
 	return &t.records[position]
+}
+
+// GetByIndexOrError returns the row with this Index, or an error naming
+// what was missing.
+//
+// For a key that has to be there - one from another table, or a constant. Go has no
+// exception to throw, so where the other languages name a throw this one names the error
+// it returns; either way the call site can tell without going to the definition.
+func (t *TemplateTable) GetByIndexOrError(key int32) (*TemplateRecord, error) {
+	position, found := t.byIndex[key]
+	if !found {
+		return nil, fmt.Errorf(
+			"there is no record in table `Template` that corresponds to field `Index` value %v", key)
+	}
+
+	return &t.records[position], nil
+}
+
+// ContainsIndex reports whether the table holds a row with this Index.
+func (t *TemplateTable) ContainsIndex(key int32) bool {
+	_, found := t.byIndex[key]
+	return found
+}
+
+// FindByOperator returns the row with this Operator, or nil when the table has none.
+//
+// The lookup to reach for when a missing row is an ordinary answer - an optional
+// reference, a key that came from user input.
+func (t *TemplateTable) FindByOperator(key string) *TemplateRecord {
+	position, found := t.byOperator[key]
+	if !found {
+		return nil
+	}
+
+	return &t.records[position]
+}
+
+// GetByOperatorOrError returns the row with this Operator, or an error naming
+// what was missing.
+//
+// For a key that has to be there - one from another table, or a constant. Go has no
+// exception to throw, so where the other languages name a throw this one names the error
+// it returns; either way the call site can tell without going to the definition.
+func (t *TemplateTable) GetByOperatorOrError(key string) (*TemplateRecord, error) {
+	position, found := t.byOperator[key]
+	if !found {
+		return nil, fmt.Errorf(
+			"there is no record in table `Template` that corresponds to field `Operator` value %v", key)
+	}
+
+	return &t.records[position], nil
+}
+
+// ContainsOperator reports whether the table holds a row with this Operator.
+func (t *TemplateTable) ContainsOperator(key string) bool {
+	_, found := t.byOperator[key]
+	return found
 }
 
 // Read loads the table from a .table file written by SheetMan.
@@ -151,9 +210,15 @@ func (t *TemplateTable) Read(filename string) error {
 		byIndex[records[i].Index] = i
 	}
 
-	// Published, now that every column read and the index is built.
+	byOperator := make(map[string]int, len(records))
+	for i := range records {
+		byOperator[records[i].Operator] = i
+	}
+
+	// Published, now that every column read and the indexes are built.
 	t.records = records
 	t.byIndex = byIndex
+	t.byOperator = byOperator
 
 	return nil
 }

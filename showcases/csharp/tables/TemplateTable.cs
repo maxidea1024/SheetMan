@@ -52,7 +52,7 @@ namespace X
             public bool Delete => _delete;
 
             /// <summary>
-            /// operator: keyword in C++
+            /// operator: keyword in C++, and a secondary index
             /// </summary>
             public string Operator => _operator;
 
@@ -166,6 +166,42 @@ namespace X
         /// <summary>Whether the table holds a row with this `Index`.</summary>
         public bool ContainsIndex(int key) => _recordsByIndex.ContainsKey(key);
         #endregion // Indexing by `Index`
+
+        #region Indexing by 'Operator'
+        public Dictionary<string, Record> RecordsByOperator => _recordsByOperator;
+        private Dictionary<string, Record> _recordsByOperator = new Dictionary<string, Record>();
+
+        /// <summary>
+        /// The row with this `Operator`, or null when the table has none.
+        /// </summary>
+        /// <remarks>
+        /// The lookup to reach for when a missing row is an ordinary answer - an optional
+        /// reference, a key that came from user input. Every language SheetMan generates has
+        /// this one under the same name.
+        /// </remarks>
+        public Record FindByOperator(string key)
+            => _recordsByOperator.TryGetValue(key, out Record record) ? record : null;
+
+        /// <summary>
+        /// The row with this `Operator`, or a thrown exception naming what was
+        /// missing.
+        /// </summary>
+        /// <remarks>
+        /// For a key that has to be there - one from another table, or a constant. The name
+        /// says it throws, because a caller reading `GetByOperator(id).Name` at
+        /// a glance cannot otherwise tell whether the next line is a null check or a catch.
+        /// </remarks>
+        public Record GetByOperatorOrThrow(string key)
+        {
+            if (!_recordsByOperator.TryGetValue(key, out Record record))
+                throw new SheetManException($"There is no record in table `Template` that corresponds to field `Operator` value {key}");
+
+            return record;
+        }
+
+        /// <summary>Whether the table holds a row with this `Operator`.</summary>
+        public bool ContainsOperator(string key) => _recordsByOperator.ContainsKey(key);
+        #endregion // Indexing by `Operator`
 
         /// <summary>
         /// Read a table from specified file.
@@ -297,6 +333,9 @@ namespace X
             var recordsByIndex = new Dictionary<int, Record>(count);
             foreach (var record in records)
                 recordsByIndex.Add(record.Index, record);
+            var recordsByOperator = new Dictionary<string, Record>(count);
+            foreach (var record in records)
+                recordsByOperator.Add(record.Operator, record);
 
             // Published. Everything above succeeded, and the barrier is what keeps the writes
             // that built these from being seen after the references to them - a reader on
@@ -305,6 +344,7 @@ namespace X
 
             _records = records;
             _recordsByIndex = recordsByIndex;
+            _recordsByOperator = recordsByOperator;
 
             return Task.CompletedTask;
         }

@@ -41,7 +41,7 @@ struct X_API FTemplateRow
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Template")
     bool bDelete = false;
 
-    /** operator: keyword in C++ */
+    /** operator: keyword in C++, and a secondary index */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Template")
     FString Operator;
 
@@ -66,8 +66,27 @@ class X_API FTemplateTable
 public:
     const TArray<FTemplateRow>& Records() const { return RecordsStorage; }
 
-    /** The row with the given primary index, or nullptr when there is none. */
-    const FTemplateRow* Find(int32 Index) const;
+    /**
+     * The row with this Index, or nullptr when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    const FTemplateRow* FindByIndex(int32 Key) const;
+
+    /** Whether the table holds a row with this Index. */
+    bool ContainsIndex(int32 Key) const;
+
+    /**
+     * The row with this Operator, or nullptr when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    const FTemplateRow* FindByOperator(const FString& Key) const;
+
+    /** Whether the table holds a row with this Operator. */
+    bool ContainsOperator(const FString& Key) const;
 
     /** Loads the table from a .table file written by SheetMan. */
     bool Read(const FString& Filename);
@@ -75,6 +94,7 @@ public:
 private:
     TArray<FTemplateRow> RecordsStorage;
     TMap<int32, int32> ByIndex;
+    TMap<FString, int32> ByOperator;
 };
 
 
@@ -124,7 +144,7 @@ class X_API UALibrary : public UBlueprintFunctionLibrary
 public:
 
     /**
-     * The Template row with the given primary index.
+     * The Template row with the given Index.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
@@ -132,7 +152,7 @@ public:
      */
     UFUNCTION(BlueprintPure, Category = "SheetMan|Template",
               meta = (DisplayName = "Get Template Row"))
-    static FTemplateRow GetTemplateRow(int32 Index, bool& bFound);
+    static FTemplateRow GetTemplateRow(int32 Key, bool& bFound);
 
     /** How many Template rows were loaded. */
     UFUNCTION(BlueprintPure, Category = "SheetMan|Template",

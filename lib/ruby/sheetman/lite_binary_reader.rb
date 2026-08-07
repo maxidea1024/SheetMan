@@ -49,6 +49,15 @@ module Sheetman
   # A table file is truncated, malformed, or not a table file.
   class LiteBinaryError < StandardError; end
 
+  # A lookup for a key no row carries.
+  #
+  # Raised by the generated `get_by_*_or_throw` lookups, which is where a caller has
+  # said the key has to be there. `find_by_*` answers the same question with nil.
+  #
+  # Its own class rather than LiteBinaryError: nothing is wrong with the file, and a
+  # caller rescuing one of these is not rescuing the other.
+  class RecordNotFoundError < StandardError; end
+
   # A 128 bit identifier, stored in .NET Guid byte order.
   #
   # That order is not plain big-endian: the first three components are little endian and

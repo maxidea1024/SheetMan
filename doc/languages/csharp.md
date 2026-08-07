@@ -8,13 +8,13 @@
 
 ```
 <Path>/
-  <AccessorName>.cs        접근자 — 테이블 프로퍼티, ReadAllAsync, 참조 연결
-  SheetManBinaryReader.cs  바이너리 리더 (함께 생성됩니다)
-  SheetManHelpers.cs       예외 타입과 보조 함수
-  SheetManUpdater.cs       데이터 갱신 (WriteUpdater를 켰을 때만)
-  tables/<Table>Table.cs   테이블당 하나
-  enums/<Enum>.cs          enum당 하나
-  constants/<Set>.cs       상수 세트당 하나
+  <AccessorName>.cs             접근자 — 테이블 프로퍼티, ReadAllAsync, 참조 연결
+  sheetman/SheetManBinaryReader.cs  바이너리 리더 (함께 생성됩니다)
+  sheetman/SheetManHelpers.cs       예외 타입과 보조 함수
+  sheetman/SheetManUpdater.cs       데이터 갱신 (WriteUpdater를 켰을 때만)
+  tables/<Table>Table.cs        테이블당 하나
+  enums/<Enum>.cs               enum당 하나
+  constants/<Set>.cs            상수 세트당 하나
 ```
 
 ## 필요한 것
@@ -59,7 +59,7 @@ using MyGame.Data;
 
 await GameData.ReadAllAsync(Application.streamingAssetsPath);
 
-var sword = GameData.Item.Find(1);
+var sword = GameData.Item.FindByIndex(1);
 if (sword != null)
 {
     // 참조는 로드 후 실제 레코드로 연결되어 있습니다.

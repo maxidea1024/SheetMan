@@ -65,7 +65,7 @@ if (!FGameData::ReadAll(FPaths::ProjectContentDir() / TEXT("Data")))
     return;
 }
 
-const FItemRow* Sword = FGameData::Item().Find(1);
+const FItemRow* Sword = FGameData::Item().FindByIndex(1);
 if (Sword != nullptr)
 {
     UE_LOG(LogTemp, Log, TEXT("%s"), *Sword->Name);
@@ -136,9 +136,11 @@ FSheetManUpdater::Update(
 
 ### 예외를 던지지 않습니다
 
-언리얼은 `Build.cs`가 따로 요청하지 않으면 모듈을 **예외 비활성**으로 빌드합니다. 그래서 리더는 손상된 파일을 예외가 아니라 `false` 반환으로 알립니다. 실패는 누적되는 플래그라, 레코드의 필드 스무 개를 연달아 읽고 마지막에 한 번만 확인합니다.
+언리얼은 `Build.cs`가 따로 요청하지 않으면 모듈을 **예외 비활성**으로 빌드합니다. 그래서 리더는 손상된 파일을 예외가 아니라 `false` 반환으로 알립니다. 실패는 누적되는 플래그라, 레코드의 필드 20개를 연달아 읽고 마지막에 한 번만 확인합니다.
 
 `bEnableExceptions = true`를 넣지 않은 것도 의도입니다 — 넣으면 이 모듈에 의존하는 모든 모듈이 그 비용을 냅니다.
+
+같은 이유로 **조회 함수가 둘입니다** — 인덱싱된 필드마다 `FindBy<Field>`와 `Contains<Field>`만 나오고, 다른 11개 언어가 내는 `GetBy<Field>OrThrow`는 없습니다. 없으면 안 되는 키는 `nullptr` 검사로 확인하세요. 자세한 것은 [조회 함수](readme.md#레코드-조회--같은-세-함수-13개-언어에서-같은-이름)에 있습니다.
 
 ### 엔진 타입만 씁니다
 

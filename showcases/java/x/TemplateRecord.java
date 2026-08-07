@@ -20,7 +20,7 @@ public final class TemplateRecord {
     public int int_;
     /** delete: keyword in C++ */
     public boolean delete;
-    /** operator: keyword in C++ */
+    /** operator: keyword in C++, and a secondary index */
     public String operator = "";
     /** namespace: keyword in C++ and C# */
     public String namespace = "";

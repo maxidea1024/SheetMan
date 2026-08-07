@@ -13,11 +13,17 @@ static bool {{ table.function_prefix }}Parse({{ table.table_name }}* table, sm_r
     table->records = ({{ table.record_name }}*)sm_arena_alloc(
       &table->arena, (size_t)table->count * sizeof *table->records);
 
-    table->by_index = (sm_index_entry*)sm_arena_alloc(
-      &table->arena, (size_t)table->count * sizeof *table->by_index);
-
-    if (table->records == NULL || table->by_index == NULL)
+    if (table->records == NULL)
       return sm_fail_with(reader, "out of memory allocating the rows");
+
+{{~ for index in table.indexes ~}}
+    table->{{ index.array_name }} = ({{ index.entry_type }}*)sm_arena_alloc(
+      &table->arena, (size_t)table->count * sizeof *table->{{ index.array_name }});
+
+    if (table->{{ index.array_name }} == NULL)
+      return sm_fail_with(reader, "out of memory allocating the {{ index.field_name }} index");
+
+{{~ end ~}}
   }
 
 {{~ if table.has_string_fields }}
@@ -154,14 +160,18 @@ static bool {{ table.function_prefix }}Parse({{ table.table_name }}* table, sm_r
   if (sm_failed(reader))
     return false;
 
-  /* The key can only be gathered once every column has been read: the column that
-   * carries it arrives wherever the file happens to put it. */
+  /* The keys can only be gathered once every column has been read: the column that
+   * carries one arrives wherever the file happens to put it. */
   for (row = 0; row < table->count; ++row) {
-    table->by_index[row].key = table->records[row].{{ table.index_field }};
-    table->by_index[row].position = row;
+{{~ for index in table.indexes ~}}
+    table->{{ index.array_name }}[row].key = table->records[row].{{ index.member }};
+    table->{{ index.array_name }}[row].position = row;
+{{~ end ~}}
   }
 
-  sm_index_sort(table->by_index, table->count);
+{{~ for index in table.indexes ~}}
+  {{ index.sort_call }}(table->{{ index.array_name }}, table->count);
+{{~ end ~}}
 
   return true;
 }
@@ -198,7 +208,7 @@ bool {{ table.function_prefix }}Load({{ table.table_name }}* table, const char* 
     /* The previous load goes now, and not before: its arena holds the strings and
      * arrays the caller was reading up to this line. */
     {{ table.function_prefix }}Free(table);
-     *table = loaded;
+    *table = loaded;
   } else {
     sm_copy_error(error, error_size, filename, sm_error(&reader));
 
@@ -217,10 +227,16 @@ void {{ table.function_prefix }}Free({{ table.table_name }}* table) {
 
   memset(table, 0, sizeof *table);
 }
-
-const {{ table.record_name }}* {{ table.function_prefix }}Find(
-  const {{ table.table_name }}* table, int32_t index) {
-  int32_t position = sm_index_find(table->by_index, table->count, index);
+{{~ for index in table.indexes }}
+const {{ table.record_name }}* {{ table.function_prefix }}FindBy{{ index.suffix }}(
+  const {{ table.table_name }}* table, {{ index.key_type }} key) {
+  int32_t position = {{ index.find_call }}(table->{{ index.array_name }}, table->count, key);
 
   return position < 0 ? NULL : &table->records[position];
 }
+
+bool {{ table.function_prefix }}Contains{{ index.suffix }}(
+  const {{ table.table_name }}* table, {{ index.key_type }} key) {
+  return {{ index.find_call }}(table->{{ index.array_name }}, table->count, key) >= 0;
+}
+{{~ end ~}}

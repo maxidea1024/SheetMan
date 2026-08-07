@@ -11,10 +11,26 @@
 #include "Misc/Paths.h"
 
 
-const FTemplateRow* FTemplateTable::Find(int32 Index) const
+const FTemplateRow* FTemplateTable::FindByIndex(int32 Key) const
 {
-    const int32* Position = ByIndex.Find(Index);
+    const int32* Position = ByIndex.Find(Key);
     return Position != nullptr ? &RecordsStorage[*Position] : nullptr;
+}
+
+bool FTemplateTable::ContainsIndex(int32 Key) const
+{
+    return ByIndex.Contains(Key);
+}
+
+const FTemplateRow* FTemplateTable::FindByOperator(const FString& Key) const
+{
+    const int32* Position = ByOperator.Find(Key);
+    return Position != nullptr ? &RecordsStorage[*Position] : nullptr;
+}
+
+bool FTemplateTable::ContainsOperator(const FString& Key) const
+{
+    return ByOperator.Contains(Key);
 }
 
 bool FTemplateTable::Read(const FString& Filename)
@@ -177,17 +193,22 @@ bool FTemplateTable::Read(const FString& Filename)
     }
 
     TMap<int32, int32> LoadedByIndex;
-
     LoadedByIndex.Empty(Loaded.Num());
+
+    TMap<FString, int32> LoadedByOperator;
+    LoadedByOperator.Empty(Loaded.Num());
+
     for (int32 Position = 0; Position < Loaded.Num(); ++Position)
     {
         LoadedByIndex.Add(Loaded[Position].Index, Position);
+        LoadedByOperator.Add(Loaded[Position].Operator, Position);
     }
 
     // Published together: rows holding this load and an index built from the last one would
-    // answer Find with a row that has moved.
+    // answer a lookup with a row that has moved.
     RecordsStorage = MoveTemp(Loaded);
     ByIndex = MoveTemp(LoadedByIndex);
+    ByOperator = MoveTemp(LoadedByOperator);
 
     return true;
 }
@@ -197,14 +218,14 @@ FTemplateTable A::TemplateStorage;
 
 
 
-FTemplateRow UALibrary::GetTemplateRow(int32 Index, bool& bFound)
+FTemplateRow UALibrary::GetTemplateRow(int32 Key, bool& bFound)
 {
-    const FTemplateRow* Found = A::Template().Find(Index);
+    const FTemplateRow* Found = A::Template().FindByIndex(Key);
 
     bFound = Found != nullptr;
 
     // A copy, because Blueprint takes a struct by value and the row belongs to the table.
-    // A default one when the index is not there, which is why bFound is not decoration.
+    // A default one when the key is not there, which is why bFound is not decoration.
     return Found != nullptr ? *Found : FTemplateRow();
 }
 

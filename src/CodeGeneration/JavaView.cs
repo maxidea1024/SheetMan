@@ -101,10 +101,39 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
 
-        /// <summary>Name of the primary index field.</summary>
-        public string IndexField { get; set; }
+        /// <summary>
+        /// The indexed fields: the sheet's first column plus every one marked with `*`.
+        /// </summary>
+        public IReadOnlyList<JavaIndexView> Indexes { get; set; }
 
         public IReadOnlyList<JavaFieldView> Fields { get; set; }
+    }
+
+    /// <summary>
+    /// One indexed field, and the lookups generated for it.
+    /// </summary>
+    internal sealed class JavaIndexView
+    {
+        /// <summary>The record field holding the key.</summary>
+        public string Member { get; set; }
+
+        /// <summary>What the lookup names end in - `Index` gives `findByIndex`.</summary>
+        public string Suffix { get; set; }
+
+        /// <summary>The map's key type, boxed where the field is a primitive.</summary>
+        public string KeyType { get; set; }
+
+        /// <summary>
+        /// The type the lookups take, which is the field's own - a caller passing an `int`
+        /// should not have to think about the box the map needs.
+        /// </summary>
+        public string KeyParam { get; set; }
+
+        /// <summary>The field holding the map from key to row.</summary>
+        public string MapName { get; set; }
+
+        /// <summary>The field as the sheet spells it, for the exception message.</summary>
+        public string FieldName { get; set; }
     }
 
     internal sealed class JavaFieldView
@@ -169,6 +198,9 @@ namespace SheetMan.CodeGeneration
     {
         public string Name { get; set; }
         public string RefTable { get; set; }
+
+        /// <summary>The referenced table's primary lookup, which is what a key resolves through.</summary>
+        public string RefLookup { get; set; }
 
         /// <summary>Record type of the table being pointed at, which the lookup declares.</summary>
         public string RefRecordName { get; set; }

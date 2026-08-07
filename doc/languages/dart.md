@@ -13,6 +13,7 @@
   enums/<enum>.dart                enum당 하나 (part)
   constants/<set>.dart             상수 세트당 하나 (part)
   sheetman/lite_binary_reader.dart 바이너리 리더 (함께 생성됩니다)
+  sheetman/updater.dart            데이터 갱신 (WriteUpdater를 켰을 때만)
 ```
 
 조각들은 `library`가 아니라 **`part`**입니다. part는 라이브러리의 import를 공유하므로 파일마다 import를 따로 계산할 필요가 없고, 소비자는 파일 하나만 import하면 모델 전체를 얻습니다.
@@ -33,6 +34,7 @@
     "Path": "lib/gamedata",
     "AccessorName": "game_data",   // 라이브러리 파일 이름
     "BinaryTableFileExtension": ".table",
+    "WriteUpdater": false,           // CDN에서 데이터를 갱신할 거라면 true
     "Sweep": true,
     "TargetSide": "c"
   }
@@ -47,7 +49,7 @@ import 'lib/gamedata/game_data.dart';
 final tables = Tables();
 tables.readAll('./data');
 
-final sword = tables.item.find(1);
+final sword = tables.item.findByIndex(1);
 if (sword != null) {
   // 참조는 로드 후 실제 레코드로 연결됩니다.
   print('${sword.name} / ${sword.categoryId?.name}');
@@ -61,6 +63,29 @@ for (final row in tables.item.records) { /* ... */ }
 ```dart
 tables.readAll('./data', '.bytes');
 ```
+
+## 데이터만 갱신하기 (`WriteUpdater`)
+
+recipe에 `"WriteUpdater": true`를 적으면 `sheetman/updater.dart`가 함께 나옵니다. CDN이나 버킷에 올려둔 데이터를 받아 로컬 사본을 최신으로 유지하는 코드이고, **배포를 다시 하지 않고 데이터만 패치**하기 위한 것입니다. 기본값이 `false`인 이유는 네트워크를 쓰는 유일한 생성물이기 때문입니다.
+
+**패키지는 여전히 필요 없습니다.** 전송은 `dart:io`, 해시 검증은 그 파일 안에 직접 쓴 MD5입니다 — Dart SDK에 MD5가 없고, 생성물이 패키지를 요구하지 않는다는 약속이 `package:crypto` 의존보다 지킬 가치가 있기 때문입니다.
+
+```dart
+import 'gamedata/sheetman/updater.dart' as sheetman;
+
+final result = await sheetman.update(
+    'https://cdn.example.com/data', './data',
+    sheetman.UpdateOptions(log: print));
+
+if (result.succeeded) {
+  tables.readAll(result.localPath);
+} else {
+  // 이전 데이터가 그대로 있습니다. 그것으로 계속해도 됩니다.
+  print(result.error);
+}
+```
+
+예외를 던지지 않습니다. 네트워크·디스크·손상된 파일은 모두 호출한 쪽이 다뤄야 할 상황이지 결함이 아니기 때문입니다. 실패하면 결과의 `error`에 이유가 들어있고, **디스크의 이전 데이터는 손대지 않은 상태**입니다. 받은 파일은 전부 매니페스트의 MD5와 대조하고, `.staging`을 거쳐 마지막에 한 번에 옮깁니다.
 
 ## 주의사항
 

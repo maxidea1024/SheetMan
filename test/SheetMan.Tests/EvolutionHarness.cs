@@ -66,13 +66,28 @@ namespace SheetMan.Tests
 
             using var process = new Process { StartInfo = psi };
 
+            // Two streams, two threads, one StringBuilder. Locked because it is not safe
+            // for that, and the failure is not a garbled line - it is an exception from
+            // inside AppendLine, on a thread pool worker where nothing catches it.
+            var writing = new object();
+
             process.OutputDataReceived += (_, e) =>
             {
                 if (e.Data == null) return;
-                stdout.AppendLine(e.Data);
-                combined.AppendLine(e.Data);
+
+                lock (writing)
+                {
+                    stdout.AppendLine(e.Data);
+                    combined.AppendLine(e.Data);
+                }
             };
-            process.ErrorDataReceived += (_, e) => { if (e.Data != null) combined.AppendLine(e.Data); };
+            process.ErrorDataReceived += (_, e) =>
+            {
+                if (e.Data == null) return;
+
+                lock (writing)
+                    combined.AppendLine(e.Data);
+            };
 
             process.Start();
             process.BeginOutputReadLine();

@@ -28,12 +28,19 @@
 #include "Misc/Paths.h"
 {{~ for table in tables }}
 
-const {{ table.record_name }}* {{ table.table_name }}::Find(int32 Index) const
+{{~ for index in table.indexes ~}}
+const {{ table.record_name }}* {{ table.table_name }}::FindBy{{ index.suffix }}({{ index.key_param }} Key) const
 {
-    const int32* Position = ByIndex.Find(Index);
+    const int32* Position = {{ index.map_name }}.Find(Key);
     return Position != nullptr ? &RecordsStorage[*Position] : nullptr;
 }
 
+bool {{ table.table_name }}::Contains{{ index.suffix }}({{ index.key_param }} Key) const
+{
+    return {{ index.map_name }}.Contains(Key);
+}
+
+{{~ end ~}}
 bool {{ table.table_name }}::Read(const FString& Filename)
 {
     TArray<uint8> Buffer;
@@ -153,18 +160,24 @@ bool {{ table.table_name }}::Read(const FString& Filename)
         return false;
     }
 
-    TMap<int32, int32> LoadedByIndex;
+{{~ for index in table.indexes ~}}
+    TMap<{{ index.key_type }}, int32> {{ index.local_name }};
+    {{ index.local_name }}.Empty(Loaded.Num());
 
-    LoadedByIndex.Empty(Loaded.Num());
+{{~ end ~}}
     for (int32 Position = 0; Position < Loaded.Num(); ++Position)
     {
-        LoadedByIndex.Add(Loaded[Position].{{ table.index_field }}, Position);
+{{~ for index in table.indexes ~}}
+        {{ index.local_name }}.Add(Loaded[Position].{{ index.member }}, Position);
+{{~ end ~}}
     }
 
     // Published together: rows holding this load and an index built from the last one would
-    // answer Find with a row that has moved.
+    // answer a lookup with a row that has moved.
     RecordsStorage = MoveTemp(Loaded);
-    ByIndex = MoveTemp(LoadedByIndex);
+{{~ for index in table.indexes ~}}
+    {{ index.map_name }} = MoveTemp({{ index.local_name }});
+{{~ end ~}}
 
     return true;
 }
@@ -175,14 +188,14 @@ bool {{ table.table_name }}::Read(const FString& Filename)
 
 {{~ for slot in accessor.tables }}
 
-{{ slot.record_name }} {{ accessor.library_name }}::Get{{ slot.name }}Row(int32 Index, bool& bFound)
+{{ slot.record_name }} {{ accessor.library_name }}::Get{{ slot.name }}Row({{ slot.primary_key_param }} Key, bool& bFound)
 {
-    const {{ slot.record_name }}* Found = {{ accessor_name }}::{{ slot.name }}().Find(Index);
+    const {{ slot.record_name }}* Found = {{ accessor_name }}::{{ slot.name }}().{{ slot.primary_lookup }}(Key);
 
     bFound = Found != nullptr;
 
     // A copy, because Blueprint takes a struct by value and the row belongs to the table.
-    // A default one when the index is not there, which is why bFound is not decoration.
+    // A default one when the key is not there, which is why bFound is not decoration.
     return Found != nullptr ? *Found : {{ slot.record_name }}();
 }
 

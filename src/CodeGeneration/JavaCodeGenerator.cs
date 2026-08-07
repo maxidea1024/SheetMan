@@ -43,6 +43,17 @@ namespace SheetMan.CodeGeneration
         public string BinaryTableFileExtension { get; set; } = ".table";
 
         /// <summary>
+        /// Whether to write the data updater beside the reader.
+        /// </summary>
+        /// <remarks>
+        /// It fetches the manifest and the changed data files over HTTP and keeps a local
+        /// copy current, so a program can take new data without being redeployed. Off by
+        /// default: one that ships its data alongside its code has no use for it, and this
+        /// is the only generated file that reaches the network.
+        /// </remarks>
+        public bool WriteUpdater { get; set; } = false;
+
+        /// <summary>
         /// Whether generated files this run did not write are removed from <see cref="Path"/>.
         /// </summary>
         /// <remarks>
@@ -222,6 +233,15 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Java.LiteBinaryReader.java",
                 System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.java"));
+
+            // Asked for rather than assumed. It reaches the network and it is of no use to a
+            // program that ships its data alongside its code.
+            if (_recipe.WriteUpdater)
+            {
+                WriteBinaryReaderRuntime(
+                    "SheetMan.Runtime.Java.SheetManUpdater.java",
+                    System.IO.Path.Combine(_recipe.Path, "sheetman", "SheetManUpdater.java"));
+            }
         }
 
         // --------------------------------------------------------------- view
@@ -277,9 +297,53 @@ namespace SheetMan.CodeGeneration
             TableName = table.Name.ToPascalCase() + "Table",
             Location = table.Location.ToString(),
             Comment = CommentLines(table.Comment),
-            IndexField = JavaName(table.Fields[0].Name),
+            Indexes = Indexes(table),
             Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
+
+        /// <summary>
+        /// The indexed fields of a table: the sheet's first column, plus every one marked
+        /// with a `*`.
+        /// </summary>
+        private IReadOnlyList<JavaIndexView> Indexes(Table table)
+            => table.SerialFields.Where(sf => sf.IsIndexer).Select(sf => new JavaIndexView
+            {
+                Member = JavaName(sf.Name),
+                Suffix = sf.Name.ToPascalCase(),
+                KeyType = Boxed(ResolvedElementType(sf)),
+                KeyParam = ResolvedElementType(sf),
+                MapName = "by" + sf.Name.ToPascalCase(),
+                FieldName = sf.Name.ToPascalCase(),
+            }).ToList();
+
+        /// <summary>
+        /// The reference type standing in for a primitive, because a Map cannot be keyed by
+        /// one.
+        /// </summary>
+        private static string Boxed(string type)
+        {
+            switch (type)
+            {
+                case "boolean": return "Boolean";
+                case "int": return "Integer";
+                case "long": return "Long";
+                case "float": return "Float";
+                case "double": return "Double";
+                default: return type;
+            }
+        }
+
+        /// <summary>
+        /// The lookup a reference is resolved through: the referenced table's primary index,
+        /// which is the key a `foreign` column carries.
+        /// </summary>
+        /// <remarks>
+        /// Read off the referenced table rather than assumed to be `findByIndex`. The primary
+        /// index is whatever the sheet put in the first column, and a sheet that calls it `Id`
+        /// generates `findById`.
+        /// </remarks>
+        private static string PrimaryLookup(Table refTable)
+            => "findBy" + refTable.SerialFields.First(sf => sf.IsIndexer).Name.ToPascalCase();
 
         private JavaFieldView BuildField(Table table, SerialField sf)
         {
@@ -429,6 +493,7 @@ namespace SheetMan.CodeGeneration
                     {
                         Name = JavaName(sf.Name),
                         RefTable = JavaName(sf.FirstField.ResolvedRefTable.Name),
+                        RefLookup = PrimaryLookup(sf.FirstField.ResolvedRefTable),
                         RefRecordName = sf.FirstField.ResolvedRefTable.Name.ToPascalCase() + "Record",
                         Value = sf.ElementType == ValueType.ForeignRecord
                             ? "target"

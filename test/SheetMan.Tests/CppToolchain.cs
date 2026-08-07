@@ -127,6 +127,60 @@ namespace SheetMan.Tests
                 : BuildWithGcc(workDir, includeDir, runtimeDir, source, exe, accessorName);
         }
 
+        /// <summary>
+        /// Builds a harness for the updater: the same C++ build, plus libcurl.
+        /// </summary>
+        /// <remarks>
+        /// The runtime directory is on the include path as `sheetman/...`, because that is
+        /// how a consumer includes it. libcurl is found the same way the C gate finds it -
+        /// through <see cref="CToolchain"/>, so there is one answer to where it is.
+        /// </remarks>
+        public static ToolResult CompileUpdaterHarness(string workDir, string source, string exeName)
+        {
+            Directory.CreateDirectory(workDir);
+
+            string runtimeParent = Path.Combine(RepoLayout.Root, "lib", "cpp");
+            string exe = Path.Combine(workDir, OnWindows ? exeName + ".exe" : exeName);
+
+            if (!OnWindows)
+            {
+                return Execute("g++", workDir,
+                    "-std=c++17", "-Wall", "-Wextra", "-Werror",
+                    "-I", runtimeParent,
+                    source, "-o", exe, "-lcurl");
+            }
+
+            string libcurl = CToolchain.LibcurlRoot;
+            string script = Path.Combine(workDir, "build-updater.bat");
+
+            File.WriteAllText(script, string.Join(Environment.NewLine, new[]
+            {
+                "@echo off",
+                $"call \"{FindVcVars()}\" >nul",
+                $"cd /d \"{workDir}\"",
+                $"cl /nologo /std:c++17 /EHsc /W3 /utf-8 /I \"{runtimeParent}\" " +
+                $"/I \"{Path.Combine(libcurl, "include")}\" \"{source}\" " +
+                $"/Fo:\"{workDir}\\\\\" /Fe:\"{exe}\" " +
+                $"/link \"{Path.Combine(libcurl, "lib", "libcurl.lib")}\"",
+                "exit /b %ERRORLEVEL%",
+            }));
+
+            var built = Execute("cmd.exe", workDir, "/c", script);
+
+            if (!built.Succeeded)
+                return built;
+
+            foreach (var dll in Directory.EnumerateFiles(Path.Combine(libcurl, "bin"), "*.dll"))
+                File.Copy(dll, Path.Combine(workDir, Path.GetFileName(dll)), overwrite: true);
+
+            return built;
+        }
+
+        /// <summary>Runs an executable built by <see cref="CompileUpdaterHarness"/>.</summary>
+        public static ToolResult RunHarness(string workDir, string exeName, params string[] args)
+            => Execute(Path.Combine(workDir, OnWindows ? exeName + ".exe" : exeName),
+                       workDir, args);
+
         private static ToolResult BuildWithMsvc(string workDir, string includeDir, string runtimeDir,
                                                 string source, string exe, string accessorName)
         {
@@ -204,15 +258,33 @@ namespace SheetMan.Tests
             var stdout = new StringBuilder();
             var combined = new StringBuilder();
 
+            // The two streams are read on two threads and both append to `combined`.
+            // StringBuilder is not safe for that, and the failure is not a garbled line -
+            // it is `Destination is too short` from inside AppendLine when both threads
+            // grow the buffer at once, thrown on a thread pool worker where nothing catches
+            // it and the test host dies. Rare until a build writes to both at speed, which
+            // is what the updater gate does.
+            var writing = new object();
+
             using (var process = new Process { StartInfo = psi })
             {
                 process.OutputDataReceived += (_, e) =>
                 {
                     if (e.Data == null) return;
-                    stdout.AppendLine(e.Data);
-                    combined.AppendLine(e.Data);
+
+                    lock (writing)
+                    {
+                        stdout.AppendLine(e.Data);
+                        combined.AppendLine(e.Data);
+                    }
                 };
-                process.ErrorDataReceived += (_, e) => { if (e.Data != null) combined.AppendLine(e.Data); };
+                process.ErrorDataReceived += (_, e) =>
+                {
+                    if (e.Data == null) return;
+
+                    lock (writing)
+                        combined.AppendLine(e.Data);
+                };
 
                 process.Start();
                 process.BeginOutputReadLine();

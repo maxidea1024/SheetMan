@@ -65,7 +65,7 @@ if err := tables.ReadAll("./data"); err != nil {
     log.Fatal(err)
 }
 
-if sword := tables.Item.Find(1); sword != nil {
+if sword := tables.Item.FindByIndex(1); sword != nil {
     // 참조는 로드 후 실제 레코드로 연결됩니다.
     fmt.Println(sword.Name, sword.CategoryId.Name)
 }

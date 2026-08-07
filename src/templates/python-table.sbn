@@ -26,15 +26,42 @@ class {{ table.record_name }}:
 class {{ table.table_name }}:
     """Every row of {{ table.raw_name }}."""
 
-    __slots__ = ("records", "by_index")
+    __slots__ = ({{ table.table_slot_names }})
 
     def __init__(self):
         self.records = []
-        self.by_index = {}
+{{~ for index in table.indexes ~}}
+        self.{{ index.map_name }} = {}
+{{~ end ~}}
+{{~ for index in table.indexes }}
+    def find_by_{{ index.suffix }}(self, key):
+        """The row with this {{ index.field_name }}, or None when the table has none.
 
-    def find(self, index):
-        """The row with the given primary index, or None when there is none."""
-        return self.by_index.get(index)
+        The lookup to reach for when a missing row is an ordinary answer - an optional
+        reference, a key that came from user input.
+        """
+        return self.{{ index.map_name }}.get(key)
+
+    def get_by_{{ index.suffix }}_or_throw(self, key):
+        """The row with this {{ index.field_name }}, or a raised error naming what was missing.
+
+        For a key that has to be there - one from another table, or a constant. The name
+        says it raises, because a caller reading `get_by_{{ index.suffix }}(key).name` at a
+        glance cannot otherwise tell whether the next line is a check or a try.
+        """
+        record = self.{{ index.map_name }}.get(key)
+
+        if record is None:
+            raise sheetman.RecordNotFoundError(
+                "there is no record in table `{{ table.raw_name }}` that corresponds to "
+                "field `{{ index.field_name }}` value %r" % (key,))
+
+        return record
+
+    def contains_{{ index.suffix }}(self, key):
+        """Whether the table holds a row with this {{ index.field_name }}."""
+        return key in self.{{ index.map_name }}
+{{~ end ~}}
 
     def read(self, filename):
         """Loads the table from a .table file written by SheetMan.
@@ -75,8 +102,12 @@ class {{ table.table_name }}:
 
             sheetman.check_block_end(reader, column, block_end)
 
-        by_index = {record.{{ table.index_field }}: record for record in records}
+{{~ for index in table.indexes ~}}
+        {{ index.map_name }} = {record.{{ index.member }}: record for record in records}
+{{~ end ~}}
 
         # Published, now that every column read.
         self.records = records
-        self.by_index = by_index
+{{~ for index in table.indexes ~}}
+        self.{{ index.map_name }} = {{ index.map_name }}
+{{~ end ~}}

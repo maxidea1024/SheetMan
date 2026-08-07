@@ -87,16 +87,26 @@ class {{ api_macro }} {{ table.table_name }}
 {
 public:
     const TArray<{{ table.record_name }}>& Records() const { return RecordsStorage; }
+{{~ for index in table.indexes }}
+    /**
+     * The row with this {{ index.field_name }}, or nullptr when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    const {{ table.record_name }}* FindBy{{ index.suffix }}({{ index.key_param }} Key) const;
 
-    /** The row with the given primary index, or nullptr when there is none. */
-    const {{ table.record_name }}* Find(int32 Index) const;
-
+    /** Whether the table holds a row with this {{ index.field_name }}. */
+    bool Contains{{ index.suffix }}({{ index.key_param }} Key) const;
+{{~ end }}
     /** Loads the table from a .table file written by SheetMan. */
     bool Read(const FString& Filename);
 
 private:
     TArray<{{ table.record_name }}> RecordsStorage;
-    TMap<int32, int32> ByIndex;
+{{~ for index in table.indexes ~}}
+    TMap<{{ index.key_type }}, int32> {{ index.map_name }};
+{{~ end ~}}
 };
 {{~ end }}
 
@@ -150,7 +160,7 @@ class {{ api_macro }} {{ accessor.library_name }} : public UBlueprintFunctionLib
 public:
 {{~ for slot in accessor.tables }}
     /**
-     * The {{ slot.raw_name }} row with the given primary index.
+     * The {{ slot.raw_name }} row with the given {{ slot.primary_field_name }}.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
@@ -158,7 +168,7 @@ public:
      */
     UFUNCTION(BlueprintPure, Category = "SheetMan|{{ slot.raw_name }}",
               meta = (DisplayName = "Get {{ slot.raw_name }} Row"))
-    static {{ slot.record_name }} Get{{ slot.name }}Row(int32 Index, bool& bFound);
+    static {{ slot.record_name }} Get{{ slot.name }}Row({{ slot.primary_key_param }} Key, bool& bFound);
 
     /** How many {{ slot.raw_name }} rows were loaded. */
     UFUNCTION(BlueprintPure, Category = "SheetMan|{{ slot.raw_name }}",

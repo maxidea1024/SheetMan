@@ -99,10 +99,39 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
 
-        /// <summary>Name of the primary index property.</summary>
-        public string IndexField { get; set; }
+        /// <summary>
+        /// The indexed fields: the sheet's first column plus every one marked with `*`.
+        /// </summary>
+        public IReadOnlyList<PhpIndexView> Indexes { get; set; }
 
         public IReadOnlyList<PhpFieldView> Fields { get; set; }
+    }
+
+    /// <summary>
+    /// One indexed field, and the lookups generated for it.
+    /// </summary>
+    internal sealed class PhpIndexView
+    {
+        /// <summary>The record property holding the key.</summary>
+        public string Member { get; set; }
+
+        /// <summary>What the lookup names end in - `Index` gives `findByIndex`.</summary>
+        public string Suffix { get; set; }
+
+        /// <summary>The key's type, as a parameter declaration.</summary>
+        public string KeyType { get; set; }
+
+        /// <summary>The key's type for a docblock, which wants the array's key type.</summary>
+        public string KeyDocType { get; set; }
+
+        /// <summary>The property holding the map from key to row.</summary>
+        public string MapName { get; set; }
+
+        /// <summary>The local the read builds before publishing it.</summary>
+        public string LocalName { get; set; }
+
+        /// <summary>The field as the sheet spells it, for the exception message.</summary>
+        public string FieldName { get; set; }
     }
 
     internal sealed class PhpFieldView
@@ -162,6 +191,10 @@ namespace SheetMan.CodeGeneration
     {
         public string Name { get; set; }
         public string RefTable { get; set; }
+
+        /// <summary>The referenced table's primary lookup, which is what a key resolves through.</summary>
+        public string RefLookup { get; set; }
+
         public string Value { get; set; }
         public bool IsArray { get; set; }
     }

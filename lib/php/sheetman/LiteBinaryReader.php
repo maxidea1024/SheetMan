@@ -32,6 +32,19 @@ declare(strict_types=1);
 namespace SheetMan;
 
 /** Thrown when a table file is truncated, malformed, or not a table file. */
+/**
+ * A lookup for a key no row carries.
+ *
+ * Thrown by the generated getBy*OrThrow lookups, which is where a caller has said the key
+ * has to be there. findBy* answers the same question with null.
+ *
+ * Its own type rather than LiteBinaryException: nothing is wrong with the file, and a
+ * caller catching one of these is not catching the other.
+ */
+final class RecordNotFoundException extends \RuntimeException
+{
+}
+
 final class LiteBinaryException extends \RuntimeException
 {
 }

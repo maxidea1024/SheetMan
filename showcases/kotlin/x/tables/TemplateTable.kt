@@ -11,6 +11,7 @@ package x
 
 import java.io.File
 import sheetman.LiteBinaryReader
+import sheetman.RecordNotFoundException
 import sheetman.Uuid
 import sheetman.readAllBytes
 import sheetman.readTableHeader
@@ -39,7 +40,7 @@ class TemplateRecord {
     var int: Int = 0
     /** delete: keyword in C++ */
     var delete: Boolean = false
-    /** operator: keyword in C++ */
+    /** operator: keyword in C++, and a secondary index */
     var operator: String = ""
     /** namespace: keyword in C++ and C# */
     var namespace: String = ""
@@ -63,9 +64,53 @@ class TemplateTable {
         private set
 
     private var byIndex: HashMap<Int, TemplateRecord> = HashMap()
+    private var byOperator: HashMap<String, TemplateRecord> = HashMap()
 
-    /** The row with the given primary index, or null when there is none. */
-    fun find(index: Int): TemplateRecord? = byIndex[index]
+    /**
+     * The row with this Index, or null when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    fun findByIndex(key: Int): TemplateRecord? = byIndex[key]
+
+    /**
+     * The row with this Index, or a thrown exception naming what was missing.
+     *
+     * For a key that has to be there - one from another table, or a constant. The name says
+     * it throws, because a caller reading getByIndex(key).name at a glance
+     * cannot otherwise tell whether the next line is a null check or a catch.
+     */
+    fun getByIndexOrThrow(key: Int): TemplateRecord =
+        byIndex[key] ?: throw RecordNotFoundException(
+            "there is no record in table `Template` that corresponds to " +
+                "field `Index` value $key")
+
+    /** Whether the table holds a row with this Index. */
+    fun containsIndex(key: Int): Boolean = byIndex.containsKey(key)
+
+    /**
+     * The row with this Operator, or null when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    fun findByOperator(key: String): TemplateRecord? = byOperator[key]
+
+    /**
+     * The row with this Operator, or a thrown exception naming what was missing.
+     *
+     * For a key that has to be there - one from another table, or a constant. The name says
+     * it throws, because a caller reading getByOperator(key).name at a glance
+     * cannot otherwise tell whether the next line is a null check or a catch.
+     */
+    fun getByOperatorOrThrow(key: String): TemplateRecord =
+        byOperator[key] ?: throw RecordNotFoundException(
+            "there is no record in table `Template` that corresponds to " +
+                "field `Operator` value $key")
+
+    /** Whether the table holds a row with this Operator. */
+    fun containsOperator(key: String): Boolean = byOperator.containsKey(key)
 
     /** Loads the table from a .table file written by SheetMan. */
     /**
@@ -81,6 +126,7 @@ class TemplateTable {
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         val loaded = ArrayList<TemplateRecord>(count)
         val loadedByIndex = HashMap<Int, TemplateRecord>(count * 2)
+        val loadedByOperator = HashMap<String, TemplateRecord>(count * 2)
 
         repeat(count) { loaded.add(TemplateRecord()) }
 
@@ -146,10 +192,12 @@ class TemplateTable {
 
         for (record in loaded) {
             loadedByIndex[record.index] = record
+            loadedByOperator[record.operator] = record
         }
 
         // Published, now that every column read.
         records = loaded
         byIndex = loadedByIndex
+        byOperator = loadedByOperator
     }
 }

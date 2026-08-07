@@ -42,16 +42,26 @@
     { "Type": "python", "Path": "test/fixtures/output/reserved-words/python",
       "PackageName": "reserved" },
     { "Type": "java", "Path": "test/fixtures/output/reserved-words/java",
+      // On here so the emitted updater is compiled by the Java gate as well.
+      "WriteUpdater": true,
       "PackageName": "reserved", "AccessorName": "ReservedAccessor" },
     { "Type": "kotlin", "Path": "test/fixtures/output/reserved-words/kotlin",
+      // On here so the emitted updater is compiled by the Kotlin gate as well.
+      "WriteUpdater": true,
       "PackageName": "reserved", "AccessorName": "ReservedAccessor" },
     { "Type": "ruby", "Path": "test/fixtures/output/reserved-words/ruby",
-      "ModuleName": "Reserved", "AccessorName": "sheetman_data" },
+      "ModuleName": "Reserved", "AccessorName": "sheetman_data",
+      // On here so the emitted updater is parsed by the Ruby gate as well.
+      "WriteUpdater": true },
     { "Type": "dart", "Path": "test/fixtures/output/reserved-words/dart",
-      "AccessorName": "sheetman_data" },
+      "AccessorName": "sheetman_data",
+      // On here so the emitted updater is analysed by the Dart gate as well.
+      "WriteUpdater": true },
     { "Type": "c", "Path": "test/fixtures/output/reserved-words/c",
       "AccessorName": "ReservedData" },
     { "Type": "php", "Path": "test/fixtures/output/reserved-words/php",
+      // On here so the emitted updater is linted by the PHP gate as well.
+      "WriteUpdater": true,
       "Namespace": "Reserved", "AccessorName": "ReservedData" },
 
     // Not for the names - the documentation escapes nothing, so a keyword is just a word

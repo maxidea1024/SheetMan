@@ -49,7 +49,7 @@ bool A_LoadAllWithExtension(A_t* data, const char* base_path,
 
   /* The previous load goes now, and not before. */
   A_Free(data);
-   *data = loaded;
+  *data = loaded;
 
   return true;
 }

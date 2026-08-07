@@ -76,6 +76,9 @@ namespace SheetMan.CodeGeneration
                         Name = table.Name,
                         File = TsFileName(table.Name),
                     }).ToList(),
+
+                    BinaryFileExtension = _typescriptRecipe.BinaryTableFileExtension,
+                    CrossReferences = BuildCrossReferences(),
                 });
 
             }
@@ -189,6 +192,68 @@ namespace SheetMan.CodeGeneration
                 Comment = CommentLines(constant.Comment),
             }).ToList(),
         };
+
+        /// <summary>
+        /// Every reference column in the model, grouped by the table that holds it.
+        /// </summary>
+        /// <remarks>
+        /// A reference is stored as the target row's primary key and turned into the row
+        /// itself once every table is in memory - the same two-step every other target
+        /// does. The key stays beside the resolved value, because a consumer sometimes
+        /// wants the number and because a zero means "points at nothing".
+        /// </remarks>
+        private IReadOnlyList<TsCrossReferenceView> BuildCrossReferences()
+            => _model.Tables
+                     .Select(table => new
+                     {
+                         Table = table,
+                         Fields = table.SerialFields.Where(sf => sf.IsRef).ToList(),
+                     })
+                     .Where(x => x.Fields.Count > 0)
+                     .Select(x => new TsCrossReferenceView
+                     {
+                         Table = TsName(x.Table.Name),
+                         Fields = x.Fields.Select(BuildReferenceField).ToList(),
+                     })
+                     .ToList();
+
+        private TsReferenceFieldView BuildReferenceField(SerialField sf)
+        {
+            var refTable = sf.FirstField.ResolvedRefTable;
+
+            return new TsReferenceFieldView
+            {
+                PropName = TsName(sf.Name),
+                FieldName = "_" + TsName(sf.Name),
+                RefTable = TsName(refTable.Name),
+
+                // The declared name, not the resolved one, because that is what the record's
+                // key member is named after and the two have to spell it the same way.
+                RefTableType = sf.FirstField.RefTableName.ToPascalCase(),
+                RefLookup = PrimaryLookup(refTable),
+
+                // A reference to a whole row yields the row; one that names a field yields
+                // that field's value.
+                Value = sf.ElementType == ValueType.ForeignRecord
+                    ? "target"
+                    : "target." + TsName(sf.FirstField.ResolvedRefField.Name),
+
+                IsArray = sf.IsArray,
+                ElementCount = sf.Fields.Count,
+            };
+        }
+
+        /// <summary>
+        /// The lookup a reference is resolved through: the referenced table's primary index,
+        /// which is the key a `foreign` column carries.
+        /// </summary>
+        /// <remarks>
+        /// Read off the referenced table rather than assumed to be `getByIndexOrThrow`. The
+        /// primary index is whatever the sheet put in the first column - its type is checked
+        /// to be `int`, but its name is not.
+        /// </remarks>
+        private static string PrimaryLookup(Models.Table refTable)
+            => "getBy" + refTable.SerialFields.First(sf => sf.IsIndexer).Name.ToPascalCase() + "OrThrow";
 
         private TsTableView BuildTable(Models.Table table)
         {
@@ -343,6 +408,11 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private string NamedRowAssignment(SerialField sf, string field, string prop)
         {
+            // The key, not the row. The row is filled in by the linking pass once every
+            // table is loaded, exactly as the binary path leaves it.
+            if (sf.IsRef)
+                return $"this.{field}_{sf.FirstField.ResolvedRefTable.Name.ToPascalCase()}_index = dataRow.{prop}";
+
             if (!NeedsJsonConversion(sf))
             {
                 // Array or scalar alike: a value the JSON carries as-is is assigned
@@ -366,6 +436,19 @@ namespace SheetMan.CodeGeneration
         /// </summary>
         private IReadOnlyList<string> CompactRowStatements(SerialField sf, string field, string prop)
         {
+            if (sf.IsRef)
+            {
+                string index = $"{field}_{sf.FirstField.ResolvedRefTable.Name.ToPascalCase()}_index";
+
+                return sf.IsArray
+                    ? new[]
+                    {
+                        $"this.{index} = dataRow.slice(offset, offset + {sf.Fields.Count})",
+                        $"offset += {sf.Fields.Count}",
+                    }
+                    : new[] { $"this.{index} = dataRow[offset++]" };
+            }
+
             string convert = NeedsJsonConversion(sf)
                 ? $".map(v => {FromJsonExpression(sf, "v")})"
                 : "";
@@ -469,6 +552,12 @@ namespace SheetMan.CodeGeneration
             // type is a double and would round it.
             if (sf.ElementType == ValueType.Int64)
                 return "string";
+
+            // A reference is exported as the target row's key. Declaring it as the row type
+            // said the JSON carried something it never carries, and the generated assignment
+            // then put a number into a member typed as a record.
+            if (sf.IsRef)
+                return "number";
 
             return ToTypescriptTypename(sf.FirstField);
         }

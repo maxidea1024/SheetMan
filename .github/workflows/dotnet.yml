@@ -41,6 +41,15 @@ jobs:
           g++ --version
           gcc --version
 
+      # The C and C++ updaters are the only emitted files that link against anything.
+      # Neither language has an HTTP client, so both use libcurl and both say so - and the
+      # gate that builds them fails rather than skips, like every other language gate here.
+      - name: Setup libcurl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev
+          curl-config --version
+
       - name: Restore
         run: dotnet restore SheetMan.slnx
 

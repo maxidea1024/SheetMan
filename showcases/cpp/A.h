@@ -13,7 +13,7 @@
 #include <cstddef>
 #include <string>
 
-#include "A_template.h"
+#include "tables/A_template.h"
 
 namespace x {
 /// Every table, loaded together so cross-table references can be resolved.

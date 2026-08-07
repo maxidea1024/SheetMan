@@ -28,7 +28,9 @@ typedef struct {{ table.table_name }} {
   {{ table.record_name }}* records;
   int32_t count;
 
-  sm_index_entry* by_index;
+{{~ for index in table.indexes ~}}
+  {{ index.entry_type }}* {{ index.array_name }};
+{{~ end ~}}
   sm_arena arena;
 } {{ table.table_name }};
 
@@ -42,7 +44,17 @@ bool {{ table.function_prefix }}Load({{ table.table_name }}* table, const char* 
 /* Releases everything the table owns. Safe on a zeroed table, and safe twice. */
 void {{ table.function_prefix }}Free({{ table.table_name }}* table);
 
-/* The row with the given primary index, or NULL when there is none. */
-const {{ table.record_name }}* {{ table.function_prefix }}Find(
-  const {{ table.table_name }}* table, int32_t index);
+{{~ for index in table.indexes ~}}
+/* The row with the given {{ index.field_name }}, or NULL when the table has none.
+ *
+ * The lookup to reach for when a missing row is an ordinary answer - an optional
+ * reference, a key that came from user input. C has nothing to throw, so a caller
+ * that needs the row to be there checks this NULL and says so itself. */
+const {{ table.record_name }}* {{ table.function_prefix }}FindBy{{ index.suffix }}(
+  const {{ table.table_name }}* table, {{ index.key_type }} key);
+
+/* Whether the table holds a row with this {{ index.field_name }}. */
+bool {{ table.function_prefix }}Contains{{ index.suffix }}(
+  const {{ table.table_name }}* table, {{ index.key_type }} key);
+{{~ end ~}}
 {{ include 'c-header-foot.sbn' ~}}

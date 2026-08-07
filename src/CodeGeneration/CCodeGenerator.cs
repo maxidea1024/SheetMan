@@ -44,6 +44,20 @@ namespace SheetMan.CodeGeneration
         public string BinaryTableFileExtension { get; set; } = ".table";
 
         /// <summary>
+        /// Whether to write the data updater beside the reader.
+        /// </summary>
+        /// <remarks>
+        /// It fetches the manifest and the changed data files over HTTP and keeps a local
+        /// copy current, so a program can take new data without being redeployed.
+        ///
+        /// Off by default, and here that means more than elsewhere: C has no HTTP client
+        /// and no portable one to fall back on, so this is the only emitted file that links
+        /// against anything - libcurl, and nothing else. Leave it off and the generated C
+        /// depends on the C standard library alone, which is what it did before.
+        /// </remarks>
+        public bool WriteUpdater { get; set; } = false;
+
+        /// <summary>
         /// Whether generated files this run did not write are removed from <see cref="Path"/>.
         /// </summary>
         /// <remarks>
@@ -216,6 +230,11 @@ namespace SheetMan.CodeGeneration
             });
 
             Write(FileBase + "_Reader.c", "c-reader-source.sbn", new CPartView());
+
+            // Asked for rather than assumed. It reaches the network, and it is the only
+            // emitted file that needs a link flag.
+            if (_recipe.WriteUpdater)
+                Write(FileBase + "_Updater.c", "c-updater-source.sbn", new CPartView());
         }
 
         // --------------------------------------------------------- file layout
@@ -231,14 +250,26 @@ namespace SheetMan.CodeGeneration
         /// </remarks>
         private string ForwardHeader => FileBase + "_Forward.h";
 
-        private string EnumHeader(CEnumView enumm) => $"{FileBase}_Enum{enumm.RawName}.h";
-        private string EnumHeaderFor(Models.Enum enumm) => $"{FileBase}_Enum{enumm.Name.ToPascalCase()}.h";
+        /// <summary>
+        /// Where each kind of generated file goes, and what it is called.
+        /// </summary>
+        /// <remarks>
+        /// The directory is the layout every target shares - `tables/`, `enums/`,
+        /// `constants/` - and the `#include` lines come from these same helpers, so a file
+        /// and the line that reaches for it cannot disagree.
+        ///
+        /// The accessor prefix stays in the name even inside a directory. It is what keeps
+        /// two SheetMan outputs on one include path from colliding, and a directory does not
+        /// take that over: `tables/Template.h` from two of them is the same path twice.
+        /// </remarks>
+        private string EnumHeader(CEnumView enumm) => $"enums/{FileBase}_Enum{enumm.RawName}.h";
+        private string EnumHeaderFor(Models.Enum enumm) => $"enums/{FileBase}_Enum{enumm.Name.ToPascalCase()}.h";
 
-        private string ConstantsHeader(CConstantSetView set) => $"{FileBase}_Const{set.Name}.h";
-        private string ConstantsSource(CConstantSetView set) => $"{FileBase}_Const{set.Name}.c";
+        private string ConstantsHeader(CConstantSetView set) => $"constants/{FileBase}_Const{set.Name}.h";
+        private string ConstantsSource(CConstantSetView set) => $"constants/{FileBase}_Const{set.Name}.c";
 
-        private string TableHeader(CTableView table) => $"{FileBase}_{table.RawName.ToPascalCase()}.h";
-        private string TableSource(CTableView table) => $"{FileBase}_{table.RawName.ToPascalCase()}.c";
+        private string TableHeader(CTableView table) => $"tables/{FileBase}_{table.RawName.ToPascalCase()}.h";
+        private string TableSource(CTableView table) => $"tables/{FileBase}_{table.RawName.ToPascalCase()}.c";
 
         /// <summary>
         /// An include guard. <paramref name="suffix"/> null gives the umbrella's own, which is
@@ -311,6 +342,13 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.C.sheetman_lite_binary_reader.h",
                 System.IO.Path.Combine(_recipe.Path, "sheetman", "sheetman_lite_binary_reader.h"));
+
+            if (_recipe.WriteUpdater)
+            {
+                WriteBinaryReaderRuntime(
+                    "SheetMan.Runtime.C.sheetman_updater.h",
+                    System.IO.Path.Combine(_recipe.Path, "sheetman", "sheetman_updater.h"));
+            }
         }
 
         // --------------------------------------------------------------- view
@@ -377,13 +415,74 @@ namespace SheetMan.CodeGeneration
             FunctionPrefix = FunctionPrefix(table),
             Location = table.Location.ToString(),
             Comment = CommentLines(table.Comment),
-            IndexField = CName(table.Fields[0].Name),
+            Indexes = Indexes(table),
 
             HasStringFields = table.SerialFields.Any(
                 sf => !sf.IsRef && sf.ElementType == ValueType.String && !sf.IsVariableLengthArray),
 
             Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
+
+        /// <summary>
+        /// The indexed fields of a table: the sheet's first column, plus every one marked
+        /// with a `*`.
+        /// </summary>
+        private IReadOnlyList<CIndexView> Indexes(Table table)
+            => table.SerialFields.Where(sf => sf.IsIndexer).Select(sf =>
+            {
+                string family = IndexFamily(sf);
+
+                return new CIndexView
+                {
+                    Member = CName(sf.Name),
+                    Suffix = sf.Name.ToPascalCase(),
+                    KeyType = ScalarTypeName(sf.FirstField.ElementType, sf.FirstField.EnumOrNull),
+                    EntryType = family + "_entry",
+                    SortCall = family + "_sort",
+                    FindCall = family + "_find",
+                    ArrayName = "by_" + sf.Name.ToSnakeCase(),
+                    FieldName = sf.Name.ToPascalCase(),
+                };
+            }).ToList();
+
+        /// <summary>
+        /// Which of the reader's four index families holds this key.
+        /// </summary>
+        /// <remarks>
+        /// An enum is stored as its number and a bool as one of two, so both order as
+        /// int32_t; the three tick-or-64-bit types share the wider one. The field's own C
+        /// type is what the lookup takes either way - the family only decides how the
+        /// entries are sorted and searched.
+        /// </remarks>
+        private static string IndexFamily(SerialField sf)
+        {
+            switch (sf.ElementType)
+            {
+                case ValueType.String: return "sm_string_index";
+                case ValueType.Uuid: return "sm_uuid_index";
+
+                case ValueType.Int64:
+                case ValueType.DateTime:
+                case ValueType.TimeSpan:
+                    return "sm_index64";
+
+                default: return "sm_index";
+            }
+        }
+
+        /// <summary>
+        /// The lookup a reference is resolved through: the referenced table's primary index,
+        /// which is the key a `foreign` column carries.
+        /// </summary>
+        /// <remarks>
+        /// Read off the referenced table rather than assumed to be `FindByIndex`. The primary
+        /// index is whatever the sheet put in the first column, and a sheet that calls it
+        /// `Id` generates `FindById`.
+        /// </remarks>
+        private string PrimaryLookup(Table refTable)
+            => FunctionPrefix(refTable)
+               + "FindBy"
+               + refTable.SerialFields.First(sf => sf.IsIndexer).Name.ToPascalCase();
 
         private CFieldView BuildField(Table table, SerialField sf)
         {
@@ -570,6 +669,7 @@ namespace SheetMan.CodeGeneration
                 Name = name,
                 RefTable = CName(refTable.Name),
                 RefFunctionPrefix = FunctionPrefix(refTable),
+                RefLookup = PrimaryLookup(refTable),
                 RefRecordName = refRecord,
 
                 // Only a whole-record reference resolves to a pointer. A field reference

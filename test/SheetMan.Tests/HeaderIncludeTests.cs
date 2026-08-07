@@ -73,10 +73,17 @@ namespace SheetMan.Tests
 
             string root = Path.Combine(RepoLayout.OutputDir(scenario), "cpp");
 
-            foreach (var header in Directory.GetFiles(root, "*.h").OrderBy(path => path))
+            foreach (var header in Directory.GetFiles(root, "*.h", SearchOption.AllDirectories)
+                                            .OrderBy(path => path))
             {
-                // Compile names the header from a base name and includes nothing else.
-                var result = CppToolchain.Compile(scenario, Path.GetFileNameWithoutExtension(header));
+                // The path relative to the output, not the base name: the headers live in
+                // `tables/`, `enums/` and `constants/` now, and that is how the umbrella
+                // includes them - so it is what a translation unit has to write too.
+                string relative = Path.GetRelativePath(root, header).Replace('\\', '/');
+
+                // Compile names the header from that path and includes nothing else.
+                var result = CppToolchain.Compile(
+                    scenario, relative.Substring(0, relative.Length - ".h".Length));
 
                 Assert.True(result.Succeeded,
                     $"{Path.GetFileName(header)} does not compile on its own." +
@@ -115,7 +122,10 @@ namespace SheetMan.Tests
         {
             Assert.True(Directory.Exists(root), $"Nothing was generated at {root}.");
 
-            var headers = Directory.GetFiles(root, "*.h")
+            // Recursive: the table headers live in `tables/` now, and a search that only
+            // looked at the top of the output would find none of them - and `Assert.NotEmpty`
+            // below is what turns that into a failure rather than a silent pass.
+            var headers = Directory.GetFiles(root, "*.h", SearchOption.AllDirectories)
                 .ToDictionary(path => Path.GetFileName(path), path => Normalize(File.ReadAllText(path)));
 
             // The umbrella and the forward header declare no record: the first includes everything

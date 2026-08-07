@@ -15,6 +15,7 @@ require_once __DIR__ . '/sheetman/LiteBinaryReader.php';
 require_once __DIR__ . '/tables/TemplateTable.php';
 
 use SheetMan\LiteBinaryReader;
+use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /** Every table, loaded together so cross-table references can be resolved. */

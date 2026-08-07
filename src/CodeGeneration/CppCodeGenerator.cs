@@ -80,6 +80,15 @@ namespace SheetMan.CodeGeneration
             WriteBinaryReaderRuntime(
                 "SheetMan.Runtime.Cpp.lite_binary_reader.h",
                 Path.Combine(_cppRecipe.Path, "sheetman", "lite_binary_reader.h"));
+
+            // Asked for rather than assumed. It reaches the network, and it is the only
+            // emitted file that needs a link flag.
+            if (_cppRecipe.WriteUpdater)
+            {
+                WriteBinaryReaderRuntime(
+                    "SheetMan.Runtime.Cpp.updater.h",
+                    Path.Combine(_cppRecipe.Path, "sheetman", "updater.h"));
+            }
         }
 
         private void GenerateModel()
@@ -158,12 +167,24 @@ namespace SheetMan.CodeGeneration
         /// </remarks>
         private string ForwardHeader => _cppRecipe.AccessorName + "_forward.h";
 
-        private string EnumHeader(CppEnumView enumm) => $"{_cppRecipe.AccessorName}_enum_{enumm.Name.ToSnakeCase()}.h";
-        private string EnumHeaderFor(Models.Enum enumm) => $"{_cppRecipe.AccessorName}_enum_{enumm.Name.ToSnakeCase()}.h";
+        /// <summary>
+        /// Where each kind of generated header goes, and what it is called.
+        /// </summary>
+        /// <remarks>
+        /// The directory is the layout every target shares - `tables/`, `enums/`,
+        /// `constants/` - and the `#include` lines come from these same helpers, so a file
+        /// and the line that reaches for it cannot disagree.
+        ///
+        /// The accessor prefix stays in the name even inside a directory. It is what keeps
+        /// two SheetMan outputs on one include path from colliding, and a directory does not
+        /// take that over: `tables/template.h` from two of them is the same path twice.
+        /// </remarks>
+        private string EnumHeader(CppEnumView enumm) => $"enums/{_cppRecipe.AccessorName}_enum_{enumm.Name.ToSnakeCase()}.h";
+        private string EnumHeaderFor(Models.Enum enumm) => $"enums/{_cppRecipe.AccessorName}_enum_{enumm.Name.ToSnakeCase()}.h";
 
-        private string ConstantsHeader(CppConstantSetView set) => $"{_cppRecipe.AccessorName}_const_{set.Name.ToSnakeCase()}.h";
+        private string ConstantsHeader(CppConstantSetView set) => $"constants/{_cppRecipe.AccessorName}_const_{set.Name.ToSnakeCase()}.h";
 
-        private string TableHeader(CppTableView table) => $"{_cppRecipe.AccessorName}_{table.RawName.ToSnakeCase()}.h";
+        private string TableHeader(CppTableView table) => $"tables/{_cppRecipe.AccessorName}_{table.RawName.ToSnakeCase()}.h";
 
         private const string ReaderInclude = "\"sheetman/lite_binary_reader.h\"";
 
@@ -303,9 +324,51 @@ namespace SheetMan.CodeGeneration
             TableName = TableName(table),
             Location = table.Location.ToString(),
             Comment = CommentLines(table.Comment),
-            IndexField = CppName(table.Fields[0].Name),
+            Indexes = Indexes(table),
             Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
         };
+
+        /// <summary>
+        /// The indexed fields of a table: the sheet's first column, plus every one marked
+        /// with a `*`.
+        /// </summary>
+        private IReadOnlyList<CppIndexView> Indexes(Table table)
+            => table.SerialFields.Where(sf => sf.IsIndexer).Select(sf =>
+            {
+                string keyType = ToCppTypeName(sf.FirstField);
+                bool copyCosts = keyType == "std::string";
+
+                return new CppIndexView
+                {
+                    Member = CppName(sf.Name),
+                    Suffix = sf.Name.ToSnakeCase(),
+                    KeyType = keyType,
+                    KeyParam = copyCosts ? "const " + keyType + "&" : keyType,
+
+                    // std::string concatenates; everything else has to go through
+                    // std::to_string, and an enum through its underlying number first.
+                    KeyText = copyCosts
+                        ? "key"
+                        : (sf.ElementType == Models.ValueType.Enum
+                            ? "std::to_string(static_cast<std::int64_t>(key))"
+                            : "std::to_string(key)"),
+
+                    MapName = "by_" + sf.Name.ToSnakeCase() + "_",
+                    FieldName = sf.Name.ToPascalCase(),
+                };
+            }).ToList();
+
+        /// <summary>
+        /// The lookup a reference is resolved through: the referenced table's primary index,
+        /// which is the key a `foreign` column carries.
+        /// </summary>
+        /// <remarks>
+        /// Read off the referenced table rather than assumed to be `find_by_index`. The
+        /// primary index is whatever the sheet put in the first column, and a sheet that
+        /// calls it `Id` generates `find_by_id`.
+        /// </remarks>
+        private static string PrimaryLookup(Table refTable)
+            => "find_by_" + refTable.SerialFields.First(sf => sf.IsIndexer).Name.ToSnakeCase();
 
         private CppFieldView BuildField(Table table, SerialField sf)
         {
@@ -404,6 +467,7 @@ namespace SheetMan.CodeGeneration
                     {
                         Name = CppName(sf.Name),
                         RefTable = CppName(sf.FirstField.ResolvedRefTable.Name),
+                        RefLookup = PrimaryLookup(sf.FirstField.ResolvedRefTable),
                         Value = ReferenceValueExpression(sf, "target"),
                         RefDefault = RefDefault(sf),
                         IsArray = sf.IsArray,

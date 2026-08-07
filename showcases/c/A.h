@@ -9,7 +9,7 @@
 #ifndef A_H
 #define A_H
 
-#include "A_Template.h"
+#include "tables/A_Template.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -127,7 +127,7 @@ sheetman --new-recipe my-recipe.json --template unity
 |`Edition`|Rust|`"2021"`|생성되는 `Cargo.toml`이 선언할 edition|
 |`WriteBuildFile`|Unreal|`true`|모듈의 `Build.cs`를 쓸 것인가. 의존성을 직접 관리한다면 `false`|
 |`UseStringEnum`|TypeScript|`false`|enum을 숫자 대신 문자열 유니온으로. 디버거와 로그에서 읽히지만 파일에 저장된 정수와는 어긋납니다|
-|`WriteUpdater`|C#, Unreal|`false`|데이터 갱신기(`SheetManUpdater.cs`)를 함께 낼 것인가. CDN에서 바뀐 파일만 받아 로컬 사본을 최신으로 유지합니다 — 언리얼에서는 `Build.cs`에 `HTTP` 의존성이 함께 추가됩니다 — 「[C#](languages/csharp.md#데이터만-갱신하기-writeupdater)」·「[언리얼](languages/unreal.md#데이터만-갱신하기-writeupdater)」|
+|`WriteUpdater`|전부|`false`|데이터 갱신기를 리더 옆에 함께 낼 것인가. CDN에서 바뀐 파일만 받아 로컬 사본을 최신으로 유지합니다. 유일하게 네트워크를 쓰는 생성물이라 기본값이 `false`이고, **의존성이 생기는 유일한 자리**이기도 합니다 — 언리얼은 `Build.cs`에 `HTTP` 모듈이, Rust는 `Cargo.toml`에 `ureq`가 함께 들어갑니다. 나머지 언어는 표준 라이브러리만 씁니다. 「[C#](languages/csharp.md#데이터만-갱신하기-writeupdater)」·「[언리얼](languages/unreal.md#데이터만-갱신하기-writeupdater)」·「[Rust](languages/rust.md#데이터만-갱신하기-writeupdater)」·「[Ruby](languages/ruby.md#데이터만-갱신하기-writeupdater)」|
 
 ### 내보내기
 
@@ -379,7 +379,7 @@ TypeScript는 JSON과 바이너리 양쪽을 읽으므로 둘 다 내보냅니�
 sheetman --recipe ci-recipe.json --commit $GITHUB_SHA
 ```
 
-### 8. 전부 — 열세 개 언어를 한 번에
+### 8. 전부 — 13개 언어를 한 번에
 
 `showcases/showcase.json`이 저장소에 있고, 실제로 매번 실행되어 [showcases/](../showcases/)에 결과가 커밋됩니다. 언어별 출력이 어떻게 생겼는지 나란히 볼 수 있습니다.
 
@@ -395,7 +395,7 @@ dotnet run --project src/SheetMan.csproj -- --recipe showcases/showcase.json
 |--|--|
 |`core.json`|엑셀 하나에서 바이너리·JSON·C#·C++·HTML까지|
 |`core-client.json` / `core-server.json`|`TargetSide`로 갈라 뽑기|
-|`conformance.json`|열세 개 타깃 전부를 한 recipe에|
+|`conformance.json`|13개 타깃 전부를 한 recipe에|
 |`table-extension.json`|`.table`이 아닌 확장자로 맞추기|
 |`databases.json`|MySQL / PostgreSQL / MongoDB / Redis|
 |`history.json`|히스토리 기록|

@@ -68,10 +68,48 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
 
-        /// <summary>Name of the primary index member.</summary>
-        public string IndexField { get; set; }
+        /// <summary>
+        /// The indexed fields: the sheet's first column plus every one marked with `*`.
+        /// </summary>
+        public IReadOnlyList<UnrealIndexView> Indexes { get; set; }
 
         public IReadOnlyList<UnrealFieldView> Fields { get; set; }
+    }
+
+    /// <summary>
+    /// One indexed field, and the lookups generated for it.
+    /// </summary>
+    /// <remarks>
+    /// Two lookups rather than the three every other target gets. A module built with
+    /// exceptions disabled - which is every Unreal module unless its Build.cs says
+    /// otherwise - has nothing to throw, so there is no honest `GetBy...OrThrow` to
+    /// generate. The same reason the reader reports a malformed file with a flag.
+    /// </remarks>
+    internal sealed class UnrealIndexView
+    {
+        /// <summary>The record member holding the key.</summary>
+        public string Member { get; set; }
+
+        /// <summary>What the lookup names end in - `Index` gives `FindByIndex`.</summary>
+        public string Suffix { get; set; }
+
+        /// <summary>The key's type.</summary>
+        public string KeyType { get; set; }
+
+        /// <summary>
+        /// The type the lookups take: a const reference where a copy would cost, the value
+        /// itself where it would not.
+        /// </summary>
+        public string KeyParam { get; set; }
+
+        /// <summary>The member holding the map from key to row position.</summary>
+        public string MapName { get; set; }
+
+        /// <summary>The local the read builds before publishing it.</summary>
+        public string LocalName { get; set; }
+
+        /// <summary>The field as the sheet spells it, for the doc comment.</summary>
+        public string FieldName { get; set; }
     }
 
     internal sealed class UnrealFieldView
@@ -155,6 +193,20 @@ namespace SheetMan.CodeGeneration
 
         /// <summary>The table's name as the sheet spelled it, for the Blueprint category.</summary>
         public string RawName { get; set; }
+
+        /// <summary>
+        /// The primary index's lookup, which is what the Blueprint node calls.
+        /// </summary>
+        public string PrimaryLookup { get; set; }
+
+        /// <summary>The primary index's key type, which the Blueprint node takes.</summary>
+        public string PrimaryKeyType { get; set; }
+
+        /// <summary>The primary index's key parameter type.</summary>
+        public string PrimaryKeyParam { get; set; }
+
+        /// <summary>The primary index's field name, as the sheet spells it.</summary>
+        public string PrimaryFieldName { get; set; }
 
         public string DataFileName { get; set; }
     }

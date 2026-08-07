@@ -200,7 +200,10 @@ namespace SheetMan.Tests
             {
                 string name = slot.Groups["name"].Value;
 
-                Assert.Contains($"static F{name}Row Get{name}Row(int32 Index, bool& bFound);", header);
+                // `int32 Key`, not `int32 Index`: the primary index is whatever the sheet put
+                // in the first column, so the parameter is named after what it is rather than
+                // after a column name that is only usually `Index`.
+                Assert.Contains($"static F{name}Row Get{name}Row(int32 Key, bool& bFound);", header);
                 Assert.Contains($"static F{name}Row Get{name}RowAt(int32 Position, bool& bFound);", header);
                 Assert.Contains($"static int32 Get{name}RowCount();", header);
             }

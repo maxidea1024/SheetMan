@@ -15,26 +15,52 @@ type {{ table.record_name }} struct {
 {{~ end ~}}
 }
 
-// read fills the record from the reader, in the exact field order the exporter wrote.
-
 // {{ table.table_name }} holds every row of {{ table.raw_name }}.
 type {{ table.table_name }} struct {
 	records []{{ table.record_name }}
-	byIndex map[int32]int
+{{~ for index in table.indexes ~}}
+	{{ index.map_name }} map[{{ index.key_type }}]int
+{{~ end ~}}
 }
 
 // Records returns every row, in the order the sheet declared them.
 func (t *{{ table.table_name }}) Records() []{{ table.record_name }} { return t.records }
-
-// Find returns the row with the given primary index, or nil when there is none.
-func (t *{{ table.table_name }}) Find(index int32) *{{ table.record_name }} {
-	position, found := t.byIndex[index]
+{{~ for index in table.indexes }}
+// FindBy{{ index.suffix }} returns the row with this {{ index.field_name }}, or nil when the table has none.
+//
+// The lookup to reach for when a missing row is an ordinary answer - an optional
+// reference, a key that came from user input.
+func (t *{{ table.table_name }}) FindBy{{ index.suffix }}(key {{ index.key_type }}) *{{ table.record_name }} {
+	position, found := t.{{ index.map_name }}[key]
 	if !found {
 		return nil
 	}
 
 	return &t.records[position]
 }
+
+// GetBy{{ index.suffix }}OrError returns the row with this {{ index.field_name }}, or an error naming
+// what was missing.
+//
+// For a key that has to be there - one from another table, or a constant. Go has no
+// exception to throw, so where the other languages name a throw this one names the error
+// it returns; either way the call site can tell without going to the definition.
+func (t *{{ table.table_name }}) GetBy{{ index.suffix }}OrError(key {{ index.key_type }}) (*{{ table.record_name }}, error) {
+	position, found := t.{{ index.map_name }}[key]
+	if !found {
+		return nil, fmt.Errorf(
+			"there is no record in table `{{ table.raw_name }}` that corresponds to field `{{ index.field_name }}` value %v", key)
+	}
+
+	return &t.records[position], nil
+}
+
+// Contains{{ index.suffix }} reports whether the table holds a row with this {{ index.field_name }}.
+func (t *{{ table.table_name }}) Contains{{ index.suffix }}(key {{ index.key_type }}) bool {
+	_, found := t.{{ index.map_name }}[key]
+	return found
+}
+{{~ end ~}}
 
 // Read loads the table from a .table file written by SheetMan.
 func (t *{{ table.table_name }}) Read(filename string) error {
@@ -101,14 +127,18 @@ func (t *{{ table.table_name }}) Read(filename string) error {
 		return fmt.Errorf("{{ table.raw_name }}: %w", err)
 	}
 
-	byIndex := make(map[int32]int, len(records))
+{{~ for index in table.indexes ~}}
+	{{ index.map_name }} := make(map[{{ index.key_type }}]int, len(records))
 	for i := range records {
-		byIndex[records[i].{{ table.index_field }}] = i
+		{{ index.map_name }}[records[i].{{ index.member }}] = i
 	}
 
-	// Published, now that every column read and the index is built.
+{{~ end ~}}
+	// Published, now that every column read and the indexes are built.
 	t.records = records
-	t.byIndex = byIndex
+{{~ for index in table.indexes ~}}
+	t.{{ index.map_name }} = {{ index.map_name }}
+{{~ end ~}}
 
 	return nil
 }

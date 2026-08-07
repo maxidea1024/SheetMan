@@ -48,6 +48,22 @@ export class Tables {
   }
 
   /**
+   * Read all tables from the binary export.
+   *
+   * The counterpart of `readAllSync`, and the one to use when the data is binary: reading a
+   * table on its own with `readBinarySync` leaves its references unlinked, because linking
+   * needs every table. Both formats produce the same values.
+   */
+  public readAllBinarySync(basePath: string, fileExtension: string = '.table'): void {
+    const offsetTable = new OffsetTableTable()
+    offsetTable.readBinarySync(path.join(basePath, `OffsetTable${fileExtension}`))
+    const secondTable = new SecondTableTable()
+    secondTable.readBinarySync(path.join(basePath, `SecondTable${fileExtension}`))
+
+    this.publish(offsetTable, secondTable)
+  }
+
+  /**
    * Publishes one whole load.
    *
    * Reading again - a refresh, a downloaded patch - loads into tables of its own and gets
@@ -62,6 +78,14 @@ export class Tables {
     this.solveCrossReferences()
   }
 
+  /**
+   * Turns the stored keys into the rows they name, once every table is in memory.
+   *
+   * A `foreign` column travels as the target row's primary key, so a table read on its own
+   * has the key and not the row - which is why this runs from `publish` and not from a
+   * table's own read. A zero means the sheet left the cell empty and is left unresolved.
+   */
   private solveCrossReferences(): void {
+    // No table references another.
   }
 }

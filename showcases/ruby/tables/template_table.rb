@@ -34,11 +34,67 @@ module X
     def initialize
       @records = []
       @by_index = {}
+      @by_operator = {}
     end
 
-    # The row with the given primary index, or nil when there is none.
-    def find(index)
-      @by_index[index]
+    # The row with this Index, or nil when the table has none.
+    #
+    # The lookup to reach for when a missing row is an ordinary answer - an optional
+    # reference, a key that came from user input.
+    def find_by_index(key)
+      @by_index[key]
+    end
+
+    # The row with this Index, or a raised error naming what was missing.
+    #
+    # For a key that has to be there - one from another table, or a constant. The name
+    # says it raises, because a caller reading `get_by_index(key).name` at a
+    # glance cannot otherwise tell whether the next line is a check or a rescue.
+    def get_by_index_or_throw(key)
+      record = @by_index[key]
+
+      if record.nil?
+        raise Sheetman::RecordNotFoundError,
+              "there is no record in table `Template` that corresponds to " \
+              "field `Index` value #{key.inspect}"
+      end
+
+      record
+    end
+
+    # Whether the table holds a row with this Index.
+    def contains_index?(key)
+      @by_index.key?(key)
+    end
+
+    # The row with this Operator, or nil when the table has none.
+    #
+    # The lookup to reach for when a missing row is an ordinary answer - an optional
+    # reference, a key that came from user input.
+    def find_by_operator(key)
+      @by_operator[key]
+    end
+
+    # The row with this Operator, or a raised error naming what was missing.
+    #
+    # For a key that has to be there - one from another table, or a constant. The name
+    # says it raises, because a caller reading `get_by_operator(key).name` at a
+    # glance cannot otherwise tell whether the next line is a check or a rescue.
+    def get_by_operator_or_throw(key)
+      record = @by_operator[key]
+
+      if record.nil?
+        raise Sheetman::RecordNotFoundError,
+              "there is no record in table `Template` that corresponds to " \
+              "field `Operator` value #{key.inspect}"
+      end
+
+      record
+    end
+
+    # Whether the table holds a row with this Operator.
+    def contains_operator?(key)
+      @by_operator.key?(key)
     end
 
     # Loads the table from a .table file written by SheetMan.
@@ -105,10 +161,12 @@ module X
       end
 
       by_index = records.to_h { |record| [record.index, record] }
+      by_operator = records.to_h { |record| [record.operator, record] }
 
       # Published, now that every column read.
       @records = records
       @by_index = by_index
+      @by_operator = by_operator
     end
   end
 end

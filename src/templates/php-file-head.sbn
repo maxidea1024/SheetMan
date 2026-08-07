@@ -26,5 +26,6 @@ namespace {{ namespace }};
 {{~ end ~}}
 
 use SheetMan\LiteBinaryReader;
+use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 

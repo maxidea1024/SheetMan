@@ -98,6 +98,33 @@ namespace SheetMan.Tests
                 items.GetProperty("categoryIndices").EnumerateArray().Select(e => e.GetInt32()).ToArray());
         }
 
+        /// <summary>
+        /// The accessor links references, from either format.
+        /// </summary>
+        /// <remarks>
+        /// It did not. `solveCrossReferences` was generated as an empty method, so nothing
+        /// ever called the `setReference_*_INTERNAL` methods sitting on every record: from
+        /// binary a reference stayed undefined, and from JSON it was assigned the raw key -
+        /// a number in a member declared as a row, which no type checker sees because the
+        /// declaration is what lies.
+        ///
+        /// Nothing caught it because the round-trip check read tables one at a time, where
+        /// being unlinked is correct, and compared the raw key rather than the row.
+        /// </remarks>
+        [Fact]
+        public void The_accessor_links_references_from_both_formats()
+        {
+            var result = RunRoundTrip();
+            Assert.True(result.Succeeded, result.Output);
+
+            var linked = JsonObjects(result.StdOut)
+                .First(o => o.TryGetProperty("linkedCategoryNames", out _));
+
+            Assert.Equal(new[] { "Weapon", "Armor", "Potion" },
+                linked.GetProperty("linkedCategoryNames")
+                      .EnumerateArray().Select(e => e.GetString()).ToArray());
+        }
+
         private static System.Collections.Generic.IEnumerable<JsonElement> JsonObjects(string output)
         {
             foreach (var line in output.Split('\n'))

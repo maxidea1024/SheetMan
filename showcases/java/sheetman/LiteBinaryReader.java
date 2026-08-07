@@ -68,6 +68,21 @@ public final class LiteBinaryReader {
     }
 
     /** A table file is truncated, malformed, or not a table file. */
+    /**
+     * A lookup for a key no row carries.
+     *
+     * Thrown by the generated getBy*OrThrow lookups, which is where a caller has said the
+     * key has to be there. findBy* answers the same question with null.
+     *
+     * Its own type rather than LiteBinaryException: nothing is wrong with the file, and a
+     * caller catching one of these is not catching the other.
+     */
+    public static final class RecordNotFoundException extends RuntimeException {
+        public RecordNotFoundException(String message) {
+            super(message);
+        }
+    }
+
     public static final class LiteBinaryException extends RuntimeException {
         public LiteBinaryException(String message) {
             super(message);

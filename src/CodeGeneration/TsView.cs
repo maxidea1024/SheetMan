@@ -37,6 +37,60 @@ namespace SheetMan.CodeGeneration
     internal sealed class TsTableSetView
     {
         public IReadOnlyList<TsTableSlotView> Tables { get; set; }
+
+        /// <summary>
+        /// Default extension of the binary data files, as the recipe told the exporter to
+        /// write them.
+        /// </summary>
+        public string BinaryFileExtension { get; set; }
+
+        /// <summary>
+        /// The tables holding reference columns, and what each one has to be linked to.
+        /// </summary>
+        /// <remarks>
+        /// Empty until now, and so was the method it renders: TypeScript generated the
+        /// `setReference_*_INTERNAL` methods and never called one, so `record.categoryId`
+        /// was the raw key from JSON or nothing at all from binary.
+        /// </remarks>
+        public IReadOnlyList<TsCrossReferenceView> CrossReferences { get; set; }
+    }
+
+    /// <summary>One table's reference columns, for the linking pass.</summary>
+    internal sealed class TsCrossReferenceView
+    {
+        /// <summary>The accessor member holding the table.</summary>
+        public string Table { get; set; }
+
+        public IReadOnlyList<TsReferenceFieldView> Fields { get; set; }
+    }
+
+    internal sealed class TsReferenceFieldView
+    {
+        /// <summary>The record's property name, which names the setter.</summary>
+        public string PropName { get; set; }
+
+        /// <summary>The record's backing member, which holds the key.</summary>
+        public string FieldName { get; set; }
+
+        /// <summary>The accessor member holding the table being pointed at.</summary>
+        public string RefTable { get; set; }
+
+        /// <summary>The referenced table's class name, which names the index member.</summary>
+        public string RefTableType { get; set; }
+
+        /// <summary>
+        /// The referenced table's throwing lookup, which is what a key resolves through.
+        /// </summary>
+        public string RefLookup { get; set; }
+
+        /// <summary>What the resolved reference yields: the row, or one of its fields.</summary>
+        public string Value { get; set; }
+
+        /// <summary>Whether the column is a fixed group of references rather than one.</summary>
+        public bool IsArray { get; set; }
+
+        /// <summary>How many, when it is a group.</summary>
+        public int ElementCount { get; set; }
     }
 
     internal sealed class TsTableSlotView

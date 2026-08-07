@@ -55,12 +55,15 @@ const tables = new Tables()
 tables.readAllSync('./data/json')
 await tables.readAll('./data/json')
 
-const sword = tables.item.find(1)
+const sword = tables.item.findByIndex(1)
 for (const row of tables.item.records) { /* ... */ }
 ```
 
 ```typescript
 // 바이너리에서 — 크기와 파싱 시간이 중요할 때
+tables.readAllBinarySync('./data/binary')
+
+// 테이블 하나만 (참조는 연결되지 않습니다)
 tables.item.readBinarySync('./data/binary/Item.table')
 
 // 파일 시스템이 없는 환경에서는 바이트를 직접
@@ -68,7 +71,7 @@ const bytes = new Uint8Array(await (await fetch(url)).arrayBuffer())
 tables.item.readBinaryFrom(bytes)
 ```
 
-`readAll`의 두 번째 인자로 확장자를 넘길 수 있습니다 (기본값 `.json`).
+두 번째 인자로 확장자를 넘길 수 있습니다 (`readAll`은 `.json`, `readAllBinarySync`는 recipe의 `BinaryTableFileExtension`).
 
 ## 주의사항
 
@@ -76,7 +79,7 @@ tables.item.readBinaryFrom(bytes)
 
 **바이너리 리더는 출력에 자동 포함됩니다.** 생성된 테이블이 상대 경로로 import하는데 TypeScript에는 include 경로 개념이 없어 소비자가 다른 곳을 가리킬 방법이 없습니다. 소스는 `lib/ts`와 공유되는 하나뿐이라 어긋날 수 없습니다.
 
-**테이블 하나만 바이너리로 읽으면 참조가 비어 있습니다.** 참조 연결은 `readAll`이 전부 읽은 뒤에 일어납니다.
+**테이블 하나만 읽으면 참조가 비어 있습니다.** 참조 연결은 접근자가 전부 읽은 뒤에 하므로, 참조가 필요하면 `readAll` / `readAllSync` / `readAllBinarySync`를 쓰세요. `readBinarySync`로 한 테이블만 읽으면 키(`_<필드>_<테이블>_index`)만 채워집니다.
 
 ## 트러블슈팅
 

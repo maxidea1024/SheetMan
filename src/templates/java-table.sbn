@@ -3,7 +3,9 @@
 /** Every row of {{ table.raw_name }}. */
 public final class {{ table.table_name }} {
     private List<{{ table.record_name }}> records = new ArrayList<>();
-    private Map<Integer, {{ table.record_name }}> byIndex = new HashMap<>();
+{{~ for index in table.indexes ~}}
+    private Map<{{ index.key_type }}, {{ table.record_name }}> {{ index.map_name }} = new HashMap<>();
+{{~ end ~}}
 
     /**
      * Every row, in the order the sheet declared them.
@@ -14,11 +16,41 @@ public final class {{ table.table_name }} {
     public List<{{ table.record_name }}> records() {
         return records;
     }
-
-    /** The row with the given primary index, or null when there is none. */
-    public {{ table.record_name }} find(int index) {
-        return byIndex.get(index);
+{{~ for index in table.indexes }}
+    /**
+     * The row with this {{ index.field_name }}, or null when the table has none.
+     *
+     * The lookup to reach for when a missing row is an ordinary answer - an optional
+     * reference, a key that came from user input.
+     */
+    public {{ table.record_name }} findBy{{ index.suffix }}({{ index.key_param }} key) {
+        return {{ index.map_name }}.get(key);
     }
+
+    /**
+     * The row with this {{ index.field_name }}, or a thrown exception naming what was missing.
+     *
+     * For a key that has to be there - one from another table, or a constant. The name says
+     * it throws, because a caller reading getBy{{ index.suffix }}(key).name() at a glance
+     * cannot otherwise tell whether the next line is a null check or a catch.
+     */
+    public {{ table.record_name }} getBy{{ index.suffix }}OrThrow({{ index.key_param }} key) {
+        {{ table.record_name }} record = {{ index.map_name }}.get(key);
+
+        if (record == null) {
+            throw new LiteBinaryReader.RecordNotFoundException(
+                "there is no record in table `{{ table.raw_name }}` that corresponds to field "
+                + "`{{ index.field_name }}` value " + key);
+        }
+
+        return record;
+    }
+
+    /** Whether the table holds a row with this {{ index.field_name }}. */
+    public boolean contains{{ index.suffix }}({{ index.key_param }} key) {
+        return {{ index.map_name }}.containsKey(key);
+    }
+{{~ end ~}}
 
     /** Loads the table from a .table file written by SheetMan. */
     /**
@@ -33,7 +65,9 @@ public final class {{ table.table_name }} {
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<{{ table.record_name }}> loaded = new ArrayList<>(count);
-        Map<Integer, {{ table.record_name }}> loadedByIndex = new HashMap<>(count * 2);
+{{~ for index in table.indexes ~}}
+        Map<{{ index.key_type }}, {{ table.record_name }}> loadedBy{{ index.suffix }} = new HashMap<>(count * 2);
+{{~ end ~}}
 
         for (int i = 0; i < count; i++) {
             loaded.add(new {{ table.record_name }}());
@@ -83,11 +117,15 @@ public final class {{ table.table_name }} {
         }
 
         for ({{ table.record_name }} record : loaded) {
-            loadedByIndex.put(record.{{ table.index_field }}, record);
+{{~ for index in table.indexes ~}}
+            loadedBy{{ index.suffix }}.put(record.{{ index.member }}, record);
+{{~ end ~}}
         }
 
         // Published, now that every column read.
         records = loaded;
-        byIndex = loadedByIndex;
+{{~ for index in table.indexes ~}}
+        {{ index.map_name }} = loadedBy{{ index.suffix }};
+{{~ end ~}}
     }
 }

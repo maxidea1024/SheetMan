@@ -83,10 +83,33 @@ namespace SheetMan.CodeGeneration
         public string Location { get; set; }
         public IReadOnlyList<string> Comment { get; set; }
 
-        /// <summary>Name of the primary index member.</summary>
-        public string IndexField { get; set; }
+        /// <summary>
+        /// The indexed fields: the sheet's first column plus every one marked with `*`.
+        /// </summary>
+        public IReadOnlyList<GoIndexView> Indexes { get; set; }
 
         public IReadOnlyList<GoFieldView> Fields { get; set; }
+    }
+
+    /// <summary>
+    /// One indexed field, and the lookups generated for it.
+    /// </summary>
+    internal sealed class GoIndexView
+    {
+        /// <summary>The record member holding the key.</summary>
+        public string Member { get; set; }
+
+        /// <summary>What the lookup names end in - `Index` gives `FindByIndex`.</summary>
+        public string Suffix { get; set; }
+
+        /// <summary>The key's Go type.</summary>
+        public string KeyType { get; set; }
+
+        /// <summary>The table member holding the map from key to row position.</summary>
+        public string MapName { get; set; }
+
+        /// <summary>The field as the sheet spells it, for the error message.</summary>
+        public string FieldName { get; set; }
     }
 
     internal sealed class GoFieldView
@@ -150,6 +173,10 @@ namespace SheetMan.CodeGeneration
     {
         public string Name { get; set; }
         public string RefTable { get; set; }
+
+        /// <summary>The referenced table's primary lookup, which is what a key resolves through.</summary>
+        public string RefLookup { get; set; }
+
         public string Value { get; set; }
         public bool IsArray { get; set; }
     }

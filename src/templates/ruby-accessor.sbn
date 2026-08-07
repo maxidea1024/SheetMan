@@ -49,11 +49,11 @@
 {{~ for field in reference.fields ~}}
 {{~ if field.is_array ~}}
         record.{{ field.name }}_index.each_with_index do |index, position|
-          target = {{ field.ref_table }}.find(index)
+          target = {{ field.ref_table }}.{{ field.ref_lookup }}(index)
           record.{{ field.name }}[position] = {{ field.value }} unless target.nil?
         end
 {{~ else ~}}
-        target = {{ field.ref_table }}.find(record.{{ field.name }}_index)
+        target = {{ field.ref_table }}.{{ field.ref_lookup }}(record.{{ field.name }}_index)
         record.{{ field.name }} = {{ field.value }} unless target.nil?
 {{~ end ~}}
 {{~ end ~}}

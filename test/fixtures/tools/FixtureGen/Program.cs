@@ -712,7 +712,11 @@ namespace SheetMan.FixtureGen
                 .Field(FieldSpec.Of("Class", "string", "class: keyword in C++ and C#"))
                 .Field(FieldSpec.Of("Int", "int", "int: keyword in C++ and C#"))
                 .Field(FieldSpec.Of("Delete", "bool", "delete: keyword in C++"))
-                .Field(FieldSpec.Of("Operator", "string", "operator: keyword in C++"))
+                // A secondary index, and a string-keyed one. The generated lookups take
+                // their key type from the field, so a table whose only index is the int
+                // primary never compiles the other half of that - and every language but
+                // C# and TypeScript went years without emitting a secondary index at all.
+                .Field(FieldSpec.Of("*Operator", "string", "operator: keyword in C++, and a secondary index"))
                 .Field(FieldSpec.Of("Namespace", "string", "namespace: keyword in C++ and C#"))
                 .Field(FieldSpec.Of("Constructor", "string", "constructor: special member in TypeScript"))
                 .Field(FieldSpec.Of("Function", "string", "function: keyword in TypeScript"));
