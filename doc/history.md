@@ -128,18 +128,18 @@ v1.2.0 is 4f2a9c1b8e33, which no conversion ever ran on. Using 8b1d7e40a2f5, the
 demo-uwo / main
   c001 .. (head)
 
-c002  2026-07-22 14:03  박밸런스 <park@motifgames.com>
+c002  2026-07-22 14:03  박밸런스 <park@example.com>
     ~ Item[1].Price  100 -> 120    sheets/core.xlsx : Refs : O9
 
-c003  2026-07-24 09:41  박밸런스 <park@motifgames.com>
+c003  2026-07-24 09:41  박밸런스 <park@example.com>
     ~ Item[2].Price  250 -> 230    sheets/core.xlsx : Refs : O10
     ~ Item[3].Description  Restores 10 HP <or> 5 MP -> HP 10 또는 MP 5 회복    sheets/core.xlsx : Refs : N11
     ~ Item[3].Price  50 -> 40    sheets/core.xlsx : Refs : O11
 
-c004  2026-07-28 16:20  이시스템 <lee@motifgames.com>
+c004  2026-07-28 16:20  이시스템 <lee@example.com>
     ~ field      Item.Price -> ShopPrice  (renamed, 3 row(s) carried over)
 
-c005  2026-07-30 11:05  김기획 <kim@motifgames.com>
+c005  2026-07-30 11:05  김기획 <kim@example.com>
     - Item[3].Name  Small Potion -> (blank)
     - Item[3].ShopPrice  40 -> (blank)
     ...
@@ -167,7 +167,7 @@ CLI와 API가 **같은 문서를 같은 직렬화기로** 내보냅니다. 아�
   "snapshots": [
     {
       "commit": "c004", "shortCommit": "c004",
-      "authorName": "이시스템", "authorEmail": "lee@motifgames.com",
+      "authorName": "이시스템", "authorEmail": "lee@example.com",
       "committedAt": "2026-07-28T07:20:00.0000000Z", "subject": null,
       "followsParent": true, "previousCommit": "c003",
       "attributable": true, "pruned": false,

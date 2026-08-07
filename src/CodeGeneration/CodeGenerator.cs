@@ -4,159 +4,155 @@ using System.IO;
 using SheetMan.Helpers;
 using SheetMan.Targets;
 
-namespace SheetMan.CodeGeneration
+namespace SheetMan.CodeGeneration;
+
+/// <summary>
+/// What every code-generation target does the same way.
+///
+/// Two methods, and both used to be copied into each generator. Neither is interesting,
+/// which is the point: thirteen copies of an uninteresting method are thirteen places for
+/// one of them to drift, and nothing reports it. The Unreal generator's copy of the reader
+/// writer pointed at the C++ reader for months, which is how it came to ship an Unreal
+/// module full of std::string.
+///
+/// What is genuinely per-language stays in the generator: the file layout, the type names,
+/// the escaping, the reader calls. This is only the plumbing they share.
+///
+/// Three generators keep their own <c>CommentLines</c> because theirs is not this one, and
+/// they are worth naming so nobody folds them in later on the strength of the signature:
+///
+///   TypeScript wraps the whole comment in `/** ... */` and runs its lines together.
+///
+///   Python maps each line through its own doc escaping.
+///
+///   C# tests <c>IsNullOrEmpty</c> rather than <c>IsNullOrWhiteSpace</c>, so a comment of
+///   nothing but spaces reaches its template as one blank line instead of none.
+///
+/// The last of those is a difference of two words and shows up as one blank line in one
+/// generated file. Which is the reason this list exists rather than a note saying the
+/// methods are all the same.
+/// </summary>
+public abstract class CodeGenerator<TRecipe> : Target<TRecipe>
+    where TRecipe : class, IOutputRecipe
 {
     /// <summary>
-    /// What every code-generation target does the same way.
+    /// A sheet comment split into the lines a comment block needs.
     ///
-    /// Two methods, and both used to be copied into each generator. Neither is interesting,
-    /// which is the point: thirteen copies of an uninteresting method are thirteen places for
-    /// one of them to drift, and nothing reports it. The Unreal generator's copy of the reader
-    /// writer pointed at the C++ reader for months, which is how it came to ship an Unreal
-    /// module full of std::string.
-    ///
-    /// What is genuinely per-language stays in the generator: the file layout, the type names,
-    /// the escaping, the reader calls. This is only the plumbing they share.
-    ///
-    /// Three generators keep their own <c>CommentLines</c> because theirs is not this one, and
-    /// they are worth naming so nobody folds them in later on the strength of the signature:
-    ///
-    ///   TypeScript wraps the whole comment in `/** ... */` and runs its lines together.
-    ///
-    ///   Python maps each line through its own doc escaping.
-    ///
-    ///   C# tests <c>IsNullOrEmpty</c> rather than <c>IsNullOrWhiteSpace</c>, so a comment of
-    ///   nothing but spaces reaches its template as one blank line instead of none.
-    ///
-    /// The last of those is a difference of two words and shows up as one blank line in one
-    /// generated file. Which is the reason this list exists rather than a note saying the
-    /// methods are all the same.
+    /// Line endings are normalized because a comment typed into Excel on Windows carries
+    /// CRLF, and a template emitting it verbatim after a `//` leaves a stray blank line in
+    /// the generated file.
     /// </summary>
-    public abstract class CodeGenerator<TRecipe> : Target<TRecipe>
-        where TRecipe : class, IOutputRecipe
+    protected static IReadOnlyList<string> CommentLines(string comment)
     {
-        /// <summary>
-        /// A sheet comment split into the lines a comment block needs.
-        ///
-        /// Line endings are normalized because a comment typed into Excel on Windows carries
-        /// CRLF, and a template emitting it verbatim after a `//` leaves a stray blank line in
-        /// the generated file.
-        /// </summary>
-        protected static IReadOnlyList<string> CommentLines(string comment)
+        if (string.IsNullOrWhiteSpace(comment))
+            return Array.Empty<string>();
+
+        return comment.Replace("\r\n", "\n").Split('\n');
+    }
+
+    /// <summary>
+    /// Writes the language's binary reader beside the generated code.
+    /// </summary>
+    /// <remarks>
+    /// From an embedded resource rather than from `lib/` on disk, so what a published
+    /// build writes cannot differ from what is committed - and so a generated output tree
+    /// is self-contained: nothing to install, no include path to set, and no chance of a
+    /// consumer pairing generated code with a reader of a different vintage.
+    /// </remarks>
+    /// <param name="resourceName">Logical name, as SheetMan.csproj declares it.</param>
+    /// <param name="path">Where to write it. Made absolute here.</param>
+    protected void WriteBinaryReaderRuntime(string resourceName, string path)
+    {
+        using var stream = GetType().Assembly.GetManifestResourceStream(resourceName);
+
+        if (stream == null)
+            throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
+
+        using var reader = new StreamReader(stream);
+
+        StagingFiles.WriteAllTextToFile(Path.GetFullPath(path), Marked(reader.ReadToEnd(), path));
+    }
+
+    /// <summary>
+    /// Puts the sweep's marker at the top of a runtime file.
+    /// </summary>
+    /// <remarks>
+    /// Runtime files are copied out of `lib/` verbatim, and until now that meant they
+    /// arrived without the `Generated by SheetMan` header every other emitted file
+    /// carries. The marker is what gives the sweep permission to remove a file, so
+    /// without it a runtime file this tool stopped writing stayed in the consumer's
+    /// project forever - which is exactly what happened when `lite_binary_reader.ts`
+    /// was renamed to `lite-binary-reader.ts` and both were left sitting there.
+    ///
+    /// Added here rather than in `lib/`, because the file in `lib/` is not generated. It
+    /// is the source, it is edited and reviewed, and a header claiming otherwise would
+    /// be a lie told to every person who opens it.
+    /// </remarks>
+    private static string Marked(string contents, string path)
+    {
+        // Some runtime files say it already, in a banner of their own. Saying it twice
+        // would be noise, and the sweep only needs to find it once.
+        if (GeneratedFileMarker.HeadIsMarked(contents))
+            return contents;
+
+        string extension = Path.GetExtension(path).ToLowerInvariant();
+        string comment = extension == ".py" || extension == ".rb" ? "#" : "//";
+
+        string banner = string.Join("\n", new[]
         {
-            if (string.IsNullOrWhiteSpace(comment))
-                return Array.Empty<string>();
+            $"{comment} ------------------------------------------------------------------------------",
+            $"{comment} Written here by SheetMan. {GeneratedFileMarker.TextWithWarning}",
+            $"{comment}",
+            $"{comment} The runtime, copied in beside the generated code so the output is",
+            $"{comment} self-contained. Edit it in the SheetMan repository, not here: this file is",
+            $"{comment} rewritten on every run, and the header above is what lets a later run remove",
+            $"{comment} it if it ever moves.",
+            $"{comment} ------------------------------------------------------------------------------",
+            "",
+            "",
+        });
 
-            return comment.Replace("\r\n", "\n").Split('\n');
-        }
+        // Two first lines cannot have anything put in front of them: `<?php`, because
+        // PHP prints whatever precedes it, and Ruby's `frozen_string_literal`, which
+        // stops being a magic comment if it is not the first one. The banner goes after
+        // either, which the sweep's marker window is wide enough to still see.
+        bool afterFirstLine =
+            contents.StartsWith("<?php", StringComparison.Ordinal)
+            || contents.StartsWith("# frozen_string_literal:", StringComparison.Ordinal);
 
-        /// <summary>
-        /// Writes the language's binary reader beside the generated code.
-        /// </summary>
-        /// <remarks>
-        /// From an embedded resource rather than from `lib/` on disk, so what a published
-        /// build writes cannot differ from what is committed - and so a generated output tree
-        /// is self-contained: nothing to install, no include path to set, and no chance of a
-        /// consumer pairing generated code with a reader of a different vintage.
-        /// </remarks>
-        /// <param name="resourceName">Logical name, as SheetMan.csproj declares it.</param>
-        /// <param name="path">Where to write it. Made absolute here.</param>
-        protected void WriteBinaryReaderRuntime(string resourceName, string path)
+        if (afterFirstLine)
         {
-            using var stream = GetType().Assembly.GetManifestResourceStream(resourceName);
+            int firstBreak = contents.IndexOf('\n');
 
-            if (stream == null)
-                throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
-
-            using var reader = new StreamReader(stream);
-
-            StagingFiles.WriteAllTextToFile(Path.GetFullPath(path), Marked(reader.ReadToEnd(), path));
-        }
-
-        /// <summary>
-        /// Puts the sweep's marker at the top of a runtime file.
-        /// </summary>
-        /// <remarks>
-        /// Runtime files are copied out of `lib/` verbatim, and until now that meant they
-        /// arrived without the `Generated by SheetMan` header every other emitted file
-        /// carries. The marker is what gives the sweep permission to remove a file, so
-        /// without it a runtime file this tool stopped writing stayed in the consumer's
-        /// project forever - which is exactly what happened when `lite_binary_reader.ts`
-        /// was renamed to `lite-binary-reader.ts` and both were left sitting there.
-        ///
-        /// Added here rather than in `lib/`, because the file in `lib/` is not generated. It
-        /// is the source, it is edited and reviewed, and a header claiming otherwise would
-        /// be a lie told to every person who opens it.
-        /// </remarks>
-        private static string Marked(string contents, string path)
-        {
-            // Some runtime files say it already, in a banner of their own. Saying it twice
-            // would be noise, and the sweep only needs to find it once.
-            const int markerWindow = 1024;
-
-            if (contents.Substring(0, Math.Min(markerWindow, contents.Length))
-                        .IndexOf("Generated by SheetMan", StringComparison.OrdinalIgnoreCase) >= 0)
-                return contents;
-
-            string extension = Path.GetExtension(path).ToLowerInvariant();
-            string comment = extension == ".py" || extension == ".rb" ? "#" : "//";
-
-            string banner = string.Join("\n", new[]
+            if (firstBreak >= 0)
             {
-                $"{comment} ------------------------------------------------------------------------------",
-                $"{comment} Written here by SheetMan. Generated by SheetMan - DO NOT EDIT.",
-                $"{comment}",
-                $"{comment} The runtime, copied in beside the generated code so the output is",
-                $"{comment} self-contained. Edit it in the SheetMan repository, not here: this file is",
-                $"{comment} rewritten on every run, and the header above is what lets a later run remove",
-                $"{comment} it if it ever moves.",
-                $"{comment} ------------------------------------------------------------------------------",
-                "",
-                "",
-            });
-
-            // Two first lines cannot have anything put in front of them: `<?php`, because
-            // PHP prints whatever precedes it, and Ruby's `frozen_string_literal`, which
-            // stops being a magic comment if it is not the first one. The banner goes after
-            // either, which the sweep's marker window is wide enough to still see.
-            bool afterFirstLine =
-                contents.StartsWith("<?php", StringComparison.Ordinal)
-                || contents.StartsWith("# frozen_string_literal:", StringComparison.Ordinal);
-
-            if (afterFirstLine)
-            {
-                int firstBreak = contents.IndexOf('\n');
-
-                if (firstBreak >= 0)
-                {
-                    return contents.Substring(0, firstBreak + 1)
-                           + "\n" + banner
-                           + contents.Substring(firstBreak + 1).TrimStart('\n');
-                }
+                return contents.Substring(0, firstBreak + 1)
+                       + "\n" + banner
+                       + contents.Substring(firstBreak + 1).TrimStart('\n');
             }
-
-            return banner + contents;
         }
 
-        /// <summary>
-        /// Asks for the generated files this run did not write to be removed from
-        /// <paramref name="directory"/> once the run commits.
-        /// </summary>
-        /// <remarks>
-        /// Every target that writes a file per table needs this, and a target that writes one
-        /// file wants it too the day it stops: delete a table from the sheets and its file
-        /// stays behind, naming types nothing declares any more.
-        ///
-        /// Only files carrying this tool's own header are removed, so a target pointed at a
-        /// directory holding somebody's own source cannot delete any of it. Which is why this
-        /// is on by default and <c>Sweep: false</c> in a recipe entry turns it off - the option
-        /// exists for a consumer who edits the output, and editing generated files is a
-        /// decision that deserves a line in a recipe.
-        /// </remarks>
-        protected static void SweepStaleOutput(string directory, bool sweep)
-        {
-            if (sweep && !string.IsNullOrEmpty(directory))
-                StagingFiles.SweepDirectory(directory);
-        }
+        return banner + contents;
+    }
+
+    /// <summary>
+    /// Asks for the generated files this run did not write to be removed from
+    /// <paramref name="directory"/> once the run commits.
+    /// </summary>
+    /// <remarks>
+    /// Every target that writes a file per table needs this, and a target that writes one
+    /// file wants it too the day it stops: delete a table from the sheets and its file
+    /// stays behind, naming types nothing declares any more.
+    ///
+    /// Only files carrying this tool's own header are removed, so a target pointed at a
+    /// directory holding somebody's own source cannot delete any of it. Which is why this
+    /// is on by default and <c>Sweep: false</c> in a recipe entry turns it off - the option
+    /// exists for a consumer who edits the output, and editing generated files is a
+    /// decision that deserves a line in a recipe.
+    /// </remarks>
+    protected static void SweepStaleOutput(string directory, bool sweep)
+    {
+        if (sweep && !string.IsNullOrEmpty(directory))
+            StagingFiles.SweepDirectory(directory);
     }
 }

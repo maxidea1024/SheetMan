@@ -1,17 +1,16 @@
-namespace SheetMan.Models
+namespace SheetMan.Models;
+
+/// <summary>
+/// Where a sheet was read from.
+/// </summary>
+public enum SourceSheetsType
 {
-    /// <summary>
-    /// Where a sheet was read from.
-    /// </summary>
-    public enum SourceSheetsType
-    {
-        /// <summary>Not set.</summary>
-        None,
+    /// <summary>Not set.</summary>
+    None,
 
-        /// <summary>An Excel workbook on disk.</summary>
-        Xlsx,
+    /// <summary>An Excel workbook on disk.</summary>
+    Xlsx,
 
-        /// <summary>A Google Sheets document fetched over the API.</summary>
-        GoogleSheets,
-    }
+    /// <summary>A Google Sheets document fetched over the API.</summary>
+    GoogleSheets,
 }

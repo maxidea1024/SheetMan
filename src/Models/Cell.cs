@@ -1,14 +1,13 @@
-﻿using SheetMan.Models.Raw;
+using SheetMan.Models.Raw;
 
-namespace SheetMan.Models
+namespace SheetMan.Models;
+
+/// <summary>Cell</summary>
+public class Cell
 {
-    /// <summary>Cell</summary>
-    public class Cell
-    {
-        /// <summary>Raw cell</summary>
-        public RawCell RawCell { get; set; }
+    /// <summary>Raw cell</summary>
+    public RawCell RawCell { get; set; }
 
-        /// <summary>Imported value</summary>
-        public object Value { get; set; }
-    }
+    /// <summary>Imported value</summary>
+    public object Value { get; set; }
 }

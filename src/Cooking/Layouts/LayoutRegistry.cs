@@ -4,96 +4,95 @@ using System.Linq;
 using System.Reflection;
 using Serilog;
 
-namespace SheetMan.Cooking.Layouts
+namespace SheetMan.Cooking.Layouts;
+
+/// <summary>One registered layout parser and what its attribute declared.</summary>
+public sealed class LayoutDescriptor
 {
-    /// <summary>One registered layout parser and what its attribute declared.</summary>
-    public sealed class LayoutDescriptor
+    internal LayoutDescriptor(string id, string summary, Type type)
     {
-        internal LayoutDescriptor(string id, string summary, Type type)
-        {
-            Id = id;
-            Summary = summary;
-            Type = type;
-        }
-
-        /// <summary>Stable short name, such as `sheetman` or `rescue`.</summary>
-        public string Id { get; }
-
-        /// <summary>One line on what the layout is.</summary>
-        public string Summary { get; }
-
-        private Type Type { get; }
-
-        /// <summary>
-        /// Builds a parser for one run.
-        /// </summary>
-        /// <remarks>
-        /// A new instance each time rather than a shared one: a parser keeps what it scanned
-        /// between its two passes, and two runs in one process - which the test suite does
-        /// constantly - would otherwise see each other's sheets.
-        /// </remarks>
-        public ILayoutParser CreateParser() => (ILayoutParser)Activator.CreateInstance(Type);
-
-        public override string ToString() => Id;
+        Id = id;
+        Summary = summary;
+        Type = type;
     }
 
+    /// <summary>Stable short name, such as `sheetman` or `rescue`.</summary>
+    public string Id { get; }
+
+    /// <summary>One line on what the layout is.</summary>
+    public string Summary { get; }
+
+    private Type Type { get; }
+
     /// <summary>
-    /// Every layout parser in this assembly, found by attribute.
+    /// Builds a parser for one run.
     /// </summary>
-    public static class LayoutRegistry
+    /// <remarks>
+    /// A new instance each time rather than a shared one: a parser keeps what it scanned
+    /// between its two passes, and two runs in one process - which the test suite does
+    /// constantly - would otherwise see each other's sheets.
+    /// </remarks>
+    public ILayoutParser CreateParser() => (ILayoutParser)Activator.CreateInstance(Type);
+
+    public override string ToString() => Id;
+}
+
+/// <summary>
+/// Every layout parser in this assembly, found by attribute.
+/// </summary>
+public static class LayoutRegistry
+{
+    private static readonly Lazy<IReadOnlyList<LayoutDescriptor>> LazyAll =
+        new Lazy<IReadOnlyList<LayoutDescriptor>>(Discover);
+
+    /// <summary>All registered layouts, ordered by id.</summary>
+    public static IReadOnlyList<LayoutDescriptor> All => LazyAll.Value;
+
+    /// <summary>Ids of every registered layout, for help text and error messages.</summary>
+    public static string KnownIds => string.Join(", ", All.Select(d => d.Id));
+
+    /// <summary>
+    /// Finds the layout a sheet asks for, or throws naming the ones that exist.
+    /// </summary>
+    public static LayoutDescriptor Get(string id)
     {
-        private static readonly Lazy<IReadOnlyList<LayoutDescriptor>> LazyAll =
-            new Lazy<IReadOnlyList<LayoutDescriptor>>(Discover);
+        var found = All.FirstOrDefault(d => string.Equals(d.Id, id, StringComparison.OrdinalIgnoreCase));
+        if (found != null)
+            return found;
 
-        /// <summary>All registered layouts, ordered by id.</summary>
-        public static IReadOnlyList<LayoutDescriptor> All => LazyAll.Value;
+        throw new SheetManException(
+            $"A recipe source asks for the sheet layout `{id}`, which does not exist. " +
+            $"Use one of: {KnownIds}.");
+    }
 
-        /// <summary>Ids of every registered layout, for help text and error messages.</summary>
-        public static string KnownIds => string.Join(", ", All.Select(d => d.Id));
+    private static IReadOnlyList<LayoutDescriptor> Discover()
+    {
+        var descriptors = new List<LayoutDescriptor>();
 
-        /// <summary>
-        /// Finds the layout a sheet asks for, or throws naming the ones that exist.
-        /// </summary>
-        public static LayoutDescriptor Get(string id)
+        foreach (var type in typeof(LayoutRegistry).Assembly.GetTypes())
         {
-            var found = All.FirstOrDefault(d => string.Equals(d.Id, id, StringComparison.OrdinalIgnoreCase));
-            if (found != null)
-                return found;
+            var attribute = type.GetCustomAttribute<SheetManLayoutAttribute>();
+            if (attribute == null)
+                continue;
 
-            throw new SheetManException(
-                $"A recipe source asks for the sheet layout `{id}`, which does not exist. " +
-                $"Use one of: {KnownIds}.");
-        }
-
-        private static IReadOnlyList<LayoutDescriptor> Discover()
-        {
-            var descriptors = new List<LayoutDescriptor>();
-
-            foreach (var type in typeof(LayoutRegistry).Assembly.GetTypes())
+            if (type.IsAbstract || !typeof(ILayoutParser).IsAssignableFrom(type))
             {
-                var attribute = type.GetCustomAttribute<SheetManLayoutAttribute>();
-                if (attribute == null)
-                    continue;
-
-                if (type.IsAbstract || !typeof(ILayoutParser).IsAssignableFrom(type))
-                {
-                    throw new SheetManException(
-                        $"`{type.Name}` is marked [SheetManLayout] but is not a concrete {nameof(ILayoutParser)}.");
-                }
-
-                descriptors.Add(new LayoutDescriptor(attribute.Id, attribute.Summary, type));
+                throw new SheetManException(
+                    $"`{type.Name}` is marked [SheetManLayout] but is not a concrete {nameof(ILayoutParser)}.");
             }
 
-            var duplicate = descriptors.GroupBy(d => d.Id, StringComparer.OrdinalIgnoreCase)
-                                       .FirstOrDefault(g => g.Count() > 1);
-            if (duplicate != null)
-                throw new SheetManException($"Two layouts both claim the id `{duplicate.Key}`.");
-
-            descriptors.Sort((left, right) => string.CompareOrdinal(left.Id, right.Id));
-
-            Log.Debug($"Registered {descriptors.Count} layout(s): {string.Join(", ", descriptors.Select(d => d.Id))}");
-
-            return descriptors;
+            descriptors.Add(new LayoutDescriptor(attribute.Id, attribute.Summary, type));
         }
+
+        var duplicate = descriptors.GroupBy(d => d.Id, StringComparer.OrdinalIgnoreCase)
+                                   .FirstOrDefault(g => g.Count() > 1);
+        if (duplicate != null)
+            throw new SheetManException($"Two layouts both claim the id `{duplicate.Key}`.");
+
+        descriptors.Sort((left, right) => string.CompareOrdinal(left.Id, right.Id));
+
+        Log.Debug($"Registered {descriptors.Count} layout(s): {string.Join(", ", descriptors.Select(d => d.Id))}");
+
+        return descriptors;
     }
 }

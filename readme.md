@@ -62,11 +62,33 @@
 
 ### 설치
 
-`SheetMan`은 `.NET 10` 기반입니다. 각 운영체제에 맞는 [.NET SDK](https://dotnet.microsoft.com/download)를 설치하세요. SDK 버전은 리포지토리 루트의 `global.json`에 고정되어 있습니다.
+[릴리즈](https://github.com/maxidea1024/SheetMan/releases)에서 내려받아 압축을 풀면 끝입니다. **.NET을 설치하지 않아도 됩니다** — 런타임이 실행 파일 안에 들어 있습니다.
+
+|플랫폼|파일|
+|--|--|
+|Linux|`sheetman-<버전>-linux-x64.tar.gz` · `linux-arm64`|
+|Windows|`sheetman-<버전>-win-x64.zip` · `win-arm64`|
+|macOS|`sheetman-<버전>-osx-x64.tar.gz` · `osx-arm64` (애플 실리콘)|
+
+`SHA256SUMS`로 받은 파일을 확인할 수 있습니다.
+
+```
+sha256sum -c SHA256SUMS --ignore-missing
+```
+
+> macOS는 서명되지 않은 바이너리를 격리합니다. 한 번만 풀어주면 됩니다.
+> `xattr -d com.apple.quarantine sheetman`
+
+<details>
+<summary>소스에서 빌드하기</summary>
+
+`.NET 10 SDK`가 필요합니다. 버전은 저장소 루트의 `global.json`에 고정되어 있습니다.
 
 ```
 dotnet build SheetMan.slnx -c Release
 ```
+
+</details>
 
 ### 실행
 

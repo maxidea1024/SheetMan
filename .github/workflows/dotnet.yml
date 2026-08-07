@@ -138,8 +138,8 @@ jobs:
 
       - name: Run the published binary
         run: |
-          ./published/SheetMan --recipe test/fixtures/recipes/core.json --silent
-          ./published/SheetMan --new-recipe "$RUNNER_TEMP/recipe.json"
+          ./published/sheetman --recipe test/fixtures/recipes/core.json --silent
+          ./published/sheetman --new-recipe "$RUNNER_TEMP/recipe.json"
 
           # Nothing beside the executable but its native dependencies: a stray .pdb here
           # was 83 MB, more than everything else together.

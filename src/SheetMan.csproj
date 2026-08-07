@@ -6,8 +6,21 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyName>SheetMan</AssemblyName>
+    <!--
+      Lower case, because this is what somebody types. The same `sheetman` on every
+      platform, rather than a name whose capitals have to be remembered on the two where
+      the shell cares about them.
+    -->
+    <AssemblyName>sheetman</AssemblyName>
     <RootNamespace>SheetMan</RootNamespace>
+
+    <!--
+      What a build with no version told to it reports. The release workflow overrides it
+      with the tag, so the version option and the `toolVersion` recorded in every summary
+      and history snapshot name the release a binary came from. A local build says 0.0.0
+      rather than claiming to be 1.0.0, which is what the SDK default did.
+    -->
+    <Version>0.0.0</Version>
 
     <!--
       NPOI 2.7+ warns on every build unless the OSMF licence is accepted explicitly.

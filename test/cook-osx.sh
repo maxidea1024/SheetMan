@@ -1,2 +1,2 @@
 #!/bin/bash
-../bin/SheetMan-osx --recipe recipe.json
+../bin/sheetman --recipe recipe.json
