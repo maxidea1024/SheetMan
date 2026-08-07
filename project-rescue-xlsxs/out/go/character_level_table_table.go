@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// CharacterLevelTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : CharacterLevelTable : A1.
+// CharacterLevelTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1.
 type CharacterLevelTableRecord struct {
 	// Index
 	Id int32

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// StatType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : I2.
+// StatType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : I2.
 // 스텟
 type StatType int32
 

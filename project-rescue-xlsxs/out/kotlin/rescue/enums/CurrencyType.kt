@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : S2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : S2
 /** 타입 */
 enum class CurrencyType(val value: Int) {
     /** 없음 */

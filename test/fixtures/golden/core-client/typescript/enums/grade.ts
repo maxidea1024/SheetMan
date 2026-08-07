@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Enums : G2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Enums : G2
 /** Item grade. Deliberately omits a zero entry. */
 export enum Grade {
   /** None (automatically inserted by SheetMan) */

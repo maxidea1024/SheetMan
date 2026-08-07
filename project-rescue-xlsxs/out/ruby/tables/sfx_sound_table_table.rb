@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1
+  # Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
   class SFXSoundTableRecord
     attr_accessor :id, :name, :category, :path, :preload_group, :description
 

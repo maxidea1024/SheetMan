@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveRangeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveRangeTable : A1
 public final class CostCurveRangeTableRecord {
     /** 숫자 */
     public int id;

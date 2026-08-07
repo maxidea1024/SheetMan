@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
 class ConfigTableRecord {
   /// Row number, added by SheetMan because `Id` cannot be a primary index.
   int index = 0;

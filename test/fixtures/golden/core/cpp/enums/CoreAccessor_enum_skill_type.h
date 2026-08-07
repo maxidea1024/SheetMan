@@ -14,7 +14,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Enums : L2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Enums : L2
 /// Declared in snake_case on purpose.
 enum class SkillType : std::int32_t {
   /// no skill

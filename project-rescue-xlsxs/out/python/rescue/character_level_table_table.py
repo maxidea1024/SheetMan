@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class CharacterLevelTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : CharacterLevelTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1.
     """
 
     __slots__ = ("id", "name", "name_kr", "level", "character_exp", "accumulated_exp", "atk_growth", "def_growth", "hp_growth")

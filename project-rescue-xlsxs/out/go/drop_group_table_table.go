@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// DropGroupTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : DropGroupTable : A1.
+// DropGroupTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1.
 type DropGroupTableRecord struct {
 	// 기본값
 	Id int32

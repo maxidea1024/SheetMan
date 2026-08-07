@@ -11,7 +11,7 @@ use crate::sheetman;
 use crate::enum_grade_type::GradeType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTranscendenceTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct CharacterTranscendenceTableRecord {
     /// Transcend_ID

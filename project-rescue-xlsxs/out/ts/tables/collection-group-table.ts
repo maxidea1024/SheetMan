@@ -19,7 +19,7 @@ interface IDataRow {
   prefabPath: string
 }
 
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionGroupTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionGroupTable : A1
 export class CollectionGroupTableRecord {
   /** Default constructor */
   constructor() {
@@ -66,7 +66,7 @@ export class CollectionGroupTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionGroupTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionGroupTable : A1
 export class CollectionGroupTableTable {
   /** Default constructor. */
   constructor() {

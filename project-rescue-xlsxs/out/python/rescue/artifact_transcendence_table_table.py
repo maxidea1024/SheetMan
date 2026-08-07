@@ -14,7 +14,7 @@ from .enum_currency_type import CurrencyType
 
 
 class ArtifactTranscendenceTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : ArtifactTranscendenceTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1.
     """
 
     __slots__ = ("id", "name", "name_kr", "grade_type", "transcend_step", "max_level", "material_type", "material_count", "power_multiplier", "next_step_id")

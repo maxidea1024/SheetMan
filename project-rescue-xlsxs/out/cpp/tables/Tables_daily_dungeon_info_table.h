@@ -23,7 +23,7 @@
 #include "enums/Tables_enum_currency_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : DailyDungeonInfoTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : DailyDungeonInfoTable : A1
 struct DailyDungeonInfoTableRecord {
   /// DailyDungeonInfo_Table
   std::int32_t id = 0;

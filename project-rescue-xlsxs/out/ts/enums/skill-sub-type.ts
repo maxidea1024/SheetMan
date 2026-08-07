@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : K2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : K2
 /** 스킬타입 */
 export enum SkillSubType {
   /** None (automatically inserted by SheetMan) */

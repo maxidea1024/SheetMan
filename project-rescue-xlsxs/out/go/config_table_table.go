@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// ConfigTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1.
+// ConfigTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1.
 type ConfigTableRecord struct {
 	// Row number, added by SheetMan because `Id` cannot be a primary index.
 	Index int32

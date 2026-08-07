@@ -30,7 +30,7 @@ interface IDataRow {
   prefabPath: string
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDContensInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDContensInfoTable : A1
 export class SDContensInfoTableRecord {
   /** Default constructor */
   constructor() {
@@ -113,7 +113,7 @@ export class SDContensInfoTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDContensInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDContensInfoTable : A1
 export class SDContensInfoTableTable {
   /** Default constructor. */
   constructor() {

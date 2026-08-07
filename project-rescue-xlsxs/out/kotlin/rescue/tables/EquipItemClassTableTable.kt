@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemClassTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemClassTable : A1
 class EquipItemClassTableRecord {
     /** EquipItemClass_Table */
     var id: Int = 0

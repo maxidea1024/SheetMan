@@ -24,7 +24,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffSelectTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1
 export class BuffSelectTableRecord {
   /** Default constructor */
   constructor() {
@@ -83,7 +83,7 @@ export class BuffSelectTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffSelectTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1
 export class BuffSelectTableTable {
   /** Default constructor. */
   constructor() {

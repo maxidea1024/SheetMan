@@ -5,7 +5,7 @@
 // regenerated.
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : E2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : E2
 /// 아티팩트 직업
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 #[repr(i32)]

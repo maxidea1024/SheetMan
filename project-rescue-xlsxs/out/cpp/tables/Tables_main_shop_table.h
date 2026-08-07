@@ -23,7 +23,7 @@
 #include "enums/Tables_enum_currency_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\ShopData.xlsx : MainShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : MainShopTable : A1
 struct MainShopTableRecord {
   /// MainShop_Table
   std::int32_t id = 0;

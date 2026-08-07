@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactLevelTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactLevelTable : A1
   class ArtifactLevelTableRecord
     attr_accessor :id, :name, :name_kr, :level, :character_exp, :accumulated_exp, :atk_growth, :def_growth, :hp_growth
 

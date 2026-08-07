@@ -18,7 +18,7 @@ interface IDataRow {
   textKoArray: string[]
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Serial : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Serial : B2
 /** Trailing-number columns collapse into arrays. */
 export class LocalizationRecord {
   /** Default constructor */
@@ -64,7 +64,7 @@ export class LocalizationRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Serial : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Serial : B2
 /** Trailing-number columns collapse into arrays. */
 export class LocalizationTable {
   /** Default constructor. */

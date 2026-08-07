@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonRewardTable : A1
+  # Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonRewardTable : A1
   class SDDungeonRewardTableRecord
     attr_accessor :id, :name, :reward_name, :condition_id, :reward_common, :common_value, :reward1_type, :reward1_value, :reward2_type, :reward2_value, :reward3_type, :reward3_value, :reward4_type, :reward4_value, :is_perfect, :reward_perfect, :perfect_value, :is_min_reward, :reward_min, :min_reward_value
 

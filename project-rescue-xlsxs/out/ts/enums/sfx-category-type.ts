@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AU2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AU2
 /** 타입 */
 export enum SFXCategoryType {
   /** None (automatically inserted by SheetMan) */

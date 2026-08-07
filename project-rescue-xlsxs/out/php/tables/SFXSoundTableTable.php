@@ -19,7 +19,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1
+ * Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
  */
 final class SFXSoundTableRecord
 {

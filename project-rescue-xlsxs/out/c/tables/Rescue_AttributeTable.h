@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
  */
 struct Rescue_AttributeTableRecord_t {
   /* Attribute_Table */

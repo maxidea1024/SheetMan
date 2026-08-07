@@ -20,7 +20,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\SoundData.xlsx : BGMSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1
 export class BGMSoundTableRecord {
   /** Default constructor */
   constructor() {
@@ -73,7 +73,7 @@ export class BGMSoundTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SoundData.xlsx : BGMSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1
 export class BGMSoundTableTable {
   /** Default constructor. */
   constructor() {

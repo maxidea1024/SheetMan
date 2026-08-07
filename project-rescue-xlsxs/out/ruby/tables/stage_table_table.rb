@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : StageTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : StageTable : A1
   class StageTableRecord
     attr_accessor :id, :name, :stage_name, :asset_data_path, :spawn_ids, :spawn_point_count, :spawn_max_count, :spawn_next_time, :stage_clear_count, :boss_id, :atk_up_percent, :def_up_percent, :mhp_up_percent, :boss_atk_up_percent, :boss_def_up_percent, :boss_mhp_up_percent, :stage_drop_list_id, :stage_bgmid, :boss_stage_bgmid
 

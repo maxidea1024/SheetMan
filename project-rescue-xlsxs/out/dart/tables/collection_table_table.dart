@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1
 class CollectionTableRecord {
   /// CollectionID
   int id = 0;

@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
 class SDAgencyTableRecord {
   /// SDAgency_Table
   int id = 0;

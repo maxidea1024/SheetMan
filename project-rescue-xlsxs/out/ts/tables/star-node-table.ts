@@ -27,7 +27,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StarNodeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StarNodeTable : A1
 export class StarNodeTableRecord {
   /** Default constructor */
   constructor() {
@@ -104,7 +104,7 @@ export class StarNodeTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StarNodeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StarNodeTable : A1
 export class StarNodeTableTable {
   /** Default constructor. */
   constructor() {

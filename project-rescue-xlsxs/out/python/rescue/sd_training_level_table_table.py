@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class SDTrainingLevelTableRecord:
-    """Generated from project-rescue-xlsxs\\SD_Contens.xlsx : SDTrainingLevelTable : A1.
+    """Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingLevelTable : A1.
     """
 
     __slots__ = ("id", "name", "level_name", "currency_value", "currency_result", "mhp_growth", "mhp_total", "def_growth", "def_total", "common_unlock_stage_id")

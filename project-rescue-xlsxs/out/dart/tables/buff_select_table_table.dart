@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffSelectTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1
 class BuffSelectTableRecord {
   /// ID
   int id = 0;

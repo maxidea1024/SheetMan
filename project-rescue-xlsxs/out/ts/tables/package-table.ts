@@ -36,7 +36,7 @@ interface IDataRow {
   itemDescription: string
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : PackageTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1
 export class PackageTableRecord {
   /** Default constructor */
   constructor() {
@@ -155,7 +155,7 @@ export class PackageTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : PackageTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1
 export class PackageTableTable {
   /** Default constructor. */
   constructor() {

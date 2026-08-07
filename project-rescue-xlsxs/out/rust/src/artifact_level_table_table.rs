@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use crate::sheetman;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactLevelTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct ArtifactLevelTableRecord {
     /// ArtifactLevelTable

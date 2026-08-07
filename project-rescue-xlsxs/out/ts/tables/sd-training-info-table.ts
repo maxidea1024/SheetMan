@@ -31,7 +31,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingInfoTable : A1
 export class SDTrainingInfoTableRecord {
   /** Default constructor */
   constructor() {
@@ -120,7 +120,7 @@ export class SDTrainingInfoTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingInfoTable : A1
 export class SDTrainingInfoTableTable {
   /** Default constructor. */
   constructor() {

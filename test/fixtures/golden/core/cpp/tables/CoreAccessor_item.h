@@ -23,7 +23,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Refs : I2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Refs : I2
 /// References ItemCategory by record.
 struct ItemRecord {
   /// primary index

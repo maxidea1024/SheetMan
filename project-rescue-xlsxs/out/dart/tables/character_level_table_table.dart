@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1
 class CharacterLevelTableRecord {
   /// Index
   int id = 0;

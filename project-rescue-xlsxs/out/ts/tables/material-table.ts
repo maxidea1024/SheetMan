@@ -31,7 +31,7 @@ interface IDataRow {
   shortCutIndex: number[]
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
 export class MaterialTableRecord {
   /** Default constructor */
   constructor() {
@@ -126,7 +126,7 @@ export class MaterialTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
 export class MaterialTableTable {
   /** Default constructor. */
   constructor() {

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// TableType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BM2.
+// TableType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BM2.
 // 타입
 type TableType int32
 

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// ArtifactJobType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : E2.
+// ArtifactJobType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : E2.
 // 아티팩트 직업
 type ArtifactJobType int32
 

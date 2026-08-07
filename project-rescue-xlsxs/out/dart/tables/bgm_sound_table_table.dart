@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\SoundData.xlsx : BGMSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1
 class BGMSoundTableRecord {
   /// BGMSound_Table
   int id = 0;

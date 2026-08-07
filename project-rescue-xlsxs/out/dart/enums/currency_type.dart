@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : S2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : S2
 /// 타입
 enum CurrencyType {
   /// 없음

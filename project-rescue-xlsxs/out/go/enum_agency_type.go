@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// AgencyType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BA2.
+// AgencyType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BA2.
 // 타입
 type AgencyType int32
 

@@ -8,7 +8,7 @@
 
 #ifndef RESCUE_ENUM_SHORT_CUT_TYPE_H
 #define RESCUE_ENUM_SHORT_CUT_TYPE_H
-/* Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AY2
+/* Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AY2
  *
  * 타입
  */

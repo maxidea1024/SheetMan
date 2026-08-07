@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_sfx_category_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
 struct SFXSoundTableRecord {
   /// SFXSound_Table
   std::int32_t id = 0;

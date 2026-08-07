@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTranscendenceTable : A1
 class CharacterTranscendenceTableRecord {
     /** Transcend_ID */
     var id: Int = 0

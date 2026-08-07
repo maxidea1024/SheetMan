@@ -16,7 +16,7 @@ from .enum_target_type import TargetType
 
 
 class SkillTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : SkillTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1.
     """
 
     __slots__ = ("id", "name", "skill_name", "skill_type", "skill_sub_type", "attribute_type", "target_type", "ani_path", "skill_use_range", "cool_time", "buff_id", "skill_icon", "description")

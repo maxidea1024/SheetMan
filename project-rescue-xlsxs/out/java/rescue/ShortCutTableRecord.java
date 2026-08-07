@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
 public final class ShortCutTableRecord {
     /** ShortCut_Table */
     public int iD;

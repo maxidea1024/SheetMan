@@ -11,7 +11,7 @@ use crate::sheetman;
 use crate::enum_job_type::JobType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemLevelTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemLevelTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct EquipItemLevelTableRecord {
     /// EquipItemLevel_Table

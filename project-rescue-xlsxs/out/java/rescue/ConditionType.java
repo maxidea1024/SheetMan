@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AO2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AO2
 /** 타입 */
 public enum ConditionType {
     /** None (automatically inserted by SheetMan) */

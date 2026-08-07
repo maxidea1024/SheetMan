@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// PackageShopTableRecord was generated from project-rescue-xlsxs\ShopData.xlsx : PackageShopTable : A1.
+// PackageShopTableRecord was generated from project-rescue-xlsxs/ShopData.xlsx : PackageShopTable : A1.
 type PackageShopTableRecord struct {
 	// PackageShop_Table
 	Id int32

@@ -22,7 +22,7 @@
 #include "enums/Tables_enum_currency_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaInfoTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaInfoTable : A1
 struct GachaInfoTableRecord {
   /// HeroGacha_Table
   std::int32_t id = 0;

@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class SDAlchemyLevelTableRecord:
-    """Generated from project-rescue-xlsxs\\SD_Contens.xlsx : SDAlchemyLevelTable : A1.
+    """Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyLevelTable : A1.
     """
 
     __slots__ = ("id", "name", "name_kr", "level_up_cost", "level_up_total", "time", "use_dia_cost", "use_item_cost", "crit_dmg_value", "crit_dmg_total", "crit_rate_value", "crit_rate_total", "block_rate_value", "block_rate_total", "hit_value", "hit_total")

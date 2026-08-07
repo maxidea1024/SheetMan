@@ -23,7 +23,7 @@ interface IDataRow {
   rewardValue: number
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyStepTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyStepTable : A1
 export class SDAlchemyStepTableRecord {
   /** Default constructor */
   constructor() {
@@ -76,7 +76,7 @@ export class SDAlchemyStepTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyStepTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyStepTable : A1
 export class SDAlchemyStepTableTable {
   /** Default constructor. */
   constructor() {

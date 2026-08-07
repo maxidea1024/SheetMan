@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : M2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : M2
 /// 타입
 enum SkillType {
   /// None (automatically inserted by SheetMan)

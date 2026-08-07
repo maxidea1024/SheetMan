@@ -25,7 +25,7 @@ interface IDataRow {
   shortCutIndex: number[]
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : ClassUpCurrencyListTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : ClassUpCurrencyListTable : A1
 export class ClassUpCurrencyListTableRecord {
   /** Default constructor */
   constructor() {
@@ -90,7 +90,7 @@ export class ClassUpCurrencyListTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : ClassUpCurrencyListTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : ClassUpCurrencyListTable : A1
 export class ClassUpCurrencyListTableTable {
   /** Default constructor. */
   constructor() {

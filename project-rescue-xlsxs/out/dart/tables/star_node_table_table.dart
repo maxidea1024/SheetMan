@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StarNodeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StarNodeTable : A1
 class StarNodeTableRecord {
   /// 기본값
   int id = 0;

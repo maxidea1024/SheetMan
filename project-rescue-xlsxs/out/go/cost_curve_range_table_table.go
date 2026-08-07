@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// CostCurveRangeTableRecord was generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveRangeTable : A1.
+// CostCurveRangeTableRecord was generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveRangeTable : A1.
 type CostCurveRangeTableRecord struct {
 	// 숫자
 	Id int32

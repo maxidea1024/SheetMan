@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BM2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BM2
   # 타입
   module TableType
     # None (automatically inserted by SheetMan)

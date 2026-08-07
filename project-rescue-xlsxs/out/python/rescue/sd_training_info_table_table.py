@@ -15,7 +15,7 @@ from .enum_currency_type import CurrencyType
 
 
 class SDTrainingInfoTableRecord:
-    """Generated from project-rescue-xlsxs\\SD_Contens.xlsx : SDTrainingInfoTable : A1.
+    """Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingInfoTable : A1.
     """
 
     __slots__ = ("id", "name", "training_name", "attribute_type", "stat_type", "unlock_condition", "level_up_condition", "max_level", "is_lv_reset", "lv_reset_currency_type", "lv_reset_currency_value", "description")

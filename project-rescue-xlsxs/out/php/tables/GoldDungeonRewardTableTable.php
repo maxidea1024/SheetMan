@@ -19,7 +19,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\DailyDungeon.xlsx : GoldDungeonRewardTable : A1
+ * Generated from project-rescue-xlsxs/DailyDungeon.xlsx : GoldDungeonRewardTable : A1
  */
 final class GoldDungeonRewardTableRecord
 {

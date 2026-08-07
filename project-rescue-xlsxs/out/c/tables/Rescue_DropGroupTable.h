@@ -16,7 +16,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : DropGroupTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1
  */
 struct Rescue_DropGroupTableRecord_t {
   /* 기본값 */

@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : O2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : O2
 /** 타입 */
 enum class AttributeType(val value: Int) {
     NONE(0),

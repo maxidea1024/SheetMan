@@ -70,14 +70,54 @@
 |Windows|`sheetman-<버전>-win-x64.zip` · `win-arm64`|
 |macOS|`sheetman-<버전>-osx-x64.tar.gz` · `osx-arm64` (애플 실리콘)|
 
-`SHA256SUMS`로 받은 파일을 확인할 수 있습니다.
+터미널에서 받는 쪽이 편하면 아래를 그대로 붙여넣으세요. `VERSION`만 원하는 버전으로 바꾸면 됩니다.
 
+**Linux · macOS**
+
+```bash
+VERSION=0.1.0
+RID=linux-x64            # linux-arm64 · osx-x64 · osx-arm64 중 하나
+
+curl -fsSL "https://github.com/maxidea1024/SheetMan/releases/download/v$VERSION/sheetman-$VERSION-$RID.tar.gz" \
+  | tar -xz -C /usr/local/bin sheetman
+
+sheetman --help
 ```
+
+> `/usr/local/bin`에 권한이 없으면 `sudo`를 붙이거나, `-C ~/.local/bin`처럼 쓰기 가능한 곳으로 바꾸세요.
+>
+> macOS는 서명되지 않은 바이너리를 격리합니다. 한 번만 풀어주면 됩니다 —
+> `xattr -d com.apple.quarantine /usr/local/bin/sheetman`
+
+**Windows (PowerShell)**
+
+```powershell
+$Version = '0.1.0'
+$Rid     = 'win-x64'      # 또는 win-arm64
+$Dest    = "$env:LOCALAPPDATA\Programs\sheetman"
+
+New-Item -ItemType Directory -Force $Dest | Out-Null
+Invoke-WebRequest "https://github.com/maxidea1024/SheetMan/releases/download/v$Version/sheetman-$Version-$Rid.zip" -OutFile "$env:TEMP\sheetman.zip"
+Expand-Archive "$env:TEMP\sheetman.zip" -DestinationPath $Dest -Force
+
+# 이번 세션에서만. 계속 쓰려면 시스템 환경변수 PATH에 $Dest를 추가하세요.
+$env:PATH = "$Dest;$env:PATH"
+sheetman --help
+```
+
+**최신 버전을 자동으로** 집으려면 (`jq` 필요)
+
+```bash
+VERSION=$(curl -fsSL https://api.github.com/repos/maxidea1024/SheetMan/releases/latest | jq -r .tag_name)
+VERSION=${VERSION#v}
+```
+
+**받은 파일 확인.** 릴리즈마다 `SHA256SUMS`가 함께 올라갑니다.
+
+```bash
+curl -fsSLO "https://github.com/maxidea1024/SheetMan/releases/download/v$VERSION/SHA256SUMS"
 sha256sum -c SHA256SUMS --ignore-missing
 ```
-
-> macOS는 서명되지 않은 바이너리를 격리합니다. 한 번만 풀어주면 됩니다.
-> `xattr -d com.apple.quarantine sheetman`
 
 <details>
 <summary>소스에서 빌드하기</summary>
@@ -177,6 +217,18 @@ sword = tables.item.find_by_index(1)
 
 ---
 
+## 기여하기
+
+버그와 제안은 [이슈](https://github.com/maxidea1024/SheetMan/issues)로 올려 주세요. 무엇을 어떻게 했을 때 그렇게 되는지가 있으면 가장 빠릅니다.
+
+- 개발·테스트하는 법은 [아키텍처와 개발](doc/architecture.md)에 있습니다.
+- 생성기나 템플릿을 건드렸다면 골든을 다시 기록하고 diff를 리뷰해 주세요. 방법은 같은 문서에 있습니다.
+- 보안 문제는 공개 이슈 대신 [SECURITY.md](SECURITY.md)의 절차를 따라 주세요.
+
+변경 내역은 [CHANGELOG.md](CHANGELOG.md)에 있습니다.
+
+---
+
 ## References
 
 - [Google.Apis.Sheets](https://github.com/googleapis/google-api-dotnet-client)
@@ -184,3 +236,11 @@ sword = tables.item.find_by_index(1)
 - [Serilog](https://serilog.net/)
 - [CommandLineParser](https://github.com/commandlineparser/commandline)
 - [Netonsoft.Json](https://www.newtonsoft.com/json)
+
+---
+
+## 라이선스
+
+[MIT](LICENSE).
+
+생성된 코드와 함께 나오는 리더·업데이터도 같은 라이선스입니다. **생성물에 이 저장소의 라이선스를 표시할 의무는 없습니다** — 시트에서 나온 코드와 데이터는 그것을 만든 프로젝트의 것입니다.

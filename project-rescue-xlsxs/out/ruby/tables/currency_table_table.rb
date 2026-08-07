@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\ItemData.xlsx : CurrencyTable : A1
+  # Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1
   class CurrencyTableRecord
     attr_accessor :id, :name, :item_name, :item_type, :type, :cycle_type, :stackable, :max_stack, :cooltime, :duration, :icon_path, :drop_prefab_path, :description, :short_cut_index
 

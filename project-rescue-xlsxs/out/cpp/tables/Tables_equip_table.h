@@ -24,7 +24,7 @@
 #include "enums/Tables_enum_stat_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipTable : A1
 struct EquipTableRecord {
   /// Equipment_Table
   std::int32_t id = 0;

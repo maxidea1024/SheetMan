@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_sd_card_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonCardTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1
 struct SDDungeonCardTableRecord {
   /// SDDungeonCard_Table
   std::int32_t id = 0;

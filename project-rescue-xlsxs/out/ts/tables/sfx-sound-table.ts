@@ -23,7 +23,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
 export class SFXSoundTableRecord {
   /** Default constructor */
   constructor() {
@@ -76,7 +76,7 @@ export class SFXSoundTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
 export class SFXSoundTableTable {
   /** Default constructor. */
   constructor() {

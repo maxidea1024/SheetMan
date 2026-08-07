@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// SeasonShopTableRecord was generated from project-rescue-xlsxs\ShopData.xlsx : SeasonShopTable : A1.
+// SeasonShopTableRecord was generated from project-rescue-xlsxs/ShopData.xlsx : SeasonShopTable : A1.
 type SeasonShopTableRecord struct {
 	// SeasonShop_Table
 	Id int32

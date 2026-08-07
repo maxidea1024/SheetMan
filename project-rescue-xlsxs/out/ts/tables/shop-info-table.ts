@@ -26,7 +26,7 @@ interface IDataRow {
   listPrefabPath: string
 }
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : ShopInfoTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : ShopInfoTable : A1
 export class ShopInfoTableRecord {
   /** Default constructor */
   constructor() {
@@ -97,7 +97,7 @@ export class ShopInfoTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : ShopInfoTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : ShopInfoTable : A1
 export class ShopInfoTableTable {
   /** Default constructor. */
   constructor() {

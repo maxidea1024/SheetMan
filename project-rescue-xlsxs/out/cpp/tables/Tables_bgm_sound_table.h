@@ -20,7 +20,7 @@
 #include "Tables_forward.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\SoundData.xlsx : BGMSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1
 struct BGMSoundTableRecord {
   /// BGMSound_Table
   std::int32_t id = 0;

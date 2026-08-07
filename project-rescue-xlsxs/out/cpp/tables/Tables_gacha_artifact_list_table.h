@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_grade_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactListTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactListTable : A1
 struct GachaArtifactListTableRecord {
   /// GachaArtifact_List
   std::int32_t id = 0;

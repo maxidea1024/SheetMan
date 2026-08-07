@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : O2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : O2
 /** 타입 */
 export enum AttributeType {
   None = 0,

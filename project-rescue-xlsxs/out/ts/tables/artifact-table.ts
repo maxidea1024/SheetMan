@@ -31,7 +31,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
 export class ArtifactTableRecord {
   /** Default constructor */
   constructor() {
@@ -120,7 +120,7 @@ export class ArtifactTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
 export class ArtifactTableTable {
   /** Default constructor. */
   constructor() {

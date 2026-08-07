@@ -16,7 +16,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDPubInfoTable : A1
+/* Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDPubInfoTable : A1
  */
 struct Rescue_SDPubInfoTableRecord_t {
   /* SDPubInfo_Table */

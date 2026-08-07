@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// GachaCharacterListTableRecord was generated from project-rescue-xlsxs\GachaData.xlsx : GachaCharacterListTable : A1.
+// GachaCharacterListTableRecord was generated from project-rescue-xlsxs/GachaData.xlsx : GachaCharacterListTable : A1.
 type GachaCharacterListTableRecord struct {
 	// GachaCharacter_List
 	Id int32

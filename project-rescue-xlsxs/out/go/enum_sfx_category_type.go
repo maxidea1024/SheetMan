@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// SFXCategoryType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AU2.
+// SFXCategoryType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AU2.
 // 타입
 type SFXCategoryType int32
 

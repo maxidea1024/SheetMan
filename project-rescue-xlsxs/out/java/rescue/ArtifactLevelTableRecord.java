@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactLevelTable : A1
 public final class ArtifactLevelTableRecord {
     /** ArtifactLevelTable */
     public int id;

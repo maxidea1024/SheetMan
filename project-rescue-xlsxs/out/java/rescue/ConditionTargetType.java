@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AM2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AM2
 /** 타입 */
 public enum ConditionTargetType {
         NONE(0),

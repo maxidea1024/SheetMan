@@ -43,7 +43,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
 export class SDAgencyTableRecord {
   /** Default constructor */
   constructor() {
@@ -186,7 +186,7 @@ export class SDAgencyTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
 export class SDAgencyTableTable {
   /** Default constructor. */
   constructor() {

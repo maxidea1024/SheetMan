@@ -24,7 +24,7 @@
 #include "enums/Tables_enum_target_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
 struct SkillTableRecord {
   /// Skill_Table
   std::int32_t id = 0;

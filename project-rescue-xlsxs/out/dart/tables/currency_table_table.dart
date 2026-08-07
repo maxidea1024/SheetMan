@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\ItemData.xlsx : CurrencyTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1
 class CurrencyTableRecord {
   /// Currency_Table
   int id = 0;

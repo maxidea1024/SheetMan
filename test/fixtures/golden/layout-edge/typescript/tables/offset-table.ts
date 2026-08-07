@@ -17,7 +17,7 @@ interface IDataRow {
   value: number
 }
 
-// Generated from test/fixtures/xlsx/layout-edge\layout-edge.xlsx : Offset : F9
+// Generated from test/fixtures/xlsx/layout-edge/layout-edge.xlsx : Offset : F9
 /** Starts at F9 rather than the top-left corner. */
 export class OffsetTableRecord {
   /** Default constructor */
@@ -53,7 +53,7 @@ export class OffsetTableRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/layout-edge\layout-edge.xlsx : Offset : F9
+// Generated from test/fixtures/xlsx/layout-edge/layout-edge.xlsx : Offset : F9
 /** Starts at F9 rather than the top-left corner. */
 export class OffsetTableTable {
   /** Default constructor. */

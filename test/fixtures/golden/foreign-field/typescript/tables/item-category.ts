@@ -17,7 +17,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from test/fixtures/xlsx/foreign-field\foreign-field.xlsx : Refs : B2
+// Generated from test/fixtures/xlsx/foreign-field/foreign-field.xlsx : Refs : B2
 /** Target of the field-level reference below. */
 export class ItemCategoryRecord {
   /** Default constructor */
@@ -53,7 +53,7 @@ export class ItemCategoryRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/foreign-field\foreign-field.xlsx : Refs : B2
+// Generated from test/fixtures/xlsx/foreign-field/foreign-field.xlsx : Refs : B2
 /** Target of the field-level reference below. */
 export class ItemCategoryTable {
   /** Default constructor. */

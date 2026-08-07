@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : U2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : U2
 /** 타입 */
 public enum ConsumablesType {
     /** 없음 */

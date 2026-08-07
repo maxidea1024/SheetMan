@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffSelectTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1
 public final class BuffSelectTableRecord {
     /** ID */
     public int id;

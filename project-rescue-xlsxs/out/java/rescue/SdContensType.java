@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AE2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AE2
 /** 타입 */
 public enum SdContensType {
         NONE(0),

@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BO2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BO2
   # 타입
   module SDCardType
     NONE = 0

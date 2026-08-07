@@ -12,7 +12,7 @@ use crate::enum_artifact_job_type::ArtifactJobType;
 use crate::enum_grade_type::GradeType;
 use crate::enum_stat_type::StatType;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct ArtifactTableRecord {
     /// Artifact_Table

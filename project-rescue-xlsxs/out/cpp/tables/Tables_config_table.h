@@ -20,7 +20,7 @@
 #include "Tables_forward.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
 struct ConfigTableRecord {
   /// Row number, added by SheetMan because `Id` cannot be a primary index.
   std::int32_t index = 0;

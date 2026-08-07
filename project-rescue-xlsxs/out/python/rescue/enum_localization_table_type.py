@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class LocalizationTableType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : AK2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AK2.
 
     타입
     """

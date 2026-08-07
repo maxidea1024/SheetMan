@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\GachaData.xlsx : GachaRateTable : A1
+  # Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1
   class GachaRateTableRecord
     attr_accessor :id, :ur_rate, :ssr_rate, :sr_rate, :r_rate, :n_rate
 

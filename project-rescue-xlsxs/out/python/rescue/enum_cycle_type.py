@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class CycleType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : BG2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BG2.
 
     타입
     """

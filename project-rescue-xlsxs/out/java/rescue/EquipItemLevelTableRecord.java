@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemLevelTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemLevelTable : A1
 public final class EquipItemLevelTableRecord {
     /** EquipItemLevel_Table */
     public int id;

@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class GachaRateTableRecord:
-    """Generated from project-rescue-xlsxs\\GachaData.xlsx : GachaRateTable : A1.
+    """Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1.
     """
 
     __slots__ = ("id", "ur_rate", "ssr_rate", "sr_rate", "r_rate", "n_rate")

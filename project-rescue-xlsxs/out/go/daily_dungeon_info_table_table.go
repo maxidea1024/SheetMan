@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// DailyDungeonInfoTableRecord was generated from project-rescue-xlsxs\DailyDungeon.xlsx : DailyDungeonInfoTable : A1.
+// DailyDungeonInfoTableRecord was generated from project-rescue-xlsxs/DailyDungeon.xlsx : DailyDungeonInfoTable : A1.
 type DailyDungeonInfoTableRecord struct {
 	// DailyDungeonInfo_Table
 	Id int32

@@ -13,7 +13,7 @@ from .enum_currency_type import CurrencyType
 
 
 class GoldDungeonRewardTableRecord:
-    """Generated from project-rescue-xlsxs\\DailyDungeon.xlsx : GoldDungeonRewardTable : A1.
+    """Generated from project-rescue-xlsxs/DailyDungeon.xlsx : GoldDungeonRewardTable : A1.
     """
 
     __slots__ = ("id", "name", "reward_name", "reward_type1", "reward_value1", "reward_type2", "reward_value2", "is_first_clear", "first_clear_reward_type", "first_clear_reward_value")

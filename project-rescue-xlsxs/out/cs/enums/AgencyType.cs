@@ -20,7 +20,7 @@ using SheetMan.Binary;
 
 namespace Rescue.Tables
 {
-    // Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BA2
+    // Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BA2
     /// <summary>
     /// 타입
     /// </summary>

@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// CharacterTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTable : A1.
+// CharacterTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTable : A1.
 type CharacterTableRecord struct {
 	// Character_Table
 	Id int32

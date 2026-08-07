@@ -18,7 +18,7 @@
 #include "FRescueData.generated.h"
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : A2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : A2
 /** 캐릭터 종류 */
 UENUM(BlueprintType)
 enum class ECharacterType : uint8
@@ -31,7 +31,7 @@ enum class ECharacterType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : C2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : C2
 /** 직업 */
 UENUM(BlueprintType)
 enum class EJobType : uint8
@@ -51,7 +51,7 @@ enum class EJobType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : E2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : E2
 /** 아티팩트 직업 */
 UENUM(BlueprintType)
 enum class EArtifactJobType : uint8
@@ -69,7 +69,7 @@ enum class EArtifactJobType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : G2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : G2
 /** 타겟 타입 */
 UENUM(BlueprintType)
 enum class ETargetType : uint8
@@ -91,7 +91,7 @@ enum class ETargetType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : I2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : I2
 /** 스텟 */
 UENUM(BlueprintType)
 enum class EStatType : uint8
@@ -189,7 +189,7 @@ enum class EStatType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : K2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : K2
 /** 스킬타입 */
 UENUM(BlueprintType)
 enum class ESkillSubType : uint8
@@ -207,7 +207,7 @@ enum class ESkillSubType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : M2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : M2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ESkillType : uint8
@@ -223,7 +223,7 @@ enum class ESkillType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : O2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : O2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EAttributeType : uint8
@@ -244,7 +244,7 @@ enum class EAttributeType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : Q2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : Q2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EBuffConditionType : uint8
@@ -258,7 +258,7 @@ enum class EBuffConditionType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : S2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : S2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ECurrencyType : uint8
@@ -448,7 +448,7 @@ enum class ECurrencyType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : U2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : U2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EConsumablesType : uint8
@@ -474,7 +474,7 @@ enum class EConsumablesType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : W2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : W2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EMaterialType : uint8
@@ -485,7 +485,7 @@ enum class EMaterialType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : Y2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : Y2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EGradeType : uint8
@@ -499,7 +499,7 @@ enum class EGradeType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AA2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AA2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EDungeonType : uint8
@@ -521,7 +521,7 @@ enum class EDungeonType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AC2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AC2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EGrowthType : uint8
@@ -535,7 +535,7 @@ enum class EGrowthType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AE2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AE2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ESdContensType : uint8
@@ -556,7 +556,7 @@ enum class ESdContensType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AG2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AG2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EQuestType : uint8
@@ -578,7 +578,7 @@ enum class EQuestType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AI2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AI2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ENationType : uint8
@@ -610,7 +610,7 @@ enum class ENationType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AK2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AK2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ELocalizationTableType : uint8
@@ -642,7 +642,7 @@ enum class ELocalizationTableType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AM2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AM2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EConditionTargetType : uint8
@@ -656,7 +656,7 @@ enum class EConditionTargetType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AO2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AO2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EConditionType : uint8
@@ -678,7 +678,7 @@ enum class EConditionType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AQ2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AQ2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ECollectionTabType : uint8
@@ -692,7 +692,7 @@ enum class ECollectionTabType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AS2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AS2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EItemType : uint8
@@ -708,7 +708,7 @@ enum class EItemType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AU2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AU2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ESFXCategoryType : uint8
@@ -724,7 +724,7 @@ enum class ESFXCategoryType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AW2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AW2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EEquipmentType : uint8
@@ -746,7 +746,7 @@ enum class EEquipmentType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AY2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AY2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EShortCutType : uint8
@@ -768,7 +768,7 @@ enum class EShortCutType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BA2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BA2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EAgencyType : uint8
@@ -788,7 +788,7 @@ enum class EAgencyType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BC2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BC2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EShopType : uint8
@@ -810,7 +810,7 @@ enum class EShopType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BE2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BE2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EGachaType : uint8
@@ -830,7 +830,7 @@ enum class EGachaType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BG2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BG2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ECycleType : uint8
@@ -847,7 +847,7 @@ enum class ECycleType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BI2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BI2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EAgencyGrade : uint8
@@ -864,7 +864,7 @@ enum class EAgencyGrade : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BK2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BK2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ERewardTarget : uint8
@@ -876,7 +876,7 @@ enum class ERewardTarget : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BM2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BM2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ETableType : uint8
@@ -894,7 +894,7 @@ enum class ETableType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BO2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BO2
 /** 타입 */
 UENUM(BlueprintType)
 enum class ESDCardType : uint8
@@ -909,7 +909,7 @@ enum class ESDCardType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BQ2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BQ2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EShopSlotType : uint8
@@ -926,7 +926,7 @@ enum class EShopSlotType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BS2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BS2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EOptionType : uint8
@@ -948,7 +948,7 @@ enum class EOptionType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BU2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BU2
 /** 타입 */
 UENUM(BlueprintType)
 enum class EValueType : uint8
@@ -968,7 +968,7 @@ enum class EValueType : uint8
 };
 
 
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionGroupTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionGroupTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FCollectionGroupTableRow
 {
@@ -997,7 +997,7 @@ struct RESCUEDATA_API FCollectionGroupTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FCollectionTableRow
 {
@@ -1054,7 +1054,7 @@ struct RESCUEDATA_API FCollectionTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+// Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FConditionTableRow
 {
@@ -1087,7 +1087,7 @@ struct RESCUEDATA_API FConditionTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : DailyDungeonInfoTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : DailyDungeonInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FDailyDungeonInfoTableRow
 {
@@ -1164,7 +1164,7 @@ struct RESCUEDATA_API FDailyDungeonInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : GoldDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : GoldDungeonStageTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FGoldDungeonStageTableRow
 {
@@ -1253,7 +1253,7 @@ struct RESCUEDATA_API FGoldDungeonStageTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : GoldDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : GoldDungeonRewardTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FGoldDungeonRewardTableRow
 {
@@ -1302,7 +1302,7 @@ struct RESCUEDATA_API FGoldDungeonRewardTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : ExpDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : ExpDungeonStageTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FExpDungeonStageTableRow
 {
@@ -1391,7 +1391,7 @@ struct RESCUEDATA_API FExpDungeonStageTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : ExpDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : ExpDungeonRewardTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FExpDungeonRewardTableRow
 {
@@ -1440,7 +1440,7 @@ struct RESCUEDATA_API FExpDungeonRewardTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : TraitDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonStageTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FTraitDungeonStageTableRow
 {
@@ -1529,7 +1529,7 @@ struct RESCUEDATA_API FTraitDungeonStageTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : TraitDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonRewardTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FTraitDungeonRewardTableRow
 {
@@ -1578,7 +1578,7 @@ struct RESCUEDATA_API FTraitDungeonRewardTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : RelicDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : RelicDungeonStageTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FRelicDungeonStageTableRow
 {
@@ -1667,7 +1667,7 @@ struct RESCUEDATA_API FRelicDungeonStageTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : RelicDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : RelicDungeonRewardTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FRelicDungeonRewardTableRow
 {
@@ -1716,7 +1716,7 @@ struct RESCUEDATA_API FRelicDungeonRewardTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : OopartsDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : OopartsDungeonStageTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FOopartsDungeonStageTableRow
 {
@@ -1805,7 +1805,7 @@ struct RESCUEDATA_API FOopartsDungeonStageTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : OopartsDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : OopartsDungeonRewardTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FOopartsDungeonRewardTableRow
 {
@@ -1854,7 +1854,7 @@ struct RESCUEDATA_API FOopartsDungeonRewardTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaInfoTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FGachaInfoTableRow
 {
@@ -1955,7 +1955,7 @@ struct RESCUEDATA_API FGachaInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaCharacterListTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaCharacterListTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FGachaCharacterListTableRow
 {
@@ -2008,7 +2008,7 @@ struct RESCUEDATA_API FGachaCharacterListTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactInfoTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FGachaArtifactInfoTableRow
 {
@@ -2109,7 +2109,7 @@ struct RESCUEDATA_API FGachaArtifactInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactListTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactListTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FGachaArtifactListTableRow
 {
@@ -2154,7 +2154,7 @@ struct RESCUEDATA_API FGachaArtifactListTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaRateTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FGachaRateTableRow
 {
@@ -2187,7 +2187,7 @@ struct RESCUEDATA_API FGachaRateTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : CurrencyTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FCurrencyTableRow
 {
@@ -2252,7 +2252,7 @@ struct RESCUEDATA_API FCurrencyTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FMaterialTableRow
 {
@@ -2313,7 +2313,7 @@ struct RESCUEDATA_API FMaterialTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : PackageTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FPackageTableRow
 {
@@ -2390,7 +2390,7 @@ struct RESCUEDATA_API FPackageTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : ClassUpCurrencyListTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : ClassUpCurrencyListTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FClassUpCurrencyListTableRow
 {
@@ -2431,7 +2431,7 @@ struct RESCUEDATA_API FClassUpCurrencyListTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemLevelTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemLevelTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FEquipItemLevelTableRow
 {
@@ -2516,7 +2516,7 @@ struct RESCUEDATA_API FEquipItemLevelTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemClassTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemClassTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FEquipItemClassTableRow
 {
@@ -2605,7 +2605,7 @@ struct RESCUEDATA_API FEquipItemClassTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FEquipTableRow
 {
@@ -2666,7 +2666,7 @@ struct RESCUEDATA_API FEquipTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemGradeTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemGradeTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FEquipItemGradeTableRow
 {
@@ -2751,7 +2751,7 @@ struct RESCUEDATA_API FEquipItemGradeTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FCharacterTableRow
 {
@@ -2908,7 +2908,7 @@ struct RESCUEDATA_API FCharacterTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSkillTableRow
 {
@@ -2969,7 +2969,7 @@ struct RESCUEDATA_API FSkillTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FBuffTableRow
 {
@@ -3050,7 +3050,7 @@ struct RESCUEDATA_API FBuffTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FCharacterLevelTableRow
 {
@@ -3095,7 +3095,7 @@ struct RESCUEDATA_API FCharacterLevelTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTranscendenceTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FCharacterTranscendenceTableRow
 {
@@ -3144,7 +3144,7 @@ struct RESCUEDATA_API FCharacterTranscendenceTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FArtifactTableRow
 {
@@ -3201,7 +3201,7 @@ struct RESCUEDATA_API FArtifactTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactLevelTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FArtifactLevelTableRow
 {
@@ -3246,7 +3246,7 @@ struct RESCUEDATA_API FArtifactLevelTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FArtifactTranscendenceTableRow
 {
@@ -3295,7 +3295,7 @@ struct RESCUEDATA_API FArtifactTranscendenceTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffSelectTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FBuffSelectTableRow
 {
@@ -3332,7 +3332,7 @@ struct RESCUEDATA_API FBuffSelectTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FShortCutTableRow
 {
@@ -3361,7 +3361,7 @@ struct RESCUEDATA_API FShortCutTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : StageTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : StageTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FStageTableRow
 {
@@ -3446,7 +3446,7 @@ struct RESCUEDATA_API FStageTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FConfigTableRow
 {
@@ -3479,7 +3479,7 @@ struct RESCUEDATA_API FConfigTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : DropGroupTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FDropGroupTableRow
 {
@@ -3520,7 +3520,7 @@ struct RESCUEDATA_API FDropGroupTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FAttributeTableRow
 {
@@ -3561,7 +3561,7 @@ struct RESCUEDATA_API FAttributeTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDContensInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDContensInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDContensInfoTableRow
 {
@@ -3614,7 +3614,7 @@ struct RESCUEDATA_API FSDContensInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDAgencyInfoTableRow
 {
@@ -3679,7 +3679,7 @@ struct RESCUEDATA_API FSDAgencyInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDAgencyTableRow
 {
@@ -3772,7 +3772,7 @@ struct RESCUEDATA_API FSDAgencyTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDPubInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDPubInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDPubInfoTableRow
 {
@@ -3809,7 +3809,7 @@ struct RESCUEDATA_API FSDPubInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDTrainingInfoTableRow
 {
@@ -3866,7 +3866,7 @@ struct RESCUEDATA_API FSDTrainingInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingLevelTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingLevelTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDTrainingLevelTableRow
 {
@@ -3915,7 +3915,7 @@ struct RESCUEDATA_API FSDTrainingLevelTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDDungeonInfoTableRow
 {
@@ -3976,7 +3976,7 @@ struct RESCUEDATA_API FSDDungeonInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonCardTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDDungeonCardTableRow
 {
@@ -4013,7 +4013,7 @@ struct RESCUEDATA_API FSDDungeonCardTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonRewardTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDDungeonRewardTableRow
 {
@@ -4102,7 +4102,7 @@ struct RESCUEDATA_API FSDDungeonRewardTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDAlchemyInfoTableRow
 {
@@ -4175,7 +4175,7 @@ struct RESCUEDATA_API FSDAlchemyInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyStepTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyStepTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDAlchemyStepTableRow
 {
@@ -4208,7 +4208,7 @@ struct RESCUEDATA_API FSDAlchemyStepTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyLevelTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyLevelTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSDAlchemyLevelTableRow
 {
@@ -4281,7 +4281,7 @@ struct RESCUEDATA_API FSDAlchemyLevelTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : ShopInfoTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : ShopInfoTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FShopInfoTableRow
 {
@@ -4326,7 +4326,7 @@ struct RESCUEDATA_API FShopInfoTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : MainShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : MainShopTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FMainShopTableRow
 {
@@ -4391,7 +4391,7 @@ struct RESCUEDATA_API FMainShopTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : PackageShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : PackageShopTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FPackageShopTableRow
 {
@@ -4456,7 +4456,7 @@ struct RESCUEDATA_API FPackageShopTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : SeasonShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : SeasonShopTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSeasonShopTableRow
 {
@@ -4521,7 +4521,7 @@ struct RESCUEDATA_API FSeasonShopTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : CashShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : CashShopTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FCashShopTableRow
 {
@@ -4586,7 +4586,7 @@ struct RESCUEDATA_API FCashShopTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SoundData.xlsx : BGMSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FBGMSoundTableRow
 {
@@ -4619,7 +4619,7 @@ struct RESCUEDATA_API FBGMSoundTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FSFXSoundTableRow
 {
@@ -4652,7 +4652,7 @@ struct RESCUEDATA_API FSFXSoundTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : InfoGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : InfoGrowthTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FInfoGrowthTableRow
 {
@@ -4717,7 +4717,7 @@ struct RESCUEDATA_API FInfoGrowthTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StatGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FStatGrowthTableRow
 {
@@ -4762,7 +4762,7 @@ struct RESCUEDATA_API FStatGrowthTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : TraitTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : TraitTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FTraitTableRow
 {
@@ -4799,7 +4799,7 @@ struct RESCUEDATA_API FTraitTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : RelicTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : RelicTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FRelicTableRow
 {
@@ -4868,7 +4868,7 @@ struct RESCUEDATA_API FRelicTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StarNodeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StarNodeTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FStarNodeTableRow
 {
@@ -4917,7 +4917,7 @@ struct RESCUEDATA_API FStarNodeTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FCostCurveTableRow
 {
@@ -4946,7 +4946,7 @@ struct RESCUEDATA_API FCostCurveTableRow
 };
 
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveRangeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveRangeTable : A1
 USTRUCT(BlueprintType)
 struct RESCUEDATA_API FCostCurveRangeTableRow
 {

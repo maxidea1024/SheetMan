@@ -8,7 +8,7 @@
 
 #ifndef RESCUE_ENUM_VALUE_TYPE_H
 #define RESCUE_ENUM_VALUE_TYPE_H
-/* Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BU2
+/* Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BU2
  *
  * 타입
  */

@@ -13,7 +13,7 @@ from .enum_growth_type import GrowthType
 
 
 class CostCurveRangeTableRecord:
-    """Generated from project-rescue-xlsxs\\StageGrowth.xlsx : CostCurveRangeTable : A1.
+    """Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveRangeTable : A1.
     """
 
     __slots__ = ("id", "growth_type", "range_index", "start_step", "end_step", "add_multiplier")

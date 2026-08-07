@@ -21,7 +21,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Sides : B2
 /// Server-only table. Must not appear in client output.
 struct ServerTuningRecord {
   /// primary index

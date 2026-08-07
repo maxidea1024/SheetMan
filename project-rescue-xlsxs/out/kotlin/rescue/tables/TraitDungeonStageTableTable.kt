@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : TraitDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonStageTable : A1
 class TraitDungeonStageTableRecord {
     /** TraitDungeonStage_Table */
     var id: Int = 0

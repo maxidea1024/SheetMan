@@ -37,7 +37,7 @@ interface IDataRow {
   minRewardValue: number
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonRewardTable : A1
 export class SDDungeonRewardTableRecord {
   /** Default constructor */
   constructor() {
@@ -174,7 +174,7 @@ export class SDDungeonRewardTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonRewardTable : A1
 export class SDDungeonRewardTableTable {
   /** Default constructor. */
   constructor() {

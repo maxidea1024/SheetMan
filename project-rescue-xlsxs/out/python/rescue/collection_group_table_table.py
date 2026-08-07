@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class CollectionGroupTableRecord:
-    """Generated from project-rescue-xlsxs\\CollectionData.xlsx : CollectionGroupTable : A1.
+    """Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionGroupTable : A1.
     """
 
     __slots__ = ("id", "name", "index", "character_list", "prefab_path")

@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
 class ArtifactTranscendenceTableRecord {
   /// Artifact_Transcend_ID
   int id = 0;

@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
 class ArtifactTableRecord {
   /// Artifact_Table
   int id = 0;

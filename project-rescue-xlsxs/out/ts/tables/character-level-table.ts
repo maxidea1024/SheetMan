@@ -23,7 +23,7 @@ interface IDataRow {
   hPGrowth: number
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1
 export class CharacterLevelTableRecord {
   /** Default constructor */
   constructor() {
@@ -94,7 +94,7 @@ export class CharacterLevelTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1
 export class CharacterLevelTableTable {
   /** Default constructor. */
   constructor() {

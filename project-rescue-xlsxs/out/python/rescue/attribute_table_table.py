@@ -13,7 +13,7 @@ from .enum_attribute_type import AttributeType
 
 
 class AttributeTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : AttributeTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1.
     """
 
     __slots__ = ("id", "name", "attribute_name", "attribute_type", "target_attribute_type", "damage_value_rate", "is_visible", "icon_path")

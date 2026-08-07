@@ -19,7 +19,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\StageGrowth.xlsx : StatGrowthTable : A1
+ * Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1
  */
 final class StatGrowthTableRecord
 {

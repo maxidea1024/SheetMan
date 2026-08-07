@@ -35,7 +35,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
 export class SDAlchemyInfoTableRecord {
   /** Default constructor */
   constructor() {
@@ -148,7 +148,7 @@ export class SDAlchemyInfoTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
 export class SDAlchemyInfoTableTable {
   /** Default constructor. */
   constructor() {

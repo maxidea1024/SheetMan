@@ -20,7 +20,7 @@
 #include "Tables_forward.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaRateTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1
 struct GachaRateTableRecord {
   /// GachaRate_Table
   std::int32_t id = 0;

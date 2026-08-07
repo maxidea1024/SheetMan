@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\ShopData.xlsx : ShopInfoTable : A1
+  # Generated from project-rescue-xlsxs/ShopData.xlsx : ShopInfoTable : A1
   class ShopInfoTableRecord
     attr_accessor :id, :name, :info_name, :shop_type, :condition_id, :sheet_name, :priority, :ui_path, :list_prefab_path
 

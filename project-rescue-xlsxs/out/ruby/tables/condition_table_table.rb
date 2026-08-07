@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+  # Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
   class ConditionTableRecord
     attr_accessor :id, :name, :condition_target_type, :condition_target_value, :condition_type, :condition_value
 

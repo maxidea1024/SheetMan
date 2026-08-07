@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use crate::sheetman;
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaRateTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct GachaRateTableRecord {
     /// GachaRate_Table

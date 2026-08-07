@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BE2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BE2
 /** 타입 */
 export enum GachaType {
   /** None (automatically inserted by SheetMan) */

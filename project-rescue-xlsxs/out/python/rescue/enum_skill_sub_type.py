@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class SkillSubType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : K2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : K2.
 
     스킬타입
     """

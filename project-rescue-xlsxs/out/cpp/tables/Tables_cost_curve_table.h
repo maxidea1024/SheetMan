@@ -22,7 +22,7 @@
 #include "enums/Tables_enum_currency_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveTable : A1
 struct CostCurveTableRecord {
   /// 아이디
   std::int32_t id = 0;

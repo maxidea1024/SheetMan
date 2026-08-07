@@ -11,7 +11,7 @@ use crate::sheetman;
 use crate::enum_condition_target_type::ConditionTargetType;
 use crate::enum_condition_type::ConditionType;
 
-// Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+// Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct ConditionTableRecord {
     /// ConditionID

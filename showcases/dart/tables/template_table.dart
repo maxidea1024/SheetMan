@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../a.dart';
-// Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
+// Generated from test/fixtures/xlsx/reserved-words/reserved-words.xlsx : Data : B2
 /// Named after a C++ keyword.
 class TemplateRecord {
   /// primary index

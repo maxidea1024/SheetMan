@@ -12,7 +12,7 @@ use crate::enum_sd_contens_type::SdContensType;
 use crate::enum_currency_type::CurrencyType;
 use crate::enum_cycle_type::CycleType;
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDContensInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDContensInfoTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct SDContensInfoTableRecord {
     /// SDContensInfo_Table

@@ -28,7 +28,7 @@ interface IDataRow {
   exCurrencyValue: number
 }
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaCharacterListTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaCharacterListTable : A1
 export class GachaCharacterListTableRecord {
   /** Default constructor */
   constructor() {
@@ -111,7 +111,7 @@ export class GachaCharacterListTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaCharacterListTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaCharacterListTable : A1
 export class GachaCharacterListTableTable {
   /** Default constructor. */
   constructor() {

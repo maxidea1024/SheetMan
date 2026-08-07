@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BK2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BK2
 /** 타입 */
 export enum RewardTarget {
   /** 없음 */

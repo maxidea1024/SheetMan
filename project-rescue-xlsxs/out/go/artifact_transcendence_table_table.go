@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// ArtifactTranscendenceTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1.
+// ArtifactTranscendenceTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1.
 type ArtifactTranscendenceTableRecord struct {
 	// Artifact_Transcend_ID
 	Id int32

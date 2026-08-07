@@ -33,7 +33,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
 export class SkillTableRecord {
   /** Default constructor */
   constructor() {
@@ -128,7 +128,7 @@ export class SkillTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
 export class SkillTableTable {
   /** Default constructor. */
   constructor() {

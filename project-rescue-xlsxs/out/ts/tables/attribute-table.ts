@@ -25,7 +25,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
 export class AttributeTableRecord {
   /** Default constructor */
   constructor() {
@@ -90,7 +90,7 @@ export class AttributeTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
 export class AttributeTableTable {
   /** Default constructor. */
   constructor() {

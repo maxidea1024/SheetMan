@@ -23,7 +23,7 @@
 #include "enums/Tables_enum_currency_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemGradeTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemGradeTable : A1
 struct EquipItemGradeTableRecord {
   /// EquipItemGrade_Table
   std::int32_t id = 0;

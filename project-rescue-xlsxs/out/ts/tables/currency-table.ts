@@ -33,7 +33,7 @@ interface IDataRow {
   shortCutIndex: number[]
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : CurrencyTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1
 export class CurrencyTableRecord {
   /** Default constructor */
   constructor() {
@@ -134,7 +134,7 @@ export class CurrencyTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : CurrencyTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1
 export class CurrencyTableTable {
   /** Default constructor. */
   constructor() {

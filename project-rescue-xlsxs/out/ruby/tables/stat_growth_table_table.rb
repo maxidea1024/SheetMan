@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\StageGrowth.xlsx : StatGrowthTable : A1
+  # Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1
   class StatGrowthTableRecord
     attr_accessor :id, :name, :stage_name, :stat_type, :infuluence_step, :growth, :growth_value, :growth_reselt, :icon_path
 

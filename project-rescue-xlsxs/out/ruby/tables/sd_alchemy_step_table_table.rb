@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyStepTable : A1
+  # Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyStepTable : A1
   class SDAlchemyStepTableRecord
     attr_accessor :id, :name, :name_kr, :max_level, :reward_type, :reward_value
 

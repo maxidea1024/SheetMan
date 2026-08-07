@@ -13,7 +13,7 @@ use crate::enum_equipment_type::EquipmentType;
 use crate::enum_grade_type::GradeType;
 use crate::enum_stat_type::StatType;
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct EquipTableRecord {
     /// Equipment_Table

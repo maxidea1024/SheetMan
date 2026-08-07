@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
 public final class MaterialTableRecord {
     /** Material_Table */
     public int id;

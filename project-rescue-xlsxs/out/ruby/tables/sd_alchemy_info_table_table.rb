@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyInfoTable : A1
+  # Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
   class SDAlchemyInfoTableRecord
     attr_accessor :id, :name, :name_kr, :material_type, :common_material_type1, :common_material_type2, :material_type2_rate, :stat_type, :target_type, :max_level_id, :accelerate_time, :accelerate_item_type1, :accelerate_item_cost1, :accelerate_item_type2, :accelerate_item_cost2, :icon_path
 

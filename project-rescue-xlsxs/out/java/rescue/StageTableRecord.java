@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : StageTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : StageTable : A1
 public final class StageTableRecord {
     /** Stage_Table */
     public int id;

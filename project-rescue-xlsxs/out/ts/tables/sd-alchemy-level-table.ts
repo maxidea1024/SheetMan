@@ -30,7 +30,7 @@ interface IDataRow {
   hITTotal: number
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyLevelTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyLevelTable : A1
 export class SDAlchemyLevelTableRecord {
   /** Default constructor */
   constructor() {
@@ -143,7 +143,7 @@ export class SDAlchemyLevelTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyLevelTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyLevelTable : A1
 export class SDAlchemyLevelTableTable {
   /** Default constructor. */
   constructor() {

@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_growth_type::GrowthType;
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveRangeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveRangeTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct CostCurveRangeTableRecord {
     /// 숫자

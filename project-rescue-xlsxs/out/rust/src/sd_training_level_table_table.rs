@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use crate::sheetman;
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingLevelTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingLevelTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct SDTrainingLevelTableRecord {
     /// SDTrainingLevel_Table

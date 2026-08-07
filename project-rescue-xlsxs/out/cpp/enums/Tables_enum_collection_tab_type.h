@@ -13,7 +13,7 @@
 #include <cstdint>
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AQ2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AQ2
 /// 타입
 enum class CollectionTabType : std::int32_t {
   /// None (automatically inserted by SheetMan)

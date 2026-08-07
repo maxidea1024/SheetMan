@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// CollectionTabType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AQ2.
+// CollectionTabType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AQ2.
 // 타입
 type CollectionTabType int32
 

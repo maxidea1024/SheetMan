@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveTable : A1
+  # Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveTable : A1
   class CostCurveTableRecord
     attr_accessor :id, :name, :growth_type, :cost_type, :base_cost_value
 

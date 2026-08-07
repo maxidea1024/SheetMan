@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// SDCardType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BO2.
+// SDCardType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BO2.
 // 타입
 type SDCardType int32
 

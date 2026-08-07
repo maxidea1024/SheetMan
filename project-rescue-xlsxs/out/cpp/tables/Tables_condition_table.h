@@ -22,7 +22,7 @@
 #include "enums/Tables_enum_condition_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+// Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
 struct ConditionTableRecord {
   /// ConditionID
   std::int32_t id = 0;

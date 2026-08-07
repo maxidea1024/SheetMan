@@ -16,7 +16,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
  */
 struct Rescue_ConfigTableRecord_t {
   /* Row number, added by SheetMan because `Id` cannot be a primary index. */

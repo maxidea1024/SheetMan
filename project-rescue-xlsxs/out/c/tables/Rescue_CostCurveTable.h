@@ -18,7 +18,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveTable : A1
+/* Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveTable : A1
  */
 struct Rescue_CostCurveTableRecord_t {
   /* 아이디 */

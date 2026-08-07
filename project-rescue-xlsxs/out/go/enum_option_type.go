@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// OptionType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BS2.
+// OptionType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BS2.
 // 타입
 type OptionType int32
 

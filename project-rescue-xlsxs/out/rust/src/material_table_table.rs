@@ -11,7 +11,7 @@ use crate::sheetman;
 use crate::enum_item_type::ItemType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct MaterialTableRecord {
     /// Material_Table

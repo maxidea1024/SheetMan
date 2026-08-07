@@ -27,7 +27,7 @@ interface IDataRow {
   dailyFreeCount: number
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonInfoTable : A1
 export class SDDungeonInfoTableRecord {
   /** Default constructor */
   constructor() {
@@ -122,7 +122,7 @@ export class SDDungeonInfoTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonInfoTable : A1
 export class SDDungeonInfoTableTable {
   /** Default constructor. */
   constructor() {

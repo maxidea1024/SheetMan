@@ -22,7 +22,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
 export class ShortCutTableRecord {
   /** Default constructor */
   constructor() {
@@ -69,7 +69,7 @@ export class ShortCutTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
 export class ShortCutTableTable {
   /** Default constructor. */
   constructor() {

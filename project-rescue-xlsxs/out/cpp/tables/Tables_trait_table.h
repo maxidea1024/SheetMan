@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_stat_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : TraitTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : TraitTable : A1
 struct TraitTableRecord {
   /// 기본값
   std::int32_t id = 0;

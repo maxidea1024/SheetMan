@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BO2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BO2
 /** 타입 */
 export enum SDCardType {
   None = 0,

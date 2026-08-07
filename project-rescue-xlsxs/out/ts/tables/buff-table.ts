@@ -39,7 +39,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
 export class BuffTableRecord {
   /** Default constructor */
   constructor() {
@@ -164,7 +164,7 @@ export class BuffTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
 export class BuffTableTable {
   /** Default constructor. */
   constructor() {

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// CharacterType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : A2.
+// CharacterType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : A2.
 // 캐릭터 종류
 type CharacterType int32
 

@@ -38,7 +38,7 @@ interface IDataRow {
   accStatRate2: number
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemGradeTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemGradeTable : A1
 export class EquipItemGradeTableRecord {
   /** Default constructor */
   constructor() {
@@ -169,7 +169,7 @@ export class EquipItemGradeTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemGradeTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemGradeTable : A1
 export class EquipItemGradeTableTable {
   /** Default constructor. */
   constructor() {

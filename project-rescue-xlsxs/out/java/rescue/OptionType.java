@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BS2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BS2
 /** 타입 */
 public enum OptionType {
     /** None (automatically inserted by SheetMan) */

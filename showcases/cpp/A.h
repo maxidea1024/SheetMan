@@ -38,7 +38,13 @@ class Tables {
  private:
   /// The tables arrive as arguments, which is how this links the load being read rather
   /// than the one already published.
-  void solve_cross_references(TemplateTable& loaded_sm_template) {
+  ///
+  /// Every table is passed whether or not it takes part in a reference, so the call site
+  /// is the same shape for every model. `[[maybe_unused]]` is what says so to the
+  /// compiler: the gate builds with `-Wextra -Werror`, and a model where nothing
+  /// references anything - which is most of them - otherwise fails to compile on the
+  /// unused parameters.
+  void solve_cross_references([[maybe_unused]] TemplateTable& loaded_sm_template) {
     // No table references another.
   }
 

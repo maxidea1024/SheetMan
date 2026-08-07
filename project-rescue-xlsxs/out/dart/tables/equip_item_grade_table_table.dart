@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemGradeTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemGradeTable : A1
 class EquipItemGradeTableRecord {
   /// EquipItemGrade_Table
   int id = 0;

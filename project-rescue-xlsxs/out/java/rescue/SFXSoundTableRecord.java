@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
 public final class SFXSoundTableRecord {
     /** SFXSound_Table */
     public int id;

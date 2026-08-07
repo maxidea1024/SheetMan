@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// CharacterTranscendenceTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTranscendenceTable : A1.
+// CharacterTranscendenceTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTranscendenceTable : A1.
 type CharacterTranscendenceTableRecord struct {
 	// Transcend_ID
 	Id int32

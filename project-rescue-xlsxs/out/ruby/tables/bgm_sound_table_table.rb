@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\SoundData.xlsx : BGMSoundTable : A1
+  # Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1
   class BGMSoundTableRecord
     attr_accessor :id, :name, :path, :loop, :fade_time, :description
 

@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// StarNodeTableRecord was generated from project-rescue-xlsxs\StageGrowth.xlsx : StarNodeTable : A1.
+// StarNodeTableRecord was generated from project-rescue-xlsxs/StageGrowth.xlsx : StarNodeTable : A1.
 type StarNodeTableRecord struct {
 	// 기본값
 	Id int32

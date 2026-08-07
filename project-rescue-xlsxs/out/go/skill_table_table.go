@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// SkillTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1.
+// SkillTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1.
 type SkillTableRecord struct {
 	// Skill_Table
 	Id int32

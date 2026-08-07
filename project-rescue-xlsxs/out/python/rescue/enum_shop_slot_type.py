@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class ShopSlotType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : BQ2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BQ2.
 
     타입
     """

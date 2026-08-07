@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// ShortCutTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1.
+// ShortCutTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1.
 type ShortCutTableRecord struct {
 	// ShortCut_Table
 	ID int32

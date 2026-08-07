@@ -20,7 +20,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
  */
 struct Rescue_SkillTableRecord_t {
   /* Skill_Table */

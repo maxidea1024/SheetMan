@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// EquipItemLevelTableRecord was generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemLevelTable : A1.
+// EquipItemLevelTableRecord was generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemLevelTable : A1.
 type EquipItemLevelTableRecord struct {
 	// EquipItemLevel_Table
 	Id int32

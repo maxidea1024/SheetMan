@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// AttributeType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : O2.
+// AttributeType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : O2.
 // 타입
 type AttributeType int32
 

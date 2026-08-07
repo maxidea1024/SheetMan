@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
 class AttributeTableRecord {
   /// Attribute_Table
   int id = 0;

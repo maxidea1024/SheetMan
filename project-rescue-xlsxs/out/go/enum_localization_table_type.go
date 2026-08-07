@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// LocalizationTableType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AK2.
+// LocalizationTableType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AK2.
 // 타입
 type LocalizationTableType int32
 

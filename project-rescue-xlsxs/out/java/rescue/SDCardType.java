@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BO2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BO2
 /** 타입 */
 public enum SDCardType {
         NONE(0),

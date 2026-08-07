@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\ItemData.xlsx : ClassUpCurrencyListTable : A1
+/* Generated from project-rescue-xlsxs/ItemData.xlsx : ClassUpCurrencyListTable : A1
  */
 struct Rescue_ClassUpCurrencyListTableRecord_t {
   /* Currency_Table */

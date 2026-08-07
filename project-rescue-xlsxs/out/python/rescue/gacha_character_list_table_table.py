@@ -13,7 +13,7 @@ from .enum_grade_type import GradeType
 
 
 class GachaCharacterListTableRecord:
-    """Generated from project-rescue-xlsxs\\GachaData.xlsx : GachaCharacterListTable : A1.
+    """Generated from project-rescue-xlsxs/GachaData.xlsx : GachaCharacterListTable : A1.
     """
 
     __slots__ = ("id", "character_id", "grade_type", "base_weight", "is_wishlist", "wishlist_weight", "class_up_currency_id", "class_up_currency_value", "ex_condition_id", "ex_currency_id", "ex_currency_value")

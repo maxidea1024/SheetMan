@@ -11,7 +11,7 @@ use crate::sheetman;
 use crate::enum_agency_grade::AgencyGrade;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyInfoTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct SDAgencyInfoTableRecord {
     /// SDAgencyInfo_Table

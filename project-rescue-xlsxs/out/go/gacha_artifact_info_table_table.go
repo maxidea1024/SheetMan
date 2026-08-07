@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// GachaArtifactInfoTableRecord was generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactInfoTable : A1.
+// GachaArtifactInfoTableRecord was generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactInfoTable : A1.
 type GachaArtifactInfoTableRecord struct {
 	// GachaArtifactInfo_Table
 	Id int32

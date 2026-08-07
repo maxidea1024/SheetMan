@@ -21,7 +21,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemClassTable : A1
+ * Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemClassTable : A1
  */
 final class EquipItemClassTableRecord
 {

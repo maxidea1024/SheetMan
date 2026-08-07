@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
 class ConfigTableRecord {
     /** Row number, added by SheetMan because `Id` cannot be a primary index. */
     var index: Int = 0

@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonCardTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1
 class SDDungeonCardTableRecord {
   /// SDDungeonCard_Table
   int id = 0;

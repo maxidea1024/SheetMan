@@ -16,7 +16,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterLevelTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1
  */
 struct Rescue_CharacterLevelTableRecord_t {
   /* Index */

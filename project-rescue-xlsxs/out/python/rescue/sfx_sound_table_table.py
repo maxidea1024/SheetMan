@@ -13,7 +13,7 @@ from .enum_sfx_category_type import SFXCategoryType
 
 
 class SFXSoundTableRecord:
-    """Generated from project-rescue-xlsxs\\SoundData.xlsx : SFXSoundTable : A1.
+    """Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1.
     """
 
     __slots__ = ("id", "name", "category", "path", "preload_group", "description")

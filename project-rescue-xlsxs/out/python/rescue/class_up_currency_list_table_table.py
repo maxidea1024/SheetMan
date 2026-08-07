@@ -13,7 +13,7 @@ from .enum_currency_type import CurrencyType
 
 
 class ClassUpCurrencyListTableRecord:
-    """Generated from project-rescue-xlsxs\\ItemData.xlsx : ClassUpCurrencyListTable : A1.
+    """Generated from project-rescue-xlsxs/ItemData.xlsx : ClassUpCurrencyListTable : A1.
     """
 
     __slots__ = ("id", "name", "type_", "target_id", "max_count", "max_stack", "icon_path", "short_cut_index")

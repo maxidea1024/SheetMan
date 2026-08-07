@@ -13,7 +13,7 @@
 #include <cstdint>
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : S2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : S2
 /// 타입
 enum class CurrencyType : std::int32_t {
   /// 없음

@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// BuffSelectTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : BuffSelectTable : A1.
+// BuffSelectTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1.
 type BuffSelectTableRecord struct {
 	// ID
 	Id int32

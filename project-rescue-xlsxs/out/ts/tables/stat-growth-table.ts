@@ -26,7 +26,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StatGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1
 export class StatGrowthTableRecord {
   /** Default constructor */
   constructor() {
@@ -97,7 +97,7 @@ export class StatGrowthTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StatGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1
 export class StatGrowthTableTable {
   /** Default constructor. */
   constructor() {

@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : C2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : C2
 /// 직업
 enum JobType {
   /// None (automatically inserted by SheetMan)

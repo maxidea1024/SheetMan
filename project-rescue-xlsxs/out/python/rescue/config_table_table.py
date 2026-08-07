@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class ConfigTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : ConfigTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1.
     """
 
     __slots__ = ("index", "id", "category", "data_type", "default_value", "description")

@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_stat_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StarNodeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StarNodeTable : A1
 struct StarNodeTableRecord {
   /// 기본값
   std::int32_t id = 0;

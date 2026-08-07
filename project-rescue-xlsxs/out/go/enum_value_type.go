@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// ValueType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BU2.
+// ValueType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BU2.
 // 타입
 type ValueType int32
 

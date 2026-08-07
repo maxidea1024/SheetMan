@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
   class ShortCutTableRecord
     attr_accessor :id, :name, :type, :sub_index, :description
 

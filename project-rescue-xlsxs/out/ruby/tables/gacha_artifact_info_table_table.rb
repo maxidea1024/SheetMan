@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactInfoTable : A1
+  # Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactInfoTable : A1
   class GachaArtifactInfoTableRecord
     attr_accessor :id, :name, :gacha_type, :priority, :condition_id, :rate_id, :trigger_count, :trigger_rate_id, :end_count, :end_rate_id, :end_character_id, :enable_reset, :is_shared_counter, :wish_list_condition_id, :wish_list_max_value, :is_single, :is_ten, :currency_type1, :single_cost1, :currency_type2, :single_cost2, :icon_path, :enable_skip
 

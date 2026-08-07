@@ -20,7 +20,7 @@ using SheetMan.Binary;
 
 namespace SheetMan.Fixtures.Core.Server
 {
-    // Generated from test/fixtures/xlsx/core\core.xlsx : Enums : L2
+    // Generated from test/fixtures/xlsx/core/core.xlsx : Enums : L2
     /// <summary>
     /// Declared in snake_case on purpose.
     /// </summary>

@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// SFXSoundTableRecord was generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1.
+// SFXSoundTableRecord was generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1.
 type SFXSoundTableRecord struct {
 	// SFXSound_Table
 	Id int32

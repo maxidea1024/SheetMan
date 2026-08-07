@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// RelicTableRecord was generated from project-rescue-xlsxs\StageGrowth.xlsx : RelicTable : A1.
+// RelicTableRecord was generated from project-rescue-xlsxs/StageGrowth.xlsx : RelicTable : A1.
 type RelicTableRecord struct {
 	// 기본값
 	Id int32

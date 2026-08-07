@@ -17,7 +17,7 @@ interface IDataRow {
   text: string
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : G2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Sides : G2
 /** Client-only table. Must not appear in server output. */
 export class ClientStringsRecord {
   /** Default constructor */
@@ -53,7 +53,7 @@ export class ClientStringsRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : G2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Sides : G2
 /** Client-only table. Must not appear in server output. */
 export class ClientStringsTable {
   /** Default constructor. */

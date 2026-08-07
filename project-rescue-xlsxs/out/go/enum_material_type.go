@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// MaterialType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : W2.
+// MaterialType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : W2.
 // 타입
 type MaterialType int32
 

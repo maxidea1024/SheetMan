@@ -37,7 +37,7 @@ interface IDataRow {
   assetDataPath: string
 }
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : ExpDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : ExpDungeonStageTable : A1
 export class ExpDungeonStageTableRecord {
   /** Default constructor */
   constructor() {
@@ -174,7 +174,7 @@ export class ExpDungeonStageTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : ExpDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : ExpDungeonStageTable : A1
 export class ExpDungeonStageTableTable {
   /** Default constructor. */
   constructor() {

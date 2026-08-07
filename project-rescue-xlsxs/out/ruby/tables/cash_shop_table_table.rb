@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\ShopData.xlsx : CashShopTable : A1
+  # Generated from project-rescue-xlsxs/ShopData.xlsx : CashShopTable : A1
   class CashShopTableRecord
     attr_accessor :id, :name, :product_name, :shop_type, :shop_slot_id, :priority, :item_id, :item_value, :cycle_type, :limit_value, :currency_type, :price_value, :condition_id, :icon_path
 

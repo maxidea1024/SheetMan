@@ -21,7 +21,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTable : A1
  */
 struct Rescue_CharacterTableRecord_t {
   /* Character_Table */

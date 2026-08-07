@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BG2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BG2
 /** 타입 */
 public enum CycleType {
         NONE(0),

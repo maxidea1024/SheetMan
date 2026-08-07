@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class SDPubInfoTableRecord:
-    """Generated from project-rescue-xlsxs\\SD_Contens.xlsx : SDPubInfoTable : A1.
+    """Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDPubInfoTable : A1.
     """
 
     __slots__ = ("id", "name", "pub_name", "unlock_condition", "limit_value", "buff_id", "description")

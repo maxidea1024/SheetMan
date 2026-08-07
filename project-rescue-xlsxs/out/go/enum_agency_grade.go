@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// AgencyGrade was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BI2.
+// AgencyGrade was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BI2.
 // 타입
 type AgencyGrade int32
 

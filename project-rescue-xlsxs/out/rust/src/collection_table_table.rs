@@ -12,7 +12,7 @@ use crate::enum_collection_tab_type::CollectionTabType;
 use crate::enum_currency_type::CurrencyType;
 use crate::enum_stat_type::StatType;
 
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct CollectionTableRecord {
     /// CollectionID

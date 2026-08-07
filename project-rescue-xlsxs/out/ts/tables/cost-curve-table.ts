@@ -23,7 +23,7 @@ interface IDataRow {
   baseCostValue: number
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveTable : A1
 export class CostCurveTableRecord {
   /** Default constructor */
   constructor() {
@@ -70,7 +70,7 @@ export class CostCurveTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveTable : A1
 export class CostCurveTableTable {
   /** Default constructor. */
   constructor() {

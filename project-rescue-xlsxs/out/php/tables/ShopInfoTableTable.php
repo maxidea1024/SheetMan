@@ -19,7 +19,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\ShopData.xlsx : ShopInfoTable : A1
+ * Generated from project-rescue-xlsxs/ShopData.xlsx : ShopInfoTable : A1
  */
 final class ShopInfoTableRecord
 {

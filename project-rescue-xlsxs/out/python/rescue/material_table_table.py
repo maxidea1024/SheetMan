@@ -14,7 +14,7 @@ from .enum_currency_type import CurrencyType
 
 
 class MaterialTableRecord:
-    """Generated from project-rescue-xlsxs\\ItemData.xlsx : MaterialTable : A1.
+    """Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1.
     """
 
     __slots__ = ("id", "name", "item_name", "item_type", "type_", "stackable", "max_stack", "cooltime", "duration", "icon_path", "drop_prefab_path", "description", "short_cut_index")

@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// ConditionTableRecord was generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1.
+// ConditionTableRecord was generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1.
 type ConditionTableRecord struct {
 	// ConditionID
 	Id int32

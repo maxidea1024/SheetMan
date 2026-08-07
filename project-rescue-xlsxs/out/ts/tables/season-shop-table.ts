@@ -33,7 +33,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : SeasonShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : SeasonShopTable : A1
 export class SeasonShopTableRecord {
   /** Default constructor */
   constructor() {
@@ -134,7 +134,7 @@ export class SeasonShopTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : SeasonShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : SeasonShopTable : A1
 export class SeasonShopTableTable {
   /** Default constructor. */
   constructor() {

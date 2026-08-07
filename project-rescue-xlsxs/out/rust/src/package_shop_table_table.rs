@@ -12,7 +12,7 @@ use crate::enum_shop_type::ShopType;
 use crate::enum_cycle_type::CycleType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : PackageShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : PackageShopTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct PackageShopTableRecord {
     /// PackageShop_Table

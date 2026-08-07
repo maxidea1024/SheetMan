@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BC2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BC2
 /** 타입 */
 export enum ShopType {
   /** None (automatically inserted by SheetMan) */

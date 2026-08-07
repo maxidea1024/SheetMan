@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AQ2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AQ2
 /** 타입 */
 public enum CollectionTabType {
     /** None (automatically inserted by SheetMan) */

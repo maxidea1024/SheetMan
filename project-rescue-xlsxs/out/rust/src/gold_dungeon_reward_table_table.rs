@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : GoldDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : GoldDungeonRewardTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct GoldDungeonRewardTableRecord {
     /// GoldDungeonReward_Table

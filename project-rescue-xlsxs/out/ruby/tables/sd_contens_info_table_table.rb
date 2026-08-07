@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDContensInfoTable : A1
+  # Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDContensInfoTable : A1
   class SDContensInfoTableRecord
     attr_accessor :id, :name, :info_name, :sheet_name, :sd_contens_type, :condition_id, :currency_type, :enable_reset, :cycle_type, :sd_character_path, :prefab_path
 

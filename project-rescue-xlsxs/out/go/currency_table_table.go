@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// CurrencyTableRecord was generated from project-rescue-xlsxs\ItemData.xlsx : CurrencyTable : A1.
+// CurrencyTableRecord was generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1.
 type CurrencyTableRecord struct {
 	// Currency_Table
 	Id int32

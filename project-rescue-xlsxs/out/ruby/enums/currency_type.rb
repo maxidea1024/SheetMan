@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : S2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : S2
   # 타입
   module CurrencyType
     # 없음

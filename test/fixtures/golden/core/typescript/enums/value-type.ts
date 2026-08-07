@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Enums : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Enums : B2
 /** Value types used by the test tables. */
 export enum ValueType {
   /** no value */

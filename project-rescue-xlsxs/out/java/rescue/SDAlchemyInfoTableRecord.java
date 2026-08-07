@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
 public final class SDAlchemyInfoTableRecord {
     /** SDAlchemyInfo_Table */
     public int id;

@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class ArtifactLevelTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : ArtifactLevelTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactLevelTable : A1.
     """
 
     __slots__ = ("id", "name", "name_kr", "level", "character_exp", "accumulated_exp", "atk_growth", "def_growth", "hp_growth")

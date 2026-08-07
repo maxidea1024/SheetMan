@@ -20,7 +20,7 @@
 #include "A_forward.h"
 
 namespace x {
-// Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
+// Generated from test/fixtures/xlsx/reserved-words/reserved-words.xlsx : Data : B2
 /// Named after a C++ keyword.
 struct TemplateRecord {
   /// primary index

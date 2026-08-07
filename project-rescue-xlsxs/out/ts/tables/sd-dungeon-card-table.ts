@@ -24,7 +24,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonCardTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1
 export class SDDungeonCardTableRecord {
   /** Default constructor */
   constructor() {
@@ -83,7 +83,7 @@ export class SDDungeonCardTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonCardTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1
 export class SDDungeonCardTableTable {
   /** Default constructor. */
   constructor() {

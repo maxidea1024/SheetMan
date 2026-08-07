@@ -16,7 +16,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BU2
+ * Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BU2
  *
  * 타입
  */

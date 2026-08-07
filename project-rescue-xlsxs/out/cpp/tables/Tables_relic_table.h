@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_stat_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : RelicTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : RelicTable : A1
 struct RelicTableRecord {
   /// 기본값
   std::int32_t id = 0;

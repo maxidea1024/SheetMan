@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\ItemData.xlsx : ClassUpCurrencyListTable : A1
+  # Generated from project-rescue-xlsxs/ItemData.xlsx : ClassUpCurrencyListTable : A1
   class ClassUpCurrencyListTableRecord
     attr_accessor :id, :name, :type, :target_id, :max_count, :max_stack, :icon_path, :short_cut_index
 

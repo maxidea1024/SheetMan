@@ -12,7 +12,7 @@ use crate::enum_currency_type::CurrencyType;
 use crate::enum_stat_type::StatType;
 use crate::enum_target_type::TargetType;
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct SDAlchemyInfoTableRecord {
     /// SDAlchemyInfo_Table

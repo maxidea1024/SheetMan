@@ -31,7 +31,7 @@ interface IDataRow {
   shortCutID: number
 }
 
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1
 export class CollectionTableRecord {
   /** Default constructor */
   constructor() {
@@ -120,7 +120,7 @@ export class CollectionTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1
 export class CollectionTableTable {
   /** Default constructor. */
   constructor() {

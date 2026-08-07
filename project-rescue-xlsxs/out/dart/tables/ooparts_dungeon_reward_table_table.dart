@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : OopartsDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : OopartsDungeonRewardTable : A1
 class OopartsDungeonRewardTableRecord {
   /// OopartsDungeonReward_Table
   int id = 0;

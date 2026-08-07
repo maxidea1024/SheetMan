@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// EquipItemClassTableRecord was generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemClassTable : A1.
+// EquipItemClassTableRecord was generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemClassTable : A1.
 type EquipItemClassTableRecord struct {
 	// EquipItemClass_Table
 	Id int32

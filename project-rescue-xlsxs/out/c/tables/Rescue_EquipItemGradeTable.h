@@ -19,7 +19,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemGradeTable : A1
+/* Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemGradeTable : A1
  */
 struct Rescue_EquipItemGradeTableRecord_t {
   /* EquipItemGrade_Table */

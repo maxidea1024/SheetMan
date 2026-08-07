@@ -21,7 +21,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionTable : A1
+ * Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1
  */
 final class CollectionTableRecord
 {

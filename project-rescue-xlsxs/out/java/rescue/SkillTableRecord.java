@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
 public final class SkillTableRecord {
     /** Skill_Table */
     public int id;

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// GradeType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : Y2.
+// GradeType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : Y2.
 // 타입
 type GradeType int32
 

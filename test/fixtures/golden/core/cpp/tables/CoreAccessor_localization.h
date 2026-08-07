@@ -21,7 +21,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Serial : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Serial : B2
 /// Trailing-number columns collapse into arrays.
 struct LocalizationRecord {
   /// primary index

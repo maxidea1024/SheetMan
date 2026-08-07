@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// SkillType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : M2.
+// SkillType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : M2.
 // 타입
 type SkillType int32
 

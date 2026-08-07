@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactInfoTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactInfoTable : A1
 class GachaArtifactInfoTableRecord {
   /// GachaArtifactInfo_Table
   int id = 0;

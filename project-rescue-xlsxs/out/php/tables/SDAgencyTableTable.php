@@ -24,7 +24,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyTable : A1
+ * Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
  */
 final class SDAgencyTableRecord
 {

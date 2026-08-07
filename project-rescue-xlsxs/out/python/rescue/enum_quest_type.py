@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class QuestType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : AG2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AG2.
 
     타입
     """

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// CycleType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BG2.
+// CycleType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BG2.
 // 타입
 type CycleType int32
 

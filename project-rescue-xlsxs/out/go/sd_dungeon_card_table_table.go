@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// SDDungeonCardTableRecord was generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonCardTable : A1.
+// SDDungeonCardTableRecord was generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1.
 type SDDungeonCardTableRecord struct {
 	// SDDungeonCard_Table
 	Id int32

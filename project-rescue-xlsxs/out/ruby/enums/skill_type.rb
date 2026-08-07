@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : M2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : M2
   # 타입
   module SkillType
     # None (automatically inserted by SheetMan)

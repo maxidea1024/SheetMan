@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// SDContensInfoTableRecord was generated from project-rescue-xlsxs\SD_Contens.xlsx : SDContensInfoTable : A1.
+// SDContensInfoTableRecord was generated from project-rescue-xlsxs/SD_Contens.xlsx : SDContensInfoTable : A1.
 type SDContensInfoTableRecord struct {
 	// SDContensInfo_Table
 	Id int32

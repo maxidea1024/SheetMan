@@ -14,7 +14,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Enums : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Enums : B2
 /// Value types used by the test tables.
 enum class ValueType : std::int32_t {
   /// no value

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// QuestType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AG2.
+// QuestType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AG2.
 // 타입
 type QuestType int32
 

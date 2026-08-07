@@ -20,7 +20,7 @@ using SheetMan.Binary;
 
 namespace SheetMan.Fixtures.Core.Client
 {
-    // Generated from test/fixtures/xlsx/core\core.xlsx : Enums : B2
+    // Generated from test/fixtures/xlsx/core/core.xlsx : Enums : B2
     /// <summary>
     /// Value types used by the test tables.
     /// </summary>

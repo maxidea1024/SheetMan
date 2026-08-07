@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : BuffTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
   class BuffTableRecord
     attr_accessor :id, :buff_name, :name, :skill_type, :stat_type, :priority, :attribute_type, :target_type, :buff_condition_type, :buff_value, :buff_value_rate, :buff_time, :buff_tick_time, :buff_max_stack, :buff_cool_down_time, :is_visible, :icon_path, :description
 

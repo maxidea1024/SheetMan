@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
   class ArtifactTranscendenceTableRecord
     attr_accessor :id, :name, :name_kr, :grade_type, :transcend_step, :max_level, :material_type, :material_count, :power_multiplier, :next_step_id
 

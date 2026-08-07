@@ -20,7 +20,7 @@ using SheetMan.Binary;
 
 namespace Rescue.Tables
 {
-    // Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : C2
+    // Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : C2
     /// <summary>
     /// 직업
     /// </summary>

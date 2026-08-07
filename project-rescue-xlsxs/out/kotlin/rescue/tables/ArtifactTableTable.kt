@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
 class ArtifactTableRecord {
     /** Artifact_Table */
     var id: Int = 0

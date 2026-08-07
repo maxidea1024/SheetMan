@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1
+/* Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
  */
 struct Rescue_SFXSoundTableRecord_t {
   /* SFXSound_Table */

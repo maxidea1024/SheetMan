@@ -11,7 +11,7 @@ use crate::sheetman;
 use crate::enum_gacha_type::GachaType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaInfoTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaInfoTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct GachaInfoTableRecord {
     /// HeroGacha_Table

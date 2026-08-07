@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionTable : A1
+  # Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1
   class CollectionTableRecord
     attr_accessor :id, :name, :character_id, :tab_type, :condition_id, :reward_type, :reward_value, :reward_stat_type1, :reward_stat_rate, :reward_stat_type2, :reward_stat_value, :short_cut_id
 

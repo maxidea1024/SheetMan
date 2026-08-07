@@ -13,7 +13,7 @@ from .enum_dungeon_type import DungeonType
 
 
 class TraitDungeonStageTableRecord:
-    """Generated from project-rescue-xlsxs\\DailyDungeon.xlsx : TraitDungeonStageTable : A1.
+    """Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonStageTable : A1.
     """
 
     __slots__ = ("id", "name", "stage_name", "dungeon_type", "dungeon_floor", "time_limit", "spawn_ids", "boss_id", "spawn_point_count", "spawn_max_count", "spawn_next_time", "stage_clear_count", "recommend_power", "reward_id", "atk_up_percent", "def_up_percent", "mhp_up_percent", "dungeon_image_path", "monster_image_path", "asset_data_path")

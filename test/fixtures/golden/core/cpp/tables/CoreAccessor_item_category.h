@@ -21,7 +21,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Refs : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Refs : B2
 /// Referenced by Item.CategoryId.
 struct ItemCategoryRecord {
   /// primary index

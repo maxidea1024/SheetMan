@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+// Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
 class ConditionTableRecord {
     /** ConditionID */
     var id: Int = 0

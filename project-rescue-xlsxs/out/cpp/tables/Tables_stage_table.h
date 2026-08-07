@@ -20,7 +20,7 @@
 #include "Tables_forward.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\MasterData.xlsx : StageTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : StageTable : A1
 struct StageTableRecord {
   /// Stage_Table
   std::int32_t id = 0;

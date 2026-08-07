@@ -20,7 +20,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactInfoTable : A1
+ * Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactInfoTable : A1
  */
 final class GachaArtifactInfoTableRecord
 {

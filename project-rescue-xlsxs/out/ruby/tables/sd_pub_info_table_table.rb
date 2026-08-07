@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDPubInfoTable : A1
+  # Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDPubInfoTable : A1
   class SDPubInfoTableRecord
     attr_accessor :id, :name, :pub_name, :unlock_condition, :limit_value, :buff_id, :description
 

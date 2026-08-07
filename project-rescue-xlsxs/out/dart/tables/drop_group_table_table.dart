@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : DropGroupTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1
 class DropGroupTableRecord {
   /// 기본값
   int id = 0;

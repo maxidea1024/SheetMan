@@ -13,7 +13,7 @@ use crate::enum_skill_sub_type::SkillSubType;
 use crate::enum_attribute_type::AttributeType;
 use crate::enum_target_type::TargetType;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct SkillTableRecord {
     /// Skill_Table

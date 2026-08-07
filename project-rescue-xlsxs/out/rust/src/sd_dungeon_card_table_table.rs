@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_sd_card_type::SDCardType;
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonCardTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct SDDungeonCardTableRecord {
     /// SDDungeonCard_Table

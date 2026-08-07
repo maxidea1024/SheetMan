@@ -13,7 +13,7 @@
 #include <cstdint>
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : E2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : E2
 /// 아티팩트 직업
 enum class ArtifactJobType : std::int32_t {
   /// None (automatically inserted by SheetMan)

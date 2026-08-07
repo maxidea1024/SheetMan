@@ -18,7 +18,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1
+/* Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
  */
 struct Rescue_MaterialTableRecord_t {
   /* Material_Table */

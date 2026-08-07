@@ -24,7 +24,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : TraitTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : TraitTable : A1
 export class TraitTableRecord {
   /** Default constructor */
   constructor() {
@@ -83,7 +83,7 @@ export class TraitTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : TraitTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : TraitTable : A1
 export class TraitTableTable {
   /** Default constructor. */
   constructor() {

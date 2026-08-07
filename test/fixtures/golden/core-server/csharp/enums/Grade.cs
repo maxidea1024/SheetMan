@@ -20,7 +20,7 @@ using SheetMan.Binary;
 
 namespace SheetMan.Fixtures.Core.Server
 {
-    // Generated from test/fixtures/xlsx/core\core.xlsx : Enums : G2
+    // Generated from test/fixtures/xlsx/core/core.xlsx : Enums : G2
     /// <summary>
     /// Item grade. Deliberately omits a zero entry.
     /// </summary>

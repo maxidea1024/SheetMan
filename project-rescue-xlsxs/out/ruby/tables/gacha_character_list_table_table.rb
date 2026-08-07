@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\GachaData.xlsx : GachaCharacterListTable : A1
+  # Generated from project-rescue-xlsxs/GachaData.xlsx : GachaCharacterListTable : A1
   class GachaCharacterListTableRecord
     attr_accessor :id, :character_id, :grade_type, :base_weight, :is_wishlist, :wishlist_weight, :class_up_currency_id, :class_up_currency_value, :ex_condition_id, :ex_currency_id, :ex_currency_value
 

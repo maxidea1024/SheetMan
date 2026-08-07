@@ -23,7 +23,7 @@
 #include "enums/Tables_enum_stat_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1
 struct CollectionTableRecord {
   /// CollectionID
   std::int32_t id = 0;

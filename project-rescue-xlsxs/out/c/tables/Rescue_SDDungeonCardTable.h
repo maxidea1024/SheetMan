@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonCardTable : A1
+/* Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1
  */
 struct Rescue_SDDungeonCardTableRecord_t {
   /* SDDungeonCard_Table */

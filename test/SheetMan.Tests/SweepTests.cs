@@ -102,10 +102,14 @@ public class SweepTests
         Convert();
         Reconvert();
 
+        // Named exactly as the generator writes them, which is kebab case and lower.
+        // `Item.ts` and `Grade.ts` were here for a long time and this test passed anyway:
+        // Windows does not distinguish them from `item.ts` and `grade.ts`, so the assertion
+        // only ever meant anything on Linux - where it failed.
         foreach (var expected in new[]
                  {
-                     Path.Combine("tables", "Item.ts"),
-                     Path.Combine("enums", "Grade.ts"),
+                     Path.Combine("tables", "item.ts"),
+                     Path.Combine("enums", "grade.ts"),
                      Path.Combine("constants", "game-config.ts"),
                      "index.ts",
                      Path.Combine("sheetman", "lite-binary-reader.ts"),

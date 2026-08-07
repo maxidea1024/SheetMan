@@ -11,7 +11,7 @@ use crate::sheetman;
 use crate::enum_growth_type::GrowthType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : InfoGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : InfoGrowthTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct InfoGrowthTableRecord {
     /// 기본값

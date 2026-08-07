@@ -12,7 +12,7 @@ use crate::enum_dungeon_type::DungeonType;
 use crate::enum_cycle_type::CycleType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : DailyDungeonInfoTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : DailyDungeonInfoTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct DailyDungeonInfoTableRecord {
     /// DailyDungeonInfo_Table

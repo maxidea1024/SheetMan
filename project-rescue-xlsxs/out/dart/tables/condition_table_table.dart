@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+// Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
 class ConditionTableRecord {
   /// ConditionID
   int id = 0;

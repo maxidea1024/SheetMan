@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
 class MaterialTableRecord {
   /// Material_Table
   int id = 0;

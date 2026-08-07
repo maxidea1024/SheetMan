@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1
 public final class CharacterLevelTableRecord {
     /** Index */
     public int id;

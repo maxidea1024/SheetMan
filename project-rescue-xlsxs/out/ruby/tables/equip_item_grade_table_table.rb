@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemGradeTable : A1
+  # Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemGradeTable : A1
   class EquipItemGradeTableRecord
     attr_accessor :id, :name, :name_kr, :type, :grade, :material_type, :material_value, :weapon_stat_rate1, :weapon_stat_rate2, :armor_stat_rate1, :armor_stat_rate2, :gauntlet_stat_rate1, :gauntlet_stat_rate2, :boots_stat_rate1, :boots_stat_rate2, :helmet_stat_rate1, :helmet_stat_rate2, :acc_stat_rate1, :acc_stat_rate2
 

@@ -20,7 +20,7 @@
 #include "Tables_forward.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactLevelTable : A1
 struct ArtifactLevelTableRecord {
   /// ArtifactLevelTable
   std::int32_t id = 0;

@@ -12,7 +12,7 @@ use crate::enum_item_type::ItemType;
 use crate::enum_currency_type::CurrencyType;
 use crate::enum_cycle_type::CycleType;
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : CurrencyTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct CurrencyTableRecord {
     /// Currency_Table

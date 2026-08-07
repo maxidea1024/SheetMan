@@ -14,7 +14,7 @@ from .enum_currency_type import CurrencyType
 
 
 class CostCurveTableRecord:
-    """Generated from project-rescue-xlsxs\\StageGrowth.xlsx : CostCurveTable : A1.
+    """Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveTable : A1.
     """
 
     __slots__ = ("id", "name", "growth_type", "cost_type", "base_cost_value")

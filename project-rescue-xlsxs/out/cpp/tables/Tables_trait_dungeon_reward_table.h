@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_currency_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : TraitDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonRewardTable : A1
 struct TraitDungeonRewardTableRecord {
   /// TraitDungeonReward_Table
   std::int32_t id = 0;

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// BuffConditionType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : Q2.
+// BuffConditionType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : Q2.
 // 타입
 type BuffConditionType int32
 

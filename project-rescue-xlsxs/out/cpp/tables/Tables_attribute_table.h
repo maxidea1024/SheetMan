@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_attribute_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
 struct AttributeTableRecord {
   /// Attribute_Table
   std::int32_t id = 0;

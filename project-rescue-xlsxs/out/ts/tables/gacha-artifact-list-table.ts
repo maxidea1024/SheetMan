@@ -26,7 +26,7 @@ interface IDataRow {
   exCurrencyValue: number
 }
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactListTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactListTable : A1
 export class GachaArtifactListTableRecord {
   /** Default constructor */
   constructor() {
@@ -97,7 +97,7 @@ export class GachaArtifactListTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactListTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactListTable : A1
 export class GachaArtifactListTableTable {
   /** Default constructor. */
   constructor() {

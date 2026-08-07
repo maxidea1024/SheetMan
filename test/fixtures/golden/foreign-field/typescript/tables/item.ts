@@ -17,7 +17,7 @@ interface IDataRow {
   categoryName: number
 }
 
-// Generated from test/fixtures/xlsx/foreign-field\foreign-field.xlsx : Refs : I2
+// Generated from test/fixtures/xlsx/foreign-field/foreign-field.xlsx : Refs : I2
 /** References a specific field rather than the whole record. */
 export class ItemRecord {
   /** Default constructor */
@@ -57,7 +57,7 @@ export class ItemRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/foreign-field\foreign-field.xlsx : Refs : I2
+// Generated from test/fixtures/xlsx/foreign-field/foreign-field.xlsx : Refs : I2
 /** References a specific field rather than the whole record. */
 export class ItemTable {
   /** Default constructor. */

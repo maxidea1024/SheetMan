@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
   class AttributeTableRecord
     attr_accessor :id, :name, :attribute_name, :attribute_type, :target_attribute_type, :damage_value_rate, :is_visible, :icon_path
 

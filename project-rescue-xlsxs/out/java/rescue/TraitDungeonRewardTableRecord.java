@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : TraitDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonRewardTable : A1
 public final class TraitDungeonRewardTableRecord {
     /** TraitDungeonReward_Table */
     public int id;

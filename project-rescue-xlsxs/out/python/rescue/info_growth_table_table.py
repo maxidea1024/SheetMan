@@ -14,7 +14,7 @@ from .enum_currency_type import CurrencyType
 
 
 class InfoGrowthTableRecord:
-    """Generated from project-rescue-xlsxs\\StageGrowth.xlsx : InfoGrowthTable : A1.
+    """Generated from project-rescue-xlsxs/StageGrowth.xlsx : InfoGrowthTable : A1.
     """
 
     __slots__ = ("id", "name", "info_name", "sheet_name", "growth_type", "reset", "reset_cost_type", "reset_cost_value", "max_step", "max_level", "unlock_condition_type", "unlock_condition_value", "description", "icon_path")

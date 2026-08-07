@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : Q2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : Q2
   # 타입
   module BuffConditionType
     # None (automatically inserted by SheetMan)

@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyTable : A1
+  # Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
   class SDAgencyTableRecord
     attr_accessor :id, :name, :info_name, :agency_type, :agency_grade, :time, :agency_weight, :condition1, :condition1value, :condition2, :condition2value, :condition3, :class_min_value, :condition3value, :reward_type1, :reward_value1, :reward_type2, :reward_value2, :reward_type3, :reward_value3, :icon_path
 

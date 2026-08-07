@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AK2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AK2
 /** 타입 */
 public enum LocalizationTableType {
     /** None (automatically inserted by SheetMan) */

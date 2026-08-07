@@ -21,7 +21,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1
+ * Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
  */
 final class ArtifactTableRecord
 {

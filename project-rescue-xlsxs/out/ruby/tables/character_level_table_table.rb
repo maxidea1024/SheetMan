@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterLevelTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1
   class CharacterLevelTableRecord
     attr_accessor :id, :name, :name_kr, :level, :character_exp, :accumulated_exp, :atk_growth, :def_growth, :hp_growth
 

@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : O2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : O2
 /// 타입
 enum AttributeType {
   none(0),

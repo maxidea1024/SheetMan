@@ -27,7 +27,7 @@ interface IDataRow {
   firstClearRewardValue: number
 }
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : TraitDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonRewardTable : A1
 export class TraitDungeonRewardTableRecord {
   /** Default constructor */
   constructor() {
@@ -104,7 +104,7 @@ export class TraitDungeonRewardTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : TraitDungeonRewardTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonRewardTable : A1
 export class TraitDungeonRewardTableTable {
   /** Default constructor. */
   constructor() {

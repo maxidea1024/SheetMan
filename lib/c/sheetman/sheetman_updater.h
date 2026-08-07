@@ -147,10 +147,29 @@ void sm_md5_hex(const uint8_t* data, size_t length, char out[33]);
 #else
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 #define sm_mkdir(path) mkdir((path), 0777)
 #define sm_rmdir(path) rmdir(path)
-#define sm_sleep_ms(ms) usleep((useconds_t)(ms) * 1000)
+
+/* nanosleep rather than usleep. usleep was removed from POSIX in 2008, and glibc now
+ * declares it only under a feature-test macro - so a translation unit compiled as strict
+ * ISO C, which is how the gate builds this, got an implicit declaration and a hard error.
+ * A header cannot fix that by defining the macro itself: by the time it is included, the
+ * libc headers that read it may already have been. nanosleep needs no such macro, and
+ * takes the split seconds this wants anyway. */
+static void sm_sleep_ms_impl(long ms)
+{
+    struct timespec requested;
+    requested.tv_sec = (time_t)(ms / 1000);
+    requested.tv_nsec = (long)(ms % 1000) * 1000000L;
+
+    /* Restarted rather than abandoned when a signal arrives: the caller asked to wait
+     * before a retry, and coming back early would spend the attempt immediately. */
+    while (nanosleep(&requested, &requested) == -1)
+        ;
+}
+#define sm_sleep_ms(ms) sm_sleep_ms_impl((long)(ms))
 #endif
 
 #ifdef __cplusplus

@@ -20,7 +20,7 @@
 #include "Tables_forward.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDPubInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDPubInfoTable : A1
 struct SDPubInfoTableRecord {
   /// SDPubInfo_Table
   std::int32_t id = 0;

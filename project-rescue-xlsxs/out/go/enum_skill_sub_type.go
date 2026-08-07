@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// SkillSubType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : K2.
+// SkillSubType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : K2.
 // 스킬타입
 type SkillSubType int32
 

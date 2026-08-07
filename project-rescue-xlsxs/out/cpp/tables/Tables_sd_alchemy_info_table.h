@@ -23,7 +23,7 @@
 #include "enums/Tables_enum_target_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
 struct SDAlchemyInfoTableRecord {
   /// SDAlchemyInfo_Table
   std::int32_t id = 0;

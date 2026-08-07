@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AY2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AY2
   # 타입
   module ShortCutType
     # 없음

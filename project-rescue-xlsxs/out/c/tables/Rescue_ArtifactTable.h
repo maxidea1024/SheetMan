@@ -19,7 +19,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
  */
 struct Rescue_ArtifactTableRecord_t {
   /* Artifact_Table */

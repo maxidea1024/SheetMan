@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : A2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : A2
   # 캐릭터 종류
   module CharacterType
     NONE = 0

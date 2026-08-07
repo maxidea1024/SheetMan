@@ -20,7 +20,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1
+ * Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
  */
 final class MaterialTableRecord
 {

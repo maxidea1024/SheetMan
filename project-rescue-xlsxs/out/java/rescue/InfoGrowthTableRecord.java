@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : InfoGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : InfoGrowthTable : A1
 public final class InfoGrowthTableRecord {
     /** 기본값 */
     public int id;

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// ConsumablesType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : U2.
+// ConsumablesType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : U2.
 // 타입
 type ConsumablesType int32
 

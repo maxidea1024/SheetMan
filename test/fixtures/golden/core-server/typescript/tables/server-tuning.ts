@@ -17,7 +17,7 @@ interface IDataRow {
   amount: number
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Sides : B2
 /** Server-only table. Must not appear in client output. */
 export class ServerTuningRecord {
   /** Default constructor */
@@ -53,7 +53,7 @@ export class ServerTuningRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Sides : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Sides : B2
 /** Server-only table. Must not appear in client output. */
 export class ServerTuningTable {
   /** Default constructor. */

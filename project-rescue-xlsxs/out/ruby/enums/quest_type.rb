@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AG2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AG2
   # 타입
   module QuestType
     # None (automatically inserted by SheetMan)

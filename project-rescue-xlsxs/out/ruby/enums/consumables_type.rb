@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : U2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : U2
   # 타입
   module ConsumablesType
     # 없음

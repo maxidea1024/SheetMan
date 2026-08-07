@@ -18,7 +18,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemLevelTable : A1
+/* Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemLevelTable : A1
  */
 struct Rescue_EquipItemLevelTableRecord_t {
   /* EquipItemLevel_Table */

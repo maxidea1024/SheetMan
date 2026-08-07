@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
   class ConfigTableRecord
     attr_accessor :index, :id, :category, :data_type, :default_value, :description
 

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// JobType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : C2.
+// JobType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : C2.
 // 직업
 type JobType int32
 

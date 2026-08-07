@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// ClassUpCurrencyListTableRecord was generated from project-rescue-xlsxs\ItemData.xlsx : ClassUpCurrencyListTable : A1.
+// ClassUpCurrencyListTableRecord was generated from project-rescue-xlsxs/ItemData.xlsx : ClassUpCurrencyListTable : A1.
 type ClassUpCurrencyListTableRecord struct {
 	// Currency_Table
 	Id int32

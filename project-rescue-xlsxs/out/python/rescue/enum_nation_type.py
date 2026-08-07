@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class NationType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : AI2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AI2.
 
     타입
     """

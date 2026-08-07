@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaRateTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1
 class GachaRateTableRecord {
   /// GachaRate_Table
   int id = 0;

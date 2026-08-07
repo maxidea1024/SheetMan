@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// SDAlchemyStepTableRecord was generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyStepTable : A1.
+// SDAlchemyStepTableRecord was generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyStepTable : A1.
 type SDAlchemyStepTableRecord struct {
 	// SDAlchemyStep_Table
 	Id int32

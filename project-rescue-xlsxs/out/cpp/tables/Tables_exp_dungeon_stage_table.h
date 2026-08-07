@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_dungeon_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : ExpDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : ExpDungeonStageTable : A1
 struct ExpDungeonStageTableRecord {
   /// ExpDungeonStage_Table
   std::int32_t id = 0;

@@ -22,7 +22,7 @@ interface IDataRow {
   function: string
 }
 
-// Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
+// Generated from test/fixtures/xlsx/reserved-words/reserved-words.xlsx : Data : B2
 /** Named after a C++ keyword. */
 export class TemplateRecord {
   /** Default constructor */
@@ -88,7 +88,7 @@ export class TemplateRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
+// Generated from test/fixtures/xlsx/reserved-words/reserved-words.xlsx : Data : B2
 /** Named after a C++ keyword. */
 export class TemplateTable {
   /** Default constructor. */

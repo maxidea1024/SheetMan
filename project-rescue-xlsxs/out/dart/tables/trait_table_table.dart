@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : TraitTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : TraitTable : A1
 class TraitTableRecord {
   /// 기본값
   int id = 0;

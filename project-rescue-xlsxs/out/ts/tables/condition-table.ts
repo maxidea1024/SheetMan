@@ -24,7 +24,7 @@ interface IDataRow {
   conditionValue: number
 }
 
-// Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+// Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
 export class ConditionTableRecord {
   /** Default constructor */
   constructor() {
@@ -77,7 +77,7 @@ export class ConditionTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+// Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
 export class ConditionTableTable {
   /** Default constructor. */
   constructor() {

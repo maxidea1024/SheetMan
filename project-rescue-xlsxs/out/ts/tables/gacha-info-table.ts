@@ -41,7 +41,7 @@ interface IDataRow {
   enableSkip: boolean
 }
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaInfoTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaInfoTable : A1
 export class GachaInfoTableRecord {
   /** Default constructor */
   constructor() {
@@ -196,7 +196,7 @@ export class GachaInfoTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaInfoTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaInfoTable : A1
 export class GachaInfoTableTable {
   /** Default constructor. */
   constructor() {

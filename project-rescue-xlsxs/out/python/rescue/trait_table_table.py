@@ -13,7 +13,7 @@ from .enum_stat_type import StatType
 
 
 class TraitTableRecord:
-    """Generated from project-rescue-xlsxs\\StageGrowth.xlsx : TraitTable : A1.
+    """Generated from project-rescue-xlsxs/StageGrowth.xlsx : TraitTable : A1.
     """
 
     __slots__ = ("id", "name", "trait_name", "stat_type", "stat_rate", "unlock_condition", "icon_path")

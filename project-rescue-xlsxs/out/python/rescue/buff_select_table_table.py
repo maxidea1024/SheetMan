@@ -13,7 +13,7 @@ from .enum_grade_type import GradeType
 
 
 class BuffSelectTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : BuffSelectTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1.
     """
 
     __slots__ = ("id", "buff_name", "buff_id", "grade", "buff_rate", "buff_tooltip", "icon_path")

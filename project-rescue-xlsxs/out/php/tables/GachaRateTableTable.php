@@ -18,7 +18,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\GachaData.xlsx : GachaRateTable : A1
+ * Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1
  */
 final class GachaRateTableRecord
 {

@@ -21,7 +21,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyInfoTable : A1
+ * Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
  */
 final class SDAlchemyInfoTableRecord
 {

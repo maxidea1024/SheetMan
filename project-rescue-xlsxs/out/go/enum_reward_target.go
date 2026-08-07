@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// RewardTarget was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BK2.
+// RewardTarget was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BK2.
 // 타입
 type RewardTarget int32
 

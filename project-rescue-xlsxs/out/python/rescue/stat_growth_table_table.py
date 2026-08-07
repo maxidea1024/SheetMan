@@ -13,7 +13,7 @@ from .enum_stat_type import StatType
 
 
 class StatGrowthTableRecord:
-    """Generated from project-rescue-xlsxs\\StageGrowth.xlsx : StatGrowthTable : A1.
+    """Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1.
     """
 
     __slots__ = ("id", "name", "stage_name", "stat_type", "infuluence_step", "growth", "growth_value", "growth_reselt", "icon_path")

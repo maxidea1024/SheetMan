@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\DailyDungeon.xlsx : TraitDungeonStageTable : A1
+/* Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonStageTable : A1
  */
 struct Rescue_TraitDungeonStageTableRecord_t {
   /* TraitDungeonStage_Table */

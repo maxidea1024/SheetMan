@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AA2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AA2
   # 타입
   module DungeonType
     # None (automatically inserted by SheetMan)

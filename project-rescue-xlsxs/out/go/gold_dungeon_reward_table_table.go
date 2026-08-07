@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// GoldDungeonRewardTableRecord was generated from project-rescue-xlsxs\DailyDungeon.xlsx : GoldDungeonRewardTable : A1.
+// GoldDungeonRewardTableRecord was generated from project-rescue-xlsxs/DailyDungeon.xlsx : GoldDungeonRewardTable : A1.
 type GoldDungeonRewardTableRecord struct {
 	// GoldDungeonReward_Table
 	Id int32

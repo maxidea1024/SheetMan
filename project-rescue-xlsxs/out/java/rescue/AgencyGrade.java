@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BI2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BI2
 /** 타입 */
 public enum AgencyGrade {
     /** 없음 */

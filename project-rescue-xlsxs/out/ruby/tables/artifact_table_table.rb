@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
   class ArtifactTableRecord
     attr_accessor :id, :name, :artifact_type, :grade, :equip_skill_id, :equip_stat_type, :equip_stat_rate, :collection_type, :collection_vlaue, :icon_path, :material_path, :description
 

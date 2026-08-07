@@ -21,7 +21,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : BuffTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
  */
 struct Rescue_BuffTableRecord_t {
   /* ID */

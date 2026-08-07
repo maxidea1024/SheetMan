@@ -18,7 +18,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\MasterData.xlsx : DropGroupTable : A1
+ * Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1
  */
 final class DropGroupTableRecord
 {

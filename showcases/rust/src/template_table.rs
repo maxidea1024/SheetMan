@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use crate::sheetman;
 
-// Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
+// Generated from test/fixtures/xlsx/reserved-words/reserved-words.xlsx : Data : B2
 /// Named after a C++ keyword.
 #[derive(Clone, Debug, Default)]
 pub struct TemplateRecord {

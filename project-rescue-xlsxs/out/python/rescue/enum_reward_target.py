@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class RewardTarget(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : BK2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BK2.
 
     타입
     """

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// NationType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AI2.
+// NationType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AI2.
 // 타입
 type NationType int32
 

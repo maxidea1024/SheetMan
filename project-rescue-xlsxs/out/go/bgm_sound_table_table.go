@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// BGMSoundTableRecord was generated from project-rescue-xlsxs\SoundData.xlsx : BGMSoundTable : A1.
+// BGMSoundTableRecord was generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1.
 type BGMSoundTableRecord struct {
 	// BGMSound_Table
 	Id int32

@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_short_cut_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
 struct ShortCutTableRecord {
   /// ShortCut_Table
   std::int32_t id = 0;

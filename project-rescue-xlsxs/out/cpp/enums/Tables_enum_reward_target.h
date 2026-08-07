@@ -13,7 +13,7 @@
 #include <cstdint>
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BK2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BK2
 /// 타입
 enum class RewardTarget : std::int32_t {
   /// 없음

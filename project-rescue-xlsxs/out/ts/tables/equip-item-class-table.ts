@@ -39,7 +39,7 @@ interface IDataRow {
   accStatRate2: number
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemClassTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemClassTable : A1
 export class EquipItemClassTableRecord {
   /** Default constructor */
   constructor() {
@@ -176,7 +176,7 @@ export class EquipItemClassTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemClassTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemClassTable : A1
 export class EquipItemClassTableTable {
   /** Default constructor. */
   constructor() {

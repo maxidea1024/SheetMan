@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// ArtifactTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTable : A1.
+// ArtifactTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1.
 type ArtifactTableRecord struct {
 	// Artifact_Table
 	Id int32

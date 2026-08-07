@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\ItemData.xlsx : PackageTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1
 class PackageTableRecord {
   /// PackcgeItem_Table
   int id = 0;

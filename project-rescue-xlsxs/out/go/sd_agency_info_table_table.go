@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// SDAgencyInfoTableRecord was generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyInfoTable : A1.
+// SDAgencyInfoTableRecord was generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyInfoTable : A1.
 type SDAgencyInfoTableRecord struct {
 	// SDAgencyInfo_Table
 	Id int32

@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
 public final class AttributeTableRecord {
     /** Attribute_Table */
     public int id;

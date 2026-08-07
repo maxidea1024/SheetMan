@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Enums : L2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Enums : L2
 /** Declared in snake_case on purpose. */
 export enum SkillType {
   /** no skill */

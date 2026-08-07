@@ -23,7 +23,7 @@ interface IDataRow {
   addMultiplier: number
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveRangeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveRangeTable : A1
 export class CostCurveRangeTableRecord {
   /** Default constructor */
   constructor() {
@@ -76,7 +76,7 @@ export class CostCurveRangeTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveRangeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveRangeTable : A1
 export class CostCurveRangeTableTable {
   /** Default constructor. */
   constructor() {

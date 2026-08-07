@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\ItemData.xlsx : PackageTable : A1
+  # Generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1
   class PackageTableRecord
     attr_accessor :id, :name, :class_name, :item_type, :package_type, :stackable, :max_stack, :package_condition, :cooltime, :duration, :currency_id, :currency_item_min, :currency_item_max, :currency_item_rate, :icon_path, :drop_prefab_path, :item_description
 

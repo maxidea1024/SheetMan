@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_shop_type::ShopType;
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : ShopInfoTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : ShopInfoTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct ShopInfoTableRecord {
     /// ShopInfo_Table

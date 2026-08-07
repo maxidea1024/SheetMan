@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class DropGroupTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : DropGroupTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1.
     """
 
     __slots__ = ("id", "name", "drop_name", "drop_area", "drop_item_ids", "drop_item_min", "drop_item_max", "item_drop_rate")

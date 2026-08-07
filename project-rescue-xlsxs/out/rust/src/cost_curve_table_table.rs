@@ -11,7 +11,7 @@ use crate::sheetman;
 use crate::enum_growth_type::GrowthType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct CostCurveTableRecord {
     /// 아이디

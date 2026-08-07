@@ -20,7 +20,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+ * Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
  */
 final class ConditionTableRecord
 {

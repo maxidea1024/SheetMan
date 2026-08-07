@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// DungeonType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AA2.
+// DungeonType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AA2.
 // 타입
 type DungeonType int32
 

@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionGroupTable : A1
+  # Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionGroupTable : A1
   class CollectionGroupTableRecord
     attr_accessor :id, :name, :index, :character_list, :prefab_path
 

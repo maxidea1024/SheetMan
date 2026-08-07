@@ -13,7 +13,7 @@
 #include <cstdint>
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BA2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BA2
 /// 타입
 enum class AgencyType : std::int32_t {
   /// None (automatically inserted by SheetMan)

@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use crate::sheetman;
 
-// Generated from project-rescue-xlsxs\SoundData.xlsx : BGMSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct BGMSoundTableRecord {
     /// BGMSound_Table

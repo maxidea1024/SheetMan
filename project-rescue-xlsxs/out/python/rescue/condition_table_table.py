@@ -14,7 +14,7 @@ from .enum_condition_type import ConditionType
 
 
 class ConditionTableRecord:
-    """Generated from project-rescue-xlsxs\\ConditionData.xlsx : ConditionTable : A1.
+    """Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1.
     """
 
     __slots__ = ("id", "name", "condition_target_type", "condition_target_value", "condition_type", "condition_value")

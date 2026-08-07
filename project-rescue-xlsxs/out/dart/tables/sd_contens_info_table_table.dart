@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDContensInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDContensInfoTable : A1
 class SDContensInfoTableRecord {
   /// SDContensInfo_Table
   int id = 0;

@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_attribute_type::AttributeType;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct AttributeTableRecord {
     /// Attribute_Table

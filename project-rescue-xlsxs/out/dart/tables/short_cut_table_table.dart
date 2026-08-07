@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
 class ShortCutTableRecord {
   /// ShortCut_Table
   int iD = 0;

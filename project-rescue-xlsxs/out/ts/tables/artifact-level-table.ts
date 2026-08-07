@@ -23,7 +23,7 @@ interface IDataRow {
   hPGrowth: number
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactLevelTable : A1
 export class ArtifactLevelTableRecord {
   /** Default constructor */
   constructor() {
@@ -94,7 +94,7 @@ export class ArtifactLevelTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactLevelTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactLevelTable : A1
 export class ArtifactLevelTableTable {
   /** Default constructor. */
   constructor() {

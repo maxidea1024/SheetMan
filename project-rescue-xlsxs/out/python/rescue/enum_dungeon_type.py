@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class DungeonType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : AA2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AA2.
 
     타입
     """

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// ShopType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BC2.
+// ShopType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BC2.
 // 타입
 type ShopType int32
 

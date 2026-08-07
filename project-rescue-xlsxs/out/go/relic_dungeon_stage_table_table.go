@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// RelicDungeonStageTableRecord was generated from project-rescue-xlsxs\DailyDungeon.xlsx : RelicDungeonStageTable : A1.
+// RelicDungeonStageTableRecord was generated from project-rescue-xlsxs/DailyDungeon.xlsx : RelicDungeonStageTable : A1.
 type RelicDungeonStageTableRecord struct {
 	// RelicDungeonStage_Table
 	Id int32

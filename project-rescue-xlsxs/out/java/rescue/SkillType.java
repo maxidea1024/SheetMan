@@ -7,7 +7,7 @@
 
 package rescue;
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : M2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : M2
 /** 타입 */
 public enum SkillType {
     /** None (automatically inserted by SheetMan) */

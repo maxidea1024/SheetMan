@@ -12,7 +12,7 @@ use crate::enum_attribute_type::AttributeType;
 use crate::enum_stat_type::StatType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingInfoTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct SDTrainingInfoTableRecord {
     /// SDTrainingInfo_Table

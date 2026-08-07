@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AO2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AO2
 /// 타입
 enum ConditionType {
   /// None (automatically inserted by SheetMan)

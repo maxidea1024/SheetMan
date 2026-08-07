@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
   class SkillTableRecord
     attr_accessor :id, :name, :skill_name, :skill_type, :skill_sub_type, :attribute_type, :target_type, :ani_path, :skill_use_range, :cool_time, :buff_id, :skill_icon, :description
 

@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTable : A1
 class CharacterTableRecord {
   /// Character_Table
   int id = 0;

@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AE2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AE2
   # 타입
   module SdContensType
     NONE = 0

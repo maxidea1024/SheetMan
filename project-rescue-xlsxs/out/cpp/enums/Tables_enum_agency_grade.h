@@ -13,7 +13,7 @@
 #include <cstdint>
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BI2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BI2
 /// 타입
 enum class AgencyGrade : std::int32_t {
   /// 없음

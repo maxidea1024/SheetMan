@@ -13,7 +13,7 @@ import (
 	"x/sheetman"
 )
 
-// TemplateRecord was generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2.
+// TemplateRecord was generated from test/fixtures/xlsx/reserved-words/reserved-words.xlsx : Data : B2.
 // Named after a C++ keyword.
 type TemplateRecord struct {
 	// primary index

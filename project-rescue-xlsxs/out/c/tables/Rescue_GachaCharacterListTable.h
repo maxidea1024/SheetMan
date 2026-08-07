@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\GachaData.xlsx : GachaCharacterListTable : A1
+/* Generated from project-rescue-xlsxs/GachaData.xlsx : GachaCharacterListTable : A1
  */
 struct Rescue_GachaCharacterListTableRecord_t {
   /* GachaCharacter_List */

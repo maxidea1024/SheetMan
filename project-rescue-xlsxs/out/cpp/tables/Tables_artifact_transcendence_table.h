@@ -22,7 +22,7 @@
 #include "enums/Tables_enum_currency_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
 struct ArtifactTranscendenceTableRecord {
   /// Artifact_Transcend_ID
   std::int32_t id = 0;

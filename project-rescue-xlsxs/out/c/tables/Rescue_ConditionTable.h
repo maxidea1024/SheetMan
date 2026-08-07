@@ -18,7 +18,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\ConditionData.xlsx : ConditionTable : A1
+/* Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
  */
 struct Rescue_ConditionTableRecord_t {
   /* ConditionID */

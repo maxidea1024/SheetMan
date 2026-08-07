@@ -33,7 +33,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipTable : A1
 export class EquipTableRecord {
   /** Default constructor */
   constructor() {
@@ -128,7 +128,7 @@ export class EquipTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipTable : A1
 export class EquipTableTable {
   /** Default constructor. */
   constructor() {

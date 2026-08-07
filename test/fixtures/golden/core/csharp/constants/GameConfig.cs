@@ -20,7 +20,7 @@ using SheetMan.Binary;
 
 namespace SheetMan.Fixtures.Core
 {
-    // Generated from test/fixtures/xlsx/core\core.xlsx : Consts : B2
+    // Generated from test/fixtures/xlsx/core/core.xlsx : Consts : B2
     /// <summary>
     /// Assorted tuning constants.
     /// </summary>

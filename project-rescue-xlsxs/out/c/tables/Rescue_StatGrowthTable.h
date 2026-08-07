@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\StageGrowth.xlsx : StatGrowthTable : A1
+/* Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1
  */
 struct Rescue_StatGrowthTableRecord_t {
   /* 기본값 */

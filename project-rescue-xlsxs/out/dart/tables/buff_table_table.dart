@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
 class BuffTableRecord {
   /// ID
   int id = 0;

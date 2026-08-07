@@ -19,7 +19,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\ShopData.xlsx : SeasonShopTable : A1
+/* Generated from project-rescue-xlsxs/ShopData.xlsx : SeasonShopTable : A1
  */
 struct Rescue_SeasonShopTableRecord_t {
   /* SeasonShop_Table */

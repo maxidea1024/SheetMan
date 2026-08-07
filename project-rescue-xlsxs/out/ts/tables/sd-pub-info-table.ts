@@ -21,7 +21,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDPubInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDPubInfoTable : A1
 export class SDPubInfoTableRecord {
   /** Default constructor */
   constructor() {
@@ -80,7 +80,7 @@ export class SDPubInfoTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDPubInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDPubInfoTable : A1
 export class SDPubInfoTableTable {
   /** Default constructor. */
   constructor() {

@@ -20,7 +20,7 @@ interface IDataRow {
   nRate: number
 }
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaRateTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1
 export class GachaRateTableRecord {
   /** Default constructor */
   constructor() {
@@ -73,7 +73,7 @@ export class GachaRateTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaRateTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1
 export class GachaRateTableTable {
   /** Default constructor. */
   constructor() {

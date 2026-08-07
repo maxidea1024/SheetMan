@@ -21,7 +21,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\ShopData.xlsx : CashShopTable : A1
+ * Generated from project-rescue-xlsxs/ShopData.xlsx : CashShopTable : A1
  */
 final class CashShopTableRecord
 {

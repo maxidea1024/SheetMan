@@ -22,7 +22,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Types : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Types : B2
 /// One column per supported primitive type.
 struct TestFieldTypesRecord {
   /// primary index

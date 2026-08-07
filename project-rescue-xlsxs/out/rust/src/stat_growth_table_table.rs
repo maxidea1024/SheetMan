@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_stat_type::StatType;
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StatGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct StatGrowthTableRecord {
     /// 기본값

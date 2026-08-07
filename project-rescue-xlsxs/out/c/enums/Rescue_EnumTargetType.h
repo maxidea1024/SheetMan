@@ -8,7 +8,7 @@
 
 #ifndef RESCUE_ENUM_TARGET_TYPE_H
 #define RESCUE_ENUM_TARGET_TYPE_H
-/* Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : G2
+/* Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : G2
  *
  * 타겟 타입
  */

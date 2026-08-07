@@ -13,7 +13,7 @@
 #include <cstdint>
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BO2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BO2
 /// 타입
 enum class SDCardType : std::int32_t {
   None = 0,

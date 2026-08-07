@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// SDPubInfoTableRecord was generated from project-rescue-xlsxs\SD_Contens.xlsx : SDPubInfoTable : A1.
+// SDPubInfoTableRecord was generated from project-rescue-xlsxs/SD_Contens.xlsx : SDPubInfoTable : A1.
 type SDPubInfoTableRecord struct {
 	// SDPubInfo_Table
 	Id int32

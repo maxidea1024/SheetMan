@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// ConditionTargetType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AM2.
+// ConditionTargetType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AM2.
 // 타입
 type ConditionTargetType int32
 

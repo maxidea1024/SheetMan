@@ -20,7 +20,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
 export class ConfigTableRecord {
   /** Default constructor */
   constructor() {
@@ -73,7 +73,7 @@ export class ConfigTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
 export class ConfigTableTable {
   /** Default constructor. */
   constructor() {

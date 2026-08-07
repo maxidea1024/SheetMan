@@ -8,7 +8,7 @@
 
 #ifndef RESCUE_ENUM_REWARD_TARGET_H
 #define RESCUE_ENUM_REWARD_TARGET_H
-/* Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BK2
+/* Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BK2
  *
  * 타입
  */

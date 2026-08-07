@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module X
-  # Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
+  # Generated from test/fixtures/xlsx/reserved-words/reserved-words.xlsx : Data : B2
   # Named after a C++ keyword.
   class TemplateRecord
     attr_accessor :index, :class_, :int, :delete, :operator, :namespace, :constructor, :function

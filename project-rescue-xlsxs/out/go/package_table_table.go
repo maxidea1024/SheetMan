@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// PackageTableRecord was generated from project-rescue-xlsxs\ItemData.xlsx : PackageTable : A1.
+// PackageTableRecord was generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1.
 type PackageTableRecord struct {
 	// PackcgeItem_Table
 	Id int32

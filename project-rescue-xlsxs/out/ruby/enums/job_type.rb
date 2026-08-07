@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : C2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : C2
   # 직업
   module JobType
     # None (automatically inserted by SheetMan)

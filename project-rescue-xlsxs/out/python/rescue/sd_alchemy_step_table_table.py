@@ -13,7 +13,7 @@ from .enum_currency_type import CurrencyType
 
 
 class SDAlchemyStepTableRecord:
-    """Generated from project-rescue-xlsxs\\SD_Contens.xlsx : SDAlchemyStepTable : A1.
+    """Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyStepTable : A1.
     """
 
     __slots__ = ("id", "name", "name_kr", "max_level", "reward_type", "reward_value")

@@ -33,7 +33,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : PackageShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : PackageShopTable : A1
 export class PackageShopTableRecord {
   /** Default constructor */
   constructor() {
@@ -134,7 +134,7 @@ export class PackageShopTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\ShopData.xlsx : PackageShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : PackageShopTable : A1
 export class PackageShopTableTable {
   /** Default constructor. */
   constructor() {

@@ -19,7 +19,7 @@ interface IDataRow {
   bigFromNumeric: string
 }
 
-// Generated from test/fixtures/xlsx/excel-typed\excel-typed.xlsx : Typed : B2
+// Generated from test/fixtures/xlsx/excel-typed/excel-typed.xlsx : Typed : B2
 /** Values entered as real Excel types rather than text. */
 export class ExcelTypedRecord {
   /** Default constructor */
@@ -67,7 +67,7 @@ export class ExcelTypedRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/excel-typed\excel-typed.xlsx : Typed : B2
+// Generated from test/fixtures/xlsx/excel-typed/excel-typed.xlsx : Typed : B2
 /** Values entered as real Excel types rather than text. */
 export class ExcelTypedTable {
   /** Default constructor. */

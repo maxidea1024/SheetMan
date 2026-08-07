@@ -14,7 +14,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Enums : G2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Enums : G2
 /// Item grade. Deliberately omits a zero entry.
 enum class Grade : std::int32_t {
   /// None (automatically inserted by SheetMan)

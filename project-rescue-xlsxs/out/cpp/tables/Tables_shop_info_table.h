@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_shop_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\ShopData.xlsx : ShopInfoTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : ShopInfoTable : A1
 struct ShopInfoTableRecord {
   /// ShopInfo_Table
   std::int32_t id = 0;

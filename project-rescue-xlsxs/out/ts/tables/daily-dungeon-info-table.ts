@@ -36,7 +36,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : DailyDungeonInfoTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : DailyDungeonInfoTable : A1
 export class DailyDungeonInfoTableRecord {
   /** Default constructor */
   constructor() {
@@ -155,7 +155,7 @@ export class DailyDungeonInfoTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : DailyDungeonInfoTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : DailyDungeonInfoTable : A1
 export class DailyDungeonInfoTableTable {
   /** Default constructor. */
   constructor() {

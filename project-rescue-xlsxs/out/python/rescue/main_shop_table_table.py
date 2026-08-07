@@ -15,7 +15,7 @@ from .enum_currency_type import CurrencyType
 
 
 class MainShopTableRecord:
-    """Generated from project-rescue-xlsxs\\ShopData.xlsx : MainShopTable : A1.
+    """Generated from project-rescue-xlsxs/ShopData.xlsx : MainShopTable : A1.
     """
 
     __slots__ = ("id", "name", "product_name", "shop_type", "shop_slot_id", "priority", "item_id", "item_value", "cycle_type", "limit_value", "currency_type", "price_value", "condition_id", "icon_path")

@@ -13,7 +13,7 @@ from .enum_sd_card_type import SDCardType
 
 
 class SDDungeonCardTableRecord:
-    """Generated from project-rescue-xlsxs\\SD_Contens.xlsx : SDDungeonCardTable : A1.
+    """Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1.
     """
 
     __slots__ = ("id", "name", "sd_dun_name", "sd_card_type", "card_count", "stat_icon_path", "icon_path")

@@ -73,7 +73,13 @@ class Tables {
  private:
   /// The tables arrive as arguments, which is how this links the load being read rather
   /// than the one already published.
-  void solve_cross_references(TestFieldTypesTable& loaded_test_field_types, ItemCategoryTable& loaded_item_category, ItemTable& loaded_item, LocalizationTable& loaded_localization, ArrayTypesTable& loaded_array_types, ServerTuningTable& loaded_server_tuning, ClientStringsTable& loaded_client_strings) {
+  ///
+  /// Every table is passed whether or not it takes part in a reference, so the call site
+  /// is the same shape for every model. `[[maybe_unused]]` is what says so to the
+  /// compiler: the gate builds with `-Wextra -Werror`, and a model where nothing
+  /// references anything - which is most of them - otherwise fails to compile on the
+  /// unused parameters.
+  void solve_cross_references([[maybe_unused]] TestFieldTypesTable& loaded_test_field_types, [[maybe_unused]] ItemCategoryTable& loaded_item_category, [[maybe_unused]] ItemTable& loaded_item, [[maybe_unused]] LocalizationTable& loaded_localization, [[maybe_unused]] ArrayTypesTable& loaded_array_types, [[maybe_unused]] ServerTuningTable& loaded_server_tuning, [[maybe_unused]] ClientStringsTable& loaded_client_strings) {
     for (auto& record : loaded_item.records_) {
       {
         const auto* target = loaded_item_category.find_by_index(record.category_id_index);

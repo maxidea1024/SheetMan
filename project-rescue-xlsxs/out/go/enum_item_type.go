@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// ItemType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AS2.
+// ItemType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AS2.
 // 타입
 type ItemType int32
 

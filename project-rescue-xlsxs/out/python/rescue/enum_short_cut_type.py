@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class ShortCutType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : AY2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AY2.
 
     타입
     """

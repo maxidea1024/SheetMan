@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class MaterialType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : W2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : W2.
 
     타입
     """

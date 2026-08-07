@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyStepTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyStepTable : A1
 class SDAlchemyStepTableRecord {
   /// SDAlchemyStep_Table
   int id = 0;

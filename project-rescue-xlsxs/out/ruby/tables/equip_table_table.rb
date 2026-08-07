@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\ItemData.xlsx : EquipTable : A1
+  # Generated from project-rescue-xlsxs/ItemData.xlsx : EquipTable : A1
   class EquipTableRecord
     attr_accessor :id, :name, :equip_name, :type, :equip_type, :grade, :max_class, :max_level, :stat_type1, :stat_type2, :icon_path, :prefab_path, :description
 

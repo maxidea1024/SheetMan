@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// EquipmentType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AW2.
+// EquipmentType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AW2.
 // 타입
 type EquipmentType int32
 

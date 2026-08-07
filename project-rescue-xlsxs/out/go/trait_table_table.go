@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// TraitTableRecord was generated from project-rescue-xlsxs\StageGrowth.xlsx : TraitTable : A1.
+// TraitTableRecord was generated from project-rescue-xlsxs/StageGrowth.xlsx : TraitTable : A1.
 type TraitTableRecord struct {
 	// 기본값
 	Id int32

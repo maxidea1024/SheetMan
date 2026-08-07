@@ -15,7 +15,7 @@ from .enum_cycle_type import CycleType
 
 
 class SDContensInfoTableRecord:
-    """Generated from project-rescue-xlsxs\\SD_Contens.xlsx : SDContensInfoTable : A1.
+    """Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDContensInfoTable : A1.
     """
 
     __slots__ = ("id", "name", "info_name", "sheet_name", "sd_contens_type", "condition_id", "currency_type", "enable_reset", "cycle_type", "sd_character_path", "prefab_path")

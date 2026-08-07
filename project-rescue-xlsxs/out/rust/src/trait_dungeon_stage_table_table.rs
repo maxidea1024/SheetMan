@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_dungeon_type::DungeonType;
 
-// Generated from project-rescue-xlsxs\DailyDungeon.xlsx : TraitDungeonStageTable : A1
+// Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonStageTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct TraitDungeonStageTableRecord {
     /// TraitDungeonStage_Table

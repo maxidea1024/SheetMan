@@ -22,7 +22,7 @@ interface IDataRow {
   itemDropRate: number[]
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : DropGroupTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1
 export class DropGroupTableRecord {
   /** Default constructor */
   constructor() {
@@ -87,7 +87,7 @@ export class DropGroupTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : DropGroupTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1
 export class DropGroupTableTable {
   /** Default constructor. */
   constructor() {

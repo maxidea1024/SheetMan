@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
 public final class ArtifactTranscendenceTableRecord {
     /** Artifact_Transcend_ID */
     public int id;

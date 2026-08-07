@@ -33,7 +33,7 @@ interface IDataRow {
   bossStageBGMID: number
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : StageTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : StageTable : A1
 export class StageTableRecord {
   /** Default constructor */
   constructor() {
@@ -164,7 +164,7 @@ export class StageTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : StageTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : StageTable : A1
 export class StageTableTable {
   /** Default constructor. */
   constructor() {

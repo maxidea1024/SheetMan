@@ -17,7 +17,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Consts : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Consts : B2
 /// Assorted tuning constants.
 struct GameConfig {
   /// level cap

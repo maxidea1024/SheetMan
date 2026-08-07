@@ -13,7 +13,7 @@ from .enum_shop_type import ShopType
 
 
 class ShopInfoTableRecord:
-    """Generated from project-rescue-xlsxs\\ShopData.xlsx : ShopInfoTable : A1.
+    """Generated from project-rescue-xlsxs/ShopData.xlsx : ShopInfoTable : A1.
     """
 
     __slots__ = ("id", "name", "info_name", "shop_type", "condition_id", "sheet_name", "priority", "ui_path", "list_prefab_path")

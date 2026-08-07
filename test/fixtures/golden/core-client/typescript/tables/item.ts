@@ -25,7 +25,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Refs : I2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Refs : I2
 /** References ItemCategory by record. */
 export class ItemRecord {
   /** Default constructor */
@@ -83,7 +83,7 @@ export class ItemRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Refs : I2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Refs : I2
 /** References ItemCategory by record. */
 export class ItemTable {
   /** Default constructor. */

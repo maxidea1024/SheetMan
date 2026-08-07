@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class OptionType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : BS2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BS2.
 
     타입
     """

@@ -16,7 +16,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from test/fixtures/xlsx/reserved-words\reserved-words.xlsx : Data : B2
+/* Generated from test/fixtures/xlsx/reserved-words/reserved-words.xlsx : Data : B2
  *
  * Named after a C++ keyword.
  */

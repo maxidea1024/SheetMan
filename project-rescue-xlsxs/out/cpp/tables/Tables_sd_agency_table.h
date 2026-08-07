@@ -26,7 +26,7 @@
 #include "enums/Tables_enum_currency_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
 struct SDAgencyTableRecord {
   /// SDAgency_Table
   std::int32_t id = 0;

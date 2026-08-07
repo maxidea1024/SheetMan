@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class SDDungeonInfoTableRecord:
-    """Generated from project-rescue-xlsxs\\SD_Contens.xlsx : SDDungeonInfoTable : A1.
+    """Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonInfoTable : A1.
     """
 
     __slots__ = ("id", "name", "name_kr", "total_count", "trap_count", "action_count", "match_cost", "mismatch_cost", "trap_cost", "view_time", "time", "ad_count", "daily_free_count")

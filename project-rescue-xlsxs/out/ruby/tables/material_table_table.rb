@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1
+  # Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
   class MaterialTableRecord
     attr_accessor :id, :name, :item_name, :item_type, :type, :stackable, :max_stack, :cooltime, :duration, :icon_path, :drop_prefab_path, :description, :short_cut_index
 

@@ -20,7 +20,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+ * Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
  */
 final class ArtifactTranscendenceTableRecord
 {

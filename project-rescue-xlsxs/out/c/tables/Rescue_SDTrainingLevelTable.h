@@ -16,7 +16,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingLevelTable : A1
+/* Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingLevelTable : A1
  */
 struct Rescue_SDTrainingLevelTableRecord_t {
   /* SDTrainingLevel_Table */

@@ -13,7 +13,7 @@ from .enum_short_cut_type import ShortCutType
 
 
 class ShortCutTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : ShortCutTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1.
     """
 
     __slots__ = ("id", "name", "type_", "sub_index", "description")

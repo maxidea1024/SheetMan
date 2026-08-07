@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : RelicTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : RelicTable : A1
 class RelicTableRecord {
   /// 기본값
   int id = 0;

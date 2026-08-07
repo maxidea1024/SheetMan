@@ -12,7 +12,7 @@ use crate::enum_job_type::JobType;
 use crate::enum_grade_type::GradeType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : EquipItemGradeTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemGradeTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct EquipItemGradeTableRecord {
     /// EquipItemGrade_Table

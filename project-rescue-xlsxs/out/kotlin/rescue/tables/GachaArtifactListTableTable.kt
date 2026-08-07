@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactListTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactListTable : A1
 class GachaArtifactListTableRecord {
     /** GachaArtifact_List */
     var id: Int = 0

@@ -13,7 +13,7 @@
 #include <cstdint>
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : W2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : W2
 /// 타입
 enum class MaterialType : std::int32_t {
   /// None (automatically inserted by SheetMan)

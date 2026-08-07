@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// InfoGrowthTableRecord was generated from project-rescue-xlsxs\StageGrowth.xlsx : InfoGrowthTable : A1.
+// InfoGrowthTableRecord was generated from project-rescue-xlsxs/StageGrowth.xlsx : InfoGrowthTable : A1.
 type InfoGrowthTableRecord struct {
 	// 기본값
 	Id int32

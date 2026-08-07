@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// TargetType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : G2.
+// TargetType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : G2.
 // 타겟 타입
 type TargetType int32
 

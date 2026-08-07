@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\StageGrowth.xlsx : RelicTable : A1
+  # Generated from project-rescue-xlsxs/StageGrowth.xlsx : RelicTable : A1
   class RelicTableRecord
     attr_accessor :id, :name, :relic_name, :infuluence_step, :relic_type1, :relic_value1, :relic_inc_value1, :relic_type2, :relic_value2, :relic_inc_value2, :relic_type3, :relic_value3, :relic_inc_value3, :description, :icon_path
 

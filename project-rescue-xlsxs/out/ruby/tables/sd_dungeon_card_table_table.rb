@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDDungeonCardTable : A1
+  # Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1
   class SDDungeonCardTableRecord
     attr_accessor :id, :name, :sd_dun_name, :sd_card_type, :card_count, :stat_icon_path, :icon_path
 

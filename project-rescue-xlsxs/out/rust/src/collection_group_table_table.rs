@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use crate::sheetman;
 
-// Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionGroupTable : A1
+// Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionGroupTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct CollectionGroupTableRecord {
     /// ID

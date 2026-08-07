@@ -22,7 +22,7 @@
 
 namespace sheetman_fixtures {
 namespace core {
-// Generated from test/fixtures/xlsx/core\core.xlsx : Arrays : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Arrays : B2
 /// One cell holding several delimited values, length varying per row.
 struct ArrayTypesRecord {
   /// primary index

@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BA2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BA2
 /** 타입 */
 export enum AgencyType {
   /** None (automatically inserted by SheetMan) */

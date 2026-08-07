@@ -32,7 +32,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : RelicTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : RelicTable : A1
 export class RelicTableRecord {
   /** Default constructor */
   constructor() {
@@ -139,7 +139,7 @@ export class RelicTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : RelicTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : RelicTable : A1
 export class RelicTableTable {
   /** Default constructor. */
   constructor() {

@@ -17,7 +17,7 @@ from .enum_nation_type import NationType
 
 
 class CharacterTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : CharacterTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTable : A1.
     """
 
     __slots__ = ("id", "title_name", "name", "character_type", "grade", "attribute_type", "job_type", "nation", "base_atk", "base_def", "base_mhp", "move_speed", "crit_rate", "crit_dmg", "search_range", "re_find_time", "max_follow", "size_prefab", "is_unlocked", "basic_attack1", "basic_attack2", "basic_attack3", "active_skill1", "active_skill2", "active_skill3", "special_skill1", "special_skill2", "special_skill3", "special_skill4", "special_skill5", "passive_buff1", "passive_buff2", "passive_buff3", "prefab_path", "sd_material_path", "icon_path", "description")

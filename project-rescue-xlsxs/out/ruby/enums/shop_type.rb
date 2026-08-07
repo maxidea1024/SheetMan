@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BC2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BC2
   # 타입
   module ShopType
     # None (automatically inserted by SheetMan)

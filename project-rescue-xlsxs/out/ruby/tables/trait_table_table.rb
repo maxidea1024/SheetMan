@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\StageGrowth.xlsx : TraitTable : A1
+  # Generated from project-rescue-xlsxs/StageGrowth.xlsx : TraitTable : A1
   class TraitTableRecord
     attr_accessor :id, :name, :trait_name, :stat_type, :stat_rate, :unlock_condition, :icon_path
 

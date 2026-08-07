@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_sfx_category_type::SFXCategoryType;
 
-// Generated from project-rescue-xlsxs\SoundData.xlsx : SFXSoundTable : A1
+// Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct SFXSoundTableRecord {
     /// SFXSound_Table

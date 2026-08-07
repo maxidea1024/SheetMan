@@ -9,7 +9,7 @@ package rescue;
 
 import sheetman.LiteBinaryReader;
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactInfoTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactInfoTable : A1
 public final class GachaArtifactInfoTableRecord {
     /** GachaArtifactInfo_Table */
     public int id;

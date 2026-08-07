@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : BuffSelectTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1
  */
 struct Rescue_BuffSelectTableRecord_t {
   /* ID */

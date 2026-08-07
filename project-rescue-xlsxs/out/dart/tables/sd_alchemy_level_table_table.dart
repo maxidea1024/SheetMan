@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyLevelTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyLevelTable : A1
 class SDAlchemyLevelTableRecord {
   /// SDAlchemyLevel_Table
   int id = 0;

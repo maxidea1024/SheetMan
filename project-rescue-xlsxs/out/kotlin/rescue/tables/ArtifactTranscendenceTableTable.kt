@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
 class ArtifactTranscendenceTableRecord {
     /** Artifact_Transcend_ID */
     var id: Int = 0

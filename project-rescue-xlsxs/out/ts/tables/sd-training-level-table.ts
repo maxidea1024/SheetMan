@@ -24,7 +24,7 @@ interface IDataRow {
   commonUnlockStageID: number
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingLevelTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingLevelTable : A1
 export class SDTrainingLevelTableRecord {
   /** Default constructor */
   constructor() {
@@ -101,7 +101,7 @@ export class SDTrainingLevelTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingLevelTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingLevelTable : A1
 export class SDTrainingLevelTableTable {
   /** Default constructor. */
   constructor() {

@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BI2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BI2
 /** 타입 */
 enum class AgencyGrade(val value: Int) {
     /** 없음 */

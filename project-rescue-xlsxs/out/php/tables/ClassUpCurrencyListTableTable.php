@@ -19,7 +19,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\ItemData.xlsx : ClassUpCurrencyListTable : A1
+ * Generated from project-rescue-xlsxs/ItemData.xlsx : ClassUpCurrencyListTable : A1
  */
 final class ClassUpCurrencyListTableRecord
 {

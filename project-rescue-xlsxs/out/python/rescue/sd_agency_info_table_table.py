@@ -14,7 +14,7 @@ from .enum_currency_type import CurrencyType
 
 
 class SDAgencyInfoTableRecord:
-    """Generated from project-rescue-xlsxs\\SD_Contens.xlsx : SDAgencyInfoTable : A1.
+    """Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyInfoTable : A1.
     """
 
     __slots__ = ("id", "name", "agency_grade", "dispatch_count", "grade_s_rate", "grade_a_rate", "grade_b_rate", "grade_c_rate", "grade_d_rate", "grade_e_rate", "grade_f_rate", "free_refresh", "refresh_currency_type", "refresh_currency_value")

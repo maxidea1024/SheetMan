@@ -15,7 +15,7 @@ from .enum_stat_type import StatType
 
 
 class ArtifactTableRecord:
-    """Generated from project-rescue-xlsxs\\MasterData.xlsx : ArtifactTable : A1.
+    """Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1.
     """
 
     __slots__ = ("id", "name", "artifact_type", "grade", "equip_skill_id", "equip_stat_type", "equip_stat_rate", "collection_type", "collection_vlaue", "icon_path", "material_path", "description")

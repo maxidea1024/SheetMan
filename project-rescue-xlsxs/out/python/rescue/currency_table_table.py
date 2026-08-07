@@ -15,7 +15,7 @@ from .enum_cycle_type import CycleType
 
 
 class CurrencyTableRecord:
-    """Generated from project-rescue-xlsxs\\ItemData.xlsx : CurrencyTable : A1.
+    """Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1.
     """
 
     __slots__ = ("id", "name", "item_name", "item_type", "type_", "cycle_type", "stackable", "max_stack", "cooltime", "duration", "icon_path", "drop_prefab_path", "description", "short_cut_index")

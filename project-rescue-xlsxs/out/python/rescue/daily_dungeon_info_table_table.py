@@ -15,7 +15,7 @@ from .enum_currency_type import CurrencyType
 
 
 class DailyDungeonInfoTableRecord:
-    """Generated from project-rescue-xlsxs\\DailyDungeon.xlsx : DailyDungeonInfoTable : A1.
+    """Generated from project-rescue-xlsxs/DailyDungeon.xlsx : DailyDungeonInfoTable : A1.
     """
 
     __slots__ = ("id", "name", "dungeon_name", "dungeon_type", "priority", "cycle_type", "enter_condition", "enter_currency_type", "dungeon_buff_id", "buff_value_rate", "enter_currency_value", "free_enter_currency_type", "ad_enter_count", "enter_currency_count_max", "dungeon_image_path", "dungeon_bgmid", "description")

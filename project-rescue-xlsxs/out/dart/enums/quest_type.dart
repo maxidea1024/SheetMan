@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AG2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AG2
 /// 타입
 enum QuestType {
   /// None (automatically inserted by SheetMan)

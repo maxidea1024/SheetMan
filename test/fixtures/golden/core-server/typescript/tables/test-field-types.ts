@@ -27,7 +27,7 @@ interface IDataRow {
   valueTypeField: ValueType
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Types : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Types : B2
 /** One column per supported primitive type. */
 export class TestFieldTypesRecord {
   /** Default constructor */
@@ -105,7 +105,7 @@ export class TestFieldTypesRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Types : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Types : B2
 /** One column per supported primitive type. */
 export class TestFieldTypesTable {
   /** Default constructor. */

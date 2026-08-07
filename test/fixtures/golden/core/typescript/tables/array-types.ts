@@ -23,7 +23,7 @@ interface IDataRow {
   slotArray: number[]
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Arrays : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Arrays : B2
 /** One cell holding several delimited values, length varying per row. */
 export class ArrayTypesRecord {
   /** Default constructor */
@@ -79,7 +79,7 @@ export class ArrayTypesRecord {
   }
 }
 
-// Generated from test/fixtures/xlsx/core\core.xlsx : Arrays : B2
+// Generated from test/fixtures/xlsx/core/core.xlsx : Arrays : B2
 /** One cell holding several delimited values, length varying per row. */
 export class ArrayTypesTable {
   /** Default constructor. */

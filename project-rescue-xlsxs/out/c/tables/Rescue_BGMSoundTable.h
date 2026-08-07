@@ -16,7 +16,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\SoundData.xlsx : BGMSoundTable : A1
+/* Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1
  */
 struct Rescue_BGMSoundTableRecord_t {
   /* BGMSound_Table */

@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_grade_type::GradeType;
 
-// Generated from project-rescue-xlsxs\GachaData.xlsx : GachaArtifactListTable : A1
+// Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactListTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct GachaArtifactListTableRecord {
     /// GachaArtifact_List

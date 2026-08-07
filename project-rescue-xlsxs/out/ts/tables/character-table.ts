@@ -58,7 +58,7 @@ interface IDataRow {
   description: string
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTable : A1
 export class CharacterTableRecord {
   /** Default constructor */
   constructor() {
@@ -297,7 +297,7 @@ export class CharacterTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTable : A1
 export class CharacterTableTable {
   /** Default constructor. */
   constructor() {

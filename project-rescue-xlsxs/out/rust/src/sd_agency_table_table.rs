@@ -15,7 +15,7 @@ use crate::enum_grade_type::GradeType;
 use crate::enum_condition_type::ConditionType;
 use crate::enum_currency_type::CurrencyType;
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct SDAgencyTableRecord {
     /// SDAgency_Table

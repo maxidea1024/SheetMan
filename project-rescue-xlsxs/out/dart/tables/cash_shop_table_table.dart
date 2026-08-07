@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\ShopData.xlsx : CashShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : CashShopTable : A1
 class CashShopTableRecord {
   /// CashShop_Table
   int id = 0;

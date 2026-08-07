@@ -12,7 +12,7 @@ use crate::enum_item_type::ItemType;
 use crate::enum_consumables_type::ConsumablesType;
 use crate::enum_condition_type::ConditionType;
 
-// Generated from project-rescue-xlsxs\ItemData.xlsx : PackageTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct PackageTableRecord {
     /// PackcgeItem_Table

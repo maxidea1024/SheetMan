@@ -14,7 +14,7 @@ use crate::enum_attribute_type::AttributeType;
 use crate::enum_target_type::TargetType;
 use crate::enum_buff_condition_type::BuffConditionType;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct BuffTableRecord {
     /// ID

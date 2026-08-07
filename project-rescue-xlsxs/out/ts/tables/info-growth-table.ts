@@ -32,7 +32,7 @@ interface IDataRow {
   iconPath: string
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : InfoGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : InfoGrowthTable : A1
 export class InfoGrowthTableRecord {
   /** Default constructor */
   constructor() {
@@ -133,7 +133,7 @@ export class InfoGrowthTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : InfoGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : InfoGrowthTable : A1
 export class InfoGrowthTableTable {
   /** Default constructor. */
   constructor() {

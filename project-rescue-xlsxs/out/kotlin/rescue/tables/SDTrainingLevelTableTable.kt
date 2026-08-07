@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDTrainingLevelTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingLevelTable : A1
 class SDTrainingLevelTableRecord {
     /** SDTrainingLevel_Table */
     var id: Int = 0

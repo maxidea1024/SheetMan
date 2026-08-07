@@ -18,7 +18,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
  */
 struct Rescue_ArtifactTranscendenceTableRecord_t {
   /* Artifact_Transcend_ID */

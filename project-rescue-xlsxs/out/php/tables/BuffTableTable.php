@@ -23,7 +23,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\MasterData.xlsx : BuffTable : A1
+ * Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
  */
 final class BuffTableRecord
 {

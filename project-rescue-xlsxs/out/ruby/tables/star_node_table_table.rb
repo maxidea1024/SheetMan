@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\StageGrowth.xlsx : StarNodeTable : A1
+  # Generated from project-rescue-xlsxs/StageGrowth.xlsx : StarNodeTable : A1
   class StarNodeTableRecord
     attr_accessor :id, :name, :infuluence_step, :star_node_name, :stat_type, :star_node_value, :star_node_rate, :unlock_condition, :description, :icon_path
 

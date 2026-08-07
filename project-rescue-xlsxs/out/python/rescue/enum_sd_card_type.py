@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class SDCardType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : BO2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BO2.
 
     타입
     """

@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// GrowthType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AC2.
+// GrowthType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AC2.
 // 타입
 type GrowthType int32
 

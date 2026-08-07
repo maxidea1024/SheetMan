@@ -19,7 +19,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAlchemyInfoTable : A1
+/* Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
  */
 struct Rescue_SDAlchemyInfoTableRecord_t {
   /* SDAlchemyInfo_Table */

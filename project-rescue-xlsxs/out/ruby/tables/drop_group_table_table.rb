@@ -9,7 +9,7 @@ require_relative '../sheetman/lite_binary_reader'
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\MasterData.xlsx : DropGroupTable : A1
+  # Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1
   class DropGroupTableRecord
     attr_accessor :id, :name, :drop_name, :drop_area, :drop_item_ids, :drop_item_min, :drop_item_max, :item_drop_rate
 

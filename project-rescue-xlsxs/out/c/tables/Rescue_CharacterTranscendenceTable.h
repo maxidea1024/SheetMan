@@ -18,7 +18,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTranscendenceTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTranscendenceTable : A1
  */
 struct Rescue_CharacterTranscendenceTableRecord_t {
   /* Transcend_ID */

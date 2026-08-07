@@ -23,7 +23,7 @@
 #include "enums/Tables_enum_cycle_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\ItemData.xlsx : CurrencyTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1
 struct CurrencyTableRecord {
   /// Currency_Table
   std::int32_t id = 0;

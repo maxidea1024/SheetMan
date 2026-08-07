@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// SdContensType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AE2.
+// SdContensType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AE2.
 // 타입
 type SdContensType int32
 

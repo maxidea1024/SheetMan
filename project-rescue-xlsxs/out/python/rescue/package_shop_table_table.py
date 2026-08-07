@@ -15,7 +15,7 @@ from .enum_currency_type import CurrencyType
 
 
 class PackageShopTableRecord:
-    """Generated from project-rescue-xlsxs\\ShopData.xlsx : PackageShopTable : A1.
+    """Generated from project-rescue-xlsxs/ShopData.xlsx : PackageShopTable : A1.
     """
 
     __slots__ = ("id", "name", "product_name", "shop_type", "shop_slot_id", "priority", "item_id", "item_value", "cycle_type", "limit_value", "currency_type", "price_value", "condition_id", "icon_path")

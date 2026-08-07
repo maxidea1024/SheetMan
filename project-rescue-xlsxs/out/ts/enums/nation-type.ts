@@ -7,7 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-// Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : AI2
+// Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : AI2
 /** 타입 */
 export enum NationType {
   /** None (automatically inserted by SheetMan) */

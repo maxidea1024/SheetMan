@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class AgencyType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : BA2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BA2.
 
     타입
     """

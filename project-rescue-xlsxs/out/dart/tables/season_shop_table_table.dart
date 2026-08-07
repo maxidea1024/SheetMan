@@ -6,7 +6,7 @@
 // ------------------------------------------------------------------------------
 
 part of '../tables.dart';
-// Generated from project-rescue-xlsxs\ShopData.xlsx : SeasonShopTable : A1
+// Generated from project-rescue-xlsxs/ShopData.xlsx : SeasonShopTable : A1
 class SeasonShopTableRecord {
   /// SeasonShop_Table
   int id = 0;

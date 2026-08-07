@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// CurrencyType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : S2.
+// CurrencyType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : S2.
 // 타입
 type CurrencyType int32
 

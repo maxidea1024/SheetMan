@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class StatType(enum.IntEnum):
-    """Generated from project-rescue-xlsxs\\0_Enums.xlsx : TableEnums : I2.
+    """Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : I2.
 
     스텟
     """

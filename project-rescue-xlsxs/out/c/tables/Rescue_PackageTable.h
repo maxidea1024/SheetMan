@@ -19,7 +19,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\ItemData.xlsx : PackageTable : A1
+/* Generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1
  */
 struct Rescue_PackageTableRecord_t {
   /* PackcgeItem_Table */

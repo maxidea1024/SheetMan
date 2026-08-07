@@ -6,7 +6,20 @@ namespace SheetMan.Models;
 public class Location
 {
     /// <summary>.xlsx file name or google-sheet id</summary>
-    public string Filename { get; set; }
+    /// <remarks>
+    /// Separators are always `/`, whatever the machine uses. This ends up in generated code
+    /// as the comment saying which cell a member came from, in the HTML pages, and in every
+    /// history record - so keeping the platform's own separator meant the same workbook
+    /// produced different output on Windows and Linux. A team with both sees that as a diff
+    /// in every generated file, and this repository saw it as a golden tree that could only
+    /// ever match the machine it was recorded on.
+    /// </remarks>
+    public string Filename
+    {
+        get => _filename;
+        set => _filename = value?.Replace('\\', '/');
+    }
+    private string _filename;
 
     /// <summary>Set only for Google Sheets, where a cell has a URL to link to.</summary>
     public string SheetUrl { get; set; } = ""; // built per cell rather than cached, so moving an entity updates its link

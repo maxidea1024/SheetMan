@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// CollectionTableRecord was generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionTable : A1.
+// CollectionTableRecord was generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1.
 type CollectionTableRecord struct {
 	// CollectionID
 	Id int32

@@ -29,6 +29,16 @@ jobs:
         with:
           node-version: '22'
 
+      # The tests reach the compiler through `npx tsc`, and npx on a runner with nothing
+      # installed answers "This is not the tsc command you are looking for" rather than
+      # fetching it - so every TypeScript gate failed on the toolchain instead of on the
+      # code. Installed globally and pinned, so a compiler release cannot change what the
+      # gate means without somebody choosing it.
+      - name: Setup TypeScript
+        run: |
+          npm install -g typescript@5.8.3
+          npx tsc --version
+
       # The suite compiles the generated C++, C and C# and runs all three against
       # the exported binary tables, which is what checks that each reader still
       # agrees with the writer about the byte format. ubuntu-latest ships both.

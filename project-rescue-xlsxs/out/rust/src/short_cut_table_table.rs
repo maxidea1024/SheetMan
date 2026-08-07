@@ -10,7 +10,7 @@ use std::path::Path;
 use crate::sheetman;
 use crate::enum_short_cut_type::ShortCutType;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct ShortCutTableRecord {
     /// ShortCut_Table

@@ -9,7 +9,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use crate::sheetman;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ConfigTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct ConfigTableRecord {
     /// Row number, added by SheetMan because `Id` cannot be a primary index.

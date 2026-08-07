@@ -14,7 +14,7 @@ use crate::enum_attribute_type::AttributeType;
 use crate::enum_job_type::JobType;
 use crate::enum_nation_type::NationType;
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : CharacterTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTable : A1
 #[derive(Clone, Debug, Default)]
 pub struct CharacterTableRecord {
     /// Character_Table

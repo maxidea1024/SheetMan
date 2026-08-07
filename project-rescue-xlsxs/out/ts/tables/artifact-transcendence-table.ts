@@ -28,7 +28,7 @@ interface IDataRow {
   nextStepID: number
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
 export class ArtifactTranscendenceTableRecord {
   /** Default constructor */
   constructor() {
@@ -105,7 +105,7 @@ export class ArtifactTranscendenceTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\MasterData.xlsx : ArtifactTranscendenceTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
 export class ArtifactTranscendenceTableTable {
   /** Default constructor. */
   constructor() {

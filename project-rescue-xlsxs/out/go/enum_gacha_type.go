@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// GachaType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BE2.
+// GachaType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BE2.
 // 타입
 type GachaType int32
 

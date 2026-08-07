@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// AttributeTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : AttributeTable : A1.
+// AttributeTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1.
 type AttributeTableRecord struct {
 	// Attribute_Table
 	Id int32

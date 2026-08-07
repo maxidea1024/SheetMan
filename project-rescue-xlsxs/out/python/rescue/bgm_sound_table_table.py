@@ -12,7 +12,7 @@ from . import sheetman
 
 
 class BGMSoundTableRecord:
-    """Generated from project-rescue-xlsxs\\SoundData.xlsx : BGMSoundTable : A1.
+    """Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1.
     """
 
     __slots__ = ("id", "name", "path", "loop", "fade_time", "description")

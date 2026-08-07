@@ -32,7 +32,7 @@ interface IDataRow {
   refreshCurrencyValue: number
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyInfoTable : A1
 export class SDAgencyInfoTableRecord {
   /** Default constructor */
   constructor() {
@@ -133,7 +133,7 @@ export class SDAgencyInfoTableRecord {
   }
 }
 
-// Generated from project-rescue-xlsxs\SD_Contens.xlsx : SDAgencyInfoTable : A1
+// Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyInfoTable : A1
 export class SDAgencyInfoTableTable {
   /** Default constructor. */
   constructor() {

@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// MaterialTableRecord was generated from project-rescue-xlsxs\ItemData.xlsx : MaterialTable : A1.
+// MaterialTableRecord was generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1.
 type MaterialTableRecord struct {
 	// Material_Table
 	Id int32

@@ -22,7 +22,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\MasterData.xlsx : SkillTable : A1
+ * Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
  */
 final class SkillTableRecord
 {

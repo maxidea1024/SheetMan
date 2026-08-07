@@ -8,7 +8,7 @@
 
 #ifndef RESCUE_ENUM_AGENCY_TYPE_H
 #define RESCUE_ENUM_AGENCY_TYPE_H
-/* Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BA2
+/* Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BA2
  *
  * 타입
  */

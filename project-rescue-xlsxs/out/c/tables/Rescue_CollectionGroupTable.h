@@ -16,7 +16,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\CollectionData.xlsx : CollectionGroupTable : A1
+/* Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionGroupTable : A1
  */
 struct Rescue_CollectionGroupTableRecord_t {
   /* ID */

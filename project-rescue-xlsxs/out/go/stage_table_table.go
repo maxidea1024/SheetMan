@@ -13,7 +13,7 @@ import (
 	"rescue/sheetman"
 )
 
-// StageTableRecord was generated from project-rescue-xlsxs\MasterData.xlsx : StageTable : A1.
+// StageTableRecord was generated from project-rescue-xlsxs/MasterData.xlsx : StageTable : A1.
 type StageTableRecord struct {
 	// Stage_Table
 	Id int32

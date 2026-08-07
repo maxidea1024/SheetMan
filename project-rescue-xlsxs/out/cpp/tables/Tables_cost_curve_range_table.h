@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_growth_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : CostCurveRangeTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveRangeTable : A1
 struct CostCurveRangeTableRecord {
   /// 숫자
   std::int32_t id = 0;

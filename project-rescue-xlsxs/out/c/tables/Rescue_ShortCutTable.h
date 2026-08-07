@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\MasterData.xlsx : ShortCutTable : A1
+/* Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
  */
 struct Rescue_ShortCutTableRecord_t {
   /* ShortCut_Table */

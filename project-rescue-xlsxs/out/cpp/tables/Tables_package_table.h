@@ -23,7 +23,7 @@
 #include "enums/Tables_enum_condition_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\ItemData.xlsx : PackageTable : A1
+// Generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1
 struct PackageTableRecord {
   /// PackcgeItem_Table
   std::int32_t id = 0;

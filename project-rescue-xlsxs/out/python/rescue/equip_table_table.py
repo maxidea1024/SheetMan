@@ -16,7 +16,7 @@ from .enum_stat_type import StatType
 
 
 class EquipTableRecord:
-    """Generated from project-rescue-xlsxs\\ItemData.xlsx : EquipTable : A1.
+    """Generated from project-rescue-xlsxs/ItemData.xlsx : EquipTable : A1.
     """
 
     __slots__ = ("id", "name", "equip_name", "type_", "equip_type", "grade", "max_class", "max_level", "stat_type1", "stat_type2", "icon_path", "prefab_path", "description")

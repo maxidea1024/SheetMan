@@ -17,7 +17,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Generated from project-rescue-xlsxs\StageGrowth.xlsx : RelicTable : A1
+/* Generated from project-rescue-xlsxs/StageGrowth.xlsx : RelicTable : A1
  */
 struct Rescue_RelicTableRecord_t {
   /* 기본값 */

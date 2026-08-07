@@ -25,7 +25,7 @@
 #include "enums/Tables_enum_buff_condition_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
 struct BuffTableRecord {
   /// ID
   std::int32_t id = 0;

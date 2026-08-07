@@ -29,7 +29,7 @@ import sheetman.KIND_SCALAR
 import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 
-// Generated from project-rescue-xlsxs\StageGrowth.xlsx : StatGrowthTable : A1
+// Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1
 class StatGrowthTableRecord {
     /** 기본값 */
     var id: Int = 0

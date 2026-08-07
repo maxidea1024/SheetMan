@@ -21,7 +21,7 @@
 #include "enums/Tables_enum_grade_type.h"
 
 namespace rescue {
-// Generated from project-rescue-xlsxs\MasterData.xlsx : BuffSelectTable : A1
+// Generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1
 struct BuffSelectTableRecord {
   /// ID
   std::int32_t id = 0;

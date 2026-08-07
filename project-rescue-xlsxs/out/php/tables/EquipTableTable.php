@@ -22,7 +22,7 @@ use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
 /**
- * Generated from project-rescue-xlsxs\ItemData.xlsx : EquipTable : A1
+ * Generated from project-rescue-xlsxs/ItemData.xlsx : EquipTable : A1
  */
 final class EquipTableRecord
 {

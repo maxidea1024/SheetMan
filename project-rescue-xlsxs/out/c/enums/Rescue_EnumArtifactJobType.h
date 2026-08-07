@@ -8,7 +8,7 @@
 
 #ifndef RESCUE_ENUM_ARTIFACT_JOB_TYPE_H
 #define RESCUE_ENUM_ARTIFACT_JOB_TYPE_H
-/* Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : E2
+/* Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : E2
  *
  * 아티팩트 직업
  */

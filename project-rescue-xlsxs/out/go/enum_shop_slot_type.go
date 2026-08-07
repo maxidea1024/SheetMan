@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-// ShopSlotType was generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : BQ2.
+// ShopSlotType was generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : BQ2.
 // 타입
 type ShopSlotType int32
 

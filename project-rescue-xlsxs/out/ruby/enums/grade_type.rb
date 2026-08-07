@@ -7,7 +7,7 @@
 
 
 module Rescue
-  # Generated from project-rescue-xlsxs\0_Enums.xlsx : TableEnums : Y2
+  # Generated from project-rescue-xlsxs/0_Enums.xlsx : TableEnums : Y2
   # 타입
   module GradeType
     NONE = 0
