@@ -38,7 +38,7 @@
 |`Path`|Xlsx|—|워크북을 찾을 폴더. 하위 폴더까지 봅니다. 이름이 `#`으로 시작하는 파일·폴더는 건너뜁니다.|
 |`FileExtensionPatterns`|Xlsx|`.xls;.xlsx`|주워올 확장자. `;`로 구분합니다.|
 |`ClientSecretFilename`|GoogleSheets|—|OAuth 클라이언트 비밀 파일 경로. **커밋하지 마세요.**|
-|`SheetsId`|GoogleSheets|—|문서 URL에 들어 있는 긴 식별자.|
+|`SheetsId`|GoogleSheets|—|워크북(스프레드시트 문서) URL에 들어 있는 긴 식별자.|
 
 아래 넷은 **두 소스 모두** 같습니다.
 
