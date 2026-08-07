@@ -35,17 +35,22 @@ jobs:
     name: ${{ matrix.rid }}
     runs-on: ${{ matrix.os }}
 
+    # A runner label that no longer exists does not fail - it queues, and `release` waits
+    # on it forever. That is how the first attempt at v0.1.0 sat for half an hour with five
+    # binaries built and nothing published: it asked for macos-13, which has been retired.
+    timeout-minutes: 30
+
     strategy:
       # One platform failing should not hide whether the other five are fine.
       fail-fast: false
       matrix:
         include:
-          - { rid: linux-x64,   os: ubuntu-latest,    archive: tar.gz }
-          - { rid: linux-arm64, os: ubuntu-24.04-arm, archive: tar.gz }
-          - { rid: win-x64,     os: windows-latest,   archive: zip }
-          - { rid: win-arm64,   os: windows-11-arm,   archive: zip }
-          - { rid: osx-x64,     os: macos-13,         archive: tar.gz }
-          - { rid: osx-arm64,   os: macos-latest,     archive: tar.gz }
+          - { rid: linux-x64,   os: ubuntu-latest,     archive: tar.gz }
+          - { rid: linux-arm64, os: ubuntu-24.04-arm,  archive: tar.gz }
+          - { rid: win-x64,     os: windows-latest,    archive: zip }
+          - { rid: win-arm64,   os: windows-11-arm,    archive: zip }
+          - { rid: osx-x64,     os: macos-15-intel,    archive: tar.gz }
+          - { rid: osx-arm64,   os: macos-latest,      archive: tar.gz }
 
     steps:
       - uses: actions/checkout@v7
