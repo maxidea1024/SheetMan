@@ -13,21 +13,21 @@ namespace SheetMan.CodeGeneration;
 /// </summary>
 internal sealed class CppFileView
 {
-    public string IncludeGuard { get; set; }
+    public required string IncludeGuard { get; set; }
 
     /// <summary>`namespace x {` lines, outermost first. Empty when no namespace is set.</summary>
-    public IReadOnlyList<string> NamespaceOpen { get; set; }
+    public required IReadOnlyList<string> NamespaceOpen { get; set; }
 
     /// <summary>The matching closers, innermost first.</summary>
-    public IReadOnlyList<string> NamespaceClose { get; set; }
+    public required IReadOnlyList<string> NamespaceClose { get; set; }
 
-    public IReadOnlyList<CppEnumView> Enums { get; set; }
+    public required IReadOnlyList<CppEnumView> Enums { get; set; }
 
-    public IReadOnlyList<CppConstantSetView> ConstantSets { get; set; }
+    public required IReadOnlyList<CppConstantSetView> ConstantSets { get; set; }
 
-    public IReadOnlyList<CppTableView> Tables { get; set; }
+    public required IReadOnlyList<CppTableView> Tables { get; set; }
 
-    public CppAccessorView Accessor { get; set; }
+    public required CppAccessorView Accessor { get; set; }
 }
 
 /// <summary>
@@ -42,80 +42,80 @@ internal sealed class CppFileView
 /// </remarks>
 internal sealed class CppPartView
 {
-    public string IncludeGuard { get; set; }
+    public string? IncludeGuard { get; set; }
 
     /// <summary>`#include` lines, standard library first and then this tool's own.</summary>
-    public IReadOnlyList<string> Includes { get; set; }
+    public IReadOnlyList<string>? Includes { get; set; }
 
-    public IReadOnlyList<string> NamespaceOpen { get; set; }
-    public IReadOnlyList<string> NamespaceClose { get; set; }
+    public IReadOnlyList<string>? NamespaceOpen { get; set; }
+    public IReadOnlyList<string>? NamespaceClose { get; set; }
 
     /// <summary>Record type names, for the forward header.</summary>
-    public IReadOnlyList<string> Records { get; set; }
+    public IReadOnlyList<string>? Records { get; set; }
 
     /// <summary>The table this file is for, when it is a table header.</summary>
-    public CppTableView Table { get; set; }
+    public CppTableView? Table { get; set; }
 
     /// <summary>The enum this file is for, when it is an enum header.</summary>
-    public CppEnumView Enumm { get; set; }
+    public CppEnumView? Enumm { get; set; }
 
     /// <summary>The constant set this file is for, when it is a constants header.</summary>
-    public CppConstantSetView Set { get; set; }
+    public CppConstantSetView? Set { get; set; }
 
     /// <summary>The accessor's own shape, for the accessor header.</summary>
-    public CppAccessorView Accessor { get; set; }
+    public CppAccessorView? Accessor { get; set; }
 }
 
 internal sealed class CppEnumView
 {
-    public string Name { get; set; }
-    public string Location { get; set; }
+    public required string Name { get; set; }
+    public required string Location { get; set; }
 
     /// <summary>Comment text, already split into lines; the template adds the `///`.</summary>
-    public IReadOnlyList<string> Comment { get; set; }
+    public required IReadOnlyList<string> Comment { get; set; }
 
-    public IReadOnlyList<CppEnumLabelView> Labels { get; set; }
+    public required IReadOnlyList<CppEnumLabelView> Labels { get; set; }
 }
 
 internal sealed class CppEnumLabelView
 {
-    public string Name { get; set; }
-    public string Value { get; set; }
-    public IReadOnlyList<string> Comment { get; set; }
+    public required string Name { get; set; }
+    public required string Value { get; set; }
+    public required IReadOnlyList<string> Comment { get; set; }
 }
 
 internal sealed class CppConstantSetView
 {
-    public string Name { get; set; }
-    public string Location { get; set; }
-    public IReadOnlyList<string> Comment { get; set; }
-    public IReadOnlyList<CppConstantView> Constants { get; set; }
+    public required string Name { get; set; }
+    public required string Location { get; set; }
+    public required IReadOnlyList<string> Comment { get; set; }
+    public required IReadOnlyList<CppConstantView> Constants { get; set; }
 }
 
 internal sealed class CppConstantView
 {
-    public string Name { get; set; }
-    public string Type { get; set; }
-    public string Value { get; set; }
-    public IReadOnlyList<string> Comment { get; set; }
+    public required string Name { get; set; }
+    public required string Type { get; set; }
+    public required string Value { get; set; }
+    public required IReadOnlyList<string> Comment { get; set; }
 }
 
 internal sealed class CppTableView
 {
     /// <summary>Table name as the sheet spelled it. Names the table's header.</summary>
-    public string RawName { get; set; }
+    public required string RawName { get; set; }
 
-    public string RecordName { get; set; }
-    public string TableName { get; set; }
-    public string Location { get; set; }
-    public IReadOnlyList<string> Comment { get; set; }
+    public required string RecordName { get; set; }
+    public required string TableName { get; set; }
+    public required string Location { get; set; }
+    public required IReadOnlyList<string> Comment { get; set; }
 
     /// <summary>
     /// The indexed fields: the sheet's first column plus every one marked with `*`.
     /// </summary>
-    public IReadOnlyList<CppIndexView> Indexes { get; set; }
+    public required IReadOnlyList<CppIndexView> Indexes { get; set; }
 
-    public IReadOnlyList<CppFieldView> Fields { get; set; }
+    public required IReadOnlyList<CppFieldView> Fields { get; set; }
 }
 
 /// <summary>
@@ -124,28 +124,28 @@ internal sealed class CppTableView
 internal sealed class CppIndexView
 {
     /// <summary>The record member holding the key, escaped.</summary>
-    public string Member { get; set; }
+    public required string Member { get; set; }
 
     /// <summary>What the lookup names end in - `index` gives `find_by_index`.</summary>
-    public string Suffix { get; set; }
+    public required string Suffix { get; set; }
 
     /// <summary>The map's key type.</summary>
-    public string KeyType { get; set; }
+    public required string KeyType { get; set; }
 
     /// <summary>
     /// The type the lookups take: a const reference where a copy would cost, the value
     /// itself where it would not.
     /// </summary>
-    public string KeyParam { get; set; }
+    public required string KeyParam { get; set; }
 
     /// <summary>The member holding the map from key to row position.</summary>
-    public string MapName { get; set; }
+    public required string MapName { get; set; }
 
     /// <summary>How the key reaches the message, since a std::string concatenates and a number does not.</summary>
-    public string KeyText { get; set; }
+    public required string KeyText { get; set; }
 
     /// <summary>The field as the sheet spells it, for the exception message.</summary>
-    public string FieldName { get; set; }
+    public required string FieldName { get; set; }
 }
 
 /// <summary>
@@ -153,91 +153,91 @@ internal sealed class CppIndexView
 /// </summary>
 internal sealed class CppFieldView
 {
-    public IReadOnlyList<string> Comment { get; set; }
+    public required IReadOnlyList<string> Comment { get; set; }
 
     /// <summary>
     /// The member declarations. Two lines for a reference, which keeps the raw index
     /// beside the resolved value.
     /// </summary>
-    public IReadOnlyList<string> Declarations { get; set; }
+    public required IReadOnlyList<string> Declarations { get; set; }
 
     /// <summary>
     /// Which read shape applies: `scalar`, `scalar_ref`, `serial`, `serial_ref` or
     /// `var_array`. A string rather than a flag set because the template selects on it,
     /// and five names read better there than four booleans.
     /// </summary>
-    public string Kind { get; set; }
+    public required string Kind { get; set; }
 
     /// <summary>The column wire tag.</summary>
-    public int Tag { get; set; }
+    public required int Tag { get; set; }
 
     /// <summary>The rendered check_column call for this member.</summary>
-    public string ColumnCheck { get; set; }
+    public required string ColumnCheck { get; set; }
 
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>Element count of a serial field, which is its column count.</summary>
-    public int ElementCount { get; set; }
+    public required int ElementCount { get; set; }
 
     /// <summary>What an unresolved reference holds until it is linked.</summary>
-    public string RefDefault { get; set; }
+    public required string RefDefault { get; set; }
 
     /// <summary>The read call for a scalar, without its semicolon.</summary>
-    public string ReadScalar { get; set; }
+    public required string ReadScalar { get; set; }
 
     /// <summary>The read call for element `i` of a serial field.</summary>
-    public string ReadElement { get; set; }
+    public required string ReadElement { get; set; }
 
     /// <summary>
     /// The read call for element `i` of a variable-length array, whose index needs the
     /// cast that a serial field's does not.
     /// </summary>
-    public string ReadVarElement { get; set; }
+    public required string ReadVarElement { get; set; }
 }
 
 internal sealed class CppAccessorView
 {
-    public string FileExtension { get; set; }
+    public required string FileExtension { get; set; }
 
-    public IReadOnlyList<CppTableSlotView> Tables { get; set; }
+    public required IReadOnlyList<CppTableSlotView> Tables { get; set; }
 
-    public IReadOnlyList<CppCrossReferenceView> CrossReferences { get; set; }
+    public required IReadOnlyList<CppCrossReferenceView> CrossReferences { get; set; }
 }
 
 internal sealed class CppTableSlotView
 {
     /// <summary>Escaped member name of the table within the accessor.</summary>
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
-    public string TableName { get; set; }
+    public required string TableName { get; set; }
 
     /// <summary>Table name as the exporter spells the data file, unescaped.</summary>
-    public string DataFileName { get; set; }
+    public required string DataFileName { get; set; }
 }
 
 internal sealed class CppCrossReferenceView
 {
     /// <summary>Escaped accessor member holding the table whose records are linked.</summary>
-    public string Table { get; set; }
+    public required string Table { get; set; }
 
-    public IReadOnlyList<CppReferenceFieldView> Fields { get; set; }
+    public required IReadOnlyList<CppReferenceFieldView> Fields { get; set; }
 }
 
 internal sealed class CppReferenceFieldView
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>Escaped accessor member of the table being pointed at.</summary>
-    public string RefTable { get; set; }
+    public required string RefTable { get; set; }
 
     /// <summary>The referenced table's primary lookup, which is what a key resolves through.</summary>
-    public string RefLookup { get; set; }
+    public required string RefLookup { get; set; }
 
     /// <summary>What the resolved reference yields - the record, or one of its fields.</summary>
-    public string Value { get; set; }
+    public required string Value { get; set; }
 
-    public string RefDefault { get; set; }
+    public required string RefDefault { get; set; }
 
     /// <summary>Whether the field holds several references.</summary>
-    public bool IsArray { get; set; }
+    public required bool IsArray { get; set; }
 }

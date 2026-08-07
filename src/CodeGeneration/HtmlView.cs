@@ -7,26 +7,32 @@ namespace SheetMan.CodeGeneration;
 /// </summary>
 internal abstract class HtmlPageView
 {
-    public string Title { get; set; }
+    public required string Title { get; set; }
 
-    /// <summary>Build time, already formatted. The golden comparison normalizes it away.</summary>
-    public string CreatedAt { get; set; }
+    /// <summary>
+    /// Build time, already formatted. The golden comparison normalizes it away.
+    /// </summary>
+    /// <remarks>
+    /// Stamped by `Write` rather than by whoever built the view, so it is the same on
+    /// every page of one run. Not required for that reason: no caller sets it.
+    /// </remarks>
+    public string CreatedAt { get; set; } = "";
 }
 
 internal sealed class HtmlIndexView : HtmlPageView
 {
-    public IReadOnlyList<HtmlSummaryEntryView> Enums { get; set; }
-    public IReadOnlyList<HtmlSummaryEntryView> Tables { get; set; }
-    public IReadOnlyList<HtmlSummaryEntryView> ConstantSets { get; set; }
-    public IReadOnlyList<HtmlSourceSheetView> SourceSheets { get; set; }
+    public required IReadOnlyList<HtmlSummaryEntryView> Enums { get; set; }
+    public required IReadOnlyList<HtmlSummaryEntryView> Tables { get; set; }
+    public required IReadOnlyList<HtmlSummaryEntryView> ConstantSets { get; set; }
+    public required IReadOnlyList<HtmlSourceSheetView> SourceSheets { get; set; }
 }
 
 internal sealed class HtmlSummaryEntryView
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>Escaped comment, or empty. The template decides whether to show a dash.</summary>
-    public string Comment { get; set; }
+    public required string Comment { get; set; }
 
     /// <summary>
     /// Where the entry's own page and anchor are.
@@ -36,7 +42,7 @@ internal sealed class HtmlSummaryEntryView
     /// wrong. Every enum link pointed at `enums.html`, which this target has never
     /// written: the pages are `enums/&lt;name&gt;.html`, one per enum.
     /// </summary>
-    public string Href { get; set; }
+    public required string Href { get; set; }
 }
 
 internal sealed class HtmlSourceSheetView
@@ -48,78 +54,78 @@ internal sealed class HtmlSourceSheetView
     /// this is empty rather than wrapping it in `href=""`, which is a link to the page
     /// the reader is already on.
     /// </summary>
-    public string Url { get; set; }
+    public required string Url { get; set; }
 
-    public string Filename { get; set; }
+    public required string Filename { get; set; }
 }
 
 internal sealed class HtmlEnumPageView : HtmlPageView
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>A rendered anchor back to the source sheet, or empty when there is none.</summary>
-    public string SourceLink { get; set; }
+    public required string SourceLink { get; set; }
 
-    public string Comment { get; set; }
+    public required string Comment { get; set; }
 
-    public IReadOnlyList<HtmlEnumLabelView> Labels { get; set; }
+    public required IReadOnlyList<HtmlEnumLabelView> Labels { get; set; }
 }
 
 internal sealed class HtmlEnumLabelView
 {
-    public int No { get; set; }
-    public string Name { get; set; }
-    public string SourceLink { get; set; }
-    public string Value { get; set; }
-    public string Comment { get; set; }
+    public required int No { get; set; }
+    public required string Name { get; set; }
+    public required string SourceLink { get; set; }
+    public required string Value { get; set; }
+    public required string Comment { get; set; }
 }
 
 internal sealed class HtmlConstantSetsPageView : HtmlPageView
 {
-    public IReadOnlyList<HtmlConstantSetView> Sets { get; set; }
+    public required IReadOnlyList<HtmlConstantSetView> Sets { get; set; }
 }
 
 internal sealed class HtmlConstantSetView
 {
-    public string Name { get; set; }
-    public string SourceLink { get; set; }
-    public string Comment { get; set; }
-    public IReadOnlyList<HtmlConstantView> Constants { get; set; }
+    public required string Name { get; set; }
+    public required string SourceLink { get; set; }
+    public required string Comment { get; set; }
+    public required IReadOnlyList<HtmlConstantView> Constants { get; set; }
 }
 
 internal sealed class HtmlConstantView
 {
-    public int No { get; set; }
+    public required int No { get; set; }
 
     /// <summary>The constant's own name, which the row's anchor id is built from.</summary>
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>Rendered cell contents, because an enum constant shows links where a
     /// plain one shows text.</summary>
-    public string NameCell { get; set; }
+    public required string NameCell { get; set; }
 
-    public string TypeCell { get; set; }
-    public string ValueCell { get; set; }
-    public string Comment { get; set; }
+    public required string TypeCell { get; set; }
+    public required string ValueCell { get; set; }
+    public required string Comment { get; set; }
 }
 
 internal sealed class HtmlTablesPageView : HtmlPageView
 {
-    public IReadOnlyList<HtmlTableView> Tables { get; set; }
+    public required IReadOnlyList<HtmlTableView> Tables { get; set; }
 }
 
 internal sealed class HtmlTableView
 {
-    public string Name { get; set; }
-    public string SourceLink { get; set; }
-    public string Comment { get; set; }
-    public int RecordCount { get; set; }
+    public required string Name { get; set; }
+    public required string SourceLink { get; set; }
+    public required string Comment { get; set; }
+    public required int RecordCount { get; set; }
 
     /// <summary>Complete `&lt;th&gt;` elements for the column-name row, one per line.</summary>
-    public IReadOnlyList<string> NameCells { get; set; }
+    public required IReadOnlyList<string> NameCells { get; set; }
 
     /// <summary>Complete `&lt;th&gt;` elements for the description row, one per line.</summary>
-    public IReadOnlyList<string> CommentCells { get; set; }
+    public required IReadOnlyList<string> CommentCells { get; set; }
 
     /// <summary>
     /// Complete `&lt;th&gt;` elements for the type row.
@@ -129,12 +135,12 @@ internal sealed class HtmlTableView
     /// same line as a result. Reproduced rather than tidied, so the golden pages do
     /// not move.
     /// </summary>
-    public IReadOnlyList<string> TypeCells { get; set; }
+    public required IReadOnlyList<string> TypeCells { get; set; }
 
     /// <summary>Complete `&lt;th&gt;` elements for the target-side row, one per line.</summary>
-    public IReadOnlyList<string> SideCells { get; set; }
+    public required IReadOnlyList<string> SideCells { get; set; }
 
-    public IReadOnlyList<HtmlRowView> Rows { get; set; }
+    public required IReadOnlyList<HtmlRowView> Rows { get; set; }
 }
 
 internal sealed class HtmlRowView
@@ -143,5 +149,5 @@ internal sealed class HtmlRowView
     /// Complete `&lt;td&gt;` elements, rendered here because a cell's markup depends on
     /// the field's type. They go on one line, with `&lt;/tr&gt;` at the end of it.
     /// </summary>
-    public IReadOnlyList<string> Cells { get; set; }
+    public required IReadOnlyList<string> Cells { get; set; }
 }

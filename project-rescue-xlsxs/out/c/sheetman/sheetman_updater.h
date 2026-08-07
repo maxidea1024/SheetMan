@@ -63,6 +63,22 @@
 #ifndef SHEETMAN_UPDATER_H
 #define SHEETMAN_UPDATER_H
 
+/* This needs POSIX, and says so here.
+ *
+ * nanosleep, strcasecmp, mkdir and rmdir are all POSIX rather than ISO C, and glibc
+ * declares none of them when a translation unit is compiled as strict ISO C - which is how
+ * the gate builds this, and how anybody passing -std=c99 builds it. Without the macro they
+ * become implicit declarations, which is a warning at best and an error under -Werror.
+ *
+ * It has to be asked for before the first libc header of the translation unit, because
+ * that is when features.h reads it. So: include this header first, or define the macro
+ * yourself before you include anything. Nothing in ISO C can do what this file does - there
+ * is no sleep, no filesystem and no case-insensitive compare in the standard - so requiring
+ * POSIX is not a limitation being introduced here, only one being written down. */
+#if !defined(_WIN32) && !defined(_POSIX_C_SOURCE)
+#define _POSIX_C_SOURCE 200809L
+#endif
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -154,6 +170,7 @@ void sm_md5_hex(const uint8_t* data, size_t length, char out[33]);
 #define sm_rmdir(path) _rmdir(path)
 #define sm_sleep_ms(ms) Sleep((DWORD)(ms))
 #else
+#include <strings.h>  /* strcasecmp */
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>

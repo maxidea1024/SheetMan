@@ -17,23 +17,23 @@ public class SheetManException : Exception
         /// <summary>
         /// The sheet cell location where the error occurred.
         /// </summary>
-        public Location Location { get; set; }
+        public Location? Location { get; set; }
 
         /// <summary>
         /// Error message.
         /// </summary>
-        public string Message { get; set; }
+        public string Message { get; set; } = "";
     }
 
     /// <summary>
     /// The sheet cell location where the error occurred.
     /// </summary>
-    public Location Location { get; set; }
+    public Location? Location { get; set; }
 
     /// <summary>
     /// Detail errors
     /// </summary>
-    public List<Detail> Details { get; set; }
+    public List<Detail> Details { get; set; } = [];
 
     /// <summary>
     /// Default empty constructor.

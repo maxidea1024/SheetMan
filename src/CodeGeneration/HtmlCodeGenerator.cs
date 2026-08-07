@@ -156,13 +156,8 @@ public partial class HtmlCodeGenerator : CodeGenerator<RecipeModel.CodeGeneratio
 
     private HtmlConstantView BuildConstant(ConstantSet constantSet, ConstantSet.Constant constant, int no)
     {
-        var view = new HtmlConstantView
-        {
-            No = no,
-            Name = constant.Name,
-            NameCell = SourceSheetLink(constant.Location, constant.Name),
-            Comment = Esc(constant.Comment),
-        };
+        string typeCell;
+        string valueCell;
 
         if (constant.Type == Models.ValueType.Enum)
         {
@@ -170,16 +165,30 @@ public partial class HtmlCodeGenerator : CodeGenerator<RecipeModel.CodeGeneratio
             // because either is a place someone might want to go from here.
             var label = constant.Enum.GetLabel(constant.Value, constant.Location);
 
-            view.TypeCell = SourceSheetLink(constant.Enum.Location, constant.Enum.Name);
-            view.ValueCell = $"{SourceSheetLink(label.Location, label.Name)} ({label.Value})";
+            typeCell = SourceSheetLink(constant.Enum.Location, constant.Enum.Name);
+            valueCell = $"{SourceSheetLink(label.Location, label.Name)} ({label.Value})";
         }
         else
         {
-            view.TypeCell = Esc(constant.TypeName);
-            view.ValueCell = Esc(constant.Value?.ToString());
+            typeCell = Esc(constant.TypeName);
+
+            // Through the invariant renderer, not `object.ToString()`. That takes the
+            // machine's culture, so a `datetime` constant came out of a Korean Windows as
+            // `2022-03-01 오전 9:00:00` and out of a Linux runner as `03/01/2022 09:00:00`
+            // - the same sheet, two different pages. Parsing has always been invariant here
+            // and writing had not caught up.
+            valueCell = Esc(PlainValue(constant.Type, constant.Value));
         }
 
-        return view;
+        return new HtmlConstantView
+        {
+            No = no,
+            Name = constant.Name,
+            NameCell = SourceSheetLink(constant.Location, constant.Name),
+            Comment = Esc(constant.Comment),
+            TypeCell = typeCell,
+            ValueCell = valueCell,
+        };
     }
 
     private void GenerateTables()
@@ -331,6 +340,34 @@ public partial class HtmlCodeGenerator : CodeGenerator<RecipeModel.CodeGeneratio
         }
 
         return ScalarValueMarkup(field, value);
+    }
+
+    /// <summary>
+    /// A value as text, in a form that does not depend on the machine's culture.
+    /// </summary>
+    /// <remarks>
+    /// For the types whose default `ToString()` is culture-sensitive - the numbers, the
+    /// clock types - and a passthrough for the rest. Everything written into a page goes
+    /// through here or through <see cref="ScalarValueMarkup"/>, so the same sheet produces
+    /// the same page wherever it is converted.
+    /// </remarks>
+    private static string PlainValue(Models.ValueType type, object value)
+    {
+        if (value == null)
+            return "";
+
+        switch (type)
+        {
+            case Models.ValueType.Int32: return ((int)value).ToString(CultureInfo.InvariantCulture);
+            case Models.ValueType.Int64: return ((long)value).ToString(CultureInfo.InvariantCulture);
+            case Models.ValueType.Float: return ((float)value).ToString(CultureInfo.InvariantCulture);
+            case Models.ValueType.Double: return ((double)value).ToString(CultureInfo.InvariantCulture);
+            case Models.ValueType.DateTime: return ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            case Models.ValueType.TimeSpan: return ((TimeSpan)value).ToString(null, CultureInfo.InvariantCulture);
+            case Models.ValueType.Uuid: return ((Guid)value).ToString();
+            case Models.ValueType.Bool: return (bool)value ? "true" : "false";
+            default: return value.ToString();
+        }
     }
 
     /// <summary>

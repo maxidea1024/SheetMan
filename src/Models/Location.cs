@@ -25,7 +25,7 @@ public class Location
     public string SheetUrl { get; set; } = ""; // built per cell rather than cached, so moving an entity updates its link
 
     /// <summary>Sheet Name</summary>
-    public string Sheet { get; set; }
+    public string Sheet { get; set; } = "";
 
     /// <summary>Column</summary>
     public int Column { get; set; }

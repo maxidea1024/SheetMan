@@ -62,9 +62,12 @@ std::string join(const std::vector<T>& values, std::string (*render)(const T&)) 
   return out + "]";
 }
 
-std::string render_int(const std::int32_t& v) { return std::to_string(v); }
-std::string render_string(const std::string& v) { return quote(v); }
-std::string render_float(const float& v) { return std::to_string(static_cast<double>(v)); }
+// One renderer per cell type this harness knows how to print. Which of them a run needs
+// depends on the scenario it was pointed at, and the build is -Wextra -Werror - so the
+// ones a given scenario has no column for are not a mistake.
+[[maybe_unused]] std::string render_int(const std::int32_t& v) { return std::to_string(v); }
+[[maybe_unused]] std::string render_string(const std::string& v) { return quote(v); }
+[[maybe_unused]] std::string render_float(const float& v) { return std::to_string(static_cast<double>(v)); }
 
 }  // namespace
 
