@@ -48,12 +48,12 @@ jobs:
           - { rid: osx-arm64,   os: macos-latest,     archive: tar.gz }
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.tag || github.ref }}
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           # The SDK band is pinned in global.json, so a release builds with the same
           # compiler the suite ran against.
@@ -119,7 +119,7 @@ jobs:
 
           echo "name=$name" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.archive.outputs.name }}
           path: dist/*
@@ -136,9 +136,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true
@@ -193,7 +193,7 @@ jobs:
             } >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           files: dist/*
           body: ${{ steps.notes.outputs.body }}
