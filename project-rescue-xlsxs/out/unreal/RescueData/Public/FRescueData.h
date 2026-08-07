@@ -970,28 +970,28 @@ enum class EValueType : uint8
 
 // Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionGroupTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FCollectionGroupTableRow
+struct RESCUEDATA_API FCollectionGroupRow
 {
     GENERATED_BODY()
 
     /** ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroup")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroup")
     FString Name;
 
     /** 출력 순서 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroup")
     int32 Index = 0;
 
     /** 캐릭터 Index(프리펩에 있는 캐릭터와 같아야 함) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroup")
     TArray<int32> CharacterList;
 
     /** 프리펩 위치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionGroup")
     FString PrefabPath;
 
 };
@@ -999,56 +999,56 @@ struct RESCUEDATA_API FCollectionGroupTableRow
 
 // Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FCollectionTableRow
+struct RESCUEDATA_API FCollectionRow
 {
     GENERATED_BODY()
 
     /** CollectionID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     FString Name;
 
     /** 캐릭터ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     int32 CharacterID = 0;
 
     /** 보상 UI분기 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     ECollectionTabType TabType = static_cast<ECollectionTabType>(0);
 
     /** 조건 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     int32 ConditionID = 0;
 
     /** 재화 보상 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     ECurrencyType RewardType = static_cast<ECurrencyType>(0);
 
     /** 재화 보상 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     int32 RewardValue = 0;
 
     /** 스탯 보상 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     EStatType RewardStatType1 = static_cast<EStatType>(0);
 
     /** 스탯 보상(%) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     float RewardStatRate = 0.0f;
 
     /** 스탯 보상 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     EStatType RewardStatType2 = static_cast<EStatType>(0);
 
     /** 스탯 보상(+) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     int32 RewardStatValue = 0;
 
     /** 바로가기 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CollectionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Collection")
     int32 ShortCutID = 0;
 
 };
@@ -1056,32 +1056,32 @@ struct RESCUEDATA_API FCollectionTableRow
 
 // Generated from project-rescue-xlsxs/ConditionData.xlsx : ConditionTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FConditionTableRow
+struct RESCUEDATA_API FConditionRow
 {
     GENERATED_BODY()
 
     /** ConditionID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConditionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConditionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
     FString Name;
 
     /** 조건 대상 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConditionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
     EConditionTargetType ConditionTargetType = static_cast<EConditionTargetType>(0);
 
     /** 대상 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConditionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
     int32 ConditionTargetValue = 0;
 
     /** 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConditionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
     EConditionType ConditionType = static_cast<EConditionType>(0);
 
     /** 조건 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConditionTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Condition")
     int32 ConditionValue = 0;
 
 };
@@ -1089,76 +1089,76 @@ struct RESCUEDATA_API FConditionTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : DailyDungeonInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FDailyDungeonInfoTableRow
+struct RESCUEDATA_API FDailyDungeonInfoRow
 {
     GENERATED_BODY()
 
     /** DailyDungeonInfo_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     FString DungeonName;
 
     /** 던전 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     EDungeonType DungeonType = static_cast<EDungeonType>(0);
 
     /** 출력 우선 순위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     int32 Priority = 0;
 
     /** 던전 입장 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     ECycleType CycleType = static_cast<ECycleType>(0);
 
     /** 해금 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     int32 EnterCondition = 0;
 
     /** 입장 재화 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     ECurrencyType EnterCurrencyType = static_cast<ECurrencyType>(0);
 
     /** 던전 버프 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     int32 DungeonBuffID = 0;
 
     /** 버프 수치 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     float BuffValueRate = 0.0f;
 
     /** 입장 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     int32 EnterCurrencyValue = 0;
 
     /** 무료입장 재화 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     ECurrencyType FreeEnterCurrencyType = static_cast<ECurrencyType>(0);
 
     /** 일일 광고 입장 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     int32 ADEnterCount = 0;
 
     /** 일일 입장권 최대 소모 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     int32 EnterCurrencyCountMax = 0;
 
     /** 던전 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     FString DungeonImagePath;
 
     /** 던전 BGM */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     int32 DungeonBGMID = 0;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DailyDungeonInfo")
     FString Description;
 
 };
@@ -1166,88 +1166,88 @@ struct RESCUEDATA_API FDailyDungeonInfoTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : GoldDungeonStageTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FGoldDungeonStageTableRow
+struct RESCUEDATA_API FGoldDungeonStageRow
 {
     GENERATED_BODY()
 
     /** GoldDungeonStage_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     FString StageName;
 
     /** 던전 아이디 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     EDungeonType DungeonType = static_cast<EDungeonType>(0);
 
     /** 던전 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     int32 DungeonFloor = 0;
 
     /** 제한 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     int32 TimeLimit = 0;
 
     /** 생성 몬스터 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     TArray<int32> SpawnIds;
 
     /** 보스 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     TArray<int32> BossID;
 
     /** 위치 생성 가능 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     int32 SpawnPointCount = 0;
 
     /** 최대 생성 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     int32 SpawnMaxCount = 0;
 
     /** 다음 포인터 생성 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     float SpawnNextTime = 0.0f;
 
     /** 스테이지 클리어 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     int32 StageClearCount = 0;
 
     /** 권장 전투력 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     FString RecommendPower;
 
     /** 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     int32 RewardID = 0;
 
     /** 던전 공격력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     float AtkUpPercent = 0.0f;
 
     /** 던전 방어력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     float DefUpPercent = 0.0f;
 
     /** 던전 체력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     float MHPUpPercent = 0.0f;
 
     /** 던전 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     FString DungeonImagePath;
 
     /** 몬스터 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     FString MonsterImagePath;
 
     /** AssetData 경로(Stage처럼 에셋만 추가하면 바뀌게) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonStage")
     FString AssetDataPath;
 
 };
@@ -1255,48 +1255,48 @@ struct RESCUEDATA_API FGoldDungeonStageTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : GoldDungeonRewardTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FGoldDungeonRewardTableRow
+struct RESCUEDATA_API FGoldDungeonRewardRow
 {
     GENERATED_BODY()
 
     /** GoldDungeonReward_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     FString RewardName;
 
     /** 보상 설정1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     ECurrencyType RewardType1 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     int32 RewardValue1 = 0;
 
     /** 보상 설정2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     ECurrencyType RewardType2 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     int32 RewardValue2 = 0;
 
     /** 최초 클리어 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     bool bIsFirstClear = false;
 
     /** 최초 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     ECurrencyType FirstClearRewardType = static_cast<ECurrencyType>(0);
 
     /** 최초 보상 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GoldDungeonReward")
     int32 FirstClearRewardValue = 0;
 
 };
@@ -1304,88 +1304,88 @@ struct RESCUEDATA_API FGoldDungeonRewardTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : ExpDungeonStageTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FExpDungeonStageTableRow
+struct RESCUEDATA_API FExpDungeonStageRow
 {
     GENERATED_BODY()
 
     /** ExpDungeonStage_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     FString StageName;
 
     /** 던전 아이디 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     EDungeonType DungeonType = static_cast<EDungeonType>(0);
 
     /** 던전 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     int32 DungeonFloor = 0;
 
     /** 제한 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     int32 TimeLimit = 0;
 
     /** 생성 몬스터 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     TArray<int32> SpawnIds;
 
     /** 보스 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     TArray<int32> BossID;
 
     /** 위치 생성 가능 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     int32 SpawnPointCount = 0;
 
     /** 최대 생성 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     int32 SpawnMaxCount = 0;
 
     /** 다음 포인터 생성 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     float SpawnNextTime = 0.0f;
 
     /** 스테이지 클리어 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     int32 StageClearCount = 0;
 
     /** 권장 전투력 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     FString RecommendPower;
 
     /** 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     int32 RewardID = 0;
 
     /** 던전 공격력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     float AtkUpPercent = 0.0f;
 
     /** 던전 방어력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     float DefUpPercent = 0.0f;
 
     /** 던전 체력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     float MHPUpPercent = 0.0f;
 
     /** 던전 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     FString DungeonImagePath;
 
     /** 몬스터 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     FString MonsterImagePath;
 
     /** AssetData 경로(Stage처럼 에셋만 추가하면 바뀌게) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonStage")
     FString AssetDataPath;
 
 };
@@ -1393,48 +1393,48 @@ struct RESCUEDATA_API FExpDungeonStageTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : ExpDungeonRewardTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FExpDungeonRewardTableRow
+struct RESCUEDATA_API FExpDungeonRewardRow
 {
     GENERATED_BODY()
 
     /** ExpDungeonReward_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     FString RewardName;
 
     /** 보상 설정1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     ECurrencyType RewardType1 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     int32 RewardValue1 = 0;
 
     /** 보상 설정2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     ECurrencyType RewardType2 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     int32 RewardValue2 = 0;
 
     /** 최초 클리어 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     bool bIsFirstClear = false;
 
     /** 최초 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     ECurrencyType FirstClearRewardType = static_cast<ECurrencyType>(0);
 
     /** 최초 보상 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ExpDungeonReward")
     int32 FirstClearRewardValue = 0;
 
 };
@@ -1442,88 +1442,88 @@ struct RESCUEDATA_API FExpDungeonRewardTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonStageTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FTraitDungeonStageTableRow
+struct RESCUEDATA_API FTraitDungeonStageRow
 {
     GENERATED_BODY()
 
     /** TraitDungeonStage_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     FString StageName;
 
     /** 던전 아이디 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     EDungeonType DungeonType = static_cast<EDungeonType>(0);
 
     /** 던전 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     int32 DungeonFloor = 0;
 
     /** 제한 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     int32 TimeLimit = 0;
 
     /** 생성 몬스터 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     TArray<int32> SpawnIds;
 
     /** 보스 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     TArray<int32> BossID;
 
     /** 위치 생성 가능 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     int32 SpawnPointCount = 0;
 
     /** 최대 생성 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     int32 SpawnMaxCount = 0;
 
     /** 다음 포인터 생성 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     float SpawnNextTime = 0.0f;
 
     /** 스테이지 클리어 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     int32 StageClearCount = 0;
 
     /** 권장 전투력 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     FString RecommendPower;
 
     /** 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     int32 RewardID = 0;
 
     /** 던전 공격력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     float AtkUpPercent = 0.0f;
 
     /** 던전 방어력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     float DefUpPercent = 0.0f;
 
     /** 던전 체력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     float MHPUpPercent = 0.0f;
 
     /** 던전 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     FString DungeonImagePath;
 
     /** 몬스터 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     FString MonsterImagePath;
 
     /** AssetData 경로(Stage처럼 에셋만 추가하면 바뀌게) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonStage")
     FString AssetDataPath;
 
 };
@@ -1531,48 +1531,48 @@ struct RESCUEDATA_API FTraitDungeonStageTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : TraitDungeonRewardTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FTraitDungeonRewardTableRow
+struct RESCUEDATA_API FTraitDungeonRewardRow
 {
     GENERATED_BODY()
 
     /** TraitDungeonReward_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     FString RewardName;
 
     /** 보상 설정1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     ECurrencyType RewardType1 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     int32 RewardValue1 = 0;
 
     /** 보상 설정2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     ECurrencyType RewardType2 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     int32 RewardValue2 = 0;
 
     /** 최초 클리어 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     bool bIsFirstClear = false;
 
     /** 최초 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     ECurrencyType FirstClearRewardType = static_cast<ECurrencyType>(0);
 
     /** 최초 보상 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitDungeonReward")
     int32 FirstClearRewardValue = 0;
 
 };
@@ -1580,88 +1580,88 @@ struct RESCUEDATA_API FTraitDungeonRewardTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : RelicDungeonStageTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FRelicDungeonStageTableRow
+struct RESCUEDATA_API FRelicDungeonStageRow
 {
     GENERATED_BODY()
 
     /** RelicDungeonStage_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     FString StageName;
 
     /** 던전 아이디 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     EDungeonType DungeonType = static_cast<EDungeonType>(0);
 
     /** 던전 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     int32 DungeonFloor = 0;
 
     /** 제한 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     int32 TimeLimit = 0;
 
     /** 생성 몬스터 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     TArray<int32> SpawnIds;
 
     /** 보스 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     TArray<int32> BossID;
 
     /** 위치 생성 가능 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     int32 SpawnPointCount = 0;
 
     /** 최대 생성 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     int32 SpawnMaxCount = 0;
 
     /** 다음 포인터 생성 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     float SpawnNextTime = 0.0f;
 
     /** 스테이지 클리어 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     int32 StageClearCount = 0;
 
     /** 권장 전투력 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     FString RecommendPower;
 
     /** 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     int32 RewardID = 0;
 
     /** 던전 공격력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     float AtkUpPercent = 0.0f;
 
     /** 던전 방어력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     float DefUpPercent = 0.0f;
 
     /** 던전 체력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     float MHPUpPercent = 0.0f;
 
     /** 던전 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     FString DungeonImagePath;
 
     /** 몬스터 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     FString MonsterImagePath;
 
     /** AssetData 경로(Stage처럼 에셋만 추가하면 바뀌게) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonStage")
     FString AssetDataPath;
 
 };
@@ -1669,48 +1669,48 @@ struct RESCUEDATA_API FRelicDungeonStageTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : RelicDungeonRewardTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FRelicDungeonRewardTableRow
+struct RESCUEDATA_API FRelicDungeonRewardRow
 {
     GENERATED_BODY()
 
     /** RelicDungeonReward_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     FString RewardName;
 
     /** 보상 설정1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     ECurrencyType RewardType1 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     int32 RewardValue1 = 0;
 
     /** 보상 설정2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     ECurrencyType RewardType2 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     int32 RewardValue2 = 0;
 
     /** 최초 클리어 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     bool bIsFirstClear = false;
 
     /** 최초 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     ECurrencyType FirstClearRewardType = static_cast<ECurrencyType>(0);
 
     /** 최초 보상 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicDungeonReward")
     int32 FirstClearRewardValue = 0;
 
 };
@@ -1718,88 +1718,88 @@ struct RESCUEDATA_API FRelicDungeonRewardTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : OopartsDungeonStageTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FOopartsDungeonStageTableRow
+struct RESCUEDATA_API FOopartsDungeonStageRow
 {
     GENERATED_BODY()
 
     /** OopartsDungeonStage_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     FString StageName;
 
     /** 던전 아이디 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     EDungeonType DungeonType = static_cast<EDungeonType>(0);
 
     /** 던전 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     int32 DungeonFloor = 0;
 
     /** 제한 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     int32 TimeLimit = 0;
 
     /** 생성 몬스터 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     TArray<int32> SpawnIds;
 
     /** 보스 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     TArray<int32> BossID;
 
     /** 위치 생성 가능 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     int32 SpawnPointCount = 0;
 
     /** 최대 생성 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     int32 SpawnMaxCount = 0;
 
     /** 다음 포인터 생성 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     float SpawnNextTime = 0.0f;
 
     /** 스테이지 클리어 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     int32 StageClearCount = 0;
 
     /** 권장 전투력 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     FString RecommendPower;
 
     /** 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     int32 RewardID = 0;
 
     /** 던전 공격력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     float AtkUpPercent = 0.0f;
 
     /** 던전 방어력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     float DefUpPercent = 0.0f;
 
     /** 던전 체력 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     float MHPUpPercent = 0.0f;
 
     /** 던전 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     FString DungeonImagePath;
 
     /** 몬스터 이미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     FString MonsterImagePath;
 
     /** AssetData 경로(Stage처럼 에셋만 추가하면 바뀌게) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonStage")
     FString AssetDataPath;
 
 };
@@ -1807,48 +1807,48 @@ struct RESCUEDATA_API FOopartsDungeonStageTableRow
 
 // Generated from project-rescue-xlsxs/DailyDungeon.xlsx : OopartsDungeonRewardTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FOopartsDungeonRewardTableRow
+struct RESCUEDATA_API FOopartsDungeonRewardRow
 {
     GENERATED_BODY()
 
     /** OopartsDungeonReward_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     FString RewardName;
 
     /** 보상 설정1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     ECurrencyType RewardType1 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     int32 RewardValue1 = 0;
 
     /** 보상 설정2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     ECurrencyType RewardType2 = static_cast<ECurrencyType>(0);
 
     /** 보상 값 2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     int32 RewardValue2 = 0;
 
     /** 최초 클리어 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     bool bIsFirstClear = false;
 
     /** 최초 보상 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     ECurrencyType FirstClearRewardType = static_cast<ECurrencyType>(0);
 
     /** 최초 보상 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "OopartsDungeonReward")
     int32 FirstClearRewardValue = 0;
 
 };
@@ -1856,100 +1856,100 @@ struct RESCUEDATA_API FOopartsDungeonRewardTableRow
 
 // Generated from project-rescue-xlsxs/GachaData.xlsx : GachaInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FGachaInfoTableRow
+struct RESCUEDATA_API FGachaInfoRow
 {
     GENERATED_BODY()
 
     /** HeroGacha_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     FString Name;
 
     /** 카테고리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     EGachaType GachaType = static_cast<EGachaType>(0);
 
     /** 출력 우선순위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 Priority = 0;
 
     /** 해금 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 ConditionID = 0;
 
     /** 기본 확률 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 RateId = 0;
 
     /** 중간 변경 확률 가챠 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 TriggerCount = 0;
 
     /** 중간 변경 확률ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 TriggerRateId = 0;
 
     /** 확정 누적 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 EndCount = 0;
 
     /** 확정 확률ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 EndRateId = 0;
 
     /** 확정 픽업 캐릭터 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 EndCharacterId = 0;
 
     /** 영입 횟수 초기화 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     bool bEnableReset = false;
 
     /** 영입 횟수 공유 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     bool bIsSharedCounter = false;
 
     /** 위시리스트 해금 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 WishListConditionID = 0;
 
     /** 위시리스트 슬롯 최대값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 WishListMaxValue = 0;
 
     /** 1회 영입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     bool bIsSingle = false;
 
     /** 10회 영입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     bool bIsTen = false;
 
     /** 재화 타입1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     ECurrencyType CurrencyType1 = static_cast<ECurrencyType>(0);
 
     /** 티켓 소모값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 SingleCost1 = 0;
 
     /** 재화 타입2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     ECurrencyType CurrencyType2 = static_cast<ECurrencyType>(0);
 
     /** 다이아 소모값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     int32 SingleCost2 = 0;
 
     /** 탭 버튼 아이콘 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     FString IconPath;
 
     /** 건너뛰기 가능 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaInfo")
     bool bEnableSkip = false;
 
 };
@@ -1957,52 +1957,52 @@ struct RESCUEDATA_API FGachaInfoTableRow
 
 // Generated from project-rescue-xlsxs/GachaData.xlsx : GachaCharacterListTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FGachaCharacterListTableRow
+struct RESCUEDATA_API FGachaCharacterListRow
 {
     GENERATED_BODY()
 
     /** GachaCharacter_List */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     int32 Id = 0;
 
     /** 캐릭터 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     int32 CharacterID = 0;
 
     /** 태생 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     EGradeType GradeType = static_cast<EGradeType>(0);
 
     /** 기본 가중치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     int32 BaseWeight = 0;
 
     /** 위시리스트 여부 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     bool bIsWishlist = false;
 
     /** 위시리스트 가중치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     int32 WishlistWeight = 0;
 
     /** 성급 재화ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     int32 ClassUpCurrencyID = 0;
 
     /** 성급 재화값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     int32 ClassUpCurrencyValue = 0;
 
     /** 변환 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     int32 ExConditionID = 0;
 
     /** 변환 재화ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     int32 ExCurrencyID = 0;
 
     /** 변환 재화값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaCharacterList")
     int32 ExCurrencyValue = 0;
 
 };
@@ -2010,100 +2010,100 @@ struct RESCUEDATA_API FGachaCharacterListTableRow
 
 // Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FGachaArtifactInfoTableRow
+struct RESCUEDATA_API FGachaArtifactInfoRow
 {
     GENERATED_BODY()
 
     /** GachaArtifactInfo_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     FString Name;
 
     /** 카테고리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     EGachaType GachaType = static_cast<EGachaType>(0);
 
     /** 출력 우선순위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 Priority = 0;
 
     /** 해금 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 ConditionID = 0;
 
     /** 기본 확률 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 RateId = 0;
 
     /** 중간 변경 확률 가챠 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 TriggerCount = 0;
 
     /** 중간 변경 확률ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 TriggerRateId = 0;
 
     /** 확정 누적 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 EndCount = 0;
 
     /** 확정 확률ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 EndRateId = 0;
 
     /** 확정 픽업 캐릭터 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 EndCharacterId = 0;
 
     /** 영입 횟수 초기화 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     bool bEnableReset = false;
 
     /** 영입 횟수 공유 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     bool bIsSharedCounter = false;
 
     /** 위시리스트 해금 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 WishListConditionID = 0;
 
     /** 위시리스트 슬롯 최대값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 WishListMaxValue = 0;
 
     /** 1회 영입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     bool bIsSingle = false;
 
     /** 10회 영입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     bool bIsTen = false;
 
     /** 재화 타입1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     ECurrencyType CurrencyType1 = static_cast<ECurrencyType>(0);
 
     /** 티켓 소모값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 SingleCost1 = 0;
 
     /** 재화 타입2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     ECurrencyType CurrencyType2 = static_cast<ECurrencyType>(0);
 
     /** 다이아 소모값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     int32 SingleCost2 = 0;
 
     /** 탭 버튼 아이콘 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     FString IconPath;
 
     /** 건너뛰기 가능 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactInfo")
     bool bEnableSkip = false;
 
 };
@@ -2111,44 +2111,44 @@ struct RESCUEDATA_API FGachaArtifactInfoTableRow
 
 // Generated from project-rescue-xlsxs/GachaData.xlsx : GachaArtifactListTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FGachaArtifactListTableRow
+struct RESCUEDATA_API FGachaArtifactListRow
 {
     GENERATED_BODY()
 
     /** GachaArtifact_List */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactList")
     int32 Id = 0;
 
     /** 아티펙트 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactList")
     int32 ArtifactID = 0;
 
     /** 태생 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactList")
     EGradeType GradeType = static_cast<EGradeType>(0);
 
     /** 기본 가중치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactList")
     int32 BaseWeight = 0;
 
     /** 성급 재화 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactList")
     int32 ClassUpCurrencyID = 0;
 
     /** 성급 재화값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactList")
     int32 ClassUpCurrencyValue = 0;
 
     /** 변환 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactList")
     int32 ExConditionID = 0;
 
     /** 변환 재화ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactList")
     int32 ExCurrencyID = 0;
 
     /** 변환 재화값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaArtifactList")
     int32 ExCurrencyValue = 0;
 
 };
@@ -2156,32 +2156,32 @@ struct RESCUEDATA_API FGachaArtifactListTableRow
 
 // Generated from project-rescue-xlsxs/GachaData.xlsx : GachaRateTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FGachaRateTableRow
+struct RESCUEDATA_API FGachaRateRow
 {
     GENERATED_BODY()
 
     /** GachaRate_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRateTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRate")
     int32 Id = 0;
 
     /** UR 등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRateTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRate")
     float URRate = 0.0f;
 
     /** SSR 등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRateTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRate")
     float SSRRate = 0.0f;
 
     /** SR 등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRateTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRate")
     float SRRate = 0.0f;
 
     /** R 등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRateTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRate")
     float RRate = 0.0f;
 
     /** N 등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRateTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GachaRate")
     float NRate = 0.0f;
 
 };
@@ -2189,64 +2189,64 @@ struct RESCUEDATA_API FGachaRateTableRow
 
 // Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FCurrencyTableRow
+struct RESCUEDATA_API FCurrencyRow
 {
     GENERATED_BODY()
 
     /** Currency_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     FString ItemName;
 
     /** 카테고리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     EItemType ItemType = static_cast<EItemType>(0);
 
     /** 세부 재화 분류 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     ECurrencyType Type = static_cast<ECurrencyType>(0);
 
     /** 제한 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     ECycleType CycleType = static_cast<ECycleType>(0);
 
     /** 중첩 가능 유무 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     bool bStackable = false;
 
     /** 최대 소유 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     int64 MaxStack = 0;
 
     /** 아이템 사용 대기시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     int32 Cooltime = 0;
 
     /** 아이템 유지 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     int32 Duration = 0;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     FString IconPath;
 
     /** 프리펩 위치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     FString DropPrefabPath;
 
     /** 아이템 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     FString Description;
 
     /** 바로가기 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CurrencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Currency")
     TArray<int32> ShortCutIndex;
 
 };
@@ -2254,60 +2254,60 @@ struct RESCUEDATA_API FCurrencyTableRow
 
 // Generated from project-rescue-xlsxs/ItemData.xlsx : MaterialTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FMaterialTableRow
+struct RESCUEDATA_API FMaterialRow
 {
     GENERATED_BODY()
 
     /** Material_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     FString ItemName;
 
     /** 카테고리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     EItemType ItemType = static_cast<EItemType>(0);
 
     /** 세부 재화 분류 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     ECurrencyType Type = static_cast<ECurrencyType>(0);
 
     /** 중첩 가능 유무 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     bool bStackable = false;
 
     /** 최대 소유 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     int64 MaxStack = 0;
 
     /** 아이템 사용 대기시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     int32 Cooltime = 0;
 
     /** 아이템 유지 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     int32 Duration = 0;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     FString IconPath;
 
     /** 프리펩 위치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     FString DropPrefabPath;
 
     /** 아이템 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     FString Description;
 
     /** 바로가기 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MaterialTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Material")
     TArray<int32> ShortCutIndex;
 
 };
@@ -2315,76 +2315,76 @@ struct RESCUEDATA_API FMaterialTableRow
 
 // Generated from project-rescue-xlsxs/ItemData.xlsx : PackageTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FPackageTableRow
+struct RESCUEDATA_API FPackageRow
 {
     GENERATED_BODY()
 
     /** PackcgeItem_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     FString ClassName;
 
     /** 카테고리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     EItemType ItemType = static_cast<EItemType>(0);
 
     /** 패키지 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     EConsumablesType PackageType = static_cast<EConsumablesType>(0);
 
     /** 중첩 가능 유무 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     bool bStackable = false;
 
     /** 최대 소유 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     int64 MaxStack = 0;
 
     /** 획득조건 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     EConditionType PackageCondition = static_cast<EConditionType>(0);
 
     /** 아이템 재사용 대기시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     int32 Cooltime = 0;
 
     /** 아이템 유지 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     int32 Duration = 0;
 
     /** 포함 아이템 종류 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     TArray<int32> CurrencyID;
 
     /** 포함 아이템 최소 수량 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     TArray<int32> CurrencyItemMin;
 
     /** 포함 아이템 최대 수량 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     TArray<int32> CurrencyItemMax;
 
     /** 포함 아이템 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     TArray<int32> CurrencyItemRate;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     FString IconPath;
 
     /** 프리펩 위치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     FString DropPrefabPath;
 
     /** 아이템 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Package")
     FString ItemDescription;
 
 };
@@ -2392,40 +2392,40 @@ struct RESCUEDATA_API FPackageTableRow
 
 // Generated from project-rescue-xlsxs/ItemData.xlsx : ClassUpCurrencyListTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FClassUpCurrencyListTableRow
+struct RESCUEDATA_API FClassUpCurrencyListRow
 {
     GENERATED_BODY()
 
     /** Currency_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyList")
     int32 Id = 0;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyList")
     FString Name;
 
     /** 재화 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyList")
     ECurrencyType Type = static_cast<ECurrencyType>(0);
 
     /** 타겟 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyList")
     int32 TargetId = 0;
 
     /** 최대 획득 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyList")
     int32 MaxCount = 0;
 
     /** 최대 소유 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyList")
     int64 MaxStack = 0;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyList")
     FString IconPath;
 
     /** 바로가기 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyListTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ClassUpCurrencyList")
     TArray<int32> ShortCutIndex;
 
 };
@@ -2433,84 +2433,84 @@ struct RESCUEDATA_API FClassUpCurrencyListTableRow
 
 // Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemLevelTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FEquipItemLevelTableRow
+struct RESCUEDATA_API FEquipItemLevelRow
 {
     GENERATED_BODY()
 
     /** EquipItemLevel_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     FString NameKR;
 
     /** 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     EJobType Type = static_cast<EJobType>(0);
 
     /** 필요 재료 종류 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     ECurrencyType MaterialType = static_cast<ECurrencyType>(0);
 
     /** 필요 재료 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     int32 MaterialValue = 0;
 
     /** 필요 재료 누적값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     int32 MaterialValue1 = 0;
 
     /** 무기 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float WeaponStatRate1 = 0.0f;
 
     /** 무기 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float WeaponStatRate2 = 0.0f;
 
     /** 갑옷 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float ArmorStatRate1 = 0.0f;
 
     /** 갑옷 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float ArmorStatRate2 = 0.0f;
 
     /** 장갑 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float GauntletStatRate1 = 0.0f;
 
     /** 장갑 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float GauntletStatRate2 = 0.0f;
 
     /** 신발 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float BootsStatRate1 = 0.0f;
 
     /** 신발 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float BootsStatRate2 = 0.0f;
 
     /** 투구 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float HelmetStatRate1 = 0.0f;
 
     /** 투구 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float HelmetStatRate2 = 0.0f;
 
     /** 악세서리 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float AccStatRate1 = 0.0f;
 
     /** 악세서리 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemLevel")
     float AccStatRate2 = 0.0f;
 
 };
@@ -2518,88 +2518,88 @@ struct RESCUEDATA_API FEquipItemLevelTableRow
 
 // Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemClassTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FEquipItemClassTableRow
+struct RESCUEDATA_API FEquipItemClassRow
 {
     GENERATED_BODY()
 
     /** EquipItemClass_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     FString NameKR;
 
     /** 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     EJobType Type = static_cast<EJobType>(0);
 
     /** 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     EGradeType Grade = static_cast<EGradeType>(0);
 
     /** 성급 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     int32 TranscendStep = 0;
 
     /** 장비 성급 재료 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     ECurrencyType MaterialType = static_cast<ECurrencyType>(0);
 
     /** 장비 성급 재료 개수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     int32 MaterialValue = 0;
 
     /** 무기 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float WeaponStatRate1 = 0.0f;
 
     /** 무기 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float WeaponStatRate2 = 0.0f;
 
     /** 갑옷 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float ArmorStatRate1 = 0.0f;
 
     /** 갑옷 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float ArmorStatRate2 = 0.0f;
 
     /** 장갑 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float GauntletStatRate1 = 0.0f;
 
     /** 장갑 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float GauntletStatRate2 = 0.0f;
 
     /** 신발 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float BootsStatRate1 = 0.0f;
 
     /** 신발 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float BootsStatRate2 = 0.0f;
 
     /** 투구 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float HelmetStatRate1 = 0.0f;
 
     /** 투구 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float HelmetStatRate2 = 0.0f;
 
     /** 악세서리 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float AccStatRate1 = 0.0f;
 
     /** 악세서리 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClassTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemClass")
     float AccStatRate2 = 0.0f;
 
 };
@@ -2607,60 +2607,60 @@ struct RESCUEDATA_API FEquipItemClassTableRow
 
 // Generated from project-rescue-xlsxs/ItemData.xlsx : EquipTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FEquipTableRow
+struct RESCUEDATA_API FEquipRow
 {
     GENERATED_BODY()
 
     /** Equipment_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     int32 Id = 0;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     FString Name;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     FString EquipName;
 
     /** 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     EJobType Type = static_cast<EJobType>(0);
 
     /** 장비 종류 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     EEquipmentType EquipType = static_cast<EEquipmentType>(0);
 
     /** 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     EGradeType Grade = static_cast<EGradeType>(0);
 
     /** 최대 성급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     int32 MaxClass = 0;
 
     /** 최대 레벨 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     int32 MaxLevel = 0;
 
     /** 스탯1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     EStatType StatType1 = static_cast<EStatType>(0);
 
     /** 스탯2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     EStatType StatType2 = static_cast<EStatType>(0);
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     FString IconPath;
 
     /** 프리펩 위치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     FString PrefabPath;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equip")
     FString Description;
 
 };
@@ -2668,84 +2668,84 @@ struct RESCUEDATA_API FEquipTableRow
 
 // Generated from project-rescue-xlsxs/ItemData.xlsx : EquipItemGradeTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FEquipItemGradeTableRow
+struct RESCUEDATA_API FEquipItemGradeRow
 {
     GENERATED_BODY()
 
     /** EquipItemGrade_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     FString NameKR;
 
     /** 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     EJobType Type = static_cast<EJobType>(0);
 
     /** 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     EGradeType Grade = static_cast<EGradeType>(0);
 
     /** 장비 등급 재료 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     ECurrencyType MaterialType = static_cast<ECurrencyType>(0);
 
     /** 장비 등급 재료 개수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     int32 MaterialValue = 0;
 
     /** 무기 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float WeaponStatRate1 = 0.0f;
 
     /** 무기 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float WeaponStatRate2 = 0.0f;
 
     /** 갑옷 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float ArmorStatRate1 = 0.0f;
 
     /** 갑옷 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float ArmorStatRate2 = 0.0f;
 
     /** 장갑 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float GauntletStatRate1 = 0.0f;
 
     /** 장갑 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float GauntletStatRate2 = 0.0f;
 
     /** 신발 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float BootsStatRate1 = 0.0f;
 
     /** 신발 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float BootsStatRate2 = 0.0f;
 
     /** 투구 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float HelmetStatRate1 = 0.0f;
 
     /** 투구 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float HelmetStatRate2 = 0.0f;
 
     /** 악세서리 스탯1 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float AccStatRate1 = 0.0f;
 
     /** 악세서리 스탯2 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGradeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "EquipItemGrade")
     float AccStatRate2 = 0.0f;
 
 };
@@ -2753,156 +2753,156 @@ struct RESCUEDATA_API FEquipItemGradeTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FCharacterTableRow
+struct RESCUEDATA_API FCharacterRow
 {
     GENERATED_BODY()
 
     /** Character_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 Id = 0;
 
     /** 접두사 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     FString TitleName;
 
     /** 후미사 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     FString Name;
 
     /** 캐릭터 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     ECharacterType CharacterType = static_cast<ECharacterType>(0);
 
     /** 캐릭터 태생 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     EGradeType Grade = static_cast<EGradeType>(0);
 
     /** 캐릭터 속성 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     EAttributeType AttributeType = static_cast<EAttributeType>(0);
 
     /** 직업 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     EJobType JobType = static_cast<EJobType>(0);
 
     /** 태생 국가 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     ENationType Nation = static_cast<ENationType>(0);
 
     /** 기본 공격 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int64 BaseATK = 0;
 
     /** 기본 방어력 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int64 BaseDEF = 0;
 
     /** 기본 체력 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int64 BaseMHP = 0;
 
     /** 이동 속도 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     float MoveSpeed = 0.0f;
 
     /** 크리티컬 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     float CritRate = 0.0f;
 
     /** 크리티컬 대미지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     float CritDmg = 0.0f;
 
     /** 적 탐색 범위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     float SearchRange = 0.0f;
 
     /** 적 재 탐지 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     float ReFindTime = 0.0f;
 
     /** 메인 케릭터와 멀어지는 거리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     float MaxFollow = 0.0f;
 
     /** 크기 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     float SizePrefab = 0.0f;
 
     /** 열림 체크 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     bool bIsUnlocked = false;
 
     /** 기본 공격1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 BasicAttack1 = 0;
 
     /** 기본 공격2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 BasicAttack2 = 0;
 
     /** 기본 공격3 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 BasicAttack3 = 0;
 
     /** 스킬 공격1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 ActiveSkill1 = 0;
 
     /** 스킬 공격2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 ActiveSkill2 = 0;
 
     /** 스킬 공격3 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 ActiveSkill3 = 0;
 
     /** 필살기1단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 SpecialSkill1 = 0;
 
     /** 필살기2단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 SpecialSkill2 = 0;
 
     /** 필살기3단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 SpecialSkill3 = 0;
 
     /** 필살기4단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 SpecialSkill4 = 0;
 
     /** 필살기5단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 SpecialSkill5 = 0;
 
     /** 패시브 버프1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 PassiveBuff1 = 0;
 
     /** 패시브 버프2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 PassiveBuff2 = 0;
 
     /** 패시브 버프3 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     int32 PassiveBuff3 = 0;
 
     /** 모델링 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     FString PrefabPath;
 
     /** SD 캐릭터 머테리얼 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     FString SdMaterialPath;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     FString IconPath;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character")
     FString Description;
 
 };
@@ -2910,60 +2910,60 @@ struct RESCUEDATA_API FCharacterTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : SkillTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSkillTableRow
+struct RESCUEDATA_API FSkillRow
 {
     GENERATED_BODY()
 
     /** Skill_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     FString SkillName;
 
     /** 메모 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     ESkillType SkillType = static_cast<ESkillType>(0);
 
     /** 메모 참조 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     ESkillSubType SkillSubType = static_cast<ESkillSubType>(0);
 
     /** 속성 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     EAttributeType AttributeType = static_cast<EAttributeType>(0);
 
     /** 메모참조 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     ETargetType TargetType = static_cast<ETargetType>(0);
 
     /** 스킬 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     FString AniPath;
 
     /** 스킬 사용 거리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     float SkillUseRange = 0.0f;
 
     /** 스킬 쿨타임 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     float CoolTime = 0.0f;
 
     /** 버프 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     TArray<int32> BuffID;
 
     /** 필살기 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     FString SkillIcon;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SkillTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skill")
     FString Description;
 
 };
@@ -2971,80 +2971,80 @@ struct RESCUEDATA_API FSkillTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : BuffTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FBuffTableRow
+struct RESCUEDATA_API FBuffRow
 {
     GENERATED_BODY()
 
     /** ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     int32 Id = 0;
 
     /** SkillTable에서 Name을 불러와서 사용 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     FString BuffName;
 
     /** 한글 명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     FString Name;
 
     /** 버프 타입_메모확인 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     ESkillType SkillType = static_cast<ESkillType>(0);
 
     /** 어떤 종류의 버프 인지 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     EStatType StatType = static_cast<EStatType>(0);
 
     /** 버프 우선 적용 순위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     int32 Priority = 0;
 
     /** 버프 속성 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     EAttributeType AttributeType = static_cast<EAttributeType>(0);
 
     /** 타겟 설정 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     ETargetType TargetType = static_cast<ETargetType>(0);
 
     /** 상태에 따른 발동 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     EBuffConditionType BuffConditionType = static_cast<EBuffConditionType>(0);
 
     /** 증가되는 값(상수) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     int32 BuffValue = 0;
 
     /** 증가되는 값(%) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     float BuffValueRate = 0.0f;
 
     /** 버프 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     int32 BuffTime = 0;
 
     /** 버프 틱 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     int32 BuffTickTime = 0;
 
     /** 버프 최대 스택 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     int32 BuffMaxStack = 0;
 
     /** 버프 쿨타임 1초 = 1000 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     float BuffCoolDownTime = 0.0f;
 
     /** 버프 표시 유무 FALSE/TRUE */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     bool bIsVisible = false;
 
     /** 버프 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     FString IconPath;
 
     /** 버프 튤팁 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Buff")
     FString Description;
 
 };
@@ -3052,44 +3052,44 @@ struct RESCUEDATA_API FBuffTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterLevelTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FCharacterLevelTableRow
+struct RESCUEDATA_API FCharacterLevelRow
 {
     GENERATED_BODY()
 
     /** Index */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevel")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevel")
     FString Name;
 
     /** 한글이름 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevel")
     FString NameKR;
 
     /** 레벨 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevel")
     int32 Level = 0;
 
     /** 필요 경험치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevel")
     int64 CharacterEXP = 0;
 
     /** 누적 경험치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevel")
     int64 AccumulatedEXP = 0;
 
     /** 공격력 고정 비율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevel")
     float ATKGrowth = 0.0f;
 
     /** 방어력 고정 비율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevel")
     float DEFGrowth = 0.0f;
 
     /** 체력 증가 비율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterLevel")
     float HPGrowth = 0.0f;
 
 };
@@ -3097,48 +3097,48 @@ struct RESCUEDATA_API FCharacterLevelTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : CharacterTranscendenceTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FCharacterTranscendenceTableRow
+struct RESCUEDATA_API FCharacterTranscendenceRow
 {
     GENERATED_BODY()
 
     /** Transcend_ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     FString Name;
 
     /** 한글이름 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     FString NameKR;
 
     /** 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     EGradeType GradeType = static_cast<EGradeType>(0);
 
     /** 초월 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     int32 TranscendStep = 0;
 
     /** 초월 최대 레벨 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     int32 MaxLevel = 0;
 
     /** 초월 특수 재료 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     ECurrencyType MaterialType = static_cast<ECurrencyType>(0);
 
     /** 초월 특수 재료 개수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     int32 MaterialCount = 0;
 
     /** 초월시 스탯 증가율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     float PowerMultiplier = 0.0f;
 
     /** 다음 성급 Index */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterTranscendence")
     int32 NextStepID = 0;
 
 };
@@ -3146,56 +3146,56 @@ struct RESCUEDATA_API FCharacterTranscendenceTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FArtifactTableRow
+struct RESCUEDATA_API FArtifactRow
 {
     GENERATED_BODY()
 
     /** Artifact_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     FString Name;
 
     /** 아티팩트 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     EArtifactJobType ArtifactType = static_cast<EArtifactJobType>(0);
 
     /** 아티팩트 태생 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     EGradeType Grade = static_cast<EGradeType>(0);
 
     /** 장착 버프 효과 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     TArray<int32> EquipSkillID;
 
     /** 장착 스탯 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     EStatType EquipStatType = static_cast<EStatType>(0);
 
     /** 장착 스탯 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     float EquipStatRate = 0.0f;
 
     /** 보유 스탯 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     EStatType CollectionType = static_cast<EStatType>(0);
 
     /** 보유 스탯 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     float CollectionVlaue = 0.0f;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     FString IconPath;
 
     /** 머티리얼 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     FString MaterialPath;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Artifact")
     FString Description;
 
 };
@@ -3203,44 +3203,44 @@ struct RESCUEDATA_API FArtifactTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactLevelTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FArtifactLevelTableRow
+struct RESCUEDATA_API FArtifactLevelRow
 {
     GENERATED_BODY()
 
     /** ArtifactLevelTable */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevel")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevel")
     FString Name;
 
     /** 한글이름 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevel")
     FString NameKR;
 
     /** 레벨 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevel")
     int32 Level = 0;
 
     /** 필요 경험치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevel")
     int64 CharacterEXP = 0;
 
     /** 누적 경험치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevel")
     int64 AccumulatedEXP = 0;
 
     /** 공격력 고정 비율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevel")
     float ATKGrowth = 0.0f;
 
     /** 방어력 고정 비율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevel")
     float DEFGrowth = 0.0f;
 
     /** 체력 증가 비율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactLevel")
     float HPGrowth = 0.0f;
 
 };
@@ -3248,48 +3248,48 @@ struct RESCUEDATA_API FArtifactLevelTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : ArtifactTranscendenceTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FArtifactTranscendenceTableRow
+struct RESCUEDATA_API FArtifactTranscendenceRow
 {
     GENERATED_BODY()
 
     /** Artifact_Transcend_ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     FString Name;
 
     /** 한글이름 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     FString NameKR;
 
     /** 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     EGradeType GradeType = static_cast<EGradeType>(0);
 
     /** 초월 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     int32 TranscendStep = 0;
 
     /** 초월 최대 레벨 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     int32 MaxLevel = 0;
 
     /** 초월 특수 재료 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     ECurrencyType MaterialType = static_cast<ECurrencyType>(0);
 
     /** 초월 특수 재료 개수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     int32 MaterialCount = 0;
 
     /** 초월시 스탯 증가율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     float PowerMultiplier = 0.0f;
 
     /** 다음 성급 Index */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendenceTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ArtifactTranscendence")
     int32 NextStepID = 0;
 
 };
@@ -3297,36 +3297,36 @@ struct RESCUEDATA_API FArtifactTranscendenceTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : BuffSelectTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FBuffSelectTableRow
+struct RESCUEDATA_API FBuffSelectRow
 {
     GENERATED_BODY()
 
     /** ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelectTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelect")
     int32 Id = 0;
 
     /** 버프 이름 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelectTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelect")
     FString BuffName;
 
     /** 버프 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelectTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelect")
     int32 BuffID = 0;
 
     /** 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelectTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelect")
     EGradeType Grade = static_cast<EGradeType>(0);
 
     /** 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelectTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelect")
     float BuffRate = 0.0f;
 
     /** 버프 튤팁 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelectTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelect")
     FString BuffTooltip;
 
     /** 버프 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelectTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BuffSelect")
     FString IconPath;
 
 };
@@ -3334,28 +3334,28 @@ struct RESCUEDATA_API FBuffSelectTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : ShortCutTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FShortCutTableRow
+struct RESCUEDATA_API FShortCutRow
 {
     GENERATED_BODY()
 
     /** ShortCut_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCutTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCut")
     int32 ID = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCutTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCut")
     FString Name;
 
     /** 콘텐츠 카테고리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCutTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCut")
     EShortCutType Type = static_cast<EShortCutType>(0);
 
     /** 하위 카테고리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCutTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCut")
     int32 SubIndex = 0;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCutTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShortCut")
     FString Description;
 
 };
@@ -3363,84 +3363,84 @@ struct RESCUEDATA_API FShortCutTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : StageTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FStageTableRow
+struct RESCUEDATA_API FStageRow
 {
     GENERATED_BODY()
 
     /** Stage_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     FString StageName;
 
     /** AssetData 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     FString AssetDataPath;
 
     /** 생성 몬스터 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     TArray<int32> SpawnIds;
 
     /** 위치 생성 가능 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     int32 SpawnPointCount = 0;
 
     /** 최대 생성 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     int32 SpawnMaxCount = 0;
 
     /** 다음 포인터 생성 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     float SpawnNextTime = 0.0f;
 
     /** 클리어 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     int32 StageClearCount = 0;
 
     /** 보스 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     TArray<int32> BossID;
 
     /** 일반 ATK증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     float AtkUpPercent = 0.0f;
 
     /** 일반 DEF증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     float DefUpPercent = 0.0f;
 
     /** 일반 HP증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     float MHPUpPercent = 0.0f;
 
     /** 보스 ATK증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     float BossAtkUpPercent = 0.0f;
 
     /** 보스 DEF증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     float BossDefUpPercent = 0.0f;
 
     /** 보스 HP증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     float BossMHPUpPercent = 0.0f;
 
     /** 드랍 테이블 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     int32 StageDropListID = 0;
 
     /** 스테이지 BGM */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     int32 StageBGMID = 0;
 
     /** 보스 스테이지 BGM */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StageTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stage")
     int32 BossStageBGMID = 0;
 
 };
@@ -3448,32 +3448,32 @@ struct RESCUEDATA_API FStageTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : ConfigTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FConfigTableRow
+struct RESCUEDATA_API FConfigRow
 {
     GENERATED_BODY()
 
     /** Row number, added by SheetMan because `Id` cannot be a primary index. */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConfigTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
     int32 Index = 0;
 
     /** ConfigTable */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConfigTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
     FString Id;
 
     /** 카테고리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConfigTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
     FString Category;
 
     /** 테이터타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConfigTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
     FString DataType;
 
     /** 기본값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConfigTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
     FString DefaultValue;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ConfigTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
     FString Description;
 
 };
@@ -3481,40 +3481,40 @@ struct RESCUEDATA_API FConfigTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FDropGroupTableRow
+struct RESCUEDATA_API FDropGroupRow
 {
     GENERATED_BODY()
 
     /** 기본값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroup")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroup")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroup")
     FString DropName;
 
     /** 드랍 구역 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroup")
     FString DropArea;
 
     /** 아이템 종류1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroup")
     TArray<int32> DropItemIds;
 
     /** 아이템 최소 수량 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroup")
     TArray<int32> DropItemMin;
 
     /** 아이템 최대 수량 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroup")
     TArray<int32> DropItemMax;
 
     /** 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroupTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DropGroup")
     TArray<float> ItemDropRate;
 
 };
@@ -3522,40 +3522,40 @@ struct RESCUEDATA_API FDropGroupTableRow
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : AttributeTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FAttributeTableRow
+struct RESCUEDATA_API FAttributeRow
 {
     GENERATED_BODY()
 
     /** Attribute_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AttributeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AttributeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AttributeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
     FString AttributeName;
 
     /** 내 속성 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AttributeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
     EAttributeType AttributeType = static_cast<EAttributeType>(0);
 
     /** 타겟 속성 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AttributeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
     EAttributeType TargetAttributeType = static_cast<EAttributeType>(0);
 
     /** 증가되는 값(%) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AttributeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
     float DamageValueRate = 0.0f;
 
     /** 속성 표시 유무 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AttributeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
     bool bIsVisible = false;
 
     /** 속성 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AttributeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attribute")
     FString IconPath;
 
 };
@@ -3563,52 +3563,52 @@ struct RESCUEDATA_API FAttributeTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDContensInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDContensInfoTableRow
+struct RESCUEDATA_API FSDContensInfoRow
 {
     GENERATED_BODY()
 
     /** SDContensInfo_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     FString InfoName;
 
     /** 실제 데이터가 있는 시트 이름 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     FString SheetName;
 
     /** SD 콘텐츠 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     ESdContensType SdContensType = static_cast<ESdContensType>(0);
 
     /** 콘텐츠 해금 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     int32 ConditionID = 0;
 
     /** 소모 재화 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     ECurrencyType CurrencyType = static_cast<ECurrencyType>(0);
 
     /** 초기화 적용 유무 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     bool bEnableReset = false;
 
     /** 초기화 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     ECycleType CycleType = static_cast<ECycleType>(0);
 
     /** SD  캐릭터 프리펩 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     FString SDCharacterPath;
 
     /** UI 3d프리펩 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDContensInfo")
     FString PrefabPath;
 
 };
@@ -3616,64 +3616,64 @@ struct RESCUEDATA_API FSDContensInfoTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDAgencyInfoTableRow
+struct RESCUEDATA_API FSDAgencyInfoRow
 {
     GENERATED_BODY()
 
     /** SDAgencyInfo_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     int32 Id = 0;
 
     /** 등급 이름 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     FString Name;
 
     /** 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     EAgencyGrade AgencyGrade = static_cast<EAgencyGrade>(0);
 
     /** 해금 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     int32 DispatchCount = 0;
 
     /** S등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     float GradeSRate = 0.0f;
 
     /** A등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     float GradeARate = 0.0f;
 
     /** B등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     float GradeBRate = 0.0f;
 
     /** C등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     float GradeCRate = 0.0f;
 
     /** D등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     float GradeDRate = 0.0f;
 
     /** E등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     float GradeERate = 0.0f;
 
     /** F등장 확률 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     float GradeFRate = 0.0f;
 
     /** 무료 초기화 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     int32 FreeRefresh = 0;
 
     /** 초기화 재화 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     ECurrencyType RefreshCurrencyType = static_cast<ECurrencyType>(0);
 
     /** 초기화 재화 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyInfo")
     int32 RefreshCurrencyValue = 0;
 
 };
@@ -3681,92 +3681,92 @@ struct RESCUEDATA_API FSDAgencyInfoTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDAgencyTableRow
+struct RESCUEDATA_API FSDAgencyRow
 {
     GENERATED_BODY()
 
     /** SDAgency_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     FString InfoName;
 
     /** 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     EAgencyType AgencyType = static_cast<EAgencyType>(0);
 
     /** 등급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     EAgencyGrade AgencyGrade = static_cast<EAgencyGrade>(0);
 
     /** 소요 시간(sec) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 Time = 0;
 
     /** 가중치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 AgencyWeight = 0;
 
     /** 조건1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     EJobType Condition1 = static_cast<EJobType>(0);
 
     /** 조건값1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 Condition1value = 0;
 
     /** 조건2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     EGradeType Condition2 = static_cast<EGradeType>(0);
 
     /** 조건값2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 Condition2value = 0;
 
     /** 조건3 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     EConditionType Condition3 = static_cast<EConditionType>(0);
 
     /** 최소 성급 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 ClassMinValue = 0;
 
     /** 조건값3 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 Condition3value = 0;
 
     /** 보상1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     ECurrencyType RewardType1 = static_cast<ECurrencyType>(0);
 
     /** 보상 값1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 RewardValue1 = 0;
 
     /** 보상2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     ECurrencyType RewardType2 = static_cast<ECurrencyType>(0);
 
     /** 보상 값2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 RewardValue2 = 0;
 
     /** 보상3 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     ECurrencyType RewardType3 = static_cast<ECurrencyType>(0);
 
     /** 보상 값3 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     int32 RewardValue3 = 0;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgencyTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAgency")
     FString IconPath;
 
 };
@@ -3774,36 +3774,36 @@ struct RESCUEDATA_API FSDAgencyTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDPubInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDPubInfoTableRow
+struct RESCUEDATA_API FSDPubInfoRow
 {
     GENERATED_BODY()
 
     /** SDPubInfo_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfo")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfo")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfo")
     FString PubName;
 
     /** SoldOut 해제 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfo")
     int32 UnlockCondition = 0;
 
     /** 제한 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfo")
     int32 LimitValue = 0;
 
     /** 버프 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfo")
     int32 BuffID = 0;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDPubInfo")
     FString Description;
 
 };
@@ -3811,56 +3811,56 @@ struct RESCUEDATA_API FSDPubInfoTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDTrainingInfoTableRow
+struct RESCUEDATA_API FSDTrainingInfoRow
 {
     GENERATED_BODY()
 
     /** SDTrainingInfo_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     FString TrainingName;
 
     /** 적용 속성 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     EAttributeType AttributeType = static_cast<EAttributeType>(0);
 
     /** 스탯 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     EStatType StatType = static_cast<EStatType>(0);
 
     /** 해제 조건 대상 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     int32 UnlockCondition = 0;
 
     /** 레벨업 제한 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     int32 LevelUpCondition = 0;
 
     /** 최대 레벨 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     int32 MaxLevel = 0;
 
     /** 레벨 초기화 여부 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     bool bIsLvReset = false;
 
     /** 레벨 초기화 재화 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     ECurrencyType LvResetCurrencyType = static_cast<ECurrencyType>(0);
 
     /** 레벨 초기화 재화값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     int32 LvResetCurrencyValue = 0;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingInfo")
     FString Description;
 
 };
@@ -3868,48 +3868,48 @@ struct RESCUEDATA_API FSDTrainingInfoTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDTrainingLevelTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDTrainingLevelTableRow
+struct RESCUEDATA_API FSDTrainingLevelRow
 {
     GENERATED_BODY()
 
     /** SDTrainingLevel_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     FString LevelName;
 
     /** 필요 재료값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     int32 CurrencyValue = 0;
 
     /** 누적 재료값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     int32 CurrencyResult = 0;
 
     /** 체력 고정 비율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     float MHPGrowth = 0.0f;
 
     /** 체력 비율 누적 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     float MHPTotal = 0.0f;
 
     /** 방어력 고정 비율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     float DEFGrowth = 0.0f;
 
     /** 방어력 비율 누적 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     float DEFTotal = 0.0f;
 
     /** 공통 훈련 스테이지 진행도 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDTrainingLevel")
     int32 CommonUnlockStageID = 0;
 
 };
@@ -3917,60 +3917,60 @@ struct RESCUEDATA_API FSDTrainingLevelTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDDungeonInfoTableRow
+struct RESCUEDATA_API FSDDungeonInfoRow
 {
     GENERATED_BODY()
 
     /** SDDungeonInfo_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     FString NameKR;
 
     /** 총 카드 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 TotalCount = 0;
 
     /** 함정 카드 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 TrapCount = 0;
 
     /** 행동 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 ActionCount = 0;
 
     /** 성공 차감수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 MatchCost = 0;
 
     /** 실패 차감수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 MismatchCost = 0;
 
     /** 함정 차감수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 TrapCost = 0;
 
     /** 미리 보기 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 ViewTime = 0;
 
     /** 오답 체크 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 Time = 0;
 
     /** 광고 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 ADCount = 0;
 
     /** 일일 무료 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonInfo")
     int32 DailyFreeCount = 0;
 
 };
@@ -3978,36 +3978,36 @@ struct RESCUEDATA_API FSDDungeonInfoTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonCardTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDDungeonCardTableRow
+struct RESCUEDATA_API FSDDungeonCardRow
 {
     GENERATED_BODY()
 
     /** SDDungeonCard_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCard")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCard")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCard")
     FString SDDunName;
 
     /** 카드 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCard")
     ESDCardType SDCardType = static_cast<ESDCardType>(0);
 
     /** 카드 개수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCard")
     int32 CardCount = 0;
 
     /** 스탯 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCard")
     FString StatIconPath;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonCard")
     FString IconPath;
 
 };
@@ -4015,88 +4015,88 @@ struct RESCUEDATA_API FSDDungeonCardTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDDungeonRewardTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDDungeonRewardTableRow
+struct RESCUEDATA_API FSDDungeonRewardRow
 {
     GENERATED_BODY()
 
     /** SDDungeonReward_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     FString RewardName;
 
     /** 해제 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     int32 ConditionId = 0;
 
     /** 공용 재료 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     ECurrencyType RewardCommon = static_cast<ECurrencyType>(0);
 
     /** 공용 재료 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     int32 CommonValue = 0;
 
     /** 크리티컬 데미지 재료 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     ECurrencyType Reward1Type = static_cast<ECurrencyType>(0);
 
     /** 크리티컬 데미지 재료값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     int32 Reward1Value = 0;
 
     /** 크리티컬 확률 재료 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     ECurrencyType Reward2Type = static_cast<ECurrencyType>(0);
 
     /** 크리티컬 확률 재료 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     int32 Reward2Value = 0;
 
     /** 블록 확률 재료 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     ECurrencyType Reward3Type = static_cast<ECurrencyType>(0);
 
     /** 블록 확률 재료 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     int32 Reward3Value = 0;
 
     /** 명중률 재료 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     ECurrencyType Reward4Type = static_cast<ECurrencyType>(0);
 
     /** 명중률 재료 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     int32 Reward4Value = 0;
 
     /** 퍼펙트 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     bool bIsPerfect = false;
 
     /** 퍼펙트 보상 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     ECurrencyType RewardPerfect = static_cast<ECurrencyType>(0);
 
     /** 퍼펙트 보상값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     int32 PerfectValue = 0;
 
     /** 최소 보상 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     bool bIsMinReward = false;
 
     /** 최소 보상 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     ECurrencyType RewardMin = static_cast<ECurrencyType>(0);
 
     /** 최소 보상값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonRewardTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDDungeonReward")
     int32 MinRewardValue = 0;
 
 };
@@ -4104,72 +4104,72 @@ struct RESCUEDATA_API FSDDungeonRewardTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDAlchemyInfoTableRow
+struct RESCUEDATA_API FSDAlchemyInfoRow
 {
     GENERATED_BODY()
 
     /** SDAlchemyInfo_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     FString NameKR;
 
     /** 전용 재료 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     ECurrencyType MaterialType = static_cast<ECurrencyType>(0);
 
     /** 공용 재료1 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     ECurrencyType CommonMaterialType1 = static_cast<ECurrencyType>(0);
 
     /** 공용 재료2 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     ECurrencyType CommonMaterialType2 = static_cast<ECurrencyType>(0);
 
     /** 재료값 증가 비율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     float MaterialType2Rate = 0.0f;
 
     /** 스텟 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     EStatType StatType = static_cast<EStatType>(0);
 
     /** 타겟 대상 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     ETargetType TargetType = static_cast<ETargetType>(0);
 
     /** 최대 레벨값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     int32 MaxLevelId = 0;
 
     /** 가속 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     int32 AccelerateTime = 0;
 
     /** 가속권 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     ECurrencyType AccelerateItemType1 = static_cast<ECurrencyType>(0);
 
     /** 가속권 개수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     int32 AccelerateItemCost1 = 0;
 
     /** 다이아 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     ECurrencyType AccelerateItemType2 = static_cast<ECurrencyType>(0);
 
     /** 필요 다이아 개수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     int32 AccelerateItemCost2 = 0;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyInfo")
     FString IconPath;
 
 };
@@ -4177,32 +4177,32 @@ struct RESCUEDATA_API FSDAlchemyInfoTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyStepTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDAlchemyStepTableRow
+struct RESCUEDATA_API FSDAlchemyStepRow
 {
     GENERATED_BODY()
 
     /** SDAlchemyStep_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStepTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStep")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStepTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStep")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStepTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStep")
     FString NameKR;
 
     /** 최대 레벨 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStepTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStep")
     int32 MaxLevel = 0;
 
     /** 보상 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStepTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStep")
     ECurrencyType RewardType = static_cast<ECurrencyType>(0);
 
     /** 보상 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStepTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyStep")
     int32 RewardValue = 0;
 
 };
@@ -4210,72 +4210,72 @@ struct RESCUEDATA_API FSDAlchemyStepTableRow
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAlchemyLevelTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSDAlchemyLevelTableRow
+struct RESCUEDATA_API FSDAlchemyLevelRow
 {
     GENERATED_BODY()
 
     /** SDAlchemyLevel_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     FString NameKR;
 
     /** 필요 재화값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     int32 LevelUpCost = 0;
 
     /** 누적 재화값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     int32 LevelUpTotal = 0;
 
     /** 소요 시간 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     int64 Time = 0;
 
     /** 필요 다이아 개수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     int32 UseDiaCost = 0;
 
     /** 필요 가속권 개수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     int32 UseItemCost = 0;
 
     /** 크리티컬 데미지 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     float CritDMGValue = 0.0f;
 
     /** 크리티컬 데미지 누적값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     float CritDMGTotal = 0.0f;
 
     /** 크리티컬 확률 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     float CritRateValue = 0.0f;
 
     /** 크리티컬 확률 누적값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     float CritRateTotal = 0.0f;
 
     /** 블록 확률 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     float BlockRateValue = 0.0f;
 
     /** 블록 확률 누적값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     float BlockRateTotal = 0.0f;
 
     /** 명중률 증가값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     float HITValue = 0.0f;
 
     /** 명중률 누적값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevelTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SDAlchemyLevel")
     float HITTotal = 0.0f;
 
 };
@@ -4283,44 +4283,44 @@ struct RESCUEDATA_API FSDAlchemyLevelTableRow
 
 // Generated from project-rescue-xlsxs/ShopData.xlsx : ShopInfoTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FShopInfoTableRow
+struct RESCUEDATA_API FShopInfoRow
 {
     GENERATED_BODY()
 
     /** ShopInfo_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfo")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfo")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfo")
     FString InfoName;
 
     /** 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfo")
     EShopType ShopType = static_cast<EShopType>(0);
 
     /** 해금 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfo")
     int32 ConditionID = 0;
 
     /** 실제 데이터가 있는 시트 이름 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfo")
     FString SheetName;
 
     /** 출력 우선순위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfo")
     int32 Priority = 0;
 
     /** UI 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfo")
     FString UIPath;
 
     /** 리스트 레이아웃 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfoTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ShopInfo")
     FString ListPrefabPath;
 
 };
@@ -4328,64 +4328,64 @@ struct RESCUEDATA_API FShopInfoTableRow
 
 // Generated from project-rescue-xlsxs/ShopData.xlsx : MainShopTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FMainShopTableRow
+struct RESCUEDATA_API FMainShopRow
 {
     GENERATED_BODY()
 
     /** MainShop_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     FString ProductName;
 
     /** 상점 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     EShopType ShopType = static_cast<EShopType>(0);
 
     /** 슬롯 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     int32 ShopSlotID = 0;
 
     /** 출력 우선순위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     int32 Priority = 0;
 
     /** 포함 아이템 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     TArray<int32> ItemID;
 
     /** 포함 아이템 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     TArray<int32> ItemValue;
 
     /** 구매 주기 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     ECycleType CycleType = static_cast<ECycleType>(0);
 
     /** 구매 제한 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     int32 LimitValue = 0;
 
     /** 소모 재화 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     ECurrencyType CurrencyType = static_cast<ECurrencyType>(0);
 
     /** 가격값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     int32 PriceValue = 0;
 
     /** 해금 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     int32 ConditionID = 0;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MainShop")
     FString IconPath;
 
 };
@@ -4393,64 +4393,64 @@ struct RESCUEDATA_API FMainShopTableRow
 
 // Generated from project-rescue-xlsxs/ShopData.xlsx : PackageShopTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FPackageShopTableRow
+struct RESCUEDATA_API FPackageShopRow
 {
     GENERATED_BODY()
 
     /** PackageShop_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     FString ProductName;
 
     /** 상점 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     EShopType ShopType = static_cast<EShopType>(0);
 
     /** 슬롯 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     int32 ShopSlotID = 0;
 
     /** 출력 우선순위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     int32 Priority = 0;
 
     /** 포함 아이템 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     TArray<int32> ItemID;
 
     /** 포함 아이템 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     TArray<int32> ItemValue;
 
     /** 구매 주기 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     ECycleType CycleType = static_cast<ECycleType>(0);
 
     /** 구매 제한 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     int32 LimitValue = 0;
 
     /** 소모 재화 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     ECurrencyType CurrencyType = static_cast<ECurrencyType>(0);
 
     /** 가격값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     int32 PriceValue = 0;
 
     /** 해금 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     int32 ConditionID = 0;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "PackageShop")
     FString IconPath;
 
 };
@@ -4458,64 +4458,64 @@ struct RESCUEDATA_API FPackageShopTableRow
 
 // Generated from project-rescue-xlsxs/ShopData.xlsx : SeasonShopTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSeasonShopTableRow
+struct RESCUEDATA_API FSeasonShopRow
 {
     GENERATED_BODY()
 
     /** SeasonShop_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     FString ProductName;
 
     /** 상점 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     EShopType ShopType = static_cast<EShopType>(0);
 
     /** 슬롯 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     int32 ShopSlotID = 0;
 
     /** 출력 우선순위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     int32 Priority = 0;
 
     /** 포함 아이템 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     TArray<int32> ItemID;
 
     /** 포함 아이템 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     TArray<int32> ItemValue;
 
     /** 구매 주기 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     ECycleType CycleType = static_cast<ECycleType>(0);
 
     /** 구매 제한 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     int32 LimitValue = 0;
 
     /** 소모 재화 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     ECurrencyType CurrencyType = static_cast<ECurrencyType>(0);
 
     /** 가격값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     int32 PriceValue = 0;
 
     /** 해금 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     int32 ConditionID = 0;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SeasonShop")
     FString IconPath;
 
 };
@@ -4523,64 +4523,64 @@ struct RESCUEDATA_API FSeasonShopTableRow
 
 // Generated from project-rescue-xlsxs/ShopData.xlsx : CashShopTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FCashShopTableRow
+struct RESCUEDATA_API FCashShopRow
 {
     GENERATED_BODY()
 
     /** CashShop_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     int32 Id = 0;
 
     /** 영문명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     FString Name;
 
     /** 한글명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     FString ProductName;
 
     /** 상점 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     EShopType ShopType = static_cast<EShopType>(0);
 
     /** 슬롯 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     int32 ShopSlotID = 0;
 
     /** 출력 우선순위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     int32 Priority = 0;
 
     /** 포함 아이템 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     TArray<int32> ItemID;
 
     /** 포함 아이템 수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     TArray<int32> ItemValue;
 
     /** 구매 주기 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     ECycleType CycleType = static_cast<ECycleType>(0);
 
     /** 구매 제한 횟수 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     int32 LimitValue = 0;
 
     /** 소모 재화 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     ECurrencyType CurrencyType = static_cast<ECurrencyType>(0);
 
     /** 가격값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     int32 PriceValue = 0;
 
     /** 해금 조건 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     int32 ConditionID = 0;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShopTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CashShop")
     FString IconPath;
 
 };
@@ -4588,32 +4588,32 @@ struct RESCUEDATA_API FCashShopTableRow
 
 // Generated from project-rescue-xlsxs/SoundData.xlsx : BGMSoundTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FBGMSoundTableRow
+struct RESCUEDATA_API FBGMSoundRow
 {
     GENERATED_BODY()
 
     /** BGMSound_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSound")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSound")
     FString Name;
 
     /** 사운드 주소 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSound")
     FString Path;
 
     /** 루프 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSound")
     bool bLoop = false;
 
     /** 페이드인/아웃 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSound")
     float FadeTime = 0.0f;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "BGMSound")
     FString Description;
 
 };
@@ -4621,32 +4621,32 @@ struct RESCUEDATA_API FBGMSoundTableRow
 
 // Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FSFXSoundTableRow
+struct RESCUEDATA_API FSFXSoundRow
 {
     GENERATED_BODY()
 
     /** SFXSound_Table */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSound")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSound")
     FString Name;
 
     /** 카테고리 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSound")
     ESFXCategoryType Category = static_cast<ESFXCategoryType>(0);
 
     /** 사운드 주소 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSound")
     FString Path;
 
     /** 프리로드 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSound")
     FString PreloadGroup;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSoundTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFXSound")
     FString Description;
 
 };
@@ -4654,64 +4654,64 @@ struct RESCUEDATA_API FSFXSoundTableRow
 
 // Generated from project-rescue-xlsxs/StageGrowth.xlsx : InfoGrowthTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FInfoGrowthTableRow
+struct RESCUEDATA_API FInfoGrowthRow
 {
     GENERATED_BODY()
 
     /** 기본값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     FString InfoName;
 
     /** 실제 데이터가 있는 시트 이름 (AccountGrowth/TraitGrowth/RelicGrowth) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     FString SheetName;
 
     /** 시스템 분류 (Account/Trait/Relic) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     EGrowthType GrowthType = static_cast<EGrowthType>(0);
 
     /** 초기화 가능 불가능 체크 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     bool bReset = false;
 
     /** 초기화 재화 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     ECurrencyType ResetCostType = static_cast<ECurrencyType>(0);
 
     /** 초기화 비용 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     int32 ResetCostValue = 0;
 
     /** 루프형 시스템만 사용 (예: 유물 20단계) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     int32 MaxStep = 0;
 
     /** 단일 레벨 최대치 (루프형 시스템은 100 고정) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     int32 MaxLevel = 0;
 
     /** 해금 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     FString UnlockConditionType;
 
     /** 해금 제한 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     int32 UnlockConditionValue = 0;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     FString Description;
 
     /** 아이콘 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "InfoGrowth")
     FString IconPath;
 
 };
@@ -4719,44 +4719,44 @@ struct RESCUEDATA_API FInfoGrowthTableRow
 
 // Generated from project-rescue-xlsxs/StageGrowth.xlsx : StatGrowthTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FStatGrowthTableRow
+struct RESCUEDATA_API FStatGrowthRow
 {
     GENERATED_BODY()
 
     /** 기본값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowth")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowth")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowth")
     FString StageName;
 
     /** 스탯 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowth")
     EStatType StatType = static_cast<EStatType>(0);
 
     /** 영향력 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowth")
     int32 InfuluenceStep = 0;
 
     /** 스탯 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowth")
     int32 Growth = 0;
 
     /** 스탯 증가 값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowth")
     int32 GrowthValue = 0;
 
     /** 스탯 누적 값(신규 추가) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowth")
     int32 GrowthReselt = 0;
 
     /** 아이콘(사용안함) */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowthTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StatGrowth")
     FString IconPath;
 
 };
@@ -4764,36 +4764,36 @@ struct RESCUEDATA_API FStatGrowthTableRow
 
 // Generated from project-rescue-xlsxs/StageGrowth.xlsx : TraitTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FTraitTableRow
+struct RESCUEDATA_API FTraitRow
 {
     GENERATED_BODY()
 
     /** 기본값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trait")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trait")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trait")
     FString TraitName;
 
     /** 스탯 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trait")
     EStatType StatType = static_cast<EStatType>(0);
 
     /** 증가 수치 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trait")
     float StatRate = 0.0f;
 
     /** 해제 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trait")
     TArray<int32> UnlockCondition;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TraitTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Trait")
     FString IconPath;
 
 };
@@ -4801,68 +4801,68 @@ struct RESCUEDATA_API FTraitTableRow
 
 // Generated from project-rescue-xlsxs/StageGrowth.xlsx : RelicTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FRelicTableRow
+struct RESCUEDATA_API FRelicRow
 {
     GENERATED_BODY()
 
     /** 기본값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     FString Name;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     FString RelicName;
 
     /** 영향력 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     int32 InfuluenceStep = 0;
 
     /** 스탯 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     EStatType RelicType1 = static_cast<EStatType>(0);
 
     /** 유물 기본 값 1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     float RelicValue1 = 0.0f;
 
     /** 유물 레벨 당 스탯 증가 수치 1 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     float RelicIncValue1 = 0.0f;
 
     /** 유물 기본 값 2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     EStatType RelicType2 = static_cast<EStatType>(0);
 
     /** 유물 레벨 당 스탯 증가 수치 2 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     float RelicValue2 = 0.0f;
 
     /** 유물 기본 값 3 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     float RelicIncValue2 = 0.0f;
 
     /** 유물 레벨 당 스탯 증가 수치 3 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     EStatType RelicType3 = static_cast<EStatType>(0);
 
     /** 유물 기본 값 4 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     float RelicValue3 = 0.0f;
 
     /** 유물 레벨 당 스탯 증가 수치 4 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     float RelicIncValue3 = 0.0f;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     FString Description;
 
     /** 아이콘 경로 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RelicTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Relic")
     FString IconPath;
 
 };
@@ -4870,48 +4870,48 @@ struct RESCUEDATA_API FRelicTableRow
 
 // Generated from project-rescue-xlsxs/StageGrowth.xlsx : StarNodeTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FStarNodeTableRow
+struct RESCUEDATA_API FStarNodeRow
 {
     GENERATED_BODY()
 
     /** 기본값 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     int32 Id = 0;
 
     /** 영문 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     FString Name;
 
     /** 영향력 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     int32 InfuluenceStep = 0;
 
     /** 한글 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     FString StarNodeName;
 
     /** 스탯 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     EStatType StatType = static_cast<EStatType>(0);
 
     /** 증가 Value */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     int32 StarNodeValue = 0;
 
     /** 증가 Rate */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     float StarNodeRate = 0.0f;
 
     /** 해제 조건 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     TArray<int32> UnlockCondition;
 
     /** 설명 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     FString Description;
 
     /** 아이콘 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNodeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "StarNode")
     FString IconPath;
 
 };
@@ -4919,28 +4919,28 @@ struct RESCUEDATA_API FStarNodeTableRow
 
 // Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FCostCurveTableRow
+struct RESCUEDATA_API FCostCurveRow
 {
     GENERATED_BODY()
 
     /** 아이디 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurve")
     int32 Id = 0;
 
     /** 콘텐츠 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurve")
     FString Name;
 
     /** 성장 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurve")
     EGrowthType GrowthType = static_cast<EGrowthType>(0);
 
     /** 재화 타입 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurve")
     ECurrencyType CostType = static_cast<ECurrencyType>(0);
 
     /** 기본 비용 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurve")
     int32 BaseCostValue = 0;
 
 };
@@ -4948,42 +4948,42 @@ struct RESCUEDATA_API FCostCurveTableRow
 
 // Generated from project-rescue-xlsxs/StageGrowth.xlsx : CostCurveRangeTable : A1
 USTRUCT(BlueprintType)
-struct RESCUEDATA_API FCostCurveRangeTableRow
+struct RESCUEDATA_API FCostCurveRangeRow
 {
     GENERATED_BODY()
 
     /** 숫자 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRangeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRange")
     int32 Id = 0;
 
     /** 비용 콘텐츠 ID */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRangeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRange")
     EGrowthType GrowthType = static_cast<EGrowthType>(0);
 
     /** 범위 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRangeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRange")
     int32 RangeIndex = 0;
 
     /** 시작 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRangeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRange")
     int32 StartStep = 0;
 
     /** 끝 단계 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRangeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRange")
     int32 EndStep = 0;
 
     /** 가격 증가 배율 */
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRangeTable")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CostCurveRange")
     float AddMultiplier = 0.0f;
 
 };
 
 
-/** Every row of CollectionGroupTable. */
-class RESCUEDATA_API FCollectionGroupTableTable
+/** Every row of CollectionGroup. */
+class RESCUEDATA_API FCollectionGroupTable
 {
 public:
-    const TArray<FCollectionGroupTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FCollectionGroupRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -4991,7 +4991,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FCollectionGroupTableRow* FindById(int32 Key) const;
+    const FCollectionGroupRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5000,16 +5000,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FCollectionGroupTableRow> RecordsStorage;
+    TArray<FCollectionGroupRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of CollectionTable. */
-class RESCUEDATA_API FCollectionTableTable
+/** Every row of Collection. */
+class RESCUEDATA_API FCollectionTable
 {
 public:
-    const TArray<FCollectionTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FCollectionRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5017,7 +5017,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FCollectionTableRow* FindById(int32 Key) const;
+    const FCollectionRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5026,16 +5026,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FCollectionTableRow> RecordsStorage;
+    TArray<FCollectionRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ConditionTable. */
-class RESCUEDATA_API FConditionTableTable
+/** Every row of Condition. */
+class RESCUEDATA_API FConditionTable
 {
 public:
-    const TArray<FConditionTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FConditionRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5043,7 +5043,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FConditionTableRow* FindById(int32 Key) const;
+    const FConditionRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5052,16 +5052,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FConditionTableRow> RecordsStorage;
+    TArray<FConditionRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of DailyDungeonInfoTable. */
-class RESCUEDATA_API FDailyDungeonInfoTableTable
+/** Every row of DailyDungeonInfo. */
+class RESCUEDATA_API FDailyDungeonInfoTable
 {
 public:
-    const TArray<FDailyDungeonInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FDailyDungeonInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5069,7 +5069,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FDailyDungeonInfoTableRow* FindById(int32 Key) const;
+    const FDailyDungeonInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5078,16 +5078,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FDailyDungeonInfoTableRow> RecordsStorage;
+    TArray<FDailyDungeonInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of GoldDungeonStageTable. */
-class RESCUEDATA_API FGoldDungeonStageTableTable
+/** Every row of GoldDungeonStage. */
+class RESCUEDATA_API FGoldDungeonStageTable
 {
 public:
-    const TArray<FGoldDungeonStageTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FGoldDungeonStageRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5095,7 +5095,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FGoldDungeonStageTableRow* FindById(int32 Key) const;
+    const FGoldDungeonStageRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5104,16 +5104,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FGoldDungeonStageTableRow> RecordsStorage;
+    TArray<FGoldDungeonStageRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of GoldDungeonRewardTable. */
-class RESCUEDATA_API FGoldDungeonRewardTableTable
+/** Every row of GoldDungeonReward. */
+class RESCUEDATA_API FGoldDungeonRewardTable
 {
 public:
-    const TArray<FGoldDungeonRewardTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FGoldDungeonRewardRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5121,7 +5121,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FGoldDungeonRewardTableRow* FindById(int32 Key) const;
+    const FGoldDungeonRewardRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5130,16 +5130,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FGoldDungeonRewardTableRow> RecordsStorage;
+    TArray<FGoldDungeonRewardRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ExpDungeonStageTable. */
-class RESCUEDATA_API FExpDungeonStageTableTable
+/** Every row of ExpDungeonStage. */
+class RESCUEDATA_API FExpDungeonStageTable
 {
 public:
-    const TArray<FExpDungeonStageTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FExpDungeonStageRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5147,7 +5147,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FExpDungeonStageTableRow* FindById(int32 Key) const;
+    const FExpDungeonStageRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5156,16 +5156,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FExpDungeonStageTableRow> RecordsStorage;
+    TArray<FExpDungeonStageRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ExpDungeonRewardTable. */
-class RESCUEDATA_API FExpDungeonRewardTableTable
+/** Every row of ExpDungeonReward. */
+class RESCUEDATA_API FExpDungeonRewardTable
 {
 public:
-    const TArray<FExpDungeonRewardTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FExpDungeonRewardRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5173,7 +5173,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FExpDungeonRewardTableRow* FindById(int32 Key) const;
+    const FExpDungeonRewardRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5182,16 +5182,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FExpDungeonRewardTableRow> RecordsStorage;
+    TArray<FExpDungeonRewardRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of TraitDungeonStageTable. */
-class RESCUEDATA_API FTraitDungeonStageTableTable
+/** Every row of TraitDungeonStage. */
+class RESCUEDATA_API FTraitDungeonStageTable
 {
 public:
-    const TArray<FTraitDungeonStageTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FTraitDungeonStageRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5199,7 +5199,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FTraitDungeonStageTableRow* FindById(int32 Key) const;
+    const FTraitDungeonStageRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5208,16 +5208,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FTraitDungeonStageTableRow> RecordsStorage;
+    TArray<FTraitDungeonStageRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of TraitDungeonRewardTable. */
-class RESCUEDATA_API FTraitDungeonRewardTableTable
+/** Every row of TraitDungeonReward. */
+class RESCUEDATA_API FTraitDungeonRewardTable
 {
 public:
-    const TArray<FTraitDungeonRewardTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FTraitDungeonRewardRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5225,7 +5225,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FTraitDungeonRewardTableRow* FindById(int32 Key) const;
+    const FTraitDungeonRewardRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5234,16 +5234,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FTraitDungeonRewardTableRow> RecordsStorage;
+    TArray<FTraitDungeonRewardRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of RelicDungeonStageTable. */
-class RESCUEDATA_API FRelicDungeonStageTableTable
+/** Every row of RelicDungeonStage. */
+class RESCUEDATA_API FRelicDungeonStageTable
 {
 public:
-    const TArray<FRelicDungeonStageTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FRelicDungeonStageRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5251,7 +5251,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FRelicDungeonStageTableRow* FindById(int32 Key) const;
+    const FRelicDungeonStageRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5260,16 +5260,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FRelicDungeonStageTableRow> RecordsStorage;
+    TArray<FRelicDungeonStageRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of RelicDungeonRewardTable. */
-class RESCUEDATA_API FRelicDungeonRewardTableTable
+/** Every row of RelicDungeonReward. */
+class RESCUEDATA_API FRelicDungeonRewardTable
 {
 public:
-    const TArray<FRelicDungeonRewardTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FRelicDungeonRewardRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5277,7 +5277,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FRelicDungeonRewardTableRow* FindById(int32 Key) const;
+    const FRelicDungeonRewardRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5286,16 +5286,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FRelicDungeonRewardTableRow> RecordsStorage;
+    TArray<FRelicDungeonRewardRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of OopartsDungeonStageTable. */
-class RESCUEDATA_API FOopartsDungeonStageTableTable
+/** Every row of OopartsDungeonStage. */
+class RESCUEDATA_API FOopartsDungeonStageTable
 {
 public:
-    const TArray<FOopartsDungeonStageTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FOopartsDungeonStageRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5303,7 +5303,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FOopartsDungeonStageTableRow* FindById(int32 Key) const;
+    const FOopartsDungeonStageRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5312,16 +5312,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FOopartsDungeonStageTableRow> RecordsStorage;
+    TArray<FOopartsDungeonStageRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of OopartsDungeonRewardTable. */
-class RESCUEDATA_API FOopartsDungeonRewardTableTable
+/** Every row of OopartsDungeonReward. */
+class RESCUEDATA_API FOopartsDungeonRewardTable
 {
 public:
-    const TArray<FOopartsDungeonRewardTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FOopartsDungeonRewardRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5329,7 +5329,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FOopartsDungeonRewardTableRow* FindById(int32 Key) const;
+    const FOopartsDungeonRewardRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5338,16 +5338,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FOopartsDungeonRewardTableRow> RecordsStorage;
+    TArray<FOopartsDungeonRewardRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of GachaInfoTable. */
-class RESCUEDATA_API FGachaInfoTableTable
+/** Every row of GachaInfo. */
+class RESCUEDATA_API FGachaInfoTable
 {
 public:
-    const TArray<FGachaInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FGachaInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5355,7 +5355,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FGachaInfoTableRow* FindById(int32 Key) const;
+    const FGachaInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5364,16 +5364,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FGachaInfoTableRow> RecordsStorage;
+    TArray<FGachaInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of GachaCharacterListTable. */
-class RESCUEDATA_API FGachaCharacterListTableTable
+/** Every row of GachaCharacterList. */
+class RESCUEDATA_API FGachaCharacterListTable
 {
 public:
-    const TArray<FGachaCharacterListTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FGachaCharacterListRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5381,7 +5381,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FGachaCharacterListTableRow* FindById(int32 Key) const;
+    const FGachaCharacterListRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5390,16 +5390,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FGachaCharacterListTableRow> RecordsStorage;
+    TArray<FGachaCharacterListRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of GachaArtifactInfoTable. */
-class RESCUEDATA_API FGachaArtifactInfoTableTable
+/** Every row of GachaArtifactInfo. */
+class RESCUEDATA_API FGachaArtifactInfoTable
 {
 public:
-    const TArray<FGachaArtifactInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FGachaArtifactInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5407,7 +5407,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FGachaArtifactInfoTableRow* FindById(int32 Key) const;
+    const FGachaArtifactInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5416,16 +5416,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FGachaArtifactInfoTableRow> RecordsStorage;
+    TArray<FGachaArtifactInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of GachaArtifactListTable. */
-class RESCUEDATA_API FGachaArtifactListTableTable
+/** Every row of GachaArtifactList. */
+class RESCUEDATA_API FGachaArtifactListTable
 {
 public:
-    const TArray<FGachaArtifactListTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FGachaArtifactListRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5433,7 +5433,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FGachaArtifactListTableRow* FindById(int32 Key) const;
+    const FGachaArtifactListRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5442,16 +5442,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FGachaArtifactListTableRow> RecordsStorage;
+    TArray<FGachaArtifactListRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of GachaRateTable. */
-class RESCUEDATA_API FGachaRateTableTable
+/** Every row of GachaRate. */
+class RESCUEDATA_API FGachaRateTable
 {
 public:
-    const TArray<FGachaRateTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FGachaRateRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5459,7 +5459,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FGachaRateTableRow* FindById(int32 Key) const;
+    const FGachaRateRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5468,16 +5468,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FGachaRateTableRow> RecordsStorage;
+    TArray<FGachaRateRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of CurrencyTable. */
-class RESCUEDATA_API FCurrencyTableTable
+/** Every row of Currency. */
+class RESCUEDATA_API FCurrencyTable
 {
 public:
-    const TArray<FCurrencyTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FCurrencyRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5485,7 +5485,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FCurrencyTableRow* FindById(int32 Key) const;
+    const FCurrencyRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5494,16 +5494,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FCurrencyTableRow> RecordsStorage;
+    TArray<FCurrencyRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of MaterialTable. */
-class RESCUEDATA_API FMaterialTableTable
+/** Every row of Material. */
+class RESCUEDATA_API FMaterialTable
 {
 public:
-    const TArray<FMaterialTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FMaterialRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5511,7 +5511,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FMaterialTableRow* FindById(int32 Key) const;
+    const FMaterialRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5520,16 +5520,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FMaterialTableRow> RecordsStorage;
+    TArray<FMaterialRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of PackageTable. */
-class RESCUEDATA_API FPackageTableTable
+/** Every row of Package. */
+class RESCUEDATA_API FPackageTable
 {
 public:
-    const TArray<FPackageTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FPackageRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5537,7 +5537,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FPackageTableRow* FindById(int32 Key) const;
+    const FPackageRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5546,16 +5546,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FPackageTableRow> RecordsStorage;
+    TArray<FPackageRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ClassUpCurrencyListTable. */
-class RESCUEDATA_API FClassUpCurrencyListTableTable
+/** Every row of ClassUpCurrencyList. */
+class RESCUEDATA_API FClassUpCurrencyListTable
 {
 public:
-    const TArray<FClassUpCurrencyListTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FClassUpCurrencyListRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5563,7 +5563,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FClassUpCurrencyListTableRow* FindById(int32 Key) const;
+    const FClassUpCurrencyListRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5572,16 +5572,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FClassUpCurrencyListTableRow> RecordsStorage;
+    TArray<FClassUpCurrencyListRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of EquipItemLevelTable. */
-class RESCUEDATA_API FEquipItemLevelTableTable
+/** Every row of EquipItemLevel. */
+class RESCUEDATA_API FEquipItemLevelTable
 {
 public:
-    const TArray<FEquipItemLevelTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FEquipItemLevelRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5589,7 +5589,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FEquipItemLevelTableRow* FindById(int32 Key) const;
+    const FEquipItemLevelRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5598,16 +5598,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FEquipItemLevelTableRow> RecordsStorage;
+    TArray<FEquipItemLevelRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of EquipItemClassTable. */
-class RESCUEDATA_API FEquipItemClassTableTable
+/** Every row of EquipItemClass. */
+class RESCUEDATA_API FEquipItemClassTable
 {
 public:
-    const TArray<FEquipItemClassTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FEquipItemClassRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5615,7 +5615,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FEquipItemClassTableRow* FindById(int32 Key) const;
+    const FEquipItemClassRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5624,16 +5624,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FEquipItemClassTableRow> RecordsStorage;
+    TArray<FEquipItemClassRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of EquipTable. */
-class RESCUEDATA_API FEquipTableTable
+/** Every row of Equip. */
+class RESCUEDATA_API FEquipTable
 {
 public:
-    const TArray<FEquipTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FEquipRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5641,7 +5641,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FEquipTableRow* FindById(int32 Key) const;
+    const FEquipRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5650,16 +5650,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FEquipTableRow> RecordsStorage;
+    TArray<FEquipRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of EquipItemGradeTable. */
-class RESCUEDATA_API FEquipItemGradeTableTable
+/** Every row of EquipItemGrade. */
+class RESCUEDATA_API FEquipItemGradeTable
 {
 public:
-    const TArray<FEquipItemGradeTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FEquipItemGradeRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5667,7 +5667,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FEquipItemGradeTableRow* FindById(int32 Key) const;
+    const FEquipItemGradeRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5676,16 +5676,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FEquipItemGradeTableRow> RecordsStorage;
+    TArray<FEquipItemGradeRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of CharacterTable. */
-class RESCUEDATA_API FCharacterTableTable
+/** Every row of Character. */
+class RESCUEDATA_API FCharacterTable
 {
 public:
-    const TArray<FCharacterTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FCharacterRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5693,7 +5693,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FCharacterTableRow* FindById(int32 Key) const;
+    const FCharacterRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5702,16 +5702,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FCharacterTableRow> RecordsStorage;
+    TArray<FCharacterRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SkillTable. */
-class RESCUEDATA_API FSkillTableTable
+/** Every row of Skill. */
+class RESCUEDATA_API FSkillTable
 {
 public:
-    const TArray<FSkillTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSkillRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5719,7 +5719,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSkillTableRow* FindById(int32 Key) const;
+    const FSkillRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5728,16 +5728,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSkillTableRow> RecordsStorage;
+    TArray<FSkillRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of BuffTable. */
-class RESCUEDATA_API FBuffTableTable
+/** Every row of Buff. */
+class RESCUEDATA_API FBuffTable
 {
 public:
-    const TArray<FBuffTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FBuffRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5745,7 +5745,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FBuffTableRow* FindById(int32 Key) const;
+    const FBuffRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5754,16 +5754,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FBuffTableRow> RecordsStorage;
+    TArray<FBuffRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of CharacterLevelTable. */
-class RESCUEDATA_API FCharacterLevelTableTable
+/** Every row of CharacterLevel. */
+class RESCUEDATA_API FCharacterLevelTable
 {
 public:
-    const TArray<FCharacterLevelTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FCharacterLevelRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5771,7 +5771,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FCharacterLevelTableRow* FindById(int32 Key) const;
+    const FCharacterLevelRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5780,16 +5780,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FCharacterLevelTableRow> RecordsStorage;
+    TArray<FCharacterLevelRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of CharacterTranscendenceTable. */
-class RESCUEDATA_API FCharacterTranscendenceTableTable
+/** Every row of CharacterTranscendence. */
+class RESCUEDATA_API FCharacterTranscendenceTable
 {
 public:
-    const TArray<FCharacterTranscendenceTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FCharacterTranscendenceRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5797,7 +5797,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FCharacterTranscendenceTableRow* FindById(int32 Key) const;
+    const FCharacterTranscendenceRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5806,16 +5806,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FCharacterTranscendenceTableRow> RecordsStorage;
+    TArray<FCharacterTranscendenceRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ArtifactTable. */
-class RESCUEDATA_API FArtifactTableTable
+/** Every row of Artifact. */
+class RESCUEDATA_API FArtifactTable
 {
 public:
-    const TArray<FArtifactTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FArtifactRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5823,7 +5823,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FArtifactTableRow* FindById(int32 Key) const;
+    const FArtifactRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5832,16 +5832,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FArtifactTableRow> RecordsStorage;
+    TArray<FArtifactRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ArtifactLevelTable. */
-class RESCUEDATA_API FArtifactLevelTableTable
+/** Every row of ArtifactLevel. */
+class RESCUEDATA_API FArtifactLevelTable
 {
 public:
-    const TArray<FArtifactLevelTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FArtifactLevelRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5849,7 +5849,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FArtifactLevelTableRow* FindById(int32 Key) const;
+    const FArtifactLevelRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5858,16 +5858,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FArtifactLevelTableRow> RecordsStorage;
+    TArray<FArtifactLevelRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ArtifactTranscendenceTable. */
-class RESCUEDATA_API FArtifactTranscendenceTableTable
+/** Every row of ArtifactTranscendence. */
+class RESCUEDATA_API FArtifactTranscendenceTable
 {
 public:
-    const TArray<FArtifactTranscendenceTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FArtifactTranscendenceRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5875,7 +5875,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FArtifactTranscendenceTableRow* FindById(int32 Key) const;
+    const FArtifactTranscendenceRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5884,16 +5884,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FArtifactTranscendenceTableRow> RecordsStorage;
+    TArray<FArtifactTranscendenceRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of BuffSelectTable. */
-class RESCUEDATA_API FBuffSelectTableTable
+/** Every row of BuffSelect. */
+class RESCUEDATA_API FBuffSelectTable
 {
 public:
-    const TArray<FBuffSelectTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FBuffSelectRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5901,7 +5901,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FBuffSelectTableRow* FindById(int32 Key) const;
+    const FBuffSelectRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5910,16 +5910,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FBuffSelectTableRow> RecordsStorage;
+    TArray<FBuffSelectRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ShortCutTable. */
-class RESCUEDATA_API FShortCutTableTable
+/** Every row of ShortCut. */
+class RESCUEDATA_API FShortCutTable
 {
 public:
-    const TArray<FShortCutTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FShortCutRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this ID, or nullptr when the table has none.
@@ -5927,7 +5927,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FShortCutTableRow* FindByID(int32 Key) const;
+    const FShortCutRow* FindByID(int32 Key) const;
 
     /** Whether the table holds a row with this ID. */
     bool ContainsID(int32 Key) const;
@@ -5936,16 +5936,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FShortCutTableRow> RecordsStorage;
+    TArray<FShortCutRow> RecordsStorage;
     TMap<int32, int32> ByID;
 };
 
 
-/** Every row of StageTable. */
-class RESCUEDATA_API FStageTableTable
+/** Every row of Stage. */
+class RESCUEDATA_API FStageTable
 {
 public:
-    const TArray<FStageTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FStageRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -5953,7 +5953,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FStageTableRow* FindById(int32 Key) const;
+    const FStageRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -5962,16 +5962,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FStageTableRow> RecordsStorage;
+    TArray<FStageRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ConfigTable. */
-class RESCUEDATA_API FConfigTableTable
+/** Every row of Config. */
+class RESCUEDATA_API FConfigTable
 {
 public:
-    const TArray<FConfigTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FConfigRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Index, or nullptr when the table has none.
@@ -5979,7 +5979,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FConfigTableRow* FindByIndex(int32 Key) const;
+    const FConfigRow* FindByIndex(int32 Key) const;
 
     /** Whether the table holds a row with this Index. */
     bool ContainsIndex(int32 Key) const;
@@ -5990,7 +5990,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FConfigTableRow* FindById(const FString& Key) const;
+    const FConfigRow* FindById(const FString& Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(const FString& Key) const;
@@ -5999,17 +5999,17 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FConfigTableRow> RecordsStorage;
+    TArray<FConfigRow> RecordsStorage;
     TMap<int32, int32> ByIndex;
     TMap<FString, int32> ById;
 };
 
 
-/** Every row of DropGroupTable. */
-class RESCUEDATA_API FDropGroupTableTable
+/** Every row of DropGroup. */
+class RESCUEDATA_API FDropGroupTable
 {
 public:
-    const TArray<FDropGroupTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FDropGroupRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6017,7 +6017,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FDropGroupTableRow* FindById(int32 Key) const;
+    const FDropGroupRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6026,16 +6026,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FDropGroupTableRow> RecordsStorage;
+    TArray<FDropGroupRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of AttributeTable. */
-class RESCUEDATA_API FAttributeTableTable
+/** Every row of Attribute. */
+class RESCUEDATA_API FAttributeTable
 {
 public:
-    const TArray<FAttributeTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FAttributeRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6043,7 +6043,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FAttributeTableRow* FindById(int32 Key) const;
+    const FAttributeRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6052,16 +6052,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FAttributeTableRow> RecordsStorage;
+    TArray<FAttributeRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDContensInfoTable. */
-class RESCUEDATA_API FSDContensInfoTableTable
+/** Every row of SDContensInfo. */
+class RESCUEDATA_API FSDContensInfoTable
 {
 public:
-    const TArray<FSDContensInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDContensInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6069,7 +6069,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDContensInfoTableRow* FindById(int32 Key) const;
+    const FSDContensInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6078,16 +6078,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDContensInfoTableRow> RecordsStorage;
+    TArray<FSDContensInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDAgencyInfoTable. */
-class RESCUEDATA_API FSDAgencyInfoTableTable
+/** Every row of SDAgencyInfo. */
+class RESCUEDATA_API FSDAgencyInfoTable
 {
 public:
-    const TArray<FSDAgencyInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDAgencyInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6095,7 +6095,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDAgencyInfoTableRow* FindById(int32 Key) const;
+    const FSDAgencyInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6104,16 +6104,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDAgencyInfoTableRow> RecordsStorage;
+    TArray<FSDAgencyInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDAgencyTable. */
-class RESCUEDATA_API FSDAgencyTableTable
+/** Every row of SDAgency. */
+class RESCUEDATA_API FSDAgencyTable
 {
 public:
-    const TArray<FSDAgencyTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDAgencyRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6121,7 +6121,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDAgencyTableRow* FindById(int32 Key) const;
+    const FSDAgencyRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6130,16 +6130,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDAgencyTableRow> RecordsStorage;
+    TArray<FSDAgencyRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDPubInfoTable. */
-class RESCUEDATA_API FSDPubInfoTableTable
+/** Every row of SDPubInfo. */
+class RESCUEDATA_API FSDPubInfoTable
 {
 public:
-    const TArray<FSDPubInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDPubInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6147,7 +6147,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDPubInfoTableRow* FindById(int32 Key) const;
+    const FSDPubInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6156,16 +6156,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDPubInfoTableRow> RecordsStorage;
+    TArray<FSDPubInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDTrainingInfoTable. */
-class RESCUEDATA_API FSDTrainingInfoTableTable
+/** Every row of SDTrainingInfo. */
+class RESCUEDATA_API FSDTrainingInfoTable
 {
 public:
-    const TArray<FSDTrainingInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDTrainingInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6173,7 +6173,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDTrainingInfoTableRow* FindById(int32 Key) const;
+    const FSDTrainingInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6182,16 +6182,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDTrainingInfoTableRow> RecordsStorage;
+    TArray<FSDTrainingInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDTrainingLevelTable. */
-class RESCUEDATA_API FSDTrainingLevelTableTable
+/** Every row of SDTrainingLevel. */
+class RESCUEDATA_API FSDTrainingLevelTable
 {
 public:
-    const TArray<FSDTrainingLevelTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDTrainingLevelRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6199,7 +6199,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDTrainingLevelTableRow* FindById(int32 Key) const;
+    const FSDTrainingLevelRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6208,16 +6208,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDTrainingLevelTableRow> RecordsStorage;
+    TArray<FSDTrainingLevelRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDDungeonInfoTable. */
-class RESCUEDATA_API FSDDungeonInfoTableTable
+/** Every row of SDDungeonInfo. */
+class RESCUEDATA_API FSDDungeonInfoTable
 {
 public:
-    const TArray<FSDDungeonInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDDungeonInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6225,7 +6225,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDDungeonInfoTableRow* FindById(int32 Key) const;
+    const FSDDungeonInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6234,16 +6234,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDDungeonInfoTableRow> RecordsStorage;
+    TArray<FSDDungeonInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDDungeonCardTable. */
-class RESCUEDATA_API FSDDungeonCardTableTable
+/** Every row of SDDungeonCard. */
+class RESCUEDATA_API FSDDungeonCardTable
 {
 public:
-    const TArray<FSDDungeonCardTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDDungeonCardRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6251,7 +6251,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDDungeonCardTableRow* FindById(int32 Key) const;
+    const FSDDungeonCardRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6260,16 +6260,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDDungeonCardTableRow> RecordsStorage;
+    TArray<FSDDungeonCardRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDDungeonRewardTable. */
-class RESCUEDATA_API FSDDungeonRewardTableTable
+/** Every row of SDDungeonReward. */
+class RESCUEDATA_API FSDDungeonRewardTable
 {
 public:
-    const TArray<FSDDungeonRewardTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDDungeonRewardRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6277,7 +6277,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDDungeonRewardTableRow* FindById(int32 Key) const;
+    const FSDDungeonRewardRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6286,16 +6286,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDDungeonRewardTableRow> RecordsStorage;
+    TArray<FSDDungeonRewardRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDAlchemyInfoTable. */
-class RESCUEDATA_API FSDAlchemyInfoTableTable
+/** Every row of SDAlchemyInfo. */
+class RESCUEDATA_API FSDAlchemyInfoTable
 {
 public:
-    const TArray<FSDAlchemyInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDAlchemyInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6303,7 +6303,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDAlchemyInfoTableRow* FindById(int32 Key) const;
+    const FSDAlchemyInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6312,16 +6312,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDAlchemyInfoTableRow> RecordsStorage;
+    TArray<FSDAlchemyInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDAlchemyStepTable. */
-class RESCUEDATA_API FSDAlchemyStepTableTable
+/** Every row of SDAlchemyStep. */
+class RESCUEDATA_API FSDAlchemyStepTable
 {
 public:
-    const TArray<FSDAlchemyStepTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDAlchemyStepRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6329,7 +6329,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDAlchemyStepTableRow* FindById(int32 Key) const;
+    const FSDAlchemyStepRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6338,16 +6338,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDAlchemyStepTableRow> RecordsStorage;
+    TArray<FSDAlchemyStepRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SDAlchemyLevelTable. */
-class RESCUEDATA_API FSDAlchemyLevelTableTable
+/** Every row of SDAlchemyLevel. */
+class RESCUEDATA_API FSDAlchemyLevelTable
 {
 public:
-    const TArray<FSDAlchemyLevelTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSDAlchemyLevelRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6355,7 +6355,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSDAlchemyLevelTableRow* FindById(int32 Key) const;
+    const FSDAlchemyLevelRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6364,16 +6364,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSDAlchemyLevelTableRow> RecordsStorage;
+    TArray<FSDAlchemyLevelRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of ShopInfoTable. */
-class RESCUEDATA_API FShopInfoTableTable
+/** Every row of ShopInfo. */
+class RESCUEDATA_API FShopInfoTable
 {
 public:
-    const TArray<FShopInfoTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FShopInfoRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6381,7 +6381,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FShopInfoTableRow* FindById(int32 Key) const;
+    const FShopInfoRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6390,16 +6390,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FShopInfoTableRow> RecordsStorage;
+    TArray<FShopInfoRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of MainShopTable. */
-class RESCUEDATA_API FMainShopTableTable
+/** Every row of MainShop. */
+class RESCUEDATA_API FMainShopTable
 {
 public:
-    const TArray<FMainShopTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FMainShopRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6407,7 +6407,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FMainShopTableRow* FindById(int32 Key) const;
+    const FMainShopRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6416,16 +6416,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FMainShopTableRow> RecordsStorage;
+    TArray<FMainShopRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of PackageShopTable. */
-class RESCUEDATA_API FPackageShopTableTable
+/** Every row of PackageShop. */
+class RESCUEDATA_API FPackageShopTable
 {
 public:
-    const TArray<FPackageShopTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FPackageShopRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6433,7 +6433,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FPackageShopTableRow* FindById(int32 Key) const;
+    const FPackageShopRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6442,16 +6442,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FPackageShopTableRow> RecordsStorage;
+    TArray<FPackageShopRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SeasonShopTable. */
-class RESCUEDATA_API FSeasonShopTableTable
+/** Every row of SeasonShop. */
+class RESCUEDATA_API FSeasonShopTable
 {
 public:
-    const TArray<FSeasonShopTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSeasonShopRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6459,7 +6459,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSeasonShopTableRow* FindById(int32 Key) const;
+    const FSeasonShopRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6468,16 +6468,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSeasonShopTableRow> RecordsStorage;
+    TArray<FSeasonShopRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of CashShopTable. */
-class RESCUEDATA_API FCashShopTableTable
+/** Every row of CashShop. */
+class RESCUEDATA_API FCashShopTable
 {
 public:
-    const TArray<FCashShopTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FCashShopRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6485,7 +6485,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FCashShopTableRow* FindById(int32 Key) const;
+    const FCashShopRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6494,16 +6494,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FCashShopTableRow> RecordsStorage;
+    TArray<FCashShopRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of BGMSoundTable. */
-class RESCUEDATA_API FBGMSoundTableTable
+/** Every row of BGMSound. */
+class RESCUEDATA_API FBGMSoundTable
 {
 public:
-    const TArray<FBGMSoundTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FBGMSoundRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6511,7 +6511,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FBGMSoundTableRow* FindById(int32 Key) const;
+    const FBGMSoundRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6520,16 +6520,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FBGMSoundTableRow> RecordsStorage;
+    TArray<FBGMSoundRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of SFXSoundTable. */
-class RESCUEDATA_API FSFXSoundTableTable
+/** Every row of SFXSound. */
+class RESCUEDATA_API FSFXSoundTable
 {
 public:
-    const TArray<FSFXSoundTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FSFXSoundRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6537,7 +6537,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FSFXSoundTableRow* FindById(int32 Key) const;
+    const FSFXSoundRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6546,16 +6546,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FSFXSoundTableRow> RecordsStorage;
+    TArray<FSFXSoundRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of InfoGrowthTable. */
-class RESCUEDATA_API FInfoGrowthTableTable
+/** Every row of InfoGrowth. */
+class RESCUEDATA_API FInfoGrowthTable
 {
 public:
-    const TArray<FInfoGrowthTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FInfoGrowthRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6563,7 +6563,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FInfoGrowthTableRow* FindById(int32 Key) const;
+    const FInfoGrowthRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6572,16 +6572,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FInfoGrowthTableRow> RecordsStorage;
+    TArray<FInfoGrowthRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of StatGrowthTable. */
-class RESCUEDATA_API FStatGrowthTableTable
+/** Every row of StatGrowth. */
+class RESCUEDATA_API FStatGrowthTable
 {
 public:
-    const TArray<FStatGrowthTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FStatGrowthRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6589,7 +6589,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FStatGrowthTableRow* FindById(int32 Key) const;
+    const FStatGrowthRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6598,16 +6598,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FStatGrowthTableRow> RecordsStorage;
+    TArray<FStatGrowthRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of TraitTable. */
-class RESCUEDATA_API FTraitTableTable
+/** Every row of Trait. */
+class RESCUEDATA_API FTraitTable
 {
 public:
-    const TArray<FTraitTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FTraitRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6615,7 +6615,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FTraitTableRow* FindById(int32 Key) const;
+    const FTraitRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6624,16 +6624,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FTraitTableRow> RecordsStorage;
+    TArray<FTraitRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of RelicTable. */
-class RESCUEDATA_API FRelicTableTable
+/** Every row of Relic. */
+class RESCUEDATA_API FRelicTable
 {
 public:
-    const TArray<FRelicTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FRelicRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6641,7 +6641,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FRelicTableRow* FindById(int32 Key) const;
+    const FRelicRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6650,16 +6650,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FRelicTableRow> RecordsStorage;
+    TArray<FRelicRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of StarNodeTable. */
-class RESCUEDATA_API FStarNodeTableTable
+/** Every row of StarNode. */
+class RESCUEDATA_API FStarNodeTable
 {
 public:
-    const TArray<FStarNodeTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FStarNodeRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6667,7 +6667,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FStarNodeTableRow* FindById(int32 Key) const;
+    const FStarNodeRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6676,16 +6676,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FStarNodeTableRow> RecordsStorage;
+    TArray<FStarNodeRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of CostCurveTable. */
-class RESCUEDATA_API FCostCurveTableTable
+/** Every row of CostCurve. */
+class RESCUEDATA_API FCostCurveTable
 {
 public:
-    const TArray<FCostCurveTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FCostCurveRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6693,7 +6693,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FCostCurveTableRow* FindById(int32 Key) const;
+    const FCostCurveRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6702,16 +6702,16 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FCostCurveTableRow> RecordsStorage;
+    TArray<FCostCurveRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
 
-/** Every row of CostCurveRangeTable. */
-class RESCUEDATA_API FCostCurveRangeTableTable
+/** Every row of CostCurveRange. */
+class RESCUEDATA_API FCostCurveRangeTable
 {
 public:
-    const TArray<FCostCurveRangeTableRow>& Records() const { return RecordsStorage; }
+    const TArray<FCostCurveRangeRow>& Records() const { return RecordsStorage; }
 
     /**
      * The row with this Id, or nullptr when the table has none.
@@ -6719,7 +6719,7 @@ public:
      * The lookup to reach for when a missing row is an ordinary answer - an optional
      * reference, a key that came from user input.
      */
-    const FCostCurveRangeTableRow* FindById(int32 Key) const;
+    const FCostCurveRangeRow* FindById(int32 Key) const;
 
     /** Whether the table holds a row with this Id. */
     bool ContainsId(int32 Key) const;
@@ -6728,7 +6728,7 @@ public:
     bool Read(const FString& Filename);
 
 private:
-    TArray<FCostCurveRangeTableRow> RecordsStorage;
+    TArray<FCostCurveRangeRow> RecordsStorage;
     TMap<int32, int32> ById;
 };
 
@@ -6742,73 +6742,73 @@ private:
 class RESCUEDATA_API FRescueData
 {
 public:
-    static const FCollectionGroupTableTable& CollectionGroupTable() { return CollectionGroupTableStorage; }
-    static const FCollectionTableTable& CollectionTable() { return CollectionTableStorage; }
-    static const FConditionTableTable& ConditionTable() { return ConditionTableStorage; }
-    static const FDailyDungeonInfoTableTable& DailyDungeonInfoTable() { return DailyDungeonInfoTableStorage; }
-    static const FGoldDungeonStageTableTable& GoldDungeonStageTable() { return GoldDungeonStageTableStorage; }
-    static const FGoldDungeonRewardTableTable& GoldDungeonRewardTable() { return GoldDungeonRewardTableStorage; }
-    static const FExpDungeonStageTableTable& ExpDungeonStageTable() { return ExpDungeonStageTableStorage; }
-    static const FExpDungeonRewardTableTable& ExpDungeonRewardTable() { return ExpDungeonRewardTableStorage; }
-    static const FTraitDungeonStageTableTable& TraitDungeonStageTable() { return TraitDungeonStageTableStorage; }
-    static const FTraitDungeonRewardTableTable& TraitDungeonRewardTable() { return TraitDungeonRewardTableStorage; }
-    static const FRelicDungeonStageTableTable& RelicDungeonStageTable() { return RelicDungeonStageTableStorage; }
-    static const FRelicDungeonRewardTableTable& RelicDungeonRewardTable() { return RelicDungeonRewardTableStorage; }
-    static const FOopartsDungeonStageTableTable& OopartsDungeonStageTable() { return OopartsDungeonStageTableStorage; }
-    static const FOopartsDungeonRewardTableTable& OopartsDungeonRewardTable() { return OopartsDungeonRewardTableStorage; }
-    static const FGachaInfoTableTable& GachaInfoTable() { return GachaInfoTableStorage; }
-    static const FGachaCharacterListTableTable& GachaCharacterListTable() { return GachaCharacterListTableStorage; }
-    static const FGachaArtifactInfoTableTable& GachaArtifactInfoTable() { return GachaArtifactInfoTableStorage; }
-    static const FGachaArtifactListTableTable& GachaArtifactListTable() { return GachaArtifactListTableStorage; }
-    static const FGachaRateTableTable& GachaRateTable() { return GachaRateTableStorage; }
-    static const FCurrencyTableTable& CurrencyTable() { return CurrencyTableStorage; }
-    static const FMaterialTableTable& MaterialTable() { return MaterialTableStorage; }
-    static const FPackageTableTable& PackageTable() { return PackageTableStorage; }
-    static const FClassUpCurrencyListTableTable& ClassUpCurrencyListTable() { return ClassUpCurrencyListTableStorage; }
-    static const FEquipItemLevelTableTable& EquipItemLevelTable() { return EquipItemLevelTableStorage; }
-    static const FEquipItemClassTableTable& EquipItemClassTable() { return EquipItemClassTableStorage; }
-    static const FEquipTableTable& EquipTable() { return EquipTableStorage; }
-    static const FEquipItemGradeTableTable& EquipItemGradeTable() { return EquipItemGradeTableStorage; }
-    static const FCharacterTableTable& CharacterTable() { return CharacterTableStorage; }
-    static const FSkillTableTable& SkillTable() { return SkillTableStorage; }
-    static const FBuffTableTable& BuffTable() { return BuffTableStorage; }
-    static const FCharacterLevelTableTable& CharacterLevelTable() { return CharacterLevelTableStorage; }
-    static const FCharacterTranscendenceTableTable& CharacterTranscendenceTable() { return CharacterTranscendenceTableStorage; }
-    static const FArtifactTableTable& ArtifactTable() { return ArtifactTableStorage; }
-    static const FArtifactLevelTableTable& ArtifactLevelTable() { return ArtifactLevelTableStorage; }
-    static const FArtifactTranscendenceTableTable& ArtifactTranscendenceTable() { return ArtifactTranscendenceTableStorage; }
-    static const FBuffSelectTableTable& BuffSelectTable() { return BuffSelectTableStorage; }
-    static const FShortCutTableTable& ShortCutTable() { return ShortCutTableStorage; }
-    static const FStageTableTable& StageTable() { return StageTableStorage; }
-    static const FConfigTableTable& ConfigTable() { return ConfigTableStorage; }
-    static const FDropGroupTableTable& DropGroupTable() { return DropGroupTableStorage; }
-    static const FAttributeTableTable& AttributeTable() { return AttributeTableStorage; }
-    static const FSDContensInfoTableTable& SDContensInfoTable() { return SDContensInfoTableStorage; }
-    static const FSDAgencyInfoTableTable& SDAgencyInfoTable() { return SDAgencyInfoTableStorage; }
-    static const FSDAgencyTableTable& SDAgencyTable() { return SDAgencyTableStorage; }
-    static const FSDPubInfoTableTable& SDPubInfoTable() { return SDPubInfoTableStorage; }
-    static const FSDTrainingInfoTableTable& SDTrainingInfoTable() { return SDTrainingInfoTableStorage; }
-    static const FSDTrainingLevelTableTable& SDTrainingLevelTable() { return SDTrainingLevelTableStorage; }
-    static const FSDDungeonInfoTableTable& SDDungeonInfoTable() { return SDDungeonInfoTableStorage; }
-    static const FSDDungeonCardTableTable& SDDungeonCardTable() { return SDDungeonCardTableStorage; }
-    static const FSDDungeonRewardTableTable& SDDungeonRewardTable() { return SDDungeonRewardTableStorage; }
-    static const FSDAlchemyInfoTableTable& SDAlchemyInfoTable() { return SDAlchemyInfoTableStorage; }
-    static const FSDAlchemyStepTableTable& SDAlchemyStepTable() { return SDAlchemyStepTableStorage; }
-    static const FSDAlchemyLevelTableTable& SDAlchemyLevelTable() { return SDAlchemyLevelTableStorage; }
-    static const FShopInfoTableTable& ShopInfoTable() { return ShopInfoTableStorage; }
-    static const FMainShopTableTable& MainShopTable() { return MainShopTableStorage; }
-    static const FPackageShopTableTable& PackageShopTable() { return PackageShopTableStorage; }
-    static const FSeasonShopTableTable& SeasonShopTable() { return SeasonShopTableStorage; }
-    static const FCashShopTableTable& CashShopTable() { return CashShopTableStorage; }
-    static const FBGMSoundTableTable& BGMSoundTable() { return BGMSoundTableStorage; }
-    static const FSFXSoundTableTable& SFXSoundTable() { return SFXSoundTableStorage; }
-    static const FInfoGrowthTableTable& InfoGrowthTable() { return InfoGrowthTableStorage; }
-    static const FStatGrowthTableTable& StatGrowthTable() { return StatGrowthTableStorage; }
-    static const FTraitTableTable& TraitTable() { return TraitTableStorage; }
-    static const FRelicTableTable& RelicTable() { return RelicTableStorage; }
-    static const FStarNodeTableTable& StarNodeTable() { return StarNodeTableStorage; }
-    static const FCostCurveTableTable& CostCurveTable() { return CostCurveTableStorage; }
-    static const FCostCurveRangeTableTable& CostCurveRangeTable() { return CostCurveRangeTableStorage; }
+    static const FCollectionGroupTable& CollectionGroup() { return CollectionGroupStorage; }
+    static const FCollectionTable& Collection() { return CollectionStorage; }
+    static const FConditionTable& Condition() { return ConditionStorage; }
+    static const FDailyDungeonInfoTable& DailyDungeonInfo() { return DailyDungeonInfoStorage; }
+    static const FGoldDungeonStageTable& GoldDungeonStage() { return GoldDungeonStageStorage; }
+    static const FGoldDungeonRewardTable& GoldDungeonReward() { return GoldDungeonRewardStorage; }
+    static const FExpDungeonStageTable& ExpDungeonStage() { return ExpDungeonStageStorage; }
+    static const FExpDungeonRewardTable& ExpDungeonReward() { return ExpDungeonRewardStorage; }
+    static const FTraitDungeonStageTable& TraitDungeonStage() { return TraitDungeonStageStorage; }
+    static const FTraitDungeonRewardTable& TraitDungeonReward() { return TraitDungeonRewardStorage; }
+    static const FRelicDungeonStageTable& RelicDungeonStage() { return RelicDungeonStageStorage; }
+    static const FRelicDungeonRewardTable& RelicDungeonReward() { return RelicDungeonRewardStorage; }
+    static const FOopartsDungeonStageTable& OopartsDungeonStage() { return OopartsDungeonStageStorage; }
+    static const FOopartsDungeonRewardTable& OopartsDungeonReward() { return OopartsDungeonRewardStorage; }
+    static const FGachaInfoTable& GachaInfo() { return GachaInfoStorage; }
+    static const FGachaCharacterListTable& GachaCharacterList() { return GachaCharacterListStorage; }
+    static const FGachaArtifactInfoTable& GachaArtifactInfo() { return GachaArtifactInfoStorage; }
+    static const FGachaArtifactListTable& GachaArtifactList() { return GachaArtifactListStorage; }
+    static const FGachaRateTable& GachaRate() { return GachaRateStorage; }
+    static const FCurrencyTable& Currency() { return CurrencyStorage; }
+    static const FMaterialTable& Material() { return MaterialStorage; }
+    static const FPackageTable& Package() { return PackageStorage; }
+    static const FClassUpCurrencyListTable& ClassUpCurrencyList() { return ClassUpCurrencyListStorage; }
+    static const FEquipItemLevelTable& EquipItemLevel() { return EquipItemLevelStorage; }
+    static const FEquipItemClassTable& EquipItemClass() { return EquipItemClassStorage; }
+    static const FEquipTable& Equip() { return EquipStorage; }
+    static const FEquipItemGradeTable& EquipItemGrade() { return EquipItemGradeStorage; }
+    static const FCharacterTable& Character() { return CharacterStorage; }
+    static const FSkillTable& Skill() { return SkillStorage; }
+    static const FBuffTable& Buff() { return BuffStorage; }
+    static const FCharacterLevelTable& CharacterLevel() { return CharacterLevelStorage; }
+    static const FCharacterTranscendenceTable& CharacterTranscendence() { return CharacterTranscendenceStorage; }
+    static const FArtifactTable& Artifact() { return ArtifactStorage; }
+    static const FArtifactLevelTable& ArtifactLevel() { return ArtifactLevelStorage; }
+    static const FArtifactTranscendenceTable& ArtifactTranscendence() { return ArtifactTranscendenceStorage; }
+    static const FBuffSelectTable& BuffSelect() { return BuffSelectStorage; }
+    static const FShortCutTable& ShortCut() { return ShortCutStorage; }
+    static const FStageTable& Stage() { return StageStorage; }
+    static const FConfigTable& Config() { return ConfigStorage; }
+    static const FDropGroupTable& DropGroup() { return DropGroupStorage; }
+    static const FAttributeTable& Attribute() { return AttributeStorage; }
+    static const FSDContensInfoTable& SDContensInfo() { return SDContensInfoStorage; }
+    static const FSDAgencyInfoTable& SDAgencyInfo() { return SDAgencyInfoStorage; }
+    static const FSDAgencyTable& SDAgency() { return SDAgencyStorage; }
+    static const FSDPubInfoTable& SDPubInfo() { return SDPubInfoStorage; }
+    static const FSDTrainingInfoTable& SDTrainingInfo() { return SDTrainingInfoStorage; }
+    static const FSDTrainingLevelTable& SDTrainingLevel() { return SDTrainingLevelStorage; }
+    static const FSDDungeonInfoTable& SDDungeonInfo() { return SDDungeonInfoStorage; }
+    static const FSDDungeonCardTable& SDDungeonCard() { return SDDungeonCardStorage; }
+    static const FSDDungeonRewardTable& SDDungeonReward() { return SDDungeonRewardStorage; }
+    static const FSDAlchemyInfoTable& SDAlchemyInfo() { return SDAlchemyInfoStorage; }
+    static const FSDAlchemyStepTable& SDAlchemyStep() { return SDAlchemyStepStorage; }
+    static const FSDAlchemyLevelTable& SDAlchemyLevel() { return SDAlchemyLevelStorage; }
+    static const FShopInfoTable& ShopInfo() { return ShopInfoStorage; }
+    static const FMainShopTable& MainShop() { return MainShopStorage; }
+    static const FPackageShopTable& PackageShop() { return PackageShopStorage; }
+    static const FSeasonShopTable& SeasonShop() { return SeasonShopStorage; }
+    static const FCashShopTable& CashShop() { return CashShopStorage; }
+    static const FBGMSoundTable& BGMSound() { return BGMSoundStorage; }
+    static const FSFXSoundTable& SFXSound() { return SFXSoundStorage; }
+    static const FInfoGrowthTable& InfoGrowth() { return InfoGrowthStorage; }
+    static const FStatGrowthTable& StatGrowth() { return StatGrowthStorage; }
+    static const FTraitTable& Trait() { return TraitStorage; }
+    static const FRelicTable& Relic() { return RelicStorage; }
+    static const FStarNodeTable& StarNode() { return StarNodeStorage; }
+    static const FCostCurveTable& CostCurve() { return CostCurveStorage; }
+    static const FCostCurveRangeTable& CostCurveRange() { return CostCurveRangeStorage; }
 
     /**
      * Reads every table from BasePath. Returns false if any of them could not be read.
@@ -6821,73 +6821,73 @@ public:
                         const FString& FileExtension = TEXT(".scb"));
 
 private:
-    static FCollectionGroupTableTable CollectionGroupTableStorage;
-    static FCollectionTableTable CollectionTableStorage;
-    static FConditionTableTable ConditionTableStorage;
-    static FDailyDungeonInfoTableTable DailyDungeonInfoTableStorage;
-    static FGoldDungeonStageTableTable GoldDungeonStageTableStorage;
-    static FGoldDungeonRewardTableTable GoldDungeonRewardTableStorage;
-    static FExpDungeonStageTableTable ExpDungeonStageTableStorage;
-    static FExpDungeonRewardTableTable ExpDungeonRewardTableStorage;
-    static FTraitDungeonStageTableTable TraitDungeonStageTableStorage;
-    static FTraitDungeonRewardTableTable TraitDungeonRewardTableStorage;
-    static FRelicDungeonStageTableTable RelicDungeonStageTableStorage;
-    static FRelicDungeonRewardTableTable RelicDungeonRewardTableStorage;
-    static FOopartsDungeonStageTableTable OopartsDungeonStageTableStorage;
-    static FOopartsDungeonRewardTableTable OopartsDungeonRewardTableStorage;
-    static FGachaInfoTableTable GachaInfoTableStorage;
-    static FGachaCharacterListTableTable GachaCharacterListTableStorage;
-    static FGachaArtifactInfoTableTable GachaArtifactInfoTableStorage;
-    static FGachaArtifactListTableTable GachaArtifactListTableStorage;
-    static FGachaRateTableTable GachaRateTableStorage;
-    static FCurrencyTableTable CurrencyTableStorage;
-    static FMaterialTableTable MaterialTableStorage;
-    static FPackageTableTable PackageTableStorage;
-    static FClassUpCurrencyListTableTable ClassUpCurrencyListTableStorage;
-    static FEquipItemLevelTableTable EquipItemLevelTableStorage;
-    static FEquipItemClassTableTable EquipItemClassTableStorage;
-    static FEquipTableTable EquipTableStorage;
-    static FEquipItemGradeTableTable EquipItemGradeTableStorage;
-    static FCharacterTableTable CharacterTableStorage;
-    static FSkillTableTable SkillTableStorage;
-    static FBuffTableTable BuffTableStorage;
-    static FCharacterLevelTableTable CharacterLevelTableStorage;
-    static FCharacterTranscendenceTableTable CharacterTranscendenceTableStorage;
-    static FArtifactTableTable ArtifactTableStorage;
-    static FArtifactLevelTableTable ArtifactLevelTableStorage;
-    static FArtifactTranscendenceTableTable ArtifactTranscendenceTableStorage;
-    static FBuffSelectTableTable BuffSelectTableStorage;
-    static FShortCutTableTable ShortCutTableStorage;
-    static FStageTableTable StageTableStorage;
-    static FConfigTableTable ConfigTableStorage;
-    static FDropGroupTableTable DropGroupTableStorage;
-    static FAttributeTableTable AttributeTableStorage;
-    static FSDContensInfoTableTable SDContensInfoTableStorage;
-    static FSDAgencyInfoTableTable SDAgencyInfoTableStorage;
-    static FSDAgencyTableTable SDAgencyTableStorage;
-    static FSDPubInfoTableTable SDPubInfoTableStorage;
-    static FSDTrainingInfoTableTable SDTrainingInfoTableStorage;
-    static FSDTrainingLevelTableTable SDTrainingLevelTableStorage;
-    static FSDDungeonInfoTableTable SDDungeonInfoTableStorage;
-    static FSDDungeonCardTableTable SDDungeonCardTableStorage;
-    static FSDDungeonRewardTableTable SDDungeonRewardTableStorage;
-    static FSDAlchemyInfoTableTable SDAlchemyInfoTableStorage;
-    static FSDAlchemyStepTableTable SDAlchemyStepTableStorage;
-    static FSDAlchemyLevelTableTable SDAlchemyLevelTableStorage;
-    static FShopInfoTableTable ShopInfoTableStorage;
-    static FMainShopTableTable MainShopTableStorage;
-    static FPackageShopTableTable PackageShopTableStorage;
-    static FSeasonShopTableTable SeasonShopTableStorage;
-    static FCashShopTableTable CashShopTableStorage;
-    static FBGMSoundTableTable BGMSoundTableStorage;
-    static FSFXSoundTableTable SFXSoundTableStorage;
-    static FInfoGrowthTableTable InfoGrowthTableStorage;
-    static FStatGrowthTableTable StatGrowthTableStorage;
-    static FTraitTableTable TraitTableStorage;
-    static FRelicTableTable RelicTableStorage;
-    static FStarNodeTableTable StarNodeTableStorage;
-    static FCostCurveTableTable CostCurveTableStorage;
-    static FCostCurveRangeTableTable CostCurveRangeTableStorage;
+    static FCollectionGroupTable CollectionGroupStorage;
+    static FCollectionTable CollectionStorage;
+    static FConditionTable ConditionStorage;
+    static FDailyDungeonInfoTable DailyDungeonInfoStorage;
+    static FGoldDungeonStageTable GoldDungeonStageStorage;
+    static FGoldDungeonRewardTable GoldDungeonRewardStorage;
+    static FExpDungeonStageTable ExpDungeonStageStorage;
+    static FExpDungeonRewardTable ExpDungeonRewardStorage;
+    static FTraitDungeonStageTable TraitDungeonStageStorage;
+    static FTraitDungeonRewardTable TraitDungeonRewardStorage;
+    static FRelicDungeonStageTable RelicDungeonStageStorage;
+    static FRelicDungeonRewardTable RelicDungeonRewardStorage;
+    static FOopartsDungeonStageTable OopartsDungeonStageStorage;
+    static FOopartsDungeonRewardTable OopartsDungeonRewardStorage;
+    static FGachaInfoTable GachaInfoStorage;
+    static FGachaCharacterListTable GachaCharacterListStorage;
+    static FGachaArtifactInfoTable GachaArtifactInfoStorage;
+    static FGachaArtifactListTable GachaArtifactListStorage;
+    static FGachaRateTable GachaRateStorage;
+    static FCurrencyTable CurrencyStorage;
+    static FMaterialTable MaterialStorage;
+    static FPackageTable PackageStorage;
+    static FClassUpCurrencyListTable ClassUpCurrencyListStorage;
+    static FEquipItemLevelTable EquipItemLevelStorage;
+    static FEquipItemClassTable EquipItemClassStorage;
+    static FEquipTable EquipStorage;
+    static FEquipItemGradeTable EquipItemGradeStorage;
+    static FCharacterTable CharacterStorage;
+    static FSkillTable SkillStorage;
+    static FBuffTable BuffStorage;
+    static FCharacterLevelTable CharacterLevelStorage;
+    static FCharacterTranscendenceTable CharacterTranscendenceStorage;
+    static FArtifactTable ArtifactStorage;
+    static FArtifactLevelTable ArtifactLevelStorage;
+    static FArtifactTranscendenceTable ArtifactTranscendenceStorage;
+    static FBuffSelectTable BuffSelectStorage;
+    static FShortCutTable ShortCutStorage;
+    static FStageTable StageStorage;
+    static FConfigTable ConfigStorage;
+    static FDropGroupTable DropGroupStorage;
+    static FAttributeTable AttributeStorage;
+    static FSDContensInfoTable SDContensInfoStorage;
+    static FSDAgencyInfoTable SDAgencyInfoStorage;
+    static FSDAgencyTable SDAgencyStorage;
+    static FSDPubInfoTable SDPubInfoStorage;
+    static FSDTrainingInfoTable SDTrainingInfoStorage;
+    static FSDTrainingLevelTable SDTrainingLevelStorage;
+    static FSDDungeonInfoTable SDDungeonInfoStorage;
+    static FSDDungeonCardTable SDDungeonCardStorage;
+    static FSDDungeonRewardTable SDDungeonRewardStorage;
+    static FSDAlchemyInfoTable SDAlchemyInfoStorage;
+    static FSDAlchemyStepTable SDAlchemyStepStorage;
+    static FSDAlchemyLevelTable SDAlchemyLevelStorage;
+    static FShopInfoTable ShopInfoStorage;
+    static FMainShopTable MainShopStorage;
+    static FPackageShopTable PackageShopStorage;
+    static FSeasonShopTable SeasonShopStorage;
+    static FCashShopTable CashShopStorage;
+    static FBGMSoundTable BGMSoundStorage;
+    static FSFXSoundTable SFXSoundStorage;
+    static FInfoGrowthTable InfoGrowthStorage;
+    static FStatGrowthTable StatGrowthStorage;
+    static FTraitTable TraitStorage;
+    static FRelicTable RelicStorage;
+    static FStarNodeTable StarNodeStorage;
+    static FCostCurveTable CostCurveStorage;
+    static FCostCurveRangeTable CostCurveRangeStorage;
 };
 
 /**
@@ -6911,1880 +6911,1880 @@ class RESCUEDATA_API URescueDataLibrary : public UBlueprintFunctionLibrary
 public:
 
     /**
-     * The CollectionGroupTable row with the given Id.
+     * The CollectionGroup row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CollectionGroupTable",
-              meta = (DisplayName = "Get CollectionGroupTable Row"))
-    static FCollectionGroupTableRow GetCollectionGroupTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CollectionGroup",
+              meta = (DisplayName = "Get CollectionGroup Row"))
+    static FCollectionGroupRow GetCollectionGroupRow(int32 Key, bool& bFound);
 
-    /** How many CollectionGroupTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CollectionGroupTable",
-              meta = (DisplayName = "Get CollectionGroupTable Row Count"))
-    static int32 GetCollectionGroupTableRowCount();
+    /** How many CollectionGroup rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CollectionGroup",
+              meta = (DisplayName = "Get CollectionGroup Row Count"))
+    static int32 GetCollectionGroupRowCount();
 
     /**
-     * The CollectionGroupTable row at a position, for walking the table in order.
+     * The CollectionGroup row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CollectionGroupTable",
-              meta = (DisplayName = "Get CollectionGroupTable Row At"))
-    static FCollectionGroupTableRow GetCollectionGroupTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CollectionGroup",
+              meta = (DisplayName = "Get CollectionGroup Row At"))
+    static FCollectionGroupRow GetCollectionGroupRowAt(int32 Position, bool& bFound);
 
     /**
-     * The CollectionTable row with the given Id.
+     * The Collection row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CollectionTable",
-              meta = (DisplayName = "Get CollectionTable Row"))
-    static FCollectionTableRow GetCollectionTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Collection",
+              meta = (DisplayName = "Get Collection Row"))
+    static FCollectionRow GetCollectionRow(int32 Key, bool& bFound);
 
-    /** How many CollectionTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CollectionTable",
-              meta = (DisplayName = "Get CollectionTable Row Count"))
-    static int32 GetCollectionTableRowCount();
+    /** How many Collection rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Collection",
+              meta = (DisplayName = "Get Collection Row Count"))
+    static int32 GetCollectionRowCount();
 
     /**
-     * The CollectionTable row at a position, for walking the table in order.
+     * The Collection row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CollectionTable",
-              meta = (DisplayName = "Get CollectionTable Row At"))
-    static FCollectionTableRow GetCollectionTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Collection",
+              meta = (DisplayName = "Get Collection Row At"))
+    static FCollectionRow GetCollectionRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ConditionTable row with the given Id.
+     * The Condition row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ConditionTable",
-              meta = (DisplayName = "Get ConditionTable Row"))
-    static FConditionTableRow GetConditionTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Condition",
+              meta = (DisplayName = "Get Condition Row"))
+    static FConditionRow GetConditionRow(int32 Key, bool& bFound);
 
-    /** How many ConditionTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ConditionTable",
-              meta = (DisplayName = "Get ConditionTable Row Count"))
-    static int32 GetConditionTableRowCount();
+    /** How many Condition rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Condition",
+              meta = (DisplayName = "Get Condition Row Count"))
+    static int32 GetConditionRowCount();
 
     /**
-     * The ConditionTable row at a position, for walking the table in order.
+     * The Condition row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ConditionTable",
-              meta = (DisplayName = "Get ConditionTable Row At"))
-    static FConditionTableRow GetConditionTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Condition",
+              meta = (DisplayName = "Get Condition Row At"))
+    static FConditionRow GetConditionRowAt(int32 Position, bool& bFound);
 
     /**
-     * The DailyDungeonInfoTable row with the given Id.
+     * The DailyDungeonInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|DailyDungeonInfoTable",
-              meta = (DisplayName = "Get DailyDungeonInfoTable Row"))
-    static FDailyDungeonInfoTableRow GetDailyDungeonInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|DailyDungeonInfo",
+              meta = (DisplayName = "Get DailyDungeonInfo Row"))
+    static FDailyDungeonInfoRow GetDailyDungeonInfoRow(int32 Key, bool& bFound);
 
-    /** How many DailyDungeonInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|DailyDungeonInfoTable",
-              meta = (DisplayName = "Get DailyDungeonInfoTable Row Count"))
-    static int32 GetDailyDungeonInfoTableRowCount();
+    /** How many DailyDungeonInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|DailyDungeonInfo",
+              meta = (DisplayName = "Get DailyDungeonInfo Row Count"))
+    static int32 GetDailyDungeonInfoRowCount();
 
     /**
-     * The DailyDungeonInfoTable row at a position, for walking the table in order.
+     * The DailyDungeonInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|DailyDungeonInfoTable",
-              meta = (DisplayName = "Get DailyDungeonInfoTable Row At"))
-    static FDailyDungeonInfoTableRow GetDailyDungeonInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|DailyDungeonInfo",
+              meta = (DisplayName = "Get DailyDungeonInfo Row At"))
+    static FDailyDungeonInfoRow GetDailyDungeonInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The GoldDungeonStageTable row with the given Id.
+     * The GoldDungeonStage row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonStageTable",
-              meta = (DisplayName = "Get GoldDungeonStageTable Row"))
-    static FGoldDungeonStageTableRow GetGoldDungeonStageTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonStage",
+              meta = (DisplayName = "Get GoldDungeonStage Row"))
+    static FGoldDungeonStageRow GetGoldDungeonStageRow(int32 Key, bool& bFound);
 
-    /** How many GoldDungeonStageTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonStageTable",
-              meta = (DisplayName = "Get GoldDungeonStageTable Row Count"))
-    static int32 GetGoldDungeonStageTableRowCount();
+    /** How many GoldDungeonStage rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonStage",
+              meta = (DisplayName = "Get GoldDungeonStage Row Count"))
+    static int32 GetGoldDungeonStageRowCount();
 
     /**
-     * The GoldDungeonStageTable row at a position, for walking the table in order.
+     * The GoldDungeonStage row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonStageTable",
-              meta = (DisplayName = "Get GoldDungeonStageTable Row At"))
-    static FGoldDungeonStageTableRow GetGoldDungeonStageTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonStage",
+              meta = (DisplayName = "Get GoldDungeonStage Row At"))
+    static FGoldDungeonStageRow GetGoldDungeonStageRowAt(int32 Position, bool& bFound);
 
     /**
-     * The GoldDungeonRewardTable row with the given Id.
+     * The GoldDungeonReward row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonRewardTable",
-              meta = (DisplayName = "Get GoldDungeonRewardTable Row"))
-    static FGoldDungeonRewardTableRow GetGoldDungeonRewardTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonReward",
+              meta = (DisplayName = "Get GoldDungeonReward Row"))
+    static FGoldDungeonRewardRow GetGoldDungeonRewardRow(int32 Key, bool& bFound);
 
-    /** How many GoldDungeonRewardTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonRewardTable",
-              meta = (DisplayName = "Get GoldDungeonRewardTable Row Count"))
-    static int32 GetGoldDungeonRewardTableRowCount();
+    /** How many GoldDungeonReward rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonReward",
+              meta = (DisplayName = "Get GoldDungeonReward Row Count"))
+    static int32 GetGoldDungeonRewardRowCount();
 
     /**
-     * The GoldDungeonRewardTable row at a position, for walking the table in order.
+     * The GoldDungeonReward row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonRewardTable",
-              meta = (DisplayName = "Get GoldDungeonRewardTable Row At"))
-    static FGoldDungeonRewardTableRow GetGoldDungeonRewardTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GoldDungeonReward",
+              meta = (DisplayName = "Get GoldDungeonReward Row At"))
+    static FGoldDungeonRewardRow GetGoldDungeonRewardRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ExpDungeonStageTable row with the given Id.
+     * The ExpDungeonStage row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonStageTable",
-              meta = (DisplayName = "Get ExpDungeonStageTable Row"))
-    static FExpDungeonStageTableRow GetExpDungeonStageTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonStage",
+              meta = (DisplayName = "Get ExpDungeonStage Row"))
+    static FExpDungeonStageRow GetExpDungeonStageRow(int32 Key, bool& bFound);
 
-    /** How many ExpDungeonStageTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonStageTable",
-              meta = (DisplayName = "Get ExpDungeonStageTable Row Count"))
-    static int32 GetExpDungeonStageTableRowCount();
+    /** How many ExpDungeonStage rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonStage",
+              meta = (DisplayName = "Get ExpDungeonStage Row Count"))
+    static int32 GetExpDungeonStageRowCount();
 
     /**
-     * The ExpDungeonStageTable row at a position, for walking the table in order.
+     * The ExpDungeonStage row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonStageTable",
-              meta = (DisplayName = "Get ExpDungeonStageTable Row At"))
-    static FExpDungeonStageTableRow GetExpDungeonStageTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonStage",
+              meta = (DisplayName = "Get ExpDungeonStage Row At"))
+    static FExpDungeonStageRow GetExpDungeonStageRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ExpDungeonRewardTable row with the given Id.
+     * The ExpDungeonReward row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonRewardTable",
-              meta = (DisplayName = "Get ExpDungeonRewardTable Row"))
-    static FExpDungeonRewardTableRow GetExpDungeonRewardTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonReward",
+              meta = (DisplayName = "Get ExpDungeonReward Row"))
+    static FExpDungeonRewardRow GetExpDungeonRewardRow(int32 Key, bool& bFound);
 
-    /** How many ExpDungeonRewardTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonRewardTable",
-              meta = (DisplayName = "Get ExpDungeonRewardTable Row Count"))
-    static int32 GetExpDungeonRewardTableRowCount();
+    /** How many ExpDungeonReward rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonReward",
+              meta = (DisplayName = "Get ExpDungeonReward Row Count"))
+    static int32 GetExpDungeonRewardRowCount();
 
     /**
-     * The ExpDungeonRewardTable row at a position, for walking the table in order.
+     * The ExpDungeonReward row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonRewardTable",
-              meta = (DisplayName = "Get ExpDungeonRewardTable Row At"))
-    static FExpDungeonRewardTableRow GetExpDungeonRewardTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ExpDungeonReward",
+              meta = (DisplayName = "Get ExpDungeonReward Row At"))
+    static FExpDungeonRewardRow GetExpDungeonRewardRowAt(int32 Position, bool& bFound);
 
     /**
-     * The TraitDungeonStageTable row with the given Id.
+     * The TraitDungeonStage row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonStageTable",
-              meta = (DisplayName = "Get TraitDungeonStageTable Row"))
-    static FTraitDungeonStageTableRow GetTraitDungeonStageTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonStage",
+              meta = (DisplayName = "Get TraitDungeonStage Row"))
+    static FTraitDungeonStageRow GetTraitDungeonStageRow(int32 Key, bool& bFound);
 
-    /** How many TraitDungeonStageTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonStageTable",
-              meta = (DisplayName = "Get TraitDungeonStageTable Row Count"))
-    static int32 GetTraitDungeonStageTableRowCount();
+    /** How many TraitDungeonStage rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonStage",
+              meta = (DisplayName = "Get TraitDungeonStage Row Count"))
+    static int32 GetTraitDungeonStageRowCount();
 
     /**
-     * The TraitDungeonStageTable row at a position, for walking the table in order.
+     * The TraitDungeonStage row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonStageTable",
-              meta = (DisplayName = "Get TraitDungeonStageTable Row At"))
-    static FTraitDungeonStageTableRow GetTraitDungeonStageTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonStage",
+              meta = (DisplayName = "Get TraitDungeonStage Row At"))
+    static FTraitDungeonStageRow GetTraitDungeonStageRowAt(int32 Position, bool& bFound);
 
     /**
-     * The TraitDungeonRewardTable row with the given Id.
+     * The TraitDungeonReward row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonRewardTable",
-              meta = (DisplayName = "Get TraitDungeonRewardTable Row"))
-    static FTraitDungeonRewardTableRow GetTraitDungeonRewardTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonReward",
+              meta = (DisplayName = "Get TraitDungeonReward Row"))
+    static FTraitDungeonRewardRow GetTraitDungeonRewardRow(int32 Key, bool& bFound);
 
-    /** How many TraitDungeonRewardTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonRewardTable",
-              meta = (DisplayName = "Get TraitDungeonRewardTable Row Count"))
-    static int32 GetTraitDungeonRewardTableRowCount();
+    /** How many TraitDungeonReward rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonReward",
+              meta = (DisplayName = "Get TraitDungeonReward Row Count"))
+    static int32 GetTraitDungeonRewardRowCount();
 
     /**
-     * The TraitDungeonRewardTable row at a position, for walking the table in order.
+     * The TraitDungeonReward row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonRewardTable",
-              meta = (DisplayName = "Get TraitDungeonRewardTable Row At"))
-    static FTraitDungeonRewardTableRow GetTraitDungeonRewardTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitDungeonReward",
+              meta = (DisplayName = "Get TraitDungeonReward Row At"))
+    static FTraitDungeonRewardRow GetTraitDungeonRewardRowAt(int32 Position, bool& bFound);
 
     /**
-     * The RelicDungeonStageTable row with the given Id.
+     * The RelicDungeonStage row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonStageTable",
-              meta = (DisplayName = "Get RelicDungeonStageTable Row"))
-    static FRelicDungeonStageTableRow GetRelicDungeonStageTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonStage",
+              meta = (DisplayName = "Get RelicDungeonStage Row"))
+    static FRelicDungeonStageRow GetRelicDungeonStageRow(int32 Key, bool& bFound);
 
-    /** How many RelicDungeonStageTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonStageTable",
-              meta = (DisplayName = "Get RelicDungeonStageTable Row Count"))
-    static int32 GetRelicDungeonStageTableRowCount();
+    /** How many RelicDungeonStage rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonStage",
+              meta = (DisplayName = "Get RelicDungeonStage Row Count"))
+    static int32 GetRelicDungeonStageRowCount();
 
     /**
-     * The RelicDungeonStageTable row at a position, for walking the table in order.
+     * The RelicDungeonStage row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonStageTable",
-              meta = (DisplayName = "Get RelicDungeonStageTable Row At"))
-    static FRelicDungeonStageTableRow GetRelicDungeonStageTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonStage",
+              meta = (DisplayName = "Get RelicDungeonStage Row At"))
+    static FRelicDungeonStageRow GetRelicDungeonStageRowAt(int32 Position, bool& bFound);
 
     /**
-     * The RelicDungeonRewardTable row with the given Id.
+     * The RelicDungeonReward row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonRewardTable",
-              meta = (DisplayName = "Get RelicDungeonRewardTable Row"))
-    static FRelicDungeonRewardTableRow GetRelicDungeonRewardTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonReward",
+              meta = (DisplayName = "Get RelicDungeonReward Row"))
+    static FRelicDungeonRewardRow GetRelicDungeonRewardRow(int32 Key, bool& bFound);
 
-    /** How many RelicDungeonRewardTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonRewardTable",
-              meta = (DisplayName = "Get RelicDungeonRewardTable Row Count"))
-    static int32 GetRelicDungeonRewardTableRowCount();
+    /** How many RelicDungeonReward rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonReward",
+              meta = (DisplayName = "Get RelicDungeonReward Row Count"))
+    static int32 GetRelicDungeonRewardRowCount();
 
     /**
-     * The RelicDungeonRewardTable row at a position, for walking the table in order.
+     * The RelicDungeonReward row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonRewardTable",
-              meta = (DisplayName = "Get RelicDungeonRewardTable Row At"))
-    static FRelicDungeonRewardTableRow GetRelicDungeonRewardTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicDungeonReward",
+              meta = (DisplayName = "Get RelicDungeonReward Row At"))
+    static FRelicDungeonRewardRow GetRelicDungeonRewardRowAt(int32 Position, bool& bFound);
 
     /**
-     * The OopartsDungeonStageTable row with the given Id.
+     * The OopartsDungeonStage row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonStageTable",
-              meta = (DisplayName = "Get OopartsDungeonStageTable Row"))
-    static FOopartsDungeonStageTableRow GetOopartsDungeonStageTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonStage",
+              meta = (DisplayName = "Get OopartsDungeonStage Row"))
+    static FOopartsDungeonStageRow GetOopartsDungeonStageRow(int32 Key, bool& bFound);
 
-    /** How many OopartsDungeonStageTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonStageTable",
-              meta = (DisplayName = "Get OopartsDungeonStageTable Row Count"))
-    static int32 GetOopartsDungeonStageTableRowCount();
+    /** How many OopartsDungeonStage rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonStage",
+              meta = (DisplayName = "Get OopartsDungeonStage Row Count"))
+    static int32 GetOopartsDungeonStageRowCount();
 
     /**
-     * The OopartsDungeonStageTable row at a position, for walking the table in order.
+     * The OopartsDungeonStage row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonStageTable",
-              meta = (DisplayName = "Get OopartsDungeonStageTable Row At"))
-    static FOopartsDungeonStageTableRow GetOopartsDungeonStageTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonStage",
+              meta = (DisplayName = "Get OopartsDungeonStage Row At"))
+    static FOopartsDungeonStageRow GetOopartsDungeonStageRowAt(int32 Position, bool& bFound);
 
     /**
-     * The OopartsDungeonRewardTable row with the given Id.
+     * The OopartsDungeonReward row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonRewardTable",
-              meta = (DisplayName = "Get OopartsDungeonRewardTable Row"))
-    static FOopartsDungeonRewardTableRow GetOopartsDungeonRewardTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonReward",
+              meta = (DisplayName = "Get OopartsDungeonReward Row"))
+    static FOopartsDungeonRewardRow GetOopartsDungeonRewardRow(int32 Key, bool& bFound);
 
-    /** How many OopartsDungeonRewardTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonRewardTable",
-              meta = (DisplayName = "Get OopartsDungeonRewardTable Row Count"))
-    static int32 GetOopartsDungeonRewardTableRowCount();
+    /** How many OopartsDungeonReward rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonReward",
+              meta = (DisplayName = "Get OopartsDungeonReward Row Count"))
+    static int32 GetOopartsDungeonRewardRowCount();
 
     /**
-     * The OopartsDungeonRewardTable row at a position, for walking the table in order.
+     * The OopartsDungeonReward row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonRewardTable",
-              meta = (DisplayName = "Get OopartsDungeonRewardTable Row At"))
-    static FOopartsDungeonRewardTableRow GetOopartsDungeonRewardTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|OopartsDungeonReward",
+              meta = (DisplayName = "Get OopartsDungeonReward Row At"))
+    static FOopartsDungeonRewardRow GetOopartsDungeonRewardRowAt(int32 Position, bool& bFound);
 
     /**
-     * The GachaInfoTable row with the given Id.
+     * The GachaInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaInfoTable",
-              meta = (DisplayName = "Get GachaInfoTable Row"))
-    static FGachaInfoTableRow GetGachaInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaInfo",
+              meta = (DisplayName = "Get GachaInfo Row"))
+    static FGachaInfoRow GetGachaInfoRow(int32 Key, bool& bFound);
 
-    /** How many GachaInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaInfoTable",
-              meta = (DisplayName = "Get GachaInfoTable Row Count"))
-    static int32 GetGachaInfoTableRowCount();
+    /** How many GachaInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaInfo",
+              meta = (DisplayName = "Get GachaInfo Row Count"))
+    static int32 GetGachaInfoRowCount();
 
     /**
-     * The GachaInfoTable row at a position, for walking the table in order.
+     * The GachaInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaInfoTable",
-              meta = (DisplayName = "Get GachaInfoTable Row At"))
-    static FGachaInfoTableRow GetGachaInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaInfo",
+              meta = (DisplayName = "Get GachaInfo Row At"))
+    static FGachaInfoRow GetGachaInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The GachaCharacterListTable row with the given Id.
+     * The GachaCharacterList row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaCharacterListTable",
-              meta = (DisplayName = "Get GachaCharacterListTable Row"))
-    static FGachaCharacterListTableRow GetGachaCharacterListTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaCharacterList",
+              meta = (DisplayName = "Get GachaCharacterList Row"))
+    static FGachaCharacterListRow GetGachaCharacterListRow(int32 Key, bool& bFound);
 
-    /** How many GachaCharacterListTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaCharacterListTable",
-              meta = (DisplayName = "Get GachaCharacterListTable Row Count"))
-    static int32 GetGachaCharacterListTableRowCount();
+    /** How many GachaCharacterList rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaCharacterList",
+              meta = (DisplayName = "Get GachaCharacterList Row Count"))
+    static int32 GetGachaCharacterListRowCount();
 
     /**
-     * The GachaCharacterListTable row at a position, for walking the table in order.
+     * The GachaCharacterList row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaCharacterListTable",
-              meta = (DisplayName = "Get GachaCharacterListTable Row At"))
-    static FGachaCharacterListTableRow GetGachaCharacterListTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaCharacterList",
+              meta = (DisplayName = "Get GachaCharacterList Row At"))
+    static FGachaCharacterListRow GetGachaCharacterListRowAt(int32 Position, bool& bFound);
 
     /**
-     * The GachaArtifactInfoTable row with the given Id.
+     * The GachaArtifactInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactInfoTable",
-              meta = (DisplayName = "Get GachaArtifactInfoTable Row"))
-    static FGachaArtifactInfoTableRow GetGachaArtifactInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactInfo",
+              meta = (DisplayName = "Get GachaArtifactInfo Row"))
+    static FGachaArtifactInfoRow GetGachaArtifactInfoRow(int32 Key, bool& bFound);
 
-    /** How many GachaArtifactInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactInfoTable",
-              meta = (DisplayName = "Get GachaArtifactInfoTable Row Count"))
-    static int32 GetGachaArtifactInfoTableRowCount();
+    /** How many GachaArtifactInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactInfo",
+              meta = (DisplayName = "Get GachaArtifactInfo Row Count"))
+    static int32 GetGachaArtifactInfoRowCount();
 
     /**
-     * The GachaArtifactInfoTable row at a position, for walking the table in order.
+     * The GachaArtifactInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactInfoTable",
-              meta = (DisplayName = "Get GachaArtifactInfoTable Row At"))
-    static FGachaArtifactInfoTableRow GetGachaArtifactInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactInfo",
+              meta = (DisplayName = "Get GachaArtifactInfo Row At"))
+    static FGachaArtifactInfoRow GetGachaArtifactInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The GachaArtifactListTable row with the given Id.
+     * The GachaArtifactList row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactListTable",
-              meta = (DisplayName = "Get GachaArtifactListTable Row"))
-    static FGachaArtifactListTableRow GetGachaArtifactListTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactList",
+              meta = (DisplayName = "Get GachaArtifactList Row"))
+    static FGachaArtifactListRow GetGachaArtifactListRow(int32 Key, bool& bFound);
 
-    /** How many GachaArtifactListTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactListTable",
-              meta = (DisplayName = "Get GachaArtifactListTable Row Count"))
-    static int32 GetGachaArtifactListTableRowCount();
+    /** How many GachaArtifactList rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactList",
+              meta = (DisplayName = "Get GachaArtifactList Row Count"))
+    static int32 GetGachaArtifactListRowCount();
 
     /**
-     * The GachaArtifactListTable row at a position, for walking the table in order.
+     * The GachaArtifactList row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactListTable",
-              meta = (DisplayName = "Get GachaArtifactListTable Row At"))
-    static FGachaArtifactListTableRow GetGachaArtifactListTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaArtifactList",
+              meta = (DisplayName = "Get GachaArtifactList Row At"))
+    static FGachaArtifactListRow GetGachaArtifactListRowAt(int32 Position, bool& bFound);
 
     /**
-     * The GachaRateTable row with the given Id.
+     * The GachaRate row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaRateTable",
-              meta = (DisplayName = "Get GachaRateTable Row"))
-    static FGachaRateTableRow GetGachaRateTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaRate",
+              meta = (DisplayName = "Get GachaRate Row"))
+    static FGachaRateRow GetGachaRateRow(int32 Key, bool& bFound);
 
-    /** How many GachaRateTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaRateTable",
-              meta = (DisplayName = "Get GachaRateTable Row Count"))
-    static int32 GetGachaRateTableRowCount();
+    /** How many GachaRate rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaRate",
+              meta = (DisplayName = "Get GachaRate Row Count"))
+    static int32 GetGachaRateRowCount();
 
     /**
-     * The GachaRateTable row at a position, for walking the table in order.
+     * The GachaRate row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaRateTable",
-              meta = (DisplayName = "Get GachaRateTable Row At"))
-    static FGachaRateTableRow GetGachaRateTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|GachaRate",
+              meta = (DisplayName = "Get GachaRate Row At"))
+    static FGachaRateRow GetGachaRateRowAt(int32 Position, bool& bFound);
 
     /**
-     * The CurrencyTable row with the given Id.
+     * The Currency row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CurrencyTable",
-              meta = (DisplayName = "Get CurrencyTable Row"))
-    static FCurrencyTableRow GetCurrencyTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Currency",
+              meta = (DisplayName = "Get Currency Row"))
+    static FCurrencyRow GetCurrencyRow(int32 Key, bool& bFound);
 
-    /** How many CurrencyTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CurrencyTable",
-              meta = (DisplayName = "Get CurrencyTable Row Count"))
-    static int32 GetCurrencyTableRowCount();
+    /** How many Currency rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Currency",
+              meta = (DisplayName = "Get Currency Row Count"))
+    static int32 GetCurrencyRowCount();
 
     /**
-     * The CurrencyTable row at a position, for walking the table in order.
+     * The Currency row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CurrencyTable",
-              meta = (DisplayName = "Get CurrencyTable Row At"))
-    static FCurrencyTableRow GetCurrencyTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Currency",
+              meta = (DisplayName = "Get Currency Row At"))
+    static FCurrencyRow GetCurrencyRowAt(int32 Position, bool& bFound);
 
     /**
-     * The MaterialTable row with the given Id.
+     * The Material row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|MaterialTable",
-              meta = (DisplayName = "Get MaterialTable Row"))
-    static FMaterialTableRow GetMaterialTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Material",
+              meta = (DisplayName = "Get Material Row"))
+    static FMaterialRow GetMaterialRow(int32 Key, bool& bFound);
 
-    /** How many MaterialTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|MaterialTable",
-              meta = (DisplayName = "Get MaterialTable Row Count"))
-    static int32 GetMaterialTableRowCount();
+    /** How many Material rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Material",
+              meta = (DisplayName = "Get Material Row Count"))
+    static int32 GetMaterialRowCount();
 
     /**
-     * The MaterialTable row at a position, for walking the table in order.
+     * The Material row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|MaterialTable",
-              meta = (DisplayName = "Get MaterialTable Row At"))
-    static FMaterialTableRow GetMaterialTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Material",
+              meta = (DisplayName = "Get Material Row At"))
+    static FMaterialRow GetMaterialRowAt(int32 Position, bool& bFound);
 
     /**
-     * The PackageTable row with the given Id.
+     * The Package row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|PackageTable",
-              meta = (DisplayName = "Get PackageTable Row"))
-    static FPackageTableRow GetPackageTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Package",
+              meta = (DisplayName = "Get Package Row"))
+    static FPackageRow GetPackageRow(int32 Key, bool& bFound);
 
-    /** How many PackageTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|PackageTable",
-              meta = (DisplayName = "Get PackageTable Row Count"))
-    static int32 GetPackageTableRowCount();
+    /** How many Package rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Package",
+              meta = (DisplayName = "Get Package Row Count"))
+    static int32 GetPackageRowCount();
 
     /**
-     * The PackageTable row at a position, for walking the table in order.
+     * The Package row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|PackageTable",
-              meta = (DisplayName = "Get PackageTable Row At"))
-    static FPackageTableRow GetPackageTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Package",
+              meta = (DisplayName = "Get Package Row At"))
+    static FPackageRow GetPackageRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ClassUpCurrencyListTable row with the given Id.
+     * The ClassUpCurrencyList row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ClassUpCurrencyListTable",
-              meta = (DisplayName = "Get ClassUpCurrencyListTable Row"))
-    static FClassUpCurrencyListTableRow GetClassUpCurrencyListTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ClassUpCurrencyList",
+              meta = (DisplayName = "Get ClassUpCurrencyList Row"))
+    static FClassUpCurrencyListRow GetClassUpCurrencyListRow(int32 Key, bool& bFound);
 
-    /** How many ClassUpCurrencyListTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ClassUpCurrencyListTable",
-              meta = (DisplayName = "Get ClassUpCurrencyListTable Row Count"))
-    static int32 GetClassUpCurrencyListTableRowCount();
+    /** How many ClassUpCurrencyList rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ClassUpCurrencyList",
+              meta = (DisplayName = "Get ClassUpCurrencyList Row Count"))
+    static int32 GetClassUpCurrencyListRowCount();
 
     /**
-     * The ClassUpCurrencyListTable row at a position, for walking the table in order.
+     * The ClassUpCurrencyList row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ClassUpCurrencyListTable",
-              meta = (DisplayName = "Get ClassUpCurrencyListTable Row At"))
-    static FClassUpCurrencyListTableRow GetClassUpCurrencyListTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ClassUpCurrencyList",
+              meta = (DisplayName = "Get ClassUpCurrencyList Row At"))
+    static FClassUpCurrencyListRow GetClassUpCurrencyListRowAt(int32 Position, bool& bFound);
 
     /**
-     * The EquipItemLevelTable row with the given Id.
+     * The EquipItemLevel row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemLevelTable",
-              meta = (DisplayName = "Get EquipItemLevelTable Row"))
-    static FEquipItemLevelTableRow GetEquipItemLevelTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemLevel",
+              meta = (DisplayName = "Get EquipItemLevel Row"))
+    static FEquipItemLevelRow GetEquipItemLevelRow(int32 Key, bool& bFound);
 
-    /** How many EquipItemLevelTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemLevelTable",
-              meta = (DisplayName = "Get EquipItemLevelTable Row Count"))
-    static int32 GetEquipItemLevelTableRowCount();
+    /** How many EquipItemLevel rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemLevel",
+              meta = (DisplayName = "Get EquipItemLevel Row Count"))
+    static int32 GetEquipItemLevelRowCount();
 
     /**
-     * The EquipItemLevelTable row at a position, for walking the table in order.
+     * The EquipItemLevel row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemLevelTable",
-              meta = (DisplayName = "Get EquipItemLevelTable Row At"))
-    static FEquipItemLevelTableRow GetEquipItemLevelTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemLevel",
+              meta = (DisplayName = "Get EquipItemLevel Row At"))
+    static FEquipItemLevelRow GetEquipItemLevelRowAt(int32 Position, bool& bFound);
 
     /**
-     * The EquipItemClassTable row with the given Id.
+     * The EquipItemClass row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemClassTable",
-              meta = (DisplayName = "Get EquipItemClassTable Row"))
-    static FEquipItemClassTableRow GetEquipItemClassTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemClass",
+              meta = (DisplayName = "Get EquipItemClass Row"))
+    static FEquipItemClassRow GetEquipItemClassRow(int32 Key, bool& bFound);
 
-    /** How many EquipItemClassTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemClassTable",
-              meta = (DisplayName = "Get EquipItemClassTable Row Count"))
-    static int32 GetEquipItemClassTableRowCount();
+    /** How many EquipItemClass rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemClass",
+              meta = (DisplayName = "Get EquipItemClass Row Count"))
+    static int32 GetEquipItemClassRowCount();
 
     /**
-     * The EquipItemClassTable row at a position, for walking the table in order.
+     * The EquipItemClass row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemClassTable",
-              meta = (DisplayName = "Get EquipItemClassTable Row At"))
-    static FEquipItemClassTableRow GetEquipItemClassTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemClass",
+              meta = (DisplayName = "Get EquipItemClass Row At"))
+    static FEquipItemClassRow GetEquipItemClassRowAt(int32 Position, bool& bFound);
 
     /**
-     * The EquipTable row with the given Id.
+     * The Equip row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipTable",
-              meta = (DisplayName = "Get EquipTable Row"))
-    static FEquipTableRow GetEquipTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Equip",
+              meta = (DisplayName = "Get Equip Row"))
+    static FEquipRow GetEquipRow(int32 Key, bool& bFound);
 
-    /** How many EquipTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipTable",
-              meta = (DisplayName = "Get EquipTable Row Count"))
-    static int32 GetEquipTableRowCount();
+    /** How many Equip rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Equip",
+              meta = (DisplayName = "Get Equip Row Count"))
+    static int32 GetEquipRowCount();
 
     /**
-     * The EquipTable row at a position, for walking the table in order.
+     * The Equip row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipTable",
-              meta = (DisplayName = "Get EquipTable Row At"))
-    static FEquipTableRow GetEquipTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Equip",
+              meta = (DisplayName = "Get Equip Row At"))
+    static FEquipRow GetEquipRowAt(int32 Position, bool& bFound);
 
     /**
-     * The EquipItemGradeTable row with the given Id.
+     * The EquipItemGrade row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemGradeTable",
-              meta = (DisplayName = "Get EquipItemGradeTable Row"))
-    static FEquipItemGradeTableRow GetEquipItemGradeTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemGrade",
+              meta = (DisplayName = "Get EquipItemGrade Row"))
+    static FEquipItemGradeRow GetEquipItemGradeRow(int32 Key, bool& bFound);
 
-    /** How many EquipItemGradeTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemGradeTable",
-              meta = (DisplayName = "Get EquipItemGradeTable Row Count"))
-    static int32 GetEquipItemGradeTableRowCount();
+    /** How many EquipItemGrade rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemGrade",
+              meta = (DisplayName = "Get EquipItemGrade Row Count"))
+    static int32 GetEquipItemGradeRowCount();
 
     /**
-     * The EquipItemGradeTable row at a position, for walking the table in order.
+     * The EquipItemGrade row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemGradeTable",
-              meta = (DisplayName = "Get EquipItemGradeTable Row At"))
-    static FEquipItemGradeTableRow GetEquipItemGradeTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|EquipItemGrade",
+              meta = (DisplayName = "Get EquipItemGrade Row At"))
+    static FEquipItemGradeRow GetEquipItemGradeRowAt(int32 Position, bool& bFound);
 
     /**
-     * The CharacterTable row with the given Id.
+     * The Character row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterTable",
-              meta = (DisplayName = "Get CharacterTable Row"))
-    static FCharacterTableRow GetCharacterTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Character",
+              meta = (DisplayName = "Get Character Row"))
+    static FCharacterRow GetCharacterRow(int32 Key, bool& bFound);
 
-    /** How many CharacterTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterTable",
-              meta = (DisplayName = "Get CharacterTable Row Count"))
-    static int32 GetCharacterTableRowCount();
+    /** How many Character rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Character",
+              meta = (DisplayName = "Get Character Row Count"))
+    static int32 GetCharacterRowCount();
 
     /**
-     * The CharacterTable row at a position, for walking the table in order.
+     * The Character row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterTable",
-              meta = (DisplayName = "Get CharacterTable Row At"))
-    static FCharacterTableRow GetCharacterTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Character",
+              meta = (DisplayName = "Get Character Row At"))
+    static FCharacterRow GetCharacterRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SkillTable row with the given Id.
+     * The Skill row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SkillTable",
-              meta = (DisplayName = "Get SkillTable Row"))
-    static FSkillTableRow GetSkillTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Skill",
+              meta = (DisplayName = "Get Skill Row"))
+    static FSkillRow GetSkillRow(int32 Key, bool& bFound);
 
-    /** How many SkillTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SkillTable",
-              meta = (DisplayName = "Get SkillTable Row Count"))
-    static int32 GetSkillTableRowCount();
+    /** How many Skill rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Skill",
+              meta = (DisplayName = "Get Skill Row Count"))
+    static int32 GetSkillRowCount();
 
     /**
-     * The SkillTable row at a position, for walking the table in order.
+     * The Skill row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SkillTable",
-              meta = (DisplayName = "Get SkillTable Row At"))
-    static FSkillTableRow GetSkillTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Skill",
+              meta = (DisplayName = "Get Skill Row At"))
+    static FSkillRow GetSkillRowAt(int32 Position, bool& bFound);
 
     /**
-     * The BuffTable row with the given Id.
+     * The Buff row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|BuffTable",
-              meta = (DisplayName = "Get BuffTable Row"))
-    static FBuffTableRow GetBuffTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Buff",
+              meta = (DisplayName = "Get Buff Row"))
+    static FBuffRow GetBuffRow(int32 Key, bool& bFound);
 
-    /** How many BuffTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|BuffTable",
-              meta = (DisplayName = "Get BuffTable Row Count"))
-    static int32 GetBuffTableRowCount();
+    /** How many Buff rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Buff",
+              meta = (DisplayName = "Get Buff Row Count"))
+    static int32 GetBuffRowCount();
 
     /**
-     * The BuffTable row at a position, for walking the table in order.
+     * The Buff row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|BuffTable",
-              meta = (DisplayName = "Get BuffTable Row At"))
-    static FBuffTableRow GetBuffTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Buff",
+              meta = (DisplayName = "Get Buff Row At"))
+    static FBuffRow GetBuffRowAt(int32 Position, bool& bFound);
 
     /**
-     * The CharacterLevelTable row with the given Id.
+     * The CharacterLevel row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterLevelTable",
-              meta = (DisplayName = "Get CharacterLevelTable Row"))
-    static FCharacterLevelTableRow GetCharacterLevelTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterLevel",
+              meta = (DisplayName = "Get CharacterLevel Row"))
+    static FCharacterLevelRow GetCharacterLevelRow(int32 Key, bool& bFound);
 
-    /** How many CharacterLevelTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterLevelTable",
-              meta = (DisplayName = "Get CharacterLevelTable Row Count"))
-    static int32 GetCharacterLevelTableRowCount();
+    /** How many CharacterLevel rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterLevel",
+              meta = (DisplayName = "Get CharacterLevel Row Count"))
+    static int32 GetCharacterLevelRowCount();
 
     /**
-     * The CharacterLevelTable row at a position, for walking the table in order.
+     * The CharacterLevel row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterLevelTable",
-              meta = (DisplayName = "Get CharacterLevelTable Row At"))
-    static FCharacterLevelTableRow GetCharacterLevelTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterLevel",
+              meta = (DisplayName = "Get CharacterLevel Row At"))
+    static FCharacterLevelRow GetCharacterLevelRowAt(int32 Position, bool& bFound);
 
     /**
-     * The CharacterTranscendenceTable row with the given Id.
+     * The CharacterTranscendence row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterTranscendenceTable",
-              meta = (DisplayName = "Get CharacterTranscendenceTable Row"))
-    static FCharacterTranscendenceTableRow GetCharacterTranscendenceTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterTranscendence",
+              meta = (DisplayName = "Get CharacterTranscendence Row"))
+    static FCharacterTranscendenceRow GetCharacterTranscendenceRow(int32 Key, bool& bFound);
 
-    /** How many CharacterTranscendenceTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterTranscendenceTable",
-              meta = (DisplayName = "Get CharacterTranscendenceTable Row Count"))
-    static int32 GetCharacterTranscendenceTableRowCount();
+    /** How many CharacterTranscendence rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterTranscendence",
+              meta = (DisplayName = "Get CharacterTranscendence Row Count"))
+    static int32 GetCharacterTranscendenceRowCount();
 
     /**
-     * The CharacterTranscendenceTable row at a position, for walking the table in order.
+     * The CharacterTranscendence row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterTranscendenceTable",
-              meta = (DisplayName = "Get CharacterTranscendenceTable Row At"))
-    static FCharacterTranscendenceTableRow GetCharacterTranscendenceTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CharacterTranscendence",
+              meta = (DisplayName = "Get CharacterTranscendence Row At"))
+    static FCharacterTranscendenceRow GetCharacterTranscendenceRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ArtifactTable row with the given Id.
+     * The Artifact row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactTable",
-              meta = (DisplayName = "Get ArtifactTable Row"))
-    static FArtifactTableRow GetArtifactTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Artifact",
+              meta = (DisplayName = "Get Artifact Row"))
+    static FArtifactRow GetArtifactRow(int32 Key, bool& bFound);
 
-    /** How many ArtifactTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactTable",
-              meta = (DisplayName = "Get ArtifactTable Row Count"))
-    static int32 GetArtifactTableRowCount();
+    /** How many Artifact rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Artifact",
+              meta = (DisplayName = "Get Artifact Row Count"))
+    static int32 GetArtifactRowCount();
 
     /**
-     * The ArtifactTable row at a position, for walking the table in order.
+     * The Artifact row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactTable",
-              meta = (DisplayName = "Get ArtifactTable Row At"))
-    static FArtifactTableRow GetArtifactTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Artifact",
+              meta = (DisplayName = "Get Artifact Row At"))
+    static FArtifactRow GetArtifactRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ArtifactLevelTable row with the given Id.
+     * The ArtifactLevel row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactLevelTable",
-              meta = (DisplayName = "Get ArtifactLevelTable Row"))
-    static FArtifactLevelTableRow GetArtifactLevelTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactLevel",
+              meta = (DisplayName = "Get ArtifactLevel Row"))
+    static FArtifactLevelRow GetArtifactLevelRow(int32 Key, bool& bFound);
 
-    /** How many ArtifactLevelTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactLevelTable",
-              meta = (DisplayName = "Get ArtifactLevelTable Row Count"))
-    static int32 GetArtifactLevelTableRowCount();
+    /** How many ArtifactLevel rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactLevel",
+              meta = (DisplayName = "Get ArtifactLevel Row Count"))
+    static int32 GetArtifactLevelRowCount();
 
     /**
-     * The ArtifactLevelTable row at a position, for walking the table in order.
+     * The ArtifactLevel row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactLevelTable",
-              meta = (DisplayName = "Get ArtifactLevelTable Row At"))
-    static FArtifactLevelTableRow GetArtifactLevelTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactLevel",
+              meta = (DisplayName = "Get ArtifactLevel Row At"))
+    static FArtifactLevelRow GetArtifactLevelRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ArtifactTranscendenceTable row with the given Id.
+     * The ArtifactTranscendence row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactTranscendenceTable",
-              meta = (DisplayName = "Get ArtifactTranscendenceTable Row"))
-    static FArtifactTranscendenceTableRow GetArtifactTranscendenceTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactTranscendence",
+              meta = (DisplayName = "Get ArtifactTranscendence Row"))
+    static FArtifactTranscendenceRow GetArtifactTranscendenceRow(int32 Key, bool& bFound);
 
-    /** How many ArtifactTranscendenceTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactTranscendenceTable",
-              meta = (DisplayName = "Get ArtifactTranscendenceTable Row Count"))
-    static int32 GetArtifactTranscendenceTableRowCount();
+    /** How many ArtifactTranscendence rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactTranscendence",
+              meta = (DisplayName = "Get ArtifactTranscendence Row Count"))
+    static int32 GetArtifactTranscendenceRowCount();
 
     /**
-     * The ArtifactTranscendenceTable row at a position, for walking the table in order.
+     * The ArtifactTranscendence row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactTranscendenceTable",
-              meta = (DisplayName = "Get ArtifactTranscendenceTable Row At"))
-    static FArtifactTranscendenceTableRow GetArtifactTranscendenceTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ArtifactTranscendence",
+              meta = (DisplayName = "Get ArtifactTranscendence Row At"))
+    static FArtifactTranscendenceRow GetArtifactTranscendenceRowAt(int32 Position, bool& bFound);
 
     /**
-     * The BuffSelectTable row with the given Id.
+     * The BuffSelect row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|BuffSelectTable",
-              meta = (DisplayName = "Get BuffSelectTable Row"))
-    static FBuffSelectTableRow GetBuffSelectTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|BuffSelect",
+              meta = (DisplayName = "Get BuffSelect Row"))
+    static FBuffSelectRow GetBuffSelectRow(int32 Key, bool& bFound);
 
-    /** How many BuffSelectTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|BuffSelectTable",
-              meta = (DisplayName = "Get BuffSelectTable Row Count"))
-    static int32 GetBuffSelectTableRowCount();
+    /** How many BuffSelect rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|BuffSelect",
+              meta = (DisplayName = "Get BuffSelect Row Count"))
+    static int32 GetBuffSelectRowCount();
 
     /**
-     * The BuffSelectTable row at a position, for walking the table in order.
+     * The BuffSelect row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|BuffSelectTable",
-              meta = (DisplayName = "Get BuffSelectTable Row At"))
-    static FBuffSelectTableRow GetBuffSelectTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|BuffSelect",
+              meta = (DisplayName = "Get BuffSelect Row At"))
+    static FBuffSelectRow GetBuffSelectRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ShortCutTable row with the given ID.
+     * The ShortCut row with the given ID.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ShortCutTable",
-              meta = (DisplayName = "Get ShortCutTable Row"))
-    static FShortCutTableRow GetShortCutTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ShortCut",
+              meta = (DisplayName = "Get ShortCut Row"))
+    static FShortCutRow GetShortCutRow(int32 Key, bool& bFound);
 
-    /** How many ShortCutTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ShortCutTable",
-              meta = (DisplayName = "Get ShortCutTable Row Count"))
-    static int32 GetShortCutTableRowCount();
+    /** How many ShortCut rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ShortCut",
+              meta = (DisplayName = "Get ShortCut Row Count"))
+    static int32 GetShortCutRowCount();
 
     /**
-     * The ShortCutTable row at a position, for walking the table in order.
+     * The ShortCut row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ShortCutTable",
-              meta = (DisplayName = "Get ShortCutTable Row At"))
-    static FShortCutTableRow GetShortCutTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ShortCut",
+              meta = (DisplayName = "Get ShortCut Row At"))
+    static FShortCutRow GetShortCutRowAt(int32 Position, bool& bFound);
 
     /**
-     * The StageTable row with the given Id.
+     * The Stage row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|StageTable",
-              meta = (DisplayName = "Get StageTable Row"))
-    static FStageTableRow GetStageTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Stage",
+              meta = (DisplayName = "Get Stage Row"))
+    static FStageRow GetStageRow(int32 Key, bool& bFound);
 
-    /** How many StageTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|StageTable",
-              meta = (DisplayName = "Get StageTable Row Count"))
-    static int32 GetStageTableRowCount();
+    /** How many Stage rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Stage",
+              meta = (DisplayName = "Get Stage Row Count"))
+    static int32 GetStageRowCount();
 
     /**
-     * The StageTable row at a position, for walking the table in order.
+     * The Stage row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|StageTable",
-              meta = (DisplayName = "Get StageTable Row At"))
-    static FStageTableRow GetStageTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Stage",
+              meta = (DisplayName = "Get Stage Row At"))
+    static FStageRow GetStageRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ConfigTable row with the given Index.
+     * The Config row with the given Index.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ConfigTable",
-              meta = (DisplayName = "Get ConfigTable Row"))
-    static FConfigTableRow GetConfigTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Config",
+              meta = (DisplayName = "Get Config Row"))
+    static FConfigRow GetConfigRow(int32 Key, bool& bFound);
 
-    /** How many ConfigTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ConfigTable",
-              meta = (DisplayName = "Get ConfigTable Row Count"))
-    static int32 GetConfigTableRowCount();
+    /** How many Config rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Config",
+              meta = (DisplayName = "Get Config Row Count"))
+    static int32 GetConfigRowCount();
 
     /**
-     * The ConfigTable row at a position, for walking the table in order.
+     * The Config row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ConfigTable",
-              meta = (DisplayName = "Get ConfigTable Row At"))
-    static FConfigTableRow GetConfigTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Config",
+              meta = (DisplayName = "Get Config Row At"))
+    static FConfigRow GetConfigRowAt(int32 Position, bool& bFound);
 
     /**
-     * The DropGroupTable row with the given Id.
+     * The DropGroup row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|DropGroupTable",
-              meta = (DisplayName = "Get DropGroupTable Row"))
-    static FDropGroupTableRow GetDropGroupTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|DropGroup",
+              meta = (DisplayName = "Get DropGroup Row"))
+    static FDropGroupRow GetDropGroupRow(int32 Key, bool& bFound);
 
-    /** How many DropGroupTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|DropGroupTable",
-              meta = (DisplayName = "Get DropGroupTable Row Count"))
-    static int32 GetDropGroupTableRowCount();
+    /** How many DropGroup rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|DropGroup",
+              meta = (DisplayName = "Get DropGroup Row Count"))
+    static int32 GetDropGroupRowCount();
 
     /**
-     * The DropGroupTable row at a position, for walking the table in order.
+     * The DropGroup row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|DropGroupTable",
-              meta = (DisplayName = "Get DropGroupTable Row At"))
-    static FDropGroupTableRow GetDropGroupTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|DropGroup",
+              meta = (DisplayName = "Get DropGroup Row At"))
+    static FDropGroupRow GetDropGroupRowAt(int32 Position, bool& bFound);
 
     /**
-     * The AttributeTable row with the given Id.
+     * The Attribute row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|AttributeTable",
-              meta = (DisplayName = "Get AttributeTable Row"))
-    static FAttributeTableRow GetAttributeTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Attribute",
+              meta = (DisplayName = "Get Attribute Row"))
+    static FAttributeRow GetAttributeRow(int32 Key, bool& bFound);
 
-    /** How many AttributeTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|AttributeTable",
-              meta = (DisplayName = "Get AttributeTable Row Count"))
-    static int32 GetAttributeTableRowCount();
+    /** How many Attribute rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Attribute",
+              meta = (DisplayName = "Get Attribute Row Count"))
+    static int32 GetAttributeRowCount();
 
     /**
-     * The AttributeTable row at a position, for walking the table in order.
+     * The Attribute row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|AttributeTable",
-              meta = (DisplayName = "Get AttributeTable Row At"))
-    static FAttributeTableRow GetAttributeTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Attribute",
+              meta = (DisplayName = "Get Attribute Row At"))
+    static FAttributeRow GetAttributeRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDContensInfoTable row with the given Id.
+     * The SDContensInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDContensInfoTable",
-              meta = (DisplayName = "Get SDContensInfoTable Row"))
-    static FSDContensInfoTableRow GetSDContensInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDContensInfo",
+              meta = (DisplayName = "Get SDContensInfo Row"))
+    static FSDContensInfoRow GetSDContensInfoRow(int32 Key, bool& bFound);
 
-    /** How many SDContensInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDContensInfoTable",
-              meta = (DisplayName = "Get SDContensInfoTable Row Count"))
-    static int32 GetSDContensInfoTableRowCount();
+    /** How many SDContensInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDContensInfo",
+              meta = (DisplayName = "Get SDContensInfo Row Count"))
+    static int32 GetSDContensInfoRowCount();
 
     /**
-     * The SDContensInfoTable row at a position, for walking the table in order.
+     * The SDContensInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDContensInfoTable",
-              meta = (DisplayName = "Get SDContensInfoTable Row At"))
-    static FSDContensInfoTableRow GetSDContensInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDContensInfo",
+              meta = (DisplayName = "Get SDContensInfo Row At"))
+    static FSDContensInfoRow GetSDContensInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDAgencyInfoTable row with the given Id.
+     * The SDAgencyInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgencyInfoTable",
-              meta = (DisplayName = "Get SDAgencyInfoTable Row"))
-    static FSDAgencyInfoTableRow GetSDAgencyInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgencyInfo",
+              meta = (DisplayName = "Get SDAgencyInfo Row"))
+    static FSDAgencyInfoRow GetSDAgencyInfoRow(int32 Key, bool& bFound);
 
-    /** How many SDAgencyInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgencyInfoTable",
-              meta = (DisplayName = "Get SDAgencyInfoTable Row Count"))
-    static int32 GetSDAgencyInfoTableRowCount();
+    /** How many SDAgencyInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgencyInfo",
+              meta = (DisplayName = "Get SDAgencyInfo Row Count"))
+    static int32 GetSDAgencyInfoRowCount();
 
     /**
-     * The SDAgencyInfoTable row at a position, for walking the table in order.
+     * The SDAgencyInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgencyInfoTable",
-              meta = (DisplayName = "Get SDAgencyInfoTable Row At"))
-    static FSDAgencyInfoTableRow GetSDAgencyInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgencyInfo",
+              meta = (DisplayName = "Get SDAgencyInfo Row At"))
+    static FSDAgencyInfoRow GetSDAgencyInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDAgencyTable row with the given Id.
+     * The SDAgency row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgencyTable",
-              meta = (DisplayName = "Get SDAgencyTable Row"))
-    static FSDAgencyTableRow GetSDAgencyTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgency",
+              meta = (DisplayName = "Get SDAgency Row"))
+    static FSDAgencyRow GetSDAgencyRow(int32 Key, bool& bFound);
 
-    /** How many SDAgencyTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgencyTable",
-              meta = (DisplayName = "Get SDAgencyTable Row Count"))
-    static int32 GetSDAgencyTableRowCount();
+    /** How many SDAgency rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgency",
+              meta = (DisplayName = "Get SDAgency Row Count"))
+    static int32 GetSDAgencyRowCount();
 
     /**
-     * The SDAgencyTable row at a position, for walking the table in order.
+     * The SDAgency row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgencyTable",
-              meta = (DisplayName = "Get SDAgencyTable Row At"))
-    static FSDAgencyTableRow GetSDAgencyTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAgency",
+              meta = (DisplayName = "Get SDAgency Row At"))
+    static FSDAgencyRow GetSDAgencyRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDPubInfoTable row with the given Id.
+     * The SDPubInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDPubInfoTable",
-              meta = (DisplayName = "Get SDPubInfoTable Row"))
-    static FSDPubInfoTableRow GetSDPubInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDPubInfo",
+              meta = (DisplayName = "Get SDPubInfo Row"))
+    static FSDPubInfoRow GetSDPubInfoRow(int32 Key, bool& bFound);
 
-    /** How many SDPubInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDPubInfoTable",
-              meta = (DisplayName = "Get SDPubInfoTable Row Count"))
-    static int32 GetSDPubInfoTableRowCount();
+    /** How many SDPubInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDPubInfo",
+              meta = (DisplayName = "Get SDPubInfo Row Count"))
+    static int32 GetSDPubInfoRowCount();
 
     /**
-     * The SDPubInfoTable row at a position, for walking the table in order.
+     * The SDPubInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDPubInfoTable",
-              meta = (DisplayName = "Get SDPubInfoTable Row At"))
-    static FSDPubInfoTableRow GetSDPubInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDPubInfo",
+              meta = (DisplayName = "Get SDPubInfo Row At"))
+    static FSDPubInfoRow GetSDPubInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDTrainingInfoTable row with the given Id.
+     * The SDTrainingInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingInfoTable",
-              meta = (DisplayName = "Get SDTrainingInfoTable Row"))
-    static FSDTrainingInfoTableRow GetSDTrainingInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingInfo",
+              meta = (DisplayName = "Get SDTrainingInfo Row"))
+    static FSDTrainingInfoRow GetSDTrainingInfoRow(int32 Key, bool& bFound);
 
-    /** How many SDTrainingInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingInfoTable",
-              meta = (DisplayName = "Get SDTrainingInfoTable Row Count"))
-    static int32 GetSDTrainingInfoTableRowCount();
+    /** How many SDTrainingInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingInfo",
+              meta = (DisplayName = "Get SDTrainingInfo Row Count"))
+    static int32 GetSDTrainingInfoRowCount();
 
     /**
-     * The SDTrainingInfoTable row at a position, for walking the table in order.
+     * The SDTrainingInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingInfoTable",
-              meta = (DisplayName = "Get SDTrainingInfoTable Row At"))
-    static FSDTrainingInfoTableRow GetSDTrainingInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingInfo",
+              meta = (DisplayName = "Get SDTrainingInfo Row At"))
+    static FSDTrainingInfoRow GetSDTrainingInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDTrainingLevelTable row with the given Id.
+     * The SDTrainingLevel row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingLevelTable",
-              meta = (DisplayName = "Get SDTrainingLevelTable Row"))
-    static FSDTrainingLevelTableRow GetSDTrainingLevelTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingLevel",
+              meta = (DisplayName = "Get SDTrainingLevel Row"))
+    static FSDTrainingLevelRow GetSDTrainingLevelRow(int32 Key, bool& bFound);
 
-    /** How many SDTrainingLevelTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingLevelTable",
-              meta = (DisplayName = "Get SDTrainingLevelTable Row Count"))
-    static int32 GetSDTrainingLevelTableRowCount();
+    /** How many SDTrainingLevel rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingLevel",
+              meta = (DisplayName = "Get SDTrainingLevel Row Count"))
+    static int32 GetSDTrainingLevelRowCount();
 
     /**
-     * The SDTrainingLevelTable row at a position, for walking the table in order.
+     * The SDTrainingLevel row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingLevelTable",
-              meta = (DisplayName = "Get SDTrainingLevelTable Row At"))
-    static FSDTrainingLevelTableRow GetSDTrainingLevelTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDTrainingLevel",
+              meta = (DisplayName = "Get SDTrainingLevel Row At"))
+    static FSDTrainingLevelRow GetSDTrainingLevelRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDDungeonInfoTable row with the given Id.
+     * The SDDungeonInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonInfoTable",
-              meta = (DisplayName = "Get SDDungeonInfoTable Row"))
-    static FSDDungeonInfoTableRow GetSDDungeonInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonInfo",
+              meta = (DisplayName = "Get SDDungeonInfo Row"))
+    static FSDDungeonInfoRow GetSDDungeonInfoRow(int32 Key, bool& bFound);
 
-    /** How many SDDungeonInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonInfoTable",
-              meta = (DisplayName = "Get SDDungeonInfoTable Row Count"))
-    static int32 GetSDDungeonInfoTableRowCount();
+    /** How many SDDungeonInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonInfo",
+              meta = (DisplayName = "Get SDDungeonInfo Row Count"))
+    static int32 GetSDDungeonInfoRowCount();
 
     /**
-     * The SDDungeonInfoTable row at a position, for walking the table in order.
+     * The SDDungeonInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonInfoTable",
-              meta = (DisplayName = "Get SDDungeonInfoTable Row At"))
-    static FSDDungeonInfoTableRow GetSDDungeonInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonInfo",
+              meta = (DisplayName = "Get SDDungeonInfo Row At"))
+    static FSDDungeonInfoRow GetSDDungeonInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDDungeonCardTable row with the given Id.
+     * The SDDungeonCard row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonCardTable",
-              meta = (DisplayName = "Get SDDungeonCardTable Row"))
-    static FSDDungeonCardTableRow GetSDDungeonCardTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonCard",
+              meta = (DisplayName = "Get SDDungeonCard Row"))
+    static FSDDungeonCardRow GetSDDungeonCardRow(int32 Key, bool& bFound);
 
-    /** How many SDDungeonCardTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonCardTable",
-              meta = (DisplayName = "Get SDDungeonCardTable Row Count"))
-    static int32 GetSDDungeonCardTableRowCount();
+    /** How many SDDungeonCard rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonCard",
+              meta = (DisplayName = "Get SDDungeonCard Row Count"))
+    static int32 GetSDDungeonCardRowCount();
 
     /**
-     * The SDDungeonCardTable row at a position, for walking the table in order.
+     * The SDDungeonCard row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonCardTable",
-              meta = (DisplayName = "Get SDDungeonCardTable Row At"))
-    static FSDDungeonCardTableRow GetSDDungeonCardTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonCard",
+              meta = (DisplayName = "Get SDDungeonCard Row At"))
+    static FSDDungeonCardRow GetSDDungeonCardRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDDungeonRewardTable row with the given Id.
+     * The SDDungeonReward row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonRewardTable",
-              meta = (DisplayName = "Get SDDungeonRewardTable Row"))
-    static FSDDungeonRewardTableRow GetSDDungeonRewardTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonReward",
+              meta = (DisplayName = "Get SDDungeonReward Row"))
+    static FSDDungeonRewardRow GetSDDungeonRewardRow(int32 Key, bool& bFound);
 
-    /** How many SDDungeonRewardTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonRewardTable",
-              meta = (DisplayName = "Get SDDungeonRewardTable Row Count"))
-    static int32 GetSDDungeonRewardTableRowCount();
+    /** How many SDDungeonReward rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonReward",
+              meta = (DisplayName = "Get SDDungeonReward Row Count"))
+    static int32 GetSDDungeonRewardRowCount();
 
     /**
-     * The SDDungeonRewardTable row at a position, for walking the table in order.
+     * The SDDungeonReward row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonRewardTable",
-              meta = (DisplayName = "Get SDDungeonRewardTable Row At"))
-    static FSDDungeonRewardTableRow GetSDDungeonRewardTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDDungeonReward",
+              meta = (DisplayName = "Get SDDungeonReward Row At"))
+    static FSDDungeonRewardRow GetSDDungeonRewardRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDAlchemyInfoTable row with the given Id.
+     * The SDAlchemyInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyInfoTable",
-              meta = (DisplayName = "Get SDAlchemyInfoTable Row"))
-    static FSDAlchemyInfoTableRow GetSDAlchemyInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyInfo",
+              meta = (DisplayName = "Get SDAlchemyInfo Row"))
+    static FSDAlchemyInfoRow GetSDAlchemyInfoRow(int32 Key, bool& bFound);
 
-    /** How many SDAlchemyInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyInfoTable",
-              meta = (DisplayName = "Get SDAlchemyInfoTable Row Count"))
-    static int32 GetSDAlchemyInfoTableRowCount();
+    /** How many SDAlchemyInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyInfo",
+              meta = (DisplayName = "Get SDAlchemyInfo Row Count"))
+    static int32 GetSDAlchemyInfoRowCount();
 
     /**
-     * The SDAlchemyInfoTable row at a position, for walking the table in order.
+     * The SDAlchemyInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyInfoTable",
-              meta = (DisplayName = "Get SDAlchemyInfoTable Row At"))
-    static FSDAlchemyInfoTableRow GetSDAlchemyInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyInfo",
+              meta = (DisplayName = "Get SDAlchemyInfo Row At"))
+    static FSDAlchemyInfoRow GetSDAlchemyInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDAlchemyStepTable row with the given Id.
+     * The SDAlchemyStep row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyStepTable",
-              meta = (DisplayName = "Get SDAlchemyStepTable Row"))
-    static FSDAlchemyStepTableRow GetSDAlchemyStepTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyStep",
+              meta = (DisplayName = "Get SDAlchemyStep Row"))
+    static FSDAlchemyStepRow GetSDAlchemyStepRow(int32 Key, bool& bFound);
 
-    /** How many SDAlchemyStepTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyStepTable",
-              meta = (DisplayName = "Get SDAlchemyStepTable Row Count"))
-    static int32 GetSDAlchemyStepTableRowCount();
+    /** How many SDAlchemyStep rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyStep",
+              meta = (DisplayName = "Get SDAlchemyStep Row Count"))
+    static int32 GetSDAlchemyStepRowCount();
 
     /**
-     * The SDAlchemyStepTable row at a position, for walking the table in order.
+     * The SDAlchemyStep row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyStepTable",
-              meta = (DisplayName = "Get SDAlchemyStepTable Row At"))
-    static FSDAlchemyStepTableRow GetSDAlchemyStepTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyStep",
+              meta = (DisplayName = "Get SDAlchemyStep Row At"))
+    static FSDAlchemyStepRow GetSDAlchemyStepRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SDAlchemyLevelTable row with the given Id.
+     * The SDAlchemyLevel row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyLevelTable",
-              meta = (DisplayName = "Get SDAlchemyLevelTable Row"))
-    static FSDAlchemyLevelTableRow GetSDAlchemyLevelTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyLevel",
+              meta = (DisplayName = "Get SDAlchemyLevel Row"))
+    static FSDAlchemyLevelRow GetSDAlchemyLevelRow(int32 Key, bool& bFound);
 
-    /** How many SDAlchemyLevelTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyLevelTable",
-              meta = (DisplayName = "Get SDAlchemyLevelTable Row Count"))
-    static int32 GetSDAlchemyLevelTableRowCount();
+    /** How many SDAlchemyLevel rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyLevel",
+              meta = (DisplayName = "Get SDAlchemyLevel Row Count"))
+    static int32 GetSDAlchemyLevelRowCount();
 
     /**
-     * The SDAlchemyLevelTable row at a position, for walking the table in order.
+     * The SDAlchemyLevel row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyLevelTable",
-              meta = (DisplayName = "Get SDAlchemyLevelTable Row At"))
-    static FSDAlchemyLevelTableRow GetSDAlchemyLevelTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SDAlchemyLevel",
+              meta = (DisplayName = "Get SDAlchemyLevel Row At"))
+    static FSDAlchemyLevelRow GetSDAlchemyLevelRowAt(int32 Position, bool& bFound);
 
     /**
-     * The ShopInfoTable row with the given Id.
+     * The ShopInfo row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ShopInfoTable",
-              meta = (DisplayName = "Get ShopInfoTable Row"))
-    static FShopInfoTableRow GetShopInfoTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ShopInfo",
+              meta = (DisplayName = "Get ShopInfo Row"))
+    static FShopInfoRow GetShopInfoRow(int32 Key, bool& bFound);
 
-    /** How many ShopInfoTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ShopInfoTable",
-              meta = (DisplayName = "Get ShopInfoTable Row Count"))
-    static int32 GetShopInfoTableRowCount();
+    /** How many ShopInfo rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ShopInfo",
+              meta = (DisplayName = "Get ShopInfo Row Count"))
+    static int32 GetShopInfoRowCount();
 
     /**
-     * The ShopInfoTable row at a position, for walking the table in order.
+     * The ShopInfo row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|ShopInfoTable",
-              meta = (DisplayName = "Get ShopInfoTable Row At"))
-    static FShopInfoTableRow GetShopInfoTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|ShopInfo",
+              meta = (DisplayName = "Get ShopInfo Row At"))
+    static FShopInfoRow GetShopInfoRowAt(int32 Position, bool& bFound);
 
     /**
-     * The MainShopTable row with the given Id.
+     * The MainShop row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|MainShopTable",
-              meta = (DisplayName = "Get MainShopTable Row"))
-    static FMainShopTableRow GetMainShopTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|MainShop",
+              meta = (DisplayName = "Get MainShop Row"))
+    static FMainShopRow GetMainShopRow(int32 Key, bool& bFound);
 
-    /** How many MainShopTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|MainShopTable",
-              meta = (DisplayName = "Get MainShopTable Row Count"))
-    static int32 GetMainShopTableRowCount();
+    /** How many MainShop rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|MainShop",
+              meta = (DisplayName = "Get MainShop Row Count"))
+    static int32 GetMainShopRowCount();
 
     /**
-     * The MainShopTable row at a position, for walking the table in order.
+     * The MainShop row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|MainShopTable",
-              meta = (DisplayName = "Get MainShopTable Row At"))
-    static FMainShopTableRow GetMainShopTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|MainShop",
+              meta = (DisplayName = "Get MainShop Row At"))
+    static FMainShopRow GetMainShopRowAt(int32 Position, bool& bFound);
 
     /**
-     * The PackageShopTable row with the given Id.
+     * The PackageShop row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|PackageShopTable",
-              meta = (DisplayName = "Get PackageShopTable Row"))
-    static FPackageShopTableRow GetPackageShopTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|PackageShop",
+              meta = (DisplayName = "Get PackageShop Row"))
+    static FPackageShopRow GetPackageShopRow(int32 Key, bool& bFound);
 
-    /** How many PackageShopTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|PackageShopTable",
-              meta = (DisplayName = "Get PackageShopTable Row Count"))
-    static int32 GetPackageShopTableRowCount();
+    /** How many PackageShop rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|PackageShop",
+              meta = (DisplayName = "Get PackageShop Row Count"))
+    static int32 GetPackageShopRowCount();
 
     /**
-     * The PackageShopTable row at a position, for walking the table in order.
+     * The PackageShop row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|PackageShopTable",
-              meta = (DisplayName = "Get PackageShopTable Row At"))
-    static FPackageShopTableRow GetPackageShopTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|PackageShop",
+              meta = (DisplayName = "Get PackageShop Row At"))
+    static FPackageShopRow GetPackageShopRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SeasonShopTable row with the given Id.
+     * The SeasonShop row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SeasonShopTable",
-              meta = (DisplayName = "Get SeasonShopTable Row"))
-    static FSeasonShopTableRow GetSeasonShopTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SeasonShop",
+              meta = (DisplayName = "Get SeasonShop Row"))
+    static FSeasonShopRow GetSeasonShopRow(int32 Key, bool& bFound);
 
-    /** How many SeasonShopTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SeasonShopTable",
-              meta = (DisplayName = "Get SeasonShopTable Row Count"))
-    static int32 GetSeasonShopTableRowCount();
+    /** How many SeasonShop rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SeasonShop",
+              meta = (DisplayName = "Get SeasonShop Row Count"))
+    static int32 GetSeasonShopRowCount();
 
     /**
-     * The SeasonShopTable row at a position, for walking the table in order.
+     * The SeasonShop row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SeasonShopTable",
-              meta = (DisplayName = "Get SeasonShopTable Row At"))
-    static FSeasonShopTableRow GetSeasonShopTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SeasonShop",
+              meta = (DisplayName = "Get SeasonShop Row At"))
+    static FSeasonShopRow GetSeasonShopRowAt(int32 Position, bool& bFound);
 
     /**
-     * The CashShopTable row with the given Id.
+     * The CashShop row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CashShopTable",
-              meta = (DisplayName = "Get CashShopTable Row"))
-    static FCashShopTableRow GetCashShopTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CashShop",
+              meta = (DisplayName = "Get CashShop Row"))
+    static FCashShopRow GetCashShopRow(int32 Key, bool& bFound);
 
-    /** How many CashShopTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CashShopTable",
-              meta = (DisplayName = "Get CashShopTable Row Count"))
-    static int32 GetCashShopTableRowCount();
+    /** How many CashShop rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CashShop",
+              meta = (DisplayName = "Get CashShop Row Count"))
+    static int32 GetCashShopRowCount();
 
     /**
-     * The CashShopTable row at a position, for walking the table in order.
+     * The CashShop row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CashShopTable",
-              meta = (DisplayName = "Get CashShopTable Row At"))
-    static FCashShopTableRow GetCashShopTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CashShop",
+              meta = (DisplayName = "Get CashShop Row At"))
+    static FCashShopRow GetCashShopRowAt(int32 Position, bool& bFound);
 
     /**
-     * The BGMSoundTable row with the given Id.
+     * The BGMSound row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|BGMSoundTable",
-              meta = (DisplayName = "Get BGMSoundTable Row"))
-    static FBGMSoundTableRow GetBGMSoundTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|BGMSound",
+              meta = (DisplayName = "Get BGMSound Row"))
+    static FBGMSoundRow GetBGMSoundRow(int32 Key, bool& bFound);
 
-    /** How many BGMSoundTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|BGMSoundTable",
-              meta = (DisplayName = "Get BGMSoundTable Row Count"))
-    static int32 GetBGMSoundTableRowCount();
+    /** How many BGMSound rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|BGMSound",
+              meta = (DisplayName = "Get BGMSound Row Count"))
+    static int32 GetBGMSoundRowCount();
 
     /**
-     * The BGMSoundTable row at a position, for walking the table in order.
+     * The BGMSound row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|BGMSoundTable",
-              meta = (DisplayName = "Get BGMSoundTable Row At"))
-    static FBGMSoundTableRow GetBGMSoundTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|BGMSound",
+              meta = (DisplayName = "Get BGMSound Row At"))
+    static FBGMSoundRow GetBGMSoundRowAt(int32 Position, bool& bFound);
 
     /**
-     * The SFXSoundTable row with the given Id.
+     * The SFXSound row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SFXSoundTable",
-              meta = (DisplayName = "Get SFXSoundTable Row"))
-    static FSFXSoundTableRow GetSFXSoundTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SFXSound",
+              meta = (DisplayName = "Get SFXSound Row"))
+    static FSFXSoundRow GetSFXSoundRow(int32 Key, bool& bFound);
 
-    /** How many SFXSoundTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SFXSoundTable",
-              meta = (DisplayName = "Get SFXSoundTable Row Count"))
-    static int32 GetSFXSoundTableRowCount();
+    /** How many SFXSound rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SFXSound",
+              meta = (DisplayName = "Get SFXSound Row Count"))
+    static int32 GetSFXSoundRowCount();
 
     /**
-     * The SFXSoundTable row at a position, for walking the table in order.
+     * The SFXSound row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|SFXSoundTable",
-              meta = (DisplayName = "Get SFXSoundTable Row At"))
-    static FSFXSoundTableRow GetSFXSoundTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|SFXSound",
+              meta = (DisplayName = "Get SFXSound Row At"))
+    static FSFXSoundRow GetSFXSoundRowAt(int32 Position, bool& bFound);
 
     /**
-     * The InfoGrowthTable row with the given Id.
+     * The InfoGrowth row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|InfoGrowthTable",
-              meta = (DisplayName = "Get InfoGrowthTable Row"))
-    static FInfoGrowthTableRow GetInfoGrowthTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|InfoGrowth",
+              meta = (DisplayName = "Get InfoGrowth Row"))
+    static FInfoGrowthRow GetInfoGrowthRow(int32 Key, bool& bFound);
 
-    /** How many InfoGrowthTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|InfoGrowthTable",
-              meta = (DisplayName = "Get InfoGrowthTable Row Count"))
-    static int32 GetInfoGrowthTableRowCount();
+    /** How many InfoGrowth rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|InfoGrowth",
+              meta = (DisplayName = "Get InfoGrowth Row Count"))
+    static int32 GetInfoGrowthRowCount();
 
     /**
-     * The InfoGrowthTable row at a position, for walking the table in order.
+     * The InfoGrowth row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|InfoGrowthTable",
-              meta = (DisplayName = "Get InfoGrowthTable Row At"))
-    static FInfoGrowthTableRow GetInfoGrowthTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|InfoGrowth",
+              meta = (DisplayName = "Get InfoGrowth Row At"))
+    static FInfoGrowthRow GetInfoGrowthRowAt(int32 Position, bool& bFound);
 
     /**
-     * The StatGrowthTable row with the given Id.
+     * The StatGrowth row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|StatGrowthTable",
-              meta = (DisplayName = "Get StatGrowthTable Row"))
-    static FStatGrowthTableRow GetStatGrowthTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|StatGrowth",
+              meta = (DisplayName = "Get StatGrowth Row"))
+    static FStatGrowthRow GetStatGrowthRow(int32 Key, bool& bFound);
 
-    /** How many StatGrowthTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|StatGrowthTable",
-              meta = (DisplayName = "Get StatGrowthTable Row Count"))
-    static int32 GetStatGrowthTableRowCount();
+    /** How many StatGrowth rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|StatGrowth",
+              meta = (DisplayName = "Get StatGrowth Row Count"))
+    static int32 GetStatGrowthRowCount();
 
     /**
-     * The StatGrowthTable row at a position, for walking the table in order.
+     * The StatGrowth row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|StatGrowthTable",
-              meta = (DisplayName = "Get StatGrowthTable Row At"))
-    static FStatGrowthTableRow GetStatGrowthTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|StatGrowth",
+              meta = (DisplayName = "Get StatGrowth Row At"))
+    static FStatGrowthRow GetStatGrowthRowAt(int32 Position, bool& bFound);
 
     /**
-     * The TraitTable row with the given Id.
+     * The Trait row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitTable",
-              meta = (DisplayName = "Get TraitTable Row"))
-    static FTraitTableRow GetTraitTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Trait",
+              meta = (DisplayName = "Get Trait Row"))
+    static FTraitRow GetTraitRow(int32 Key, bool& bFound);
 
-    /** How many TraitTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitTable",
-              meta = (DisplayName = "Get TraitTable Row Count"))
-    static int32 GetTraitTableRowCount();
+    /** How many Trait rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Trait",
+              meta = (DisplayName = "Get Trait Row Count"))
+    static int32 GetTraitRowCount();
 
     /**
-     * The TraitTable row at a position, for walking the table in order.
+     * The Trait row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|TraitTable",
-              meta = (DisplayName = "Get TraitTable Row At"))
-    static FTraitTableRow GetTraitTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Trait",
+              meta = (DisplayName = "Get Trait Row At"))
+    static FTraitRow GetTraitRowAt(int32 Position, bool& bFound);
 
     /**
-     * The RelicTable row with the given Id.
+     * The Relic row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicTable",
-              meta = (DisplayName = "Get RelicTable Row"))
-    static FRelicTableRow GetRelicTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Relic",
+              meta = (DisplayName = "Get Relic Row"))
+    static FRelicRow GetRelicRow(int32 Key, bool& bFound);
 
-    /** How many RelicTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicTable",
-              meta = (DisplayName = "Get RelicTable Row Count"))
-    static int32 GetRelicTableRowCount();
+    /** How many Relic rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Relic",
+              meta = (DisplayName = "Get Relic Row Count"))
+    static int32 GetRelicRowCount();
 
     /**
-     * The RelicTable row at a position, for walking the table in order.
+     * The Relic row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|RelicTable",
-              meta = (DisplayName = "Get RelicTable Row At"))
-    static FRelicTableRow GetRelicTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|Relic",
+              meta = (DisplayName = "Get Relic Row At"))
+    static FRelicRow GetRelicRowAt(int32 Position, bool& bFound);
 
     /**
-     * The StarNodeTable row with the given Id.
+     * The StarNode row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|StarNodeTable",
-              meta = (DisplayName = "Get StarNodeTable Row"))
-    static FStarNodeTableRow GetStarNodeTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|StarNode",
+              meta = (DisplayName = "Get StarNode Row"))
+    static FStarNodeRow GetStarNodeRow(int32 Key, bool& bFound);
 
-    /** How many StarNodeTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|StarNodeTable",
-              meta = (DisplayName = "Get StarNodeTable Row Count"))
-    static int32 GetStarNodeTableRowCount();
+    /** How many StarNode rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|StarNode",
+              meta = (DisplayName = "Get StarNode Row Count"))
+    static int32 GetStarNodeRowCount();
 
     /**
-     * The StarNodeTable row at a position, for walking the table in order.
+     * The StarNode row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|StarNodeTable",
-              meta = (DisplayName = "Get StarNodeTable Row At"))
-    static FStarNodeTableRow GetStarNodeTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|StarNode",
+              meta = (DisplayName = "Get StarNode Row At"))
+    static FStarNodeRow GetStarNodeRowAt(int32 Position, bool& bFound);
 
     /**
-     * The CostCurveTable row with the given Id.
+     * The CostCurve row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurveTable",
-              meta = (DisplayName = "Get CostCurveTable Row"))
-    static FCostCurveTableRow GetCostCurveTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurve",
+              meta = (DisplayName = "Get CostCurve Row"))
+    static FCostCurveRow GetCostCurveRow(int32 Key, bool& bFound);
 
-    /** How many CostCurveTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurveTable",
-              meta = (DisplayName = "Get CostCurveTable Row Count"))
-    static int32 GetCostCurveTableRowCount();
+    /** How many CostCurve rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurve",
+              meta = (DisplayName = "Get CostCurve Row Count"))
+    static int32 GetCostCurveRowCount();
 
     /**
-     * The CostCurveTable row at a position, for walking the table in order.
+     * The CostCurve row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurveTable",
-              meta = (DisplayName = "Get CostCurveTable Row At"))
-    static FCostCurveTableRow GetCostCurveTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurve",
+              meta = (DisplayName = "Get CostCurve Row At"))
+    static FCostCurveRow GetCostCurveRowAt(int32 Position, bool& bFound);
 
     /**
-     * The CostCurveRangeTable row with the given Id.
+     * The CostCurveRange row with the given Id.
      *
      * bFound rather than a pointer, because Blueprint has no null struct - a graph that
      * ignored a failure would otherwise carry a default row it could not tell apart from
      * a real one.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurveRangeTable",
-              meta = (DisplayName = "Get CostCurveRangeTable Row"))
-    static FCostCurveRangeTableRow GetCostCurveRangeTableRow(int32 Key, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurveRange",
+              meta = (DisplayName = "Get CostCurveRange Row"))
+    static FCostCurveRangeRow GetCostCurveRangeRow(int32 Key, bool& bFound);
 
-    /** How many CostCurveRangeTable rows were loaded. */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurveRangeTable",
-              meta = (DisplayName = "Get CostCurveRangeTable Row Count"))
-    static int32 GetCostCurveRangeTableRowCount();
+    /** How many CostCurveRange rows were loaded. */
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurveRange",
+              meta = (DisplayName = "Get CostCurveRange Row Count"))
+    static int32 GetCostCurveRangeRowCount();
 
     /**
-     * The CostCurveRangeTable row at a position, for walking the table in order.
+     * The CostCurveRange row at a position, for walking the table in order.
      *
      * A position and a count rather than the whole array. Blueprint takes a return value
      * by value, so handing back a TArray would copy every row of the table on every call -
      * and a reference return is not something Unreal Header Tool accepts. With these two a
      * graph can loop over the table and copy one row per turn.
      */
-    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurveRangeTable",
-              meta = (DisplayName = "Get CostCurveRangeTable Row At"))
-    static FCostCurveRangeTableRow GetCostCurveRangeTableRowAt(int32 Position, bool& bFound);
+    UFUNCTION(BlueprintPure, Category = "SheetMan|CostCurveRange",
+              meta = (DisplayName = "Get CostCurveRange Row At"))
+    static FCostCurveRangeRow GetCostCurveRangeRowAt(int32 Position, bool& bFound);
 
     /**
      * Reads every table from BasePath, as FRescueData::ReadAll does.

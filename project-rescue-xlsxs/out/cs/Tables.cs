@@ -112,339 +112,339 @@ namespace Rescue.Tables
 #endif
 
         /// <summary>
-        /// Property for CollectionGroupTable table.
+        /// Property for CollectionGroup table.
         /// </summary>
-        public static CollectionGroupTableTable CollectionGroupTable { get; private set; }
+        public static CollectionGroupTable CollectionGroup { get; private set; }
 
         /// <summary>
-        /// Property for CollectionTable table.
+        /// Property for Collection table.
         /// </summary>
-        public static CollectionTableTable CollectionTable { get; private set; }
+        public static CollectionTable Collection { get; private set; }
 
         /// <summary>
-        /// Property for ConditionTable table.
+        /// Property for Condition table.
         /// </summary>
-        public static ConditionTableTable ConditionTable { get; private set; }
+        public static ConditionTable Condition { get; private set; }
 
         /// <summary>
-        /// Property for DailyDungeonInfoTable table.
+        /// Property for DailyDungeonInfo table.
         /// </summary>
-        public static DailyDungeonInfoTableTable DailyDungeonInfoTable { get; private set; }
+        public static DailyDungeonInfoTable DailyDungeonInfo { get; private set; }
 
         /// <summary>
-        /// Property for GoldDungeonStageTable table.
+        /// Property for GoldDungeonStage table.
         /// </summary>
-        public static GoldDungeonStageTableTable GoldDungeonStageTable { get; private set; }
+        public static GoldDungeonStageTable GoldDungeonStage { get; private set; }
 
         /// <summary>
-        /// Property for GoldDungeonRewardTable table.
+        /// Property for GoldDungeonReward table.
         /// </summary>
-        public static GoldDungeonRewardTableTable GoldDungeonRewardTable { get; private set; }
+        public static GoldDungeonRewardTable GoldDungeonReward { get; private set; }
 
         /// <summary>
-        /// Property for ExpDungeonStageTable table.
+        /// Property for ExpDungeonStage table.
         /// </summary>
-        public static ExpDungeonStageTableTable ExpDungeonStageTable { get; private set; }
+        public static ExpDungeonStageTable ExpDungeonStage { get; private set; }
 
         /// <summary>
-        /// Property for ExpDungeonRewardTable table.
+        /// Property for ExpDungeonReward table.
         /// </summary>
-        public static ExpDungeonRewardTableTable ExpDungeonRewardTable { get; private set; }
+        public static ExpDungeonRewardTable ExpDungeonReward { get; private set; }
 
         /// <summary>
-        /// Property for TraitDungeonStageTable table.
+        /// Property for TraitDungeonStage table.
         /// </summary>
-        public static TraitDungeonStageTableTable TraitDungeonStageTable { get; private set; }
+        public static TraitDungeonStageTable TraitDungeonStage { get; private set; }
 
         /// <summary>
-        /// Property for TraitDungeonRewardTable table.
+        /// Property for TraitDungeonReward table.
         /// </summary>
-        public static TraitDungeonRewardTableTable TraitDungeonRewardTable { get; private set; }
+        public static TraitDungeonRewardTable TraitDungeonReward { get; private set; }
 
         /// <summary>
-        /// Property for RelicDungeonStageTable table.
+        /// Property for RelicDungeonStage table.
         /// </summary>
-        public static RelicDungeonStageTableTable RelicDungeonStageTable { get; private set; }
+        public static RelicDungeonStageTable RelicDungeonStage { get; private set; }
 
         /// <summary>
-        /// Property for RelicDungeonRewardTable table.
+        /// Property for RelicDungeonReward table.
         /// </summary>
-        public static RelicDungeonRewardTableTable RelicDungeonRewardTable { get; private set; }
+        public static RelicDungeonRewardTable RelicDungeonReward { get; private set; }
 
         /// <summary>
-        /// Property for OopartsDungeonStageTable table.
+        /// Property for OopartsDungeonStage table.
         /// </summary>
-        public static OopartsDungeonStageTableTable OopartsDungeonStageTable { get; private set; }
+        public static OopartsDungeonStageTable OopartsDungeonStage { get; private set; }
 
         /// <summary>
-        /// Property for OopartsDungeonRewardTable table.
+        /// Property for OopartsDungeonReward table.
         /// </summary>
-        public static OopartsDungeonRewardTableTable OopartsDungeonRewardTable { get; private set; }
+        public static OopartsDungeonRewardTable OopartsDungeonReward { get; private set; }
 
         /// <summary>
-        /// Property for GachaInfoTable table.
+        /// Property for GachaInfo table.
         /// </summary>
-        public static GachaInfoTableTable GachaInfoTable { get; private set; }
+        public static GachaInfoTable GachaInfo { get; private set; }
 
         /// <summary>
-        /// Property for GachaCharacterListTable table.
+        /// Property for GachaCharacterList table.
         /// </summary>
-        public static GachaCharacterListTableTable GachaCharacterListTable { get; private set; }
+        public static GachaCharacterListTable GachaCharacterList { get; private set; }
 
         /// <summary>
-        /// Property for GachaArtifactInfoTable table.
+        /// Property for GachaArtifactInfo table.
         /// </summary>
-        public static GachaArtifactInfoTableTable GachaArtifactInfoTable { get; private set; }
+        public static GachaArtifactInfoTable GachaArtifactInfo { get; private set; }
 
         /// <summary>
-        /// Property for GachaArtifactListTable table.
+        /// Property for GachaArtifactList table.
         /// </summary>
-        public static GachaArtifactListTableTable GachaArtifactListTable { get; private set; }
+        public static GachaArtifactListTable GachaArtifactList { get; private set; }
 
         /// <summary>
-        /// Property for GachaRateTable table.
+        /// Property for GachaRate table.
         /// </summary>
-        public static GachaRateTableTable GachaRateTable { get; private set; }
+        public static GachaRateTable GachaRate { get; private set; }
 
         /// <summary>
-        /// Property for CurrencyTable table.
+        /// Property for Currency table.
         /// </summary>
-        public static CurrencyTableTable CurrencyTable { get; private set; }
+        public static CurrencyTable Currency { get; private set; }
 
         /// <summary>
-        /// Property for MaterialTable table.
+        /// Property for Material table.
         /// </summary>
-        public static MaterialTableTable MaterialTable { get; private set; }
+        public static MaterialTable Material { get; private set; }
 
         /// <summary>
-        /// Property for PackageTable table.
+        /// Property for Package table.
         /// </summary>
-        public static PackageTableTable PackageTable { get; private set; }
+        public static PackageTable Package { get; private set; }
 
         /// <summary>
-        /// Property for ClassUpCurrencyListTable table.
+        /// Property for ClassUpCurrencyList table.
         /// </summary>
-        public static ClassUpCurrencyListTableTable ClassUpCurrencyListTable { get; private set; }
+        public static ClassUpCurrencyListTable ClassUpCurrencyList { get; private set; }
 
         /// <summary>
-        /// Property for EquipItemLevelTable table.
+        /// Property for EquipItemLevel table.
         /// </summary>
-        public static EquipItemLevelTableTable EquipItemLevelTable { get; private set; }
+        public static EquipItemLevelTable EquipItemLevel { get; private set; }
 
         /// <summary>
-        /// Property for EquipItemClassTable table.
+        /// Property for EquipItemClass table.
         /// </summary>
-        public static EquipItemClassTableTable EquipItemClassTable { get; private set; }
+        public static EquipItemClassTable EquipItemClass { get; private set; }
 
         /// <summary>
-        /// Property for EquipTable table.
+        /// Property for Equip table.
         /// </summary>
-        public static EquipTableTable EquipTable { get; private set; }
+        public static EquipTable Equip { get; private set; }
 
         /// <summary>
-        /// Property for EquipItemGradeTable table.
+        /// Property for EquipItemGrade table.
         /// </summary>
-        public static EquipItemGradeTableTable EquipItemGradeTable { get; private set; }
+        public static EquipItemGradeTable EquipItemGrade { get; private set; }
 
         /// <summary>
-        /// Property for CharacterTable table.
+        /// Property for Character table.
         /// </summary>
-        public static CharacterTableTable CharacterTable { get; private set; }
+        public static CharacterTable Character { get; private set; }
 
         /// <summary>
-        /// Property for SkillTable table.
+        /// Property for Skill table.
         /// </summary>
-        public static SkillTableTable SkillTable { get; private set; }
+        public static SkillTable Skill { get; private set; }
 
         /// <summary>
-        /// Property for BuffTable table.
+        /// Property for Buff table.
         /// </summary>
-        public static BuffTableTable BuffTable { get; private set; }
+        public static BuffTable Buff { get; private set; }
 
         /// <summary>
-        /// Property for CharacterLevelTable table.
+        /// Property for CharacterLevel table.
         /// </summary>
-        public static CharacterLevelTableTable CharacterLevelTable { get; private set; }
+        public static CharacterLevelTable CharacterLevel { get; private set; }
 
         /// <summary>
-        /// Property for CharacterTranscendenceTable table.
+        /// Property for CharacterTranscendence table.
         /// </summary>
-        public static CharacterTranscendenceTableTable CharacterTranscendenceTable { get; private set; }
+        public static CharacterTranscendenceTable CharacterTranscendence { get; private set; }
 
         /// <summary>
-        /// Property for ArtifactTable table.
+        /// Property for Artifact table.
         /// </summary>
-        public static ArtifactTableTable ArtifactTable { get; private set; }
+        public static ArtifactTable Artifact { get; private set; }
 
         /// <summary>
-        /// Property for ArtifactLevelTable table.
+        /// Property for ArtifactLevel table.
         /// </summary>
-        public static ArtifactLevelTableTable ArtifactLevelTable { get; private set; }
+        public static ArtifactLevelTable ArtifactLevel { get; private set; }
 
         /// <summary>
-        /// Property for ArtifactTranscendenceTable table.
+        /// Property for ArtifactTranscendence table.
         /// </summary>
-        public static ArtifactTranscendenceTableTable ArtifactTranscendenceTable { get; private set; }
+        public static ArtifactTranscendenceTable ArtifactTranscendence { get; private set; }
 
         /// <summary>
-        /// Property for BuffSelectTable table.
+        /// Property for BuffSelect table.
         /// </summary>
-        public static BuffSelectTableTable BuffSelectTable { get; private set; }
+        public static BuffSelectTable BuffSelect { get; private set; }
 
         /// <summary>
-        /// Property for ShortCutTable table.
+        /// Property for ShortCut table.
         /// </summary>
-        public static ShortCutTableTable ShortCutTable { get; private set; }
+        public static ShortCutTable ShortCut { get; private set; }
 
         /// <summary>
-        /// Property for StageTable table.
+        /// Property for Stage table.
         /// </summary>
-        public static StageTableTable StageTable { get; private set; }
+        public static StageTable Stage { get; private set; }
 
         /// <summary>
-        /// Property for ConfigTable table.
+        /// Property for Config table.
         /// </summary>
-        public static ConfigTableTable ConfigTable { get; private set; }
+        public static ConfigTable Config { get; private set; }
 
         /// <summary>
-        /// Property for DropGroupTable table.
+        /// Property for DropGroup table.
         /// </summary>
-        public static DropGroupTableTable DropGroupTable { get; private set; }
+        public static DropGroupTable DropGroup { get; private set; }
 
         /// <summary>
-        /// Property for AttributeTable table.
+        /// Property for Attribute table.
         /// </summary>
-        public static AttributeTableTable AttributeTable { get; private set; }
+        public static AttributeTable Attribute { get; private set; }
 
         /// <summary>
-        /// Property for SDContensInfoTable table.
+        /// Property for SDContensInfo table.
         /// </summary>
-        public static SDContensInfoTableTable SDContensInfoTable { get; private set; }
+        public static SDContensInfoTable SDContensInfo { get; private set; }
 
         /// <summary>
-        /// Property for SDAgencyInfoTable table.
+        /// Property for SDAgencyInfo table.
         /// </summary>
-        public static SDAgencyInfoTableTable SDAgencyInfoTable { get; private set; }
+        public static SDAgencyInfoTable SDAgencyInfo { get; private set; }
 
         /// <summary>
-        /// Property for SDAgencyTable table.
+        /// Property for SDAgency table.
         /// </summary>
-        public static SDAgencyTableTable SDAgencyTable { get; private set; }
+        public static SDAgencyTable SDAgency { get; private set; }
 
         /// <summary>
-        /// Property for SDPubInfoTable table.
+        /// Property for SDPubInfo table.
         /// </summary>
-        public static SDPubInfoTableTable SDPubInfoTable { get; private set; }
+        public static SDPubInfoTable SDPubInfo { get; private set; }
 
         /// <summary>
-        /// Property for SDTrainingInfoTable table.
+        /// Property for SDTrainingInfo table.
         /// </summary>
-        public static SDTrainingInfoTableTable SDTrainingInfoTable { get; private set; }
+        public static SDTrainingInfoTable SDTrainingInfo { get; private set; }
 
         /// <summary>
-        /// Property for SDTrainingLevelTable table.
+        /// Property for SDTrainingLevel table.
         /// </summary>
-        public static SDTrainingLevelTableTable SDTrainingLevelTable { get; private set; }
+        public static SDTrainingLevelTable SDTrainingLevel { get; private set; }
 
         /// <summary>
-        /// Property for SDDungeonInfoTable table.
+        /// Property for SDDungeonInfo table.
         /// </summary>
-        public static SDDungeonInfoTableTable SDDungeonInfoTable { get; private set; }
+        public static SDDungeonInfoTable SDDungeonInfo { get; private set; }
 
         /// <summary>
-        /// Property for SDDungeonCardTable table.
+        /// Property for SDDungeonCard table.
         /// </summary>
-        public static SDDungeonCardTableTable SDDungeonCardTable { get; private set; }
+        public static SDDungeonCardTable SDDungeonCard { get; private set; }
 
         /// <summary>
-        /// Property for SDDungeonRewardTable table.
+        /// Property for SDDungeonReward table.
         /// </summary>
-        public static SDDungeonRewardTableTable SDDungeonRewardTable { get; private set; }
+        public static SDDungeonRewardTable SDDungeonReward { get; private set; }
 
         /// <summary>
-        /// Property for SDAlchemyInfoTable table.
+        /// Property for SDAlchemyInfo table.
         /// </summary>
-        public static SDAlchemyInfoTableTable SDAlchemyInfoTable { get; private set; }
+        public static SDAlchemyInfoTable SDAlchemyInfo { get; private set; }
 
         /// <summary>
-        /// Property for SDAlchemyStepTable table.
+        /// Property for SDAlchemyStep table.
         /// </summary>
-        public static SDAlchemyStepTableTable SDAlchemyStepTable { get; private set; }
+        public static SDAlchemyStepTable SDAlchemyStep { get; private set; }
 
         /// <summary>
-        /// Property for SDAlchemyLevelTable table.
+        /// Property for SDAlchemyLevel table.
         /// </summary>
-        public static SDAlchemyLevelTableTable SDAlchemyLevelTable { get; private set; }
+        public static SDAlchemyLevelTable SDAlchemyLevel { get; private set; }
 
         /// <summary>
-        /// Property for ShopInfoTable table.
+        /// Property for ShopInfo table.
         /// </summary>
-        public static ShopInfoTableTable ShopInfoTable { get; private set; }
+        public static ShopInfoTable ShopInfo { get; private set; }
 
         /// <summary>
-        /// Property for MainShopTable table.
+        /// Property for MainShop table.
         /// </summary>
-        public static MainShopTableTable MainShopTable { get; private set; }
+        public static MainShopTable MainShop { get; private set; }
 
         /// <summary>
-        /// Property for PackageShopTable table.
+        /// Property for PackageShop table.
         /// </summary>
-        public static PackageShopTableTable PackageShopTable { get; private set; }
+        public static PackageShopTable PackageShop { get; private set; }
 
         /// <summary>
-        /// Property for SeasonShopTable table.
+        /// Property for SeasonShop table.
         /// </summary>
-        public static SeasonShopTableTable SeasonShopTable { get; private set; }
+        public static SeasonShopTable SeasonShop { get; private set; }
 
         /// <summary>
-        /// Property for CashShopTable table.
+        /// Property for CashShop table.
         /// </summary>
-        public static CashShopTableTable CashShopTable { get; private set; }
+        public static CashShopTable CashShop { get; private set; }
 
         /// <summary>
-        /// Property for BGMSoundTable table.
+        /// Property for BGMSound table.
         /// </summary>
-        public static BGMSoundTableTable BGMSoundTable { get; private set; }
+        public static BGMSoundTable BGMSound { get; private set; }
 
         /// <summary>
-        /// Property for SFXSoundTable table.
+        /// Property for SFXSound table.
         /// </summary>
-        public static SFXSoundTableTable SFXSoundTable { get; private set; }
+        public static SFXSoundTable SFXSound { get; private set; }
 
         /// <summary>
-        /// Property for InfoGrowthTable table.
+        /// Property for InfoGrowth table.
         /// </summary>
-        public static InfoGrowthTableTable InfoGrowthTable { get; private set; }
+        public static InfoGrowthTable InfoGrowth { get; private set; }
 
         /// <summary>
-        /// Property for StatGrowthTable table.
+        /// Property for StatGrowth table.
         /// </summary>
-        public static StatGrowthTableTable StatGrowthTable { get; private set; }
+        public static StatGrowthTable StatGrowth { get; private set; }
 
         /// <summary>
-        /// Property for TraitTable table.
+        /// Property for Trait table.
         /// </summary>
-        public static TraitTableTable TraitTable { get; private set; }
+        public static TraitTable Trait { get; private set; }
 
         /// <summary>
-        /// Property for RelicTable table.
+        /// Property for Relic table.
         /// </summary>
-        public static RelicTableTable RelicTable { get; private set; }
+        public static RelicTable Relic { get; private set; }
 
         /// <summary>
-        /// Property for StarNodeTable table.
+        /// Property for StarNode table.
         /// </summary>
-        public static StarNodeTableTable StarNodeTable { get; private set; }
+        public static StarNodeTable StarNode { get; private set; }
 
         /// <summary>
-        /// Property for CostCurveTable table.
+        /// Property for CostCurve table.
         /// </summary>
-        public static CostCurveTableTable CostCurveTable { get; private set; }
+        public static CostCurveTable CostCurve { get; private set; }
 
         /// <summary>
-        /// Property for CostCurveRangeTable table.
+        /// Property for CostCurveRange table.
         /// </summary>
-        public static CostCurveRangeTableTable CostCurveRangeTable { get; private set; }
+        public static CostCurveRangeTable CostCurveRange { get; private set; }
 
 
         /// <summary>
@@ -464,73 +464,73 @@ namespace Rescue.Tables
         /// </remarks>
         private sealed class Snapshot
         {
-            public CollectionGroupTableTable CollectionGroupTable = new CollectionGroupTableTable();
-            public CollectionTableTable CollectionTable = new CollectionTableTable();
-            public ConditionTableTable ConditionTable = new ConditionTableTable();
-            public DailyDungeonInfoTableTable DailyDungeonInfoTable = new DailyDungeonInfoTableTable();
-            public GoldDungeonStageTableTable GoldDungeonStageTable = new GoldDungeonStageTableTable();
-            public GoldDungeonRewardTableTable GoldDungeonRewardTable = new GoldDungeonRewardTableTable();
-            public ExpDungeonStageTableTable ExpDungeonStageTable = new ExpDungeonStageTableTable();
-            public ExpDungeonRewardTableTable ExpDungeonRewardTable = new ExpDungeonRewardTableTable();
-            public TraitDungeonStageTableTable TraitDungeonStageTable = new TraitDungeonStageTableTable();
-            public TraitDungeonRewardTableTable TraitDungeonRewardTable = new TraitDungeonRewardTableTable();
-            public RelicDungeonStageTableTable RelicDungeonStageTable = new RelicDungeonStageTableTable();
-            public RelicDungeonRewardTableTable RelicDungeonRewardTable = new RelicDungeonRewardTableTable();
-            public OopartsDungeonStageTableTable OopartsDungeonStageTable = new OopartsDungeonStageTableTable();
-            public OopartsDungeonRewardTableTable OopartsDungeonRewardTable = new OopartsDungeonRewardTableTable();
-            public GachaInfoTableTable GachaInfoTable = new GachaInfoTableTable();
-            public GachaCharacterListTableTable GachaCharacterListTable = new GachaCharacterListTableTable();
-            public GachaArtifactInfoTableTable GachaArtifactInfoTable = new GachaArtifactInfoTableTable();
-            public GachaArtifactListTableTable GachaArtifactListTable = new GachaArtifactListTableTable();
-            public GachaRateTableTable GachaRateTable = new GachaRateTableTable();
-            public CurrencyTableTable CurrencyTable = new CurrencyTableTable();
-            public MaterialTableTable MaterialTable = new MaterialTableTable();
-            public PackageTableTable PackageTable = new PackageTableTable();
-            public ClassUpCurrencyListTableTable ClassUpCurrencyListTable = new ClassUpCurrencyListTableTable();
-            public EquipItemLevelTableTable EquipItemLevelTable = new EquipItemLevelTableTable();
-            public EquipItemClassTableTable EquipItemClassTable = new EquipItemClassTableTable();
-            public EquipTableTable EquipTable = new EquipTableTable();
-            public EquipItemGradeTableTable EquipItemGradeTable = new EquipItemGradeTableTable();
-            public CharacterTableTable CharacterTable = new CharacterTableTable();
-            public SkillTableTable SkillTable = new SkillTableTable();
-            public BuffTableTable BuffTable = new BuffTableTable();
-            public CharacterLevelTableTable CharacterLevelTable = new CharacterLevelTableTable();
-            public CharacterTranscendenceTableTable CharacterTranscendenceTable = new CharacterTranscendenceTableTable();
-            public ArtifactTableTable ArtifactTable = new ArtifactTableTable();
-            public ArtifactLevelTableTable ArtifactLevelTable = new ArtifactLevelTableTable();
-            public ArtifactTranscendenceTableTable ArtifactTranscendenceTable = new ArtifactTranscendenceTableTable();
-            public BuffSelectTableTable BuffSelectTable = new BuffSelectTableTable();
-            public ShortCutTableTable ShortCutTable = new ShortCutTableTable();
-            public StageTableTable StageTable = new StageTableTable();
-            public ConfigTableTable ConfigTable = new ConfigTableTable();
-            public DropGroupTableTable DropGroupTable = new DropGroupTableTable();
-            public AttributeTableTable AttributeTable = new AttributeTableTable();
-            public SDContensInfoTableTable SDContensInfoTable = new SDContensInfoTableTable();
-            public SDAgencyInfoTableTable SDAgencyInfoTable = new SDAgencyInfoTableTable();
-            public SDAgencyTableTable SDAgencyTable = new SDAgencyTableTable();
-            public SDPubInfoTableTable SDPubInfoTable = new SDPubInfoTableTable();
-            public SDTrainingInfoTableTable SDTrainingInfoTable = new SDTrainingInfoTableTable();
-            public SDTrainingLevelTableTable SDTrainingLevelTable = new SDTrainingLevelTableTable();
-            public SDDungeonInfoTableTable SDDungeonInfoTable = new SDDungeonInfoTableTable();
-            public SDDungeonCardTableTable SDDungeonCardTable = new SDDungeonCardTableTable();
-            public SDDungeonRewardTableTable SDDungeonRewardTable = new SDDungeonRewardTableTable();
-            public SDAlchemyInfoTableTable SDAlchemyInfoTable = new SDAlchemyInfoTableTable();
-            public SDAlchemyStepTableTable SDAlchemyStepTable = new SDAlchemyStepTableTable();
-            public SDAlchemyLevelTableTable SDAlchemyLevelTable = new SDAlchemyLevelTableTable();
-            public ShopInfoTableTable ShopInfoTable = new ShopInfoTableTable();
-            public MainShopTableTable MainShopTable = new MainShopTableTable();
-            public PackageShopTableTable PackageShopTable = new PackageShopTableTable();
-            public SeasonShopTableTable SeasonShopTable = new SeasonShopTableTable();
-            public CashShopTableTable CashShopTable = new CashShopTableTable();
-            public BGMSoundTableTable BGMSoundTable = new BGMSoundTableTable();
-            public SFXSoundTableTable SFXSoundTable = new SFXSoundTableTable();
-            public InfoGrowthTableTable InfoGrowthTable = new InfoGrowthTableTable();
-            public StatGrowthTableTable StatGrowthTable = new StatGrowthTableTable();
-            public TraitTableTable TraitTable = new TraitTableTable();
-            public RelicTableTable RelicTable = new RelicTableTable();
-            public StarNodeTableTable StarNodeTable = new StarNodeTableTable();
-            public CostCurveTableTable CostCurveTable = new CostCurveTableTable();
-            public CostCurveRangeTableTable CostCurveRangeTable = new CostCurveRangeTableTable();
+            public CollectionGroupTable CollectionGroup = new CollectionGroupTable();
+            public CollectionTable Collection = new CollectionTable();
+            public ConditionTable Condition = new ConditionTable();
+            public DailyDungeonInfoTable DailyDungeonInfo = new DailyDungeonInfoTable();
+            public GoldDungeonStageTable GoldDungeonStage = new GoldDungeonStageTable();
+            public GoldDungeonRewardTable GoldDungeonReward = new GoldDungeonRewardTable();
+            public ExpDungeonStageTable ExpDungeonStage = new ExpDungeonStageTable();
+            public ExpDungeonRewardTable ExpDungeonReward = new ExpDungeonRewardTable();
+            public TraitDungeonStageTable TraitDungeonStage = new TraitDungeonStageTable();
+            public TraitDungeonRewardTable TraitDungeonReward = new TraitDungeonRewardTable();
+            public RelicDungeonStageTable RelicDungeonStage = new RelicDungeonStageTable();
+            public RelicDungeonRewardTable RelicDungeonReward = new RelicDungeonRewardTable();
+            public OopartsDungeonStageTable OopartsDungeonStage = new OopartsDungeonStageTable();
+            public OopartsDungeonRewardTable OopartsDungeonReward = new OopartsDungeonRewardTable();
+            public GachaInfoTable GachaInfo = new GachaInfoTable();
+            public GachaCharacterListTable GachaCharacterList = new GachaCharacterListTable();
+            public GachaArtifactInfoTable GachaArtifactInfo = new GachaArtifactInfoTable();
+            public GachaArtifactListTable GachaArtifactList = new GachaArtifactListTable();
+            public GachaRateTable GachaRate = new GachaRateTable();
+            public CurrencyTable Currency = new CurrencyTable();
+            public MaterialTable Material = new MaterialTable();
+            public PackageTable Package = new PackageTable();
+            public ClassUpCurrencyListTable ClassUpCurrencyList = new ClassUpCurrencyListTable();
+            public EquipItemLevelTable EquipItemLevel = new EquipItemLevelTable();
+            public EquipItemClassTable EquipItemClass = new EquipItemClassTable();
+            public EquipTable Equip = new EquipTable();
+            public EquipItemGradeTable EquipItemGrade = new EquipItemGradeTable();
+            public CharacterTable Character = new CharacterTable();
+            public SkillTable Skill = new SkillTable();
+            public BuffTable Buff = new BuffTable();
+            public CharacterLevelTable CharacterLevel = new CharacterLevelTable();
+            public CharacterTranscendenceTable CharacterTranscendence = new CharacterTranscendenceTable();
+            public ArtifactTable Artifact = new ArtifactTable();
+            public ArtifactLevelTable ArtifactLevel = new ArtifactLevelTable();
+            public ArtifactTranscendenceTable ArtifactTranscendence = new ArtifactTranscendenceTable();
+            public BuffSelectTable BuffSelect = new BuffSelectTable();
+            public ShortCutTable ShortCut = new ShortCutTable();
+            public StageTable Stage = new StageTable();
+            public ConfigTable Config = new ConfigTable();
+            public DropGroupTable DropGroup = new DropGroupTable();
+            public AttributeTable Attribute = new AttributeTable();
+            public SDContensInfoTable SDContensInfo = new SDContensInfoTable();
+            public SDAgencyInfoTable SDAgencyInfo = new SDAgencyInfoTable();
+            public SDAgencyTable SDAgency = new SDAgencyTable();
+            public SDPubInfoTable SDPubInfo = new SDPubInfoTable();
+            public SDTrainingInfoTable SDTrainingInfo = new SDTrainingInfoTable();
+            public SDTrainingLevelTable SDTrainingLevel = new SDTrainingLevelTable();
+            public SDDungeonInfoTable SDDungeonInfo = new SDDungeonInfoTable();
+            public SDDungeonCardTable SDDungeonCard = new SDDungeonCardTable();
+            public SDDungeonRewardTable SDDungeonReward = new SDDungeonRewardTable();
+            public SDAlchemyInfoTable SDAlchemyInfo = new SDAlchemyInfoTable();
+            public SDAlchemyStepTable SDAlchemyStep = new SDAlchemyStepTable();
+            public SDAlchemyLevelTable SDAlchemyLevel = new SDAlchemyLevelTable();
+            public ShopInfoTable ShopInfo = new ShopInfoTable();
+            public MainShopTable MainShop = new MainShopTable();
+            public PackageShopTable PackageShop = new PackageShopTable();
+            public SeasonShopTable SeasonShop = new SeasonShopTable();
+            public CashShopTable CashShop = new CashShopTable();
+            public BGMSoundTable BGMSound = new BGMSoundTable();
+            public SFXSoundTable SFXSound = new SFXSoundTable();
+            public InfoGrowthTable InfoGrowth = new InfoGrowthTable();
+            public StatGrowthTable StatGrowth = new StatGrowthTable();
+            public TraitTable Trait = new TraitTable();
+            public RelicTable Relic = new RelicTable();
+            public StarNodeTable StarNode = new StarNodeTable();
+            public CostCurveTable CostCurve = new CostCurveTable();
+            public CostCurveRangeTable CostCurveRange = new CostCurveRangeTable();
         }
 
 
@@ -546,73 +546,73 @@ namespace Rescue.Tables
         {
             var snapshot = new Snapshot();
             var tasks = new List<Task>();
-            tasks.Add(snapshot.CollectionGroupTable.ReadAsync(System.IO.Path.Combine(basePath, $"CollectionGroupTable{fileExtension}")));
-            tasks.Add(snapshot.CollectionTable.ReadAsync(System.IO.Path.Combine(basePath, $"CollectionTable{fileExtension}")));
-            tasks.Add(snapshot.ConditionTable.ReadAsync(System.IO.Path.Combine(basePath, $"ConditionTable{fileExtension}")));
-            tasks.Add(snapshot.DailyDungeonInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"DailyDungeonInfoTable{fileExtension}")));
-            tasks.Add(snapshot.GoldDungeonStageTable.ReadAsync(System.IO.Path.Combine(basePath, $"GoldDungeonStageTable{fileExtension}")));
-            tasks.Add(snapshot.GoldDungeonRewardTable.ReadAsync(System.IO.Path.Combine(basePath, $"GoldDungeonRewardTable{fileExtension}")));
-            tasks.Add(snapshot.ExpDungeonStageTable.ReadAsync(System.IO.Path.Combine(basePath, $"ExpDungeonStageTable{fileExtension}")));
-            tasks.Add(snapshot.ExpDungeonRewardTable.ReadAsync(System.IO.Path.Combine(basePath, $"ExpDungeonRewardTable{fileExtension}")));
-            tasks.Add(snapshot.TraitDungeonStageTable.ReadAsync(System.IO.Path.Combine(basePath, $"TraitDungeonStageTable{fileExtension}")));
-            tasks.Add(snapshot.TraitDungeonRewardTable.ReadAsync(System.IO.Path.Combine(basePath, $"TraitDungeonRewardTable{fileExtension}")));
-            tasks.Add(snapshot.RelicDungeonStageTable.ReadAsync(System.IO.Path.Combine(basePath, $"RelicDungeonStageTable{fileExtension}")));
-            tasks.Add(snapshot.RelicDungeonRewardTable.ReadAsync(System.IO.Path.Combine(basePath, $"RelicDungeonRewardTable{fileExtension}")));
-            tasks.Add(snapshot.OopartsDungeonStageTable.ReadAsync(System.IO.Path.Combine(basePath, $"OopartsDungeonStageTable{fileExtension}")));
-            tasks.Add(snapshot.OopartsDungeonRewardTable.ReadAsync(System.IO.Path.Combine(basePath, $"OopartsDungeonRewardTable{fileExtension}")));
-            tasks.Add(snapshot.GachaInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"GachaInfoTable{fileExtension}")));
-            tasks.Add(snapshot.GachaCharacterListTable.ReadAsync(System.IO.Path.Combine(basePath, $"GachaCharacterListTable{fileExtension}")));
-            tasks.Add(snapshot.GachaArtifactInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"GachaArtifactInfoTable{fileExtension}")));
-            tasks.Add(snapshot.GachaArtifactListTable.ReadAsync(System.IO.Path.Combine(basePath, $"GachaArtifactListTable{fileExtension}")));
-            tasks.Add(snapshot.GachaRateTable.ReadAsync(System.IO.Path.Combine(basePath, $"GachaRateTable{fileExtension}")));
-            tasks.Add(snapshot.CurrencyTable.ReadAsync(System.IO.Path.Combine(basePath, $"CurrencyTable{fileExtension}")));
-            tasks.Add(snapshot.MaterialTable.ReadAsync(System.IO.Path.Combine(basePath, $"MaterialTable{fileExtension}")));
-            tasks.Add(snapshot.PackageTable.ReadAsync(System.IO.Path.Combine(basePath, $"PackageTable{fileExtension}")));
-            tasks.Add(snapshot.ClassUpCurrencyListTable.ReadAsync(System.IO.Path.Combine(basePath, $"ClassUpCurrencyListTable{fileExtension}")));
-            tasks.Add(snapshot.EquipItemLevelTable.ReadAsync(System.IO.Path.Combine(basePath, $"EquipItemLevelTable{fileExtension}")));
-            tasks.Add(snapshot.EquipItemClassTable.ReadAsync(System.IO.Path.Combine(basePath, $"EquipItemClassTable{fileExtension}")));
-            tasks.Add(snapshot.EquipTable.ReadAsync(System.IO.Path.Combine(basePath, $"EquipTable{fileExtension}")));
-            tasks.Add(snapshot.EquipItemGradeTable.ReadAsync(System.IO.Path.Combine(basePath, $"EquipItemGradeTable{fileExtension}")));
-            tasks.Add(snapshot.CharacterTable.ReadAsync(System.IO.Path.Combine(basePath, $"CharacterTable{fileExtension}")));
-            tasks.Add(snapshot.SkillTable.ReadAsync(System.IO.Path.Combine(basePath, $"SkillTable{fileExtension}")));
-            tasks.Add(snapshot.BuffTable.ReadAsync(System.IO.Path.Combine(basePath, $"BuffTable{fileExtension}")));
-            tasks.Add(snapshot.CharacterLevelTable.ReadAsync(System.IO.Path.Combine(basePath, $"CharacterLevelTable{fileExtension}")));
-            tasks.Add(snapshot.CharacterTranscendenceTable.ReadAsync(System.IO.Path.Combine(basePath, $"CharacterTranscendenceTable{fileExtension}")));
-            tasks.Add(snapshot.ArtifactTable.ReadAsync(System.IO.Path.Combine(basePath, $"ArtifactTable{fileExtension}")));
-            tasks.Add(snapshot.ArtifactLevelTable.ReadAsync(System.IO.Path.Combine(basePath, $"ArtifactLevelTable{fileExtension}")));
-            tasks.Add(snapshot.ArtifactTranscendenceTable.ReadAsync(System.IO.Path.Combine(basePath, $"ArtifactTranscendenceTable{fileExtension}")));
-            tasks.Add(snapshot.BuffSelectTable.ReadAsync(System.IO.Path.Combine(basePath, $"BuffSelectTable{fileExtension}")));
-            tasks.Add(snapshot.ShortCutTable.ReadAsync(System.IO.Path.Combine(basePath, $"ShortCutTable{fileExtension}")));
-            tasks.Add(snapshot.StageTable.ReadAsync(System.IO.Path.Combine(basePath, $"StageTable{fileExtension}")));
-            tasks.Add(snapshot.ConfigTable.ReadAsync(System.IO.Path.Combine(basePath, $"ConfigTable{fileExtension}")));
-            tasks.Add(snapshot.DropGroupTable.ReadAsync(System.IO.Path.Combine(basePath, $"DropGroupTable{fileExtension}")));
-            tasks.Add(snapshot.AttributeTable.ReadAsync(System.IO.Path.Combine(basePath, $"AttributeTable{fileExtension}")));
-            tasks.Add(snapshot.SDContensInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDContensInfoTable{fileExtension}")));
-            tasks.Add(snapshot.SDAgencyInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDAgencyInfoTable{fileExtension}")));
-            tasks.Add(snapshot.SDAgencyTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDAgencyTable{fileExtension}")));
-            tasks.Add(snapshot.SDPubInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDPubInfoTable{fileExtension}")));
-            tasks.Add(snapshot.SDTrainingInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDTrainingInfoTable{fileExtension}")));
-            tasks.Add(snapshot.SDTrainingLevelTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDTrainingLevelTable{fileExtension}")));
-            tasks.Add(snapshot.SDDungeonInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDDungeonInfoTable{fileExtension}")));
-            tasks.Add(snapshot.SDDungeonCardTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDDungeonCardTable{fileExtension}")));
-            tasks.Add(snapshot.SDDungeonRewardTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDDungeonRewardTable{fileExtension}")));
-            tasks.Add(snapshot.SDAlchemyInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDAlchemyInfoTable{fileExtension}")));
-            tasks.Add(snapshot.SDAlchemyStepTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDAlchemyStepTable{fileExtension}")));
-            tasks.Add(snapshot.SDAlchemyLevelTable.ReadAsync(System.IO.Path.Combine(basePath, $"SDAlchemyLevelTable{fileExtension}")));
-            tasks.Add(snapshot.ShopInfoTable.ReadAsync(System.IO.Path.Combine(basePath, $"ShopInfoTable{fileExtension}")));
-            tasks.Add(snapshot.MainShopTable.ReadAsync(System.IO.Path.Combine(basePath, $"MainShopTable{fileExtension}")));
-            tasks.Add(snapshot.PackageShopTable.ReadAsync(System.IO.Path.Combine(basePath, $"PackageShopTable{fileExtension}")));
-            tasks.Add(snapshot.SeasonShopTable.ReadAsync(System.IO.Path.Combine(basePath, $"SeasonShopTable{fileExtension}")));
-            tasks.Add(snapshot.CashShopTable.ReadAsync(System.IO.Path.Combine(basePath, $"CashShopTable{fileExtension}")));
-            tasks.Add(snapshot.BGMSoundTable.ReadAsync(System.IO.Path.Combine(basePath, $"BGMSoundTable{fileExtension}")));
-            tasks.Add(snapshot.SFXSoundTable.ReadAsync(System.IO.Path.Combine(basePath, $"SFXSoundTable{fileExtension}")));
-            tasks.Add(snapshot.InfoGrowthTable.ReadAsync(System.IO.Path.Combine(basePath, $"InfoGrowthTable{fileExtension}")));
-            tasks.Add(snapshot.StatGrowthTable.ReadAsync(System.IO.Path.Combine(basePath, $"StatGrowthTable{fileExtension}")));
-            tasks.Add(snapshot.TraitTable.ReadAsync(System.IO.Path.Combine(basePath, $"TraitTable{fileExtension}")));
-            tasks.Add(snapshot.RelicTable.ReadAsync(System.IO.Path.Combine(basePath, $"RelicTable{fileExtension}")));
-            tasks.Add(snapshot.StarNodeTable.ReadAsync(System.IO.Path.Combine(basePath, $"StarNodeTable{fileExtension}")));
-            tasks.Add(snapshot.CostCurveTable.ReadAsync(System.IO.Path.Combine(basePath, $"CostCurveTable{fileExtension}")));
-            tasks.Add(snapshot.CostCurveRangeTable.ReadAsync(System.IO.Path.Combine(basePath, $"CostCurveRangeTable{fileExtension}")));
+            tasks.Add(snapshot.CollectionGroup.ReadAsync(System.IO.Path.Combine(basePath, $"CollectionGroup{fileExtension}")));
+            tasks.Add(snapshot.Collection.ReadAsync(System.IO.Path.Combine(basePath, $"Collection{fileExtension}")));
+            tasks.Add(snapshot.Condition.ReadAsync(System.IO.Path.Combine(basePath, $"Condition{fileExtension}")));
+            tasks.Add(snapshot.DailyDungeonInfo.ReadAsync(System.IO.Path.Combine(basePath, $"DailyDungeonInfo{fileExtension}")));
+            tasks.Add(snapshot.GoldDungeonStage.ReadAsync(System.IO.Path.Combine(basePath, $"GoldDungeonStage{fileExtension}")));
+            tasks.Add(snapshot.GoldDungeonReward.ReadAsync(System.IO.Path.Combine(basePath, $"GoldDungeonReward{fileExtension}")));
+            tasks.Add(snapshot.ExpDungeonStage.ReadAsync(System.IO.Path.Combine(basePath, $"ExpDungeonStage{fileExtension}")));
+            tasks.Add(snapshot.ExpDungeonReward.ReadAsync(System.IO.Path.Combine(basePath, $"ExpDungeonReward{fileExtension}")));
+            tasks.Add(snapshot.TraitDungeonStage.ReadAsync(System.IO.Path.Combine(basePath, $"TraitDungeonStage{fileExtension}")));
+            tasks.Add(snapshot.TraitDungeonReward.ReadAsync(System.IO.Path.Combine(basePath, $"TraitDungeonReward{fileExtension}")));
+            tasks.Add(snapshot.RelicDungeonStage.ReadAsync(System.IO.Path.Combine(basePath, $"RelicDungeonStage{fileExtension}")));
+            tasks.Add(snapshot.RelicDungeonReward.ReadAsync(System.IO.Path.Combine(basePath, $"RelicDungeonReward{fileExtension}")));
+            tasks.Add(snapshot.OopartsDungeonStage.ReadAsync(System.IO.Path.Combine(basePath, $"OopartsDungeonStage{fileExtension}")));
+            tasks.Add(snapshot.OopartsDungeonReward.ReadAsync(System.IO.Path.Combine(basePath, $"OopartsDungeonReward{fileExtension}")));
+            tasks.Add(snapshot.GachaInfo.ReadAsync(System.IO.Path.Combine(basePath, $"GachaInfo{fileExtension}")));
+            tasks.Add(snapshot.GachaCharacterList.ReadAsync(System.IO.Path.Combine(basePath, $"GachaCharacterList{fileExtension}")));
+            tasks.Add(snapshot.GachaArtifactInfo.ReadAsync(System.IO.Path.Combine(basePath, $"GachaArtifactInfo{fileExtension}")));
+            tasks.Add(snapshot.GachaArtifactList.ReadAsync(System.IO.Path.Combine(basePath, $"GachaArtifactList{fileExtension}")));
+            tasks.Add(snapshot.GachaRate.ReadAsync(System.IO.Path.Combine(basePath, $"GachaRate{fileExtension}")));
+            tasks.Add(snapshot.Currency.ReadAsync(System.IO.Path.Combine(basePath, $"Currency{fileExtension}")));
+            tasks.Add(snapshot.Material.ReadAsync(System.IO.Path.Combine(basePath, $"Material{fileExtension}")));
+            tasks.Add(snapshot.Package.ReadAsync(System.IO.Path.Combine(basePath, $"Package{fileExtension}")));
+            tasks.Add(snapshot.ClassUpCurrencyList.ReadAsync(System.IO.Path.Combine(basePath, $"ClassUpCurrencyList{fileExtension}")));
+            tasks.Add(snapshot.EquipItemLevel.ReadAsync(System.IO.Path.Combine(basePath, $"EquipItemLevel{fileExtension}")));
+            tasks.Add(snapshot.EquipItemClass.ReadAsync(System.IO.Path.Combine(basePath, $"EquipItemClass{fileExtension}")));
+            tasks.Add(snapshot.Equip.ReadAsync(System.IO.Path.Combine(basePath, $"Equip{fileExtension}")));
+            tasks.Add(snapshot.EquipItemGrade.ReadAsync(System.IO.Path.Combine(basePath, $"EquipItemGrade{fileExtension}")));
+            tasks.Add(snapshot.Character.ReadAsync(System.IO.Path.Combine(basePath, $"Character{fileExtension}")));
+            tasks.Add(snapshot.Skill.ReadAsync(System.IO.Path.Combine(basePath, $"Skill{fileExtension}")));
+            tasks.Add(snapshot.Buff.ReadAsync(System.IO.Path.Combine(basePath, $"Buff{fileExtension}")));
+            tasks.Add(snapshot.CharacterLevel.ReadAsync(System.IO.Path.Combine(basePath, $"CharacterLevel{fileExtension}")));
+            tasks.Add(snapshot.CharacterTranscendence.ReadAsync(System.IO.Path.Combine(basePath, $"CharacterTranscendence{fileExtension}")));
+            tasks.Add(snapshot.Artifact.ReadAsync(System.IO.Path.Combine(basePath, $"Artifact{fileExtension}")));
+            tasks.Add(snapshot.ArtifactLevel.ReadAsync(System.IO.Path.Combine(basePath, $"ArtifactLevel{fileExtension}")));
+            tasks.Add(snapshot.ArtifactTranscendence.ReadAsync(System.IO.Path.Combine(basePath, $"ArtifactTranscendence{fileExtension}")));
+            tasks.Add(snapshot.BuffSelect.ReadAsync(System.IO.Path.Combine(basePath, $"BuffSelect{fileExtension}")));
+            tasks.Add(snapshot.ShortCut.ReadAsync(System.IO.Path.Combine(basePath, $"ShortCut{fileExtension}")));
+            tasks.Add(snapshot.Stage.ReadAsync(System.IO.Path.Combine(basePath, $"Stage{fileExtension}")));
+            tasks.Add(snapshot.Config.ReadAsync(System.IO.Path.Combine(basePath, $"Config{fileExtension}")));
+            tasks.Add(snapshot.DropGroup.ReadAsync(System.IO.Path.Combine(basePath, $"DropGroup{fileExtension}")));
+            tasks.Add(snapshot.Attribute.ReadAsync(System.IO.Path.Combine(basePath, $"Attribute{fileExtension}")));
+            tasks.Add(snapshot.SDContensInfo.ReadAsync(System.IO.Path.Combine(basePath, $"SDContensInfo{fileExtension}")));
+            tasks.Add(snapshot.SDAgencyInfo.ReadAsync(System.IO.Path.Combine(basePath, $"SDAgencyInfo{fileExtension}")));
+            tasks.Add(snapshot.SDAgency.ReadAsync(System.IO.Path.Combine(basePath, $"SDAgency{fileExtension}")));
+            tasks.Add(snapshot.SDPubInfo.ReadAsync(System.IO.Path.Combine(basePath, $"SDPubInfo{fileExtension}")));
+            tasks.Add(snapshot.SDTrainingInfo.ReadAsync(System.IO.Path.Combine(basePath, $"SDTrainingInfo{fileExtension}")));
+            tasks.Add(snapshot.SDTrainingLevel.ReadAsync(System.IO.Path.Combine(basePath, $"SDTrainingLevel{fileExtension}")));
+            tasks.Add(snapshot.SDDungeonInfo.ReadAsync(System.IO.Path.Combine(basePath, $"SDDungeonInfo{fileExtension}")));
+            tasks.Add(snapshot.SDDungeonCard.ReadAsync(System.IO.Path.Combine(basePath, $"SDDungeonCard{fileExtension}")));
+            tasks.Add(snapshot.SDDungeonReward.ReadAsync(System.IO.Path.Combine(basePath, $"SDDungeonReward{fileExtension}")));
+            tasks.Add(snapshot.SDAlchemyInfo.ReadAsync(System.IO.Path.Combine(basePath, $"SDAlchemyInfo{fileExtension}")));
+            tasks.Add(snapshot.SDAlchemyStep.ReadAsync(System.IO.Path.Combine(basePath, $"SDAlchemyStep{fileExtension}")));
+            tasks.Add(snapshot.SDAlchemyLevel.ReadAsync(System.IO.Path.Combine(basePath, $"SDAlchemyLevel{fileExtension}")));
+            tasks.Add(snapshot.ShopInfo.ReadAsync(System.IO.Path.Combine(basePath, $"ShopInfo{fileExtension}")));
+            tasks.Add(snapshot.MainShop.ReadAsync(System.IO.Path.Combine(basePath, $"MainShop{fileExtension}")));
+            tasks.Add(snapshot.PackageShop.ReadAsync(System.IO.Path.Combine(basePath, $"PackageShop{fileExtension}")));
+            tasks.Add(snapshot.SeasonShop.ReadAsync(System.IO.Path.Combine(basePath, $"SeasonShop{fileExtension}")));
+            tasks.Add(snapshot.CashShop.ReadAsync(System.IO.Path.Combine(basePath, $"CashShop{fileExtension}")));
+            tasks.Add(snapshot.BGMSound.ReadAsync(System.IO.Path.Combine(basePath, $"BGMSound{fileExtension}")));
+            tasks.Add(snapshot.SFXSound.ReadAsync(System.IO.Path.Combine(basePath, $"SFXSound{fileExtension}")));
+            tasks.Add(snapshot.InfoGrowth.ReadAsync(System.IO.Path.Combine(basePath, $"InfoGrowth{fileExtension}")));
+            tasks.Add(snapshot.StatGrowth.ReadAsync(System.IO.Path.Combine(basePath, $"StatGrowth{fileExtension}")));
+            tasks.Add(snapshot.Trait.ReadAsync(System.IO.Path.Combine(basePath, $"Trait{fileExtension}")));
+            tasks.Add(snapshot.Relic.ReadAsync(System.IO.Path.Combine(basePath, $"Relic{fileExtension}")));
+            tasks.Add(snapshot.StarNode.ReadAsync(System.IO.Path.Combine(basePath, $"StarNode{fileExtension}")));
+            tasks.Add(snapshot.CostCurve.ReadAsync(System.IO.Path.Combine(basePath, $"CostCurve{fileExtension}")));
+            tasks.Add(snapshot.CostCurveRange.ReadAsync(System.IO.Path.Combine(basePath, $"CostCurveRange{fileExtension}")));
 
             await Task.WhenAll(tasks);
 
@@ -623,73 +623,73 @@ namespace Rescue.Tables
             // this load or the one before it - never a mixture.
             System.Threading.Thread.MemoryBarrier();
 
-            CollectionGroupTable = snapshot.CollectionGroupTable;
-            CollectionTable = snapshot.CollectionTable;
-            ConditionTable = snapshot.ConditionTable;
-            DailyDungeonInfoTable = snapshot.DailyDungeonInfoTable;
-            GoldDungeonStageTable = snapshot.GoldDungeonStageTable;
-            GoldDungeonRewardTable = snapshot.GoldDungeonRewardTable;
-            ExpDungeonStageTable = snapshot.ExpDungeonStageTable;
-            ExpDungeonRewardTable = snapshot.ExpDungeonRewardTable;
-            TraitDungeonStageTable = snapshot.TraitDungeonStageTable;
-            TraitDungeonRewardTable = snapshot.TraitDungeonRewardTable;
-            RelicDungeonStageTable = snapshot.RelicDungeonStageTable;
-            RelicDungeonRewardTable = snapshot.RelicDungeonRewardTable;
-            OopartsDungeonStageTable = snapshot.OopartsDungeonStageTable;
-            OopartsDungeonRewardTable = snapshot.OopartsDungeonRewardTable;
-            GachaInfoTable = snapshot.GachaInfoTable;
-            GachaCharacterListTable = snapshot.GachaCharacterListTable;
-            GachaArtifactInfoTable = snapshot.GachaArtifactInfoTable;
-            GachaArtifactListTable = snapshot.GachaArtifactListTable;
-            GachaRateTable = snapshot.GachaRateTable;
-            CurrencyTable = snapshot.CurrencyTable;
-            MaterialTable = snapshot.MaterialTable;
-            PackageTable = snapshot.PackageTable;
-            ClassUpCurrencyListTable = snapshot.ClassUpCurrencyListTable;
-            EquipItemLevelTable = snapshot.EquipItemLevelTable;
-            EquipItemClassTable = snapshot.EquipItemClassTable;
-            EquipTable = snapshot.EquipTable;
-            EquipItemGradeTable = snapshot.EquipItemGradeTable;
-            CharacterTable = snapshot.CharacterTable;
-            SkillTable = snapshot.SkillTable;
-            BuffTable = snapshot.BuffTable;
-            CharacterLevelTable = snapshot.CharacterLevelTable;
-            CharacterTranscendenceTable = snapshot.CharacterTranscendenceTable;
-            ArtifactTable = snapshot.ArtifactTable;
-            ArtifactLevelTable = snapshot.ArtifactLevelTable;
-            ArtifactTranscendenceTable = snapshot.ArtifactTranscendenceTable;
-            BuffSelectTable = snapshot.BuffSelectTable;
-            ShortCutTable = snapshot.ShortCutTable;
-            StageTable = snapshot.StageTable;
-            ConfigTable = snapshot.ConfigTable;
-            DropGroupTable = snapshot.DropGroupTable;
-            AttributeTable = snapshot.AttributeTable;
-            SDContensInfoTable = snapshot.SDContensInfoTable;
-            SDAgencyInfoTable = snapshot.SDAgencyInfoTable;
-            SDAgencyTable = snapshot.SDAgencyTable;
-            SDPubInfoTable = snapshot.SDPubInfoTable;
-            SDTrainingInfoTable = snapshot.SDTrainingInfoTable;
-            SDTrainingLevelTable = snapshot.SDTrainingLevelTable;
-            SDDungeonInfoTable = snapshot.SDDungeonInfoTable;
-            SDDungeonCardTable = snapshot.SDDungeonCardTable;
-            SDDungeonRewardTable = snapshot.SDDungeonRewardTable;
-            SDAlchemyInfoTable = snapshot.SDAlchemyInfoTable;
-            SDAlchemyStepTable = snapshot.SDAlchemyStepTable;
-            SDAlchemyLevelTable = snapshot.SDAlchemyLevelTable;
-            ShopInfoTable = snapshot.ShopInfoTable;
-            MainShopTable = snapshot.MainShopTable;
-            PackageShopTable = snapshot.PackageShopTable;
-            SeasonShopTable = snapshot.SeasonShopTable;
-            CashShopTable = snapshot.CashShopTable;
-            BGMSoundTable = snapshot.BGMSoundTable;
-            SFXSoundTable = snapshot.SFXSoundTable;
-            InfoGrowthTable = snapshot.InfoGrowthTable;
-            StatGrowthTable = snapshot.StatGrowthTable;
-            TraitTable = snapshot.TraitTable;
-            RelicTable = snapshot.RelicTable;
-            StarNodeTable = snapshot.StarNodeTable;
-            CostCurveTable = snapshot.CostCurveTable;
-            CostCurveRangeTable = snapshot.CostCurveRangeTable;
+            CollectionGroup = snapshot.CollectionGroup;
+            Collection = snapshot.Collection;
+            Condition = snapshot.Condition;
+            DailyDungeonInfo = snapshot.DailyDungeonInfo;
+            GoldDungeonStage = snapshot.GoldDungeonStage;
+            GoldDungeonReward = snapshot.GoldDungeonReward;
+            ExpDungeonStage = snapshot.ExpDungeonStage;
+            ExpDungeonReward = snapshot.ExpDungeonReward;
+            TraitDungeonStage = snapshot.TraitDungeonStage;
+            TraitDungeonReward = snapshot.TraitDungeonReward;
+            RelicDungeonStage = snapshot.RelicDungeonStage;
+            RelicDungeonReward = snapshot.RelicDungeonReward;
+            OopartsDungeonStage = snapshot.OopartsDungeonStage;
+            OopartsDungeonReward = snapshot.OopartsDungeonReward;
+            GachaInfo = snapshot.GachaInfo;
+            GachaCharacterList = snapshot.GachaCharacterList;
+            GachaArtifactInfo = snapshot.GachaArtifactInfo;
+            GachaArtifactList = snapshot.GachaArtifactList;
+            GachaRate = snapshot.GachaRate;
+            Currency = snapshot.Currency;
+            Material = snapshot.Material;
+            Package = snapshot.Package;
+            ClassUpCurrencyList = snapshot.ClassUpCurrencyList;
+            EquipItemLevel = snapshot.EquipItemLevel;
+            EquipItemClass = snapshot.EquipItemClass;
+            Equip = snapshot.Equip;
+            EquipItemGrade = snapshot.EquipItemGrade;
+            Character = snapshot.Character;
+            Skill = snapshot.Skill;
+            Buff = snapshot.Buff;
+            CharacterLevel = snapshot.CharacterLevel;
+            CharacterTranscendence = snapshot.CharacterTranscendence;
+            Artifact = snapshot.Artifact;
+            ArtifactLevel = snapshot.ArtifactLevel;
+            ArtifactTranscendence = snapshot.ArtifactTranscendence;
+            BuffSelect = snapshot.BuffSelect;
+            ShortCut = snapshot.ShortCut;
+            Stage = snapshot.Stage;
+            Config = snapshot.Config;
+            DropGroup = snapshot.DropGroup;
+            Attribute = snapshot.Attribute;
+            SDContensInfo = snapshot.SDContensInfo;
+            SDAgencyInfo = snapshot.SDAgencyInfo;
+            SDAgency = snapshot.SDAgency;
+            SDPubInfo = snapshot.SDPubInfo;
+            SDTrainingInfo = snapshot.SDTrainingInfo;
+            SDTrainingLevel = snapshot.SDTrainingLevel;
+            SDDungeonInfo = snapshot.SDDungeonInfo;
+            SDDungeonCard = snapshot.SDDungeonCard;
+            SDDungeonReward = snapshot.SDDungeonReward;
+            SDAlchemyInfo = snapshot.SDAlchemyInfo;
+            SDAlchemyStep = snapshot.SDAlchemyStep;
+            SDAlchemyLevel = snapshot.SDAlchemyLevel;
+            ShopInfo = snapshot.ShopInfo;
+            MainShop = snapshot.MainShop;
+            PackageShop = snapshot.PackageShop;
+            SeasonShop = snapshot.SeasonShop;
+            CashShop = snapshot.CashShop;
+            BGMSound = snapshot.BGMSound;
+            SFXSound = snapshot.SFXSound;
+            InfoGrowth = snapshot.InfoGrowth;
+            StatGrowth = snapshot.StatGrowth;
+            Trait = snapshot.Trait;
+            Relic = snapshot.Relic;
+            StarNode = snapshot.StarNode;
+            CostCurve = snapshot.CostCurve;
+            CostCurveRange = snapshot.CostCurveRange;
         }
 
 

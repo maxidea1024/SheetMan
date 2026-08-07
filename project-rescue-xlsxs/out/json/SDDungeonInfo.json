@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "SDDungeonRule",
+    "nameKR": "지하던전 규칙",
+    "totalCount": 12,
+    "trapCount": 4,
+    "actionCount": 6,
+    "matchCost": 1,
+    "mismatchCost": 1,
+    "trapCost": 1,
+    "viewTime": 3000,
+    "time": 1000,
+    "aDCount": 1,
+    "dailyFreeCount": 1
+  }
+]

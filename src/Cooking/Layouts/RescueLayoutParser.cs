@@ -8,8 +8,8 @@ using SheetMan.Models.Raw;
 namespace SheetMan.Cooking.Layouts;
 
 /// <summary>
-/// A layout for sheets written to another convention: one table per sheet, named by its tab,
-/// with three header rows above the data.
+/// A layout for sheets written to another convention: one table per sheet, named by its tab
+/// less the `Table` the tabs end with, with three header rows above the data.
 /// </summary>
 /// <remarks>
 /// <code>
@@ -37,7 +37,7 @@ namespace SheetMan.Cooking.Layouts;
 /// means all come from <see cref="CookingContext"/> unchanged.
 /// </remarks>
 [SheetManLayout("rescue",
-    Summary = "One table per sheet, named by the sheet tab, with three header rows.")]
+    Summary = "One table per sheet, named by the sheet tab less its trailing `Table`, with three header rows.")]
 public sealed class RescueLayoutParser : ILayoutParser
 {
     /// <summary>Row holding each column's description. A `#` here drops the column.</summary>
@@ -112,7 +112,8 @@ public sealed class RescueLayoutParser : ILayoutParser
             {
                 throw new SheetManException(table.Location,
                     $"Table `{table.Name}` is already defined. In this layout a table is named by its " +
-                    "sheet tab, so two sheets of the same name in one source collide.");
+                    "sheet tab, less any trailing `Table`, so two tabs whose names agree once that " +
+                    "word is dropped collide.");
             }
 
             Model.Tables.Add(table);
@@ -293,7 +294,7 @@ public sealed class RescueLayoutParser : ILayoutParser
         }
 
         string rawName = sheetName;
-        string name = rawName.ToPascalCase();
+        string name = TableNameFor(rawName);
 
         _context.RequiresIdentifier(name, sheet.Location);
 
@@ -321,6 +322,26 @@ public sealed class RescueLayoutParser : ILayoutParser
         _context.AssignTags(table);
 
         return table;
+    }
+
+    /// <summary>
+    /// The table name a sheet tab yields: the tab's name, less the `Table` these
+    /// workbooks end every table tab with.
+    /// </summary>
+    /// <remarks>
+    /// The word is not dropped for tidiness. Every generator builds the container type's
+    /// name by appending `Table` to the table's name, so a tab called `ItemTable` kept
+    /// whole would come out as a class called `ItemTableTable`. A tab named just `Table`
+    /// keeps its name - there is nothing left once the word comes off.
+    /// </remarks>
+    private static string TableNameFor(string rawName)
+    {
+        string name = rawName.ToPascalCase();
+
+        if (name.Length > "Table".Length && name.EndsWith("Table"))
+            name = name.Substring(0, name.Length - "Table".Length);
+
+        return name;
     }
 
     /// <summary>

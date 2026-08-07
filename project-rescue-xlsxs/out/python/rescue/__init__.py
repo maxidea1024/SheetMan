@@ -42,73 +42,73 @@ from .enum_sd_card_type import SDCardType
 from .enum_shop_slot_type import ShopSlotType
 from .enum_option_type import OptionType
 from .enum_value_type import ValueType
-from .collection_group_table_table import CollectionGroupTableRecord, CollectionGroupTableTable
-from .collection_table_table import CollectionTableRecord, CollectionTableTable
-from .condition_table_table import ConditionTableRecord, ConditionTableTable
-from .daily_dungeon_info_table_table import DailyDungeonInfoTableRecord, DailyDungeonInfoTableTable
-from .gold_dungeon_stage_table_table import GoldDungeonStageTableRecord, GoldDungeonStageTableTable
-from .gold_dungeon_reward_table_table import GoldDungeonRewardTableRecord, GoldDungeonRewardTableTable
-from .exp_dungeon_stage_table_table import ExpDungeonStageTableRecord, ExpDungeonStageTableTable
-from .exp_dungeon_reward_table_table import ExpDungeonRewardTableRecord, ExpDungeonRewardTableTable
-from .trait_dungeon_stage_table_table import TraitDungeonStageTableRecord, TraitDungeonStageTableTable
-from .trait_dungeon_reward_table_table import TraitDungeonRewardTableRecord, TraitDungeonRewardTableTable
-from .relic_dungeon_stage_table_table import RelicDungeonStageTableRecord, RelicDungeonStageTableTable
-from .relic_dungeon_reward_table_table import RelicDungeonRewardTableRecord, RelicDungeonRewardTableTable
-from .ooparts_dungeon_stage_table_table import OopartsDungeonStageTableRecord, OopartsDungeonStageTableTable
-from .ooparts_dungeon_reward_table_table import OopartsDungeonRewardTableRecord, OopartsDungeonRewardTableTable
-from .gacha_info_table_table import GachaInfoTableRecord, GachaInfoTableTable
-from .gacha_character_list_table_table import GachaCharacterListTableRecord, GachaCharacterListTableTable
-from .gacha_artifact_info_table_table import GachaArtifactInfoTableRecord, GachaArtifactInfoTableTable
-from .gacha_artifact_list_table_table import GachaArtifactListTableRecord, GachaArtifactListTableTable
-from .gacha_rate_table_table import GachaRateTableRecord, GachaRateTableTable
-from .currency_table_table import CurrencyTableRecord, CurrencyTableTable
-from .material_table_table import MaterialTableRecord, MaterialTableTable
-from .package_table_table import PackageTableRecord, PackageTableTable
-from .class_up_currency_list_table_table import ClassUpCurrencyListTableRecord, ClassUpCurrencyListTableTable
-from .equip_item_level_table_table import EquipItemLevelTableRecord, EquipItemLevelTableTable
-from .equip_item_class_table_table import EquipItemClassTableRecord, EquipItemClassTableTable
-from .equip_table_table import EquipTableRecord, EquipTableTable
-from .equip_item_grade_table_table import EquipItemGradeTableRecord, EquipItemGradeTableTable
-from .character_table_table import CharacterTableRecord, CharacterTableTable
-from .skill_table_table import SkillTableRecord, SkillTableTable
-from .buff_table_table import BuffTableRecord, BuffTableTable
-from .character_level_table_table import CharacterLevelTableRecord, CharacterLevelTableTable
-from .character_transcendence_table_table import CharacterTranscendenceTableRecord, CharacterTranscendenceTableTable
-from .artifact_table_table import ArtifactTableRecord, ArtifactTableTable
-from .artifact_level_table_table import ArtifactLevelTableRecord, ArtifactLevelTableTable
-from .artifact_transcendence_table_table import ArtifactTranscendenceTableRecord, ArtifactTranscendenceTableTable
-from .buff_select_table_table import BuffSelectTableRecord, BuffSelectTableTable
-from .short_cut_table_table import ShortCutTableRecord, ShortCutTableTable
-from .stage_table_table import StageTableRecord, StageTableTable
-from .config_table_table import ConfigTableRecord, ConfigTableTable
-from .drop_group_table_table import DropGroupTableRecord, DropGroupTableTable
-from .attribute_table_table import AttributeTableRecord, AttributeTableTable
-from .sd_contens_info_table_table import SDContensInfoTableRecord, SDContensInfoTableTable
-from .sd_agency_info_table_table import SDAgencyInfoTableRecord, SDAgencyInfoTableTable
-from .sd_agency_table_table import SDAgencyTableRecord, SDAgencyTableTable
-from .sd_pub_info_table_table import SDPubInfoTableRecord, SDPubInfoTableTable
-from .sd_training_info_table_table import SDTrainingInfoTableRecord, SDTrainingInfoTableTable
-from .sd_training_level_table_table import SDTrainingLevelTableRecord, SDTrainingLevelTableTable
-from .sd_dungeon_info_table_table import SDDungeonInfoTableRecord, SDDungeonInfoTableTable
-from .sd_dungeon_card_table_table import SDDungeonCardTableRecord, SDDungeonCardTableTable
-from .sd_dungeon_reward_table_table import SDDungeonRewardTableRecord, SDDungeonRewardTableTable
-from .sd_alchemy_info_table_table import SDAlchemyInfoTableRecord, SDAlchemyInfoTableTable
-from .sd_alchemy_step_table_table import SDAlchemyStepTableRecord, SDAlchemyStepTableTable
-from .sd_alchemy_level_table_table import SDAlchemyLevelTableRecord, SDAlchemyLevelTableTable
-from .shop_info_table_table import ShopInfoTableRecord, ShopInfoTableTable
-from .main_shop_table_table import MainShopTableRecord, MainShopTableTable
-from .package_shop_table_table import PackageShopTableRecord, PackageShopTableTable
-from .season_shop_table_table import SeasonShopTableRecord, SeasonShopTableTable
-from .cash_shop_table_table import CashShopTableRecord, CashShopTableTable
-from .bgm_sound_table_table import BGMSoundTableRecord, BGMSoundTableTable
-from .sfx_sound_table_table import SFXSoundTableRecord, SFXSoundTableTable
-from .info_growth_table_table import InfoGrowthTableRecord, InfoGrowthTableTable
-from .stat_growth_table_table import StatGrowthTableRecord, StatGrowthTableTable
-from .trait_table_table import TraitTableRecord, TraitTableTable
-from .relic_table_table import RelicTableRecord, RelicTableTable
-from .star_node_table_table import StarNodeTableRecord, StarNodeTableTable
-from .cost_curve_table_table import CostCurveTableRecord, CostCurveTableTable
-from .cost_curve_range_table_table import CostCurveRangeTableRecord, CostCurveRangeTableTable
+from .collection_group_table import CollectionGroupRecord, CollectionGroupTable
+from .collection_table import CollectionRecord, CollectionTable
+from .condition_table import ConditionRecord, ConditionTable
+from .daily_dungeon_info_table import DailyDungeonInfoRecord, DailyDungeonInfoTable
+from .gold_dungeon_stage_table import GoldDungeonStageRecord, GoldDungeonStageTable
+from .gold_dungeon_reward_table import GoldDungeonRewardRecord, GoldDungeonRewardTable
+from .exp_dungeon_stage_table import ExpDungeonStageRecord, ExpDungeonStageTable
+from .exp_dungeon_reward_table import ExpDungeonRewardRecord, ExpDungeonRewardTable
+from .trait_dungeon_stage_table import TraitDungeonStageRecord, TraitDungeonStageTable
+from .trait_dungeon_reward_table import TraitDungeonRewardRecord, TraitDungeonRewardTable
+from .relic_dungeon_stage_table import RelicDungeonStageRecord, RelicDungeonStageTable
+from .relic_dungeon_reward_table import RelicDungeonRewardRecord, RelicDungeonRewardTable
+from .ooparts_dungeon_stage_table import OopartsDungeonStageRecord, OopartsDungeonStageTable
+from .ooparts_dungeon_reward_table import OopartsDungeonRewardRecord, OopartsDungeonRewardTable
+from .gacha_info_table import GachaInfoRecord, GachaInfoTable
+from .gacha_character_list_table import GachaCharacterListRecord, GachaCharacterListTable
+from .gacha_artifact_info_table import GachaArtifactInfoRecord, GachaArtifactInfoTable
+from .gacha_artifact_list_table import GachaArtifactListRecord, GachaArtifactListTable
+from .gacha_rate_table import GachaRateRecord, GachaRateTable
+from .currency_table import CurrencyRecord, CurrencyTable
+from .material_table import MaterialRecord, MaterialTable
+from .package_table import PackageRecord, PackageTable
+from .class_up_currency_list_table import ClassUpCurrencyListRecord, ClassUpCurrencyListTable
+from .equip_item_level_table import EquipItemLevelRecord, EquipItemLevelTable
+from .equip_item_class_table import EquipItemClassRecord, EquipItemClassTable
+from .equip_table import EquipRecord, EquipTable
+from .equip_item_grade_table import EquipItemGradeRecord, EquipItemGradeTable
+from .character_table import CharacterRecord, CharacterTable
+from .skill_table import SkillRecord, SkillTable
+from .buff_table import BuffRecord, BuffTable
+from .character_level_table import CharacterLevelRecord, CharacterLevelTable
+from .character_transcendence_table import CharacterTranscendenceRecord, CharacterTranscendenceTable
+from .artifact_table import ArtifactRecord, ArtifactTable
+from .artifact_level_table import ArtifactLevelRecord, ArtifactLevelTable
+from .artifact_transcendence_table import ArtifactTranscendenceRecord, ArtifactTranscendenceTable
+from .buff_select_table import BuffSelectRecord, BuffSelectTable
+from .short_cut_table import ShortCutRecord, ShortCutTable
+from .stage_table import StageRecord, StageTable
+from .config_table import ConfigRecord, ConfigTable
+from .drop_group_table import DropGroupRecord, DropGroupTable
+from .attribute_table import AttributeRecord, AttributeTable
+from .sd_contens_info_table import SDContensInfoRecord, SDContensInfoTable
+from .sd_agency_info_table import SDAgencyInfoRecord, SDAgencyInfoTable
+from .sd_agency_table import SDAgencyRecord, SDAgencyTable
+from .sd_pub_info_table import SDPubInfoRecord, SDPubInfoTable
+from .sd_training_info_table import SDTrainingInfoRecord, SDTrainingInfoTable
+from .sd_training_level_table import SDTrainingLevelRecord, SDTrainingLevelTable
+from .sd_dungeon_info_table import SDDungeonInfoRecord, SDDungeonInfoTable
+from .sd_dungeon_card_table import SDDungeonCardRecord, SDDungeonCardTable
+from .sd_dungeon_reward_table import SDDungeonRewardRecord, SDDungeonRewardTable
+from .sd_alchemy_info_table import SDAlchemyInfoRecord, SDAlchemyInfoTable
+from .sd_alchemy_step_table import SDAlchemyStepRecord, SDAlchemyStepTable
+from .sd_alchemy_level_table import SDAlchemyLevelRecord, SDAlchemyLevelTable
+from .shop_info_table import ShopInfoRecord, ShopInfoTable
+from .main_shop_table import MainShopRecord, MainShopTable
+from .package_shop_table import PackageShopRecord, PackageShopTable
+from .season_shop_table import SeasonShopRecord, SeasonShopTable
+from .cash_shop_table import CashShopRecord, CashShopTable
+from .bgm_sound_table import BGMSoundRecord, BGMSoundTable
+from .sfx_sound_table import SFXSoundRecord, SFXSoundTable
+from .info_growth_table import InfoGrowthRecord, InfoGrowthTable
+from .stat_growth_table import StatGrowthRecord, StatGrowthTable
+from .trait_table import TraitRecord, TraitTable
+from .relic_table import RelicRecord, RelicTable
+from .star_node_table import StarNodeRecord, StarNodeTable
+from .cost_curve_table import CostCurveRecord, CostCurveTable
+from .cost_curve_range_table import CostCurveRangeRecord, CostCurveRangeTable
 from .tables import Tables
 
 __all__ = [
@@ -149,139 +149,139 @@ __all__ = [
     "ShopSlotType",
     "OptionType",
     "ValueType",
-    "CollectionGroupTableRecord",
-    "CollectionGroupTableTable",
-    "CollectionTableRecord",
-    "CollectionTableTable",
-    "ConditionTableRecord",
-    "ConditionTableTable",
-    "DailyDungeonInfoTableRecord",
-    "DailyDungeonInfoTableTable",
-    "GoldDungeonStageTableRecord",
-    "GoldDungeonStageTableTable",
-    "GoldDungeonRewardTableRecord",
-    "GoldDungeonRewardTableTable",
-    "ExpDungeonStageTableRecord",
-    "ExpDungeonStageTableTable",
-    "ExpDungeonRewardTableRecord",
-    "ExpDungeonRewardTableTable",
-    "TraitDungeonStageTableRecord",
-    "TraitDungeonStageTableTable",
-    "TraitDungeonRewardTableRecord",
-    "TraitDungeonRewardTableTable",
-    "RelicDungeonStageTableRecord",
-    "RelicDungeonStageTableTable",
-    "RelicDungeonRewardTableRecord",
-    "RelicDungeonRewardTableTable",
-    "OopartsDungeonStageTableRecord",
-    "OopartsDungeonStageTableTable",
-    "OopartsDungeonRewardTableRecord",
-    "OopartsDungeonRewardTableTable",
-    "GachaInfoTableRecord",
-    "GachaInfoTableTable",
-    "GachaCharacterListTableRecord",
-    "GachaCharacterListTableTable",
-    "GachaArtifactInfoTableRecord",
-    "GachaArtifactInfoTableTable",
-    "GachaArtifactListTableRecord",
-    "GachaArtifactListTableTable",
-    "GachaRateTableRecord",
-    "GachaRateTableTable",
-    "CurrencyTableRecord",
-    "CurrencyTableTable",
-    "MaterialTableRecord",
-    "MaterialTableTable",
-    "PackageTableRecord",
-    "PackageTableTable",
-    "ClassUpCurrencyListTableRecord",
-    "ClassUpCurrencyListTableTable",
-    "EquipItemLevelTableRecord",
-    "EquipItemLevelTableTable",
-    "EquipItemClassTableRecord",
-    "EquipItemClassTableTable",
-    "EquipTableRecord",
-    "EquipTableTable",
-    "EquipItemGradeTableRecord",
-    "EquipItemGradeTableTable",
-    "CharacterTableRecord",
-    "CharacterTableTable",
-    "SkillTableRecord",
-    "SkillTableTable",
-    "BuffTableRecord",
-    "BuffTableTable",
-    "CharacterLevelTableRecord",
-    "CharacterLevelTableTable",
-    "CharacterTranscendenceTableRecord",
-    "CharacterTranscendenceTableTable",
-    "ArtifactTableRecord",
-    "ArtifactTableTable",
-    "ArtifactLevelTableRecord",
-    "ArtifactLevelTableTable",
-    "ArtifactTranscendenceTableRecord",
-    "ArtifactTranscendenceTableTable",
-    "BuffSelectTableRecord",
-    "BuffSelectTableTable",
-    "ShortCutTableRecord",
-    "ShortCutTableTable",
-    "StageTableRecord",
-    "StageTableTable",
-    "ConfigTableRecord",
-    "ConfigTableTable",
-    "DropGroupTableRecord",
-    "DropGroupTableTable",
-    "AttributeTableRecord",
-    "AttributeTableTable",
-    "SDContensInfoTableRecord",
-    "SDContensInfoTableTable",
-    "SDAgencyInfoTableRecord",
-    "SDAgencyInfoTableTable",
-    "SDAgencyTableRecord",
-    "SDAgencyTableTable",
-    "SDPubInfoTableRecord",
-    "SDPubInfoTableTable",
-    "SDTrainingInfoTableRecord",
-    "SDTrainingInfoTableTable",
-    "SDTrainingLevelTableRecord",
-    "SDTrainingLevelTableTable",
-    "SDDungeonInfoTableRecord",
-    "SDDungeonInfoTableTable",
-    "SDDungeonCardTableRecord",
-    "SDDungeonCardTableTable",
-    "SDDungeonRewardTableRecord",
-    "SDDungeonRewardTableTable",
-    "SDAlchemyInfoTableRecord",
-    "SDAlchemyInfoTableTable",
-    "SDAlchemyStepTableRecord",
-    "SDAlchemyStepTableTable",
-    "SDAlchemyLevelTableRecord",
-    "SDAlchemyLevelTableTable",
-    "ShopInfoTableRecord",
-    "ShopInfoTableTable",
-    "MainShopTableRecord",
-    "MainShopTableTable",
-    "PackageShopTableRecord",
-    "PackageShopTableTable",
-    "SeasonShopTableRecord",
-    "SeasonShopTableTable",
-    "CashShopTableRecord",
-    "CashShopTableTable",
-    "BGMSoundTableRecord",
-    "BGMSoundTableTable",
-    "SFXSoundTableRecord",
-    "SFXSoundTableTable",
-    "InfoGrowthTableRecord",
-    "InfoGrowthTableTable",
-    "StatGrowthTableRecord",
-    "StatGrowthTableTable",
-    "TraitTableRecord",
-    "TraitTableTable",
-    "RelicTableRecord",
-    "RelicTableTable",
-    "StarNodeTableRecord",
-    "StarNodeTableTable",
-    "CostCurveTableRecord",
-    "CostCurveTableTable",
-    "CostCurveRangeTableRecord",
-    "CostCurveRangeTableTable",
+    "CollectionGroupRecord",
+    "CollectionGroupTable",
+    "CollectionRecord",
+    "CollectionTable",
+    "ConditionRecord",
+    "ConditionTable",
+    "DailyDungeonInfoRecord",
+    "DailyDungeonInfoTable",
+    "GoldDungeonStageRecord",
+    "GoldDungeonStageTable",
+    "GoldDungeonRewardRecord",
+    "GoldDungeonRewardTable",
+    "ExpDungeonStageRecord",
+    "ExpDungeonStageTable",
+    "ExpDungeonRewardRecord",
+    "ExpDungeonRewardTable",
+    "TraitDungeonStageRecord",
+    "TraitDungeonStageTable",
+    "TraitDungeonRewardRecord",
+    "TraitDungeonRewardTable",
+    "RelicDungeonStageRecord",
+    "RelicDungeonStageTable",
+    "RelicDungeonRewardRecord",
+    "RelicDungeonRewardTable",
+    "OopartsDungeonStageRecord",
+    "OopartsDungeonStageTable",
+    "OopartsDungeonRewardRecord",
+    "OopartsDungeonRewardTable",
+    "GachaInfoRecord",
+    "GachaInfoTable",
+    "GachaCharacterListRecord",
+    "GachaCharacterListTable",
+    "GachaArtifactInfoRecord",
+    "GachaArtifactInfoTable",
+    "GachaArtifactListRecord",
+    "GachaArtifactListTable",
+    "GachaRateRecord",
+    "GachaRateTable",
+    "CurrencyRecord",
+    "CurrencyTable",
+    "MaterialRecord",
+    "MaterialTable",
+    "PackageRecord",
+    "PackageTable",
+    "ClassUpCurrencyListRecord",
+    "ClassUpCurrencyListTable",
+    "EquipItemLevelRecord",
+    "EquipItemLevelTable",
+    "EquipItemClassRecord",
+    "EquipItemClassTable",
+    "EquipRecord",
+    "EquipTable",
+    "EquipItemGradeRecord",
+    "EquipItemGradeTable",
+    "CharacterRecord",
+    "CharacterTable",
+    "SkillRecord",
+    "SkillTable",
+    "BuffRecord",
+    "BuffTable",
+    "CharacterLevelRecord",
+    "CharacterLevelTable",
+    "CharacterTranscendenceRecord",
+    "CharacterTranscendenceTable",
+    "ArtifactRecord",
+    "ArtifactTable",
+    "ArtifactLevelRecord",
+    "ArtifactLevelTable",
+    "ArtifactTranscendenceRecord",
+    "ArtifactTranscendenceTable",
+    "BuffSelectRecord",
+    "BuffSelectTable",
+    "ShortCutRecord",
+    "ShortCutTable",
+    "StageRecord",
+    "StageTable",
+    "ConfigRecord",
+    "ConfigTable",
+    "DropGroupRecord",
+    "DropGroupTable",
+    "AttributeRecord",
+    "AttributeTable",
+    "SDContensInfoRecord",
+    "SDContensInfoTable",
+    "SDAgencyInfoRecord",
+    "SDAgencyInfoTable",
+    "SDAgencyRecord",
+    "SDAgencyTable",
+    "SDPubInfoRecord",
+    "SDPubInfoTable",
+    "SDTrainingInfoRecord",
+    "SDTrainingInfoTable",
+    "SDTrainingLevelRecord",
+    "SDTrainingLevelTable",
+    "SDDungeonInfoRecord",
+    "SDDungeonInfoTable",
+    "SDDungeonCardRecord",
+    "SDDungeonCardTable",
+    "SDDungeonRewardRecord",
+    "SDDungeonRewardTable",
+    "SDAlchemyInfoRecord",
+    "SDAlchemyInfoTable",
+    "SDAlchemyStepRecord",
+    "SDAlchemyStepTable",
+    "SDAlchemyLevelRecord",
+    "SDAlchemyLevelTable",
+    "ShopInfoRecord",
+    "ShopInfoTable",
+    "MainShopRecord",
+    "MainShopTable",
+    "PackageShopRecord",
+    "PackageShopTable",
+    "SeasonShopRecord",
+    "SeasonShopTable",
+    "CashShopRecord",
+    "CashShopTable",
+    "BGMSoundRecord",
+    "BGMSoundTable",
+    "SFXSoundRecord",
+    "SFXSoundTable",
+    "InfoGrowthRecord",
+    "InfoGrowthTable",
+    "StatGrowthRecord",
+    "StatGrowthTable",
+    "TraitRecord",
+    "TraitTable",
+    "RelicRecord",
+    "RelicTable",
+    "StarNodeRecord",
+    "StarNodeTable",
+    "CostCurveRecord",
+    "CostCurveTable",
+    "CostCurveRangeRecord",
+    "CostCurveRangeTable",
     "Tables",
 ]

@@ -30,139 +30,139 @@ import sheetman.KIND_FIXED_ARRAY
 import sheetman.KIND_VAR_ARRAY
 /** Every table, loaded together so cross-table references can be resolved. */
 object Tables {
-    var collectionGroupTable: CollectionGroupTableTable = CollectionGroupTableTable()
+    var collectionGroup: CollectionGroupTable = CollectionGroupTable()
         private set
-    var collectionTable: CollectionTableTable = CollectionTableTable()
+    var collection: CollectionTable = CollectionTable()
         private set
-    var conditionTable: ConditionTableTable = ConditionTableTable()
+    var condition: ConditionTable = ConditionTable()
         private set
-    var dailyDungeonInfoTable: DailyDungeonInfoTableTable = DailyDungeonInfoTableTable()
+    var dailyDungeonInfo: DailyDungeonInfoTable = DailyDungeonInfoTable()
         private set
-    var goldDungeonStageTable: GoldDungeonStageTableTable = GoldDungeonStageTableTable()
+    var goldDungeonStage: GoldDungeonStageTable = GoldDungeonStageTable()
         private set
-    var goldDungeonRewardTable: GoldDungeonRewardTableTable = GoldDungeonRewardTableTable()
+    var goldDungeonReward: GoldDungeonRewardTable = GoldDungeonRewardTable()
         private set
-    var expDungeonStageTable: ExpDungeonStageTableTable = ExpDungeonStageTableTable()
+    var expDungeonStage: ExpDungeonStageTable = ExpDungeonStageTable()
         private set
-    var expDungeonRewardTable: ExpDungeonRewardTableTable = ExpDungeonRewardTableTable()
+    var expDungeonReward: ExpDungeonRewardTable = ExpDungeonRewardTable()
         private set
-    var traitDungeonStageTable: TraitDungeonStageTableTable = TraitDungeonStageTableTable()
+    var traitDungeonStage: TraitDungeonStageTable = TraitDungeonStageTable()
         private set
-    var traitDungeonRewardTable: TraitDungeonRewardTableTable = TraitDungeonRewardTableTable()
+    var traitDungeonReward: TraitDungeonRewardTable = TraitDungeonRewardTable()
         private set
-    var relicDungeonStageTable: RelicDungeonStageTableTable = RelicDungeonStageTableTable()
+    var relicDungeonStage: RelicDungeonStageTable = RelicDungeonStageTable()
         private set
-    var relicDungeonRewardTable: RelicDungeonRewardTableTable = RelicDungeonRewardTableTable()
+    var relicDungeonReward: RelicDungeonRewardTable = RelicDungeonRewardTable()
         private set
-    var oopartsDungeonStageTable: OopartsDungeonStageTableTable = OopartsDungeonStageTableTable()
+    var oopartsDungeonStage: OopartsDungeonStageTable = OopartsDungeonStageTable()
         private set
-    var oopartsDungeonRewardTable: OopartsDungeonRewardTableTable = OopartsDungeonRewardTableTable()
+    var oopartsDungeonReward: OopartsDungeonRewardTable = OopartsDungeonRewardTable()
         private set
-    var gachaInfoTable: GachaInfoTableTable = GachaInfoTableTable()
+    var gachaInfo: GachaInfoTable = GachaInfoTable()
         private set
-    var gachaCharacterListTable: GachaCharacterListTableTable = GachaCharacterListTableTable()
+    var gachaCharacterList: GachaCharacterListTable = GachaCharacterListTable()
         private set
-    var gachaArtifactInfoTable: GachaArtifactInfoTableTable = GachaArtifactInfoTableTable()
+    var gachaArtifactInfo: GachaArtifactInfoTable = GachaArtifactInfoTable()
         private set
-    var gachaArtifactListTable: GachaArtifactListTableTable = GachaArtifactListTableTable()
+    var gachaArtifactList: GachaArtifactListTable = GachaArtifactListTable()
         private set
-    var gachaRateTable: GachaRateTableTable = GachaRateTableTable()
+    var gachaRate: GachaRateTable = GachaRateTable()
         private set
-    var currencyTable: CurrencyTableTable = CurrencyTableTable()
+    var currency: CurrencyTable = CurrencyTable()
         private set
-    var materialTable: MaterialTableTable = MaterialTableTable()
+    var material: MaterialTable = MaterialTable()
         private set
-    var packageTable: PackageTableTable = PackageTableTable()
+    var `package`: PackageTable = PackageTable()
         private set
-    var classUpCurrencyListTable: ClassUpCurrencyListTableTable = ClassUpCurrencyListTableTable()
+    var classUpCurrencyList: ClassUpCurrencyListTable = ClassUpCurrencyListTable()
         private set
-    var equipItemLevelTable: EquipItemLevelTableTable = EquipItemLevelTableTable()
+    var equipItemLevel: EquipItemLevelTable = EquipItemLevelTable()
         private set
-    var equipItemClassTable: EquipItemClassTableTable = EquipItemClassTableTable()
+    var equipItemClass: EquipItemClassTable = EquipItemClassTable()
         private set
-    var equipTable: EquipTableTable = EquipTableTable()
+    var equip: EquipTable = EquipTable()
         private set
-    var equipItemGradeTable: EquipItemGradeTableTable = EquipItemGradeTableTable()
+    var equipItemGrade: EquipItemGradeTable = EquipItemGradeTable()
         private set
-    var characterTable: CharacterTableTable = CharacterTableTable()
+    var character: CharacterTable = CharacterTable()
         private set
-    var skillTable: SkillTableTable = SkillTableTable()
+    var skill: SkillTable = SkillTable()
         private set
-    var buffTable: BuffTableTable = BuffTableTable()
+    var buff: BuffTable = BuffTable()
         private set
-    var characterLevelTable: CharacterLevelTableTable = CharacterLevelTableTable()
+    var characterLevel: CharacterLevelTable = CharacterLevelTable()
         private set
-    var characterTranscendenceTable: CharacterTranscendenceTableTable = CharacterTranscendenceTableTable()
+    var characterTranscendence: CharacterTranscendenceTable = CharacterTranscendenceTable()
         private set
-    var artifactTable: ArtifactTableTable = ArtifactTableTable()
+    var artifact: ArtifactTable = ArtifactTable()
         private set
-    var artifactLevelTable: ArtifactLevelTableTable = ArtifactLevelTableTable()
+    var artifactLevel: ArtifactLevelTable = ArtifactLevelTable()
         private set
-    var artifactTranscendenceTable: ArtifactTranscendenceTableTable = ArtifactTranscendenceTableTable()
+    var artifactTranscendence: ArtifactTranscendenceTable = ArtifactTranscendenceTable()
         private set
-    var buffSelectTable: BuffSelectTableTable = BuffSelectTableTable()
+    var buffSelect: BuffSelectTable = BuffSelectTable()
         private set
-    var shortCutTable: ShortCutTableTable = ShortCutTableTable()
+    var shortCut: ShortCutTable = ShortCutTable()
         private set
-    var stageTable: StageTableTable = StageTableTable()
+    var stage: StageTable = StageTable()
         private set
-    var configTable: ConfigTableTable = ConfigTableTable()
+    var config: ConfigTable = ConfigTable()
         private set
-    var dropGroupTable: DropGroupTableTable = DropGroupTableTable()
+    var dropGroup: DropGroupTable = DropGroupTable()
         private set
-    var attributeTable: AttributeTableTable = AttributeTableTable()
+    var attribute: AttributeTable = AttributeTable()
         private set
-    var sDContensInfoTable: SDContensInfoTableTable = SDContensInfoTableTable()
+    var sDContensInfo: SDContensInfoTable = SDContensInfoTable()
         private set
-    var sDAgencyInfoTable: SDAgencyInfoTableTable = SDAgencyInfoTableTable()
+    var sDAgencyInfo: SDAgencyInfoTable = SDAgencyInfoTable()
         private set
-    var sDAgencyTable: SDAgencyTableTable = SDAgencyTableTable()
+    var sDAgency: SDAgencyTable = SDAgencyTable()
         private set
-    var sDPubInfoTable: SDPubInfoTableTable = SDPubInfoTableTable()
+    var sDPubInfo: SDPubInfoTable = SDPubInfoTable()
         private set
-    var sDTrainingInfoTable: SDTrainingInfoTableTable = SDTrainingInfoTableTable()
+    var sDTrainingInfo: SDTrainingInfoTable = SDTrainingInfoTable()
         private set
-    var sDTrainingLevelTable: SDTrainingLevelTableTable = SDTrainingLevelTableTable()
+    var sDTrainingLevel: SDTrainingLevelTable = SDTrainingLevelTable()
         private set
-    var sDDungeonInfoTable: SDDungeonInfoTableTable = SDDungeonInfoTableTable()
+    var sDDungeonInfo: SDDungeonInfoTable = SDDungeonInfoTable()
         private set
-    var sDDungeonCardTable: SDDungeonCardTableTable = SDDungeonCardTableTable()
+    var sDDungeonCard: SDDungeonCardTable = SDDungeonCardTable()
         private set
-    var sDDungeonRewardTable: SDDungeonRewardTableTable = SDDungeonRewardTableTable()
+    var sDDungeonReward: SDDungeonRewardTable = SDDungeonRewardTable()
         private set
-    var sDAlchemyInfoTable: SDAlchemyInfoTableTable = SDAlchemyInfoTableTable()
+    var sDAlchemyInfo: SDAlchemyInfoTable = SDAlchemyInfoTable()
         private set
-    var sDAlchemyStepTable: SDAlchemyStepTableTable = SDAlchemyStepTableTable()
+    var sDAlchemyStep: SDAlchemyStepTable = SDAlchemyStepTable()
         private set
-    var sDAlchemyLevelTable: SDAlchemyLevelTableTable = SDAlchemyLevelTableTable()
+    var sDAlchemyLevel: SDAlchemyLevelTable = SDAlchemyLevelTable()
         private set
-    var shopInfoTable: ShopInfoTableTable = ShopInfoTableTable()
+    var shopInfo: ShopInfoTable = ShopInfoTable()
         private set
-    var mainShopTable: MainShopTableTable = MainShopTableTable()
+    var mainShop: MainShopTable = MainShopTable()
         private set
-    var packageShopTable: PackageShopTableTable = PackageShopTableTable()
+    var packageShop: PackageShopTable = PackageShopTable()
         private set
-    var seasonShopTable: SeasonShopTableTable = SeasonShopTableTable()
+    var seasonShop: SeasonShopTable = SeasonShopTable()
         private set
-    var cashShopTable: CashShopTableTable = CashShopTableTable()
+    var cashShop: CashShopTable = CashShopTable()
         private set
-    var bGMSoundTable: BGMSoundTableTable = BGMSoundTableTable()
+    var bGMSound: BGMSoundTable = BGMSoundTable()
         private set
-    var sFXSoundTable: SFXSoundTableTable = SFXSoundTableTable()
+    var sFXSound: SFXSoundTable = SFXSoundTable()
         private set
-    var infoGrowthTable: InfoGrowthTableTable = InfoGrowthTableTable()
+    var infoGrowth: InfoGrowthTable = InfoGrowthTable()
         private set
-    var statGrowthTable: StatGrowthTableTable = StatGrowthTableTable()
+    var statGrowth: StatGrowthTable = StatGrowthTable()
         private set
-    var traitTable: TraitTableTable = TraitTableTable()
+    var trait: TraitTable = TraitTable()
         private set
-    var relicTable: RelicTableTable = RelicTableTable()
+    var relic: RelicTable = RelicTable()
         private set
-    var starNodeTable: StarNodeTableTable = StarNodeTableTable()
+    var starNode: StarNodeTable = StarNodeTable()
         private set
-    var costCurveTable: CostCurveTableTable = CostCurveTableTable()
+    var costCurve: CostCurveTable = CostCurveTable()
         private set
-    var costCurveRangeTable: CostCurveRangeTableTable = CostCurveRangeTableTable()
+    var costCurveRange: CostCurveRangeTable = CostCurveRangeTable()
         private set
 
     /**
@@ -171,210 +171,210 @@ object Tables {
      * Safe to call on a loaded accessor. Every file is read into a set of its own and the references are linked among those, so nothing here is visible until all of it is: a failure part way through leaves the tables holding the load they already had, and no row ever points at a row from it.
      */
     fun readAll(basePath: String, fileExtension: String = ".scb") {
-        val loadedCollectionGroupTableTable = CollectionGroupTableTable()
-        loadedCollectionGroupTableTable.read(File(basePath, "CollectionGroupTable$fileExtension").path)
-        val loadedCollectionTableTable = CollectionTableTable()
-        loadedCollectionTableTable.read(File(basePath, "CollectionTable$fileExtension").path)
-        val loadedConditionTableTable = ConditionTableTable()
-        loadedConditionTableTable.read(File(basePath, "ConditionTable$fileExtension").path)
-        val loadedDailyDungeonInfoTableTable = DailyDungeonInfoTableTable()
-        loadedDailyDungeonInfoTableTable.read(File(basePath, "DailyDungeonInfoTable$fileExtension").path)
-        val loadedGoldDungeonStageTableTable = GoldDungeonStageTableTable()
-        loadedGoldDungeonStageTableTable.read(File(basePath, "GoldDungeonStageTable$fileExtension").path)
-        val loadedGoldDungeonRewardTableTable = GoldDungeonRewardTableTable()
-        loadedGoldDungeonRewardTableTable.read(File(basePath, "GoldDungeonRewardTable$fileExtension").path)
-        val loadedExpDungeonStageTableTable = ExpDungeonStageTableTable()
-        loadedExpDungeonStageTableTable.read(File(basePath, "ExpDungeonStageTable$fileExtension").path)
-        val loadedExpDungeonRewardTableTable = ExpDungeonRewardTableTable()
-        loadedExpDungeonRewardTableTable.read(File(basePath, "ExpDungeonRewardTable$fileExtension").path)
-        val loadedTraitDungeonStageTableTable = TraitDungeonStageTableTable()
-        loadedTraitDungeonStageTableTable.read(File(basePath, "TraitDungeonStageTable$fileExtension").path)
-        val loadedTraitDungeonRewardTableTable = TraitDungeonRewardTableTable()
-        loadedTraitDungeonRewardTableTable.read(File(basePath, "TraitDungeonRewardTable$fileExtension").path)
-        val loadedRelicDungeonStageTableTable = RelicDungeonStageTableTable()
-        loadedRelicDungeonStageTableTable.read(File(basePath, "RelicDungeonStageTable$fileExtension").path)
-        val loadedRelicDungeonRewardTableTable = RelicDungeonRewardTableTable()
-        loadedRelicDungeonRewardTableTable.read(File(basePath, "RelicDungeonRewardTable$fileExtension").path)
-        val loadedOopartsDungeonStageTableTable = OopartsDungeonStageTableTable()
-        loadedOopartsDungeonStageTableTable.read(File(basePath, "OopartsDungeonStageTable$fileExtension").path)
-        val loadedOopartsDungeonRewardTableTable = OopartsDungeonRewardTableTable()
-        loadedOopartsDungeonRewardTableTable.read(File(basePath, "OopartsDungeonRewardTable$fileExtension").path)
-        val loadedGachaInfoTableTable = GachaInfoTableTable()
-        loadedGachaInfoTableTable.read(File(basePath, "GachaInfoTable$fileExtension").path)
-        val loadedGachaCharacterListTableTable = GachaCharacterListTableTable()
-        loadedGachaCharacterListTableTable.read(File(basePath, "GachaCharacterListTable$fileExtension").path)
-        val loadedGachaArtifactInfoTableTable = GachaArtifactInfoTableTable()
-        loadedGachaArtifactInfoTableTable.read(File(basePath, "GachaArtifactInfoTable$fileExtension").path)
-        val loadedGachaArtifactListTableTable = GachaArtifactListTableTable()
-        loadedGachaArtifactListTableTable.read(File(basePath, "GachaArtifactListTable$fileExtension").path)
-        val loadedGachaRateTableTable = GachaRateTableTable()
-        loadedGachaRateTableTable.read(File(basePath, "GachaRateTable$fileExtension").path)
-        val loadedCurrencyTableTable = CurrencyTableTable()
-        loadedCurrencyTableTable.read(File(basePath, "CurrencyTable$fileExtension").path)
-        val loadedMaterialTableTable = MaterialTableTable()
-        loadedMaterialTableTable.read(File(basePath, "MaterialTable$fileExtension").path)
-        val loadedPackageTableTable = PackageTableTable()
-        loadedPackageTableTable.read(File(basePath, "PackageTable$fileExtension").path)
-        val loadedClassUpCurrencyListTableTable = ClassUpCurrencyListTableTable()
-        loadedClassUpCurrencyListTableTable.read(File(basePath, "ClassUpCurrencyListTable$fileExtension").path)
-        val loadedEquipItemLevelTableTable = EquipItemLevelTableTable()
-        loadedEquipItemLevelTableTable.read(File(basePath, "EquipItemLevelTable$fileExtension").path)
-        val loadedEquipItemClassTableTable = EquipItemClassTableTable()
-        loadedEquipItemClassTableTable.read(File(basePath, "EquipItemClassTable$fileExtension").path)
-        val loadedEquipTableTable = EquipTableTable()
-        loadedEquipTableTable.read(File(basePath, "EquipTable$fileExtension").path)
-        val loadedEquipItemGradeTableTable = EquipItemGradeTableTable()
-        loadedEquipItemGradeTableTable.read(File(basePath, "EquipItemGradeTable$fileExtension").path)
-        val loadedCharacterTableTable = CharacterTableTable()
-        loadedCharacterTableTable.read(File(basePath, "CharacterTable$fileExtension").path)
-        val loadedSkillTableTable = SkillTableTable()
-        loadedSkillTableTable.read(File(basePath, "SkillTable$fileExtension").path)
-        val loadedBuffTableTable = BuffTableTable()
-        loadedBuffTableTable.read(File(basePath, "BuffTable$fileExtension").path)
-        val loadedCharacterLevelTableTable = CharacterLevelTableTable()
-        loadedCharacterLevelTableTable.read(File(basePath, "CharacterLevelTable$fileExtension").path)
-        val loadedCharacterTranscendenceTableTable = CharacterTranscendenceTableTable()
-        loadedCharacterTranscendenceTableTable.read(File(basePath, "CharacterTranscendenceTable$fileExtension").path)
-        val loadedArtifactTableTable = ArtifactTableTable()
-        loadedArtifactTableTable.read(File(basePath, "ArtifactTable$fileExtension").path)
-        val loadedArtifactLevelTableTable = ArtifactLevelTableTable()
-        loadedArtifactLevelTableTable.read(File(basePath, "ArtifactLevelTable$fileExtension").path)
-        val loadedArtifactTranscendenceTableTable = ArtifactTranscendenceTableTable()
-        loadedArtifactTranscendenceTableTable.read(File(basePath, "ArtifactTranscendenceTable$fileExtension").path)
-        val loadedBuffSelectTableTable = BuffSelectTableTable()
-        loadedBuffSelectTableTable.read(File(basePath, "BuffSelectTable$fileExtension").path)
-        val loadedShortCutTableTable = ShortCutTableTable()
-        loadedShortCutTableTable.read(File(basePath, "ShortCutTable$fileExtension").path)
-        val loadedStageTableTable = StageTableTable()
-        loadedStageTableTable.read(File(basePath, "StageTable$fileExtension").path)
-        val loadedConfigTableTable = ConfigTableTable()
-        loadedConfigTableTable.read(File(basePath, "ConfigTable$fileExtension").path)
-        val loadedDropGroupTableTable = DropGroupTableTable()
-        loadedDropGroupTableTable.read(File(basePath, "DropGroupTable$fileExtension").path)
-        val loadedAttributeTableTable = AttributeTableTable()
-        loadedAttributeTableTable.read(File(basePath, "AttributeTable$fileExtension").path)
-        val loadedSDContensInfoTableTable = SDContensInfoTableTable()
-        loadedSDContensInfoTableTable.read(File(basePath, "SDContensInfoTable$fileExtension").path)
-        val loadedSDAgencyInfoTableTable = SDAgencyInfoTableTable()
-        loadedSDAgencyInfoTableTable.read(File(basePath, "SDAgencyInfoTable$fileExtension").path)
-        val loadedSDAgencyTableTable = SDAgencyTableTable()
-        loadedSDAgencyTableTable.read(File(basePath, "SDAgencyTable$fileExtension").path)
-        val loadedSDPubInfoTableTable = SDPubInfoTableTable()
-        loadedSDPubInfoTableTable.read(File(basePath, "SDPubInfoTable$fileExtension").path)
-        val loadedSDTrainingInfoTableTable = SDTrainingInfoTableTable()
-        loadedSDTrainingInfoTableTable.read(File(basePath, "SDTrainingInfoTable$fileExtension").path)
-        val loadedSDTrainingLevelTableTable = SDTrainingLevelTableTable()
-        loadedSDTrainingLevelTableTable.read(File(basePath, "SDTrainingLevelTable$fileExtension").path)
-        val loadedSDDungeonInfoTableTable = SDDungeonInfoTableTable()
-        loadedSDDungeonInfoTableTable.read(File(basePath, "SDDungeonInfoTable$fileExtension").path)
-        val loadedSDDungeonCardTableTable = SDDungeonCardTableTable()
-        loadedSDDungeonCardTableTable.read(File(basePath, "SDDungeonCardTable$fileExtension").path)
-        val loadedSDDungeonRewardTableTable = SDDungeonRewardTableTable()
-        loadedSDDungeonRewardTableTable.read(File(basePath, "SDDungeonRewardTable$fileExtension").path)
-        val loadedSDAlchemyInfoTableTable = SDAlchemyInfoTableTable()
-        loadedSDAlchemyInfoTableTable.read(File(basePath, "SDAlchemyInfoTable$fileExtension").path)
-        val loadedSDAlchemyStepTableTable = SDAlchemyStepTableTable()
-        loadedSDAlchemyStepTableTable.read(File(basePath, "SDAlchemyStepTable$fileExtension").path)
-        val loadedSDAlchemyLevelTableTable = SDAlchemyLevelTableTable()
-        loadedSDAlchemyLevelTableTable.read(File(basePath, "SDAlchemyLevelTable$fileExtension").path)
-        val loadedShopInfoTableTable = ShopInfoTableTable()
-        loadedShopInfoTableTable.read(File(basePath, "ShopInfoTable$fileExtension").path)
-        val loadedMainShopTableTable = MainShopTableTable()
-        loadedMainShopTableTable.read(File(basePath, "MainShopTable$fileExtension").path)
-        val loadedPackageShopTableTable = PackageShopTableTable()
-        loadedPackageShopTableTable.read(File(basePath, "PackageShopTable$fileExtension").path)
-        val loadedSeasonShopTableTable = SeasonShopTableTable()
-        loadedSeasonShopTableTable.read(File(basePath, "SeasonShopTable$fileExtension").path)
-        val loadedCashShopTableTable = CashShopTableTable()
-        loadedCashShopTableTable.read(File(basePath, "CashShopTable$fileExtension").path)
-        val loadedBGMSoundTableTable = BGMSoundTableTable()
-        loadedBGMSoundTableTable.read(File(basePath, "BGMSoundTable$fileExtension").path)
-        val loadedSFXSoundTableTable = SFXSoundTableTable()
-        loadedSFXSoundTableTable.read(File(basePath, "SFXSoundTable$fileExtension").path)
-        val loadedInfoGrowthTableTable = InfoGrowthTableTable()
-        loadedInfoGrowthTableTable.read(File(basePath, "InfoGrowthTable$fileExtension").path)
-        val loadedStatGrowthTableTable = StatGrowthTableTable()
-        loadedStatGrowthTableTable.read(File(basePath, "StatGrowthTable$fileExtension").path)
-        val loadedTraitTableTable = TraitTableTable()
-        loadedTraitTableTable.read(File(basePath, "TraitTable$fileExtension").path)
-        val loadedRelicTableTable = RelicTableTable()
-        loadedRelicTableTable.read(File(basePath, "RelicTable$fileExtension").path)
-        val loadedStarNodeTableTable = StarNodeTableTable()
-        loadedStarNodeTableTable.read(File(basePath, "StarNodeTable$fileExtension").path)
-        val loadedCostCurveTableTable = CostCurveTableTable()
-        loadedCostCurveTableTable.read(File(basePath, "CostCurveTable$fileExtension").path)
-        val loadedCostCurveRangeTableTable = CostCurveRangeTableTable()
-        loadedCostCurveRangeTableTable.read(File(basePath, "CostCurveRangeTable$fileExtension").path)
+        val loadedCollectionGroupTable = CollectionGroupTable()
+        loadedCollectionGroupTable.read(File(basePath, "CollectionGroup$fileExtension").path)
+        val loadedCollectionTable = CollectionTable()
+        loadedCollectionTable.read(File(basePath, "Collection$fileExtension").path)
+        val loadedConditionTable = ConditionTable()
+        loadedConditionTable.read(File(basePath, "Condition$fileExtension").path)
+        val loadedDailyDungeonInfoTable = DailyDungeonInfoTable()
+        loadedDailyDungeonInfoTable.read(File(basePath, "DailyDungeonInfo$fileExtension").path)
+        val loadedGoldDungeonStageTable = GoldDungeonStageTable()
+        loadedGoldDungeonStageTable.read(File(basePath, "GoldDungeonStage$fileExtension").path)
+        val loadedGoldDungeonRewardTable = GoldDungeonRewardTable()
+        loadedGoldDungeonRewardTable.read(File(basePath, "GoldDungeonReward$fileExtension").path)
+        val loadedExpDungeonStageTable = ExpDungeonStageTable()
+        loadedExpDungeonStageTable.read(File(basePath, "ExpDungeonStage$fileExtension").path)
+        val loadedExpDungeonRewardTable = ExpDungeonRewardTable()
+        loadedExpDungeonRewardTable.read(File(basePath, "ExpDungeonReward$fileExtension").path)
+        val loadedTraitDungeonStageTable = TraitDungeonStageTable()
+        loadedTraitDungeonStageTable.read(File(basePath, "TraitDungeonStage$fileExtension").path)
+        val loadedTraitDungeonRewardTable = TraitDungeonRewardTable()
+        loadedTraitDungeonRewardTable.read(File(basePath, "TraitDungeonReward$fileExtension").path)
+        val loadedRelicDungeonStageTable = RelicDungeonStageTable()
+        loadedRelicDungeonStageTable.read(File(basePath, "RelicDungeonStage$fileExtension").path)
+        val loadedRelicDungeonRewardTable = RelicDungeonRewardTable()
+        loadedRelicDungeonRewardTable.read(File(basePath, "RelicDungeonReward$fileExtension").path)
+        val loadedOopartsDungeonStageTable = OopartsDungeonStageTable()
+        loadedOopartsDungeonStageTable.read(File(basePath, "OopartsDungeonStage$fileExtension").path)
+        val loadedOopartsDungeonRewardTable = OopartsDungeonRewardTable()
+        loadedOopartsDungeonRewardTable.read(File(basePath, "OopartsDungeonReward$fileExtension").path)
+        val loadedGachaInfoTable = GachaInfoTable()
+        loadedGachaInfoTable.read(File(basePath, "GachaInfo$fileExtension").path)
+        val loadedGachaCharacterListTable = GachaCharacterListTable()
+        loadedGachaCharacterListTable.read(File(basePath, "GachaCharacterList$fileExtension").path)
+        val loadedGachaArtifactInfoTable = GachaArtifactInfoTable()
+        loadedGachaArtifactInfoTable.read(File(basePath, "GachaArtifactInfo$fileExtension").path)
+        val loadedGachaArtifactListTable = GachaArtifactListTable()
+        loadedGachaArtifactListTable.read(File(basePath, "GachaArtifactList$fileExtension").path)
+        val loadedGachaRateTable = GachaRateTable()
+        loadedGachaRateTable.read(File(basePath, "GachaRate$fileExtension").path)
+        val loadedCurrencyTable = CurrencyTable()
+        loadedCurrencyTable.read(File(basePath, "Currency$fileExtension").path)
+        val loadedMaterialTable = MaterialTable()
+        loadedMaterialTable.read(File(basePath, "Material$fileExtension").path)
+        val loadedPackageTable = PackageTable()
+        loadedPackageTable.read(File(basePath, "Package$fileExtension").path)
+        val loadedClassUpCurrencyListTable = ClassUpCurrencyListTable()
+        loadedClassUpCurrencyListTable.read(File(basePath, "ClassUpCurrencyList$fileExtension").path)
+        val loadedEquipItemLevelTable = EquipItemLevelTable()
+        loadedEquipItemLevelTable.read(File(basePath, "EquipItemLevel$fileExtension").path)
+        val loadedEquipItemClassTable = EquipItemClassTable()
+        loadedEquipItemClassTable.read(File(basePath, "EquipItemClass$fileExtension").path)
+        val loadedEquipTable = EquipTable()
+        loadedEquipTable.read(File(basePath, "Equip$fileExtension").path)
+        val loadedEquipItemGradeTable = EquipItemGradeTable()
+        loadedEquipItemGradeTable.read(File(basePath, "EquipItemGrade$fileExtension").path)
+        val loadedCharacterTable = CharacterTable()
+        loadedCharacterTable.read(File(basePath, "Character$fileExtension").path)
+        val loadedSkillTable = SkillTable()
+        loadedSkillTable.read(File(basePath, "Skill$fileExtension").path)
+        val loadedBuffTable = BuffTable()
+        loadedBuffTable.read(File(basePath, "Buff$fileExtension").path)
+        val loadedCharacterLevelTable = CharacterLevelTable()
+        loadedCharacterLevelTable.read(File(basePath, "CharacterLevel$fileExtension").path)
+        val loadedCharacterTranscendenceTable = CharacterTranscendenceTable()
+        loadedCharacterTranscendenceTable.read(File(basePath, "CharacterTranscendence$fileExtension").path)
+        val loadedArtifactTable = ArtifactTable()
+        loadedArtifactTable.read(File(basePath, "Artifact$fileExtension").path)
+        val loadedArtifactLevelTable = ArtifactLevelTable()
+        loadedArtifactLevelTable.read(File(basePath, "ArtifactLevel$fileExtension").path)
+        val loadedArtifactTranscendenceTable = ArtifactTranscendenceTable()
+        loadedArtifactTranscendenceTable.read(File(basePath, "ArtifactTranscendence$fileExtension").path)
+        val loadedBuffSelectTable = BuffSelectTable()
+        loadedBuffSelectTable.read(File(basePath, "BuffSelect$fileExtension").path)
+        val loadedShortCutTable = ShortCutTable()
+        loadedShortCutTable.read(File(basePath, "ShortCut$fileExtension").path)
+        val loadedStageTable = StageTable()
+        loadedStageTable.read(File(basePath, "Stage$fileExtension").path)
+        val loadedConfigTable = ConfigTable()
+        loadedConfigTable.read(File(basePath, "Config$fileExtension").path)
+        val loadedDropGroupTable = DropGroupTable()
+        loadedDropGroupTable.read(File(basePath, "DropGroup$fileExtension").path)
+        val loadedAttributeTable = AttributeTable()
+        loadedAttributeTable.read(File(basePath, "Attribute$fileExtension").path)
+        val loadedSDContensInfoTable = SDContensInfoTable()
+        loadedSDContensInfoTable.read(File(basePath, "SDContensInfo$fileExtension").path)
+        val loadedSDAgencyInfoTable = SDAgencyInfoTable()
+        loadedSDAgencyInfoTable.read(File(basePath, "SDAgencyInfo$fileExtension").path)
+        val loadedSDAgencyTable = SDAgencyTable()
+        loadedSDAgencyTable.read(File(basePath, "SDAgency$fileExtension").path)
+        val loadedSDPubInfoTable = SDPubInfoTable()
+        loadedSDPubInfoTable.read(File(basePath, "SDPubInfo$fileExtension").path)
+        val loadedSDTrainingInfoTable = SDTrainingInfoTable()
+        loadedSDTrainingInfoTable.read(File(basePath, "SDTrainingInfo$fileExtension").path)
+        val loadedSDTrainingLevelTable = SDTrainingLevelTable()
+        loadedSDTrainingLevelTable.read(File(basePath, "SDTrainingLevel$fileExtension").path)
+        val loadedSDDungeonInfoTable = SDDungeonInfoTable()
+        loadedSDDungeonInfoTable.read(File(basePath, "SDDungeonInfo$fileExtension").path)
+        val loadedSDDungeonCardTable = SDDungeonCardTable()
+        loadedSDDungeonCardTable.read(File(basePath, "SDDungeonCard$fileExtension").path)
+        val loadedSDDungeonRewardTable = SDDungeonRewardTable()
+        loadedSDDungeonRewardTable.read(File(basePath, "SDDungeonReward$fileExtension").path)
+        val loadedSDAlchemyInfoTable = SDAlchemyInfoTable()
+        loadedSDAlchemyInfoTable.read(File(basePath, "SDAlchemyInfo$fileExtension").path)
+        val loadedSDAlchemyStepTable = SDAlchemyStepTable()
+        loadedSDAlchemyStepTable.read(File(basePath, "SDAlchemyStep$fileExtension").path)
+        val loadedSDAlchemyLevelTable = SDAlchemyLevelTable()
+        loadedSDAlchemyLevelTable.read(File(basePath, "SDAlchemyLevel$fileExtension").path)
+        val loadedShopInfoTable = ShopInfoTable()
+        loadedShopInfoTable.read(File(basePath, "ShopInfo$fileExtension").path)
+        val loadedMainShopTable = MainShopTable()
+        loadedMainShopTable.read(File(basePath, "MainShop$fileExtension").path)
+        val loadedPackageShopTable = PackageShopTable()
+        loadedPackageShopTable.read(File(basePath, "PackageShop$fileExtension").path)
+        val loadedSeasonShopTable = SeasonShopTable()
+        loadedSeasonShopTable.read(File(basePath, "SeasonShop$fileExtension").path)
+        val loadedCashShopTable = CashShopTable()
+        loadedCashShopTable.read(File(basePath, "CashShop$fileExtension").path)
+        val loadedBGMSoundTable = BGMSoundTable()
+        loadedBGMSoundTable.read(File(basePath, "BGMSound$fileExtension").path)
+        val loadedSFXSoundTable = SFXSoundTable()
+        loadedSFXSoundTable.read(File(basePath, "SFXSound$fileExtension").path)
+        val loadedInfoGrowthTable = InfoGrowthTable()
+        loadedInfoGrowthTable.read(File(basePath, "InfoGrowth$fileExtension").path)
+        val loadedStatGrowthTable = StatGrowthTable()
+        loadedStatGrowthTable.read(File(basePath, "StatGrowth$fileExtension").path)
+        val loadedTraitTable = TraitTable()
+        loadedTraitTable.read(File(basePath, "Trait$fileExtension").path)
+        val loadedRelicTable = RelicTable()
+        loadedRelicTable.read(File(basePath, "Relic$fileExtension").path)
+        val loadedStarNodeTable = StarNodeTable()
+        loadedStarNodeTable.read(File(basePath, "StarNode$fileExtension").path)
+        val loadedCostCurveTable = CostCurveTable()
+        loadedCostCurveTable.read(File(basePath, "CostCurve$fileExtension").path)
+        val loadedCostCurveRangeTable = CostCurveRangeTable()
+        loadedCostCurveRangeTable.read(File(basePath, "CostCurveRange$fileExtension").path)
 
-        solveCrossReferences(loadedCollectionGroupTableTable, loadedCollectionTableTable, loadedConditionTableTable, loadedDailyDungeonInfoTableTable, loadedGoldDungeonStageTableTable, loadedGoldDungeonRewardTableTable, loadedExpDungeonStageTableTable, loadedExpDungeonRewardTableTable, loadedTraitDungeonStageTableTable, loadedTraitDungeonRewardTableTable, loadedRelicDungeonStageTableTable, loadedRelicDungeonRewardTableTable, loadedOopartsDungeonStageTableTable, loadedOopartsDungeonRewardTableTable, loadedGachaInfoTableTable, loadedGachaCharacterListTableTable, loadedGachaArtifactInfoTableTable, loadedGachaArtifactListTableTable, loadedGachaRateTableTable, loadedCurrencyTableTable, loadedMaterialTableTable, loadedPackageTableTable, loadedClassUpCurrencyListTableTable, loadedEquipItemLevelTableTable, loadedEquipItemClassTableTable, loadedEquipTableTable, loadedEquipItemGradeTableTable, loadedCharacterTableTable, loadedSkillTableTable, loadedBuffTableTable, loadedCharacterLevelTableTable, loadedCharacterTranscendenceTableTable, loadedArtifactTableTable, loadedArtifactLevelTableTable, loadedArtifactTranscendenceTableTable, loadedBuffSelectTableTable, loadedShortCutTableTable, loadedStageTableTable, loadedConfigTableTable, loadedDropGroupTableTable, loadedAttributeTableTable, loadedSDContensInfoTableTable, loadedSDAgencyInfoTableTable, loadedSDAgencyTableTable, loadedSDPubInfoTableTable, loadedSDTrainingInfoTableTable, loadedSDTrainingLevelTableTable, loadedSDDungeonInfoTableTable, loadedSDDungeonCardTableTable, loadedSDDungeonRewardTableTable, loadedSDAlchemyInfoTableTable, loadedSDAlchemyStepTableTable, loadedSDAlchemyLevelTableTable, loadedShopInfoTableTable, loadedMainShopTableTable, loadedPackageShopTableTable, loadedSeasonShopTableTable, loadedCashShopTableTable, loadedBGMSoundTableTable, loadedSFXSoundTableTable, loadedInfoGrowthTableTable, loadedStatGrowthTableTable, loadedTraitTableTable, loadedRelicTableTable, loadedStarNodeTableTable, loadedCostCurveTableTable, loadedCostCurveRangeTableTable)
+        solveCrossReferences(loadedCollectionGroupTable, loadedCollectionTable, loadedConditionTable, loadedDailyDungeonInfoTable, loadedGoldDungeonStageTable, loadedGoldDungeonRewardTable, loadedExpDungeonStageTable, loadedExpDungeonRewardTable, loadedTraitDungeonStageTable, loadedTraitDungeonRewardTable, loadedRelicDungeonStageTable, loadedRelicDungeonRewardTable, loadedOopartsDungeonStageTable, loadedOopartsDungeonRewardTable, loadedGachaInfoTable, loadedGachaCharacterListTable, loadedGachaArtifactInfoTable, loadedGachaArtifactListTable, loadedGachaRateTable, loadedCurrencyTable, loadedMaterialTable, loadedPackageTable, loadedClassUpCurrencyListTable, loadedEquipItemLevelTable, loadedEquipItemClassTable, loadedEquipTable, loadedEquipItemGradeTable, loadedCharacterTable, loadedSkillTable, loadedBuffTable, loadedCharacterLevelTable, loadedCharacterTranscendenceTable, loadedArtifactTable, loadedArtifactLevelTable, loadedArtifactTranscendenceTable, loadedBuffSelectTable, loadedShortCutTable, loadedStageTable, loadedConfigTable, loadedDropGroupTable, loadedAttributeTable, loadedSDContensInfoTable, loadedSDAgencyInfoTable, loadedSDAgencyTable, loadedSDPubInfoTable, loadedSDTrainingInfoTable, loadedSDTrainingLevelTable, loadedSDDungeonInfoTable, loadedSDDungeonCardTable, loadedSDDungeonRewardTable, loadedSDAlchemyInfoTable, loadedSDAlchemyStepTable, loadedSDAlchemyLevelTable, loadedShopInfoTable, loadedMainShopTable, loadedPackageShopTable, loadedSeasonShopTable, loadedCashShopTable, loadedBGMSoundTable, loadedSFXSoundTable, loadedInfoGrowthTable, loadedStatGrowthTable, loadedTraitTable, loadedRelicTable, loadedStarNodeTable, loadedCostCurveTable, loadedCostCurveRangeTable)
 
-        collectionGroupTable = loadedCollectionGroupTableTable
-        collectionTable = loadedCollectionTableTable
-        conditionTable = loadedConditionTableTable
-        dailyDungeonInfoTable = loadedDailyDungeonInfoTableTable
-        goldDungeonStageTable = loadedGoldDungeonStageTableTable
-        goldDungeonRewardTable = loadedGoldDungeonRewardTableTable
-        expDungeonStageTable = loadedExpDungeonStageTableTable
-        expDungeonRewardTable = loadedExpDungeonRewardTableTable
-        traitDungeonStageTable = loadedTraitDungeonStageTableTable
-        traitDungeonRewardTable = loadedTraitDungeonRewardTableTable
-        relicDungeonStageTable = loadedRelicDungeonStageTableTable
-        relicDungeonRewardTable = loadedRelicDungeonRewardTableTable
-        oopartsDungeonStageTable = loadedOopartsDungeonStageTableTable
-        oopartsDungeonRewardTable = loadedOopartsDungeonRewardTableTable
-        gachaInfoTable = loadedGachaInfoTableTable
-        gachaCharacterListTable = loadedGachaCharacterListTableTable
-        gachaArtifactInfoTable = loadedGachaArtifactInfoTableTable
-        gachaArtifactListTable = loadedGachaArtifactListTableTable
-        gachaRateTable = loadedGachaRateTableTable
-        currencyTable = loadedCurrencyTableTable
-        materialTable = loadedMaterialTableTable
-        packageTable = loadedPackageTableTable
-        classUpCurrencyListTable = loadedClassUpCurrencyListTableTable
-        equipItemLevelTable = loadedEquipItemLevelTableTable
-        equipItemClassTable = loadedEquipItemClassTableTable
-        equipTable = loadedEquipTableTable
-        equipItemGradeTable = loadedEquipItemGradeTableTable
-        characterTable = loadedCharacterTableTable
-        skillTable = loadedSkillTableTable
-        buffTable = loadedBuffTableTable
-        characterLevelTable = loadedCharacterLevelTableTable
-        characterTranscendenceTable = loadedCharacterTranscendenceTableTable
-        artifactTable = loadedArtifactTableTable
-        artifactLevelTable = loadedArtifactLevelTableTable
-        artifactTranscendenceTable = loadedArtifactTranscendenceTableTable
-        buffSelectTable = loadedBuffSelectTableTable
-        shortCutTable = loadedShortCutTableTable
-        stageTable = loadedStageTableTable
-        configTable = loadedConfigTableTable
-        dropGroupTable = loadedDropGroupTableTable
-        attributeTable = loadedAttributeTableTable
-        sDContensInfoTable = loadedSDContensInfoTableTable
-        sDAgencyInfoTable = loadedSDAgencyInfoTableTable
-        sDAgencyTable = loadedSDAgencyTableTable
-        sDPubInfoTable = loadedSDPubInfoTableTable
-        sDTrainingInfoTable = loadedSDTrainingInfoTableTable
-        sDTrainingLevelTable = loadedSDTrainingLevelTableTable
-        sDDungeonInfoTable = loadedSDDungeonInfoTableTable
-        sDDungeonCardTable = loadedSDDungeonCardTableTable
-        sDDungeonRewardTable = loadedSDDungeonRewardTableTable
-        sDAlchemyInfoTable = loadedSDAlchemyInfoTableTable
-        sDAlchemyStepTable = loadedSDAlchemyStepTableTable
-        sDAlchemyLevelTable = loadedSDAlchemyLevelTableTable
-        shopInfoTable = loadedShopInfoTableTable
-        mainShopTable = loadedMainShopTableTable
-        packageShopTable = loadedPackageShopTableTable
-        seasonShopTable = loadedSeasonShopTableTable
-        cashShopTable = loadedCashShopTableTable
-        bGMSoundTable = loadedBGMSoundTableTable
-        sFXSoundTable = loadedSFXSoundTableTable
-        infoGrowthTable = loadedInfoGrowthTableTable
-        statGrowthTable = loadedStatGrowthTableTable
-        traitTable = loadedTraitTableTable
-        relicTable = loadedRelicTableTable
-        starNodeTable = loadedStarNodeTableTable
-        costCurveTable = loadedCostCurveTableTable
-        costCurveRangeTable = loadedCostCurveRangeTableTable
+        collectionGroup = loadedCollectionGroupTable
+        collection = loadedCollectionTable
+        condition = loadedConditionTable
+        dailyDungeonInfo = loadedDailyDungeonInfoTable
+        goldDungeonStage = loadedGoldDungeonStageTable
+        goldDungeonReward = loadedGoldDungeonRewardTable
+        expDungeonStage = loadedExpDungeonStageTable
+        expDungeonReward = loadedExpDungeonRewardTable
+        traitDungeonStage = loadedTraitDungeonStageTable
+        traitDungeonReward = loadedTraitDungeonRewardTable
+        relicDungeonStage = loadedRelicDungeonStageTable
+        relicDungeonReward = loadedRelicDungeonRewardTable
+        oopartsDungeonStage = loadedOopartsDungeonStageTable
+        oopartsDungeonReward = loadedOopartsDungeonRewardTable
+        gachaInfo = loadedGachaInfoTable
+        gachaCharacterList = loadedGachaCharacterListTable
+        gachaArtifactInfo = loadedGachaArtifactInfoTable
+        gachaArtifactList = loadedGachaArtifactListTable
+        gachaRate = loadedGachaRateTable
+        currency = loadedCurrencyTable
+        material = loadedMaterialTable
+        `package` = loadedPackageTable
+        classUpCurrencyList = loadedClassUpCurrencyListTable
+        equipItemLevel = loadedEquipItemLevelTable
+        equipItemClass = loadedEquipItemClassTable
+        equip = loadedEquipTable
+        equipItemGrade = loadedEquipItemGradeTable
+        character = loadedCharacterTable
+        skill = loadedSkillTable
+        buff = loadedBuffTable
+        characterLevel = loadedCharacterLevelTable
+        characterTranscendence = loadedCharacterTranscendenceTable
+        artifact = loadedArtifactTable
+        artifactLevel = loadedArtifactLevelTable
+        artifactTranscendence = loadedArtifactTranscendenceTable
+        buffSelect = loadedBuffSelectTable
+        shortCut = loadedShortCutTable
+        stage = loadedStageTable
+        config = loadedConfigTable
+        dropGroup = loadedDropGroupTable
+        attribute = loadedAttributeTable
+        sDContensInfo = loadedSDContensInfoTable
+        sDAgencyInfo = loadedSDAgencyInfoTable
+        sDAgency = loadedSDAgencyTable
+        sDPubInfo = loadedSDPubInfoTable
+        sDTrainingInfo = loadedSDTrainingInfoTable
+        sDTrainingLevel = loadedSDTrainingLevelTable
+        sDDungeonInfo = loadedSDDungeonInfoTable
+        sDDungeonCard = loadedSDDungeonCardTable
+        sDDungeonReward = loadedSDDungeonRewardTable
+        sDAlchemyInfo = loadedSDAlchemyInfoTable
+        sDAlchemyStep = loadedSDAlchemyStepTable
+        sDAlchemyLevel = loadedSDAlchemyLevelTable
+        shopInfo = loadedShopInfoTable
+        mainShop = loadedMainShopTable
+        packageShop = loadedPackageShopTable
+        seasonShop = loadedSeasonShopTable
+        cashShop = loadedCashShopTable
+        bGMSound = loadedBGMSoundTable
+        sFXSound = loadedSFXSoundTable
+        infoGrowth = loadedInfoGrowthTable
+        statGrowth = loadedStatGrowthTable
+        trait = loadedTraitTable
+        relic = loadedRelicTable
+        starNode = loadedStarNodeTable
+        costCurve = loadedCostCurveTable
+        costCurveRange = loadedCostCurveRangeTable
     }
 
     /**
@@ -383,7 +383,7 @@ object Tables {
      * The tables arrive as arguments and shadow the properties of the same name, which is
      * how this resolves the load being read rather than the one already published.
      */
-    private fun solveCrossReferences(collectionGroupTable: CollectionGroupTableTable, collectionTable: CollectionTableTable, conditionTable: ConditionTableTable, dailyDungeonInfoTable: DailyDungeonInfoTableTable, goldDungeonStageTable: GoldDungeonStageTableTable, goldDungeonRewardTable: GoldDungeonRewardTableTable, expDungeonStageTable: ExpDungeonStageTableTable, expDungeonRewardTable: ExpDungeonRewardTableTable, traitDungeonStageTable: TraitDungeonStageTableTable, traitDungeonRewardTable: TraitDungeonRewardTableTable, relicDungeonStageTable: RelicDungeonStageTableTable, relicDungeonRewardTable: RelicDungeonRewardTableTable, oopartsDungeonStageTable: OopartsDungeonStageTableTable, oopartsDungeonRewardTable: OopartsDungeonRewardTableTable, gachaInfoTable: GachaInfoTableTable, gachaCharacterListTable: GachaCharacterListTableTable, gachaArtifactInfoTable: GachaArtifactInfoTableTable, gachaArtifactListTable: GachaArtifactListTableTable, gachaRateTable: GachaRateTableTable, currencyTable: CurrencyTableTable, materialTable: MaterialTableTable, packageTable: PackageTableTable, classUpCurrencyListTable: ClassUpCurrencyListTableTable, equipItemLevelTable: EquipItemLevelTableTable, equipItemClassTable: EquipItemClassTableTable, equipTable: EquipTableTable, equipItemGradeTable: EquipItemGradeTableTable, characterTable: CharacterTableTable, skillTable: SkillTableTable, buffTable: BuffTableTable, characterLevelTable: CharacterLevelTableTable, characterTranscendenceTable: CharacterTranscendenceTableTable, artifactTable: ArtifactTableTable, artifactLevelTable: ArtifactLevelTableTable, artifactTranscendenceTable: ArtifactTranscendenceTableTable, buffSelectTable: BuffSelectTableTable, shortCutTable: ShortCutTableTable, stageTable: StageTableTable, configTable: ConfigTableTable, dropGroupTable: DropGroupTableTable, attributeTable: AttributeTableTable, sDContensInfoTable: SDContensInfoTableTable, sDAgencyInfoTable: SDAgencyInfoTableTable, sDAgencyTable: SDAgencyTableTable, sDPubInfoTable: SDPubInfoTableTable, sDTrainingInfoTable: SDTrainingInfoTableTable, sDTrainingLevelTable: SDTrainingLevelTableTable, sDDungeonInfoTable: SDDungeonInfoTableTable, sDDungeonCardTable: SDDungeonCardTableTable, sDDungeonRewardTable: SDDungeonRewardTableTable, sDAlchemyInfoTable: SDAlchemyInfoTableTable, sDAlchemyStepTable: SDAlchemyStepTableTable, sDAlchemyLevelTable: SDAlchemyLevelTableTable, shopInfoTable: ShopInfoTableTable, mainShopTable: MainShopTableTable, packageShopTable: PackageShopTableTable, seasonShopTable: SeasonShopTableTable, cashShopTable: CashShopTableTable, bGMSoundTable: BGMSoundTableTable, sFXSoundTable: SFXSoundTableTable, infoGrowthTable: InfoGrowthTableTable, statGrowthTable: StatGrowthTableTable, traitTable: TraitTableTable, relicTable: RelicTableTable, starNodeTable: StarNodeTableTable, costCurveTable: CostCurveTableTable, costCurveRangeTable: CostCurveRangeTableTable) {
+    private fun solveCrossReferences(collectionGroup: CollectionGroupTable, collection: CollectionTable, condition: ConditionTable, dailyDungeonInfo: DailyDungeonInfoTable, goldDungeonStage: GoldDungeonStageTable, goldDungeonReward: GoldDungeonRewardTable, expDungeonStage: ExpDungeonStageTable, expDungeonReward: ExpDungeonRewardTable, traitDungeonStage: TraitDungeonStageTable, traitDungeonReward: TraitDungeonRewardTable, relicDungeonStage: RelicDungeonStageTable, relicDungeonReward: RelicDungeonRewardTable, oopartsDungeonStage: OopartsDungeonStageTable, oopartsDungeonReward: OopartsDungeonRewardTable, gachaInfo: GachaInfoTable, gachaCharacterList: GachaCharacterListTable, gachaArtifactInfo: GachaArtifactInfoTable, gachaArtifactList: GachaArtifactListTable, gachaRate: GachaRateTable, currency: CurrencyTable, material: MaterialTable, `package`: PackageTable, classUpCurrencyList: ClassUpCurrencyListTable, equipItemLevel: EquipItemLevelTable, equipItemClass: EquipItemClassTable, equip: EquipTable, equipItemGrade: EquipItemGradeTable, character: CharacterTable, skill: SkillTable, buff: BuffTable, characterLevel: CharacterLevelTable, characterTranscendence: CharacterTranscendenceTable, artifact: ArtifactTable, artifactLevel: ArtifactLevelTable, artifactTranscendence: ArtifactTranscendenceTable, buffSelect: BuffSelectTable, shortCut: ShortCutTable, stage: StageTable, config: ConfigTable, dropGroup: DropGroupTable, attribute: AttributeTable, sDContensInfo: SDContensInfoTable, sDAgencyInfo: SDAgencyInfoTable, sDAgency: SDAgencyTable, sDPubInfo: SDPubInfoTable, sDTrainingInfo: SDTrainingInfoTable, sDTrainingLevel: SDTrainingLevelTable, sDDungeonInfo: SDDungeonInfoTable, sDDungeonCard: SDDungeonCardTable, sDDungeonReward: SDDungeonRewardTable, sDAlchemyInfo: SDAlchemyInfoTable, sDAlchemyStep: SDAlchemyStepTable, sDAlchemyLevel: SDAlchemyLevelTable, shopInfo: ShopInfoTable, mainShop: MainShopTable, packageShop: PackageShopTable, seasonShop: SeasonShopTable, cashShop: CashShopTable, bGMSound: BGMSoundTable, sFXSound: SFXSoundTable, infoGrowth: InfoGrowthTable, statGrowth: StatGrowthTable, trait: TraitTable, relic: RelicTable, starNode: StarNodeTable, costCurve: CostCurveTable, costCurveRange: CostCurveRangeTable) {
         // No table references another.
     }
 }

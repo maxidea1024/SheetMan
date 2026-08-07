@@ -9,343 +9,343 @@
 
 import * as path from 'path'
 
-import { CollectionGroupTableTable } from './tables/collection-group-table'
-import { CollectionTableTable } from './tables/collection-table'
-import { ConditionTableTable } from './tables/condition-table'
-import { DailyDungeonInfoTableTable } from './tables/daily-dungeon-info-table'
-import { GoldDungeonStageTableTable } from './tables/gold-dungeon-stage-table'
-import { GoldDungeonRewardTableTable } from './tables/gold-dungeon-reward-table'
-import { ExpDungeonStageTableTable } from './tables/exp-dungeon-stage-table'
-import { ExpDungeonRewardTableTable } from './tables/exp-dungeon-reward-table'
-import { TraitDungeonStageTableTable } from './tables/trait-dungeon-stage-table'
-import { TraitDungeonRewardTableTable } from './tables/trait-dungeon-reward-table'
-import { RelicDungeonStageTableTable } from './tables/relic-dungeon-stage-table'
-import { RelicDungeonRewardTableTable } from './tables/relic-dungeon-reward-table'
-import { OopartsDungeonStageTableTable } from './tables/ooparts-dungeon-stage-table'
-import { OopartsDungeonRewardTableTable } from './tables/ooparts-dungeon-reward-table'
-import { GachaInfoTableTable } from './tables/gacha-info-table'
-import { GachaCharacterListTableTable } from './tables/gacha-character-list-table'
-import { GachaArtifactInfoTableTable } from './tables/gacha-artifact-info-table'
-import { GachaArtifactListTableTable } from './tables/gacha-artifact-list-table'
-import { GachaRateTableTable } from './tables/gacha-rate-table'
-import { CurrencyTableTable } from './tables/currency-table'
-import { MaterialTableTable } from './tables/material-table'
-import { PackageTableTable } from './tables/package-table'
-import { ClassUpCurrencyListTableTable } from './tables/class-up-currency-list-table'
-import { EquipItemLevelTableTable } from './tables/equip-item-level-table'
-import { EquipItemClassTableTable } from './tables/equip-item-class-table'
-import { EquipTableTable } from './tables/equip-table'
-import { EquipItemGradeTableTable } from './tables/equip-item-grade-table'
-import { CharacterTableTable } from './tables/character-table'
-import { SkillTableTable } from './tables/skill-table'
-import { BuffTableTable } from './tables/buff-table'
-import { CharacterLevelTableTable } from './tables/character-level-table'
-import { CharacterTranscendenceTableTable } from './tables/character-transcendence-table'
-import { ArtifactTableTable } from './tables/artifact-table'
-import { ArtifactLevelTableTable } from './tables/artifact-level-table'
-import { ArtifactTranscendenceTableTable } from './tables/artifact-transcendence-table'
-import { BuffSelectTableTable } from './tables/buff-select-table'
-import { ShortCutTableTable } from './tables/short-cut-table'
-import { StageTableTable } from './tables/stage-table'
-import { ConfigTableTable } from './tables/config-table'
-import { DropGroupTableTable } from './tables/drop-group-table'
-import { AttributeTableTable } from './tables/attribute-table'
-import { SDContensInfoTableTable } from './tables/sd-contens-info-table'
-import { SDAgencyInfoTableTable } from './tables/sd-agency-info-table'
-import { SDAgencyTableTable } from './tables/sd-agency-table'
-import { SDPubInfoTableTable } from './tables/sd-pub-info-table'
-import { SDTrainingInfoTableTable } from './tables/sd-training-info-table'
-import { SDTrainingLevelTableTable } from './tables/sd-training-level-table'
-import { SDDungeonInfoTableTable } from './tables/sd-dungeon-info-table'
-import { SDDungeonCardTableTable } from './tables/sd-dungeon-card-table'
-import { SDDungeonRewardTableTable } from './tables/sd-dungeon-reward-table'
-import { SDAlchemyInfoTableTable } from './tables/sd-alchemy-info-table'
-import { SDAlchemyStepTableTable } from './tables/sd-alchemy-step-table'
-import { SDAlchemyLevelTableTable } from './tables/sd-alchemy-level-table'
-import { ShopInfoTableTable } from './tables/shop-info-table'
-import { MainShopTableTable } from './tables/main-shop-table'
-import { PackageShopTableTable } from './tables/package-shop-table'
-import { SeasonShopTableTable } from './tables/season-shop-table'
-import { CashShopTableTable } from './tables/cash-shop-table'
-import { BGMSoundTableTable } from './tables/bgm-sound-table'
-import { SFXSoundTableTable } from './tables/sfx-sound-table'
-import { InfoGrowthTableTable } from './tables/info-growth-table'
-import { StatGrowthTableTable } from './tables/stat-growth-table'
-import { TraitTableTable } from './tables/trait-table'
-import { RelicTableTable } from './tables/relic-table'
-import { StarNodeTableTable } from './tables/star-node-table'
-import { CostCurveTableTable } from './tables/cost-curve-table'
-import { CostCurveRangeTableTable } from './tables/cost-curve-range-table'
+import { CollectionGroupTable } from './tables/collection-group'
+import { CollectionTable } from './tables/collection'
+import { ConditionTable } from './tables/condition'
+import { DailyDungeonInfoTable } from './tables/daily-dungeon-info'
+import { GoldDungeonStageTable } from './tables/gold-dungeon-stage'
+import { GoldDungeonRewardTable } from './tables/gold-dungeon-reward'
+import { ExpDungeonStageTable } from './tables/exp-dungeon-stage'
+import { ExpDungeonRewardTable } from './tables/exp-dungeon-reward'
+import { TraitDungeonStageTable } from './tables/trait-dungeon-stage'
+import { TraitDungeonRewardTable } from './tables/trait-dungeon-reward'
+import { RelicDungeonStageTable } from './tables/relic-dungeon-stage'
+import { RelicDungeonRewardTable } from './tables/relic-dungeon-reward'
+import { OopartsDungeonStageTable } from './tables/ooparts-dungeon-stage'
+import { OopartsDungeonRewardTable } from './tables/ooparts-dungeon-reward'
+import { GachaInfoTable } from './tables/gacha-info'
+import { GachaCharacterListTable } from './tables/gacha-character-list'
+import { GachaArtifactInfoTable } from './tables/gacha-artifact-info'
+import { GachaArtifactListTable } from './tables/gacha-artifact-list'
+import { GachaRateTable } from './tables/gacha-rate'
+import { CurrencyTable } from './tables/currency'
+import { MaterialTable } from './tables/material'
+import { PackageTable } from './tables/package'
+import { ClassUpCurrencyListTable } from './tables/class-up-currency-list'
+import { EquipItemLevelTable } from './tables/equip-item-level'
+import { EquipItemClassTable } from './tables/equip-item-class'
+import { EquipTable } from './tables/equip'
+import { EquipItemGradeTable } from './tables/equip-item-grade'
+import { CharacterTable } from './tables/character'
+import { SkillTable } from './tables/skill'
+import { BuffTable } from './tables/buff'
+import { CharacterLevelTable } from './tables/character-level'
+import { CharacterTranscendenceTable } from './tables/character-transcendence'
+import { ArtifactTable } from './tables/artifact'
+import { ArtifactLevelTable } from './tables/artifact-level'
+import { ArtifactTranscendenceTable } from './tables/artifact-transcendence'
+import { BuffSelectTable } from './tables/buff-select'
+import { ShortCutTable } from './tables/short-cut'
+import { StageTable } from './tables/stage'
+import { ConfigTable } from './tables/config'
+import { DropGroupTable } from './tables/drop-group'
+import { AttributeTable } from './tables/attribute'
+import { SDContensInfoTable } from './tables/sd-contens-info'
+import { SDAgencyInfoTable } from './tables/sd-agency-info'
+import { SDAgencyTable } from './tables/sd-agency'
+import { SDPubInfoTable } from './tables/sd-pub-info'
+import { SDTrainingInfoTable } from './tables/sd-training-info'
+import { SDTrainingLevelTable } from './tables/sd-training-level'
+import { SDDungeonInfoTable } from './tables/sd-dungeon-info'
+import { SDDungeonCardTable } from './tables/sd-dungeon-card'
+import { SDDungeonRewardTable } from './tables/sd-dungeon-reward'
+import { SDAlchemyInfoTable } from './tables/sd-alchemy-info'
+import { SDAlchemyStepTable } from './tables/sd-alchemy-step'
+import { SDAlchemyLevelTable } from './tables/sd-alchemy-level'
+import { ShopInfoTable } from './tables/shop-info'
+import { MainShopTable } from './tables/main-shop'
+import { PackageShopTable } from './tables/package-shop'
+import { SeasonShopTable } from './tables/season-shop'
+import { CashShopTable } from './tables/cash-shop'
+import { BGMSoundTable } from './tables/bgm-sound'
+import { SFXSoundTable } from './tables/sfx-sound'
+import { InfoGrowthTable } from './tables/info-growth'
+import { StatGrowthTable } from './tables/stat-growth'
+import { TraitTable } from './tables/trait'
+import { RelicTable } from './tables/relic'
+import { StarNodeTable } from './tables/star-node'
+import { CostCurveTable } from './tables/cost-curve'
+import { CostCurveRangeTable } from './tables/cost-curve-range'
 
 /** Tables */
 export class Tables {
-  /** Peroperty for table CollectionGroupTable */
-  public get collectionGroupTable(): CollectionGroupTableTable { return this._collectionGroupTable }
-  private _collectionGroupTable: CollectionGroupTableTable = new CollectionGroupTableTable()
-
-  /** Peroperty for table CollectionTable */
-  public get collectionTable(): CollectionTableTable { return this._collectionTable }
-  private _collectionTable: CollectionTableTable = new CollectionTableTable()
-
-  /** Peroperty for table ConditionTable */
-  public get conditionTable(): ConditionTableTable { return this._conditionTable }
-  private _conditionTable: ConditionTableTable = new ConditionTableTable()
-
-  /** Peroperty for table DailyDungeonInfoTable */
-  public get dailyDungeonInfoTable(): DailyDungeonInfoTableTable { return this._dailyDungeonInfoTable }
-  private _dailyDungeonInfoTable: DailyDungeonInfoTableTable = new DailyDungeonInfoTableTable()
-
-  /** Peroperty for table GoldDungeonStageTable */
-  public get goldDungeonStageTable(): GoldDungeonStageTableTable { return this._goldDungeonStageTable }
-  private _goldDungeonStageTable: GoldDungeonStageTableTable = new GoldDungeonStageTableTable()
-
-  /** Peroperty for table GoldDungeonRewardTable */
-  public get goldDungeonRewardTable(): GoldDungeonRewardTableTable { return this._goldDungeonRewardTable }
-  private _goldDungeonRewardTable: GoldDungeonRewardTableTable = new GoldDungeonRewardTableTable()
-
-  /** Peroperty for table ExpDungeonStageTable */
-  public get expDungeonStageTable(): ExpDungeonStageTableTable { return this._expDungeonStageTable }
-  private _expDungeonStageTable: ExpDungeonStageTableTable = new ExpDungeonStageTableTable()
-
-  /** Peroperty for table ExpDungeonRewardTable */
-  public get expDungeonRewardTable(): ExpDungeonRewardTableTable { return this._expDungeonRewardTable }
-  private _expDungeonRewardTable: ExpDungeonRewardTableTable = new ExpDungeonRewardTableTable()
-
-  /** Peroperty for table TraitDungeonStageTable */
-  public get traitDungeonStageTable(): TraitDungeonStageTableTable { return this._traitDungeonStageTable }
-  private _traitDungeonStageTable: TraitDungeonStageTableTable = new TraitDungeonStageTableTable()
-
-  /** Peroperty for table TraitDungeonRewardTable */
-  public get traitDungeonRewardTable(): TraitDungeonRewardTableTable { return this._traitDungeonRewardTable }
-  private _traitDungeonRewardTable: TraitDungeonRewardTableTable = new TraitDungeonRewardTableTable()
-
-  /** Peroperty for table RelicDungeonStageTable */
-  public get relicDungeonStageTable(): RelicDungeonStageTableTable { return this._relicDungeonStageTable }
-  private _relicDungeonStageTable: RelicDungeonStageTableTable = new RelicDungeonStageTableTable()
-
-  /** Peroperty for table RelicDungeonRewardTable */
-  public get relicDungeonRewardTable(): RelicDungeonRewardTableTable { return this._relicDungeonRewardTable }
-  private _relicDungeonRewardTable: RelicDungeonRewardTableTable = new RelicDungeonRewardTableTable()
-
-  /** Peroperty for table OopartsDungeonStageTable */
-  public get oopartsDungeonStageTable(): OopartsDungeonStageTableTable { return this._oopartsDungeonStageTable }
-  private _oopartsDungeonStageTable: OopartsDungeonStageTableTable = new OopartsDungeonStageTableTable()
-
-  /** Peroperty for table OopartsDungeonRewardTable */
-  public get oopartsDungeonRewardTable(): OopartsDungeonRewardTableTable { return this._oopartsDungeonRewardTable }
-  private _oopartsDungeonRewardTable: OopartsDungeonRewardTableTable = new OopartsDungeonRewardTableTable()
-
-  /** Peroperty for table GachaInfoTable */
-  public get gachaInfoTable(): GachaInfoTableTable { return this._gachaInfoTable }
-  private _gachaInfoTable: GachaInfoTableTable = new GachaInfoTableTable()
-
-  /** Peroperty for table GachaCharacterListTable */
-  public get gachaCharacterListTable(): GachaCharacterListTableTable { return this._gachaCharacterListTable }
-  private _gachaCharacterListTable: GachaCharacterListTableTable = new GachaCharacterListTableTable()
-
-  /** Peroperty for table GachaArtifactInfoTable */
-  public get gachaArtifactInfoTable(): GachaArtifactInfoTableTable { return this._gachaArtifactInfoTable }
-  private _gachaArtifactInfoTable: GachaArtifactInfoTableTable = new GachaArtifactInfoTableTable()
-
-  /** Peroperty for table GachaArtifactListTable */
-  public get gachaArtifactListTable(): GachaArtifactListTableTable { return this._gachaArtifactListTable }
-  private _gachaArtifactListTable: GachaArtifactListTableTable = new GachaArtifactListTableTable()
-
-  /** Peroperty for table GachaRateTable */
-  public get gachaRateTable(): GachaRateTableTable { return this._gachaRateTable }
-  private _gachaRateTable: GachaRateTableTable = new GachaRateTableTable()
-
-  /** Peroperty for table CurrencyTable */
-  public get currencyTable(): CurrencyTableTable { return this._currencyTable }
-  private _currencyTable: CurrencyTableTable = new CurrencyTableTable()
-
-  /** Peroperty for table MaterialTable */
-  public get materialTable(): MaterialTableTable { return this._materialTable }
-  private _materialTable: MaterialTableTable = new MaterialTableTable()
-
-  /** Peroperty for table PackageTable */
-  public get packageTable(): PackageTableTable { return this._packageTable }
-  private _packageTable: PackageTableTable = new PackageTableTable()
-
-  /** Peroperty for table ClassUpCurrencyListTable */
-  public get classUpCurrencyListTable(): ClassUpCurrencyListTableTable { return this._classUpCurrencyListTable }
-  private _classUpCurrencyListTable: ClassUpCurrencyListTableTable = new ClassUpCurrencyListTableTable()
-
-  /** Peroperty for table EquipItemLevelTable */
-  public get equipItemLevelTable(): EquipItemLevelTableTable { return this._equipItemLevelTable }
-  private _equipItemLevelTable: EquipItemLevelTableTable = new EquipItemLevelTableTable()
-
-  /** Peroperty for table EquipItemClassTable */
-  public get equipItemClassTable(): EquipItemClassTableTable { return this._equipItemClassTable }
-  private _equipItemClassTable: EquipItemClassTableTable = new EquipItemClassTableTable()
-
-  /** Peroperty for table EquipTable */
-  public get equipTable(): EquipTableTable { return this._equipTable }
-  private _equipTable: EquipTableTable = new EquipTableTable()
-
-  /** Peroperty for table EquipItemGradeTable */
-  public get equipItemGradeTable(): EquipItemGradeTableTable { return this._equipItemGradeTable }
-  private _equipItemGradeTable: EquipItemGradeTableTable = new EquipItemGradeTableTable()
-
-  /** Peroperty for table CharacterTable */
-  public get characterTable(): CharacterTableTable { return this._characterTable }
-  private _characterTable: CharacterTableTable = new CharacterTableTable()
-
-  /** Peroperty for table SkillTable */
-  public get skillTable(): SkillTableTable { return this._skillTable }
-  private _skillTable: SkillTableTable = new SkillTableTable()
-
-  /** Peroperty for table BuffTable */
-  public get buffTable(): BuffTableTable { return this._buffTable }
-  private _buffTable: BuffTableTable = new BuffTableTable()
-
-  /** Peroperty for table CharacterLevelTable */
-  public get characterLevelTable(): CharacterLevelTableTable { return this._characterLevelTable }
-  private _characterLevelTable: CharacterLevelTableTable = new CharacterLevelTableTable()
-
-  /** Peroperty for table CharacterTranscendenceTable */
-  public get characterTranscendenceTable(): CharacterTranscendenceTableTable { return this._characterTranscendenceTable }
-  private _characterTranscendenceTable: CharacterTranscendenceTableTable = new CharacterTranscendenceTableTable()
-
-  /** Peroperty for table ArtifactTable */
-  public get artifactTable(): ArtifactTableTable { return this._artifactTable }
-  private _artifactTable: ArtifactTableTable = new ArtifactTableTable()
-
-  /** Peroperty for table ArtifactLevelTable */
-  public get artifactLevelTable(): ArtifactLevelTableTable { return this._artifactLevelTable }
-  private _artifactLevelTable: ArtifactLevelTableTable = new ArtifactLevelTableTable()
-
-  /** Peroperty for table ArtifactTranscendenceTable */
-  public get artifactTranscendenceTable(): ArtifactTranscendenceTableTable { return this._artifactTranscendenceTable }
-  private _artifactTranscendenceTable: ArtifactTranscendenceTableTable = new ArtifactTranscendenceTableTable()
-
-  /** Peroperty for table BuffSelectTable */
-  public get buffSelectTable(): BuffSelectTableTable { return this._buffSelectTable }
-  private _buffSelectTable: BuffSelectTableTable = new BuffSelectTableTable()
-
-  /** Peroperty for table ShortCutTable */
-  public get shortCutTable(): ShortCutTableTable { return this._shortCutTable }
-  private _shortCutTable: ShortCutTableTable = new ShortCutTableTable()
-
-  /** Peroperty for table StageTable */
-  public get stageTable(): StageTableTable { return this._stageTable }
-  private _stageTable: StageTableTable = new StageTableTable()
-
-  /** Peroperty for table ConfigTable */
-  public get configTable(): ConfigTableTable { return this._configTable }
-  private _configTable: ConfigTableTable = new ConfigTableTable()
-
-  /** Peroperty for table DropGroupTable */
-  public get dropGroupTable(): DropGroupTableTable { return this._dropGroupTable }
-  private _dropGroupTable: DropGroupTableTable = new DropGroupTableTable()
-
-  /** Peroperty for table AttributeTable */
-  public get attributeTable(): AttributeTableTable { return this._attributeTable }
-  private _attributeTable: AttributeTableTable = new AttributeTableTable()
-
-  /** Peroperty for table SDContensInfoTable */
-  public get sDContensInfoTable(): SDContensInfoTableTable { return this._sDContensInfoTable }
-  private _sDContensInfoTable: SDContensInfoTableTable = new SDContensInfoTableTable()
-
-  /** Peroperty for table SDAgencyInfoTable */
-  public get sDAgencyInfoTable(): SDAgencyInfoTableTable { return this._sDAgencyInfoTable }
-  private _sDAgencyInfoTable: SDAgencyInfoTableTable = new SDAgencyInfoTableTable()
-
-  /** Peroperty for table SDAgencyTable */
-  public get sDAgencyTable(): SDAgencyTableTable { return this._sDAgencyTable }
-  private _sDAgencyTable: SDAgencyTableTable = new SDAgencyTableTable()
-
-  /** Peroperty for table SDPubInfoTable */
-  public get sDPubInfoTable(): SDPubInfoTableTable { return this._sDPubInfoTable }
-  private _sDPubInfoTable: SDPubInfoTableTable = new SDPubInfoTableTable()
-
-  /** Peroperty for table SDTrainingInfoTable */
-  public get sDTrainingInfoTable(): SDTrainingInfoTableTable { return this._sDTrainingInfoTable }
-  private _sDTrainingInfoTable: SDTrainingInfoTableTable = new SDTrainingInfoTableTable()
-
-  /** Peroperty for table SDTrainingLevelTable */
-  public get sDTrainingLevelTable(): SDTrainingLevelTableTable { return this._sDTrainingLevelTable }
-  private _sDTrainingLevelTable: SDTrainingLevelTableTable = new SDTrainingLevelTableTable()
-
-  /** Peroperty for table SDDungeonInfoTable */
-  public get sDDungeonInfoTable(): SDDungeonInfoTableTable { return this._sDDungeonInfoTable }
-  private _sDDungeonInfoTable: SDDungeonInfoTableTable = new SDDungeonInfoTableTable()
-
-  /** Peroperty for table SDDungeonCardTable */
-  public get sDDungeonCardTable(): SDDungeonCardTableTable { return this._sDDungeonCardTable }
-  private _sDDungeonCardTable: SDDungeonCardTableTable = new SDDungeonCardTableTable()
-
-  /** Peroperty for table SDDungeonRewardTable */
-  public get sDDungeonRewardTable(): SDDungeonRewardTableTable { return this._sDDungeonRewardTable }
-  private _sDDungeonRewardTable: SDDungeonRewardTableTable = new SDDungeonRewardTableTable()
-
-  /** Peroperty for table SDAlchemyInfoTable */
-  public get sDAlchemyInfoTable(): SDAlchemyInfoTableTable { return this._sDAlchemyInfoTable }
-  private _sDAlchemyInfoTable: SDAlchemyInfoTableTable = new SDAlchemyInfoTableTable()
-
-  /** Peroperty for table SDAlchemyStepTable */
-  public get sDAlchemyStepTable(): SDAlchemyStepTableTable { return this._sDAlchemyStepTable }
-  private _sDAlchemyStepTable: SDAlchemyStepTableTable = new SDAlchemyStepTableTable()
-
-  /** Peroperty for table SDAlchemyLevelTable */
-  public get sDAlchemyLevelTable(): SDAlchemyLevelTableTable { return this._sDAlchemyLevelTable }
-  private _sDAlchemyLevelTable: SDAlchemyLevelTableTable = new SDAlchemyLevelTableTable()
-
-  /** Peroperty for table ShopInfoTable */
-  public get shopInfoTable(): ShopInfoTableTable { return this._shopInfoTable }
-  private _shopInfoTable: ShopInfoTableTable = new ShopInfoTableTable()
-
-  /** Peroperty for table MainShopTable */
-  public get mainShopTable(): MainShopTableTable { return this._mainShopTable }
-  private _mainShopTable: MainShopTableTable = new MainShopTableTable()
-
-  /** Peroperty for table PackageShopTable */
-  public get packageShopTable(): PackageShopTableTable { return this._packageShopTable }
-  private _packageShopTable: PackageShopTableTable = new PackageShopTableTable()
-
-  /** Peroperty for table SeasonShopTable */
-  public get seasonShopTable(): SeasonShopTableTable { return this._seasonShopTable }
-  private _seasonShopTable: SeasonShopTableTable = new SeasonShopTableTable()
-
-  /** Peroperty for table CashShopTable */
-  public get cashShopTable(): CashShopTableTable { return this._cashShopTable }
-  private _cashShopTable: CashShopTableTable = new CashShopTableTable()
-
-  /** Peroperty for table BGMSoundTable */
-  public get bGMSoundTable(): BGMSoundTableTable { return this._bGMSoundTable }
-  private _bGMSoundTable: BGMSoundTableTable = new BGMSoundTableTable()
-
-  /** Peroperty for table SFXSoundTable */
-  public get sFXSoundTable(): SFXSoundTableTable { return this._sFXSoundTable }
-  private _sFXSoundTable: SFXSoundTableTable = new SFXSoundTableTable()
-
-  /** Peroperty for table InfoGrowthTable */
-  public get infoGrowthTable(): InfoGrowthTableTable { return this._infoGrowthTable }
-  private _infoGrowthTable: InfoGrowthTableTable = new InfoGrowthTableTable()
-
-  /** Peroperty for table StatGrowthTable */
-  public get statGrowthTable(): StatGrowthTableTable { return this._statGrowthTable }
-  private _statGrowthTable: StatGrowthTableTable = new StatGrowthTableTable()
-
-  /** Peroperty for table TraitTable */
-  public get traitTable(): TraitTableTable { return this._traitTable }
-  private _traitTable: TraitTableTable = new TraitTableTable()
-
-  /** Peroperty for table RelicTable */
-  public get relicTable(): RelicTableTable { return this._relicTable }
-  private _relicTable: RelicTableTable = new RelicTableTable()
-
-  /** Peroperty for table StarNodeTable */
-  public get starNodeTable(): StarNodeTableTable { return this._starNodeTable }
-  private _starNodeTable: StarNodeTableTable = new StarNodeTableTable()
-
-  /** Peroperty for table CostCurveTable */
-  public get costCurveTable(): CostCurveTableTable { return this._costCurveTable }
-  private _costCurveTable: CostCurveTableTable = new CostCurveTableTable()
-
-  /** Peroperty for table CostCurveRangeTable */
-  public get costCurveRangeTable(): CostCurveRangeTableTable { return this._costCurveRangeTable }
-  private _costCurveRangeTable: CostCurveRangeTableTable = new CostCurveRangeTableTable()
+  /** Peroperty for table CollectionGroup */
+  public get collectionGroup(): CollectionGroupTable { return this._collectionGroup }
+  private _collectionGroup: CollectionGroupTable = new CollectionGroupTable()
+
+  /** Peroperty for table Collection */
+  public get collection(): CollectionTable { return this._collection }
+  private _collection: CollectionTable = new CollectionTable()
+
+  /** Peroperty for table Condition */
+  public get condition(): ConditionTable { return this._condition }
+  private _condition: ConditionTable = new ConditionTable()
+
+  /** Peroperty for table DailyDungeonInfo */
+  public get dailyDungeonInfo(): DailyDungeonInfoTable { return this._dailyDungeonInfo }
+  private _dailyDungeonInfo: DailyDungeonInfoTable = new DailyDungeonInfoTable()
+
+  /** Peroperty for table GoldDungeonStage */
+  public get goldDungeonStage(): GoldDungeonStageTable { return this._goldDungeonStage }
+  private _goldDungeonStage: GoldDungeonStageTable = new GoldDungeonStageTable()
+
+  /** Peroperty for table GoldDungeonReward */
+  public get goldDungeonReward(): GoldDungeonRewardTable { return this._goldDungeonReward }
+  private _goldDungeonReward: GoldDungeonRewardTable = new GoldDungeonRewardTable()
+
+  /** Peroperty for table ExpDungeonStage */
+  public get expDungeonStage(): ExpDungeonStageTable { return this._expDungeonStage }
+  private _expDungeonStage: ExpDungeonStageTable = new ExpDungeonStageTable()
+
+  /** Peroperty for table ExpDungeonReward */
+  public get expDungeonReward(): ExpDungeonRewardTable { return this._expDungeonReward }
+  private _expDungeonReward: ExpDungeonRewardTable = new ExpDungeonRewardTable()
+
+  /** Peroperty for table TraitDungeonStage */
+  public get traitDungeonStage(): TraitDungeonStageTable { return this._traitDungeonStage }
+  private _traitDungeonStage: TraitDungeonStageTable = new TraitDungeonStageTable()
+
+  /** Peroperty for table TraitDungeonReward */
+  public get traitDungeonReward(): TraitDungeonRewardTable { return this._traitDungeonReward }
+  private _traitDungeonReward: TraitDungeonRewardTable = new TraitDungeonRewardTable()
+
+  /** Peroperty for table RelicDungeonStage */
+  public get relicDungeonStage(): RelicDungeonStageTable { return this._relicDungeonStage }
+  private _relicDungeonStage: RelicDungeonStageTable = new RelicDungeonStageTable()
+
+  /** Peroperty for table RelicDungeonReward */
+  public get relicDungeonReward(): RelicDungeonRewardTable { return this._relicDungeonReward }
+  private _relicDungeonReward: RelicDungeonRewardTable = new RelicDungeonRewardTable()
+
+  /** Peroperty for table OopartsDungeonStage */
+  public get oopartsDungeonStage(): OopartsDungeonStageTable { return this._oopartsDungeonStage }
+  private _oopartsDungeonStage: OopartsDungeonStageTable = new OopartsDungeonStageTable()
+
+  /** Peroperty for table OopartsDungeonReward */
+  public get oopartsDungeonReward(): OopartsDungeonRewardTable { return this._oopartsDungeonReward }
+  private _oopartsDungeonReward: OopartsDungeonRewardTable = new OopartsDungeonRewardTable()
+
+  /** Peroperty for table GachaInfo */
+  public get gachaInfo(): GachaInfoTable { return this._gachaInfo }
+  private _gachaInfo: GachaInfoTable = new GachaInfoTable()
+
+  /** Peroperty for table GachaCharacterList */
+  public get gachaCharacterList(): GachaCharacterListTable { return this._gachaCharacterList }
+  private _gachaCharacterList: GachaCharacterListTable = new GachaCharacterListTable()
+
+  /** Peroperty for table GachaArtifactInfo */
+  public get gachaArtifactInfo(): GachaArtifactInfoTable { return this._gachaArtifactInfo }
+  private _gachaArtifactInfo: GachaArtifactInfoTable = new GachaArtifactInfoTable()
+
+  /** Peroperty for table GachaArtifactList */
+  public get gachaArtifactList(): GachaArtifactListTable { return this._gachaArtifactList }
+  private _gachaArtifactList: GachaArtifactListTable = new GachaArtifactListTable()
+
+  /** Peroperty for table GachaRate */
+  public get gachaRate(): GachaRateTable { return this._gachaRate }
+  private _gachaRate: GachaRateTable = new GachaRateTable()
+
+  /** Peroperty for table Currency */
+  public get currency(): CurrencyTable { return this._currency }
+  private _currency: CurrencyTable = new CurrencyTable()
+
+  /** Peroperty for table Material */
+  public get material(): MaterialTable { return this._material }
+  private _material: MaterialTable = new MaterialTable()
+
+  /** Peroperty for table Package */
+  public get package(): PackageTable { return this._package }
+  private _package: PackageTable = new PackageTable()
+
+  /** Peroperty for table ClassUpCurrencyList */
+  public get classUpCurrencyList(): ClassUpCurrencyListTable { return this._classUpCurrencyList }
+  private _classUpCurrencyList: ClassUpCurrencyListTable = new ClassUpCurrencyListTable()
+
+  /** Peroperty for table EquipItemLevel */
+  public get equipItemLevel(): EquipItemLevelTable { return this._equipItemLevel }
+  private _equipItemLevel: EquipItemLevelTable = new EquipItemLevelTable()
+
+  /** Peroperty for table EquipItemClass */
+  public get equipItemClass(): EquipItemClassTable { return this._equipItemClass }
+  private _equipItemClass: EquipItemClassTable = new EquipItemClassTable()
+
+  /** Peroperty for table Equip */
+  public get equip(): EquipTable { return this._equip }
+  private _equip: EquipTable = new EquipTable()
+
+  /** Peroperty for table EquipItemGrade */
+  public get equipItemGrade(): EquipItemGradeTable { return this._equipItemGrade }
+  private _equipItemGrade: EquipItemGradeTable = new EquipItemGradeTable()
+
+  /** Peroperty for table Character */
+  public get character(): CharacterTable { return this._character }
+  private _character: CharacterTable = new CharacterTable()
+
+  /** Peroperty for table Skill */
+  public get skill(): SkillTable { return this._skill }
+  private _skill: SkillTable = new SkillTable()
+
+  /** Peroperty for table Buff */
+  public get buff(): BuffTable { return this._buff }
+  private _buff: BuffTable = new BuffTable()
+
+  /** Peroperty for table CharacterLevel */
+  public get characterLevel(): CharacterLevelTable { return this._characterLevel }
+  private _characterLevel: CharacterLevelTable = new CharacterLevelTable()
+
+  /** Peroperty for table CharacterTranscendence */
+  public get characterTranscendence(): CharacterTranscendenceTable { return this._characterTranscendence }
+  private _characterTranscendence: CharacterTranscendenceTable = new CharacterTranscendenceTable()
+
+  /** Peroperty for table Artifact */
+  public get artifact(): ArtifactTable { return this._artifact }
+  private _artifact: ArtifactTable = new ArtifactTable()
+
+  /** Peroperty for table ArtifactLevel */
+  public get artifactLevel(): ArtifactLevelTable { return this._artifactLevel }
+  private _artifactLevel: ArtifactLevelTable = new ArtifactLevelTable()
+
+  /** Peroperty for table ArtifactTranscendence */
+  public get artifactTranscendence(): ArtifactTranscendenceTable { return this._artifactTranscendence }
+  private _artifactTranscendence: ArtifactTranscendenceTable = new ArtifactTranscendenceTable()
+
+  /** Peroperty for table BuffSelect */
+  public get buffSelect(): BuffSelectTable { return this._buffSelect }
+  private _buffSelect: BuffSelectTable = new BuffSelectTable()
+
+  /** Peroperty for table ShortCut */
+  public get shortCut(): ShortCutTable { return this._shortCut }
+  private _shortCut: ShortCutTable = new ShortCutTable()
+
+  /** Peroperty for table Stage */
+  public get stage(): StageTable { return this._stage }
+  private _stage: StageTable = new StageTable()
+
+  /** Peroperty for table Config */
+  public get config(): ConfigTable { return this._config }
+  private _config: ConfigTable = new ConfigTable()
+
+  /** Peroperty for table DropGroup */
+  public get dropGroup(): DropGroupTable { return this._dropGroup }
+  private _dropGroup: DropGroupTable = new DropGroupTable()
+
+  /** Peroperty for table Attribute */
+  public get attribute(): AttributeTable { return this._attribute }
+  private _attribute: AttributeTable = new AttributeTable()
+
+  /** Peroperty for table SDContensInfo */
+  public get sDContensInfo(): SDContensInfoTable { return this._sDContensInfo }
+  private _sDContensInfo: SDContensInfoTable = new SDContensInfoTable()
+
+  /** Peroperty for table SDAgencyInfo */
+  public get sDAgencyInfo(): SDAgencyInfoTable { return this._sDAgencyInfo }
+  private _sDAgencyInfo: SDAgencyInfoTable = new SDAgencyInfoTable()
+
+  /** Peroperty for table SDAgency */
+  public get sDAgency(): SDAgencyTable { return this._sDAgency }
+  private _sDAgency: SDAgencyTable = new SDAgencyTable()
+
+  /** Peroperty for table SDPubInfo */
+  public get sDPubInfo(): SDPubInfoTable { return this._sDPubInfo }
+  private _sDPubInfo: SDPubInfoTable = new SDPubInfoTable()
+
+  /** Peroperty for table SDTrainingInfo */
+  public get sDTrainingInfo(): SDTrainingInfoTable { return this._sDTrainingInfo }
+  private _sDTrainingInfo: SDTrainingInfoTable = new SDTrainingInfoTable()
+
+  /** Peroperty for table SDTrainingLevel */
+  public get sDTrainingLevel(): SDTrainingLevelTable { return this._sDTrainingLevel }
+  private _sDTrainingLevel: SDTrainingLevelTable = new SDTrainingLevelTable()
+
+  /** Peroperty for table SDDungeonInfo */
+  public get sDDungeonInfo(): SDDungeonInfoTable { return this._sDDungeonInfo }
+  private _sDDungeonInfo: SDDungeonInfoTable = new SDDungeonInfoTable()
+
+  /** Peroperty for table SDDungeonCard */
+  public get sDDungeonCard(): SDDungeonCardTable { return this._sDDungeonCard }
+  private _sDDungeonCard: SDDungeonCardTable = new SDDungeonCardTable()
+
+  /** Peroperty for table SDDungeonReward */
+  public get sDDungeonReward(): SDDungeonRewardTable { return this._sDDungeonReward }
+  private _sDDungeonReward: SDDungeonRewardTable = new SDDungeonRewardTable()
+
+  /** Peroperty for table SDAlchemyInfo */
+  public get sDAlchemyInfo(): SDAlchemyInfoTable { return this._sDAlchemyInfo }
+  private _sDAlchemyInfo: SDAlchemyInfoTable = new SDAlchemyInfoTable()
+
+  /** Peroperty for table SDAlchemyStep */
+  public get sDAlchemyStep(): SDAlchemyStepTable { return this._sDAlchemyStep }
+  private _sDAlchemyStep: SDAlchemyStepTable = new SDAlchemyStepTable()
+
+  /** Peroperty for table SDAlchemyLevel */
+  public get sDAlchemyLevel(): SDAlchemyLevelTable { return this._sDAlchemyLevel }
+  private _sDAlchemyLevel: SDAlchemyLevelTable = new SDAlchemyLevelTable()
+
+  /** Peroperty for table ShopInfo */
+  public get shopInfo(): ShopInfoTable { return this._shopInfo }
+  private _shopInfo: ShopInfoTable = new ShopInfoTable()
+
+  /** Peroperty for table MainShop */
+  public get mainShop(): MainShopTable { return this._mainShop }
+  private _mainShop: MainShopTable = new MainShopTable()
+
+  /** Peroperty for table PackageShop */
+  public get packageShop(): PackageShopTable { return this._packageShop }
+  private _packageShop: PackageShopTable = new PackageShopTable()
+
+  /** Peroperty for table SeasonShop */
+  public get seasonShop(): SeasonShopTable { return this._seasonShop }
+  private _seasonShop: SeasonShopTable = new SeasonShopTable()
+
+  /** Peroperty for table CashShop */
+  public get cashShop(): CashShopTable { return this._cashShop }
+  private _cashShop: CashShopTable = new CashShopTable()
+
+  /** Peroperty for table BGMSound */
+  public get bGMSound(): BGMSoundTable { return this._bGMSound }
+  private _bGMSound: BGMSoundTable = new BGMSoundTable()
+
+  /** Peroperty for table SFXSound */
+  public get sFXSound(): SFXSoundTable { return this._sFXSound }
+  private _sFXSound: SFXSoundTable = new SFXSoundTable()
+
+  /** Peroperty for table InfoGrowth */
+  public get infoGrowth(): InfoGrowthTable { return this._infoGrowth }
+  private _infoGrowth: InfoGrowthTable = new InfoGrowthTable()
+
+  /** Peroperty for table StatGrowth */
+  public get statGrowth(): StatGrowthTable { return this._statGrowth }
+  private _statGrowth: StatGrowthTable = new StatGrowthTable()
+
+  /** Peroperty for table Trait */
+  public get trait(): TraitTable { return this._trait }
+  private _trait: TraitTable = new TraitTable()
+
+  /** Peroperty for table Relic */
+  public get relic(): RelicTable { return this._relic }
+  private _relic: RelicTable = new RelicTable()
+
+  /** Peroperty for table StarNode */
+  public get starNode(): StarNodeTable { return this._starNode }
+  private _starNode: StarNodeTable = new StarNodeTable()
+
+  /** Peroperty for table CostCurve */
+  public get costCurve(): CostCurveTable { return this._costCurve }
+  private _costCurve: CostCurveTable = new CostCurveTable()
+
+  /** Peroperty for table CostCurveRange */
+  public get costCurveRange(): CostCurveRangeTable { return this._costCurveRange }
+  private _costCurveRange: CostCurveRangeTable = new CostCurveRangeTable()
 
   /**
    * Read all tables asynchronously.
@@ -354,282 +354,282 @@ export class Tables {
    * data files were renamed after export.
    */
   public async readAll(basePath: string, fileExtension: string = '.json'): Promise<void> {
-    const collectionGroupTable = new CollectionGroupTableTable()
-    await collectionGroupTable.read(path.join(basePath, `CollectionGroupTable${fileExtension}`))
-    const collectionTable = new CollectionTableTable()
-    await collectionTable.read(path.join(basePath, `CollectionTable${fileExtension}`))
-    const conditionTable = new ConditionTableTable()
-    await conditionTable.read(path.join(basePath, `ConditionTable${fileExtension}`))
-    const dailyDungeonInfoTable = new DailyDungeonInfoTableTable()
-    await dailyDungeonInfoTable.read(path.join(basePath, `DailyDungeonInfoTable${fileExtension}`))
-    const goldDungeonStageTable = new GoldDungeonStageTableTable()
-    await goldDungeonStageTable.read(path.join(basePath, `GoldDungeonStageTable${fileExtension}`))
-    const goldDungeonRewardTable = new GoldDungeonRewardTableTable()
-    await goldDungeonRewardTable.read(path.join(basePath, `GoldDungeonRewardTable${fileExtension}`))
-    const expDungeonStageTable = new ExpDungeonStageTableTable()
-    await expDungeonStageTable.read(path.join(basePath, `ExpDungeonStageTable${fileExtension}`))
-    const expDungeonRewardTable = new ExpDungeonRewardTableTable()
-    await expDungeonRewardTable.read(path.join(basePath, `ExpDungeonRewardTable${fileExtension}`))
-    const traitDungeonStageTable = new TraitDungeonStageTableTable()
-    await traitDungeonStageTable.read(path.join(basePath, `TraitDungeonStageTable${fileExtension}`))
-    const traitDungeonRewardTable = new TraitDungeonRewardTableTable()
-    await traitDungeonRewardTable.read(path.join(basePath, `TraitDungeonRewardTable${fileExtension}`))
-    const relicDungeonStageTable = new RelicDungeonStageTableTable()
-    await relicDungeonStageTable.read(path.join(basePath, `RelicDungeonStageTable${fileExtension}`))
-    const relicDungeonRewardTable = new RelicDungeonRewardTableTable()
-    await relicDungeonRewardTable.read(path.join(basePath, `RelicDungeonRewardTable${fileExtension}`))
-    const oopartsDungeonStageTable = new OopartsDungeonStageTableTable()
-    await oopartsDungeonStageTable.read(path.join(basePath, `OopartsDungeonStageTable${fileExtension}`))
-    const oopartsDungeonRewardTable = new OopartsDungeonRewardTableTable()
-    await oopartsDungeonRewardTable.read(path.join(basePath, `OopartsDungeonRewardTable${fileExtension}`))
-    const gachaInfoTable = new GachaInfoTableTable()
-    await gachaInfoTable.read(path.join(basePath, `GachaInfoTable${fileExtension}`))
-    const gachaCharacterListTable = new GachaCharacterListTableTable()
-    await gachaCharacterListTable.read(path.join(basePath, `GachaCharacterListTable${fileExtension}`))
-    const gachaArtifactInfoTable = new GachaArtifactInfoTableTable()
-    await gachaArtifactInfoTable.read(path.join(basePath, `GachaArtifactInfoTable${fileExtension}`))
-    const gachaArtifactListTable = new GachaArtifactListTableTable()
-    await gachaArtifactListTable.read(path.join(basePath, `GachaArtifactListTable${fileExtension}`))
-    const gachaRateTable = new GachaRateTableTable()
-    await gachaRateTable.read(path.join(basePath, `GachaRateTable${fileExtension}`))
-    const currencyTable = new CurrencyTableTable()
-    await currencyTable.read(path.join(basePath, `CurrencyTable${fileExtension}`))
-    const materialTable = new MaterialTableTable()
-    await materialTable.read(path.join(basePath, `MaterialTable${fileExtension}`))
-    const packageTable = new PackageTableTable()
-    await packageTable.read(path.join(basePath, `PackageTable${fileExtension}`))
-    const classUpCurrencyListTable = new ClassUpCurrencyListTableTable()
-    await classUpCurrencyListTable.read(path.join(basePath, `ClassUpCurrencyListTable${fileExtension}`))
-    const equipItemLevelTable = new EquipItemLevelTableTable()
-    await equipItemLevelTable.read(path.join(basePath, `EquipItemLevelTable${fileExtension}`))
-    const equipItemClassTable = new EquipItemClassTableTable()
-    await equipItemClassTable.read(path.join(basePath, `EquipItemClassTable${fileExtension}`))
-    const equipTable = new EquipTableTable()
-    await equipTable.read(path.join(basePath, `EquipTable${fileExtension}`))
-    const equipItemGradeTable = new EquipItemGradeTableTable()
-    await equipItemGradeTable.read(path.join(basePath, `EquipItemGradeTable${fileExtension}`))
-    const characterTable = new CharacterTableTable()
-    await characterTable.read(path.join(basePath, `CharacterTable${fileExtension}`))
-    const skillTable = new SkillTableTable()
-    await skillTable.read(path.join(basePath, `SkillTable${fileExtension}`))
-    const buffTable = new BuffTableTable()
-    await buffTable.read(path.join(basePath, `BuffTable${fileExtension}`))
-    const characterLevelTable = new CharacterLevelTableTable()
-    await characterLevelTable.read(path.join(basePath, `CharacterLevelTable${fileExtension}`))
-    const characterTranscendenceTable = new CharacterTranscendenceTableTable()
-    await characterTranscendenceTable.read(path.join(basePath, `CharacterTranscendenceTable${fileExtension}`))
-    const artifactTable = new ArtifactTableTable()
-    await artifactTable.read(path.join(basePath, `ArtifactTable${fileExtension}`))
-    const artifactLevelTable = new ArtifactLevelTableTable()
-    await artifactLevelTable.read(path.join(basePath, `ArtifactLevelTable${fileExtension}`))
-    const artifactTranscendenceTable = new ArtifactTranscendenceTableTable()
-    await artifactTranscendenceTable.read(path.join(basePath, `ArtifactTranscendenceTable${fileExtension}`))
-    const buffSelectTable = new BuffSelectTableTable()
-    await buffSelectTable.read(path.join(basePath, `BuffSelectTable${fileExtension}`))
-    const shortCutTable = new ShortCutTableTable()
-    await shortCutTable.read(path.join(basePath, `ShortCutTable${fileExtension}`))
-    const stageTable = new StageTableTable()
-    await stageTable.read(path.join(basePath, `StageTable${fileExtension}`))
-    const configTable = new ConfigTableTable()
-    await configTable.read(path.join(basePath, `ConfigTable${fileExtension}`))
-    const dropGroupTable = new DropGroupTableTable()
-    await dropGroupTable.read(path.join(basePath, `DropGroupTable${fileExtension}`))
-    const attributeTable = new AttributeTableTable()
-    await attributeTable.read(path.join(basePath, `AttributeTable${fileExtension}`))
-    const sDContensInfoTable = new SDContensInfoTableTable()
-    await sDContensInfoTable.read(path.join(basePath, `SDContensInfoTable${fileExtension}`))
-    const sDAgencyInfoTable = new SDAgencyInfoTableTable()
-    await sDAgencyInfoTable.read(path.join(basePath, `SDAgencyInfoTable${fileExtension}`))
-    const sDAgencyTable = new SDAgencyTableTable()
-    await sDAgencyTable.read(path.join(basePath, `SDAgencyTable${fileExtension}`))
-    const sDPubInfoTable = new SDPubInfoTableTable()
-    await sDPubInfoTable.read(path.join(basePath, `SDPubInfoTable${fileExtension}`))
-    const sDTrainingInfoTable = new SDTrainingInfoTableTable()
-    await sDTrainingInfoTable.read(path.join(basePath, `SDTrainingInfoTable${fileExtension}`))
-    const sDTrainingLevelTable = new SDTrainingLevelTableTable()
-    await sDTrainingLevelTable.read(path.join(basePath, `SDTrainingLevelTable${fileExtension}`))
-    const sDDungeonInfoTable = new SDDungeonInfoTableTable()
-    await sDDungeonInfoTable.read(path.join(basePath, `SDDungeonInfoTable${fileExtension}`))
-    const sDDungeonCardTable = new SDDungeonCardTableTable()
-    await sDDungeonCardTable.read(path.join(basePath, `SDDungeonCardTable${fileExtension}`))
-    const sDDungeonRewardTable = new SDDungeonRewardTableTable()
-    await sDDungeonRewardTable.read(path.join(basePath, `SDDungeonRewardTable${fileExtension}`))
-    const sDAlchemyInfoTable = new SDAlchemyInfoTableTable()
-    await sDAlchemyInfoTable.read(path.join(basePath, `SDAlchemyInfoTable${fileExtension}`))
-    const sDAlchemyStepTable = new SDAlchemyStepTableTable()
-    await sDAlchemyStepTable.read(path.join(basePath, `SDAlchemyStepTable${fileExtension}`))
-    const sDAlchemyLevelTable = new SDAlchemyLevelTableTable()
-    await sDAlchemyLevelTable.read(path.join(basePath, `SDAlchemyLevelTable${fileExtension}`))
-    const shopInfoTable = new ShopInfoTableTable()
-    await shopInfoTable.read(path.join(basePath, `ShopInfoTable${fileExtension}`))
-    const mainShopTable = new MainShopTableTable()
-    await mainShopTable.read(path.join(basePath, `MainShopTable${fileExtension}`))
-    const packageShopTable = new PackageShopTableTable()
-    await packageShopTable.read(path.join(basePath, `PackageShopTable${fileExtension}`))
-    const seasonShopTable = new SeasonShopTableTable()
-    await seasonShopTable.read(path.join(basePath, `SeasonShopTable${fileExtension}`))
-    const cashShopTable = new CashShopTableTable()
-    await cashShopTable.read(path.join(basePath, `CashShopTable${fileExtension}`))
-    const bGMSoundTable = new BGMSoundTableTable()
-    await bGMSoundTable.read(path.join(basePath, `BGMSoundTable${fileExtension}`))
-    const sFXSoundTable = new SFXSoundTableTable()
-    await sFXSoundTable.read(path.join(basePath, `SFXSoundTable${fileExtension}`))
-    const infoGrowthTable = new InfoGrowthTableTable()
-    await infoGrowthTable.read(path.join(basePath, `InfoGrowthTable${fileExtension}`))
-    const statGrowthTable = new StatGrowthTableTable()
-    await statGrowthTable.read(path.join(basePath, `StatGrowthTable${fileExtension}`))
-    const traitTable = new TraitTableTable()
-    await traitTable.read(path.join(basePath, `TraitTable${fileExtension}`))
-    const relicTable = new RelicTableTable()
-    await relicTable.read(path.join(basePath, `RelicTable${fileExtension}`))
-    const starNodeTable = new StarNodeTableTable()
-    await starNodeTable.read(path.join(basePath, `StarNodeTable${fileExtension}`))
-    const costCurveTable = new CostCurveTableTable()
-    await costCurveTable.read(path.join(basePath, `CostCurveTable${fileExtension}`))
-    const costCurveRangeTable = new CostCurveRangeTableTable()
-    await costCurveRangeTable.read(path.join(basePath, `CostCurveRangeTable${fileExtension}`))
+    const collectionGroup = new CollectionGroupTable()
+    await collectionGroup.read(path.join(basePath, `CollectionGroup${fileExtension}`))
+    const collection = new CollectionTable()
+    await collection.read(path.join(basePath, `Collection${fileExtension}`))
+    const condition = new ConditionTable()
+    await condition.read(path.join(basePath, `Condition${fileExtension}`))
+    const dailyDungeonInfo = new DailyDungeonInfoTable()
+    await dailyDungeonInfo.read(path.join(basePath, `DailyDungeonInfo${fileExtension}`))
+    const goldDungeonStage = new GoldDungeonStageTable()
+    await goldDungeonStage.read(path.join(basePath, `GoldDungeonStage${fileExtension}`))
+    const goldDungeonReward = new GoldDungeonRewardTable()
+    await goldDungeonReward.read(path.join(basePath, `GoldDungeonReward${fileExtension}`))
+    const expDungeonStage = new ExpDungeonStageTable()
+    await expDungeonStage.read(path.join(basePath, `ExpDungeonStage${fileExtension}`))
+    const expDungeonReward = new ExpDungeonRewardTable()
+    await expDungeonReward.read(path.join(basePath, `ExpDungeonReward${fileExtension}`))
+    const traitDungeonStage = new TraitDungeonStageTable()
+    await traitDungeonStage.read(path.join(basePath, `TraitDungeonStage${fileExtension}`))
+    const traitDungeonReward = new TraitDungeonRewardTable()
+    await traitDungeonReward.read(path.join(basePath, `TraitDungeonReward${fileExtension}`))
+    const relicDungeonStage = new RelicDungeonStageTable()
+    await relicDungeonStage.read(path.join(basePath, `RelicDungeonStage${fileExtension}`))
+    const relicDungeonReward = new RelicDungeonRewardTable()
+    await relicDungeonReward.read(path.join(basePath, `RelicDungeonReward${fileExtension}`))
+    const oopartsDungeonStage = new OopartsDungeonStageTable()
+    await oopartsDungeonStage.read(path.join(basePath, `OopartsDungeonStage${fileExtension}`))
+    const oopartsDungeonReward = new OopartsDungeonRewardTable()
+    await oopartsDungeonReward.read(path.join(basePath, `OopartsDungeonReward${fileExtension}`))
+    const gachaInfo = new GachaInfoTable()
+    await gachaInfo.read(path.join(basePath, `GachaInfo${fileExtension}`))
+    const gachaCharacterList = new GachaCharacterListTable()
+    await gachaCharacterList.read(path.join(basePath, `GachaCharacterList${fileExtension}`))
+    const gachaArtifactInfo = new GachaArtifactInfoTable()
+    await gachaArtifactInfo.read(path.join(basePath, `GachaArtifactInfo${fileExtension}`))
+    const gachaArtifactList = new GachaArtifactListTable()
+    await gachaArtifactList.read(path.join(basePath, `GachaArtifactList${fileExtension}`))
+    const gachaRate = new GachaRateTable()
+    await gachaRate.read(path.join(basePath, `GachaRate${fileExtension}`))
+    const currency = new CurrencyTable()
+    await currency.read(path.join(basePath, `Currency${fileExtension}`))
+    const material = new MaterialTable()
+    await material.read(path.join(basePath, `Material${fileExtension}`))
+    const package = new PackageTable()
+    await package.read(path.join(basePath, `Package${fileExtension}`))
+    const classUpCurrencyList = new ClassUpCurrencyListTable()
+    await classUpCurrencyList.read(path.join(basePath, `ClassUpCurrencyList${fileExtension}`))
+    const equipItemLevel = new EquipItemLevelTable()
+    await equipItemLevel.read(path.join(basePath, `EquipItemLevel${fileExtension}`))
+    const equipItemClass = new EquipItemClassTable()
+    await equipItemClass.read(path.join(basePath, `EquipItemClass${fileExtension}`))
+    const equip = new EquipTable()
+    await equip.read(path.join(basePath, `Equip${fileExtension}`))
+    const equipItemGrade = new EquipItemGradeTable()
+    await equipItemGrade.read(path.join(basePath, `EquipItemGrade${fileExtension}`))
+    const character = new CharacterTable()
+    await character.read(path.join(basePath, `Character${fileExtension}`))
+    const skill = new SkillTable()
+    await skill.read(path.join(basePath, `Skill${fileExtension}`))
+    const buff = new BuffTable()
+    await buff.read(path.join(basePath, `Buff${fileExtension}`))
+    const characterLevel = new CharacterLevelTable()
+    await characterLevel.read(path.join(basePath, `CharacterLevel${fileExtension}`))
+    const characterTranscendence = new CharacterTranscendenceTable()
+    await characterTranscendence.read(path.join(basePath, `CharacterTranscendence${fileExtension}`))
+    const artifact = new ArtifactTable()
+    await artifact.read(path.join(basePath, `Artifact${fileExtension}`))
+    const artifactLevel = new ArtifactLevelTable()
+    await artifactLevel.read(path.join(basePath, `ArtifactLevel${fileExtension}`))
+    const artifactTranscendence = new ArtifactTranscendenceTable()
+    await artifactTranscendence.read(path.join(basePath, `ArtifactTranscendence${fileExtension}`))
+    const buffSelect = new BuffSelectTable()
+    await buffSelect.read(path.join(basePath, `BuffSelect${fileExtension}`))
+    const shortCut = new ShortCutTable()
+    await shortCut.read(path.join(basePath, `ShortCut${fileExtension}`))
+    const stage = new StageTable()
+    await stage.read(path.join(basePath, `Stage${fileExtension}`))
+    const config = new ConfigTable()
+    await config.read(path.join(basePath, `Config${fileExtension}`))
+    const dropGroup = new DropGroupTable()
+    await dropGroup.read(path.join(basePath, `DropGroup${fileExtension}`))
+    const attribute = new AttributeTable()
+    await attribute.read(path.join(basePath, `Attribute${fileExtension}`))
+    const sDContensInfo = new SDContensInfoTable()
+    await sDContensInfo.read(path.join(basePath, `SDContensInfo${fileExtension}`))
+    const sDAgencyInfo = new SDAgencyInfoTable()
+    await sDAgencyInfo.read(path.join(basePath, `SDAgencyInfo${fileExtension}`))
+    const sDAgency = new SDAgencyTable()
+    await sDAgency.read(path.join(basePath, `SDAgency${fileExtension}`))
+    const sDPubInfo = new SDPubInfoTable()
+    await sDPubInfo.read(path.join(basePath, `SDPubInfo${fileExtension}`))
+    const sDTrainingInfo = new SDTrainingInfoTable()
+    await sDTrainingInfo.read(path.join(basePath, `SDTrainingInfo${fileExtension}`))
+    const sDTrainingLevel = new SDTrainingLevelTable()
+    await sDTrainingLevel.read(path.join(basePath, `SDTrainingLevel${fileExtension}`))
+    const sDDungeonInfo = new SDDungeonInfoTable()
+    await sDDungeonInfo.read(path.join(basePath, `SDDungeonInfo${fileExtension}`))
+    const sDDungeonCard = new SDDungeonCardTable()
+    await sDDungeonCard.read(path.join(basePath, `SDDungeonCard${fileExtension}`))
+    const sDDungeonReward = new SDDungeonRewardTable()
+    await sDDungeonReward.read(path.join(basePath, `SDDungeonReward${fileExtension}`))
+    const sDAlchemyInfo = new SDAlchemyInfoTable()
+    await sDAlchemyInfo.read(path.join(basePath, `SDAlchemyInfo${fileExtension}`))
+    const sDAlchemyStep = new SDAlchemyStepTable()
+    await sDAlchemyStep.read(path.join(basePath, `SDAlchemyStep${fileExtension}`))
+    const sDAlchemyLevel = new SDAlchemyLevelTable()
+    await sDAlchemyLevel.read(path.join(basePath, `SDAlchemyLevel${fileExtension}`))
+    const shopInfo = new ShopInfoTable()
+    await shopInfo.read(path.join(basePath, `ShopInfo${fileExtension}`))
+    const mainShop = new MainShopTable()
+    await mainShop.read(path.join(basePath, `MainShop${fileExtension}`))
+    const packageShop = new PackageShopTable()
+    await packageShop.read(path.join(basePath, `PackageShop${fileExtension}`))
+    const seasonShop = new SeasonShopTable()
+    await seasonShop.read(path.join(basePath, `SeasonShop${fileExtension}`))
+    const cashShop = new CashShopTable()
+    await cashShop.read(path.join(basePath, `CashShop${fileExtension}`))
+    const bGMSound = new BGMSoundTable()
+    await bGMSound.read(path.join(basePath, `BGMSound${fileExtension}`))
+    const sFXSound = new SFXSoundTable()
+    await sFXSound.read(path.join(basePath, `SFXSound${fileExtension}`))
+    const infoGrowth = new InfoGrowthTable()
+    await infoGrowth.read(path.join(basePath, `InfoGrowth${fileExtension}`))
+    const statGrowth = new StatGrowthTable()
+    await statGrowth.read(path.join(basePath, `StatGrowth${fileExtension}`))
+    const trait = new TraitTable()
+    await trait.read(path.join(basePath, `Trait${fileExtension}`))
+    const relic = new RelicTable()
+    await relic.read(path.join(basePath, `Relic${fileExtension}`))
+    const starNode = new StarNodeTable()
+    await starNode.read(path.join(basePath, `StarNode${fileExtension}`))
+    const costCurve = new CostCurveTable()
+    await costCurve.read(path.join(basePath, `CostCurve${fileExtension}`))
+    const costCurveRange = new CostCurveRangeTable()
+    await costCurveRange.read(path.join(basePath, `CostCurveRange${fileExtension}`))
 
-    this.publish(collectionGroupTable, collectionTable, conditionTable, dailyDungeonInfoTable, goldDungeonStageTable, goldDungeonRewardTable, expDungeonStageTable, expDungeonRewardTable, traitDungeonStageTable, traitDungeonRewardTable, relicDungeonStageTable, relicDungeonRewardTable, oopartsDungeonStageTable, oopartsDungeonRewardTable, gachaInfoTable, gachaCharacterListTable, gachaArtifactInfoTable, gachaArtifactListTable, gachaRateTable, currencyTable, materialTable, packageTable, classUpCurrencyListTable, equipItemLevelTable, equipItemClassTable, equipTable, equipItemGradeTable, characterTable, skillTable, buffTable, characterLevelTable, characterTranscendenceTable, artifactTable, artifactLevelTable, artifactTranscendenceTable, buffSelectTable, shortCutTable, stageTable, configTable, dropGroupTable, attributeTable, sDContensInfoTable, sDAgencyInfoTable, sDAgencyTable, sDPubInfoTable, sDTrainingInfoTable, sDTrainingLevelTable, sDDungeonInfoTable, sDDungeonCardTable, sDDungeonRewardTable, sDAlchemyInfoTable, sDAlchemyStepTable, sDAlchemyLevelTable, shopInfoTable, mainShopTable, packageShopTable, seasonShopTable, cashShopTable, bGMSoundTable, sFXSoundTable, infoGrowthTable, statGrowthTable, traitTable, relicTable, starNodeTable, costCurveTable, costCurveRangeTable)
+    this.publish(collectionGroup, collection, condition, dailyDungeonInfo, goldDungeonStage, goldDungeonReward, expDungeonStage, expDungeonReward, traitDungeonStage, traitDungeonReward, relicDungeonStage, relicDungeonReward, oopartsDungeonStage, oopartsDungeonReward, gachaInfo, gachaCharacterList, gachaArtifactInfo, gachaArtifactList, gachaRate, currency, material, package, classUpCurrencyList, equipItemLevel, equipItemClass, equip, equipItemGrade, character, skill, buff, characterLevel, characterTranscendence, artifact, artifactLevel, artifactTranscendence, buffSelect, shortCut, stage, config, dropGroup, attribute, sDContensInfo, sDAgencyInfo, sDAgency, sDPubInfo, sDTrainingInfo, sDTrainingLevel, sDDungeonInfo, sDDungeonCard, sDDungeonReward, sDAlchemyInfo, sDAlchemyStep, sDAlchemyLevel, shopInfo, mainShop, packageShop, seasonShop, cashShop, bGMSound, sFXSound, infoGrowth, statGrowth, trait, relic, starNode, costCurve, costCurveRange)
   }
 
   /** Read all tables synchronously. */
   public readAllSync(basePath: string, fileExtension: string = '.json'): void {
-    const collectionGroupTable = new CollectionGroupTableTable()
-    collectionGroupTable.readSync(path.join(basePath, `CollectionGroupTable${fileExtension}`))
-    const collectionTable = new CollectionTableTable()
-    collectionTable.readSync(path.join(basePath, `CollectionTable${fileExtension}`))
-    const conditionTable = new ConditionTableTable()
-    conditionTable.readSync(path.join(basePath, `ConditionTable${fileExtension}`))
-    const dailyDungeonInfoTable = new DailyDungeonInfoTableTable()
-    dailyDungeonInfoTable.readSync(path.join(basePath, `DailyDungeonInfoTable${fileExtension}`))
-    const goldDungeonStageTable = new GoldDungeonStageTableTable()
-    goldDungeonStageTable.readSync(path.join(basePath, `GoldDungeonStageTable${fileExtension}`))
-    const goldDungeonRewardTable = new GoldDungeonRewardTableTable()
-    goldDungeonRewardTable.readSync(path.join(basePath, `GoldDungeonRewardTable${fileExtension}`))
-    const expDungeonStageTable = new ExpDungeonStageTableTable()
-    expDungeonStageTable.readSync(path.join(basePath, `ExpDungeonStageTable${fileExtension}`))
-    const expDungeonRewardTable = new ExpDungeonRewardTableTable()
-    expDungeonRewardTable.readSync(path.join(basePath, `ExpDungeonRewardTable${fileExtension}`))
-    const traitDungeonStageTable = new TraitDungeonStageTableTable()
-    traitDungeonStageTable.readSync(path.join(basePath, `TraitDungeonStageTable${fileExtension}`))
-    const traitDungeonRewardTable = new TraitDungeonRewardTableTable()
-    traitDungeonRewardTable.readSync(path.join(basePath, `TraitDungeonRewardTable${fileExtension}`))
-    const relicDungeonStageTable = new RelicDungeonStageTableTable()
-    relicDungeonStageTable.readSync(path.join(basePath, `RelicDungeonStageTable${fileExtension}`))
-    const relicDungeonRewardTable = new RelicDungeonRewardTableTable()
-    relicDungeonRewardTable.readSync(path.join(basePath, `RelicDungeonRewardTable${fileExtension}`))
-    const oopartsDungeonStageTable = new OopartsDungeonStageTableTable()
-    oopartsDungeonStageTable.readSync(path.join(basePath, `OopartsDungeonStageTable${fileExtension}`))
-    const oopartsDungeonRewardTable = new OopartsDungeonRewardTableTable()
-    oopartsDungeonRewardTable.readSync(path.join(basePath, `OopartsDungeonRewardTable${fileExtension}`))
-    const gachaInfoTable = new GachaInfoTableTable()
-    gachaInfoTable.readSync(path.join(basePath, `GachaInfoTable${fileExtension}`))
-    const gachaCharacterListTable = new GachaCharacterListTableTable()
-    gachaCharacterListTable.readSync(path.join(basePath, `GachaCharacterListTable${fileExtension}`))
-    const gachaArtifactInfoTable = new GachaArtifactInfoTableTable()
-    gachaArtifactInfoTable.readSync(path.join(basePath, `GachaArtifactInfoTable${fileExtension}`))
-    const gachaArtifactListTable = new GachaArtifactListTableTable()
-    gachaArtifactListTable.readSync(path.join(basePath, `GachaArtifactListTable${fileExtension}`))
-    const gachaRateTable = new GachaRateTableTable()
-    gachaRateTable.readSync(path.join(basePath, `GachaRateTable${fileExtension}`))
-    const currencyTable = new CurrencyTableTable()
-    currencyTable.readSync(path.join(basePath, `CurrencyTable${fileExtension}`))
-    const materialTable = new MaterialTableTable()
-    materialTable.readSync(path.join(basePath, `MaterialTable${fileExtension}`))
-    const packageTable = new PackageTableTable()
-    packageTable.readSync(path.join(basePath, `PackageTable${fileExtension}`))
-    const classUpCurrencyListTable = new ClassUpCurrencyListTableTable()
-    classUpCurrencyListTable.readSync(path.join(basePath, `ClassUpCurrencyListTable${fileExtension}`))
-    const equipItemLevelTable = new EquipItemLevelTableTable()
-    equipItemLevelTable.readSync(path.join(basePath, `EquipItemLevelTable${fileExtension}`))
-    const equipItemClassTable = new EquipItemClassTableTable()
-    equipItemClassTable.readSync(path.join(basePath, `EquipItemClassTable${fileExtension}`))
-    const equipTable = new EquipTableTable()
-    equipTable.readSync(path.join(basePath, `EquipTable${fileExtension}`))
-    const equipItemGradeTable = new EquipItemGradeTableTable()
-    equipItemGradeTable.readSync(path.join(basePath, `EquipItemGradeTable${fileExtension}`))
-    const characterTable = new CharacterTableTable()
-    characterTable.readSync(path.join(basePath, `CharacterTable${fileExtension}`))
-    const skillTable = new SkillTableTable()
-    skillTable.readSync(path.join(basePath, `SkillTable${fileExtension}`))
-    const buffTable = new BuffTableTable()
-    buffTable.readSync(path.join(basePath, `BuffTable${fileExtension}`))
-    const characterLevelTable = new CharacterLevelTableTable()
-    characterLevelTable.readSync(path.join(basePath, `CharacterLevelTable${fileExtension}`))
-    const characterTranscendenceTable = new CharacterTranscendenceTableTable()
-    characterTranscendenceTable.readSync(path.join(basePath, `CharacterTranscendenceTable${fileExtension}`))
-    const artifactTable = new ArtifactTableTable()
-    artifactTable.readSync(path.join(basePath, `ArtifactTable${fileExtension}`))
-    const artifactLevelTable = new ArtifactLevelTableTable()
-    artifactLevelTable.readSync(path.join(basePath, `ArtifactLevelTable${fileExtension}`))
-    const artifactTranscendenceTable = new ArtifactTranscendenceTableTable()
-    artifactTranscendenceTable.readSync(path.join(basePath, `ArtifactTranscendenceTable${fileExtension}`))
-    const buffSelectTable = new BuffSelectTableTable()
-    buffSelectTable.readSync(path.join(basePath, `BuffSelectTable${fileExtension}`))
-    const shortCutTable = new ShortCutTableTable()
-    shortCutTable.readSync(path.join(basePath, `ShortCutTable${fileExtension}`))
-    const stageTable = new StageTableTable()
-    stageTable.readSync(path.join(basePath, `StageTable${fileExtension}`))
-    const configTable = new ConfigTableTable()
-    configTable.readSync(path.join(basePath, `ConfigTable${fileExtension}`))
-    const dropGroupTable = new DropGroupTableTable()
-    dropGroupTable.readSync(path.join(basePath, `DropGroupTable${fileExtension}`))
-    const attributeTable = new AttributeTableTable()
-    attributeTable.readSync(path.join(basePath, `AttributeTable${fileExtension}`))
-    const sDContensInfoTable = new SDContensInfoTableTable()
-    sDContensInfoTable.readSync(path.join(basePath, `SDContensInfoTable${fileExtension}`))
-    const sDAgencyInfoTable = new SDAgencyInfoTableTable()
-    sDAgencyInfoTable.readSync(path.join(basePath, `SDAgencyInfoTable${fileExtension}`))
-    const sDAgencyTable = new SDAgencyTableTable()
-    sDAgencyTable.readSync(path.join(basePath, `SDAgencyTable${fileExtension}`))
-    const sDPubInfoTable = new SDPubInfoTableTable()
-    sDPubInfoTable.readSync(path.join(basePath, `SDPubInfoTable${fileExtension}`))
-    const sDTrainingInfoTable = new SDTrainingInfoTableTable()
-    sDTrainingInfoTable.readSync(path.join(basePath, `SDTrainingInfoTable${fileExtension}`))
-    const sDTrainingLevelTable = new SDTrainingLevelTableTable()
-    sDTrainingLevelTable.readSync(path.join(basePath, `SDTrainingLevelTable${fileExtension}`))
-    const sDDungeonInfoTable = new SDDungeonInfoTableTable()
-    sDDungeonInfoTable.readSync(path.join(basePath, `SDDungeonInfoTable${fileExtension}`))
-    const sDDungeonCardTable = new SDDungeonCardTableTable()
-    sDDungeonCardTable.readSync(path.join(basePath, `SDDungeonCardTable${fileExtension}`))
-    const sDDungeonRewardTable = new SDDungeonRewardTableTable()
-    sDDungeonRewardTable.readSync(path.join(basePath, `SDDungeonRewardTable${fileExtension}`))
-    const sDAlchemyInfoTable = new SDAlchemyInfoTableTable()
-    sDAlchemyInfoTable.readSync(path.join(basePath, `SDAlchemyInfoTable${fileExtension}`))
-    const sDAlchemyStepTable = new SDAlchemyStepTableTable()
-    sDAlchemyStepTable.readSync(path.join(basePath, `SDAlchemyStepTable${fileExtension}`))
-    const sDAlchemyLevelTable = new SDAlchemyLevelTableTable()
-    sDAlchemyLevelTable.readSync(path.join(basePath, `SDAlchemyLevelTable${fileExtension}`))
-    const shopInfoTable = new ShopInfoTableTable()
-    shopInfoTable.readSync(path.join(basePath, `ShopInfoTable${fileExtension}`))
-    const mainShopTable = new MainShopTableTable()
-    mainShopTable.readSync(path.join(basePath, `MainShopTable${fileExtension}`))
-    const packageShopTable = new PackageShopTableTable()
-    packageShopTable.readSync(path.join(basePath, `PackageShopTable${fileExtension}`))
-    const seasonShopTable = new SeasonShopTableTable()
-    seasonShopTable.readSync(path.join(basePath, `SeasonShopTable${fileExtension}`))
-    const cashShopTable = new CashShopTableTable()
-    cashShopTable.readSync(path.join(basePath, `CashShopTable${fileExtension}`))
-    const bGMSoundTable = new BGMSoundTableTable()
-    bGMSoundTable.readSync(path.join(basePath, `BGMSoundTable${fileExtension}`))
-    const sFXSoundTable = new SFXSoundTableTable()
-    sFXSoundTable.readSync(path.join(basePath, `SFXSoundTable${fileExtension}`))
-    const infoGrowthTable = new InfoGrowthTableTable()
-    infoGrowthTable.readSync(path.join(basePath, `InfoGrowthTable${fileExtension}`))
-    const statGrowthTable = new StatGrowthTableTable()
-    statGrowthTable.readSync(path.join(basePath, `StatGrowthTable${fileExtension}`))
-    const traitTable = new TraitTableTable()
-    traitTable.readSync(path.join(basePath, `TraitTable${fileExtension}`))
-    const relicTable = new RelicTableTable()
-    relicTable.readSync(path.join(basePath, `RelicTable${fileExtension}`))
-    const starNodeTable = new StarNodeTableTable()
-    starNodeTable.readSync(path.join(basePath, `StarNodeTable${fileExtension}`))
-    const costCurveTable = new CostCurveTableTable()
-    costCurveTable.readSync(path.join(basePath, `CostCurveTable${fileExtension}`))
-    const costCurveRangeTable = new CostCurveRangeTableTable()
-    costCurveRangeTable.readSync(path.join(basePath, `CostCurveRangeTable${fileExtension}`))
+    const collectionGroup = new CollectionGroupTable()
+    collectionGroup.readSync(path.join(basePath, `CollectionGroup${fileExtension}`))
+    const collection = new CollectionTable()
+    collection.readSync(path.join(basePath, `Collection${fileExtension}`))
+    const condition = new ConditionTable()
+    condition.readSync(path.join(basePath, `Condition${fileExtension}`))
+    const dailyDungeonInfo = new DailyDungeonInfoTable()
+    dailyDungeonInfo.readSync(path.join(basePath, `DailyDungeonInfo${fileExtension}`))
+    const goldDungeonStage = new GoldDungeonStageTable()
+    goldDungeonStage.readSync(path.join(basePath, `GoldDungeonStage${fileExtension}`))
+    const goldDungeonReward = new GoldDungeonRewardTable()
+    goldDungeonReward.readSync(path.join(basePath, `GoldDungeonReward${fileExtension}`))
+    const expDungeonStage = new ExpDungeonStageTable()
+    expDungeonStage.readSync(path.join(basePath, `ExpDungeonStage${fileExtension}`))
+    const expDungeonReward = new ExpDungeonRewardTable()
+    expDungeonReward.readSync(path.join(basePath, `ExpDungeonReward${fileExtension}`))
+    const traitDungeonStage = new TraitDungeonStageTable()
+    traitDungeonStage.readSync(path.join(basePath, `TraitDungeonStage${fileExtension}`))
+    const traitDungeonReward = new TraitDungeonRewardTable()
+    traitDungeonReward.readSync(path.join(basePath, `TraitDungeonReward${fileExtension}`))
+    const relicDungeonStage = new RelicDungeonStageTable()
+    relicDungeonStage.readSync(path.join(basePath, `RelicDungeonStage${fileExtension}`))
+    const relicDungeonReward = new RelicDungeonRewardTable()
+    relicDungeonReward.readSync(path.join(basePath, `RelicDungeonReward${fileExtension}`))
+    const oopartsDungeonStage = new OopartsDungeonStageTable()
+    oopartsDungeonStage.readSync(path.join(basePath, `OopartsDungeonStage${fileExtension}`))
+    const oopartsDungeonReward = new OopartsDungeonRewardTable()
+    oopartsDungeonReward.readSync(path.join(basePath, `OopartsDungeonReward${fileExtension}`))
+    const gachaInfo = new GachaInfoTable()
+    gachaInfo.readSync(path.join(basePath, `GachaInfo${fileExtension}`))
+    const gachaCharacterList = new GachaCharacterListTable()
+    gachaCharacterList.readSync(path.join(basePath, `GachaCharacterList${fileExtension}`))
+    const gachaArtifactInfo = new GachaArtifactInfoTable()
+    gachaArtifactInfo.readSync(path.join(basePath, `GachaArtifactInfo${fileExtension}`))
+    const gachaArtifactList = new GachaArtifactListTable()
+    gachaArtifactList.readSync(path.join(basePath, `GachaArtifactList${fileExtension}`))
+    const gachaRate = new GachaRateTable()
+    gachaRate.readSync(path.join(basePath, `GachaRate${fileExtension}`))
+    const currency = new CurrencyTable()
+    currency.readSync(path.join(basePath, `Currency${fileExtension}`))
+    const material = new MaterialTable()
+    material.readSync(path.join(basePath, `Material${fileExtension}`))
+    const package = new PackageTable()
+    package.readSync(path.join(basePath, `Package${fileExtension}`))
+    const classUpCurrencyList = new ClassUpCurrencyListTable()
+    classUpCurrencyList.readSync(path.join(basePath, `ClassUpCurrencyList${fileExtension}`))
+    const equipItemLevel = new EquipItemLevelTable()
+    equipItemLevel.readSync(path.join(basePath, `EquipItemLevel${fileExtension}`))
+    const equipItemClass = new EquipItemClassTable()
+    equipItemClass.readSync(path.join(basePath, `EquipItemClass${fileExtension}`))
+    const equip = new EquipTable()
+    equip.readSync(path.join(basePath, `Equip${fileExtension}`))
+    const equipItemGrade = new EquipItemGradeTable()
+    equipItemGrade.readSync(path.join(basePath, `EquipItemGrade${fileExtension}`))
+    const character = new CharacterTable()
+    character.readSync(path.join(basePath, `Character${fileExtension}`))
+    const skill = new SkillTable()
+    skill.readSync(path.join(basePath, `Skill${fileExtension}`))
+    const buff = new BuffTable()
+    buff.readSync(path.join(basePath, `Buff${fileExtension}`))
+    const characterLevel = new CharacterLevelTable()
+    characterLevel.readSync(path.join(basePath, `CharacterLevel${fileExtension}`))
+    const characterTranscendence = new CharacterTranscendenceTable()
+    characterTranscendence.readSync(path.join(basePath, `CharacterTranscendence${fileExtension}`))
+    const artifact = new ArtifactTable()
+    artifact.readSync(path.join(basePath, `Artifact${fileExtension}`))
+    const artifactLevel = new ArtifactLevelTable()
+    artifactLevel.readSync(path.join(basePath, `ArtifactLevel${fileExtension}`))
+    const artifactTranscendence = new ArtifactTranscendenceTable()
+    artifactTranscendence.readSync(path.join(basePath, `ArtifactTranscendence${fileExtension}`))
+    const buffSelect = new BuffSelectTable()
+    buffSelect.readSync(path.join(basePath, `BuffSelect${fileExtension}`))
+    const shortCut = new ShortCutTable()
+    shortCut.readSync(path.join(basePath, `ShortCut${fileExtension}`))
+    const stage = new StageTable()
+    stage.readSync(path.join(basePath, `Stage${fileExtension}`))
+    const config = new ConfigTable()
+    config.readSync(path.join(basePath, `Config${fileExtension}`))
+    const dropGroup = new DropGroupTable()
+    dropGroup.readSync(path.join(basePath, `DropGroup${fileExtension}`))
+    const attribute = new AttributeTable()
+    attribute.readSync(path.join(basePath, `Attribute${fileExtension}`))
+    const sDContensInfo = new SDContensInfoTable()
+    sDContensInfo.readSync(path.join(basePath, `SDContensInfo${fileExtension}`))
+    const sDAgencyInfo = new SDAgencyInfoTable()
+    sDAgencyInfo.readSync(path.join(basePath, `SDAgencyInfo${fileExtension}`))
+    const sDAgency = new SDAgencyTable()
+    sDAgency.readSync(path.join(basePath, `SDAgency${fileExtension}`))
+    const sDPubInfo = new SDPubInfoTable()
+    sDPubInfo.readSync(path.join(basePath, `SDPubInfo${fileExtension}`))
+    const sDTrainingInfo = new SDTrainingInfoTable()
+    sDTrainingInfo.readSync(path.join(basePath, `SDTrainingInfo${fileExtension}`))
+    const sDTrainingLevel = new SDTrainingLevelTable()
+    sDTrainingLevel.readSync(path.join(basePath, `SDTrainingLevel${fileExtension}`))
+    const sDDungeonInfo = new SDDungeonInfoTable()
+    sDDungeonInfo.readSync(path.join(basePath, `SDDungeonInfo${fileExtension}`))
+    const sDDungeonCard = new SDDungeonCardTable()
+    sDDungeonCard.readSync(path.join(basePath, `SDDungeonCard${fileExtension}`))
+    const sDDungeonReward = new SDDungeonRewardTable()
+    sDDungeonReward.readSync(path.join(basePath, `SDDungeonReward${fileExtension}`))
+    const sDAlchemyInfo = new SDAlchemyInfoTable()
+    sDAlchemyInfo.readSync(path.join(basePath, `SDAlchemyInfo${fileExtension}`))
+    const sDAlchemyStep = new SDAlchemyStepTable()
+    sDAlchemyStep.readSync(path.join(basePath, `SDAlchemyStep${fileExtension}`))
+    const sDAlchemyLevel = new SDAlchemyLevelTable()
+    sDAlchemyLevel.readSync(path.join(basePath, `SDAlchemyLevel${fileExtension}`))
+    const shopInfo = new ShopInfoTable()
+    shopInfo.readSync(path.join(basePath, `ShopInfo${fileExtension}`))
+    const mainShop = new MainShopTable()
+    mainShop.readSync(path.join(basePath, `MainShop${fileExtension}`))
+    const packageShop = new PackageShopTable()
+    packageShop.readSync(path.join(basePath, `PackageShop${fileExtension}`))
+    const seasonShop = new SeasonShopTable()
+    seasonShop.readSync(path.join(basePath, `SeasonShop${fileExtension}`))
+    const cashShop = new CashShopTable()
+    cashShop.readSync(path.join(basePath, `CashShop${fileExtension}`))
+    const bGMSound = new BGMSoundTable()
+    bGMSound.readSync(path.join(basePath, `BGMSound${fileExtension}`))
+    const sFXSound = new SFXSoundTable()
+    sFXSound.readSync(path.join(basePath, `SFXSound${fileExtension}`))
+    const infoGrowth = new InfoGrowthTable()
+    infoGrowth.readSync(path.join(basePath, `InfoGrowth${fileExtension}`))
+    const statGrowth = new StatGrowthTable()
+    statGrowth.readSync(path.join(basePath, `StatGrowth${fileExtension}`))
+    const trait = new TraitTable()
+    trait.readSync(path.join(basePath, `Trait${fileExtension}`))
+    const relic = new RelicTable()
+    relic.readSync(path.join(basePath, `Relic${fileExtension}`))
+    const starNode = new StarNodeTable()
+    starNode.readSync(path.join(basePath, `StarNode${fileExtension}`))
+    const costCurve = new CostCurveTable()
+    costCurve.readSync(path.join(basePath, `CostCurve${fileExtension}`))
+    const costCurveRange = new CostCurveRangeTable()
+    costCurveRange.readSync(path.join(basePath, `CostCurveRange${fileExtension}`))
 
-    this.publish(collectionGroupTable, collectionTable, conditionTable, dailyDungeonInfoTable, goldDungeonStageTable, goldDungeonRewardTable, expDungeonStageTable, expDungeonRewardTable, traitDungeonStageTable, traitDungeonRewardTable, relicDungeonStageTable, relicDungeonRewardTable, oopartsDungeonStageTable, oopartsDungeonRewardTable, gachaInfoTable, gachaCharacterListTable, gachaArtifactInfoTable, gachaArtifactListTable, gachaRateTable, currencyTable, materialTable, packageTable, classUpCurrencyListTable, equipItemLevelTable, equipItemClassTable, equipTable, equipItemGradeTable, characterTable, skillTable, buffTable, characterLevelTable, characterTranscendenceTable, artifactTable, artifactLevelTable, artifactTranscendenceTable, buffSelectTable, shortCutTable, stageTable, configTable, dropGroupTable, attributeTable, sDContensInfoTable, sDAgencyInfoTable, sDAgencyTable, sDPubInfoTable, sDTrainingInfoTable, sDTrainingLevelTable, sDDungeonInfoTable, sDDungeonCardTable, sDDungeonRewardTable, sDAlchemyInfoTable, sDAlchemyStepTable, sDAlchemyLevelTable, shopInfoTable, mainShopTable, packageShopTable, seasonShopTable, cashShopTable, bGMSoundTable, sFXSoundTable, infoGrowthTable, statGrowthTable, traitTable, relicTable, starNodeTable, costCurveTable, costCurveRangeTable)
+    this.publish(collectionGroup, collection, condition, dailyDungeonInfo, goldDungeonStage, goldDungeonReward, expDungeonStage, expDungeonReward, traitDungeonStage, traitDungeonReward, relicDungeonStage, relicDungeonReward, oopartsDungeonStage, oopartsDungeonReward, gachaInfo, gachaCharacterList, gachaArtifactInfo, gachaArtifactList, gachaRate, currency, material, package, classUpCurrencyList, equipItemLevel, equipItemClass, equip, equipItemGrade, character, skill, buff, characterLevel, characterTranscendence, artifact, artifactLevel, artifactTranscendence, buffSelect, shortCut, stage, config, dropGroup, attribute, sDContensInfo, sDAgencyInfo, sDAgency, sDPubInfo, sDTrainingInfo, sDTrainingLevel, sDDungeonInfo, sDDungeonCard, sDDungeonReward, sDAlchemyInfo, sDAlchemyStep, sDAlchemyLevel, shopInfo, mainShop, packageShop, seasonShop, cashShop, bGMSound, sFXSound, infoGrowth, statGrowth, trait, relic, starNode, costCurve, costCurveRange)
   }
 
   /**
@@ -640,142 +640,142 @@ export class Tables {
    * needs every table. Both formats produce the same values.
    */
   public readAllBinarySync(basePath: string, fileExtension: string = '.scb'): void {
-    const collectionGroupTable = new CollectionGroupTableTable()
-    collectionGroupTable.readBinarySync(path.join(basePath, `CollectionGroupTable${fileExtension}`))
-    const collectionTable = new CollectionTableTable()
-    collectionTable.readBinarySync(path.join(basePath, `CollectionTable${fileExtension}`))
-    const conditionTable = new ConditionTableTable()
-    conditionTable.readBinarySync(path.join(basePath, `ConditionTable${fileExtension}`))
-    const dailyDungeonInfoTable = new DailyDungeonInfoTableTable()
-    dailyDungeonInfoTable.readBinarySync(path.join(basePath, `DailyDungeonInfoTable${fileExtension}`))
-    const goldDungeonStageTable = new GoldDungeonStageTableTable()
-    goldDungeonStageTable.readBinarySync(path.join(basePath, `GoldDungeonStageTable${fileExtension}`))
-    const goldDungeonRewardTable = new GoldDungeonRewardTableTable()
-    goldDungeonRewardTable.readBinarySync(path.join(basePath, `GoldDungeonRewardTable${fileExtension}`))
-    const expDungeonStageTable = new ExpDungeonStageTableTable()
-    expDungeonStageTable.readBinarySync(path.join(basePath, `ExpDungeonStageTable${fileExtension}`))
-    const expDungeonRewardTable = new ExpDungeonRewardTableTable()
-    expDungeonRewardTable.readBinarySync(path.join(basePath, `ExpDungeonRewardTable${fileExtension}`))
-    const traitDungeonStageTable = new TraitDungeonStageTableTable()
-    traitDungeonStageTable.readBinarySync(path.join(basePath, `TraitDungeonStageTable${fileExtension}`))
-    const traitDungeonRewardTable = new TraitDungeonRewardTableTable()
-    traitDungeonRewardTable.readBinarySync(path.join(basePath, `TraitDungeonRewardTable${fileExtension}`))
-    const relicDungeonStageTable = new RelicDungeonStageTableTable()
-    relicDungeonStageTable.readBinarySync(path.join(basePath, `RelicDungeonStageTable${fileExtension}`))
-    const relicDungeonRewardTable = new RelicDungeonRewardTableTable()
-    relicDungeonRewardTable.readBinarySync(path.join(basePath, `RelicDungeonRewardTable${fileExtension}`))
-    const oopartsDungeonStageTable = new OopartsDungeonStageTableTable()
-    oopartsDungeonStageTable.readBinarySync(path.join(basePath, `OopartsDungeonStageTable${fileExtension}`))
-    const oopartsDungeonRewardTable = new OopartsDungeonRewardTableTable()
-    oopartsDungeonRewardTable.readBinarySync(path.join(basePath, `OopartsDungeonRewardTable${fileExtension}`))
-    const gachaInfoTable = new GachaInfoTableTable()
-    gachaInfoTable.readBinarySync(path.join(basePath, `GachaInfoTable${fileExtension}`))
-    const gachaCharacterListTable = new GachaCharacterListTableTable()
-    gachaCharacterListTable.readBinarySync(path.join(basePath, `GachaCharacterListTable${fileExtension}`))
-    const gachaArtifactInfoTable = new GachaArtifactInfoTableTable()
-    gachaArtifactInfoTable.readBinarySync(path.join(basePath, `GachaArtifactInfoTable${fileExtension}`))
-    const gachaArtifactListTable = new GachaArtifactListTableTable()
-    gachaArtifactListTable.readBinarySync(path.join(basePath, `GachaArtifactListTable${fileExtension}`))
-    const gachaRateTable = new GachaRateTableTable()
-    gachaRateTable.readBinarySync(path.join(basePath, `GachaRateTable${fileExtension}`))
-    const currencyTable = new CurrencyTableTable()
-    currencyTable.readBinarySync(path.join(basePath, `CurrencyTable${fileExtension}`))
-    const materialTable = new MaterialTableTable()
-    materialTable.readBinarySync(path.join(basePath, `MaterialTable${fileExtension}`))
-    const packageTable = new PackageTableTable()
-    packageTable.readBinarySync(path.join(basePath, `PackageTable${fileExtension}`))
-    const classUpCurrencyListTable = new ClassUpCurrencyListTableTable()
-    classUpCurrencyListTable.readBinarySync(path.join(basePath, `ClassUpCurrencyListTable${fileExtension}`))
-    const equipItemLevelTable = new EquipItemLevelTableTable()
-    equipItemLevelTable.readBinarySync(path.join(basePath, `EquipItemLevelTable${fileExtension}`))
-    const equipItemClassTable = new EquipItemClassTableTable()
-    equipItemClassTable.readBinarySync(path.join(basePath, `EquipItemClassTable${fileExtension}`))
-    const equipTable = new EquipTableTable()
-    equipTable.readBinarySync(path.join(basePath, `EquipTable${fileExtension}`))
-    const equipItemGradeTable = new EquipItemGradeTableTable()
-    equipItemGradeTable.readBinarySync(path.join(basePath, `EquipItemGradeTable${fileExtension}`))
-    const characterTable = new CharacterTableTable()
-    characterTable.readBinarySync(path.join(basePath, `CharacterTable${fileExtension}`))
-    const skillTable = new SkillTableTable()
-    skillTable.readBinarySync(path.join(basePath, `SkillTable${fileExtension}`))
-    const buffTable = new BuffTableTable()
-    buffTable.readBinarySync(path.join(basePath, `BuffTable${fileExtension}`))
-    const characterLevelTable = new CharacterLevelTableTable()
-    characterLevelTable.readBinarySync(path.join(basePath, `CharacterLevelTable${fileExtension}`))
-    const characterTranscendenceTable = new CharacterTranscendenceTableTable()
-    characterTranscendenceTable.readBinarySync(path.join(basePath, `CharacterTranscendenceTable${fileExtension}`))
-    const artifactTable = new ArtifactTableTable()
-    artifactTable.readBinarySync(path.join(basePath, `ArtifactTable${fileExtension}`))
-    const artifactLevelTable = new ArtifactLevelTableTable()
-    artifactLevelTable.readBinarySync(path.join(basePath, `ArtifactLevelTable${fileExtension}`))
-    const artifactTranscendenceTable = new ArtifactTranscendenceTableTable()
-    artifactTranscendenceTable.readBinarySync(path.join(basePath, `ArtifactTranscendenceTable${fileExtension}`))
-    const buffSelectTable = new BuffSelectTableTable()
-    buffSelectTable.readBinarySync(path.join(basePath, `BuffSelectTable${fileExtension}`))
-    const shortCutTable = new ShortCutTableTable()
-    shortCutTable.readBinarySync(path.join(basePath, `ShortCutTable${fileExtension}`))
-    const stageTable = new StageTableTable()
-    stageTable.readBinarySync(path.join(basePath, `StageTable${fileExtension}`))
-    const configTable = new ConfigTableTable()
-    configTable.readBinarySync(path.join(basePath, `ConfigTable${fileExtension}`))
-    const dropGroupTable = new DropGroupTableTable()
-    dropGroupTable.readBinarySync(path.join(basePath, `DropGroupTable${fileExtension}`))
-    const attributeTable = new AttributeTableTable()
-    attributeTable.readBinarySync(path.join(basePath, `AttributeTable${fileExtension}`))
-    const sDContensInfoTable = new SDContensInfoTableTable()
-    sDContensInfoTable.readBinarySync(path.join(basePath, `SDContensInfoTable${fileExtension}`))
-    const sDAgencyInfoTable = new SDAgencyInfoTableTable()
-    sDAgencyInfoTable.readBinarySync(path.join(basePath, `SDAgencyInfoTable${fileExtension}`))
-    const sDAgencyTable = new SDAgencyTableTable()
-    sDAgencyTable.readBinarySync(path.join(basePath, `SDAgencyTable${fileExtension}`))
-    const sDPubInfoTable = new SDPubInfoTableTable()
-    sDPubInfoTable.readBinarySync(path.join(basePath, `SDPubInfoTable${fileExtension}`))
-    const sDTrainingInfoTable = new SDTrainingInfoTableTable()
-    sDTrainingInfoTable.readBinarySync(path.join(basePath, `SDTrainingInfoTable${fileExtension}`))
-    const sDTrainingLevelTable = new SDTrainingLevelTableTable()
-    sDTrainingLevelTable.readBinarySync(path.join(basePath, `SDTrainingLevelTable${fileExtension}`))
-    const sDDungeonInfoTable = new SDDungeonInfoTableTable()
-    sDDungeonInfoTable.readBinarySync(path.join(basePath, `SDDungeonInfoTable${fileExtension}`))
-    const sDDungeonCardTable = new SDDungeonCardTableTable()
-    sDDungeonCardTable.readBinarySync(path.join(basePath, `SDDungeonCardTable${fileExtension}`))
-    const sDDungeonRewardTable = new SDDungeonRewardTableTable()
-    sDDungeonRewardTable.readBinarySync(path.join(basePath, `SDDungeonRewardTable${fileExtension}`))
-    const sDAlchemyInfoTable = new SDAlchemyInfoTableTable()
-    sDAlchemyInfoTable.readBinarySync(path.join(basePath, `SDAlchemyInfoTable${fileExtension}`))
-    const sDAlchemyStepTable = new SDAlchemyStepTableTable()
-    sDAlchemyStepTable.readBinarySync(path.join(basePath, `SDAlchemyStepTable${fileExtension}`))
-    const sDAlchemyLevelTable = new SDAlchemyLevelTableTable()
-    sDAlchemyLevelTable.readBinarySync(path.join(basePath, `SDAlchemyLevelTable${fileExtension}`))
-    const shopInfoTable = new ShopInfoTableTable()
-    shopInfoTable.readBinarySync(path.join(basePath, `ShopInfoTable${fileExtension}`))
-    const mainShopTable = new MainShopTableTable()
-    mainShopTable.readBinarySync(path.join(basePath, `MainShopTable${fileExtension}`))
-    const packageShopTable = new PackageShopTableTable()
-    packageShopTable.readBinarySync(path.join(basePath, `PackageShopTable${fileExtension}`))
-    const seasonShopTable = new SeasonShopTableTable()
-    seasonShopTable.readBinarySync(path.join(basePath, `SeasonShopTable${fileExtension}`))
-    const cashShopTable = new CashShopTableTable()
-    cashShopTable.readBinarySync(path.join(basePath, `CashShopTable${fileExtension}`))
-    const bGMSoundTable = new BGMSoundTableTable()
-    bGMSoundTable.readBinarySync(path.join(basePath, `BGMSoundTable${fileExtension}`))
-    const sFXSoundTable = new SFXSoundTableTable()
-    sFXSoundTable.readBinarySync(path.join(basePath, `SFXSoundTable${fileExtension}`))
-    const infoGrowthTable = new InfoGrowthTableTable()
-    infoGrowthTable.readBinarySync(path.join(basePath, `InfoGrowthTable${fileExtension}`))
-    const statGrowthTable = new StatGrowthTableTable()
-    statGrowthTable.readBinarySync(path.join(basePath, `StatGrowthTable${fileExtension}`))
-    const traitTable = new TraitTableTable()
-    traitTable.readBinarySync(path.join(basePath, `TraitTable${fileExtension}`))
-    const relicTable = new RelicTableTable()
-    relicTable.readBinarySync(path.join(basePath, `RelicTable${fileExtension}`))
-    const starNodeTable = new StarNodeTableTable()
-    starNodeTable.readBinarySync(path.join(basePath, `StarNodeTable${fileExtension}`))
-    const costCurveTable = new CostCurveTableTable()
-    costCurveTable.readBinarySync(path.join(basePath, `CostCurveTable${fileExtension}`))
-    const costCurveRangeTable = new CostCurveRangeTableTable()
-    costCurveRangeTable.readBinarySync(path.join(basePath, `CostCurveRangeTable${fileExtension}`))
+    const collectionGroup = new CollectionGroupTable()
+    collectionGroup.readBinarySync(path.join(basePath, `CollectionGroup${fileExtension}`))
+    const collection = new CollectionTable()
+    collection.readBinarySync(path.join(basePath, `Collection${fileExtension}`))
+    const condition = new ConditionTable()
+    condition.readBinarySync(path.join(basePath, `Condition${fileExtension}`))
+    const dailyDungeonInfo = new DailyDungeonInfoTable()
+    dailyDungeonInfo.readBinarySync(path.join(basePath, `DailyDungeonInfo${fileExtension}`))
+    const goldDungeonStage = new GoldDungeonStageTable()
+    goldDungeonStage.readBinarySync(path.join(basePath, `GoldDungeonStage${fileExtension}`))
+    const goldDungeonReward = new GoldDungeonRewardTable()
+    goldDungeonReward.readBinarySync(path.join(basePath, `GoldDungeonReward${fileExtension}`))
+    const expDungeonStage = new ExpDungeonStageTable()
+    expDungeonStage.readBinarySync(path.join(basePath, `ExpDungeonStage${fileExtension}`))
+    const expDungeonReward = new ExpDungeonRewardTable()
+    expDungeonReward.readBinarySync(path.join(basePath, `ExpDungeonReward${fileExtension}`))
+    const traitDungeonStage = new TraitDungeonStageTable()
+    traitDungeonStage.readBinarySync(path.join(basePath, `TraitDungeonStage${fileExtension}`))
+    const traitDungeonReward = new TraitDungeonRewardTable()
+    traitDungeonReward.readBinarySync(path.join(basePath, `TraitDungeonReward${fileExtension}`))
+    const relicDungeonStage = new RelicDungeonStageTable()
+    relicDungeonStage.readBinarySync(path.join(basePath, `RelicDungeonStage${fileExtension}`))
+    const relicDungeonReward = new RelicDungeonRewardTable()
+    relicDungeonReward.readBinarySync(path.join(basePath, `RelicDungeonReward${fileExtension}`))
+    const oopartsDungeonStage = new OopartsDungeonStageTable()
+    oopartsDungeonStage.readBinarySync(path.join(basePath, `OopartsDungeonStage${fileExtension}`))
+    const oopartsDungeonReward = new OopartsDungeonRewardTable()
+    oopartsDungeonReward.readBinarySync(path.join(basePath, `OopartsDungeonReward${fileExtension}`))
+    const gachaInfo = new GachaInfoTable()
+    gachaInfo.readBinarySync(path.join(basePath, `GachaInfo${fileExtension}`))
+    const gachaCharacterList = new GachaCharacterListTable()
+    gachaCharacterList.readBinarySync(path.join(basePath, `GachaCharacterList${fileExtension}`))
+    const gachaArtifactInfo = new GachaArtifactInfoTable()
+    gachaArtifactInfo.readBinarySync(path.join(basePath, `GachaArtifactInfo${fileExtension}`))
+    const gachaArtifactList = new GachaArtifactListTable()
+    gachaArtifactList.readBinarySync(path.join(basePath, `GachaArtifactList${fileExtension}`))
+    const gachaRate = new GachaRateTable()
+    gachaRate.readBinarySync(path.join(basePath, `GachaRate${fileExtension}`))
+    const currency = new CurrencyTable()
+    currency.readBinarySync(path.join(basePath, `Currency${fileExtension}`))
+    const material = new MaterialTable()
+    material.readBinarySync(path.join(basePath, `Material${fileExtension}`))
+    const package = new PackageTable()
+    package.readBinarySync(path.join(basePath, `Package${fileExtension}`))
+    const classUpCurrencyList = new ClassUpCurrencyListTable()
+    classUpCurrencyList.readBinarySync(path.join(basePath, `ClassUpCurrencyList${fileExtension}`))
+    const equipItemLevel = new EquipItemLevelTable()
+    equipItemLevel.readBinarySync(path.join(basePath, `EquipItemLevel${fileExtension}`))
+    const equipItemClass = new EquipItemClassTable()
+    equipItemClass.readBinarySync(path.join(basePath, `EquipItemClass${fileExtension}`))
+    const equip = new EquipTable()
+    equip.readBinarySync(path.join(basePath, `Equip${fileExtension}`))
+    const equipItemGrade = new EquipItemGradeTable()
+    equipItemGrade.readBinarySync(path.join(basePath, `EquipItemGrade${fileExtension}`))
+    const character = new CharacterTable()
+    character.readBinarySync(path.join(basePath, `Character${fileExtension}`))
+    const skill = new SkillTable()
+    skill.readBinarySync(path.join(basePath, `Skill${fileExtension}`))
+    const buff = new BuffTable()
+    buff.readBinarySync(path.join(basePath, `Buff${fileExtension}`))
+    const characterLevel = new CharacterLevelTable()
+    characterLevel.readBinarySync(path.join(basePath, `CharacterLevel${fileExtension}`))
+    const characterTranscendence = new CharacterTranscendenceTable()
+    characterTranscendence.readBinarySync(path.join(basePath, `CharacterTranscendence${fileExtension}`))
+    const artifact = new ArtifactTable()
+    artifact.readBinarySync(path.join(basePath, `Artifact${fileExtension}`))
+    const artifactLevel = new ArtifactLevelTable()
+    artifactLevel.readBinarySync(path.join(basePath, `ArtifactLevel${fileExtension}`))
+    const artifactTranscendence = new ArtifactTranscendenceTable()
+    artifactTranscendence.readBinarySync(path.join(basePath, `ArtifactTranscendence${fileExtension}`))
+    const buffSelect = new BuffSelectTable()
+    buffSelect.readBinarySync(path.join(basePath, `BuffSelect${fileExtension}`))
+    const shortCut = new ShortCutTable()
+    shortCut.readBinarySync(path.join(basePath, `ShortCut${fileExtension}`))
+    const stage = new StageTable()
+    stage.readBinarySync(path.join(basePath, `Stage${fileExtension}`))
+    const config = new ConfigTable()
+    config.readBinarySync(path.join(basePath, `Config${fileExtension}`))
+    const dropGroup = new DropGroupTable()
+    dropGroup.readBinarySync(path.join(basePath, `DropGroup${fileExtension}`))
+    const attribute = new AttributeTable()
+    attribute.readBinarySync(path.join(basePath, `Attribute${fileExtension}`))
+    const sDContensInfo = new SDContensInfoTable()
+    sDContensInfo.readBinarySync(path.join(basePath, `SDContensInfo${fileExtension}`))
+    const sDAgencyInfo = new SDAgencyInfoTable()
+    sDAgencyInfo.readBinarySync(path.join(basePath, `SDAgencyInfo${fileExtension}`))
+    const sDAgency = new SDAgencyTable()
+    sDAgency.readBinarySync(path.join(basePath, `SDAgency${fileExtension}`))
+    const sDPubInfo = new SDPubInfoTable()
+    sDPubInfo.readBinarySync(path.join(basePath, `SDPubInfo${fileExtension}`))
+    const sDTrainingInfo = new SDTrainingInfoTable()
+    sDTrainingInfo.readBinarySync(path.join(basePath, `SDTrainingInfo${fileExtension}`))
+    const sDTrainingLevel = new SDTrainingLevelTable()
+    sDTrainingLevel.readBinarySync(path.join(basePath, `SDTrainingLevel${fileExtension}`))
+    const sDDungeonInfo = new SDDungeonInfoTable()
+    sDDungeonInfo.readBinarySync(path.join(basePath, `SDDungeonInfo${fileExtension}`))
+    const sDDungeonCard = new SDDungeonCardTable()
+    sDDungeonCard.readBinarySync(path.join(basePath, `SDDungeonCard${fileExtension}`))
+    const sDDungeonReward = new SDDungeonRewardTable()
+    sDDungeonReward.readBinarySync(path.join(basePath, `SDDungeonReward${fileExtension}`))
+    const sDAlchemyInfo = new SDAlchemyInfoTable()
+    sDAlchemyInfo.readBinarySync(path.join(basePath, `SDAlchemyInfo${fileExtension}`))
+    const sDAlchemyStep = new SDAlchemyStepTable()
+    sDAlchemyStep.readBinarySync(path.join(basePath, `SDAlchemyStep${fileExtension}`))
+    const sDAlchemyLevel = new SDAlchemyLevelTable()
+    sDAlchemyLevel.readBinarySync(path.join(basePath, `SDAlchemyLevel${fileExtension}`))
+    const shopInfo = new ShopInfoTable()
+    shopInfo.readBinarySync(path.join(basePath, `ShopInfo${fileExtension}`))
+    const mainShop = new MainShopTable()
+    mainShop.readBinarySync(path.join(basePath, `MainShop${fileExtension}`))
+    const packageShop = new PackageShopTable()
+    packageShop.readBinarySync(path.join(basePath, `PackageShop${fileExtension}`))
+    const seasonShop = new SeasonShopTable()
+    seasonShop.readBinarySync(path.join(basePath, `SeasonShop${fileExtension}`))
+    const cashShop = new CashShopTable()
+    cashShop.readBinarySync(path.join(basePath, `CashShop${fileExtension}`))
+    const bGMSound = new BGMSoundTable()
+    bGMSound.readBinarySync(path.join(basePath, `BGMSound${fileExtension}`))
+    const sFXSound = new SFXSoundTable()
+    sFXSound.readBinarySync(path.join(basePath, `SFXSound${fileExtension}`))
+    const infoGrowth = new InfoGrowthTable()
+    infoGrowth.readBinarySync(path.join(basePath, `InfoGrowth${fileExtension}`))
+    const statGrowth = new StatGrowthTable()
+    statGrowth.readBinarySync(path.join(basePath, `StatGrowth${fileExtension}`))
+    const trait = new TraitTable()
+    trait.readBinarySync(path.join(basePath, `Trait${fileExtension}`))
+    const relic = new RelicTable()
+    relic.readBinarySync(path.join(basePath, `Relic${fileExtension}`))
+    const starNode = new StarNodeTable()
+    starNode.readBinarySync(path.join(basePath, `StarNode${fileExtension}`))
+    const costCurve = new CostCurveTable()
+    costCurve.readBinarySync(path.join(basePath, `CostCurve${fileExtension}`))
+    const costCurveRange = new CostCurveRangeTable()
+    costCurveRange.readBinarySync(path.join(basePath, `CostCurveRange${fileExtension}`))
 
-    this.publish(collectionGroupTable, collectionTable, conditionTable, dailyDungeonInfoTable, goldDungeonStageTable, goldDungeonRewardTable, expDungeonStageTable, expDungeonRewardTable, traitDungeonStageTable, traitDungeonRewardTable, relicDungeonStageTable, relicDungeonRewardTable, oopartsDungeonStageTable, oopartsDungeonRewardTable, gachaInfoTable, gachaCharacterListTable, gachaArtifactInfoTable, gachaArtifactListTable, gachaRateTable, currencyTable, materialTable, packageTable, classUpCurrencyListTable, equipItemLevelTable, equipItemClassTable, equipTable, equipItemGradeTable, characterTable, skillTable, buffTable, characterLevelTable, characterTranscendenceTable, artifactTable, artifactLevelTable, artifactTranscendenceTable, buffSelectTable, shortCutTable, stageTable, configTable, dropGroupTable, attributeTable, sDContensInfoTable, sDAgencyInfoTable, sDAgencyTable, sDPubInfoTable, sDTrainingInfoTable, sDTrainingLevelTable, sDDungeonInfoTable, sDDungeonCardTable, sDDungeonRewardTable, sDAlchemyInfoTable, sDAlchemyStepTable, sDAlchemyLevelTable, shopInfoTable, mainShopTable, packageShopTable, seasonShopTable, cashShopTable, bGMSoundTable, sFXSoundTable, infoGrowthTable, statGrowthTable, traitTable, relicTable, starNodeTable, costCurveTable, costCurveRangeTable)
+    this.publish(collectionGroup, collection, condition, dailyDungeonInfo, goldDungeonStage, goldDungeonReward, expDungeonStage, expDungeonReward, traitDungeonStage, traitDungeonReward, relicDungeonStage, relicDungeonReward, oopartsDungeonStage, oopartsDungeonReward, gachaInfo, gachaCharacterList, gachaArtifactInfo, gachaArtifactList, gachaRate, currency, material, package, classUpCurrencyList, equipItemLevel, equipItemClass, equip, equipItemGrade, character, skill, buff, characterLevel, characterTranscendence, artifact, artifactLevel, artifactTranscendence, buffSelect, shortCut, stage, config, dropGroup, attribute, sDContensInfo, sDAgencyInfo, sDAgency, sDPubInfo, sDTrainingInfo, sDTrainingLevel, sDDungeonInfo, sDDungeonCard, sDDungeonReward, sDAlchemyInfo, sDAlchemyStep, sDAlchemyLevel, shopInfo, mainShop, packageShop, seasonShop, cashShop, bGMSound, sFXSound, infoGrowth, statGrowth, trait, relic, starNode, costCurve, costCurveRange)
   }
 
   /**
@@ -786,74 +786,74 @@ export class Tables {
    * what it held, which is the answer a running program wants: the data it already had, and
    * an exception saying why the new data was not taken.
    */
-  private publish(collectionGroupTable: CollectionGroupTableTable, collectionTable: CollectionTableTable, conditionTable: ConditionTableTable, dailyDungeonInfoTable: DailyDungeonInfoTableTable, goldDungeonStageTable: GoldDungeonStageTableTable, goldDungeonRewardTable: GoldDungeonRewardTableTable, expDungeonStageTable: ExpDungeonStageTableTable, expDungeonRewardTable: ExpDungeonRewardTableTable, traitDungeonStageTable: TraitDungeonStageTableTable, traitDungeonRewardTable: TraitDungeonRewardTableTable, relicDungeonStageTable: RelicDungeonStageTableTable, relicDungeonRewardTable: RelicDungeonRewardTableTable, oopartsDungeonStageTable: OopartsDungeonStageTableTable, oopartsDungeonRewardTable: OopartsDungeonRewardTableTable, gachaInfoTable: GachaInfoTableTable, gachaCharacterListTable: GachaCharacterListTableTable, gachaArtifactInfoTable: GachaArtifactInfoTableTable, gachaArtifactListTable: GachaArtifactListTableTable, gachaRateTable: GachaRateTableTable, currencyTable: CurrencyTableTable, materialTable: MaterialTableTable, packageTable: PackageTableTable, classUpCurrencyListTable: ClassUpCurrencyListTableTable, equipItemLevelTable: EquipItemLevelTableTable, equipItemClassTable: EquipItemClassTableTable, equipTable: EquipTableTable, equipItemGradeTable: EquipItemGradeTableTable, characterTable: CharacterTableTable, skillTable: SkillTableTable, buffTable: BuffTableTable, characterLevelTable: CharacterLevelTableTable, characterTranscendenceTable: CharacterTranscendenceTableTable, artifactTable: ArtifactTableTable, artifactLevelTable: ArtifactLevelTableTable, artifactTranscendenceTable: ArtifactTranscendenceTableTable, buffSelectTable: BuffSelectTableTable, shortCutTable: ShortCutTableTable, stageTable: StageTableTable, configTable: ConfigTableTable, dropGroupTable: DropGroupTableTable, attributeTable: AttributeTableTable, sDContensInfoTable: SDContensInfoTableTable, sDAgencyInfoTable: SDAgencyInfoTableTable, sDAgencyTable: SDAgencyTableTable, sDPubInfoTable: SDPubInfoTableTable, sDTrainingInfoTable: SDTrainingInfoTableTable, sDTrainingLevelTable: SDTrainingLevelTableTable, sDDungeonInfoTable: SDDungeonInfoTableTable, sDDungeonCardTable: SDDungeonCardTableTable, sDDungeonRewardTable: SDDungeonRewardTableTable, sDAlchemyInfoTable: SDAlchemyInfoTableTable, sDAlchemyStepTable: SDAlchemyStepTableTable, sDAlchemyLevelTable: SDAlchemyLevelTableTable, shopInfoTable: ShopInfoTableTable, mainShopTable: MainShopTableTable, packageShopTable: PackageShopTableTable, seasonShopTable: SeasonShopTableTable, cashShopTable: CashShopTableTable, bGMSoundTable: BGMSoundTableTable, sFXSoundTable: SFXSoundTableTable, infoGrowthTable: InfoGrowthTableTable, statGrowthTable: StatGrowthTableTable, traitTable: TraitTableTable, relicTable: RelicTableTable, starNodeTable: StarNodeTableTable, costCurveTable: CostCurveTableTable, costCurveRangeTable: CostCurveRangeTableTable): void {
-    this._collectionGroupTable = collectionGroupTable
-    this._collectionTable = collectionTable
-    this._conditionTable = conditionTable
-    this._dailyDungeonInfoTable = dailyDungeonInfoTable
-    this._goldDungeonStageTable = goldDungeonStageTable
-    this._goldDungeonRewardTable = goldDungeonRewardTable
-    this._expDungeonStageTable = expDungeonStageTable
-    this._expDungeonRewardTable = expDungeonRewardTable
-    this._traitDungeonStageTable = traitDungeonStageTable
-    this._traitDungeonRewardTable = traitDungeonRewardTable
-    this._relicDungeonStageTable = relicDungeonStageTable
-    this._relicDungeonRewardTable = relicDungeonRewardTable
-    this._oopartsDungeonStageTable = oopartsDungeonStageTable
-    this._oopartsDungeonRewardTable = oopartsDungeonRewardTable
-    this._gachaInfoTable = gachaInfoTable
-    this._gachaCharacterListTable = gachaCharacterListTable
-    this._gachaArtifactInfoTable = gachaArtifactInfoTable
-    this._gachaArtifactListTable = gachaArtifactListTable
-    this._gachaRateTable = gachaRateTable
-    this._currencyTable = currencyTable
-    this._materialTable = materialTable
-    this._packageTable = packageTable
-    this._classUpCurrencyListTable = classUpCurrencyListTable
-    this._equipItemLevelTable = equipItemLevelTable
-    this._equipItemClassTable = equipItemClassTable
-    this._equipTable = equipTable
-    this._equipItemGradeTable = equipItemGradeTable
-    this._characterTable = characterTable
-    this._skillTable = skillTable
-    this._buffTable = buffTable
-    this._characterLevelTable = characterLevelTable
-    this._characterTranscendenceTable = characterTranscendenceTable
-    this._artifactTable = artifactTable
-    this._artifactLevelTable = artifactLevelTable
-    this._artifactTranscendenceTable = artifactTranscendenceTable
-    this._buffSelectTable = buffSelectTable
-    this._shortCutTable = shortCutTable
-    this._stageTable = stageTable
-    this._configTable = configTable
-    this._dropGroupTable = dropGroupTable
-    this._attributeTable = attributeTable
-    this._sDContensInfoTable = sDContensInfoTable
-    this._sDAgencyInfoTable = sDAgencyInfoTable
-    this._sDAgencyTable = sDAgencyTable
-    this._sDPubInfoTable = sDPubInfoTable
-    this._sDTrainingInfoTable = sDTrainingInfoTable
-    this._sDTrainingLevelTable = sDTrainingLevelTable
-    this._sDDungeonInfoTable = sDDungeonInfoTable
-    this._sDDungeonCardTable = sDDungeonCardTable
-    this._sDDungeonRewardTable = sDDungeonRewardTable
-    this._sDAlchemyInfoTable = sDAlchemyInfoTable
-    this._sDAlchemyStepTable = sDAlchemyStepTable
-    this._sDAlchemyLevelTable = sDAlchemyLevelTable
-    this._shopInfoTable = shopInfoTable
-    this._mainShopTable = mainShopTable
-    this._packageShopTable = packageShopTable
-    this._seasonShopTable = seasonShopTable
-    this._cashShopTable = cashShopTable
-    this._bGMSoundTable = bGMSoundTable
-    this._sFXSoundTable = sFXSoundTable
-    this._infoGrowthTable = infoGrowthTable
-    this._statGrowthTable = statGrowthTable
-    this._traitTable = traitTable
-    this._relicTable = relicTable
-    this._starNodeTable = starNodeTable
-    this._costCurveTable = costCurveTable
-    this._costCurveRangeTable = costCurveRangeTable
+  private publish(collectionGroup: CollectionGroupTable, collection: CollectionTable, condition: ConditionTable, dailyDungeonInfo: DailyDungeonInfoTable, goldDungeonStage: GoldDungeonStageTable, goldDungeonReward: GoldDungeonRewardTable, expDungeonStage: ExpDungeonStageTable, expDungeonReward: ExpDungeonRewardTable, traitDungeonStage: TraitDungeonStageTable, traitDungeonReward: TraitDungeonRewardTable, relicDungeonStage: RelicDungeonStageTable, relicDungeonReward: RelicDungeonRewardTable, oopartsDungeonStage: OopartsDungeonStageTable, oopartsDungeonReward: OopartsDungeonRewardTable, gachaInfo: GachaInfoTable, gachaCharacterList: GachaCharacterListTable, gachaArtifactInfo: GachaArtifactInfoTable, gachaArtifactList: GachaArtifactListTable, gachaRate: GachaRateTable, currency: CurrencyTable, material: MaterialTable, package: PackageTable, classUpCurrencyList: ClassUpCurrencyListTable, equipItemLevel: EquipItemLevelTable, equipItemClass: EquipItemClassTable, equip: EquipTable, equipItemGrade: EquipItemGradeTable, character: CharacterTable, skill: SkillTable, buff: BuffTable, characterLevel: CharacterLevelTable, characterTranscendence: CharacterTranscendenceTable, artifact: ArtifactTable, artifactLevel: ArtifactLevelTable, artifactTranscendence: ArtifactTranscendenceTable, buffSelect: BuffSelectTable, shortCut: ShortCutTable, stage: StageTable, config: ConfigTable, dropGroup: DropGroupTable, attribute: AttributeTable, sDContensInfo: SDContensInfoTable, sDAgencyInfo: SDAgencyInfoTable, sDAgency: SDAgencyTable, sDPubInfo: SDPubInfoTable, sDTrainingInfo: SDTrainingInfoTable, sDTrainingLevel: SDTrainingLevelTable, sDDungeonInfo: SDDungeonInfoTable, sDDungeonCard: SDDungeonCardTable, sDDungeonReward: SDDungeonRewardTable, sDAlchemyInfo: SDAlchemyInfoTable, sDAlchemyStep: SDAlchemyStepTable, sDAlchemyLevel: SDAlchemyLevelTable, shopInfo: ShopInfoTable, mainShop: MainShopTable, packageShop: PackageShopTable, seasonShop: SeasonShopTable, cashShop: CashShopTable, bGMSound: BGMSoundTable, sFXSound: SFXSoundTable, infoGrowth: InfoGrowthTable, statGrowth: StatGrowthTable, trait: TraitTable, relic: RelicTable, starNode: StarNodeTable, costCurve: CostCurveTable, costCurveRange: CostCurveRangeTable): void {
+    this._collectionGroup = collectionGroup
+    this._collection = collection
+    this._condition = condition
+    this._dailyDungeonInfo = dailyDungeonInfo
+    this._goldDungeonStage = goldDungeonStage
+    this._goldDungeonReward = goldDungeonReward
+    this._expDungeonStage = expDungeonStage
+    this._expDungeonReward = expDungeonReward
+    this._traitDungeonStage = traitDungeonStage
+    this._traitDungeonReward = traitDungeonReward
+    this._relicDungeonStage = relicDungeonStage
+    this._relicDungeonReward = relicDungeonReward
+    this._oopartsDungeonStage = oopartsDungeonStage
+    this._oopartsDungeonReward = oopartsDungeonReward
+    this._gachaInfo = gachaInfo
+    this._gachaCharacterList = gachaCharacterList
+    this._gachaArtifactInfo = gachaArtifactInfo
+    this._gachaArtifactList = gachaArtifactList
+    this._gachaRate = gachaRate
+    this._currency = currency
+    this._material = material
+    this._package = package
+    this._classUpCurrencyList = classUpCurrencyList
+    this._equipItemLevel = equipItemLevel
+    this._equipItemClass = equipItemClass
+    this._equip = equip
+    this._equipItemGrade = equipItemGrade
+    this._character = character
+    this._skill = skill
+    this._buff = buff
+    this._characterLevel = characterLevel
+    this._characterTranscendence = characterTranscendence
+    this._artifact = artifact
+    this._artifactLevel = artifactLevel
+    this._artifactTranscendence = artifactTranscendence
+    this._buffSelect = buffSelect
+    this._shortCut = shortCut
+    this._stage = stage
+    this._config = config
+    this._dropGroup = dropGroup
+    this._attribute = attribute
+    this._sDContensInfo = sDContensInfo
+    this._sDAgencyInfo = sDAgencyInfo
+    this._sDAgency = sDAgency
+    this._sDPubInfo = sDPubInfo
+    this._sDTrainingInfo = sDTrainingInfo
+    this._sDTrainingLevel = sDTrainingLevel
+    this._sDDungeonInfo = sDDungeonInfo
+    this._sDDungeonCard = sDDungeonCard
+    this._sDDungeonReward = sDDungeonReward
+    this._sDAlchemyInfo = sDAlchemyInfo
+    this._sDAlchemyStep = sDAlchemyStep
+    this._sDAlchemyLevel = sDAlchemyLevel
+    this._shopInfo = shopInfo
+    this._mainShop = mainShop
+    this._packageShop = packageShop
+    this._seasonShop = seasonShop
+    this._cashShop = cashShop
+    this._bGMSound = bGMSound
+    this._sFXSound = sFXSound
+    this._infoGrowth = infoGrowth
+    this._statGrowth = statGrowth
+    this._trait = trait
+    this._relic = relic
+    this._starNode = starNode
+    this._costCurve = costCurve
+    this._costCurveRange = costCurveRange
 
     this.solveCrossReferences()
   }

@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Cost",
+    "growthType": 1,
+    "costType": 1,
+    "baseCostValue": 1200
+  },
+  {
+    "id": 2,
+    "name": "TraitCost",
+    "growthType": 2,
+    "costType": 5,
+    "baseCostValue": 500
+  },
+  {
+    "id": 3,
+    "name": "RelicCost",
+    "growthType": 3,
+    "costType": 6,
+    "baseCostValue": 500
+  },
+  {
+    "id": 4,
+    "name": "StarNodeCost",
+    "growthType": 4,
+    "costType": 8,
+    "baseCostValue": 1000
+  }
+]

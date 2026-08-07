@@ -1,0 +1,93 @@
+[
+  {
+    "id": 2000001,
+    "name": "ATK_UP",
+    "traitName": "공격력",
+    "statType": 2,
+    "statRate": 0.006,
+    "unlockCondition": [
+      0
+    ],
+    "iconPath": "Img_SlotB_IconA"
+  },
+  {
+    "id": 2000002,
+    "name": "DEF_UP",
+    "traitName": "방어력",
+    "statType": 3,
+    "statRate": 0.006,
+    "unlockCondition": [
+      2000001
+    ],
+    "iconPath": "Img_SlotB_IconB"
+  },
+  {
+    "id": 2000003,
+    "name": "HIT_UP",
+    "traitName": "명중",
+    "statType": 4,
+    "statRate": 0.004,
+    "unlockCondition": [
+      2000001
+    ],
+    "iconPath": "Img_SlotB_IconB"
+  },
+  {
+    "id": 2000004,
+    "name": "MHP_UP",
+    "traitName": "체력",
+    "statType": 1,
+    "statRate": 0.006,
+    "unlockCondition": [
+      2000002
+    ],
+    "iconPath": "Img_SlotB_IconA"
+  },
+  {
+    "id": 2000005,
+    "name": "GOLD_BONUS_UP",
+    "traitName": "스테이지 골드",
+    "statType": 14,
+    "statRate": 0.004,
+    "unlockCondition": [
+      2000002,
+      2000003
+    ],
+    "iconPath": "Img_SlotB_IconB"
+  },
+  {
+    "id": 2000006,
+    "name": "OFFLINE_GOLD_BONUS_UP",
+    "traitName": "오프라인 골드",
+    "statType": 16,
+    "statRate": 0.004,
+    "unlockCondition": [
+      2000003
+    ],
+    "iconPath": "Img_SlotB_IconB"
+  },
+  {
+    "id": 2000007,
+    "name": "OFFLINE_EXP_BONUS_UP",
+    "traitName": "오프라인 영웅 경험치",
+    "statType": 17,
+    "statRate": 0.004,
+    "unlockCondition": [
+      2000004,
+      2000005
+    ],
+    "iconPath": "Img_SlotB_IconA"
+  },
+  {
+    "id": 2000008,
+    "name": "MHP_RESELCTION_UP",
+    "traitName": "체력 회복률",
+    "statType": 13,
+    "statRate": 0.004,
+    "unlockCondition": [
+      2000005,
+      2000006
+    ],
+    "iconPath": "Img_SlotB_IconA"
+  }
+]

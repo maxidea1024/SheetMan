@@ -1,409 +1,409 @@
 {
-  "LastUpdatedDate": "2026-08-07T12:58:27.6223377+09:00",
+  "LastUpdatedDate": "2026-08-07T23:35:50.0830914+09:00",
   "MasterHash": "8589e14c369133d915da58a097224363",
   "TotalSize": 27721789,
   "Items": [
     {
-      "Name": "CollectionGroupTable.json",
+      "Name": "CollectionGroup.json",
       "Size": 4976,
       "Hash": "7ff57f429344e5ff03a73b7c1f0dc817",
-      "LastUpdatedDate": "2026-08-07T12:58:26.8798272+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5302517+09:00"
     },
     {
-      "Name": "CollectionTable.json",
+      "Name": "Collection.json",
       "Size": 662333,
       "Hash": "e91e7ec2db01711a231644a3fd92b910",
-      "LastUpdatedDate": "2026-08-07T12:58:26.914838+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5525529+09:00"
     },
     {
-      "Name": "ConditionTable.json",
+      "Name": "Condition.json",
       "Size": 6539,
       "Hash": "9044851e1b119123dcea82dabc80a829",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9155448+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5535545+09:00"
     },
     {
-      "Name": "DailyDungeonInfoTable.json",
+      "Name": "DailyDungeonInfo.json",
       "Size": 2498,
       "Hash": "e794a4bc2952439e96dc55c920fbdb42",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9162404+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5544817+09:00"
     },
     {
-      "Name": "GoldDungeonStageTable.json",
+      "Name": "GoldDungeonStage.json",
       "Size": 13201,
       "Hash": "28be03c5a74f0234f4d02e88d3cbded3",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9173375+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5569037+09:00"
     },
     {
-      "Name": "GoldDungeonRewardTable.json",
+      "Name": "GoldDungeonReward.json",
       "Size": 5774,
       "Hash": "ba4b76d34b42a716be4167800fb93cad",
-      "LastUpdatedDate": "2026-08-07T12:58:26.918151+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5577521+09:00"
     },
     {
-      "Name": "ExpDungeonStageTable.json",
+      "Name": "ExpDungeonStage.json",
       "Size": 13161,
       "Hash": "533fc9423e855e79cd603a0339fc4a41",
-      "LastUpdatedDate": "2026-08-07T12:58:26.91908+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5586901+09:00"
     },
     {
-      "Name": "ExpDungeonRewardTable.json",
+      "Name": "ExpDungeonReward.json",
       "Size": 5910,
       "Hash": "7a8641f4c3ab65f74243e2c400faabe4",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9197006+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5592512+09:00"
     },
     {
-      "Name": "TraitDungeonStageTable.json",
+      "Name": "TraitDungeonStage.json",
       "Size": 13397,
       "Hash": "f41c7c2504448c78185086de15aa4036",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9207025+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5602081+09:00"
     },
     {
-      "Name": "TraitDungeonRewardTable.json",
+      "Name": "TraitDungeonReward.json",
       "Size": 5800,
       "Hash": "c8d97e1c5046d91df81a80305bf8de08",
-      "LastUpdatedDate": "2026-08-07T12:58:26.921284+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5608136+09:00"
     },
     {
-      "Name": "RelicDungeonStageTable.json",
+      "Name": "RelicDungeonStage.json",
       "Size": 13237,
       "Hash": "76688779545b60f62698db1b467e6cf3",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9222544+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5616941+09:00"
     },
     {
-      "Name": "RelicDungeonRewardTable.json",
+      "Name": "RelicDungeonReward.json",
       "Size": 5798,
       "Hash": "1976ff12438902c6033fa1972ddf4ed1",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9228796+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5622265+09:00"
     },
     {
-      "Name": "OopartsDungeonStageTable.json",
+      "Name": "OopartsDungeonStage.json",
       "Size": 13448,
       "Hash": "9f979f358f0b26d026f714c93af48ba5",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9238557+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5630775+09:00"
     },
     {
-      "Name": "OopartsDungeonRewardTable.json",
+      "Name": "OopartsDungeonReward.json",
       "Size": 5900,
       "Hash": "f79d84bb6e77cdefe7b9cbda52ebf670",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9245169+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5636097+09:00"
     },
     {
-      "Name": "GachaInfoTable.json",
+      "Name": "GachaInfo.json",
       "Size": 1141,
       "Hash": "f2998b46474e316990a894cf36807393",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9250591+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5639914+09:00"
     },
     {
-      "Name": "GachaCharacterListTable.json",
+      "Name": "GachaCharacterList.json",
       "Size": 29394,
       "Hash": "55c0f8e90065d90b1e5ac952e0a27150",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9290566+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5653917+09:00"
     },
     {
-      "Name": "GachaArtifactInfoTable.json",
+      "Name": "GachaArtifactInfo.json",
       "Size": 1147,
       "Hash": "fb843ee0761571236b42fc7f957da317",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9295986+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5658297+09:00"
     },
     {
-      "Name": "GachaArtifactListTable.json",
+      "Name": "GachaArtifactList.json",
       "Size": 4843,
       "Hash": "b2ba924d593661ce42ac22b509a31dae",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9302178+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5664243+09:00"
     },
     {
-      "Name": "GachaRateTable.json",
+      "Name": "GachaRate.json",
       "Size": 826,
       "Hash": "cb59f2b0ab2946c741ca18fa401ef661",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9306894+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5669094+09:00"
     },
     {
-      "Name": "CurrencyTable.json",
+      "Name": "Currency.json",
       "Size": 22531,
       "Hash": "e2e81c59a8f844b7c4be091b004cb365",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9319422+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5681698+09:00"
     },
     {
-      "Name": "MaterialTable.json",
+      "Name": "Material.json",
       "Size": 15945,
       "Hash": "9078350f8e48c6ed37e9c83919b132d7",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9332407+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5690942+09:00"
     },
     {
-      "Name": "PackageTable.json",
+      "Name": "Package.json",
       "Size": 67471,
       "Hash": "d1cc8886e90edfc71302203d33503437",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9357139+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5716951+09:00"
     },
     {
-      "Name": "ClassUpCurrencyListTable.json",
+      "Name": "ClassUpCurrencyList.json",
       "Size": 27308,
       "Hash": "b4e2c3b1928a00c0f8ecdd98fa0b36f1",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9370946+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5729478+09:00"
     },
     {
-      "Name": "EquipItemLevelTable.json",
+      "Name": "EquipItemLevel.json",
       "Size": 215119,
       "Hash": "fef6f61de28f281228221c52c19de18b",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9446532+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5801221+09:00"
     },
     {
-      "Name": "EquipItemClassTable.json",
+      "Name": "EquipItemClass.json",
       "Size": 123516,
       "Hash": "89b806da36502fc4d48eb99b18ade52a",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9493457+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5846233+09:00"
     },
     {
-      "Name": "EquipTable.json",
+      "Name": "Equip.json",
       "Size": 50147,
       "Hash": "020d344dfb24d918b30b07fbed3f1969",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9515175+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.586604+09:00"
     },
     {
-      "Name": "EquipItemGradeTable.json",
+      "Name": "EquipItemGrade.json",
       "Size": 10251,
       "Hash": "8c7518fb6129cc02427c35f21e73d3d6",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9524915+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.5874288+09:00"
     },
     {
-      "Name": "CharacterTable.json",
+      "Name": "Character.json",
       "Size": 664152,
       "Hash": "70c98eea9d88395f44f5c32f3b167302",
-      "LastUpdatedDate": "2026-08-07T12:58:26.97643+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6151774+09:00"
     },
     {
-      "Name": "SkillTable.json",
+      "Name": "Skill.json",
       "Size": 135161,
       "Hash": "8a5aff574132097a426c72e2c0ebf33e",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9808878+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6203973+09:00"
     },
     {
-      "Name": "BuffTable.json",
+      "Name": "Buff.json",
       "Size": 88063,
       "Hash": "0e88e88effa3cc0ff05774acd939e83f",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9841275+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6238161+09:00"
     },
     {
-      "Name": "CharacterLevelTable.json",
+      "Name": "CharacterLevel.json",
       "Size": 21936,
       "Hash": "3a2ff223795f813ce621bf0ac100a63c",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9853798+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6252427+09:00"
     },
     {
-      "Name": "CharacterTranscendenceTable.json",
+      "Name": "CharacterTranscendence.json",
       "Size": 13786,
       "Hash": "043570dc2d328ee0963be69dd5243d3e",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9863988+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6262487+09:00"
     },
     {
-      "Name": "ArtifactTable.json",
+      "Name": "Artifact.json",
       "Size": 37289,
       "Hash": "5d62f0df8d8964cbab948551df2cfad1",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9878551+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6278417+09:00"
     },
     {
-      "Name": "ArtifactLevelTable.json",
+      "Name": "ArtifactLevel.json",
       "Size": 9609,
       "Hash": "c173aa057b9077bab0805328d59c603a",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9887012+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6295366+09:00"
     },
     {
-      "Name": "ArtifactTranscendenceTable.json",
+      "Name": "ArtifactTranscendence.json",
       "Size": 13786,
       "Hash": "2ee0b979613f026f1e6d61a1d42dde79",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9896152+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.630479+09:00"
     },
     {
-      "Name": "BuffSelectTable.json",
+      "Name": "BuffSelect.json",
       "Size": 2277,
       "Hash": "e2af714494ba3406f5757c51f2d4ea0a",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9900784+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6309242+09:00"
     },
     {
-      "Name": "ShortCutTable.json",
+      "Name": "ShortCut.json",
       "Size": 2714,
       "Hash": "da4bca655066d50d4f0f37f44bc79d66",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9906051+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6313824+09:00"
     },
     {
-      "Name": "StageTable.json",
+      "Name": "Stage.json",
       "Size": 90376,
       "Hash": "97d0f90121a41dff34ade380cba1e326",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9937182+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6366385+09:00"
     },
     {
-      "Name": "ConfigTable.json",
+      "Name": "Config.json",
       "Size": 2111,
       "Hash": "a6c4f92bd357665eba73dce75ebc7da3",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9942872+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6372763+09:00"
     },
     {
-      "Name": "DropGroupTable.json",
+      "Name": "DropGroup.json",
       "Size": 1819,
       "Hash": "8570c6cd49ad80d646effbdf85bf1ce6",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9947545+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6377558+09:00"
     },
     {
-      "Name": "AttributeTable.json",
+      "Name": "Attribute.json",
       "Size": 1340,
       "Hash": "45f52f5ae7e9ad2e59f052ddbe805f15",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9952356+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6381731+09:00"
     },
     {
-      "Name": "SDContensInfoTable.json",
+      "Name": "SDContensInfo.json",
       "Size": 2110,
       "Hash": "571cd54d59ab65ba0d5a65d137f36dec",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9956785+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6385756+09:00"
     },
     {
-      "Name": "SDAgencyInfoTable.json",
+      "Name": "SDAgencyInfo.json",
       "Size": 2462,
       "Hash": "ae9132570b159da82094e33233118316",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9961694+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6390601+09:00"
     },
     {
-      "Name": "SDAgencyTable.json",
+      "Name": "SDAgency.json",
       "Size": 18113,
       "Hash": "a21647092d7dfd5e4b8d0f75bc9a0079",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9972213+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6401013+09:00"
     },
     {
-      "Name": "SDPubInfoTable.json",
+      "Name": "SDPubInfo.json",
       "Size": 1485,
       "Hash": "35006311aeeec2acfe56c24c762517c0",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9976679+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6405083+09:00"
     },
     {
-      "Name": "SDTrainingInfoTable.json",
+      "Name": "SDTrainingInfo.json",
       "Size": 2897,
       "Hash": "2aaa185020750ef142ac44926316a5a7",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9981276+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.641013+09:00"
     },
     {
-      "Name": "SDTrainingLevelTable.json",
+      "Name": "SDTrainingLevel.json",
       "Size": 13314,
       "Hash": "d73e235e8fb2fa6b5831100b44426361",
-      "LastUpdatedDate": "2026-08-07T12:58:26.999107+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.642062+09:00"
     },
     {
-      "Name": "SDDungeonInfoTable.json",
+      "Name": "SDDungeonInfo.json",
       "Size": 299,
       "Hash": "a505593c1fadf4581f1d5322d72fd4bb",
-      "LastUpdatedDate": "2026-08-07T12:58:26.9995226+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6424634+09:00"
     },
     {
-      "Name": "SDDungeonCardTable.json",
+      "Name": "SDDungeonCard.json",
       "Size": 984,
       "Hash": "5d9ddbe6537e0dd24bae4e63f6543be0",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0000075+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6429305+09:00"
     },
     {
-      "Name": "SDDungeonRewardTable.json",
+      "Name": "SDDungeonReward.json",
       "Size": 2883,
       "Hash": "1b9decec96b62cc58ff719b912a7457e",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0004881+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6434421+09:00"
     },
     {
-      "Name": "SDAlchemyInfoTable.json",
+      "Name": "SDAlchemyInfo.json",
       "Size": 1891,
       "Hash": "92099b7802ad883e2fa23c77624203d3",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0010085+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6440173+09:00"
     },
     {
-      "Name": "SDAlchemyStepTable.json",
+      "Name": "SDAlchemyStep.json",
       "Size": 1574,
       "Hash": "5f8211cef59008144717c2556f97bc82",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0015026+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6444606+09:00"
     },
     {
-      "Name": "SDAlchemyLevelTable.json",
+      "Name": "SDAlchemyLevel.json",
       "Size": 40169,
       "Hash": "7dcedc5478dac5b9716dfcee3f6cd59a",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0035937+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.646939+09:00"
     },
     {
-      "Name": "ShopInfoTable.json",
+      "Name": "ShopInfo.json",
       "Size": 1072,
       "Hash": "e795a143b8460838fb3764f14bcf3f7e",
-      "LastUpdatedDate": "2026-08-07T12:58:27.005037+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6475214+09:00"
     },
     {
-      "Name": "MainShopTable.json",
+      "Name": "MainShop.json",
       "Size": 4912,
       "Hash": "63e954fe38147b6192c467875a17a35d",
-      "LastUpdatedDate": "2026-08-07T12:58:27.005733+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6482102+09:00"
     },
     {
-      "Name": "PackageShopTable.json",
+      "Name": "PackageShop.json",
       "Size": 3868,
       "Hash": "86c098d47ce09f583d2ed22b2a38a929",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0063237+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6487565+09:00"
     },
     {
-      "Name": "SeasonShopTable.json",
+      "Name": "SeasonShop.json",
       "Size": 16197,
       "Hash": "4998a741486dc1b895c6d7a6efd84dde",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0073082+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.649868+09:00"
     },
     {
-      "Name": "CashShopTable.json",
+      "Name": "CashShop.json",
       "Size": 6755,
       "Hash": "20aee02ed4f4b0745eb71cc1dfab198f",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0079668+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6505522+09:00"
     },
     {
-      "Name": "BGMSoundTable.json",
+      "Name": "BGMSound.json",
       "Size": 1376,
       "Hash": "26bc68a14cf4ba3a78709e855c6938e3",
-      "LastUpdatedDate": "2026-08-07T12:58:27.008436+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6512648+09:00"
     },
     {
-      "Name": "SFXSoundTable.json",
+      "Name": "SFXSound.json",
       "Size": 5128,
       "Hash": "e3d1e32146b8e705e2a5077593f1fd70",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0090525+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6520853+09:00"
     },
     {
-      "Name": "InfoGrowthTable.json",
+      "Name": "InfoGrowth.json",
       "Size": 1444,
       "Hash": "a09c5b531b5d0cb5a6e3fd5a13412015",
-      "LastUpdatedDate": "2026-08-07T12:58:27.0096448+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:48.6525799+09:00"
     },
     {
-      "Name": "StatGrowthTable.json",
+      "Name": "StatGrowth.json",
       "Size": 25103673,
       "Hash": "79a25f5fa1295f273e80f68c062bbc8e",
-      "LastUpdatedDate": "2026-08-07T12:58:27.6182797+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:50.0736144+09:00"
     },
     {
-      "Name": "TraitTable.json",
+      "Name": "Trait.json",
       "Size": 1750,
       "Hash": "99756a15b4c732c1cfa1e1ee7c503655",
-      "LastUpdatedDate": "2026-08-07T12:58:27.618978+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:50.0743643+09:00"
     },
     {
-      "Name": "RelicTable.json",
+      "Name": "Relic.json",
       "Size": 11055,
       "Hash": "eefda62f8a32442ed194d1ef3025c6e7",
-      "LastUpdatedDate": "2026-08-07T12:58:27.6198025+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:50.0797658+09:00"
     },
     {
-      "Name": "StarNodeTable.json",
+      "Name": "StarNode.json",
       "Size": 47172,
       "Hash": "3fcea58688c887ee5f30d2784f727a7b",
-      "LastUpdatedDate": "2026-08-07T12:58:27.6213464+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:50.0813803+09:00"
     },
     {
-      "Name": "CostCurveTable.json",
+      "Name": "CostCurve.json",
       "Size": 451,
       "Hash": "efcb6483584f1026a71a56a6ae579a2d",
-      "LastUpdatedDate": "2026-08-07T12:58:27.6218386+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:50.0821946+09:00"
     },
     {
-      "Name": "CostCurveRangeTable.json",
+      "Name": "CostCurveRange.json",
       "Size": 2725,
       "Hash": "e21f090dbffcb2c798b0895f89a3a682",
-      "LastUpdatedDate": "2026-08-07T12:58:27.622336+09:00"
+      "LastUpdatedDate": "2026-08-07T23:35:50.0830876+09:00"
     }
   ]
 }

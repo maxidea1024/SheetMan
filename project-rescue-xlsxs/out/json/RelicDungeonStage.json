@@ -1,0 +1,522 @@
+[
+  {
+    "id": 9400001,
+    "name": "RelicDungeon1",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 1,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "300",
+    "rewardID": 9040001,
+    "atkUpPercent": 1.0,
+    "defUpPercent": 1.0,
+    "mHPUpPercent": 1.0,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400002,
+    "name": "RelicDungeon2",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 2,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "435",
+    "rewardID": 9040002,
+    "atkUpPercent": 1.12,
+    "defUpPercent": 1.12,
+    "mHPUpPercent": 1.45,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400003,
+    "name": "RelicDungeon3",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 3,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "631",
+    "rewardID": 9040003,
+    "atkUpPercent": 1.24,
+    "defUpPercent": 1.24,
+    "mHPUpPercent": 1.9,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400004,
+    "name": "RelicDungeon4",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 4,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "915",
+    "rewardID": 9040004,
+    "atkUpPercent": 1.36,
+    "defUpPercent": 1.36,
+    "mHPUpPercent": 2.35,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400005,
+    "name": "RelicDungeon5",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 5,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "1327",
+    "rewardID": 9040005,
+    "atkUpPercent": 1.48,
+    "defUpPercent": 1.48,
+    "mHPUpPercent": 2.8,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400006,
+    "name": "RelicDungeon6",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 6,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "1924",
+    "rewardID": 9040006,
+    "atkUpPercent": 1.6,
+    "defUpPercent": 1.6,
+    "mHPUpPercent": 3.25,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400007,
+    "name": "RelicDungeon7",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 7,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "2790",
+    "rewardID": 9040007,
+    "atkUpPercent": 1.72,
+    "defUpPercent": 1.72,
+    "mHPUpPercent": 3.7,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400008,
+    "name": "RelicDungeon8",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 8,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "4046",
+    "rewardID": 9040008,
+    "atkUpPercent": 1.84,
+    "defUpPercent": 1.84,
+    "mHPUpPercent": 4.15,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400009,
+    "name": "RelicDungeon9",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 9,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "5867",
+    "rewardID": 9040009,
+    "atkUpPercent": 1.96,
+    "defUpPercent": 1.96,
+    "mHPUpPercent": 4.6,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400010,
+    "name": "RelicDungeon10",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 10,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "8507",
+    "rewardID": 9040010,
+    "atkUpPercent": 2.08,
+    "defUpPercent": 2.08,
+    "mHPUpPercent": 5.05,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400011,
+    "name": "RelicDungeon11",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 11,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "12335",
+    "rewardID": 9040011,
+    "atkUpPercent": 2.2,
+    "defUpPercent": 2.2,
+    "mHPUpPercent": 5.5,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400012,
+    "name": "RelicDungeon12",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 12,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "17886",
+    "rewardID": 9040012,
+    "atkUpPercent": 2.32,
+    "defUpPercent": 2.32,
+    "mHPUpPercent": 5.95,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400013,
+    "name": "RelicDungeon13",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 13,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "25935",
+    "rewardID": 9040013,
+    "atkUpPercent": 2.44,
+    "defUpPercent": 2.44,
+    "mHPUpPercent": 6.4,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400014,
+    "name": "RelicDungeon14",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 14,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "37606",
+    "rewardID": 9040014,
+    "atkUpPercent": 2.56,
+    "defUpPercent": 2.56,
+    "mHPUpPercent": 6.85,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400015,
+    "name": "RelicDungeon15",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 15,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "54529",
+    "rewardID": 9040015,
+    "atkUpPercent": 2.68,
+    "defUpPercent": 2.68,
+    "mHPUpPercent": 7.3,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400016,
+    "name": "RelicDungeon16",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 16,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "79067",
+    "rewardID": 9040016,
+    "atkUpPercent": 2.8,
+    "defUpPercent": 2.8,
+    "mHPUpPercent": 7.75,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400017,
+    "name": "RelicDungeon17",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 17,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "114647",
+    "rewardID": 9040017,
+    "atkUpPercent": 2.92,
+    "defUpPercent": 2.92,
+    "mHPUpPercent": 8.2,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400018,
+    "name": "RelicDungeon18",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 18,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "166238",
+    "rewardID": 9040018,
+    "atkUpPercent": 3.04,
+    "defUpPercent": 3.04,
+    "mHPUpPercent": 8.65,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400019,
+    "name": "RelicDungeon19",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 19,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "241045",
+    "rewardID": 9040019,
+    "atkUpPercent": 3.16,
+    "defUpPercent": 3.16,
+    "mHPUpPercent": 9.1,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  },
+  {
+    "id": 9400020,
+    "name": "RelicDungeon20",
+    "stageName": "고대 유적지",
+    "dungeonType": 4,
+    "dungeonFloor": 20,
+    "timeLimit": 60000,
+    "spawnIds": [
+      -1
+    ],
+    "bossID": [
+      141201
+    ],
+    "spawnPointCount": 1,
+    "spawnMaxCount": 1,
+    "spawnNextTime": 1.0,
+    "stageClearCount": -1,
+    "recommendPower": "349515",
+    "rewardID": 9040020,
+    "atkUpPercent": 3.28,
+    "defUpPercent": 3.28,
+    "mHPUpPercent": 9.55,
+    "dungeonImagePath": "Dungeon_Daily_Relic02",
+    "monsterImagePath": "Bust_Lepin",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_D_Born_dragon01_Overcast01_AtifactDungeon.asset"
+  }
+]

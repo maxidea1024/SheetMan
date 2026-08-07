@@ -1,0 +1,1442 @@
+[
+  {
+    "id": 1101,
+    "name": "ArtifactName.Ruin.UR_1",
+    "artifactType": 1,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Attack_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/IILLUST_S5_Attack_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1111,
+    "name": "ArtifactName.Ruin.UR_2",
+    "artifactType": 1,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Attack_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Attack_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1121,
+    "name": "ArtifactName.Ruin.UR_3",
+    "artifactType": 1,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Attack_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Attack_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1131,
+    "name": "ArtifactName.Ruin.UR_4",
+    "artifactType": 1,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Attack_08",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Attack_08.mat",
+    "description": "None"
+  },
+  {
+    "id": 1141,
+    "name": "ArtifactName.Ruin.UR_5",
+    "artifactType": 1,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Attack_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Attack_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1151,
+    "name": "ArtifactName.Ruin.UR_6",
+    "artifactType": 1,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Attack_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Attack_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1161,
+    "name": "ArtifactName.Ruin.UR_7",
+    "artifactType": 1,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Attack_06",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Attack_06.mat",
+    "description": "None"
+  },
+  {
+    "id": 1171,
+    "name": "ArtifactName.Ruin.UR_8",
+    "artifactType": 1,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Attack_07",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Attack_07.mat",
+    "description": "None"
+  },
+  {
+    "id": 1102,
+    "name": "ArtifactName.Ruin.SSR_1",
+    "artifactType": 1,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Attack_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Attack_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1112,
+    "name": "ArtifactName.Ruin.SSR_2",
+    "artifactType": 1,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Attack_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Attack_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1122,
+    "name": "ArtifactName.Ruin.SSR_3",
+    "artifactType": 1,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Attack_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Attack_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1132,
+    "name": "ArtifactName.Ruin.SSR_4",
+    "artifactType": 1,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Attack_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Attack_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1103,
+    "name": "ArtifactName.Ruin.SR_1",
+    "artifactType": 1,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Attack_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Attack_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1113,
+    "name": "ArtifactName.Ruin.SR_2",
+    "artifactType": 1,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Attack_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Attack_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1123,
+    "name": "ArtifactName.Ruin.SR_3",
+    "artifactType": 1,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Attack_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Attack_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1133,
+    "name": "ArtifactName.Ruin.SR_4",
+    "artifactType": 1,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Attack_07",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Attack_07.mat",
+    "description": "None"
+  },
+  {
+    "id": 1104,
+    "name": "ArtifactName.Ruin.R_1",
+    "artifactType": 1,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S2_Attack_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S2_Attack_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1114,
+    "name": "ArtifactName.Ruin.R_2",
+    "artifactType": 1,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S2_Attack_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S2_Attack_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1124,
+    "name": "ArtifactName.Ruin.R_3",
+    "artifactType": 1,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Attack_06",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Attack_06.mat",
+    "description": "None"
+  },
+  {
+    "id": 1134,
+    "name": "ArtifactName.Ruin.R_4",
+    "artifactType": 1,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Attack_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Attack_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1105,
+    "name": "ArtifactName.Ruin.N_1",
+    "artifactType": 1,
+    "grade": 1,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S1_Attack_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S1_Attack_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1115,
+    "name": "ArtifactName.Ruin.N_2",
+    "artifactType": 1,
+    "grade": 1,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Attack_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Attack_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1201,
+    "name": "ArtifactName.Guard.UR_1",
+    "artifactType": 2,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Defense_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Defense_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1211,
+    "name": "ArtifactName.Guard.UR_2",
+    "artifactType": 2,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Defense_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Defense_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1221,
+    "name": "ArtifactName.Guard.UR_3",
+    "artifactType": 2,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Defense_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Defense_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1231,
+    "name": "ArtifactName.Guard.UR_4",
+    "artifactType": 2,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Defense_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Defense_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1241,
+    "name": "ArtifactName.Guard.UR_5",
+    "artifactType": 2,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Defense_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Defense_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1251,
+    "name": "ArtifactName.Guard.UR_6",
+    "artifactType": 2,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Defense_06",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Defense_06.mat",
+    "description": "None"
+  },
+  {
+    "id": 1261,
+    "name": "ArtifactName.Guard.UR_7",
+    "artifactType": 2,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Defense_07",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Defense_07.mat",
+    "description": "None"
+  },
+  {
+    "id": 1271,
+    "name": "ArtifactName.Guard.UR_8",
+    "artifactType": 2,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Defense_08",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Defense_08.mat",
+    "description": "None"
+  },
+  {
+    "id": 1202,
+    "name": "ArtifactName.Guard.SSR_1",
+    "artifactType": 2,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Defense_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Defense_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1212,
+    "name": "ArtifactName.Guard.SSR_2",
+    "artifactType": 2,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Defense_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Defense_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1222,
+    "name": "ArtifactName.Guard.SSR_3",
+    "artifactType": 2,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Defense_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Defense_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1232,
+    "name": "ArtifactName.Guard.SSR_4",
+    "artifactType": 2,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Defense_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Defense_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1242,
+    "name": "ArtifactName.Guard.SSR_5",
+    "artifactType": 2,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Defense_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Defense_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1252,
+    "name": "ArtifactName.Guard.SSR_6",
+    "artifactType": 2,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Defense_06",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Defense_06.mat",
+    "description": "None"
+  },
+  {
+    "id": 1203,
+    "name": "ArtifactName.Guard.SR_1",
+    "artifactType": 2,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Defense_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Defense_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1213,
+    "name": "ArtifactName.Guard.SR_2",
+    "artifactType": 2,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Defense_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Defense_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1223,
+    "name": "ArtifactName.Guard.SR_3",
+    "artifactType": 2,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Defense_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Defense_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1233,
+    "name": "ArtifactName.Guard.SR_4",
+    "artifactType": 2,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Defense_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Defense_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1243,
+    "name": "ArtifactName.Guard.SR_5",
+    "artifactType": 2,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Defense_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Defense_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1204,
+    "name": "ArtifactName.Guard.R_1",
+    "artifactType": 2,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S2_Defense_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S2_Defense_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1214,
+    "name": "ArtifactName.Guard.R_2",
+    "artifactType": 2,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Defense_06",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Defense_06.mat",
+    "description": "None"
+  },
+  {
+    "id": 1224,
+    "name": "ArtifactName.Guard.R_3",
+    "artifactType": 2,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Defense_07",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Defense_07.mat",
+    "description": "None"
+  },
+  {
+    "id": 1205,
+    "name": "ArtifactName.Guard.N_1",
+    "artifactType": 2,
+    "grade": 1,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S1_Defense_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S1_Defense_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1215,
+    "name": "ArtifactName.Guard.N_2",
+    "artifactType": 2,
+    "grade": 1,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 3,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S1_Defense_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S1_Defense_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1301,
+    "name": "ArtifactName.Chaos.UR_1",
+    "artifactType": 3,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Special_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Special_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1311,
+    "name": "ArtifactName.Chaos.UR_2",
+    "artifactType": 3,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Special_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Special_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1321,
+    "name": "ArtifactName.Chaos.UR_3",
+    "artifactType": 3,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Special_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Special_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1331,
+    "name": "ArtifactName.Chaos.UR_4",
+    "artifactType": 3,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Special_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Special_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1341,
+    "name": "ArtifactName.Chaos.UR_5",
+    "artifactType": 3,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Special_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Special_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1351,
+    "name": "ArtifactName.Chaos.UR_6",
+    "artifactType": 3,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Special_06",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Special_06.mat",
+    "description": "None"
+  },
+  {
+    "id": 1361,
+    "name": "ArtifactName.Chaos.UR_7",
+    "artifactType": 3,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Special_07",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Special_07.mat",
+    "description": "None"
+  },
+  {
+    "id": 1302,
+    "name": "ArtifactName.Chaos.SSR_1",
+    "artifactType": 3,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Special_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Special_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1312,
+    "name": "ArtifactName.Chaos.SSR_2",
+    "artifactType": 3,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Special_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Special_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1322,
+    "name": "ArtifactName.Chaos.SSR_3",
+    "artifactType": 3,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Special_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Special_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1332,
+    "name": "ArtifactName.Chaos.SSR_4",
+    "artifactType": 3,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Special_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Special_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1342,
+    "name": "ArtifactName.Chaos.SSR_5",
+    "artifactType": 3,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Special_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Special_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1352,
+    "name": "ArtifactName.Chaos.SSR_6",
+    "artifactType": 3,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Special_06",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Special_06.mat",
+    "description": "None"
+  },
+  {
+    "id": 1303,
+    "name": "ArtifactName.Chaos.SR_1",
+    "artifactType": 3,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Special_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Special_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1313,
+    "name": "ArtifactName.Chaos.SR_2",
+    "artifactType": 3,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Special_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Special_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1323,
+    "name": "ArtifactName.Chaos.SR_3",
+    "artifactType": 3,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Special_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Special_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1333,
+    "name": "ArtifactName.Chaos.SR_4",
+    "artifactType": 3,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Special_06",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Special_06.mat",
+    "description": "None"
+  },
+  {
+    "id": 1343,
+    "name": "ArtifactName.Chaos.SR_5",
+    "artifactType": 3,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Special_07",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Special_07.mat",
+    "description": "None"
+  },
+  {
+    "id": 1304,
+    "name": "ArtifactName.Chaos.R_1",
+    "artifactType": 3,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S2_Special_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S2_Special_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1314,
+    "name": "ArtifactName.Chaos.R_2",
+    "artifactType": 3,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Special_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Special_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1324,
+    "name": "ArtifactName.Chaos.R_3",
+    "artifactType": 3,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Special_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Special_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1305,
+    "name": "ArtifactName.Chaos.N_1",
+    "artifactType": 3,
+    "grade": 1,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S1_Special_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S1_Special_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1315,
+    "name": "ArtifactName.Chaos.N_2",
+    "artifactType": 3,
+    "grade": 1,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 2,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S1_Special_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S1_Special_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1401,
+    "name": "ArtifactName.Grace.UR_1",
+    "artifactType": 4,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Stamina_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Stamina_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1411,
+    "name": "ArtifactName.Grace.UR_2",
+    "artifactType": 4,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Stamina_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Stamina_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1421,
+    "name": "ArtifactName.Grace.UR_3",
+    "artifactType": 4,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Stamina_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Stamina_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1431,
+    "name": "ArtifactName.Grace.UR_4",
+    "artifactType": 4,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Stamina_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Stamina_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1441,
+    "name": "ArtifactName.Grace.UR_5",
+    "artifactType": 4,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Stamina_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Stamina_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1451,
+    "name": "ArtifactName.Grace.UR_6",
+    "artifactType": 4,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Stamina_06",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Stamina_06.mat",
+    "description": "None"
+  },
+  {
+    "id": 1461,
+    "name": "ArtifactName.Grace.UR_7",
+    "artifactType": 4,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Stamina_07",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Stamina_07.mat",
+    "description": "None"
+  },
+  {
+    "id": 1471,
+    "name": "ArtifactName.Grace.UR_8",
+    "artifactType": 4,
+    "grade": 5,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S5_Stamina_08",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S5_Stamina_08.mat",
+    "description": "None"
+  },
+  {
+    "id": 1402,
+    "name": "ArtifactName.Grace.SSR_1",
+    "artifactType": 4,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Stamina_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Stamina_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1412,
+    "name": "ArtifactName.Grace.SSR_2",
+    "artifactType": 4,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Stamina_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Stamina_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1422,
+    "name": "ArtifactName.Grace.SSR_3",
+    "artifactType": 4,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Stamina_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Stamina_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1432,
+    "name": "ArtifactName.Grace.SSR_4",
+    "artifactType": 4,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Stamina_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Stamina_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1442,
+    "name": "ArtifactName.Grace.SSR_5",
+    "artifactType": 4,
+    "grade": 4,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S4_Stamina_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S4_Stamina_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1403,
+    "name": "ArtifactName.Grace.SR_1",
+    "artifactType": 4,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Stamina_02",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Stamina_02.mat",
+    "description": "None"
+  },
+  {
+    "id": 1413,
+    "name": "ArtifactName.Grace.SR_2",
+    "artifactType": 4,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Stamina_03",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Stamina_03.mat",
+    "description": "None"
+  },
+  {
+    "id": 1423,
+    "name": "ArtifactName.Grace.SR_3",
+    "artifactType": 4,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Stamina_04",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Stamina_04.mat",
+    "description": "None"
+  },
+  {
+    "id": 1433,
+    "name": "ArtifactName.Grace.SR_4",
+    "artifactType": 4,
+    "grade": 3,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Stamina_05",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Stamina_05.mat",
+    "description": "None"
+  },
+  {
+    "id": 1404,
+    "name": "ArtifactName.Grace.R_1",
+    "artifactType": 4,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S2_Stamina_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S2_Stamina_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1414,
+    "name": "ArtifactName.Grace.R_2",
+    "artifactType": 4,
+    "grade": 2,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S3_Stamina_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S3_Stamina_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1405,
+    "name": "ArtifactName.Grace.N_1",
+    "artifactType": 4,
+    "grade": 1,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S1_Stamina_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S1_Stamina_01.mat",
+    "description": "None"
+  },
+  {
+    "id": 1415,
+    "name": "ArtifactName.Grace.N_2",
+    "artifactType": 4,
+    "grade": 1,
+    "equipSkillID": [
+      1110001
+    ],
+    "equipStatType": 1,
+    "equipStatRate": 0.005,
+    "collectionType": 1,
+    "collectionVlaue": 1.2,
+    "iconPath": "PR_S2_Stamina_01",
+    "materialPath": "Assets/ART/GUI/Textures/Artifact_Card/Artifact_Illust/ILLUST_S2_Stamina_01.mat",
+    "description": "None"
+  }
+]

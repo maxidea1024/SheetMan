@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "uRRate": 0.5,
+    "sSRRate": 0.2,
+    "sRRate": 0.1,
+    "rRate": 0.1,
+    "nRate": 0.1
+  },
+  {
+    "id": 2,
+    "uRRate": 0.04,
+    "sSRRate": 0.06,
+    "sRRate": 0.14,
+    "rRate": 0.26,
+    "nRate": 0.5
+  },
+  {
+    "id": 3,
+    "uRRate": 0.02,
+    "sSRRate": 0.04,
+    "sRRate": 0.14,
+    "rRate": 0.3,
+    "nRate": 0.5
+  },
+  {
+    "id": 4,
+    "uRRate": 0.04,
+    "sSRRate": 0.06,
+    "sRRate": 0.14,
+    "rRate": 0.26,
+    "nRate": 0.5
+  },
+  {
+    "id": 5,
+    "uRRate": 0.02,
+    "sSRRate": 0.04,
+    "sRRate": 0.94,
+    "rRate": 0.0,
+    "nRate": 0.0
+  },
+  {
+    "id": 6,
+    "uRRate": 0.02,
+    "sSRRate": 0.98,
+    "sRRate": 0.0,
+    "rRate": 0.0,
+    "nRate": 0.0
+  },
+  {
+    "id": 7,
+    "uRRate": 0.04,
+    "sSRRate": 0.06,
+    "sRRate": 0.9,
+    "rRate": 0.0,
+    "nRate": 0.0
+  }
+]

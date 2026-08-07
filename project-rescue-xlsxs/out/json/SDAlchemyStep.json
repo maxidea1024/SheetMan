@@ -1,0 +1,82 @@
+[
+  {
+    "id": 81610001,
+    "name": "AlchemyStep1",
+    "nameKR": "연금술 1단계",
+    "maxLevel": 20,
+    "rewardType": 3,
+    "rewardValue": 10
+  },
+  {
+    "id": 81610002,
+    "name": "AlchemyStep2",
+    "nameKR": "연금술 2단계",
+    "maxLevel": 50,
+    "rewardType": 3,
+    "rewardValue": 100
+  },
+  {
+    "id": 81610003,
+    "name": "AlchemyStep3",
+    "nameKR": "연금술 3단계",
+    "maxLevel": 100,
+    "rewardType": 3,
+    "rewardValue": 200
+  },
+  {
+    "id": 81610004,
+    "name": "AlchemyStep4",
+    "nameKR": "연금술 4단계",
+    "maxLevel": 170,
+    "rewardType": 3,
+    "rewardValue": 300
+  },
+  {
+    "id": 81610005,
+    "name": "AlchemyStep5",
+    "nameKR": "연금술 5단계",
+    "maxLevel": 260,
+    "rewardType": 3,
+    "rewardValue": 400
+  },
+  {
+    "id": 81610006,
+    "name": "AlchemyStep6",
+    "nameKR": "연금술 6단계",
+    "maxLevel": 370,
+    "rewardType": 3,
+    "rewardValue": 500
+  },
+  {
+    "id": 81610007,
+    "name": "AlchemyStep7",
+    "nameKR": "연금술 7단계",
+    "maxLevel": 500,
+    "rewardType": 3,
+    "rewardValue": 600
+  },
+  {
+    "id": 81610008,
+    "name": "AlchemyStep8",
+    "nameKR": "연금술 8단계",
+    "maxLevel": 650,
+    "rewardType": 3,
+    "rewardValue": 700
+  },
+  {
+    "id": 81610009,
+    "name": "AlchemyStep9",
+    "nameKR": "연금술 9단계",
+    "maxLevel": 820,
+    "rewardType": 3,
+    "rewardValue": 800
+  },
+  {
+    "id": 81610010,
+    "name": "AlchemyStep10",
+    "nameKR": "연금술 10단계",
+    "maxLevel": 1000,
+    "rewardType": 3,
+    "rewardValue": 1000
+  }
+]

@@ -13,8 +13,8 @@ using ValueType = SheetMan.Models.ValueType;
 namespace SheetMan.Tests;
 
 /// <summary>
-/// The `rescue` sheet layout: one table per sheet, named by the sheet tab, with three
-/// header rows and no entity markers.
+/// The `rescue` sheet layout: one table per sheet, named by the sheet tab less its
+/// trailing `Table`, with three header rows and no entity markers.
 ///
 /// Written against raw sheets built here rather than against a committed workbook. The
 /// questions are all about how a particular arrangement of cells is read - a commented-out
@@ -126,7 +126,10 @@ public class RescueLayoutTests
 
         var table = Assert.Single(model.Tables);
 
-        Assert.Equal("ItemTable", table.Name);
+        // Less the tab's trailing `Table`: the generators append that word to build the
+        // container type's name, so keeping it would generate `ItemTableTable`.
+        Assert.Equal("Item", table.Name);
+        Assert.Equal("ItemTable", table.RawName);
         Assert.Equal(2, table.Data.Count);
 
         // Row 1 is the column's description, which is the only place this layout has for one.
@@ -136,6 +139,38 @@ public class RescueLayoutTests
         // layout SheetMan defines.
         Assert.True(table.Fields[0].Indexing);
         Assert.False(table.Fields[1].Indexing);
+    }
+
+    [Fact]
+    public void A_tab_named_just_Table_or_without_the_suffix_keeps_its_name()
+    {
+        var model = Cook(
+            Sheet("Table",
+                new[] { "", "" }, new[] { "Id", "Name" }, new[] { "int", "string" },
+                new[] { "1", "a" }),
+            Sheet("Hero",
+                new[] { "", "" }, new[] { "Id", "Name" }, new[] { "int", "string" },
+                new[] { "1", "b" }));
+
+        // `Table` alone has nothing left once the word comes off, and `Hero` never had it.
+        Assert.Equal(new[] { "Table", "Hero" }, model.Tables.Select(t => t.Name));
+    }
+
+    [Fact]
+    public void Two_tabs_that_yield_one_table_name_collide()
+    {
+        // `Item` and `ItemTable` are different tabs to whoever named them, and only
+        // become the same table here - so the message says how the names are made.
+        var error = Assert.Throws<SheetManException>(() => Cook(
+            Sheet("Item",
+                new[] { "", "" }, new[] { "Id", "Name" }, new[] { "int", "string" },
+                new[] { "1", "a" }),
+            Sheet("ItemTable",
+                new[] { "", "" }, new[] { "Id", "Name" }, new[] { "int", "string" },
+                new[] { "1", "b" })));
+
+        Assert.Contains("already defined", error.ToString());
+        Assert.Contains("trailing `Table`", error.ToString());
     }
 
     [Fact]
@@ -376,7 +411,7 @@ public class RescueLayoutTests
                 new[] { "PC", "10101" },
                 new[] { "PC", "10201" }));
 
-        Assert.Equal(new[] { "ItemTable" }, model.Tables.Select(t => t.Name));
+        Assert.Equal(new[] { "Item" }, model.Tables.Select(t => t.Name));
     }
 
     [Fact]
@@ -437,7 +472,7 @@ public class RescueLayoutTests
         var model = new ModelCooker().Cook(new Options(), new RecipeModel(), raw);
 
         Assert.Equal(new[] { "GradeType" }, model.Enums.Select(e => e.Name));
-        Assert.Equal(new[] { "HeroTable" }, model.Tables.Select(t => t.Name));
+        Assert.Equal(new[] { "Hero" }, model.Tables.Select(t => t.Name));
         Assert.Equal(new object[] { 2 }, Column(model.Tables[0], "Grade"));
     }
 
@@ -485,11 +520,11 @@ public class RescueLayoutTests
 
         Assert.Equal(
             new object[] { new[] { "a", "b" } },
-            Column(model.Tables.Single(t => t.Name == "ItemTable"), "Tags"));
+            Column(model.Tables.Single(t => t.Name == "Item"), "Tags"));
 
         Assert.Equal(
             new object[] { new[] { "x", "y" } },
-            Column(model.Tables.Single(t => t.Name == "HeroTable"), "Tags"));
+            Column(model.Tables.Single(t => t.Name == "Hero"), "Tags"));
     }
 
     [Fact]

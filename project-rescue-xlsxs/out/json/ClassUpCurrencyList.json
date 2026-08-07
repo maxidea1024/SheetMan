@@ -1,0 +1,1442 @@
+[
+  {
+    "id": 531001,
+    "name": "아이리스 성급업 재화",
+    "type": 30,
+    "targetId": 10101,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531002,
+    "name": "바라카 성급업 재화",
+    "type": 30,
+    "targetId": 10201,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531003,
+    "name": "도르카 성급업 재화",
+    "type": 30,
+    "targetId": 10301,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531004,
+    "name": "바소리 성급업 재화",
+    "type": 30,
+    "targetId": 10401,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531005,
+    "name": "레이켈 성급업 재화",
+    "type": 30,
+    "targetId": 10501,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531006,
+    "name": "러들리 성급업 재화",
+    "type": 30,
+    "targetId": 10601,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531007,
+    "name": "발라르 성급업 재화",
+    "type": 30,
+    "targetId": 10701,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531008,
+    "name": "알렉세이 성급업 재화",
+    "type": 30,
+    "targetId": 10801,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531009,
+    "name": "아나스타샤 성급업 재화",
+    "type": 30,
+    "targetId": 10901,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531010,
+    "name": "베르나데트 성급업 재화",
+    "type": 30,
+    "targetId": 11001,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531011,
+    "name": "지나이 성급업 재화",
+    "type": 30,
+    "targetId": 11101,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531012,
+    "name": "탈리아 성급업 재화",
+    "type": 30,
+    "targetId": 11201,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531013,
+    "name": "제온 성급업 재화",
+    "type": 30,
+    "targetId": 11301,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531014,
+    "name": "서아 성급업 재화",
+    "type": 30,
+    "targetId": 11401,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531015,
+    "name": "슈프라켄 성급업 재화",
+    "type": 30,
+    "targetId": 11501,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531016,
+    "name": "리피 성급업 재화",
+    "type": 30,
+    "targetId": 11601,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531017,
+    "name": "레핀 성급업 재화",
+    "type": 30,
+    "targetId": 11701,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531018,
+    "name": "쉘 성급업 재화",
+    "type": 30,
+    "targetId": 12501,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531019,
+    "name": "프리시오프 성급업 재화",
+    "type": 30,
+    "targetId": 12601,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531020,
+    "name": "가르프 성급업 재화",
+    "type": 30,
+    "targetId": 12701,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531021,
+    "name": "브룩크 성급업 재화",
+    "type": 30,
+    "targetId": 12801,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531022,
+    "name": "진 성급업 재화",
+    "type": 30,
+    "targetId": 12901,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531023,
+    "name": "레임지 성급업 재화",
+    "type": 30,
+    "targetId": 13001,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531024,
+    "name": "미네아 성급업 재화",
+    "type": 30,
+    "targetId": 13101,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531025,
+    "name": "레제 성급업 재화",
+    "type": 30,
+    "targetId": 13201,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531026,
+    "name": "마기 성급업 재화",
+    "type": 30,
+    "targetId": 13301,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531027,
+    "name": "엠마 성급업 재화",
+    "type": 30,
+    "targetId": 13401,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531028,
+    "name": "다나 성급업 재화",
+    "type": 30,
+    "targetId": 13501,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531029,
+    "name": "게일 성급업 재화",
+    "type": 30,
+    "targetId": 12301,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531030,
+    "name": "네로 성급업 재화",
+    "type": 30,
+    "targetId": 12401,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531031,
+    "name": "자리엔느 성급업 재화",
+    "type": 30,
+    "targetId": 12201,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531032,
+    "name": "판 성급업 재화",
+    "type": 30,
+    "targetId": 12101,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531033,
+    "name": "오타르 성급업 재화",
+    "type": 30,
+    "targetId": 12001,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531034,
+    "name": "야오 성급업 재화",
+    "type": 30,
+    "targetId": 11901,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531035,
+    "name": "글렌 성급업 재화",
+    "type": 30,
+    "targetId": 11801,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531036,
+    "name": "브룬 군관 사제 단장 성급업 재화",
+    "type": 30,
+    "targetId": 10109,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531037,
+    "name": "브룬 군관 전사 단장 성급업 재화",
+    "type": 30,
+    "targetId": 10209,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531038,
+    "name": "브룬 군관 자객 단장 성급업 재화",
+    "type": 30,
+    "targetId": 10309,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531039,
+    "name": "브룬 군관 총병 단장 성급업 재화",
+    "type": 30,
+    "targetId": 10409,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531040,
+    "name": "브룬 군관 마법사 단장 성급업 재화",
+    "type": 30,
+    "targetId": 10509,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531041,
+    "name": "브룬 군관 검병 단장 성급업 재화",
+    "type": 30,
+    "targetId": 10609,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531042,
+    "name": "아코르 도끼 단장 성급업 재화",
+    "type": 30,
+    "targetId": 10709,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531043,
+    "name": "아코르 검병 단장 성급업 재화",
+    "type": 30,
+    "targetId": 10809,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531044,
+    "name": "아코르 검방패 단장 성급업 재화",
+    "type": 30,
+    "targetId": 10909,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531045,
+    "name": "트레저헌터 석궁 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11009,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531046,
+    "name": "트레저헌터 건틀렛 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11109,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531047,
+    "name": "트레저헌터 마법사 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11209,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531048,
+    "name": "트레저헌터 암살자 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11309,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531049,
+    "name": "트레저헌터 전사 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11409,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531050,
+    "name": "트레저헌터 대검병 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11509,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531051,
+    "name": "카드모스 궁수 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11609,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531052,
+    "name": "카드모스 검병 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11709,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531053,
+    "name": "카드모스 전사 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11809,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531054,
+    "name": "카드모스 대검병 단장 성급업 재화",
+    "type": 30,
+    "targetId": 11909,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531055,
+    "name": "아시키 성급업 재화",
+    "type": 30,
+    "targetId": 12009,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531056,
+    "name": "블라스카 성급업 재화",
+    "type": 30,
+    "targetId": 12109,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531057,
+    "name": "마만티 성급업 재화",
+    "type": 30,
+    "targetId": 12209,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531058,
+    "name": "타슈메 성급업 재화",
+    "type": 30,
+    "targetId": 12309,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531059,
+    "name": "와그니 성급업 재화",
+    "type": 30,
+    "targetId": 12409,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531060,
+    "name": "마리노스 석궁 단장 성급업 재화",
+    "type": 30,
+    "targetId": 12509,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531061,
+    "name": "마리노스 총병 단장 성급업 재화",
+    "type": 30,
+    "targetId": 12609,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531062,
+    "name": "마리노스 마법사 단장 성급업 재화",
+    "type": 30,
+    "targetId": 12709,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531063,
+    "name": "마리노스 검병 단장 성급업 재화",
+    "type": 30,
+    "targetId": 12809,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531064,
+    "name": "마리노스 건틀렛 단장 성급업 재화",
+    "type": 30,
+    "targetId": 12909,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531065,
+    "name": "마리노스 전사 단장 성급업 재화",
+    "type": 30,
+    "targetId": 13009,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531066,
+    "name": "언더워커 광부 단원 성급업 재화",
+    "type": 30,
+    "targetId": 13109,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531067,
+    "name": "언더워커 석궁 단원 성급업 재화",
+    "type": 30,
+    "targetId": 13209,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531068,
+    "name": "언더워커 사제 단원 성급업 재화",
+    "type": 30,
+    "targetId": 13309,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531069,
+    "name": "언더워커 해머 단원 성급업 재화",
+    "type": 30,
+    "targetId": 13409,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531070,
+    "name": "언더워커 자객 단원 성급업 재화",
+    "type": 30,
+    "targetId": 13509,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531071,
+    "name": "용병단 대검병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 13609,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531072,
+    "name": "용병단 검병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 13709,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531073,
+    "name": "용병단 사제 단원 성급업 재화",
+    "type": 30,
+    "targetId": 13809,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531074,
+    "name": "용병단 총병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 13909,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531075,
+    "name": "용병단 광부 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14009,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531076,
+    "name": "용병단 암살자 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14109,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531077,
+    "name": "바이바라 전사 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14209,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531078,
+    "name": "바이바라 총병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14309,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531079,
+    "name": "바이바라 마법사 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14409,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531080,
+    "name": "바이바라 사제 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14509,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531081,
+    "name": "바이바라 도끼병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14609,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531082,
+    "name": "바이바라 검병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14709,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531083,
+    "name": "엑시드 궁수 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14809,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531084,
+    "name": "엑시드 사제 단원 성급업 재화",
+    "type": 30,
+    "targetId": 14909,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531085,
+    "name": "엑시드 전사 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15009,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531086,
+    "name": "엑시드 창병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15109,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531087,
+    "name": "엑시드 암살자 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15209,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531088,
+    "name": "엑시드 마법사 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15309,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531089,
+    "name": "벨리언 석궁 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15409,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531090,
+    "name": "벨리언 건틀렛 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15509,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531091,
+    "name": "벨리언 총병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15609,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531092,
+    "name": "벨리언 마법사 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15709,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531093,
+    "name": "벨리언 검병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15809,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531094,
+    "name": "벨리언 전사 단원 성급업 재화",
+    "type": 30,
+    "targetId": 15909,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531095,
+    "name": "브룬 총병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 16009,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531096,
+    "name": "브룬 마법사 단원 성급업 재화",
+    "type": 30,
+    "targetId": 16109,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531097,
+    "name": "브룬 전사 단원 성급업 재화",
+    "type": 30,
+    "targetId": 16209,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531098,
+    "name": "브룬 사제 단원 성급업 재화",
+    "type": 30,
+    "targetId": 16309,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531099,
+    "name": "브룬 검병 단원 성급업 재화",
+    "type": 30,
+    "targetId": 16409,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 531100,
+    "name": "브룬 자객 단원 성급업 재화",
+    "type": 30,
+    "targetId": 16509,
+    "maxCount": 5,
+    "maxStack": "-1",
+    "iconPath": "StarATicket",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541001,
+    "name": "냉혹한 선봉장 카네브",
+    "type": 45,
+    "targetId": 1101,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541002,
+    "name": "매료의 검무 러블리",
+    "type": 45,
+    "targetId": 1201,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541003,
+    "name": "생령의 등화 카븐",
+    "type": 45,
+    "targetId": 1301,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541004,
+    "name": "생령의 등화 카븐",
+    "type": 45,
+    "targetId": 1401,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541005,
+    "name": "분노의 포효 라이넬",
+    "type": 45,
+    "targetId": 1102,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541006,
+    "name": "공화국의 방어막 니케",
+    "type": 45,
+    "targetId": 1202,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541007,
+    "name": "광채의 미아 아포릿",
+    "type": 45,
+    "targetId": 1302,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541008,
+    "name": "균형의 수호자 블링캣",
+    "type": 45,
+    "targetId": 1402,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541009,
+    "name": "급소를 노리는 나무꾼",
+    "type": 45,
+    "targetId": 1103,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541010,
+    "name": "과거의 잔재",
+    "type": 45,
+    "targetId": 1203,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541011,
+    "name": "감시자 와이들러",
+    "type": 45,
+    "targetId": 1303,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541012,
+    "name": "공명의 펜셔",
+    "type": 45,
+    "targetId": 1403,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541013,
+    "name": "기사의 긍지",
+    "type": 45,
+    "targetId": 1104,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541014,
+    "name": "브루MKv.2",
+    "type": 45,
+    "targetId": 1204,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541015,
+    "name": "엘리멘탈 마그마",
+    "type": 45,
+    "targetId": 1304,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541016,
+    "name": "냉기의 집사",
+    "type": 45,
+    "targetId": 1404,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541017,
+    "name": "굶주린 하이에나",
+    "type": 45,
+    "targetId": 1105,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541018,
+    "name": "사파이어 골렘",
+    "type": 45,
+    "targetId": 1205,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541019,
+    "name": "그림자 늑대",
+    "type": 45,
+    "targetId": 1305,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 541020,
+    "name": "사서의 주시",
+    "type": 45,
+    "targetId": 1405,
+    "maxCount": 10,
+    "maxStack": "-1",
+    "iconPath": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  }
+]

@@ -32,13 +32,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "CollectionGroupTable", file_extension) >= (int)sizeof path) {
+        base_path, "CollectionGroup", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_CollectionGroupTableLoad(&loaded.collection_group_table, path, error, error_size)) {
+  if (!Rescue_CollectionGroupLoad(&loaded.collection_group, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -47,13 +47,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "CollectionTable", file_extension) >= (int)sizeof path) {
+        base_path, "Collection", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_CollectionTableLoad(&loaded.collection_table, path, error, error_size)) {
+  if (!Rescue_CollectionLoad(&loaded.collection, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -62,13 +62,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ConditionTable", file_extension) >= (int)sizeof path) {
+        base_path, "Condition", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ConditionTableLoad(&loaded.condition_table, path, error, error_size)) {
+  if (!Rescue_ConditionLoad(&loaded.condition, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -77,13 +77,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "DailyDungeonInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "DailyDungeonInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_DailyDungeonInfoTableLoad(&loaded.daily_dungeon_info_table, path, error, error_size)) {
+  if (!Rescue_DailyDungeonInfoLoad(&loaded.daily_dungeon_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -92,13 +92,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "GoldDungeonStageTable", file_extension) >= (int)sizeof path) {
+        base_path, "GoldDungeonStage", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_GoldDungeonStageTableLoad(&loaded.gold_dungeon_stage_table, path, error, error_size)) {
+  if (!Rescue_GoldDungeonStageLoad(&loaded.gold_dungeon_stage, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -107,13 +107,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "GoldDungeonRewardTable", file_extension) >= (int)sizeof path) {
+        base_path, "GoldDungeonReward", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_GoldDungeonRewardTableLoad(&loaded.gold_dungeon_reward_table, path, error, error_size)) {
+  if (!Rescue_GoldDungeonRewardLoad(&loaded.gold_dungeon_reward, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -122,13 +122,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ExpDungeonStageTable", file_extension) >= (int)sizeof path) {
+        base_path, "ExpDungeonStage", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ExpDungeonStageTableLoad(&loaded.exp_dungeon_stage_table, path, error, error_size)) {
+  if (!Rescue_ExpDungeonStageLoad(&loaded.exp_dungeon_stage, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -137,13 +137,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ExpDungeonRewardTable", file_extension) >= (int)sizeof path) {
+        base_path, "ExpDungeonReward", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ExpDungeonRewardTableLoad(&loaded.exp_dungeon_reward_table, path, error, error_size)) {
+  if (!Rescue_ExpDungeonRewardLoad(&loaded.exp_dungeon_reward, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -152,13 +152,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "TraitDungeonStageTable", file_extension) >= (int)sizeof path) {
+        base_path, "TraitDungeonStage", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_TraitDungeonStageTableLoad(&loaded.trait_dungeon_stage_table, path, error, error_size)) {
+  if (!Rescue_TraitDungeonStageLoad(&loaded.trait_dungeon_stage, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -167,13 +167,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "TraitDungeonRewardTable", file_extension) >= (int)sizeof path) {
+        base_path, "TraitDungeonReward", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_TraitDungeonRewardTableLoad(&loaded.trait_dungeon_reward_table, path, error, error_size)) {
+  if (!Rescue_TraitDungeonRewardLoad(&loaded.trait_dungeon_reward, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -182,13 +182,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "RelicDungeonStageTable", file_extension) >= (int)sizeof path) {
+        base_path, "RelicDungeonStage", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_RelicDungeonStageTableLoad(&loaded.relic_dungeon_stage_table, path, error, error_size)) {
+  if (!Rescue_RelicDungeonStageLoad(&loaded.relic_dungeon_stage, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -197,13 +197,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "RelicDungeonRewardTable", file_extension) >= (int)sizeof path) {
+        base_path, "RelicDungeonReward", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_RelicDungeonRewardTableLoad(&loaded.relic_dungeon_reward_table, path, error, error_size)) {
+  if (!Rescue_RelicDungeonRewardLoad(&loaded.relic_dungeon_reward, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -212,13 +212,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "OopartsDungeonStageTable", file_extension) >= (int)sizeof path) {
+        base_path, "OopartsDungeonStage", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_OopartsDungeonStageTableLoad(&loaded.ooparts_dungeon_stage_table, path, error, error_size)) {
+  if (!Rescue_OopartsDungeonStageLoad(&loaded.ooparts_dungeon_stage, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -227,13 +227,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "OopartsDungeonRewardTable", file_extension) >= (int)sizeof path) {
+        base_path, "OopartsDungeonReward", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_OopartsDungeonRewardTableLoad(&loaded.ooparts_dungeon_reward_table, path, error, error_size)) {
+  if (!Rescue_OopartsDungeonRewardLoad(&loaded.ooparts_dungeon_reward, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -242,13 +242,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "GachaInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "GachaInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_GachaInfoTableLoad(&loaded.gacha_info_table, path, error, error_size)) {
+  if (!Rescue_GachaInfoLoad(&loaded.gacha_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -257,13 +257,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "GachaCharacterListTable", file_extension) >= (int)sizeof path) {
+        base_path, "GachaCharacterList", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_GachaCharacterListTableLoad(&loaded.gacha_character_list_table, path, error, error_size)) {
+  if (!Rescue_GachaCharacterListLoad(&loaded.gacha_character_list, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -272,13 +272,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "GachaArtifactInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "GachaArtifactInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_GachaArtifactInfoTableLoad(&loaded.gacha_artifact_info_table, path, error, error_size)) {
+  if (!Rescue_GachaArtifactInfoLoad(&loaded.gacha_artifact_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -287,13 +287,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "GachaArtifactListTable", file_extension) >= (int)sizeof path) {
+        base_path, "GachaArtifactList", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_GachaArtifactListTableLoad(&loaded.gacha_artifact_list_table, path, error, error_size)) {
+  if (!Rescue_GachaArtifactListLoad(&loaded.gacha_artifact_list, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -302,13 +302,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "GachaRateTable", file_extension) >= (int)sizeof path) {
+        base_path, "GachaRate", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_GachaRateTableLoad(&loaded.gacha_rate_table, path, error, error_size)) {
+  if (!Rescue_GachaRateLoad(&loaded.gacha_rate, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -317,13 +317,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "CurrencyTable", file_extension) >= (int)sizeof path) {
+        base_path, "Currency", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_CurrencyTableLoad(&loaded.currency_table, path, error, error_size)) {
+  if (!Rescue_CurrencyLoad(&loaded.currency, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -332,13 +332,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "MaterialTable", file_extension) >= (int)sizeof path) {
+        base_path, "Material", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_MaterialTableLoad(&loaded.material_table, path, error, error_size)) {
+  if (!Rescue_MaterialLoad(&loaded.material, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -347,13 +347,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "PackageTable", file_extension) >= (int)sizeof path) {
+        base_path, "Package", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_PackageTableLoad(&loaded.package_table, path, error, error_size)) {
+  if (!Rescue_PackageLoad(&loaded.package, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -362,13 +362,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ClassUpCurrencyListTable", file_extension) >= (int)sizeof path) {
+        base_path, "ClassUpCurrencyList", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ClassUpCurrencyListTableLoad(&loaded.class_up_currency_list_table, path, error, error_size)) {
+  if (!Rescue_ClassUpCurrencyListLoad(&loaded.class_up_currency_list, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -377,13 +377,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "EquipItemLevelTable", file_extension) >= (int)sizeof path) {
+        base_path, "EquipItemLevel", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_EquipItemLevelTableLoad(&loaded.equip_item_level_table, path, error, error_size)) {
+  if (!Rescue_EquipItemLevelLoad(&loaded.equip_item_level, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -392,13 +392,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "EquipItemClassTable", file_extension) >= (int)sizeof path) {
+        base_path, "EquipItemClass", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_EquipItemClassTableLoad(&loaded.equip_item_class_table, path, error, error_size)) {
+  if (!Rescue_EquipItemClassLoad(&loaded.equip_item_class, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -407,13 +407,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "EquipTable", file_extension) >= (int)sizeof path) {
+        base_path, "Equip", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_EquipTableLoad(&loaded.equip_table, path, error, error_size)) {
+  if (!Rescue_EquipLoad(&loaded.equip, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -422,13 +422,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "EquipItemGradeTable", file_extension) >= (int)sizeof path) {
+        base_path, "EquipItemGrade", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_EquipItemGradeTableLoad(&loaded.equip_item_grade_table, path, error, error_size)) {
+  if (!Rescue_EquipItemGradeLoad(&loaded.equip_item_grade, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -437,13 +437,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "CharacterTable", file_extension) >= (int)sizeof path) {
+        base_path, "Character", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_CharacterTableLoad(&loaded.character_table, path, error, error_size)) {
+  if (!Rescue_CharacterLoad(&loaded.character, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -452,13 +452,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SkillTable", file_extension) >= (int)sizeof path) {
+        base_path, "Skill", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SkillTableLoad(&loaded.skill_table, path, error, error_size)) {
+  if (!Rescue_SkillLoad(&loaded.skill, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -467,13 +467,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "BuffTable", file_extension) >= (int)sizeof path) {
+        base_path, "Buff", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_BuffTableLoad(&loaded.buff_table, path, error, error_size)) {
+  if (!Rescue_BuffLoad(&loaded.buff, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -482,13 +482,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "CharacterLevelTable", file_extension) >= (int)sizeof path) {
+        base_path, "CharacterLevel", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_CharacterLevelTableLoad(&loaded.character_level_table, path, error, error_size)) {
+  if (!Rescue_CharacterLevelLoad(&loaded.character_level, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -497,13 +497,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "CharacterTranscendenceTable", file_extension) >= (int)sizeof path) {
+        base_path, "CharacterTranscendence", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_CharacterTranscendenceTableLoad(&loaded.character_transcendence_table, path, error, error_size)) {
+  if (!Rescue_CharacterTranscendenceLoad(&loaded.character_transcendence, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -512,13 +512,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ArtifactTable", file_extension) >= (int)sizeof path) {
+        base_path, "Artifact", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ArtifactTableLoad(&loaded.artifact_table, path, error, error_size)) {
+  if (!Rescue_ArtifactLoad(&loaded.artifact, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -527,13 +527,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ArtifactLevelTable", file_extension) >= (int)sizeof path) {
+        base_path, "ArtifactLevel", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ArtifactLevelTableLoad(&loaded.artifact_level_table, path, error, error_size)) {
+  if (!Rescue_ArtifactLevelLoad(&loaded.artifact_level, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -542,13 +542,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ArtifactTranscendenceTable", file_extension) >= (int)sizeof path) {
+        base_path, "ArtifactTranscendence", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ArtifactTranscendenceTableLoad(&loaded.artifact_transcendence_table, path, error, error_size)) {
+  if (!Rescue_ArtifactTranscendenceLoad(&loaded.artifact_transcendence, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -557,13 +557,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "BuffSelectTable", file_extension) >= (int)sizeof path) {
+        base_path, "BuffSelect", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_BuffSelectTableLoad(&loaded.buff_select_table, path, error, error_size)) {
+  if (!Rescue_BuffSelectLoad(&loaded.buff_select, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -572,13 +572,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ShortCutTable", file_extension) >= (int)sizeof path) {
+        base_path, "ShortCut", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ShortCutTableLoad(&loaded.short_cut_table, path, error, error_size)) {
+  if (!Rescue_ShortCutLoad(&loaded.short_cut, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -587,13 +587,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "StageTable", file_extension) >= (int)sizeof path) {
+        base_path, "Stage", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_StageTableLoad(&loaded.stage_table, path, error, error_size)) {
+  if (!Rescue_StageLoad(&loaded.stage, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -602,13 +602,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ConfigTable", file_extension) >= (int)sizeof path) {
+        base_path, "Config", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ConfigTableLoad(&loaded.config_table, path, error, error_size)) {
+  if (!Rescue_ConfigLoad(&loaded.config, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -617,13 +617,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "DropGroupTable", file_extension) >= (int)sizeof path) {
+        base_path, "DropGroup", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_DropGroupTableLoad(&loaded.drop_group_table, path, error, error_size)) {
+  if (!Rescue_DropGroupLoad(&loaded.drop_group, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -632,13 +632,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "AttributeTable", file_extension) >= (int)sizeof path) {
+        base_path, "Attribute", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_AttributeTableLoad(&loaded.attribute_table, path, error, error_size)) {
+  if (!Rescue_AttributeLoad(&loaded.attribute, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -647,13 +647,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDContensInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDContensInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDContensInfoTableLoad(&loaded.sd_contens_info_table, path, error, error_size)) {
+  if (!Rescue_SDContensInfoLoad(&loaded.sd_contens_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -662,13 +662,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDAgencyInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDAgencyInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDAgencyInfoTableLoad(&loaded.sd_agency_info_table, path, error, error_size)) {
+  if (!Rescue_SDAgencyInfoLoad(&loaded.sd_agency_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -677,13 +677,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDAgencyTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDAgency", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDAgencyTableLoad(&loaded.sd_agency_table, path, error, error_size)) {
+  if (!Rescue_SDAgencyLoad(&loaded.sd_agency, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -692,13 +692,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDPubInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDPubInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDPubInfoTableLoad(&loaded.sd_pub_info_table, path, error, error_size)) {
+  if (!Rescue_SDPubInfoLoad(&loaded.sd_pub_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -707,13 +707,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDTrainingInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDTrainingInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDTrainingInfoTableLoad(&loaded.sd_training_info_table, path, error, error_size)) {
+  if (!Rescue_SDTrainingInfoLoad(&loaded.sd_training_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -722,13 +722,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDTrainingLevelTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDTrainingLevel", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDTrainingLevelTableLoad(&loaded.sd_training_level_table, path, error, error_size)) {
+  if (!Rescue_SDTrainingLevelLoad(&loaded.sd_training_level, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -737,13 +737,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDDungeonInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDDungeonInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDDungeonInfoTableLoad(&loaded.sd_dungeon_info_table, path, error, error_size)) {
+  if (!Rescue_SDDungeonInfoLoad(&loaded.sd_dungeon_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -752,13 +752,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDDungeonCardTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDDungeonCard", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDDungeonCardTableLoad(&loaded.sd_dungeon_card_table, path, error, error_size)) {
+  if (!Rescue_SDDungeonCardLoad(&loaded.sd_dungeon_card, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -767,13 +767,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDDungeonRewardTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDDungeonReward", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDDungeonRewardTableLoad(&loaded.sd_dungeon_reward_table, path, error, error_size)) {
+  if (!Rescue_SDDungeonRewardLoad(&loaded.sd_dungeon_reward, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -782,13 +782,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDAlchemyInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDAlchemyInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDAlchemyInfoTableLoad(&loaded.sd_alchemy_info_table, path, error, error_size)) {
+  if (!Rescue_SDAlchemyInfoLoad(&loaded.sd_alchemy_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -797,13 +797,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDAlchemyStepTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDAlchemyStep", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDAlchemyStepTableLoad(&loaded.sd_alchemy_step_table, path, error, error_size)) {
+  if (!Rescue_SDAlchemyStepLoad(&loaded.sd_alchemy_step, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -812,13 +812,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SDAlchemyLevelTable", file_extension) >= (int)sizeof path) {
+        base_path, "SDAlchemyLevel", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SDAlchemyLevelTableLoad(&loaded.sd_alchemy_level_table, path, error, error_size)) {
+  if (!Rescue_SDAlchemyLevelLoad(&loaded.sd_alchemy_level, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -827,13 +827,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "ShopInfoTable", file_extension) >= (int)sizeof path) {
+        base_path, "ShopInfo", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_ShopInfoTableLoad(&loaded.shop_info_table, path, error, error_size)) {
+  if (!Rescue_ShopInfoLoad(&loaded.shop_info, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -842,13 +842,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "MainShopTable", file_extension) >= (int)sizeof path) {
+        base_path, "MainShop", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_MainShopTableLoad(&loaded.main_shop_table, path, error, error_size)) {
+  if (!Rescue_MainShopLoad(&loaded.main_shop, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -857,13 +857,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "PackageShopTable", file_extension) >= (int)sizeof path) {
+        base_path, "PackageShop", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_PackageShopTableLoad(&loaded.package_shop_table, path, error, error_size)) {
+  if (!Rescue_PackageShopLoad(&loaded.package_shop, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -872,13 +872,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SeasonShopTable", file_extension) >= (int)sizeof path) {
+        base_path, "SeasonShop", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SeasonShopTableLoad(&loaded.season_shop_table, path, error, error_size)) {
+  if (!Rescue_SeasonShopLoad(&loaded.season_shop, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -887,13 +887,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "CashShopTable", file_extension) >= (int)sizeof path) {
+        base_path, "CashShop", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_CashShopTableLoad(&loaded.cash_shop_table, path, error, error_size)) {
+  if (!Rescue_CashShopLoad(&loaded.cash_shop, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -902,13 +902,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "BGMSoundTable", file_extension) >= (int)sizeof path) {
+        base_path, "BGMSound", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_BGMSoundTableLoad(&loaded.bgm_sound_table, path, error, error_size)) {
+  if (!Rescue_BGMSoundLoad(&loaded.bgm_sound, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -917,13 +917,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "SFXSoundTable", file_extension) >= (int)sizeof path) {
+        base_path, "SFXSound", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_SFXSoundTableLoad(&loaded.sfx_sound_table, path, error, error_size)) {
+  if (!Rescue_SFXSoundLoad(&loaded.sfx_sound, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -932,13 +932,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "InfoGrowthTable", file_extension) >= (int)sizeof path) {
+        base_path, "InfoGrowth", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_InfoGrowthTableLoad(&loaded.info_growth_table, path, error, error_size)) {
+  if (!Rescue_InfoGrowthLoad(&loaded.info_growth, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -947,13 +947,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "StatGrowthTable", file_extension) >= (int)sizeof path) {
+        base_path, "StatGrowth", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_StatGrowthTableLoad(&loaded.stat_growth_table, path, error, error_size)) {
+  if (!Rescue_StatGrowthLoad(&loaded.stat_growth, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -962,13 +962,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "TraitTable", file_extension) >= (int)sizeof path) {
+        base_path, "Trait", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_TraitTableLoad(&loaded.trait_table, path, error, error_size)) {
+  if (!Rescue_TraitLoad(&loaded.trait, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -977,13 +977,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "RelicTable", file_extension) >= (int)sizeof path) {
+        base_path, "Relic", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_RelicTableLoad(&loaded.relic_table, path, error, error_size)) {
+  if (!Rescue_RelicLoad(&loaded.relic, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -992,13 +992,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "StarNodeTable", file_extension) >= (int)sizeof path) {
+        base_path, "StarNode", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_StarNodeTableLoad(&loaded.star_node_table, path, error, error_size)) {
+  if (!Rescue_StarNodeLoad(&loaded.star_node, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -1007,13 +1007,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "CostCurveTable", file_extension) >= (int)sizeof path) {
+        base_path, "CostCurve", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_CostCurveTableLoad(&loaded.cost_curve_table, path, error, error_size)) {
+  if (!Rescue_CostCurveLoad(&loaded.cost_curve, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -1022,13 +1022,13 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 
 
   if (snprintf(path, sizeof path, "%s/%s%s",
-        base_path, "CostCurveRangeTable", file_extension) >= (int)sizeof path) {
+        base_path, "CostCurveRange", file_extension) >= (int)sizeof path) {
     sm_copy_error(error, error_size, base_path, "the path to a table file is too long");
     Rescue_Free(&loaded);
     return false;
   }
 
-  if (!Rescue_CostCurveRangeTableLoad(&loaded.cost_curve_range_table, path, error, error_size)) {
+  if (!Rescue_CostCurveRangeLoad(&loaded.cost_curve_range, path, error, error_size)) {
     /* Everything loaded so far goes too. A model missing one table is not one
      * a caller can use, and leaving it allocated makes that a leak as well. */
     Rescue_Free(&loaded);
@@ -1045,71 +1045,71 @@ bool Rescue_LoadAllWithExtension(Rescue_t* data, const char* base_path,
 }
 
 void Rescue_Free(Rescue_t* data) {
-  Rescue_CollectionGroupTableFree(&data->collection_group_table);
-  Rescue_CollectionTableFree(&data->collection_table);
-  Rescue_ConditionTableFree(&data->condition_table);
-  Rescue_DailyDungeonInfoTableFree(&data->daily_dungeon_info_table);
-  Rescue_GoldDungeonStageTableFree(&data->gold_dungeon_stage_table);
-  Rescue_GoldDungeonRewardTableFree(&data->gold_dungeon_reward_table);
-  Rescue_ExpDungeonStageTableFree(&data->exp_dungeon_stage_table);
-  Rescue_ExpDungeonRewardTableFree(&data->exp_dungeon_reward_table);
-  Rescue_TraitDungeonStageTableFree(&data->trait_dungeon_stage_table);
-  Rescue_TraitDungeonRewardTableFree(&data->trait_dungeon_reward_table);
-  Rescue_RelicDungeonStageTableFree(&data->relic_dungeon_stage_table);
-  Rescue_RelicDungeonRewardTableFree(&data->relic_dungeon_reward_table);
-  Rescue_OopartsDungeonStageTableFree(&data->ooparts_dungeon_stage_table);
-  Rescue_OopartsDungeonRewardTableFree(&data->ooparts_dungeon_reward_table);
-  Rescue_GachaInfoTableFree(&data->gacha_info_table);
-  Rescue_GachaCharacterListTableFree(&data->gacha_character_list_table);
-  Rescue_GachaArtifactInfoTableFree(&data->gacha_artifact_info_table);
-  Rescue_GachaArtifactListTableFree(&data->gacha_artifact_list_table);
-  Rescue_GachaRateTableFree(&data->gacha_rate_table);
-  Rescue_CurrencyTableFree(&data->currency_table);
-  Rescue_MaterialTableFree(&data->material_table);
-  Rescue_PackageTableFree(&data->package_table);
-  Rescue_ClassUpCurrencyListTableFree(&data->class_up_currency_list_table);
-  Rescue_EquipItemLevelTableFree(&data->equip_item_level_table);
-  Rescue_EquipItemClassTableFree(&data->equip_item_class_table);
-  Rescue_EquipTableFree(&data->equip_table);
-  Rescue_EquipItemGradeTableFree(&data->equip_item_grade_table);
-  Rescue_CharacterTableFree(&data->character_table);
-  Rescue_SkillTableFree(&data->skill_table);
-  Rescue_BuffTableFree(&data->buff_table);
-  Rescue_CharacterLevelTableFree(&data->character_level_table);
-  Rescue_CharacterTranscendenceTableFree(&data->character_transcendence_table);
-  Rescue_ArtifactTableFree(&data->artifact_table);
-  Rescue_ArtifactLevelTableFree(&data->artifact_level_table);
-  Rescue_ArtifactTranscendenceTableFree(&data->artifact_transcendence_table);
-  Rescue_BuffSelectTableFree(&data->buff_select_table);
-  Rescue_ShortCutTableFree(&data->short_cut_table);
-  Rescue_StageTableFree(&data->stage_table);
-  Rescue_ConfigTableFree(&data->config_table);
-  Rescue_DropGroupTableFree(&data->drop_group_table);
-  Rescue_AttributeTableFree(&data->attribute_table);
-  Rescue_SDContensInfoTableFree(&data->sd_contens_info_table);
-  Rescue_SDAgencyInfoTableFree(&data->sd_agency_info_table);
-  Rescue_SDAgencyTableFree(&data->sd_agency_table);
-  Rescue_SDPubInfoTableFree(&data->sd_pub_info_table);
-  Rescue_SDTrainingInfoTableFree(&data->sd_training_info_table);
-  Rescue_SDTrainingLevelTableFree(&data->sd_training_level_table);
-  Rescue_SDDungeonInfoTableFree(&data->sd_dungeon_info_table);
-  Rescue_SDDungeonCardTableFree(&data->sd_dungeon_card_table);
-  Rescue_SDDungeonRewardTableFree(&data->sd_dungeon_reward_table);
-  Rescue_SDAlchemyInfoTableFree(&data->sd_alchemy_info_table);
-  Rescue_SDAlchemyStepTableFree(&data->sd_alchemy_step_table);
-  Rescue_SDAlchemyLevelTableFree(&data->sd_alchemy_level_table);
-  Rescue_ShopInfoTableFree(&data->shop_info_table);
-  Rescue_MainShopTableFree(&data->main_shop_table);
-  Rescue_PackageShopTableFree(&data->package_shop_table);
-  Rescue_SeasonShopTableFree(&data->season_shop_table);
-  Rescue_CashShopTableFree(&data->cash_shop_table);
-  Rescue_BGMSoundTableFree(&data->bgm_sound_table);
-  Rescue_SFXSoundTableFree(&data->sfx_sound_table);
-  Rescue_InfoGrowthTableFree(&data->info_growth_table);
-  Rescue_StatGrowthTableFree(&data->stat_growth_table);
-  Rescue_TraitTableFree(&data->trait_table);
-  Rescue_RelicTableFree(&data->relic_table);
-  Rescue_StarNodeTableFree(&data->star_node_table);
-  Rescue_CostCurveTableFree(&data->cost_curve_table);
-  Rescue_CostCurveRangeTableFree(&data->cost_curve_range_table);
+  Rescue_CollectionGroupFree(&data->collection_group);
+  Rescue_CollectionFree(&data->collection);
+  Rescue_ConditionFree(&data->condition);
+  Rescue_DailyDungeonInfoFree(&data->daily_dungeon_info);
+  Rescue_GoldDungeonStageFree(&data->gold_dungeon_stage);
+  Rescue_GoldDungeonRewardFree(&data->gold_dungeon_reward);
+  Rescue_ExpDungeonStageFree(&data->exp_dungeon_stage);
+  Rescue_ExpDungeonRewardFree(&data->exp_dungeon_reward);
+  Rescue_TraitDungeonStageFree(&data->trait_dungeon_stage);
+  Rescue_TraitDungeonRewardFree(&data->trait_dungeon_reward);
+  Rescue_RelicDungeonStageFree(&data->relic_dungeon_stage);
+  Rescue_RelicDungeonRewardFree(&data->relic_dungeon_reward);
+  Rescue_OopartsDungeonStageFree(&data->ooparts_dungeon_stage);
+  Rescue_OopartsDungeonRewardFree(&data->ooparts_dungeon_reward);
+  Rescue_GachaInfoFree(&data->gacha_info);
+  Rescue_GachaCharacterListFree(&data->gacha_character_list);
+  Rescue_GachaArtifactInfoFree(&data->gacha_artifact_info);
+  Rescue_GachaArtifactListFree(&data->gacha_artifact_list);
+  Rescue_GachaRateFree(&data->gacha_rate);
+  Rescue_CurrencyFree(&data->currency);
+  Rescue_MaterialFree(&data->material);
+  Rescue_PackageFree(&data->package);
+  Rescue_ClassUpCurrencyListFree(&data->class_up_currency_list);
+  Rescue_EquipItemLevelFree(&data->equip_item_level);
+  Rescue_EquipItemClassFree(&data->equip_item_class);
+  Rescue_EquipFree(&data->equip);
+  Rescue_EquipItemGradeFree(&data->equip_item_grade);
+  Rescue_CharacterFree(&data->character);
+  Rescue_SkillFree(&data->skill);
+  Rescue_BuffFree(&data->buff);
+  Rescue_CharacterLevelFree(&data->character_level);
+  Rescue_CharacterTranscendenceFree(&data->character_transcendence);
+  Rescue_ArtifactFree(&data->artifact);
+  Rescue_ArtifactLevelFree(&data->artifact_level);
+  Rescue_ArtifactTranscendenceFree(&data->artifact_transcendence);
+  Rescue_BuffSelectFree(&data->buff_select);
+  Rescue_ShortCutFree(&data->short_cut);
+  Rescue_StageFree(&data->stage);
+  Rescue_ConfigFree(&data->config);
+  Rescue_DropGroupFree(&data->drop_group);
+  Rescue_AttributeFree(&data->attribute);
+  Rescue_SDContensInfoFree(&data->sd_contens_info);
+  Rescue_SDAgencyInfoFree(&data->sd_agency_info);
+  Rescue_SDAgencyFree(&data->sd_agency);
+  Rescue_SDPubInfoFree(&data->sd_pub_info);
+  Rescue_SDTrainingInfoFree(&data->sd_training_info);
+  Rescue_SDTrainingLevelFree(&data->sd_training_level);
+  Rescue_SDDungeonInfoFree(&data->sd_dungeon_info);
+  Rescue_SDDungeonCardFree(&data->sd_dungeon_card);
+  Rescue_SDDungeonRewardFree(&data->sd_dungeon_reward);
+  Rescue_SDAlchemyInfoFree(&data->sd_alchemy_info);
+  Rescue_SDAlchemyStepFree(&data->sd_alchemy_step);
+  Rescue_SDAlchemyLevelFree(&data->sd_alchemy_level);
+  Rescue_ShopInfoFree(&data->shop_info);
+  Rescue_MainShopFree(&data->main_shop);
+  Rescue_PackageShopFree(&data->package_shop);
+  Rescue_SeasonShopFree(&data->season_shop);
+  Rescue_CashShopFree(&data->cash_shop);
+  Rescue_BGMSoundFree(&data->bgm_sound);
+  Rescue_SFXSoundFree(&data->sfx_sound);
+  Rescue_InfoGrowthFree(&data->info_growth);
+  Rescue_StatGrowthFree(&data->stat_growth);
+  Rescue_TraitFree(&data->trait);
+  Rescue_RelicFree(&data->relic);
+  Rescue_StarNodeFree(&data->star_node);
+  Rescue_CostCurveFree(&data->cost_curve);
+  Rescue_CostCurveRangeFree(&data->cost_curve_range);
 }

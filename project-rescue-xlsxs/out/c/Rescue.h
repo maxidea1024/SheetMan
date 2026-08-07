@@ -46,146 +46,146 @@
 #include "enums/Rescue_EnumShopSlotType.h"
 #include "enums/Rescue_EnumOptionType.h"
 #include "enums/Rescue_EnumValueType.h"
-#include "tables/Rescue_CollectionGroupTable.h"
-#include "tables/Rescue_CollectionTable.h"
-#include "tables/Rescue_ConditionTable.h"
-#include "tables/Rescue_DailyDungeonInfoTable.h"
-#include "tables/Rescue_GoldDungeonStageTable.h"
-#include "tables/Rescue_GoldDungeonRewardTable.h"
-#include "tables/Rescue_ExpDungeonStageTable.h"
-#include "tables/Rescue_ExpDungeonRewardTable.h"
-#include "tables/Rescue_TraitDungeonStageTable.h"
-#include "tables/Rescue_TraitDungeonRewardTable.h"
-#include "tables/Rescue_RelicDungeonStageTable.h"
-#include "tables/Rescue_RelicDungeonRewardTable.h"
-#include "tables/Rescue_OopartsDungeonStageTable.h"
-#include "tables/Rescue_OopartsDungeonRewardTable.h"
-#include "tables/Rescue_GachaInfoTable.h"
-#include "tables/Rescue_GachaCharacterListTable.h"
-#include "tables/Rescue_GachaArtifactInfoTable.h"
-#include "tables/Rescue_GachaArtifactListTable.h"
-#include "tables/Rescue_GachaRateTable.h"
-#include "tables/Rescue_CurrencyTable.h"
-#include "tables/Rescue_MaterialTable.h"
-#include "tables/Rescue_PackageTable.h"
-#include "tables/Rescue_ClassUpCurrencyListTable.h"
-#include "tables/Rescue_EquipItemLevelTable.h"
-#include "tables/Rescue_EquipItemClassTable.h"
-#include "tables/Rescue_EquipTable.h"
-#include "tables/Rescue_EquipItemGradeTable.h"
-#include "tables/Rescue_CharacterTable.h"
-#include "tables/Rescue_SkillTable.h"
-#include "tables/Rescue_BuffTable.h"
-#include "tables/Rescue_CharacterLevelTable.h"
-#include "tables/Rescue_CharacterTranscendenceTable.h"
-#include "tables/Rescue_ArtifactTable.h"
-#include "tables/Rescue_ArtifactLevelTable.h"
-#include "tables/Rescue_ArtifactTranscendenceTable.h"
-#include "tables/Rescue_BuffSelectTable.h"
-#include "tables/Rescue_ShortCutTable.h"
-#include "tables/Rescue_StageTable.h"
-#include "tables/Rescue_ConfigTable.h"
-#include "tables/Rescue_DropGroupTable.h"
-#include "tables/Rescue_AttributeTable.h"
-#include "tables/Rescue_SDContensInfoTable.h"
-#include "tables/Rescue_SDAgencyInfoTable.h"
-#include "tables/Rescue_SDAgencyTable.h"
-#include "tables/Rescue_SDPubInfoTable.h"
-#include "tables/Rescue_SDTrainingInfoTable.h"
-#include "tables/Rescue_SDTrainingLevelTable.h"
-#include "tables/Rescue_SDDungeonInfoTable.h"
-#include "tables/Rescue_SDDungeonCardTable.h"
-#include "tables/Rescue_SDDungeonRewardTable.h"
-#include "tables/Rescue_SDAlchemyInfoTable.h"
-#include "tables/Rescue_SDAlchemyStepTable.h"
-#include "tables/Rescue_SDAlchemyLevelTable.h"
-#include "tables/Rescue_ShopInfoTable.h"
-#include "tables/Rescue_MainShopTable.h"
-#include "tables/Rescue_PackageShopTable.h"
-#include "tables/Rescue_SeasonShopTable.h"
-#include "tables/Rescue_CashShopTable.h"
-#include "tables/Rescue_BGMSoundTable.h"
-#include "tables/Rescue_SFXSoundTable.h"
-#include "tables/Rescue_InfoGrowthTable.h"
-#include "tables/Rescue_StatGrowthTable.h"
-#include "tables/Rescue_TraitTable.h"
-#include "tables/Rescue_RelicTable.h"
-#include "tables/Rescue_StarNodeTable.h"
-#include "tables/Rescue_CostCurveTable.h"
-#include "tables/Rescue_CostCurveRangeTable.h"
+#include "tables/Rescue_CollectionGroup.h"
+#include "tables/Rescue_Collection.h"
+#include "tables/Rescue_Condition.h"
+#include "tables/Rescue_DailyDungeonInfo.h"
+#include "tables/Rescue_GoldDungeonStage.h"
+#include "tables/Rescue_GoldDungeonReward.h"
+#include "tables/Rescue_ExpDungeonStage.h"
+#include "tables/Rescue_ExpDungeonReward.h"
+#include "tables/Rescue_TraitDungeonStage.h"
+#include "tables/Rescue_TraitDungeonReward.h"
+#include "tables/Rescue_RelicDungeonStage.h"
+#include "tables/Rescue_RelicDungeonReward.h"
+#include "tables/Rescue_OopartsDungeonStage.h"
+#include "tables/Rescue_OopartsDungeonReward.h"
+#include "tables/Rescue_GachaInfo.h"
+#include "tables/Rescue_GachaCharacterList.h"
+#include "tables/Rescue_GachaArtifactInfo.h"
+#include "tables/Rescue_GachaArtifactList.h"
+#include "tables/Rescue_GachaRate.h"
+#include "tables/Rescue_Currency.h"
+#include "tables/Rescue_Material.h"
+#include "tables/Rescue_Package.h"
+#include "tables/Rescue_ClassUpCurrencyList.h"
+#include "tables/Rescue_EquipItemLevel.h"
+#include "tables/Rescue_EquipItemClass.h"
+#include "tables/Rescue_Equip.h"
+#include "tables/Rescue_EquipItemGrade.h"
+#include "tables/Rescue_Character.h"
+#include "tables/Rescue_Skill.h"
+#include "tables/Rescue_Buff.h"
+#include "tables/Rescue_CharacterLevel.h"
+#include "tables/Rescue_CharacterTranscendence.h"
+#include "tables/Rescue_Artifact.h"
+#include "tables/Rescue_ArtifactLevel.h"
+#include "tables/Rescue_ArtifactTranscendence.h"
+#include "tables/Rescue_BuffSelect.h"
+#include "tables/Rescue_ShortCut.h"
+#include "tables/Rescue_Stage.h"
+#include "tables/Rescue_Config.h"
+#include "tables/Rescue_DropGroup.h"
+#include "tables/Rescue_Attribute.h"
+#include "tables/Rescue_SDContensInfo.h"
+#include "tables/Rescue_SDAgencyInfo.h"
+#include "tables/Rescue_SDAgency.h"
+#include "tables/Rescue_SDPubInfo.h"
+#include "tables/Rescue_SDTrainingInfo.h"
+#include "tables/Rescue_SDTrainingLevel.h"
+#include "tables/Rescue_SDDungeonInfo.h"
+#include "tables/Rescue_SDDungeonCard.h"
+#include "tables/Rescue_SDDungeonReward.h"
+#include "tables/Rescue_SDAlchemyInfo.h"
+#include "tables/Rescue_SDAlchemyStep.h"
+#include "tables/Rescue_SDAlchemyLevel.h"
+#include "tables/Rescue_ShopInfo.h"
+#include "tables/Rescue_MainShop.h"
+#include "tables/Rescue_PackageShop.h"
+#include "tables/Rescue_SeasonShop.h"
+#include "tables/Rescue_CashShop.h"
+#include "tables/Rescue_BGMSound.h"
+#include "tables/Rescue_SFXSound.h"
+#include "tables/Rescue_InfoGrowth.h"
+#include "tables/Rescue_StatGrowth.h"
+#include "tables/Rescue_Trait.h"
+#include "tables/Rescue_Relic.h"
+#include "tables/Rescue_StarNode.h"
+#include "tables/Rescue_CostCurve.h"
+#include "tables/Rescue_CostCurveRange.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 /* Every table, loaded together so cross-table references can be resolved. */
 typedef struct Rescue_t {
-  Rescue_CollectionGroupTableTable_t collection_group_table;
-  Rescue_CollectionTableTable_t collection_table;
-  Rescue_ConditionTableTable_t condition_table;
-  Rescue_DailyDungeonInfoTableTable_t daily_dungeon_info_table;
-  Rescue_GoldDungeonStageTableTable_t gold_dungeon_stage_table;
-  Rescue_GoldDungeonRewardTableTable_t gold_dungeon_reward_table;
-  Rescue_ExpDungeonStageTableTable_t exp_dungeon_stage_table;
-  Rescue_ExpDungeonRewardTableTable_t exp_dungeon_reward_table;
-  Rescue_TraitDungeonStageTableTable_t trait_dungeon_stage_table;
-  Rescue_TraitDungeonRewardTableTable_t trait_dungeon_reward_table;
-  Rescue_RelicDungeonStageTableTable_t relic_dungeon_stage_table;
-  Rescue_RelicDungeonRewardTableTable_t relic_dungeon_reward_table;
-  Rescue_OopartsDungeonStageTableTable_t ooparts_dungeon_stage_table;
-  Rescue_OopartsDungeonRewardTableTable_t ooparts_dungeon_reward_table;
-  Rescue_GachaInfoTableTable_t gacha_info_table;
-  Rescue_GachaCharacterListTableTable_t gacha_character_list_table;
-  Rescue_GachaArtifactInfoTableTable_t gacha_artifact_info_table;
-  Rescue_GachaArtifactListTableTable_t gacha_artifact_list_table;
-  Rescue_GachaRateTableTable_t gacha_rate_table;
-  Rescue_CurrencyTableTable_t currency_table;
-  Rescue_MaterialTableTable_t material_table;
-  Rescue_PackageTableTable_t package_table;
-  Rescue_ClassUpCurrencyListTableTable_t class_up_currency_list_table;
-  Rescue_EquipItemLevelTableTable_t equip_item_level_table;
-  Rescue_EquipItemClassTableTable_t equip_item_class_table;
-  Rescue_EquipTableTable_t equip_table;
-  Rescue_EquipItemGradeTableTable_t equip_item_grade_table;
-  Rescue_CharacterTableTable_t character_table;
-  Rescue_SkillTableTable_t skill_table;
-  Rescue_BuffTableTable_t buff_table;
-  Rescue_CharacterLevelTableTable_t character_level_table;
-  Rescue_CharacterTranscendenceTableTable_t character_transcendence_table;
-  Rescue_ArtifactTableTable_t artifact_table;
-  Rescue_ArtifactLevelTableTable_t artifact_level_table;
-  Rescue_ArtifactTranscendenceTableTable_t artifact_transcendence_table;
-  Rescue_BuffSelectTableTable_t buff_select_table;
-  Rescue_ShortCutTableTable_t short_cut_table;
-  Rescue_StageTableTable_t stage_table;
-  Rescue_ConfigTableTable_t config_table;
-  Rescue_DropGroupTableTable_t drop_group_table;
-  Rescue_AttributeTableTable_t attribute_table;
-  Rescue_SDContensInfoTableTable_t sd_contens_info_table;
-  Rescue_SDAgencyInfoTableTable_t sd_agency_info_table;
-  Rescue_SDAgencyTableTable_t sd_agency_table;
-  Rescue_SDPubInfoTableTable_t sd_pub_info_table;
-  Rescue_SDTrainingInfoTableTable_t sd_training_info_table;
-  Rescue_SDTrainingLevelTableTable_t sd_training_level_table;
-  Rescue_SDDungeonInfoTableTable_t sd_dungeon_info_table;
-  Rescue_SDDungeonCardTableTable_t sd_dungeon_card_table;
-  Rescue_SDDungeonRewardTableTable_t sd_dungeon_reward_table;
-  Rescue_SDAlchemyInfoTableTable_t sd_alchemy_info_table;
-  Rescue_SDAlchemyStepTableTable_t sd_alchemy_step_table;
-  Rescue_SDAlchemyLevelTableTable_t sd_alchemy_level_table;
-  Rescue_ShopInfoTableTable_t shop_info_table;
-  Rescue_MainShopTableTable_t main_shop_table;
-  Rescue_PackageShopTableTable_t package_shop_table;
-  Rescue_SeasonShopTableTable_t season_shop_table;
-  Rescue_CashShopTableTable_t cash_shop_table;
-  Rescue_BGMSoundTableTable_t bgm_sound_table;
-  Rescue_SFXSoundTableTable_t sfx_sound_table;
-  Rescue_InfoGrowthTableTable_t info_growth_table;
-  Rescue_StatGrowthTableTable_t stat_growth_table;
-  Rescue_TraitTableTable_t trait_table;
-  Rescue_RelicTableTable_t relic_table;
-  Rescue_StarNodeTableTable_t star_node_table;
-  Rescue_CostCurveTableTable_t cost_curve_table;
-  Rescue_CostCurveRangeTableTable_t cost_curve_range_table;
+  Rescue_CollectionGroupTable_t collection_group;
+  Rescue_CollectionTable_t collection;
+  Rescue_ConditionTable_t condition;
+  Rescue_DailyDungeonInfoTable_t daily_dungeon_info;
+  Rescue_GoldDungeonStageTable_t gold_dungeon_stage;
+  Rescue_GoldDungeonRewardTable_t gold_dungeon_reward;
+  Rescue_ExpDungeonStageTable_t exp_dungeon_stage;
+  Rescue_ExpDungeonRewardTable_t exp_dungeon_reward;
+  Rescue_TraitDungeonStageTable_t trait_dungeon_stage;
+  Rescue_TraitDungeonRewardTable_t trait_dungeon_reward;
+  Rescue_RelicDungeonStageTable_t relic_dungeon_stage;
+  Rescue_RelicDungeonRewardTable_t relic_dungeon_reward;
+  Rescue_OopartsDungeonStageTable_t ooparts_dungeon_stage;
+  Rescue_OopartsDungeonRewardTable_t ooparts_dungeon_reward;
+  Rescue_GachaInfoTable_t gacha_info;
+  Rescue_GachaCharacterListTable_t gacha_character_list;
+  Rescue_GachaArtifactInfoTable_t gacha_artifact_info;
+  Rescue_GachaArtifactListTable_t gacha_artifact_list;
+  Rescue_GachaRateTable_t gacha_rate;
+  Rescue_CurrencyTable_t currency;
+  Rescue_MaterialTable_t material;
+  Rescue_PackageTable_t package;
+  Rescue_ClassUpCurrencyListTable_t class_up_currency_list;
+  Rescue_EquipItemLevelTable_t equip_item_level;
+  Rescue_EquipItemClassTable_t equip_item_class;
+  Rescue_EquipTable_t equip;
+  Rescue_EquipItemGradeTable_t equip_item_grade;
+  Rescue_CharacterTable_t character;
+  Rescue_SkillTable_t skill;
+  Rescue_BuffTable_t buff;
+  Rescue_CharacterLevelTable_t character_level;
+  Rescue_CharacterTranscendenceTable_t character_transcendence;
+  Rescue_ArtifactTable_t artifact;
+  Rescue_ArtifactLevelTable_t artifact_level;
+  Rescue_ArtifactTranscendenceTable_t artifact_transcendence;
+  Rescue_BuffSelectTable_t buff_select;
+  Rescue_ShortCutTable_t short_cut;
+  Rescue_StageTable_t stage;
+  Rescue_ConfigTable_t config;
+  Rescue_DropGroupTable_t drop_group;
+  Rescue_AttributeTable_t attribute;
+  Rescue_SDContensInfoTable_t sd_contens_info;
+  Rescue_SDAgencyInfoTable_t sd_agency_info;
+  Rescue_SDAgencyTable_t sd_agency;
+  Rescue_SDPubInfoTable_t sd_pub_info;
+  Rescue_SDTrainingInfoTable_t sd_training_info;
+  Rescue_SDTrainingLevelTable_t sd_training_level;
+  Rescue_SDDungeonInfoTable_t sd_dungeon_info;
+  Rescue_SDDungeonCardTable_t sd_dungeon_card;
+  Rescue_SDDungeonRewardTable_t sd_dungeon_reward;
+  Rescue_SDAlchemyInfoTable_t sd_alchemy_info;
+  Rescue_SDAlchemyStepTable_t sd_alchemy_step;
+  Rescue_SDAlchemyLevelTable_t sd_alchemy_level;
+  Rescue_ShopInfoTable_t shop_info;
+  Rescue_MainShopTable_t main_shop;
+  Rescue_PackageShopTable_t package_shop;
+  Rescue_SeasonShopTable_t season_shop;
+  Rescue_CashShopTable_t cash_shop;
+  Rescue_BGMSoundTable_t bgm_sound;
+  Rescue_SFXSoundTable_t sfx_sound;
+  Rescue_InfoGrowthTable_t info_growth;
+  Rescue_StatGrowthTable_t stat_growth;
+  Rescue_TraitTable_t trait;
+  Rescue_RelicTable_t relic;
+  Rescue_StarNodeTable_t star_node;
+  Rescue_CostCurveTable_t cost_curve;
+  Rescue_CostCurveRangeTable_t cost_curve_range;
 } Rescue_t;
 
 /* Reads every table from base_path, then links the references between them.

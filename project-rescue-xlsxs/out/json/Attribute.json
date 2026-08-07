@@ -1,0 +1,62 @@
+[
+  {
+    "id": 7001,
+    "name": "Attribute_Fire1",
+    "attributeName": "화염 속성",
+    "attributeType": 1,
+    "targetAttributeType": 2,
+    "damageValueRate": 12.0,
+    "isVisible": true,
+    "iconPath": "Fire"
+  },
+  {
+    "id": 7002,
+    "name": "Attribute_Ice1",
+    "attributeName": "얼음 속성",
+    "attributeType": 2,
+    "targetAttributeType": 1,
+    "damageValueRate": 12.0,
+    "isVisible": true,
+    "iconPath": "Ice"
+  },
+  {
+    "id": 7003,
+    "name": "Attribute_Nature1",
+    "attributeName": "자연 속성",
+    "attributeType": 3,
+    "targetAttributeType": 6,
+    "damageValueRate": 12.0,
+    "isVisible": true,
+    "iconPath": "Nature"
+  },
+  {
+    "id": 7004,
+    "name": "Attribute_Holy1",
+    "attributeName": "빛 속성",
+    "attributeType": 4,
+    "targetAttributeType": 5,
+    "damageValueRate": 12.0,
+    "isVisible": true,
+    "iconPath": "Holy"
+  },
+  {
+    "id": 7005,
+    "name": "Attribute_Dark1",
+    "attributeName": "어둠 속성",
+    "attributeType": 5,
+    "targetAttributeType": 4,
+    "damageValueRate": 12.0,
+    "isVisible": true,
+    "iconPath": "Dark"
+  },
+  {
+    "id": 7006,
+    "name": "Attribute_Iron1",
+    "attributeName": "기계 속성",
+    "attributeType": 6,
+    "targetAttributeType": 3,
+    "damageValueRate": 12.0,
+    "isVisible": true,
+    "iconPath": "Iron"
+  }
+]

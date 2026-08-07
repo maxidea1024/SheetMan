@@ -13,73 +13,73 @@ import (
 
 // Tables holds every table, loaded together so cross-table references can be resolved.
 type Tables struct {
-	CollectionGroupTable CollectionGroupTableTable
-	CollectionTable CollectionTableTable
-	ConditionTable ConditionTableTable
-	DailyDungeonInfoTable DailyDungeonInfoTableTable
-	GoldDungeonStageTable GoldDungeonStageTableTable
-	GoldDungeonRewardTable GoldDungeonRewardTableTable
-	ExpDungeonStageTable ExpDungeonStageTableTable
-	ExpDungeonRewardTable ExpDungeonRewardTableTable
-	TraitDungeonStageTable TraitDungeonStageTableTable
-	TraitDungeonRewardTable TraitDungeonRewardTableTable
-	RelicDungeonStageTable RelicDungeonStageTableTable
-	RelicDungeonRewardTable RelicDungeonRewardTableTable
-	OopartsDungeonStageTable OopartsDungeonStageTableTable
-	OopartsDungeonRewardTable OopartsDungeonRewardTableTable
-	GachaInfoTable GachaInfoTableTable
-	GachaCharacterListTable GachaCharacterListTableTable
-	GachaArtifactInfoTable GachaArtifactInfoTableTable
-	GachaArtifactListTable GachaArtifactListTableTable
-	GachaRateTable GachaRateTableTable
-	CurrencyTable CurrencyTableTable
-	MaterialTable MaterialTableTable
-	PackageTable PackageTableTable
-	ClassUpCurrencyListTable ClassUpCurrencyListTableTable
-	EquipItemLevelTable EquipItemLevelTableTable
-	EquipItemClassTable EquipItemClassTableTable
-	EquipTable EquipTableTable
-	EquipItemGradeTable EquipItemGradeTableTable
-	CharacterTable CharacterTableTable
-	SkillTable SkillTableTable
-	BuffTable BuffTableTable
-	CharacterLevelTable CharacterLevelTableTable
-	CharacterTranscendenceTable CharacterTranscendenceTableTable
-	ArtifactTable ArtifactTableTable
-	ArtifactLevelTable ArtifactLevelTableTable
-	ArtifactTranscendenceTable ArtifactTranscendenceTableTable
-	BuffSelectTable BuffSelectTableTable
-	ShortCutTable ShortCutTableTable
-	StageTable StageTableTable
-	ConfigTable ConfigTableTable
-	DropGroupTable DropGroupTableTable
-	AttributeTable AttributeTableTable
-	SDContensInfoTable SDContensInfoTableTable
-	SDAgencyInfoTable SDAgencyInfoTableTable
-	SDAgencyTable SDAgencyTableTable
-	SDPubInfoTable SDPubInfoTableTable
-	SDTrainingInfoTable SDTrainingInfoTableTable
-	SDTrainingLevelTable SDTrainingLevelTableTable
-	SDDungeonInfoTable SDDungeonInfoTableTable
-	SDDungeonCardTable SDDungeonCardTableTable
-	SDDungeonRewardTable SDDungeonRewardTableTable
-	SDAlchemyInfoTable SDAlchemyInfoTableTable
-	SDAlchemyStepTable SDAlchemyStepTableTable
-	SDAlchemyLevelTable SDAlchemyLevelTableTable
-	ShopInfoTable ShopInfoTableTable
-	MainShopTable MainShopTableTable
-	PackageShopTable PackageShopTableTable
-	SeasonShopTable SeasonShopTableTable
-	CashShopTable CashShopTableTable
-	BGMSoundTable BGMSoundTableTable
-	SFXSoundTable SFXSoundTableTable
-	InfoGrowthTable InfoGrowthTableTable
-	StatGrowthTable StatGrowthTableTable
-	TraitTable TraitTableTable
-	RelicTable RelicTableTable
-	StarNodeTable StarNodeTableTable
-	CostCurveTable CostCurveTableTable
-	CostCurveRangeTable CostCurveRangeTableTable
+	CollectionGroup CollectionGroupTable
+	Collection CollectionTable
+	Condition ConditionTable
+	DailyDungeonInfo DailyDungeonInfoTable
+	GoldDungeonStage GoldDungeonStageTable
+	GoldDungeonReward GoldDungeonRewardTable
+	ExpDungeonStage ExpDungeonStageTable
+	ExpDungeonReward ExpDungeonRewardTable
+	TraitDungeonStage TraitDungeonStageTable
+	TraitDungeonReward TraitDungeonRewardTable
+	RelicDungeonStage RelicDungeonStageTable
+	RelicDungeonReward RelicDungeonRewardTable
+	OopartsDungeonStage OopartsDungeonStageTable
+	OopartsDungeonReward OopartsDungeonRewardTable
+	GachaInfo GachaInfoTable
+	GachaCharacterList GachaCharacterListTable
+	GachaArtifactInfo GachaArtifactInfoTable
+	GachaArtifactList GachaArtifactListTable
+	GachaRate GachaRateTable
+	Currency CurrencyTable
+	Material MaterialTable
+	Package PackageTable
+	ClassUpCurrencyList ClassUpCurrencyListTable
+	EquipItemLevel EquipItemLevelTable
+	EquipItemClass EquipItemClassTable
+	Equip EquipTable
+	EquipItemGrade EquipItemGradeTable
+	Character CharacterTable
+	Skill SkillTable
+	Buff BuffTable
+	CharacterLevel CharacterLevelTable
+	CharacterTranscendence CharacterTranscendenceTable
+	Artifact ArtifactTable
+	ArtifactLevel ArtifactLevelTable
+	ArtifactTranscendence ArtifactTranscendenceTable
+	BuffSelect BuffSelectTable
+	ShortCut ShortCutTable
+	Stage StageTable
+	Config ConfigTable
+	DropGroup DropGroupTable
+	Attribute AttributeTable
+	SDContensInfo SDContensInfoTable
+	SDAgencyInfo SDAgencyInfoTable
+	SDAgency SDAgencyTable
+	SDPubInfo SDPubInfoTable
+	SDTrainingInfo SDTrainingInfoTable
+	SDTrainingLevel SDTrainingLevelTable
+	SDDungeonInfo SDDungeonInfoTable
+	SDDungeonCard SDDungeonCardTable
+	SDDungeonReward SDDungeonRewardTable
+	SDAlchemyInfo SDAlchemyInfoTable
+	SDAlchemyStep SDAlchemyStepTable
+	SDAlchemyLevel SDAlchemyLevelTable
+	ShopInfo ShopInfoTable
+	MainShop MainShopTable
+	PackageShop PackageShopTable
+	SeasonShop SeasonShopTable
+	CashShop CashShopTable
+	BGMSound BGMSoundTable
+	SFXSound SFXSoundTable
+	InfoGrowth InfoGrowthTable
+	StatGrowth StatGrowthTable
+	Trait TraitTable
+	Relic RelicTable
+	StarNode StarNodeTable
+	CostCurve CostCurveTable
+	CostCurveRange CostCurveRangeTable
 }
 
 // ReadAll reads every table from basePath, then links the references between them.
@@ -98,205 +98,205 @@ func (t *Tables) ReadAll(basePath string) error {
 func (t *Tables) ReadAllWithExtension(basePath string, fileExtension string) error {
 	var loaded Tables
 
-	if err := loaded.CollectionGroupTable.Read(filepath.Join(basePath, "CollectionGroupTable"+fileExtension)); err != nil {
+	if err := loaded.CollectionGroup.Read(filepath.Join(basePath, "CollectionGroup"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.CollectionTable.Read(filepath.Join(basePath, "CollectionTable"+fileExtension)); err != nil {
+	if err := loaded.Collection.Read(filepath.Join(basePath, "Collection"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ConditionTable.Read(filepath.Join(basePath, "ConditionTable"+fileExtension)); err != nil {
+	if err := loaded.Condition.Read(filepath.Join(basePath, "Condition"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.DailyDungeonInfoTable.Read(filepath.Join(basePath, "DailyDungeonInfoTable"+fileExtension)); err != nil {
+	if err := loaded.DailyDungeonInfo.Read(filepath.Join(basePath, "DailyDungeonInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.GoldDungeonStageTable.Read(filepath.Join(basePath, "GoldDungeonStageTable"+fileExtension)); err != nil {
+	if err := loaded.GoldDungeonStage.Read(filepath.Join(basePath, "GoldDungeonStage"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.GoldDungeonRewardTable.Read(filepath.Join(basePath, "GoldDungeonRewardTable"+fileExtension)); err != nil {
+	if err := loaded.GoldDungeonReward.Read(filepath.Join(basePath, "GoldDungeonReward"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ExpDungeonStageTable.Read(filepath.Join(basePath, "ExpDungeonStageTable"+fileExtension)); err != nil {
+	if err := loaded.ExpDungeonStage.Read(filepath.Join(basePath, "ExpDungeonStage"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ExpDungeonRewardTable.Read(filepath.Join(basePath, "ExpDungeonRewardTable"+fileExtension)); err != nil {
+	if err := loaded.ExpDungeonReward.Read(filepath.Join(basePath, "ExpDungeonReward"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.TraitDungeonStageTable.Read(filepath.Join(basePath, "TraitDungeonStageTable"+fileExtension)); err != nil {
+	if err := loaded.TraitDungeonStage.Read(filepath.Join(basePath, "TraitDungeonStage"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.TraitDungeonRewardTable.Read(filepath.Join(basePath, "TraitDungeonRewardTable"+fileExtension)); err != nil {
+	if err := loaded.TraitDungeonReward.Read(filepath.Join(basePath, "TraitDungeonReward"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.RelicDungeonStageTable.Read(filepath.Join(basePath, "RelicDungeonStageTable"+fileExtension)); err != nil {
+	if err := loaded.RelicDungeonStage.Read(filepath.Join(basePath, "RelicDungeonStage"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.RelicDungeonRewardTable.Read(filepath.Join(basePath, "RelicDungeonRewardTable"+fileExtension)); err != nil {
+	if err := loaded.RelicDungeonReward.Read(filepath.Join(basePath, "RelicDungeonReward"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.OopartsDungeonStageTable.Read(filepath.Join(basePath, "OopartsDungeonStageTable"+fileExtension)); err != nil {
+	if err := loaded.OopartsDungeonStage.Read(filepath.Join(basePath, "OopartsDungeonStage"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.OopartsDungeonRewardTable.Read(filepath.Join(basePath, "OopartsDungeonRewardTable"+fileExtension)); err != nil {
+	if err := loaded.OopartsDungeonReward.Read(filepath.Join(basePath, "OopartsDungeonReward"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.GachaInfoTable.Read(filepath.Join(basePath, "GachaInfoTable"+fileExtension)); err != nil {
+	if err := loaded.GachaInfo.Read(filepath.Join(basePath, "GachaInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.GachaCharacterListTable.Read(filepath.Join(basePath, "GachaCharacterListTable"+fileExtension)); err != nil {
+	if err := loaded.GachaCharacterList.Read(filepath.Join(basePath, "GachaCharacterList"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.GachaArtifactInfoTable.Read(filepath.Join(basePath, "GachaArtifactInfoTable"+fileExtension)); err != nil {
+	if err := loaded.GachaArtifactInfo.Read(filepath.Join(basePath, "GachaArtifactInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.GachaArtifactListTable.Read(filepath.Join(basePath, "GachaArtifactListTable"+fileExtension)); err != nil {
+	if err := loaded.GachaArtifactList.Read(filepath.Join(basePath, "GachaArtifactList"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.GachaRateTable.Read(filepath.Join(basePath, "GachaRateTable"+fileExtension)); err != nil {
+	if err := loaded.GachaRate.Read(filepath.Join(basePath, "GachaRate"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.CurrencyTable.Read(filepath.Join(basePath, "CurrencyTable"+fileExtension)); err != nil {
+	if err := loaded.Currency.Read(filepath.Join(basePath, "Currency"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.MaterialTable.Read(filepath.Join(basePath, "MaterialTable"+fileExtension)); err != nil {
+	if err := loaded.Material.Read(filepath.Join(basePath, "Material"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.PackageTable.Read(filepath.Join(basePath, "PackageTable"+fileExtension)); err != nil {
+	if err := loaded.Package.Read(filepath.Join(basePath, "Package"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ClassUpCurrencyListTable.Read(filepath.Join(basePath, "ClassUpCurrencyListTable"+fileExtension)); err != nil {
+	if err := loaded.ClassUpCurrencyList.Read(filepath.Join(basePath, "ClassUpCurrencyList"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.EquipItemLevelTable.Read(filepath.Join(basePath, "EquipItemLevelTable"+fileExtension)); err != nil {
+	if err := loaded.EquipItemLevel.Read(filepath.Join(basePath, "EquipItemLevel"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.EquipItemClassTable.Read(filepath.Join(basePath, "EquipItemClassTable"+fileExtension)); err != nil {
+	if err := loaded.EquipItemClass.Read(filepath.Join(basePath, "EquipItemClass"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.EquipTable.Read(filepath.Join(basePath, "EquipTable"+fileExtension)); err != nil {
+	if err := loaded.Equip.Read(filepath.Join(basePath, "Equip"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.EquipItemGradeTable.Read(filepath.Join(basePath, "EquipItemGradeTable"+fileExtension)); err != nil {
+	if err := loaded.EquipItemGrade.Read(filepath.Join(basePath, "EquipItemGrade"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.CharacterTable.Read(filepath.Join(basePath, "CharacterTable"+fileExtension)); err != nil {
+	if err := loaded.Character.Read(filepath.Join(basePath, "Character"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SkillTable.Read(filepath.Join(basePath, "SkillTable"+fileExtension)); err != nil {
+	if err := loaded.Skill.Read(filepath.Join(basePath, "Skill"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.BuffTable.Read(filepath.Join(basePath, "BuffTable"+fileExtension)); err != nil {
+	if err := loaded.Buff.Read(filepath.Join(basePath, "Buff"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.CharacterLevelTable.Read(filepath.Join(basePath, "CharacterLevelTable"+fileExtension)); err != nil {
+	if err := loaded.CharacterLevel.Read(filepath.Join(basePath, "CharacterLevel"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.CharacterTranscendenceTable.Read(filepath.Join(basePath, "CharacterTranscendenceTable"+fileExtension)); err != nil {
+	if err := loaded.CharacterTranscendence.Read(filepath.Join(basePath, "CharacterTranscendence"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ArtifactTable.Read(filepath.Join(basePath, "ArtifactTable"+fileExtension)); err != nil {
+	if err := loaded.Artifact.Read(filepath.Join(basePath, "Artifact"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ArtifactLevelTable.Read(filepath.Join(basePath, "ArtifactLevelTable"+fileExtension)); err != nil {
+	if err := loaded.ArtifactLevel.Read(filepath.Join(basePath, "ArtifactLevel"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ArtifactTranscendenceTable.Read(filepath.Join(basePath, "ArtifactTranscendenceTable"+fileExtension)); err != nil {
+	if err := loaded.ArtifactTranscendence.Read(filepath.Join(basePath, "ArtifactTranscendence"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.BuffSelectTable.Read(filepath.Join(basePath, "BuffSelectTable"+fileExtension)); err != nil {
+	if err := loaded.BuffSelect.Read(filepath.Join(basePath, "BuffSelect"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ShortCutTable.Read(filepath.Join(basePath, "ShortCutTable"+fileExtension)); err != nil {
+	if err := loaded.ShortCut.Read(filepath.Join(basePath, "ShortCut"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.StageTable.Read(filepath.Join(basePath, "StageTable"+fileExtension)); err != nil {
+	if err := loaded.Stage.Read(filepath.Join(basePath, "Stage"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ConfigTable.Read(filepath.Join(basePath, "ConfigTable"+fileExtension)); err != nil {
+	if err := loaded.Config.Read(filepath.Join(basePath, "Config"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.DropGroupTable.Read(filepath.Join(basePath, "DropGroupTable"+fileExtension)); err != nil {
+	if err := loaded.DropGroup.Read(filepath.Join(basePath, "DropGroup"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.AttributeTable.Read(filepath.Join(basePath, "AttributeTable"+fileExtension)); err != nil {
+	if err := loaded.Attribute.Read(filepath.Join(basePath, "Attribute"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDContensInfoTable.Read(filepath.Join(basePath, "SDContensInfoTable"+fileExtension)); err != nil {
+	if err := loaded.SDContensInfo.Read(filepath.Join(basePath, "SDContensInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDAgencyInfoTable.Read(filepath.Join(basePath, "SDAgencyInfoTable"+fileExtension)); err != nil {
+	if err := loaded.SDAgencyInfo.Read(filepath.Join(basePath, "SDAgencyInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDAgencyTable.Read(filepath.Join(basePath, "SDAgencyTable"+fileExtension)); err != nil {
+	if err := loaded.SDAgency.Read(filepath.Join(basePath, "SDAgency"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDPubInfoTable.Read(filepath.Join(basePath, "SDPubInfoTable"+fileExtension)); err != nil {
+	if err := loaded.SDPubInfo.Read(filepath.Join(basePath, "SDPubInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDTrainingInfoTable.Read(filepath.Join(basePath, "SDTrainingInfoTable"+fileExtension)); err != nil {
+	if err := loaded.SDTrainingInfo.Read(filepath.Join(basePath, "SDTrainingInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDTrainingLevelTable.Read(filepath.Join(basePath, "SDTrainingLevelTable"+fileExtension)); err != nil {
+	if err := loaded.SDTrainingLevel.Read(filepath.Join(basePath, "SDTrainingLevel"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDDungeonInfoTable.Read(filepath.Join(basePath, "SDDungeonInfoTable"+fileExtension)); err != nil {
+	if err := loaded.SDDungeonInfo.Read(filepath.Join(basePath, "SDDungeonInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDDungeonCardTable.Read(filepath.Join(basePath, "SDDungeonCardTable"+fileExtension)); err != nil {
+	if err := loaded.SDDungeonCard.Read(filepath.Join(basePath, "SDDungeonCard"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDDungeonRewardTable.Read(filepath.Join(basePath, "SDDungeonRewardTable"+fileExtension)); err != nil {
+	if err := loaded.SDDungeonReward.Read(filepath.Join(basePath, "SDDungeonReward"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDAlchemyInfoTable.Read(filepath.Join(basePath, "SDAlchemyInfoTable"+fileExtension)); err != nil {
+	if err := loaded.SDAlchemyInfo.Read(filepath.Join(basePath, "SDAlchemyInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDAlchemyStepTable.Read(filepath.Join(basePath, "SDAlchemyStepTable"+fileExtension)); err != nil {
+	if err := loaded.SDAlchemyStep.Read(filepath.Join(basePath, "SDAlchemyStep"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SDAlchemyLevelTable.Read(filepath.Join(basePath, "SDAlchemyLevelTable"+fileExtension)); err != nil {
+	if err := loaded.SDAlchemyLevel.Read(filepath.Join(basePath, "SDAlchemyLevel"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.ShopInfoTable.Read(filepath.Join(basePath, "ShopInfoTable"+fileExtension)); err != nil {
+	if err := loaded.ShopInfo.Read(filepath.Join(basePath, "ShopInfo"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.MainShopTable.Read(filepath.Join(basePath, "MainShopTable"+fileExtension)); err != nil {
+	if err := loaded.MainShop.Read(filepath.Join(basePath, "MainShop"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.PackageShopTable.Read(filepath.Join(basePath, "PackageShopTable"+fileExtension)); err != nil {
+	if err := loaded.PackageShop.Read(filepath.Join(basePath, "PackageShop"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SeasonShopTable.Read(filepath.Join(basePath, "SeasonShopTable"+fileExtension)); err != nil {
+	if err := loaded.SeasonShop.Read(filepath.Join(basePath, "SeasonShop"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.CashShopTable.Read(filepath.Join(basePath, "CashShopTable"+fileExtension)); err != nil {
+	if err := loaded.CashShop.Read(filepath.Join(basePath, "CashShop"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.BGMSoundTable.Read(filepath.Join(basePath, "BGMSoundTable"+fileExtension)); err != nil {
+	if err := loaded.BGMSound.Read(filepath.Join(basePath, "BGMSound"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.SFXSoundTable.Read(filepath.Join(basePath, "SFXSoundTable"+fileExtension)); err != nil {
+	if err := loaded.SFXSound.Read(filepath.Join(basePath, "SFXSound"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.InfoGrowthTable.Read(filepath.Join(basePath, "InfoGrowthTable"+fileExtension)); err != nil {
+	if err := loaded.InfoGrowth.Read(filepath.Join(basePath, "InfoGrowth"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.StatGrowthTable.Read(filepath.Join(basePath, "StatGrowthTable"+fileExtension)); err != nil {
+	if err := loaded.StatGrowth.Read(filepath.Join(basePath, "StatGrowth"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.TraitTable.Read(filepath.Join(basePath, "TraitTable"+fileExtension)); err != nil {
+	if err := loaded.Trait.Read(filepath.Join(basePath, "Trait"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.RelicTable.Read(filepath.Join(basePath, "RelicTable"+fileExtension)); err != nil {
+	if err := loaded.Relic.Read(filepath.Join(basePath, "Relic"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.StarNodeTable.Read(filepath.Join(basePath, "StarNodeTable"+fileExtension)); err != nil {
+	if err := loaded.StarNode.Read(filepath.Join(basePath, "StarNode"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.CostCurveTable.Read(filepath.Join(basePath, "CostCurveTable"+fileExtension)); err != nil {
+	if err := loaded.CostCurve.Read(filepath.Join(basePath, "CostCurve"+fileExtension)); err != nil {
 		return err
 	}
-	if err := loaded.CostCurveRangeTable.Read(filepath.Join(basePath, "CostCurveRangeTable"+fileExtension)); err != nil {
+	if err := loaded.CostCurveRange.Read(filepath.Join(basePath, "CostCurveRange"+fileExtension)); err != nil {
 		return err
 	}
 

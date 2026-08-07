@@ -7,144 +7,144 @@
 
 use std::path::Path;
 use crate::sheetman;
-use crate::collection_group_table_table::CollectionGroupTableTable;
-use crate::collection_table_table::CollectionTableTable;
-use crate::condition_table_table::ConditionTableTable;
-use crate::daily_dungeon_info_table_table::DailyDungeonInfoTableTable;
-use crate::gold_dungeon_stage_table_table::GoldDungeonStageTableTable;
-use crate::gold_dungeon_reward_table_table::GoldDungeonRewardTableTable;
-use crate::exp_dungeon_stage_table_table::ExpDungeonStageTableTable;
-use crate::exp_dungeon_reward_table_table::ExpDungeonRewardTableTable;
-use crate::trait_dungeon_stage_table_table::TraitDungeonStageTableTable;
-use crate::trait_dungeon_reward_table_table::TraitDungeonRewardTableTable;
-use crate::relic_dungeon_stage_table_table::RelicDungeonStageTableTable;
-use crate::relic_dungeon_reward_table_table::RelicDungeonRewardTableTable;
-use crate::ooparts_dungeon_stage_table_table::OopartsDungeonStageTableTable;
-use crate::ooparts_dungeon_reward_table_table::OopartsDungeonRewardTableTable;
-use crate::gacha_info_table_table::GachaInfoTableTable;
-use crate::gacha_character_list_table_table::GachaCharacterListTableTable;
-use crate::gacha_artifact_info_table_table::GachaArtifactInfoTableTable;
-use crate::gacha_artifact_list_table_table::GachaArtifactListTableTable;
-use crate::gacha_rate_table_table::GachaRateTableTable;
-use crate::currency_table_table::CurrencyTableTable;
-use crate::material_table_table::MaterialTableTable;
-use crate::package_table_table::PackageTableTable;
-use crate::class_up_currency_list_table_table::ClassUpCurrencyListTableTable;
-use crate::equip_item_level_table_table::EquipItemLevelTableTable;
-use crate::equip_item_class_table_table::EquipItemClassTableTable;
-use crate::equip_table_table::EquipTableTable;
-use crate::equip_item_grade_table_table::EquipItemGradeTableTable;
-use crate::character_table_table::CharacterTableTable;
-use crate::skill_table_table::SkillTableTable;
-use crate::buff_table_table::BuffTableTable;
-use crate::character_level_table_table::CharacterLevelTableTable;
-use crate::character_transcendence_table_table::CharacterTranscendenceTableTable;
-use crate::artifact_table_table::ArtifactTableTable;
-use crate::artifact_level_table_table::ArtifactLevelTableTable;
-use crate::artifact_transcendence_table_table::ArtifactTranscendenceTableTable;
-use crate::buff_select_table_table::BuffSelectTableTable;
-use crate::short_cut_table_table::ShortCutTableTable;
-use crate::stage_table_table::StageTableTable;
-use crate::config_table_table::ConfigTableTable;
-use crate::drop_group_table_table::DropGroupTableTable;
-use crate::attribute_table_table::AttributeTableTable;
-use crate::sd_contens_info_table_table::SDContensInfoTableTable;
-use crate::sd_agency_info_table_table::SDAgencyInfoTableTable;
-use crate::sd_agency_table_table::SDAgencyTableTable;
-use crate::sd_pub_info_table_table::SDPubInfoTableTable;
-use crate::sd_training_info_table_table::SDTrainingInfoTableTable;
-use crate::sd_training_level_table_table::SDTrainingLevelTableTable;
-use crate::sd_dungeon_info_table_table::SDDungeonInfoTableTable;
-use crate::sd_dungeon_card_table_table::SDDungeonCardTableTable;
-use crate::sd_dungeon_reward_table_table::SDDungeonRewardTableTable;
-use crate::sd_alchemy_info_table_table::SDAlchemyInfoTableTable;
-use crate::sd_alchemy_step_table_table::SDAlchemyStepTableTable;
-use crate::sd_alchemy_level_table_table::SDAlchemyLevelTableTable;
-use crate::shop_info_table_table::ShopInfoTableTable;
-use crate::main_shop_table_table::MainShopTableTable;
-use crate::package_shop_table_table::PackageShopTableTable;
-use crate::season_shop_table_table::SeasonShopTableTable;
-use crate::cash_shop_table_table::CashShopTableTable;
-use crate::bgm_sound_table_table::BGMSoundTableTable;
-use crate::sfx_sound_table_table::SFXSoundTableTable;
-use crate::info_growth_table_table::InfoGrowthTableTable;
-use crate::stat_growth_table_table::StatGrowthTableTable;
-use crate::trait_table_table::TraitTableTable;
-use crate::relic_table_table::RelicTableTable;
-use crate::star_node_table_table::StarNodeTableTable;
-use crate::cost_curve_table_table::CostCurveTableTable;
-use crate::cost_curve_range_table_table::CostCurveRangeTableTable;
+use crate::collection_group_table::CollectionGroupTable;
+use crate::collection_table::CollectionTable;
+use crate::condition_table::ConditionTable;
+use crate::daily_dungeon_info_table::DailyDungeonInfoTable;
+use crate::gold_dungeon_stage_table::GoldDungeonStageTable;
+use crate::gold_dungeon_reward_table::GoldDungeonRewardTable;
+use crate::exp_dungeon_stage_table::ExpDungeonStageTable;
+use crate::exp_dungeon_reward_table::ExpDungeonRewardTable;
+use crate::trait_dungeon_stage_table::TraitDungeonStageTable;
+use crate::trait_dungeon_reward_table::TraitDungeonRewardTable;
+use crate::relic_dungeon_stage_table::RelicDungeonStageTable;
+use crate::relic_dungeon_reward_table::RelicDungeonRewardTable;
+use crate::ooparts_dungeon_stage_table::OopartsDungeonStageTable;
+use crate::ooparts_dungeon_reward_table::OopartsDungeonRewardTable;
+use crate::gacha_info_table::GachaInfoTable;
+use crate::gacha_character_list_table::GachaCharacterListTable;
+use crate::gacha_artifact_info_table::GachaArtifactInfoTable;
+use crate::gacha_artifact_list_table::GachaArtifactListTable;
+use crate::gacha_rate_table::GachaRateTable;
+use crate::currency_table::CurrencyTable;
+use crate::material_table::MaterialTable;
+use crate::package_table::PackageTable;
+use crate::class_up_currency_list_table::ClassUpCurrencyListTable;
+use crate::equip_item_level_table::EquipItemLevelTable;
+use crate::equip_item_class_table::EquipItemClassTable;
+use crate::equip_table::EquipTable;
+use crate::equip_item_grade_table::EquipItemGradeTable;
+use crate::character_table::CharacterTable;
+use crate::skill_table::SkillTable;
+use crate::buff_table::BuffTable;
+use crate::character_level_table::CharacterLevelTable;
+use crate::character_transcendence_table::CharacterTranscendenceTable;
+use crate::artifact_table::ArtifactTable;
+use crate::artifact_level_table::ArtifactLevelTable;
+use crate::artifact_transcendence_table::ArtifactTranscendenceTable;
+use crate::buff_select_table::BuffSelectTable;
+use crate::short_cut_table::ShortCutTable;
+use crate::stage_table::StageTable;
+use crate::config_table::ConfigTable;
+use crate::drop_group_table::DropGroupTable;
+use crate::attribute_table::AttributeTable;
+use crate::sd_contens_info_table::SDContensInfoTable;
+use crate::sd_agency_info_table::SDAgencyInfoTable;
+use crate::sd_agency_table::SDAgencyTable;
+use crate::sd_pub_info_table::SDPubInfoTable;
+use crate::sd_training_info_table::SDTrainingInfoTable;
+use crate::sd_training_level_table::SDTrainingLevelTable;
+use crate::sd_dungeon_info_table::SDDungeonInfoTable;
+use crate::sd_dungeon_card_table::SDDungeonCardTable;
+use crate::sd_dungeon_reward_table::SDDungeonRewardTable;
+use crate::sd_alchemy_info_table::SDAlchemyInfoTable;
+use crate::sd_alchemy_step_table::SDAlchemyStepTable;
+use crate::sd_alchemy_level_table::SDAlchemyLevelTable;
+use crate::shop_info_table::ShopInfoTable;
+use crate::main_shop_table::MainShopTable;
+use crate::package_shop_table::PackageShopTable;
+use crate::season_shop_table::SeasonShopTable;
+use crate::cash_shop_table::CashShopTable;
+use crate::bgm_sound_table::BGMSoundTable;
+use crate::sfx_sound_table::SFXSoundTable;
+use crate::info_growth_table::InfoGrowthTable;
+use crate::stat_growth_table::StatGrowthTable;
+use crate::trait_table::TraitTable;
+use crate::relic_table::RelicTable;
+use crate::star_node_table::StarNodeTable;
+use crate::cost_curve_table::CostCurveTable;
+use crate::cost_curve_range_table::CostCurveRangeTable;
 
 /// Every table, loaded together.
 #[derive(Clone, Debug, Default)]
 pub struct Tables {
-    pub collection_group_table: CollectionGroupTableTable,
-    pub collection_table: CollectionTableTable,
-    pub condition_table: ConditionTableTable,
-    pub daily_dungeon_info_table: DailyDungeonInfoTableTable,
-    pub gold_dungeon_stage_table: GoldDungeonStageTableTable,
-    pub gold_dungeon_reward_table: GoldDungeonRewardTableTable,
-    pub exp_dungeon_stage_table: ExpDungeonStageTableTable,
-    pub exp_dungeon_reward_table: ExpDungeonRewardTableTable,
-    pub trait_dungeon_stage_table: TraitDungeonStageTableTable,
-    pub trait_dungeon_reward_table: TraitDungeonRewardTableTable,
-    pub relic_dungeon_stage_table: RelicDungeonStageTableTable,
-    pub relic_dungeon_reward_table: RelicDungeonRewardTableTable,
-    pub ooparts_dungeon_stage_table: OopartsDungeonStageTableTable,
-    pub ooparts_dungeon_reward_table: OopartsDungeonRewardTableTable,
-    pub gacha_info_table: GachaInfoTableTable,
-    pub gacha_character_list_table: GachaCharacterListTableTable,
-    pub gacha_artifact_info_table: GachaArtifactInfoTableTable,
-    pub gacha_artifact_list_table: GachaArtifactListTableTable,
-    pub gacha_rate_table: GachaRateTableTable,
-    pub currency_table: CurrencyTableTable,
-    pub material_table: MaterialTableTable,
-    pub package_table: PackageTableTable,
-    pub class_up_currency_list_table: ClassUpCurrencyListTableTable,
-    pub equip_item_level_table: EquipItemLevelTableTable,
-    pub equip_item_class_table: EquipItemClassTableTable,
-    pub equip_table: EquipTableTable,
-    pub equip_item_grade_table: EquipItemGradeTableTable,
-    pub character_table: CharacterTableTable,
-    pub skill_table: SkillTableTable,
-    pub buff_table: BuffTableTable,
-    pub character_level_table: CharacterLevelTableTable,
-    pub character_transcendence_table: CharacterTranscendenceTableTable,
-    pub artifact_table: ArtifactTableTable,
-    pub artifact_level_table: ArtifactLevelTableTable,
-    pub artifact_transcendence_table: ArtifactTranscendenceTableTable,
-    pub buff_select_table: BuffSelectTableTable,
-    pub short_cut_table: ShortCutTableTable,
-    pub stage_table: StageTableTable,
-    pub config_table: ConfigTableTable,
-    pub drop_group_table: DropGroupTableTable,
-    pub attribute_table: AttributeTableTable,
-    pub sd_contens_info_table: SDContensInfoTableTable,
-    pub sd_agency_info_table: SDAgencyInfoTableTable,
-    pub sd_agency_table: SDAgencyTableTable,
-    pub sd_pub_info_table: SDPubInfoTableTable,
-    pub sd_training_info_table: SDTrainingInfoTableTable,
-    pub sd_training_level_table: SDTrainingLevelTableTable,
-    pub sd_dungeon_info_table: SDDungeonInfoTableTable,
-    pub sd_dungeon_card_table: SDDungeonCardTableTable,
-    pub sd_dungeon_reward_table: SDDungeonRewardTableTable,
-    pub sd_alchemy_info_table: SDAlchemyInfoTableTable,
-    pub sd_alchemy_step_table: SDAlchemyStepTableTable,
-    pub sd_alchemy_level_table: SDAlchemyLevelTableTable,
-    pub shop_info_table: ShopInfoTableTable,
-    pub main_shop_table: MainShopTableTable,
-    pub package_shop_table: PackageShopTableTable,
-    pub season_shop_table: SeasonShopTableTable,
-    pub cash_shop_table: CashShopTableTable,
-    pub bgm_sound_table: BGMSoundTableTable,
-    pub sfx_sound_table: SFXSoundTableTable,
-    pub info_growth_table: InfoGrowthTableTable,
-    pub stat_growth_table: StatGrowthTableTable,
-    pub trait_table: TraitTableTable,
-    pub relic_table: RelicTableTable,
-    pub star_node_table: StarNodeTableTable,
-    pub cost_curve_table: CostCurveTableTable,
-    pub cost_curve_range_table: CostCurveRangeTableTable,
+    pub collection_group: CollectionGroupTable,
+    pub collection: CollectionTable,
+    pub condition: ConditionTable,
+    pub daily_dungeon_info: DailyDungeonInfoTable,
+    pub gold_dungeon_stage: GoldDungeonStageTable,
+    pub gold_dungeon_reward: GoldDungeonRewardTable,
+    pub exp_dungeon_stage: ExpDungeonStageTable,
+    pub exp_dungeon_reward: ExpDungeonRewardTable,
+    pub trait_dungeon_stage: TraitDungeonStageTable,
+    pub trait_dungeon_reward: TraitDungeonRewardTable,
+    pub relic_dungeon_stage: RelicDungeonStageTable,
+    pub relic_dungeon_reward: RelicDungeonRewardTable,
+    pub ooparts_dungeon_stage: OopartsDungeonStageTable,
+    pub ooparts_dungeon_reward: OopartsDungeonRewardTable,
+    pub gacha_info: GachaInfoTable,
+    pub gacha_character_list: GachaCharacterListTable,
+    pub gacha_artifact_info: GachaArtifactInfoTable,
+    pub gacha_artifact_list: GachaArtifactListTable,
+    pub gacha_rate: GachaRateTable,
+    pub currency: CurrencyTable,
+    pub material: MaterialTable,
+    pub package: PackageTable,
+    pub class_up_currency_list: ClassUpCurrencyListTable,
+    pub equip_item_level: EquipItemLevelTable,
+    pub equip_item_class: EquipItemClassTable,
+    pub equip: EquipTable,
+    pub equip_item_grade: EquipItemGradeTable,
+    pub character: CharacterTable,
+    pub skill: SkillTable,
+    pub buff: BuffTable,
+    pub character_level: CharacterLevelTable,
+    pub character_transcendence: CharacterTranscendenceTable,
+    pub artifact: ArtifactTable,
+    pub artifact_level: ArtifactLevelTable,
+    pub artifact_transcendence: ArtifactTranscendenceTable,
+    pub buff_select: BuffSelectTable,
+    pub short_cut: ShortCutTable,
+    pub stage: StageTable,
+    pub config: ConfigTable,
+    pub drop_group: DropGroupTable,
+    pub attribute: AttributeTable,
+    pub sd_contens_info: SDContensInfoTable,
+    pub sd_agency_info: SDAgencyInfoTable,
+    pub sd_agency: SDAgencyTable,
+    pub sd_pub_info: SDPubInfoTable,
+    pub sd_training_info: SDTrainingInfoTable,
+    pub sd_training_level: SDTrainingLevelTable,
+    pub sd_dungeon_info: SDDungeonInfoTable,
+    pub sd_dungeon_card: SDDungeonCardTable,
+    pub sd_dungeon_reward: SDDungeonRewardTable,
+    pub sd_alchemy_info: SDAlchemyInfoTable,
+    pub sd_alchemy_step: SDAlchemyStepTable,
+    pub sd_alchemy_level: SDAlchemyLevelTable,
+    pub shop_info: ShopInfoTable,
+    pub main_shop: MainShopTable,
+    pub package_shop: PackageShopTable,
+    pub season_shop: SeasonShopTable,
+    pub cash_shop: CashShopTable,
+    pub bgm_sound: BGMSoundTable,
+    pub sfx_sound: SFXSoundTable,
+    pub info_growth: InfoGrowthTable,
+    pub stat_growth: StatGrowthTable,
+    pub trait_: TraitTable,
+    pub relic: RelicTable,
+    pub star_node: StarNodeTable,
+    pub cost_curve: CostCurveTable,
+    pub cost_curve_range: CostCurveRangeTable,
 }
 
 impl Tables {
@@ -165,140 +165,140 @@ impl Tables {
         &mut self, base_path: &Path, file_extension: &str) -> sheetman::Result<()> {
         let mut loaded = Tables::default();
 
-        loaded.collection_group_table.read(
-            &base_path.join(format!("CollectionGroupTable{}", file_extension)))?;
-        loaded.collection_table.read(
-            &base_path.join(format!("CollectionTable{}", file_extension)))?;
-        loaded.condition_table.read(
-            &base_path.join(format!("ConditionTable{}", file_extension)))?;
-        loaded.daily_dungeon_info_table.read(
-            &base_path.join(format!("DailyDungeonInfoTable{}", file_extension)))?;
-        loaded.gold_dungeon_stage_table.read(
-            &base_path.join(format!("GoldDungeonStageTable{}", file_extension)))?;
-        loaded.gold_dungeon_reward_table.read(
-            &base_path.join(format!("GoldDungeonRewardTable{}", file_extension)))?;
-        loaded.exp_dungeon_stage_table.read(
-            &base_path.join(format!("ExpDungeonStageTable{}", file_extension)))?;
-        loaded.exp_dungeon_reward_table.read(
-            &base_path.join(format!("ExpDungeonRewardTable{}", file_extension)))?;
-        loaded.trait_dungeon_stage_table.read(
-            &base_path.join(format!("TraitDungeonStageTable{}", file_extension)))?;
-        loaded.trait_dungeon_reward_table.read(
-            &base_path.join(format!("TraitDungeonRewardTable{}", file_extension)))?;
-        loaded.relic_dungeon_stage_table.read(
-            &base_path.join(format!("RelicDungeonStageTable{}", file_extension)))?;
-        loaded.relic_dungeon_reward_table.read(
-            &base_path.join(format!("RelicDungeonRewardTable{}", file_extension)))?;
-        loaded.ooparts_dungeon_stage_table.read(
-            &base_path.join(format!("OopartsDungeonStageTable{}", file_extension)))?;
-        loaded.ooparts_dungeon_reward_table.read(
-            &base_path.join(format!("OopartsDungeonRewardTable{}", file_extension)))?;
-        loaded.gacha_info_table.read(
-            &base_path.join(format!("GachaInfoTable{}", file_extension)))?;
-        loaded.gacha_character_list_table.read(
-            &base_path.join(format!("GachaCharacterListTable{}", file_extension)))?;
-        loaded.gacha_artifact_info_table.read(
-            &base_path.join(format!("GachaArtifactInfoTable{}", file_extension)))?;
-        loaded.gacha_artifact_list_table.read(
-            &base_path.join(format!("GachaArtifactListTable{}", file_extension)))?;
-        loaded.gacha_rate_table.read(
-            &base_path.join(format!("GachaRateTable{}", file_extension)))?;
-        loaded.currency_table.read(
-            &base_path.join(format!("CurrencyTable{}", file_extension)))?;
-        loaded.material_table.read(
-            &base_path.join(format!("MaterialTable{}", file_extension)))?;
-        loaded.package_table.read(
-            &base_path.join(format!("PackageTable{}", file_extension)))?;
-        loaded.class_up_currency_list_table.read(
-            &base_path.join(format!("ClassUpCurrencyListTable{}", file_extension)))?;
-        loaded.equip_item_level_table.read(
-            &base_path.join(format!("EquipItemLevelTable{}", file_extension)))?;
-        loaded.equip_item_class_table.read(
-            &base_path.join(format!("EquipItemClassTable{}", file_extension)))?;
-        loaded.equip_table.read(
-            &base_path.join(format!("EquipTable{}", file_extension)))?;
-        loaded.equip_item_grade_table.read(
-            &base_path.join(format!("EquipItemGradeTable{}", file_extension)))?;
-        loaded.character_table.read(
-            &base_path.join(format!("CharacterTable{}", file_extension)))?;
-        loaded.skill_table.read(
-            &base_path.join(format!("SkillTable{}", file_extension)))?;
-        loaded.buff_table.read(
-            &base_path.join(format!("BuffTable{}", file_extension)))?;
-        loaded.character_level_table.read(
-            &base_path.join(format!("CharacterLevelTable{}", file_extension)))?;
-        loaded.character_transcendence_table.read(
-            &base_path.join(format!("CharacterTranscendenceTable{}", file_extension)))?;
-        loaded.artifact_table.read(
-            &base_path.join(format!("ArtifactTable{}", file_extension)))?;
-        loaded.artifact_level_table.read(
-            &base_path.join(format!("ArtifactLevelTable{}", file_extension)))?;
-        loaded.artifact_transcendence_table.read(
-            &base_path.join(format!("ArtifactTranscendenceTable{}", file_extension)))?;
-        loaded.buff_select_table.read(
-            &base_path.join(format!("BuffSelectTable{}", file_extension)))?;
-        loaded.short_cut_table.read(
-            &base_path.join(format!("ShortCutTable{}", file_extension)))?;
-        loaded.stage_table.read(
-            &base_path.join(format!("StageTable{}", file_extension)))?;
-        loaded.config_table.read(
-            &base_path.join(format!("ConfigTable{}", file_extension)))?;
-        loaded.drop_group_table.read(
-            &base_path.join(format!("DropGroupTable{}", file_extension)))?;
-        loaded.attribute_table.read(
-            &base_path.join(format!("AttributeTable{}", file_extension)))?;
-        loaded.sd_contens_info_table.read(
-            &base_path.join(format!("SDContensInfoTable{}", file_extension)))?;
-        loaded.sd_agency_info_table.read(
-            &base_path.join(format!("SDAgencyInfoTable{}", file_extension)))?;
-        loaded.sd_agency_table.read(
-            &base_path.join(format!("SDAgencyTable{}", file_extension)))?;
-        loaded.sd_pub_info_table.read(
-            &base_path.join(format!("SDPubInfoTable{}", file_extension)))?;
-        loaded.sd_training_info_table.read(
-            &base_path.join(format!("SDTrainingInfoTable{}", file_extension)))?;
-        loaded.sd_training_level_table.read(
-            &base_path.join(format!("SDTrainingLevelTable{}", file_extension)))?;
-        loaded.sd_dungeon_info_table.read(
-            &base_path.join(format!("SDDungeonInfoTable{}", file_extension)))?;
-        loaded.sd_dungeon_card_table.read(
-            &base_path.join(format!("SDDungeonCardTable{}", file_extension)))?;
-        loaded.sd_dungeon_reward_table.read(
-            &base_path.join(format!("SDDungeonRewardTable{}", file_extension)))?;
-        loaded.sd_alchemy_info_table.read(
-            &base_path.join(format!("SDAlchemyInfoTable{}", file_extension)))?;
-        loaded.sd_alchemy_step_table.read(
-            &base_path.join(format!("SDAlchemyStepTable{}", file_extension)))?;
-        loaded.sd_alchemy_level_table.read(
-            &base_path.join(format!("SDAlchemyLevelTable{}", file_extension)))?;
-        loaded.shop_info_table.read(
-            &base_path.join(format!("ShopInfoTable{}", file_extension)))?;
-        loaded.main_shop_table.read(
-            &base_path.join(format!("MainShopTable{}", file_extension)))?;
-        loaded.package_shop_table.read(
-            &base_path.join(format!("PackageShopTable{}", file_extension)))?;
-        loaded.season_shop_table.read(
-            &base_path.join(format!("SeasonShopTable{}", file_extension)))?;
-        loaded.cash_shop_table.read(
-            &base_path.join(format!("CashShopTable{}", file_extension)))?;
-        loaded.bgm_sound_table.read(
-            &base_path.join(format!("BGMSoundTable{}", file_extension)))?;
-        loaded.sfx_sound_table.read(
-            &base_path.join(format!("SFXSoundTable{}", file_extension)))?;
-        loaded.info_growth_table.read(
-            &base_path.join(format!("InfoGrowthTable{}", file_extension)))?;
-        loaded.stat_growth_table.read(
-            &base_path.join(format!("StatGrowthTable{}", file_extension)))?;
-        loaded.trait_table.read(
-            &base_path.join(format!("TraitTable{}", file_extension)))?;
-        loaded.relic_table.read(
-            &base_path.join(format!("RelicTable{}", file_extension)))?;
-        loaded.star_node_table.read(
-            &base_path.join(format!("StarNodeTable{}", file_extension)))?;
-        loaded.cost_curve_table.read(
-            &base_path.join(format!("CostCurveTable{}", file_extension)))?;
-        loaded.cost_curve_range_table.read(
-            &base_path.join(format!("CostCurveRangeTable{}", file_extension)))?;
+        loaded.collection_group.read(
+            &base_path.join(format!("CollectionGroup{}", file_extension)))?;
+        loaded.collection.read(
+            &base_path.join(format!("Collection{}", file_extension)))?;
+        loaded.condition.read(
+            &base_path.join(format!("Condition{}", file_extension)))?;
+        loaded.daily_dungeon_info.read(
+            &base_path.join(format!("DailyDungeonInfo{}", file_extension)))?;
+        loaded.gold_dungeon_stage.read(
+            &base_path.join(format!("GoldDungeonStage{}", file_extension)))?;
+        loaded.gold_dungeon_reward.read(
+            &base_path.join(format!("GoldDungeonReward{}", file_extension)))?;
+        loaded.exp_dungeon_stage.read(
+            &base_path.join(format!("ExpDungeonStage{}", file_extension)))?;
+        loaded.exp_dungeon_reward.read(
+            &base_path.join(format!("ExpDungeonReward{}", file_extension)))?;
+        loaded.trait_dungeon_stage.read(
+            &base_path.join(format!("TraitDungeonStage{}", file_extension)))?;
+        loaded.trait_dungeon_reward.read(
+            &base_path.join(format!("TraitDungeonReward{}", file_extension)))?;
+        loaded.relic_dungeon_stage.read(
+            &base_path.join(format!("RelicDungeonStage{}", file_extension)))?;
+        loaded.relic_dungeon_reward.read(
+            &base_path.join(format!("RelicDungeonReward{}", file_extension)))?;
+        loaded.ooparts_dungeon_stage.read(
+            &base_path.join(format!("OopartsDungeonStage{}", file_extension)))?;
+        loaded.ooparts_dungeon_reward.read(
+            &base_path.join(format!("OopartsDungeonReward{}", file_extension)))?;
+        loaded.gacha_info.read(
+            &base_path.join(format!("GachaInfo{}", file_extension)))?;
+        loaded.gacha_character_list.read(
+            &base_path.join(format!("GachaCharacterList{}", file_extension)))?;
+        loaded.gacha_artifact_info.read(
+            &base_path.join(format!("GachaArtifactInfo{}", file_extension)))?;
+        loaded.gacha_artifact_list.read(
+            &base_path.join(format!("GachaArtifactList{}", file_extension)))?;
+        loaded.gacha_rate.read(
+            &base_path.join(format!("GachaRate{}", file_extension)))?;
+        loaded.currency.read(
+            &base_path.join(format!("Currency{}", file_extension)))?;
+        loaded.material.read(
+            &base_path.join(format!("Material{}", file_extension)))?;
+        loaded.package.read(
+            &base_path.join(format!("Package{}", file_extension)))?;
+        loaded.class_up_currency_list.read(
+            &base_path.join(format!("ClassUpCurrencyList{}", file_extension)))?;
+        loaded.equip_item_level.read(
+            &base_path.join(format!("EquipItemLevel{}", file_extension)))?;
+        loaded.equip_item_class.read(
+            &base_path.join(format!("EquipItemClass{}", file_extension)))?;
+        loaded.equip.read(
+            &base_path.join(format!("Equip{}", file_extension)))?;
+        loaded.equip_item_grade.read(
+            &base_path.join(format!("EquipItemGrade{}", file_extension)))?;
+        loaded.character.read(
+            &base_path.join(format!("Character{}", file_extension)))?;
+        loaded.skill.read(
+            &base_path.join(format!("Skill{}", file_extension)))?;
+        loaded.buff.read(
+            &base_path.join(format!("Buff{}", file_extension)))?;
+        loaded.character_level.read(
+            &base_path.join(format!("CharacterLevel{}", file_extension)))?;
+        loaded.character_transcendence.read(
+            &base_path.join(format!("CharacterTranscendence{}", file_extension)))?;
+        loaded.artifact.read(
+            &base_path.join(format!("Artifact{}", file_extension)))?;
+        loaded.artifact_level.read(
+            &base_path.join(format!("ArtifactLevel{}", file_extension)))?;
+        loaded.artifact_transcendence.read(
+            &base_path.join(format!("ArtifactTranscendence{}", file_extension)))?;
+        loaded.buff_select.read(
+            &base_path.join(format!("BuffSelect{}", file_extension)))?;
+        loaded.short_cut.read(
+            &base_path.join(format!("ShortCut{}", file_extension)))?;
+        loaded.stage.read(
+            &base_path.join(format!("Stage{}", file_extension)))?;
+        loaded.config.read(
+            &base_path.join(format!("Config{}", file_extension)))?;
+        loaded.drop_group.read(
+            &base_path.join(format!("DropGroup{}", file_extension)))?;
+        loaded.attribute.read(
+            &base_path.join(format!("Attribute{}", file_extension)))?;
+        loaded.sd_contens_info.read(
+            &base_path.join(format!("SDContensInfo{}", file_extension)))?;
+        loaded.sd_agency_info.read(
+            &base_path.join(format!("SDAgencyInfo{}", file_extension)))?;
+        loaded.sd_agency.read(
+            &base_path.join(format!("SDAgency{}", file_extension)))?;
+        loaded.sd_pub_info.read(
+            &base_path.join(format!("SDPubInfo{}", file_extension)))?;
+        loaded.sd_training_info.read(
+            &base_path.join(format!("SDTrainingInfo{}", file_extension)))?;
+        loaded.sd_training_level.read(
+            &base_path.join(format!("SDTrainingLevel{}", file_extension)))?;
+        loaded.sd_dungeon_info.read(
+            &base_path.join(format!("SDDungeonInfo{}", file_extension)))?;
+        loaded.sd_dungeon_card.read(
+            &base_path.join(format!("SDDungeonCard{}", file_extension)))?;
+        loaded.sd_dungeon_reward.read(
+            &base_path.join(format!("SDDungeonReward{}", file_extension)))?;
+        loaded.sd_alchemy_info.read(
+            &base_path.join(format!("SDAlchemyInfo{}", file_extension)))?;
+        loaded.sd_alchemy_step.read(
+            &base_path.join(format!("SDAlchemyStep{}", file_extension)))?;
+        loaded.sd_alchemy_level.read(
+            &base_path.join(format!("SDAlchemyLevel{}", file_extension)))?;
+        loaded.shop_info.read(
+            &base_path.join(format!("ShopInfo{}", file_extension)))?;
+        loaded.main_shop.read(
+            &base_path.join(format!("MainShop{}", file_extension)))?;
+        loaded.package_shop.read(
+            &base_path.join(format!("PackageShop{}", file_extension)))?;
+        loaded.season_shop.read(
+            &base_path.join(format!("SeasonShop{}", file_extension)))?;
+        loaded.cash_shop.read(
+            &base_path.join(format!("CashShop{}", file_extension)))?;
+        loaded.bgm_sound.read(
+            &base_path.join(format!("BGMSound{}", file_extension)))?;
+        loaded.sfx_sound.read(
+            &base_path.join(format!("SFXSound{}", file_extension)))?;
+        loaded.info_growth.read(
+            &base_path.join(format!("InfoGrowth{}", file_extension)))?;
+        loaded.stat_growth.read(
+            &base_path.join(format!("StatGrowth{}", file_extension)))?;
+        loaded.trait_.read(
+            &base_path.join(format!("Trait{}", file_extension)))?;
+        loaded.relic.read(
+            &base_path.join(format!("Relic{}", file_extension)))?;
+        loaded.star_node.read(
+            &base_path.join(format!("StarNode{}", file_extension)))?;
+        loaded.cost_curve.read(
+            &base_path.join(format!("CostCurve{}", file_extension)))?;
+        loaded.cost_curve_range.read(
+            &base_path.join(format!("CostCurveRange{}", file_extension)))?;
 
         *self = loaded;
 
