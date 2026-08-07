@@ -229,6 +229,91 @@ public class SummaryTests
         Assert.Equal("none", commit.Origin);
     }
 
+    // ------------------------------------------------------------- author disclosure
+
+    /// <summary>
+    /// The summary is the output that travels - committed, mailed, served - so its
+    /// recipe entry can cut the commit author down before the file is written. On the
+    /// written document alone: the history builds its own document from the same
+    /// commit and keeps the full author, because attribution is its entire point.
+    /// </summary>
+    [Fact]
+    public void The_author_can_be_masked_or_dropped_from_the_written_file()
+    {
+        SummaryCommit Commit() => new SummaryCommit
+        {
+            AuthorName = "서재형",
+            AuthorEmail = "maxidea1024@gmail.com",
+            Origin = "git",
+        };
+
+        var masked = Commit();
+        SummaryTarget.ApplyAuthorDisclosure(masked, AuthorDisclosure.Masked);
+
+        // One character each, not one per character: padding to the original length
+        // would state the length. The e-mail's domain stays - it names an
+        // organisation, not a person.
+        Assert.Equal("서*", masked.AuthorName);
+        Assert.Equal("m*@gmail.com", masked.AuthorEmail);
+
+        var dropped = Commit();
+        SummaryTarget.ApplyAuthorDisclosure(dropped, AuthorDisclosure.None);
+
+        Assert.Null(dropped.AuthorName);
+        Assert.Null(dropped.AuthorEmail);
+
+        var full = Commit();
+        SummaryTarget.ApplyAuthorDisclosure(full, AuthorDisclosure.Full);
+
+        Assert.Equal("서재형", full.AuthorName);
+        Assert.Equal("maxidea1024@gmail.com", full.AuthorEmail);
+    }
+
+    /// <summary>
+    /// Masking has edges worth pinning: an author with no e-mail, an e-mail that is
+    /// not one, and a name whose first character is not one UTF-16 unit.
+    /// </summary>
+    [Fact]
+    public void Masking_survives_the_authors_git_does_produce()
+    {
+        var nothing = new SummaryCommit { Origin = "git" };
+        SummaryTarget.ApplyAuthorDisclosure(nothing, AuthorDisclosure.Masked);
+
+        Assert.Null(nothing.AuthorName);
+        Assert.Null(nothing.AuthorEmail);
+
+        var odd = new SummaryCommit
+        {
+            // A surrogate pair, and an "e-mail" with nothing before the @.
+            AuthorName = "𩸽수집가",
+            AuthorEmail = "@ci",
+            Origin = "commandLine",
+        };
+
+        SummaryTarget.ApplyAuthorDisclosure(odd, AuthorDisclosure.Masked);
+
+        Assert.Equal("𩸽*", odd.AuthorName);
+        Assert.Equal("@*", odd.AuthorEmail);
+    }
+
+    /// <summary>
+    /// A value that is not a spelling of anything is an error naming the choices,
+    /// and blank is `full` - it is what a recipe written before the setting existed
+    /// holds.
+    /// </summary>
+    [Fact]
+    public void The_author_setting_rejects_what_it_cannot_read()
+    {
+        Assert.Equal(AuthorDisclosure.Full, SummaryTarget.ParseAuthorDisclosure(null));
+        Assert.Equal(AuthorDisclosure.Full, SummaryTarget.ParseAuthorDisclosure("  "));
+        Assert.Equal(AuthorDisclosure.Masked, SummaryTarget.ParseAuthorDisclosure("Masked"));
+
+        var error = Assert.Throws<SheetManException>(
+            () => SummaryTarget.ParseAuthorDisclosure("anonymized"));
+
+        Assert.Contains("`full`, `masked` or `none`", error.Message);
+    }
+
     private static IReadOnlyList<string> TableNames(JsonElement summary)
         => summary.GetProperty("data").GetProperty("tables")
                   .EnumerateArray()

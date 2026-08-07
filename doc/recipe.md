@@ -223,6 +223,7 @@ sheetman --new-recipe my-recipe.json --template unity
 |키|해당|기본값|무엇인가|
 |--|--|--|--|
 |`FileName`|Summary|`"summary.json"`|문서의 파일 이름|
+|`Author`|Summary|`"full"`|파일에 커밋 작성자를 얼마나 싣는가. `full`은 이름·이메일을 커밋 그대로, `masked`는 각각 첫 글자만 남기고(`서*`, `m*@gmail.com`), `none`은 두 필드를 뺍니다. summary는 산출물 옆에 커밋되거나 다른 팀에 전달되기 쉬운 파일이라, 개인정보를 내보내고 싶지 않으면 낮추세요. 히스토리에는 영향이 없습니다 — 귀속이 목적인 기록이라 전체 작성자를 유지합니다|
 |`ConnectionString`|History|`""`|히스토리가 사는 곳. `${NAME}` 지원|
 |`ProjectKey`|History|`""`|어느 프로젝트의 히스토리인가. 데이터베이스 하나가 여럿을 담을 수 있고, **이 값을 바꾸면 이어지는 게 아니라 새 히스토리가 시작됩니다**|
 |`RecordDirty`|History|`false`|커밋되지 않은 변경이 있는 워킹카피의 변환도 기록할 것인가. 꺼져 있는 이유는 그런 변환이 어느 커밋에도 없는 작업을 담고 있기 때문입니다|
