@@ -291,6 +291,53 @@ table.data td.num { text-align: right; font-variant-numeric: tabular-nums; }
   font-size: 12px;
 }
 
+/* ----------------------------------------------------------- ship verdict */
+
+/*
+  `data` rides the series blue and `code` gets amber: the same change list wearing a
+  different chip is the whole message, so the two must not look like each other. Text
+  and border only - a filled chip at 11px drowns its own label in both themes.
+*/
+
+.ship { display: inline-flex; gap: 4px; align-items: baseline; }
+
+.chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+
+.chip.data { color: var(--series); }
+.chip.code { color: #b06c00; }
+.chip.none { color: var(--ink-muted); }
+
+:root[data-theme="dark"] .chip.code { color: #e5a441; }
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .chip.code { color: #e5a441; }
+}
+
+.ship-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  margin: 0 0 10px;
+}
+
+.ship-line .ship-label {
+  color: var(--ink-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ship-line .ship-why { color: var(--ink-2); font-size: 12px; }
+
 /* ------------------------------------------------------------------ changes */
 
 .change {

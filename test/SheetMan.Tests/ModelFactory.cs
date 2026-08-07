@@ -93,6 +93,33 @@ internal static class ModelFactory
         return table;
     }
 
+    /// <summary>An enum with the given labels, valued in declaration order from zero.</summary>
+    public static Models.Enum Enum(string name, params string[] labels)
+    {
+        var result = new Models.Enum
+        {
+            Name = name,
+            RawName = name,
+            TargetSide = TargetSide.Both,
+            Location = At(name, 0, 0),
+            Comment = "",
+        };
+
+        for (int i = 0; i < labels.Length; i++)
+        {
+            result.Labels.Add(new Models.Enum.Label
+            {
+                Name = labels[i],
+                RawName = labels[i],
+                Value = i,
+                Location = At(name, 0, i + 1),
+                Comment = "",
+            });
+        }
+
+        return result;
+    }
+
     private static Location At(string sheet, int column, int row)
         => new Location { Filename = "memory.xlsx", Sheet = sheet, Column = column, Row = row };
 }

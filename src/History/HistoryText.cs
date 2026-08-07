@@ -42,6 +42,8 @@ internal static class HistoryText
             $"{totals.Snapshots} snapshot(s), {totals.Schema} schema, " +
             $"{totals.Rows} row and {totals.Cells} cell change(s).");
 
+        RenderDeployment(text, document.Deployment);
+
         if (totals.Gaps > 0)
         {
             // Said plainly, because the alternative is a reader crediting one person
@@ -110,6 +112,14 @@ internal static class HistoryText
                 $"parent - the commits in between were never converted");
         }
 
+        if (snapshot.Deployment is not null)
+        {
+            text.AppendLine($"    => ship: {ShipPhrase(snapshot.Deployment)}");
+
+            foreach (var warning in snapshot.Deployment.Warnings)
+                text.AppendLine($"    ! {warning}");
+        }
+
         // A renamed column moves every one of its cells, and none of that is an edit
         // anybody made. Counted on the rename's own line rather than listed.
         var renamed = new HashSet<(string, string)>();
@@ -162,6 +172,36 @@ internal static class HistoryText
             text.AppendLine($"    {Mark(row.Kind)} {row.Table}[{row.RowKey}]  (row {row.Kind.ToLowerInvariant()})");
 
         text.AppendLine();
+    }
+
+    /// <summary>
+    /// The range's verdict, at the end where a reader looks for the conclusion.
+    ///
+    /// The per-snapshot lines say what each one needs; this says what the range needs,
+    /// which is the question "to go from A to B, what do I deploy?" asked directly.
+    /// </summary>
+    private static void RenderDeployment(StringBuilder text, DeploymentAdvice advice)
+    {
+        if (advice is null)
+            return;
+
+        text.AppendLine();
+        text.AppendLine($"To ship this range: {ShipPhrase(advice)}");
+
+        foreach (var reason in advice.Reasons)
+            text.AppendLine($"  - {reason}");
+
+        foreach (var warning in advice.Warnings)
+            text.AppendLine($"  ! {warning}");
+    }
+
+    private static string ShipPhrase(DeploymentAdvice advice)
+    {
+        if (advice.Data && advice.Code) return "data + code";
+        if (advice.Data) return "data only";
+        if (advice.Code) return "code only - a data patch carries none of this";
+
+        return "nothing - cosmetic change only";
     }
 
     private static string Who(HistorySnapshotView snapshot)

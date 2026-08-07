@@ -125,6 +125,53 @@ public class HistoryQueryTests : IDisposable
     }
 
     /// <summary>
+    /// The ship verdict, end to end: a cell edit is a data patch, an enum label is a
+    /// code deploy, and the range needs whatever any snapshot in it needed.
+    ///
+    /// The classification itself is tested change-by-change in
+    /// <see cref="DeploymentAdviceTests"/>; this proves the verdict actually rides the
+    /// document - through the store, past the budget, onto both the snapshot and the
+    /// range.
+    /// </summary>
+    [Fact]
+    public void A_range_says_what_shipping_it_requires()
+    {
+        var enums = ModelFactory.Enum("Grade", "None", "Common", "Rare");
+
+        var v1 = Items(new object[] { 1, "Sword", 10 });
+        v1.Enums.Add(enums);
+
+        // One cell edited: data only.
+        var v2 = Items(new object[] { 1, "Sword", 20 });
+        v2.Enums.Add(enums);
+
+        // One label appended, no data touched: code only.
+        var v3 = Items(new object[] { 1, "Sword", 20 });
+        v3.Enums.Add(ModelFactory.Enum("Grade", "None", "Common", "Rare", "Epic"));
+
+        Record(v1, Commit("aaaaaaaa1111", "Kim", 0));
+        Record(v2, Commit("bbbbbbbb2222", "Park", 5));
+        Record(v3, Commit("cccccccc3333", "Lee", 10));
+
+        using var query = Query();
+
+        var document = query.Diff(_project, "main", from: "aaaaaaaa1111", to: "cccccccc3333");
+
+        var dataOnly = document.Snapshots[0].Deployment;
+        Assert.True(dataOnly.Data);
+        Assert.False(dataOnly.Code);
+
+        var codeOnly = document.Snapshots[1].Deployment;
+        Assert.False(codeOnly.Data);
+        Assert.True(codeOnly.Code);
+        Assert.Contains(codeOnly.Reasons, r => r.Contains("Grade"));
+
+        // The range needs both, because each snapshot needed one.
+        Assert.True(document.Deployment.Data);
+        Assert.True(document.Deployment.Code);
+    }
+
+    /// <summary>
     /// `from` is the state compared from, so its own changes belong to the range before
     /// this one. Getting this off by one puts somebody else's edit in your report.
     /// </summary>

@@ -20,6 +20,15 @@ public sealed class HistoryDocument
 
     /// <remarks>Filled once every snapshot has been read, so it cannot be supplied at construction.</remarks>
     public HistoryTotals? Totals { get; set; }
+
+    /// <summary>
+    /// What shipping this whole range requires: the union of its snapshots' verdicts.
+    ///
+    /// This is the range question asked directly - "to go from A to B, what do I
+    /// deploy?" - and a union is the only honest answer, because a code deploy needed
+    /// by any snapshot in the middle is needed by the range.
+    /// </summary>
+    public DeploymentAdvice? Deployment { get; set; }
 }
 
 /// <summary>What was asked, echoed back so a stored answer explains itself.</summary>
@@ -115,6 +124,15 @@ public sealed class HistorySnapshotView
     /// <remarks>Counted once the snapshot's changes have been read, so it cannot be
     /// supplied where the snapshot row is.</remarks>
     public HistoryChangeCounts Counts { get; set; } = new();
+
+    /// <summary>
+    /// What shipping this snapshot requires - data patch, code deploy, or both.
+    ///
+    /// Null for a pruned snapshot: its change detail is gone, and a verdict computed
+    /// from nothing would read as "nothing to ship", which is a different and wrong
+    /// answer.
+    /// </summary>
+    public DeploymentAdvice? Deployment { get; set; }
 
     /// <remarks>Filled after the snapshot row is read, when its changes are fetched.</remarks>
     public IReadOnlyList<SchemaChangeView> Schema { get; set; } = [];

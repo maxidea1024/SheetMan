@@ -315,6 +315,27 @@
                           el('span', { class: 'now' }, descriptor(after)));
   }
 
+  /**
+   * What shipping a change set requires, as chips: `data`, `code`, or both.
+   *
+   * The reasons ride in the tooltip and the warnings are rendered by the caller -
+   * a chip answers at a glance, and the glance is the point. Everything is computed
+   * server-side; this only draws it, so the terminal and the page cannot disagree.
+   */
+  function shipChips(advice) {
+    if (!advice) return null;
+
+    const chips = el('span', { class: 'ship', title: (advice.reasons || []).join('\n') });
+
+    if (advice.data) chips.appendChild(el('span', { class: 'chip data', text: 'data' }));
+    if (advice.code) chips.appendChild(el('span', { class: 'chip code', text: 'code' }));
+
+    if (!advice.data && !advice.code)
+      chips.appendChild(el('span', { class: 'chip none', text: 'nothing to ship' }));
+
+    return chips;
+  }
+
   function change(kind, what, detail, location) {
     return el('div', { class: 'change ' + kind.toLowerCase() },
       // The glyph and the word carry the meaning; the colour only reinforces it.
@@ -386,6 +407,22 @@
               + ` ${num(history.totals.cells)} cell`,
       }));
 
+    // The range's verdict, right under the heading: "to go from A to B, what do I
+    // deploy?" is the question this card gets opened for during live operations.
+    if (history.deployment) {
+      const advice = history.deployment;
+
+      card.appendChild(el('div', { class: 'ship-line' },
+        el('span', { class: 'ship-label', text: 'to ship this range' }),
+        shipChips(advice),
+        (advice.reasons && advice.reasons.length)
+          ? el('span', { class: 'ship-why', text: advice.reasons.join('  ·  ') })
+          : null));
+
+      for (const warning of advice.warnings || [])
+        card.appendChild(el('div', { class: 'warn', text: warning }));
+    }
+
     // Anything the answer did that was not asked for - a tag resolved, a commit with no
     // snapshot stood in for. It changes what the numbers describe, so it is on the page.
     for (const note of history.query.notes || []) {
@@ -420,10 +457,16 @@
       el('div', { class: 'who' },
         el('span', { class: 'hash', text: snapshot.shortCommit }),
         el('strong', { text: snapshot.authorName || '(unknown author)' }),
-        el('span', { class: 'when', text: shortDate(snapshot.committedAt) })));
+        el('span', { class: 'when', text: shortDate(snapshot.committedAt) }),
+        shipChips(snapshot.deployment)));
 
     if (snapshot.subject)
       node.appendChild(el('div', { class: 'subject', text: snapshot.subject }));
+
+    // The quiet failures: an enum renumbered, a label removed, a table gone. Nothing
+    // rejects these, so the page is where they get said.
+    for (const warning of (snapshot.deployment && snapshot.deployment.warnings) || [])
+      node.appendChild(el('div', { class: 'warn', text: warning }));
 
     if (!snapshot.attributable) {
       node.appendChild(el('div', {

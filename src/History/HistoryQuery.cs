@@ -386,6 +386,10 @@ public sealed class HistoryQuery : IDisposable
             };
         }
 
+        AttachDeploymentAdvice(project, branch, snapshots);
+
+        document.Deployment = DeploymentAdvice.Merge(snapshots.Select(s => s.Deployment));
+
         document.Query.Truncated = omitted > 0;
         document.Query.Omitted = omitted;
 
@@ -565,6 +569,152 @@ public sealed class HistoryQuery : IDisposable
                 Location = LocationOf(r, 6),
             },
             args.ToArray());
+    }
+
+    /// <summary>
+    /// Works out what each snapshot needs shipped, and pins it to the snapshot.
+    ///
+    /// Reads the schema changes again, in full and unfiltered, rather than reusing what
+    /// the budgeted reads returned. The budget exists to keep an answer sendable and
+    /// cuts whatever falls past the limit - and a verdict computed from a cut list
+    /// would report "data only" for the snapshot whose enum change fell off the end.
+    /// Schema changes are bounded by the model's shape, not its rows, so the second
+    /// read is small. The table filter is ignored for the same reason: the verdict is
+    /// about shipping the snapshot, which no filter makes smaller.
+    /// </summary>
+    private void AttachDeploymentAdvice(
+        string project, string branch, IReadOnlyList<HistorySnapshotView> snapshots)
+    {
+        // Pruned snapshots are skipped, not judged: their change detail is deleted, and
+        // the honest verdict on evidence that was thrown away is no verdict.
+        var ids = snapshots.Where(s => !s.Pruned).Select(s => s.Id).ToList();
+
+        if (ids.Count == 0)
+            return;
+
+        var schema = ReadSchemaForAdvice(ids);
+        var moved = SnapshotsWhereDataMoved(ids);
+        var enumsInUse = ReadEnumsInUse(project, branch);
+
+        foreach (var snapshot in snapshots)
+        {
+            if (snapshot.Pruned)
+                continue;
+
+            schema.TryGetValue(snapshot.Id, out var changes);
+
+            snapshot.Deployment = DeploymentAdvice.Compute(
+                changes ?? [], moved.Contains(snapshot.Id), enumsInUse);
+        }
+    }
+
+    /// <summary>
+    /// The type names the branch's current columns are declared with.
+    ///
+    /// An enum in this set has its values written into exported rows; one outside it
+    /// exists only as a declaration, and changing it - renumbering included - touches
+    /// no data. Read from the head state rather than reconstructed per snapshot,
+    /// because the verdict is about shipping into the present: what matters is whether
+    /// the values are out there now.
+    ///
+    /// The set holds every column type name, not only the enums. Membership is only
+    /// ever tested with an enum's name, and a scalar type name cannot collide with one
+    /// - the conversion would have refused an enum named `int` long before it got here.
+    /// </summary>
+    private HashSet<string> ReadEnumsInUse(string project, string branch)
+    {
+        var descriptors = Read(@"
+            SELECT f.descriptor
+            FROM field_current f JOIN project p ON p.id = f.project_id
+            WHERE p.project_key = @project AND f.branch = @branch",
+            r => r.GetString(0),
+            ("@project", project), ("@branch", branch ?? ""));
+
+        var used = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var descriptor in descriptors)
+        {
+            try
+            {
+                string type = (string)Newtonsoft.Json.Linq.JObject.Parse(descriptor)["type"];
+
+                if (!string.IsNullOrEmpty(type))
+                    used.Add(type);
+            }
+            catch (Newtonsoft.Json.JsonException)
+            {
+                // A descriptor this build cannot parse proves nothing about usage,
+                // and skipping it errs toward fewer warnings, not wrong ones.
+            }
+        }
+
+        return used;
+    }
+
+    /// <summary>Every schema change of every listed snapshot, grouped by snapshot.</summary>
+    private Dictionary<long, List<SchemaChangeView>> ReadSchemaForAdvice(IReadOnlyList<long> ids)
+    {
+        var result = new Dictionary<long, List<SchemaChangeView>>();
+
+        var (placeholders, args) = InList(ids);
+
+        using var command = Command($@"
+            SELECT snapshot_id, entity_kind, entity_name, member_name, change_kind,
+                   before_value, after_value, renamed_from
+            FROM schema_change
+            WHERE snapshot_id IN ({placeholders})
+            ORDER BY id", args);
+
+        using var reader = command.ExecuteReader();
+
+        while (reader.Read())
+        {
+            long id = reader.GetInt64(0);
+
+            if (!result.TryGetValue(id, out var list))
+                result[id] = list = new List<SchemaChangeView>();
+
+            list.Add(new SchemaChangeView
+            {
+                EntityKind = reader.GetString(1),
+                Entity = reader.GetString(2),
+                Member = Text(reader, 3),
+                Kind = reader.GetString(4),
+                Before = Text(reader, 5),
+                After = Text(reader, 6),
+                RenamedFrom = Text(reader, 7),
+            });
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Which of the listed snapshots changed any row or cell.
+    ///
+    /// Existence is the whole question, so this reads distinct ids off the snapshot
+    /// index instead of counting rows a big conversion has hundreds of thousands of.
+    /// </summary>
+    private HashSet<long> SnapshotsWhereDataMoved(IReadOnlyList<long> ids)
+    {
+        var (placeholders, args) = InList(ids);
+
+        var moved = Read($@"
+            SELECT DISTINCT snapshot_id FROM row_change WHERE snapshot_id IN ({placeholders})
+            UNION
+            SELECT DISTINCT snapshot_id FROM cell_change WHERE snapshot_id IN ({placeholders})",
+            r => r.GetInt64(0),
+            args);
+
+        return new HashSet<long>(moved);
+    }
+
+    private static (string Placeholders, (string, object)[] Args) InList(IReadOnlyList<long> ids)
+    {
+        var placeholders = string.Join(",", ids.Select((_, i) => "@i" + i));
+        var args = ids.Select((id, i) => ("@i" + i, (object)id)).ToArray();
+
+        return (placeholders, args);
     }
 
     /// <summary>
