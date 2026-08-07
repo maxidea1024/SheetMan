@@ -411,6 +411,12 @@ dotnet run --project src/SheetMan.csproj -- --recipe showcases/showcase.json
   // 배열 셀의 구분자. 쉼표가 기본이 아닌 이유는 문장과 숫자 표기에 너무 흔하기 때문입니다.
   "ArrayDelimiter": ";",
 
+  // 0번 라벨이 없는 enum에 `None = 0`을 넣어줍니다.
+  // 켜두는 쪽이 기본인 이유: enum 타입의 필드는 값이 대입되기 전에도 뭔가를 들고 있어야 하는데,
+  // 그게 이름 없는 0이면 디버거에서도 로그에서도 읽을 수 없기 때문입니다.
+  // 시트에 적은 것만 정확히 나오길 원한다면 끄세요.
+  "AutoInsertEnumNoneLabel": true,
+
   "Sources": {
     "Xlsx": [
       {

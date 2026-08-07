@@ -82,7 +82,7 @@ FGameData::ReadAll(BasePath, TEXT(".bytes"));
 
 ### 블루프린트에서
 
-`U<AccessorName>Library`가 함께 생성됩니다.
+함수 라이브러리가 함께 생성됩니다. 이름은 `AccessorName` 앞의 `F`를 떼고 `U...Library`를 붙인 것입니다 — `FGameData`면 `UGameDataLibrary`. 언리얼에서 접두사는 타입이 무엇인지 말해주는 것이라, `U`와 `F`를 둘 다 달고 있는 이름이 나오지 않게 합니다.
 
 |노드|하는 일|
 |--|--|
@@ -114,7 +114,8 @@ FSheetManUpdater::Update(
             UE_LOG(LogTemp, Warning, TEXT("데이터 갱신 실패: %s"), *Result.Error);
         }
 
-        USheetManData::ReadAll(Result.LocalPath, TEXT(".table"));
+        // 실패했더라도 이전 데이터가 남아 있으므로 읽을 것은 있습니다.
+        FGameData::ReadAll(Result.LocalPath, TEXT(".table"));
     }));
 ```
 

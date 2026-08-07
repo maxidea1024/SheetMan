@@ -117,6 +117,7 @@ v1.2.0 is 4f2a9c1b8e33, which no conversion ever ran on. Using 8b1d7e40a2f5, the
 |`--from` / `--to`|범위. 커밋 해시(앞부분 가능) · 태그 · 리비전 표현식. 생략하면 브랜치 처음 / head|
 |`--at`|`--stats`가 볼 커밋. `--from`과 같은 형식을 받습니다. 생략하면 head|
 |`--table` / `--field` / `--author`|좁히기|
+|`--project <이름>`|어느 프로젝트의 기록을 볼지. 생략하면 recipe에 적힌 것을 씁니다. 한 데이터베이스에 여러 프로젝트의 기록이 쌓여 있을 때 씁니다|
 |`--format`|`json`(기본) / `text` / `html`|
 |`--out <파일>`|파일로. 생략하면 표준출력|
 |`--limit <n>`|최대 변경 건수. **잘린 만큼은 잘렸다고 보고합니다.**|
