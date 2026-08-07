@@ -35,7 +35,7 @@ public class RawSheet
     /// columns freely, so a ragged grid would have it reading past the end of a short
     /// row.
     /// </summary>
-    public List<List<RawCell>> Rows { get; set; } = new List<List<RawCell>>();
+    public List<List<RawCell>> Rows { get; set; } = [];
 
     /// <summary>
     /// Trims the blank margins off a sheet and squares off what is left.
@@ -106,7 +106,7 @@ public class RawSheet
             // row index. The previous version tracked a separate counter that was
             // only advanced for rows it padded, so it drifted out of step with the
             // sheet as soon as one row was already full width.
-            var anchor = row[row.Count - 1].Location;
+            var anchor = row[^1].Location;
 
             for (int i = 0; i < fill; i++)
             {

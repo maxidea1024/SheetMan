@@ -78,9 +78,15 @@ public partial class ModelCooker
     /// Sorts the sheets by the layout their source stamped on them, keeping the order the
     /// importers produced them in.
     /// </summary>
-    private static Dictionary<string, IReadOnlyList<RawSheet>> GroupByLayout(RawModel rawModel)
+    private static Dictionary<string, List<RawSheet>> GroupByLayout(RawModel rawModel)
     {
-        var result = new Dictionary<string, IReadOnlyList<RawSheet>>();
+        // The value type is the concrete list rather than IReadOnlyList. Holding the
+        // interface and casting back to add read the same until a collection expression
+        // was applied to the `new List<RawSheet>()`: an empty `[]` for an IReadOnlyList
+        // target is an array, and the cast then threw on the first sheet of every run.
+        // A parser takes IReadOnlyList, which List satisfies, so nothing needed the
+        // wider type here.
+        var result = new Dictionary<string, List<RawSheet>>();
 
         foreach (var sheet in rawModel.Sheets)
         {
@@ -88,11 +94,11 @@ public partial class ModelCooker
 
             if (!result.TryGetValue(id, out var sheets))
             {
-                sheets = new List<RawSheet>();
+                sheets = [];
                 result.Add(id, sheets);
             }
 
-            ((List<RawSheet>)sheets).Add(sheet);
+            sheets.Add(sheet);
         }
 
         return result;
