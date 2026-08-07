@@ -35,9 +35,8 @@ SheetMan이 그 사이를 맡습니다. 시트에서 **읽는 코드와 데이�
 
 레이아웃은 **소스 항목마다** 지정하므로 한 recipe에서 섞어 읽을 수 있고, 한쪽에서 선언한 enum을 다른 쪽 테이블이 타입으로 써도 됩니다.
 
-- 레이아웃별 시트 규칙: [시트 작성 — `rescue` 사례](doc/sheets.md#rescue-사례)
+- **`rescue` 레이아웃 규칙과 실제 적용 기록**: [다른 규칙으로 쓰인 시트 읽기](doc/adopting-a-project.md)
 - recipe 설정: [Recipe 파일 — Layout](doc/recipe.md#layout--시트를-읽는-방식)
-- **실제 적용 기록**: [다른 규칙으로 쓰인 시트 읽기](doc/adopting-a-project.md)
 
 ---
 
@@ -45,8 +44,8 @@ SheetMan이 그 사이를 맡습니다. 시트에서 **읽는 코드와 데이�
 
 |문서|내용|
 |--|--|
-|[시트 작성](doc/sheets.md)|엑셀·구글 스프레드시트에 데이터를 배치하는 법, 엔티티 마커, 이름 규칙, 지원 타입, 서버/클라 분리, 정적 검증, **시트 레이아웃**|
-|[**다른 규칙으로 쓰인 시트 읽기**](doc/adopting-a-project.md)|`rescue` 레이아웃을 실제 프로젝트에 적용한 기록|
+|[시트 작성](doc/sheets.md)|엑셀·구글 스프레드시트에 데이터를 배치하는 법, 엔티티 마커, 이름 규칙, 지원 타입, 서버/클라 분리, 정적 검증|
+|[**다른 규칙으로 쓰인 시트 읽기**](doc/adopting-a-project.md)|`rescue` 레이아웃의 규칙과, 실제 프로젝트에 적용한 기록|
 |[CLI](doc/cli.md)|빌드하고 실행하는 법, 명령줄 옵션|
 |[Recipe 파일](doc/recipe.md)|무엇을 어디서 읽어 어디로 내보낼지 적는 파일|
 |[내보내기](doc/exports.md)|바이너리·JSON 파일과 MySQL / PostgreSQL / MongoDB / Redis 적재. **바이너리를 쓰는 이유**|

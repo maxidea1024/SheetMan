@@ -68,7 +68,7 @@
 ]
 ```
 
-각 레이아웃이 시트를 어떻게 읽는지는 [시트 작성](sheets.md#rescue-사례)에 있습니다. 실제로 적용한 기록은 [다른 규칙으로 쓰인 시트 읽기](adopting-a-project.md)에 있습니다.
+`rescue`가 시트를 어떻게 읽는지와 실제로 적용한 기록은 [다른 규칙으로 쓰인 시트 읽기](adopting-a-project.md)에 있습니다.
 
 #### `IncludeSheets` / `ExcludeSheets` — 읽을 시트 골라내기
 
