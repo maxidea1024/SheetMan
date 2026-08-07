@@ -95,7 +95,7 @@ internal static class TypeDependencies
 
         foreach (var item in items)
         {
-            if (item != null && seen.Add(item))
+            if (item is not null && seen.Add(item))
                 ordered.Add(item);
         }
 

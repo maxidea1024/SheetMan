@@ -51,7 +51,7 @@ public static class GeneratedFileMarker
     /// </remarks>
     public static bool IsMarked(string head)
     {
-        return head != null
+        return head is not null
             && head.IndexOf(Text, System.StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
@@ -60,7 +60,7 @@ public static class GeneratedFileMarker
     /// </summary>
     public static bool HeadIsMarked(string contents)
     {
-        if (contents == null)
+        if (contents is null)
             return false;
 
         return IsMarked(contents.Substring(0, System.Math.Min(Window, contents.Length)));

@@ -61,12 +61,12 @@ public static class TargetSides
     /// </summary>
     public static string Describe(TargetSide side)
     {
-        switch (side)
+        return side switch
         {
-            case TargetSide.ClientOnly: return "client";
-            case TargetSide.ServerOnly: return "server";
-            case TargetSide.Both: return "client and server";
-            default: return "no";
-        }
+            TargetSide.ClientOnly => "client",
+            TargetSide.ServerOnly => "server",
+            TargetSide.Both => "client and server",
+            _ => "no",
+        };
     }
 }

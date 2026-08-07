@@ -5,6 +5,7 @@ using SheetMan.Cooking;
 using SheetMan.Models;
 using SheetMan.Models.Raw;
 using SheetMan.Recipe;
+using SheetMan.Sources;
 using Xunit;
 
 using ValueType = SheetMan.Models.ValueType;
@@ -438,5 +439,68 @@ public class RescueLayoutTests
         Assert.Equal(new[] { "GradeType" }, model.Enums.Select(e => e.Name));
         Assert.Equal(new[] { "HeroTable" }, model.Tables.Select(t => t.Name));
         Assert.Equal(new object[] { 2 }, Column(model.Tables[0], "Grade"));
+    }
+
+    [Fact]
+    public void A_source_entry_can_name_its_own_array_delimiter()
+    {
+        var sheet = Sheet("ItemTable",
+            new[] { "", "" },
+            new[] { "Id", "Tags" },
+            new[] { "int", "stringArray" },
+            new[] { "1", "a|b|c" });
+
+        sheet.Layout = new SheetLayout("rescue", DuplicateIndexPolicy.Error, '|');
+
+        var raw = new RawModel();
+        raw.Sheets.Add(sheet);
+
+        var model = new ModelCooker().Cook(new Options(), new RecipeModel(), raw);
+
+        Assert.Equal(
+            new object[] { new[] { "a", "b", "c" } },
+            Column(model.Tables[0], "Tags"));
+    }
+
+    [Fact]
+    public void Two_entries_can_delimit_their_arrays_differently()
+    {
+        // The reason the setting is per entry: these two sets of sheets were written by
+        // different people, and neither has to be rewritten for the other to be read.
+        var pipes = Sheet("ItemTable",
+            new[] { "", "" }, new[] { "Id", "Tags" }, new[] { "int", "stringArray" },
+            new[] { "1", "a|b" });
+        pipes.Layout = new SheetLayout("rescue", DuplicateIndexPolicy.Error, '|');
+
+        var semicolons = Sheet("HeroTable",
+            new[] { "", "" }, new[] { "Id", "Tags" }, new[] { "int", "stringArray" },
+            new[] { "1", "x;y" });
+        semicolons.Layout = new SheetLayout("rescue", DuplicateIndexPolicy.Error);
+
+        var raw = new RawModel();
+        raw.Sheets.Add(pipes);
+        raw.Sheets.Add(semicolons);
+
+        var model = new ModelCooker().Cook(new Options(), new RecipeModel(), raw);
+
+        Assert.Equal(
+            new object[] { new[] { "a", "b" } },
+            Column(model.Tables.Single(t => t.Name == "ItemTable"), "Tags"));
+
+        Assert.Equal(
+            new object[] { new[] { "x", "y" } },
+            Column(model.Tables.Single(t => t.Name == "HeroTable"), "Tags"));
+    }
+
+    [Fact]
+    public void An_entry_delimiter_that_is_not_one_character_is_reported()
+    {
+        var recipe = new RecipeModel.SourceRecipeGroup.XlsxRecipe { ArrayDelimiter = "::" };
+
+        var error = Assert.Throws<SheetManException>(
+            () => SheetImportSettings.From(recipe, "Sources.Xlsx[0]"));
+
+        Assert.Contains("ArrayDelimiter", error.Message);
+        Assert.Contains("exactly one character", error.Message);
     }
 }

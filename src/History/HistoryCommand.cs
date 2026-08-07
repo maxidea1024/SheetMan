@@ -49,7 +49,7 @@ public static class HistoryCommand
 
         string branch = options.Branch ?? query.DefaultBranch(projectKey);
 
-        if (branch == null)
+        if (branch is null)
         {
             Log.Error($"The history holds nothing for project `{projectKey}`. " +
                       $"Run a conversion with the history target enabled first.");
@@ -99,7 +99,7 @@ public static class HistoryCommand
 
         string branch = options.Branch ?? query.DefaultBranch(projectKey);
 
-        if (branch == null)
+        if (branch is null)
         {
             Log.Error($"The history holds nothing for project `{projectKey}`. " +
                       $"Run a conversion with the history target enabled first.");
@@ -108,9 +108,9 @@ public static class HistoryCommand
 
         var summary = query.Stats(projectKey, branch, options.At);
 
-        if (summary == null)
+        if (summary is null)
         {
-            Log.Error(options.At == null
+            Log.Error(options.At is null
                 ? $"Branch `{branch}` of `{projectKey}` has no snapshots."
                 : $"The history has no snapshot for `{options.At}` on branch `{branch}`.");
 
@@ -143,7 +143,7 @@ public static class HistoryCommand
         // rather than after a database has been opened and locked.
         var before = HistoryMaintenance.ParseCutoff(options.Before);
 
-        if (before == null && options.Keep <= 0)
+        if (before is null && options.Keep <= 0)
         {
             throw new SheetManException(
                 "--prune with neither --before nor --keep would remove every snapshot's " +
@@ -157,13 +157,13 @@ public static class HistoryCommand
 
         string branch = options.Branch;
 
-        if (branch == null)
+        if (branch is null)
         {
             using var query = HistoryQuery.Open(connectionString);
             branch = query.DefaultBranch(projectKey);
         }
 
-        if (branch == null)
+        if (branch is null)
         {
             Log.Error($"The history holds nothing for project `{projectKey}`.");
             return 1;
@@ -261,7 +261,7 @@ public static class HistoryCommand
                 "point --recipe at the recipe the conversions use.");
         }
 
-        if (planned.Count > 1 && options.Project == null)
+        if (planned.Count > 1 && options.Project is null)
         {
             var keys = planned.Select(p => ((HistoryRecipe)p.Entry).ProjectKey).Distinct().ToList();
 
@@ -270,12 +270,12 @@ public static class HistoryCommand
                 $"Name the one to read with --project.");
         }
 
-        var chosen = options.Project == null
+        var chosen = options.Project is null
             ? planned[0]
             : planned.FirstOrDefault(p => string.Equals(
                   ((HistoryRecipe)p.Entry).ProjectKey, options.Project, StringComparison.OrdinalIgnoreCase));
 
-        if (chosen.Entry == null)
+        if (chosen.Entry is null)
         {
             throw new SheetManException(
                 $"This recipe has no history target for project `{options.Project}`.");

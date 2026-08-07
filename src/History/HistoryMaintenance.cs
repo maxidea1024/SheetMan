@@ -103,7 +103,7 @@ internal static class HistoryMaintenance
 
         var id = command.ExecuteScalar();
 
-        return id == null || id == DBNull.Value ? (int?)null : Convert.ToInt32(id);
+        return id is null || id == DBNull.Value ? (int?)null : Convert.ToInt32(id);
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ internal static class HistoryMaintenance
             "project_id = @project", "branch = @branch", "pruned = 0",
         };
 
-        if (before != null)
+        if (before is not null)
             conditions.Add("COALESCE(committed_at, converted_at) < @before");
 
         // `keep` is a floor under the cutoff rather than an alternative to it: a branch
@@ -137,7 +137,7 @@ internal static class HistoryMaintenance
         command.Parameters.AddWithValue("@branch", branch);
         command.Parameters.AddWithValue("@keep", Math.Max(0, keep));
 
-        if (before != null)
+        if (before is not null)
             command.Parameters.AddWithValue("@before", before.Value);
 
         var ids = new List<long>();

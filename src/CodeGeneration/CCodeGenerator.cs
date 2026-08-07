@@ -276,7 +276,7 @@ public class CCodeGenerator : CodeGenerator<CRecipe>
     /// what it has always been, so a consumer testing for it still can.
     /// </summary>
     private string Guard(string suffix)
-        => suffix == null ? UpperPrefix + "_H" : $"{UpperPrefix}_{suffix}_H";
+        => suffix is null ? UpperPrefix + "_H" : $"{UpperPrefix}_{suffix}_H";
 
     /// <summary>
     /// Include lines, reader first and then this tool's own, with a blank line between the

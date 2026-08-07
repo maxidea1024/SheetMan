@@ -25,7 +25,7 @@
 |--|--|
 |C++|17 이상|
 |외부 라이브러리|**없음** — `WriteUpdater`를 켤 때만 libcurl (아래)|
-|include 경로|생성 폴더 하나. `lib/cpp`를 추가할 필요가 **없습니다** — 리더가 함께 생성됩니다|
+|include 경로|생성 폴더 하나. `lib/cpp`를 추가할 필요가 **없습니다** — 테이블 리더가 함께 생성됩니다|
 
 ## recipe 설정
 
@@ -90,7 +90,7 @@ std::time_t when = std::chrono::system_clock::to_time_t(
 
 **기간 단위가 100나노초(.NET 틱)인 이유**는 그것이 파일에 실린 단위라 아무것도 잃지 않기 때문입니다. `std::chrono::nanoseconds`로 두면 `TimeSpan`의 최대값(9.2e18틱)이 64비트를 넘칩니다.
 
-**에폭은 유닉스 에폭입니다.** 파일은 .NET 기준(0001-01-01)으로 실려 오고, 리더가 읽는 순간 한 번 옮깁니다 — C++의 모든 시계와 C 라이브러리가 합의한 기준이 그쪽이기 때문입니다. .NET 쪽과 틱으로 이야기해야 한다면 `sheetman::to_net_ticks(value)`와 `sheetman::from_net_ticks(ticks)`가 있습니다.
+**에폭은 유닉스 에폭입니다.** 파일은 .NET 기준(0001-01-01)으로 실려 오고, 테이블 리더가 읽는 순간 한 번 옮깁니다 — C++의 모든 시계와 C 라이브러리가 합의한 기준이 그쪽이기 때문입니다. .NET 쪽과 틱으로 이야기해야 한다면 `sheetman::to_net_ticks(value)`와 `sheetman::from_net_ticks(ticks)`가 있습니다.
 
 ## 데이터만 갱신하기 (`WriteUpdater`)
 
@@ -136,7 +136,7 @@ if (result.succeeded) {
 
 |증상|원인과 조치|
 |--|--|
-|`lite_binary_reader.h`를 찾을 수 없음|생성 폴더가 include 경로에 있는지 확인하세요. 리더는 그 아래 `sheetman/`에 함께 생성됩니다|
+|`lite_binary_reader.h`를 찾을 수 없음|생성 폴더가 include 경로에 있는지 확인하세요. 테이블 리더는 그 아래 `sheetman/`에 함께 생성됩니다|
 |`incomplete type` 오류|우산 헤더 대신 테이블 헤더만 include하고 다른 테이블의 레코드를 **역참조**했습니다. 전방선언은 포인터까지만 허용합니다 — 그 테이블의 헤더도 include하세요|
 |참조가 `nullptr`|테이블 하나만 읽었거나, 시트가 그 셀에 `0`을 넣었습니다 (0은 "참조 없음")|
 |`std::` 관련 링크 오류|헤더 온리라 링크할 것이 없습니다. 다른 문제입니다|

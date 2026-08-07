@@ -58,7 +58,7 @@ public static class SummaryBuilder
 
             // The name, not the path: where a machine keeps its checkout says nothing
             // about the data, and putting it in makes two identical conversions differ.
-            Recipe = context?.Options?.RecipeFilename == null
+            Recipe = context?.Options?.RecipeFilename is null
                 ? null
                 : System.IO.Path.GetFileName(context.Options.RecipeFilename),
 
@@ -179,7 +179,7 @@ public static class SummaryBuilder
 
             var references = new SortedSet<string>(StringComparer.Ordinal);
 
-            foreach (var field in table.Fields.Where(f => f.IsRef && f.ResolvedRefTable != null))
+            foreach (var field in table.Fields.Where(f => f.IsRef && f.ResolvedRefTable is not null))
             {
                 references.Add(field.ResolvedRefTable.Name);
 
@@ -230,7 +230,7 @@ public static class SummaryBuilder
         {
             foreach (var field in table.Fields)
             {
-                if (field.ElementType != ValueType.Enum || field.EnumOrNull == null)
+                if (field.ElementType != ValueType.Enum || field.EnumOrNull is null)
                     continue;
 
                 if (!usedBy.TryGetValue(field.EnumOrNull.Name, out var users))
@@ -316,7 +316,7 @@ public static class SummaryBuilder
 
         public void Count(string value)
         {
-            if (value == null)
+            if (value is null)
             {
                 Empty++;
 
@@ -396,7 +396,7 @@ public static class SummaryBuilder
 
     private static SummaryLocation LocationOf(Location location)
     {
-        if (location == null)
+        if (location is null)
             return null;
 
         return new SummaryLocation
@@ -419,12 +419,12 @@ public static class SummaryBuilder
 
     private static string Side(TargetSide side)
     {
-        switch (side)
+        return side switch
         {
-            case TargetSide.ClientOnly: return "c";
-            case TargetSide.ServerOnly: return "s";
-            default: return "cs";
-        }
+            TargetSide.ClientOnly => "c",
+            TargetSide.ServerOnly => "s",
+            _ => "cs",
+        };
     }
 
     private static string Blank(string value) => string.IsNullOrEmpty(value) ? null : value;

@@ -216,7 +216,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// is never rendered for one.
     /// </remarks>
     private static string PrimaryLookup(Table refTable)
-        => refTable == null
+        => refTable is null
             ? ""
             : "GetBy" + refTable.SerialFields.First(sf => sf.IsIndexer).Name.ToPascalCase() + "OrThrow";
 

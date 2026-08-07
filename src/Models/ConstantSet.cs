@@ -74,7 +74,7 @@ public class ConstantSet
     public required string Comment { get; set; }
 
     /// <summary>Whether a constant of this name exists in the set.</summary>
-    public bool ContainsConstant(string constantName) => FindConstant(constantName) != null;
+    public bool ContainsConstant(string constantName) => FindConstant(constantName) is not null;
 
     /// <summary>
     /// Finds a constant, or throws naming the cell that asked for it.

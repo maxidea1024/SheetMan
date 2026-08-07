@@ -258,7 +258,7 @@ public sealed class SheetManLayoutParser : ILayoutParser
             // rather than assigned after it. An enum names its type in the detail cell, so
             // a diagnostic about it should point there.
             var type = _context.ParseValueType(
-                typeName, enumm != null ? detailTypeCol.Location : typeCol.Location);
+                typeName, enumm is not null ? detailTypeCol.Location : typeCol.Location);
 
             result.Constants.Add(new Models.ConstantSet.Constant
             {
@@ -270,7 +270,9 @@ public sealed class SheetManLayoutParser : ILayoutParser
                 Enum = enumm,
                 Comment = descCol.Value,
                 ValueString = valueCol.Value,
-                Value = _context.ParseValue(type, enumm, valueCol.Value, valueCol.Location),
+                Value = _context.ParseValue(
+                    type, enumm, valueCol.Value, valueCol.Location,
+                    def.rawSheet.Layout?.ArrayDelimiter),
             });
         }
 
@@ -340,7 +342,7 @@ public sealed class SheetManLayoutParser : ILayoutParser
 
                 // A tagged tombstone: the column is gone from the model, but its tag
                 // stays reserved so it can never identify different data.
-                if (wireTag != null)
+                if (wireTag is not null)
                     table.ReservedTags.Add(wireTag.Value);
 
                 continue;
@@ -508,7 +510,9 @@ public sealed class SheetManLayoutParser : ILayoutParser
                 var field = table.Fields[i];
 
                 var rawCell = def.rawSheet.Rows[rowIdx][dataColumnOffsets[i]];
-                var value = _context.ParseValue(field.Type, field.EnumOrNull, rawCell.Value, rawCell.Location);
+                var value = _context.ParseValue(
+                    field.Type, field.EnumOrNull, rawCell.Value, rawCell.Location,
+                    def.rawSheet.Layout?.ArrayDelimiter);
 
                 // Index uniqueness is checked in ValidateModel rather than here.
                 // Doing it inline compared each new value against every row read

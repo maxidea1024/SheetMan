@@ -274,7 +274,7 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
     {
         var offender = OutOfBlueprintRange(enumm);
 
-        if (offender != null)
+        if (offender is not null)
         {
             Log.Warning(
                 $"Enum `{enumm.Name}` label `{offender.Name}` has value {offender.Value}, which does " +
@@ -288,9 +288,9 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
         Name = EnumName(enumm),
         Location = enumm.Location.ToString(),
         Comment = CommentLines(enumm.Comment),
-        BlueprintVisible = offender == null,
-        UnderlyingType = offender == null ? "uint8" : "int32",
-        NotVisibleBecause = offender == null
+        BlueprintVisible = offender is null,
+        UnderlyingType = offender is null ? "uint8" : "int32",
+        NotVisibleBecause = offender is null
             ? null
             : $"label `{offender.Name}` is {offender.Value}, and a BlueprintType enum is uint8.",
         Labels = enumm.Labels.Select(label => new UnrealEnumLabelView
@@ -387,7 +387,7 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
     /// Whether this field is declared with an enum that had to widen past uint8.
     /// </summary>
     private bool NamesAWideEnum(SerialField sf)
-        => sf.ElementType == ValueType.Enum && OutOfBlueprintRange(sf.FirstField.Enum) != null;
+        => sf.ElementType == ValueType.Enum && OutOfBlueprintRange(sf.FirstField.Enum) is not null;
 
     private string WideEnumReason(SerialField sf)
     {
@@ -396,7 +396,7 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
 
         var offender = OutOfBlueprintRange(sf.FirstField.Enum);
 
-        return offender == null
+        return offender is null
             ? null
             : $"`{EnumName(sf.FirstField.Enum)}` is not a BlueprintType - label `{offender.Name}` " +
               $"is {offender.Value}, and a BlueprintType enum is uint8.";

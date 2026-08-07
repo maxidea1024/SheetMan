@@ -63,7 +63,7 @@ public static class Helper
     {
         using var md5Provider = MD5.Create();
         var hash = md5Provider.ComputeHash(data);
-        if (hash == null)
+        if (hash is null)
             return "";
         return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
     }
@@ -73,7 +73,7 @@ public static class Helper
     {
         using var md5Provider = MD5.Create();
         var hash = md5Provider.ComputeHash(Encoding.UTF8.GetBytes(str));
-        if (hash == null)
+        if (hash is null)
             return "";
         return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
     }
@@ -108,7 +108,7 @@ public static class Helper
                 md5.TransformBlock(data, 0, data.Length, data, 0);
         }
 
-        if (md5.Hash == null)
+        if (md5.Hash is null)
             return "";
 
         return BitConverter.ToString(md5.Hash).Replace("-", "").ToLowerInvariant();

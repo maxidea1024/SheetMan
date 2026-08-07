@@ -74,7 +74,7 @@ internal static class RecipeSkeleton
 
         using var stream = typeof(RecipeSkeleton).Assembly.GetManifestResourceStream(resource);
 
-        if (stream == null)
+        if (stream is null)
         {
             throw new SheetManException(
                 $"There is no starting recipe called `{template}`. " +
@@ -148,7 +148,7 @@ internal static class RecipeSkeleton
             var type = TypeOf(member);
             object value = ValueOf(member, owner);
 
-            if (value == null)
+            if (value is null)
                 continue;
 
             if (IsEntryList(type))

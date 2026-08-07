@@ -45,7 +45,7 @@ public class XlsxImporter : Source<RecipeModel.SourceRecipeGroup.XlsxRecipe>
         _sheetNamesSeen.Clear();
 
         var fileExtensionPatterns = xlsx.FileExtensionPatterns.Split(";");
-        if (fileExtensionPatterns == null || fileExtensionPatterns.Length == 0)
+        if (fileExtensionPatterns is null || fileExtensionPatterns.Length == 0)
         {
             fileExtensionPatterns = [".xlsx"];
         }
@@ -141,7 +141,7 @@ public class XlsxImporter : Source<RecipeModel.SourceRecipeGroup.XlsxRecipe>
         for (int rowIndex = sheet.FirstRowNum; rowIndex <= sheet.LastRowNum; rowIndex++)
         {
             var row = sheet.GetRow(rowIndex);
-            if (row == null)
+            if (row is null)
                 continue;
 
             List<RawCell> rawRow = [];
@@ -176,7 +176,7 @@ public class XlsxImporter : Source<RecipeModel.SourceRecipeGroup.XlsxRecipe>
 
     private string SafeCellComment(ICell cell)
     {
-        if (cell == null || cell.CellComment == null)
+        if (cell is null || cell.CellComment is null)
             return "";
 
         string comment = "";
@@ -202,7 +202,7 @@ public class XlsxImporter : Source<RecipeModel.SourceRecipeGroup.XlsxRecipe>
 
     private string SafeCellValue(ICell cell)
     {
-        if (cell == null)
+        if (cell is null)
             return "";
 
         switch (cell.CellType)

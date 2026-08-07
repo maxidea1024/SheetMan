@@ -237,7 +237,7 @@ public partial class HtmlCodeGenerator : CodeGenerator<RecipeModel.CodeGeneratio
         string caption = field.IsRef ? $"*{Esc(field.Name)}*" : Esc(field.Name);
         string group = GroupNameOf(table, field);
 
-        return group != null
+        return group is not null
             ? $"<th title=\"exposed as {Esc(group)}\">{caption}</th>"
             : $"<th>{caption}</th>";
     }
@@ -277,7 +277,7 @@ public partial class HtmlCodeGenerator : CodeGenerator<RecipeModel.CodeGeneratio
             // It used to read `ref?` in red bold, which is what a generator prints when it
             // has not decided - and a reader cannot tell that from an error. The name was
             // always to hand; only the rendering was missing.
-            string target = field.ResolvedRefTable != null
+            string target = field.ResolvedRefTable is not null
                 ? field.ResolvedRefTable.Name
                 : field.RefTableName;
 
@@ -353,21 +353,21 @@ public partial class HtmlCodeGenerator : CodeGenerator<RecipeModel.CodeGeneratio
     /// </remarks>
     private static string PlainValue(Models.ValueType type, object value)
     {
-        if (value == null)
+        if (value is null)
             return "";
 
-        switch (type)
+        return type switch
         {
-            case Models.ValueType.Int32: return ((int)value).ToString(CultureInfo.InvariantCulture);
-            case Models.ValueType.Int64: return ((long)value).ToString(CultureInfo.InvariantCulture);
-            case Models.ValueType.Float: return ((float)value).ToString(CultureInfo.InvariantCulture);
-            case Models.ValueType.Double: return ((double)value).ToString(CultureInfo.InvariantCulture);
-            case Models.ValueType.DateTime: return ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-            case Models.ValueType.TimeSpan: return ((TimeSpan)value).ToString(null, CultureInfo.InvariantCulture);
-            case Models.ValueType.Uuid: return ((Guid)value).ToString();
-            case Models.ValueType.Bool: return (bool)value ? "true" : "false";
-            default: return value.ToString();
-        }
+            Models.ValueType.Int32 => ((int)value).ToString(CultureInfo.InvariantCulture),
+            Models.ValueType.Int64 => ((long)value).ToString(CultureInfo.InvariantCulture),
+            Models.ValueType.Float => ((float)value).ToString(CultureInfo.InvariantCulture),
+            Models.ValueType.Double => ((double)value).ToString(CultureInfo.InvariantCulture),
+            Models.ValueType.DateTime => ((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+            Models.ValueType.TimeSpan => ((TimeSpan)value).ToString(null, CultureInfo.InvariantCulture),
+            Models.ValueType.Uuid => ((Guid)value).ToString(),
+            Models.ValueType.Bool => (bool)value ? "true" : "false",
+            _ => value.ToString(),
+        };
     }
 
     /// <summary>

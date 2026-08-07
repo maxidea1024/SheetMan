@@ -44,13 +44,13 @@ internal static class RecipeSectionReader
             MemberInfo member = current.GetProperty(part, MemberFlags);
             Type next = (member as PropertyInfo)?.PropertyType;
 
-            if (member == null)
+            if (member is null)
             {
                 member = current.GetField(part, MemberFlags);
                 next = (member as FieldInfo)?.FieldType;
             }
 
-            if (member == null)
+            if (member is null)
             {
                 throw new SheetManException(
                     $"`{ownerType.Name}` declares recipe section `{section}`, " +
@@ -79,7 +79,7 @@ internal static class RecipeSectionReader
                     : ((FieldInfo)member).GetValue(value);
 
                 // A recipe that omits a whole group leaves it null rather than empty.
-                if (value == null)
+                if (value is null)
                     return Array.Empty<object>();
             }
 

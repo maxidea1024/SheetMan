@@ -84,7 +84,7 @@ public class SerialField
     /// time and nothing needs to be written. A delimited cell has to carry its
     /// length, and its reader has to allocate per row.
     /// </summary>
-    public bool IsVariableLengthArray => Fields.Count == 1 && FirstField != null && FirstField.IsArray;
+    public bool IsVariableLengthArray => Fields.Count == 1 && FirstField is not null && FirstField.IsArray;
 
     /// <summary>
     /// Element type behind this field, looking through both array kinds.

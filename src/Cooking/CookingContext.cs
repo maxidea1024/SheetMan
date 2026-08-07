@@ -36,7 +36,9 @@ public sealed class CookingContext
     /// <summary>The model every parser adds to.</summary>
     public Model Model { get; }
 
-    /// <summary>Separator for array cells, taken from the recipe.</summary>
+    /// <summary>
+    /// Separator for array cells, taken from the recipe. A source entry may override it.
+    /// </summary>
     public char ArrayDelimiter { get; }
 
     /// <summary>Whether to give an enum a zero label it did not declare.</summary>
@@ -92,7 +94,7 @@ public sealed class CookingContext
     /// </remarks>
     public bool IsValidTypeName(string typeName)
     {
-        if (typeName == null)
+        if (typeName is null)
             return false;
 
         // `int[]`, `string[]` and so on: one cell holding several delimited
@@ -175,10 +177,16 @@ public sealed class CookingContext
         throw new SheetManException(location, $"unsupported type '{typeName}'");
     }
 
-    public object ParseValue(Models.ValueType type, Models.Enum enumm, string rawValue, Location location)
+    /// <param name="arrayDelimiter">
+    /// What separates elements of an array cell, when the sheet's own entry named one.
+    /// Null takes the recipe-wide delimiter, which is the usual case.
+    /// </param>
+    public object ParseValue(
+        Models.ValueType type, Models.Enum enumm, string rawValue, Location location,
+        char? arrayDelimiter = null)
     {
         if (Models.ValueTypes.IsArray(type))
-            return ParseArrayValue(type, enumm, rawValue, location);
+            return ParseArrayValue(type, enumm, rawValue, location, arrayDelimiter);
 
         try
         {
@@ -249,14 +257,16 @@ public sealed class CookingContext
     ///
     /// Elements are trimmed, so `1; 2 ;3` reads the same as `1;2;3`.
     /// </summary>
-    private object ParseArrayValue(Models.ValueType arrayType, Models.Enum enumm, string rawValue, Location location)
+    private object ParseArrayValue(
+        Models.ValueType arrayType, Models.Enum enumm, string rawValue, Location location,
+        char? arrayDelimiter)
     {
         var elementType = Models.ValueTypes.ElementOf(arrayType);
 
         if (string.IsNullOrWhiteSpace(rawValue))
             return System.Array.CreateInstance(ElementClrType(elementType, enumm), 0);
 
-        var parts = rawValue.Split(ArrayDelimiter);
+        var parts = rawValue.Split(arrayDelimiter ?? ArrayDelimiter);
         var result = System.Array.CreateInstance(ElementClrType(elementType, enumm), parts.Length);
 
         for (int i = 0; i < parts.Length; i++)
@@ -274,22 +284,22 @@ public sealed class CookingContext
     /// </summary>
     private static System.Type ElementClrType(Models.ValueType elementType, Models.Enum enumm)
     {
-        switch (elementType)
+        return elementType switch
         {
-            case Models.ValueType.String: return typeof(string);
-            case Models.ValueType.Bool: return typeof(bool);
-            case Models.ValueType.Int32: return typeof(int);
-            case Models.ValueType.Int64: return typeof(long);
-            case Models.ValueType.Float: return typeof(float);
-            case Models.ValueType.Double: return typeof(double);
-            case Models.ValueType.TimeSpan: return typeof(System.TimeSpan);
-            case Models.ValueType.DateTime: return typeof(System.DateTime);
-            case Models.ValueType.Uuid: return typeof(System.Guid);
+            Models.ValueType.String => typeof(string),
+            Models.ValueType.Bool => typeof(bool),
+            Models.ValueType.Int32 => typeof(int),
+            Models.ValueType.Int64 => typeof(long),
+            Models.ValueType.Float => typeof(float),
+            Models.ValueType.Double => typeof(double),
+            Models.ValueType.TimeSpan => typeof(System.TimeSpan),
+            Models.ValueType.DateTime => typeof(System.DateTime),
+            Models.ValueType.Uuid => typeof(System.Guid),
             // Enum labels and record references are both stored as their integer.
-            case Models.ValueType.Enum: return typeof(int);
-            case Models.ValueType.ForeignRecord: return typeof(int);
-            default: return typeof(object);
-        }
+            Models.ValueType.Enum => typeof(int),
+            Models.ValueType.ForeignRecord => typeof(int),
+            _ => typeof(object),
+        };
     }
 
     /// <summary>
@@ -403,7 +413,7 @@ public sealed class CookingContext
         {
             foreach (var extra in sf.Fields.Skip(1))
             {
-                if (extra.Tag != null)
+                if (extra.Tag is not null)
                 {
                     throw new SheetManException(extra.NameLocation,
                         $"Field `{table.Name}.{extra.Name}` is part of the serial field " +
@@ -413,7 +423,7 @@ public sealed class CookingContext
             }
         }
 
-        var tagged = serials.Where(sf => sf.FirstField.Tag != null).ToList();
+        var tagged = serials.Where(sf => sf.FirstField.Tag is not null).ToList();
 
         if (tagged.Count == 0)
         {
@@ -438,7 +448,7 @@ public sealed class CookingContext
 
         if (tagged.Count != serials.Count)
         {
-            var untagged = serials.Where(sf => sf.FirstField.Tag == null).Select(sf => sf.Name);
+            var untagged = serials.Where(sf => sf.FirstField.Tag is null).Select(sf => sf.Name);
 
             throw new SheetManException(table.Location,
                 $"Table `{table.Name}` tags some fields and not others: " +

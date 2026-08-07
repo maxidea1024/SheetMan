@@ -322,15 +322,15 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
     /// </summary>
     private static string Boxed(string type)
     {
-        switch (type)
+        return type switch
         {
-            case "boolean": return "Boolean";
-            case "int": return "Integer";
-            case "long": return "Long";
-            case "float": return "Float";
-            case "double": return "Double";
-            default: return type;
-        }
+            "boolean" => "Boolean",
+            "int" => "Integer",
+            "long" => "Long",
+            "float" => "Float",
+            "double" => "Double",
+            _ => type,
+        };
     }
 
     /// <summary>
@@ -397,15 +397,15 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
     /// </summary>
     private string Initializer(SerialField sf)
     {
-        switch (sf.ElementType)
+        return sf.ElementType switch
         {
             // The reference types. Everything else is a primitive whose zero is already
             // an empty value, and saying so again would only be noise.
-            case ValueType.String: return " = \"\"";
-            case ValueType.Uuid: return " = LiteBinaryReader.Uuid.empty()";
-            case ValueType.Enum: return $" = {sf.FirstField.Enum.Name.ToPascalCase()}.of(0)";
-            default: return "";
-        }
+            ValueType.String => " = \"\"",
+            ValueType.Uuid => " = LiteBinaryReader.Uuid.empty()",
+            ValueType.Enum => $" = {sf.FirstField.Enum.Name.ToPascalCase()}.of(0)",
+            _ => "",
+        };
     }
 
     /// <summary>

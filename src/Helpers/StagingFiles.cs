@@ -12,12 +12,12 @@ namespace SheetMan.Helpers;
 /// </summary>
 public static class StagingFiles
 {
-    static readonly List<(string, string)> _stagingFiles = new List<(string, string)>();
+    static readonly List<(string, string)> _stagingFiles = [];
 
     /// <summary>
     /// Directories a target asked to have its stale output removed from.
     /// </summary>
-    static readonly List<string> _sweepRoots = new List<string>();
+    static readonly List<string> _sweepRoots = [];
 
     /// <summary>
     /// What every generated file says about itself, in its first few lines.

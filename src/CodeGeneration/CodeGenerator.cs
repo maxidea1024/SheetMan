@@ -65,7 +65,7 @@ public abstract class CodeGenerator<TRecipe> : Target<TRecipe>
     {
         using var stream = GetType().Assembly.GetManifestResourceStream(resourceName);
 
-        if (stream == null)
+        if (stream is null)
             throw new SheetManException($"Embedded resource `{resourceName}` is missing from the build.");
 
         using var reader = new StreamReader(stream);

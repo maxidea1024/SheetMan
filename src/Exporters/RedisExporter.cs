@@ -76,7 +76,7 @@ public class RedisExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.
         public string ShadowName;
 
         /// <summary>Shadow key paired with the live key it replaces.</summary>
-        public List<(RedisKey Shadow, RedisKey Live)> Pairs = new List<(RedisKey, RedisKey)>();
+        public List<(RedisKey Shadow, RedisKey Live)> Pairs = [];
     }
 
     private ShadowKeys WriteShadowKeys(IDatabase database, string name, Table table)
@@ -100,7 +100,7 @@ public class RedisExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.
 
         foreach (var row in table.Data)
         {
-            string key = indexColumn != null
+            string key = indexColumn is not null
                 ? ToText(row[indexColumn.FirstField.Index].Value)
                 : (indexValues.Count + 1).ToString();
 

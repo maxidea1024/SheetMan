@@ -56,8 +56,7 @@ public sealed class ModelFingerprint
     /// </summary>
     public static ModelFingerprint Of(Model model)
     {
-        if (model == null)
-            throw new ArgumentNullException(nameof(model));
+        ArgumentNullException.ThrowIfNull(model);
 
         var tables = model.Tables.Select(TableFingerprint.Of).ToList();
         var enums = model.Enums.Select(EnumFingerprint).ToList();
@@ -136,7 +135,7 @@ public sealed class ModelFingerprint
         if (constant.Type != ValueType.Enum)
             return CanonicalValue.OfScalar(constant.Value, constant.Type);
 
-        if (constant.Value == null)
+        if (constant.Value is null)
             return null;
 
         return constant.Enum.GetLabel(constant.Value, constant.Location).Name;
@@ -204,8 +203,7 @@ public sealed class TableFingerprint
     /// </summary>
     public IEnumerable<CellFingerprint> CellsOf(RowFingerprint row)
     {
-        if (row == null)
-            throw new ArgumentNullException(nameof(row));
+        ArgumentNullException.ThrowIfNull(row);
 
         var data = _table.Data[row.Index];
 
@@ -216,7 +214,7 @@ public sealed class TableFingerprint
             yield return new CellFingerprint(
                 field.Name,
                 CanonicalValue.Of(cell?.Value, field),
-                cell?.RawCell == null ? _table.Location : LocationOf(cell));
+                cell?.RawCell is null ? _table.Location : LocationOf(cell));
         }
     }
 

@@ -11,7 +11,7 @@
   <AccessorName>.h                       우산 헤더 — 이것만 include하면 전부 들어옵니다
   <AccessorName>.c                       접근자 구현 (LoadAll, Free, 참조 연결)
   <AccessorName>_Forward.h               레코드 전방선언 (테이블 간 참조용)
-  <AccessorName>_Reader.c                리더 구현을 담는 번역 단위 하나
+  <AccessorName>_Reader.c                테이블 리더 구현을 담는 번역 단위 하나
   tables/<AccessorName>_<Table>.h / .c   테이블당 하나씩
   enums/<AccessorName>_Enum<Enum>.h      enum당 하나
   constants/<AccessorName>_Const<Set>.h / .c  상수 세트당. `.c`는 헤더가 담을 수 없는 값이 있을 때만
@@ -127,7 +127,7 @@ if (sm_update("https://cdn.example.com/data", "./data", &options, &result)) {
 
 **던지지 않습니다.** 실패는 `false` 반환과 `error` 버퍼입니다. 실패한 로드는 자기가 잡았던 것을 해제하고 테이블을 비워두므로, 반환값을 무시해도 절반만 든 데이터가 아니라 빈 테이블을 보게 됩니다.
 
-**`_Reader.c`를 빼지 마세요.** 리더는 헤더 하나에 선언과 구현이 함께 있고, 구현은 정확히 한 번역 단위에서만 켜져야 합니다. 그 일만 하는 파일이 `<AccessorName>_Reader.c`입니다.
+**`_Reader.c`를 빼지 마세요.** 테이블 리더는 헤더 하나에 선언과 구현이 함께 있고, 구현은 정확히 한 번역 단위에서만 켜져야 합니다. 그 일만 하는 파일이 `<AccessorName>_Reader.c`입니다.
 
 **테이블 헤더는 서로를 include하지 않습니다.** 두 테이블이 서로를 참조하면 순환이 되기 때문입니다. 포인터 멤버에는 불완전 타입이면 충분하므로 모든 레코드가 `_Forward.h`에 한 번 전방선언되어 있습니다. C99에서 같은 `typedef`를 두 번 적는 것은 제약 위반이라, 각 헤더가 따로 적지 않고 한 곳에 모았습니다.
 

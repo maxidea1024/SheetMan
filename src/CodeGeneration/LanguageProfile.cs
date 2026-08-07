@@ -93,7 +93,7 @@ public sealed class LanguageProfile
     /// </param>
     public string ReadCall(ValueType type, string destination = null)
     {
-        if (ReadCalls == null)
+        if (ReadCalls is null)
             throw new SheetManException($"The {Id} reader resolves reads by overload, so it has no call table.");
 
         var element = ValueTypes.ElementOf(type);

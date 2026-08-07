@@ -507,18 +507,15 @@ public class GoCodeGenerator : CodeGenerator<GoRecipe>
     /// </summary>
     private string ReadExpression(SerialField sf)
     {
-        switch (sf.ElementType)
+        return sf.ElementType switch
         {
-
             // Enum values travel zig-zag encoded rather than fixed width.
-            case ValueType.Enum: return $"{sf.FirstField.Enum.Name.ToPascalCase()}(reader.ReadEnum())";
-
-            case ValueType.ForeignRecord: return "reader.ReadInt32()";
-
+            ValueType.Enum => $"{sf.FirstField.Enum.Name.ToPascalCase()}(reader.ReadEnum())",
+            ValueType.ForeignRecord => "reader.ReadInt32()",
             // Everything else is a plain call named in the profile, which is where the
             // nine of them live now rather than here and in nine other generators.
-            default: return LanguageProfile.Go.ReadCall(sf.ElementType);
-        }
+            _ => LanguageProfile.Go.ReadCall(sf.ElementType),
+        };
     }
 
     /// <summary>

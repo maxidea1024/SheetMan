@@ -66,7 +66,7 @@ public sealed class CommitInfo
     public string Hash { get; }
 
     /// <summary>First twelve characters of <see cref="Hash"/>, for display.</summary>
-    public string ShortHash => Hash == null ? null : Hash.Substring(0, Math.Min(12, Hash.Length));
+    public string ShortHash => Hash is null ? null : Hash.Substring(0, Math.Min(12, Hash.Length));
 
     /// <summary>
     /// Branch this snapshot belongs to, or null when there is none.
@@ -101,7 +101,7 @@ public sealed class CommitInfo
     public string RepositoryPath { get; }
 
     /// <summary>Whether this identifies a conversion well enough to record it.</summary>
-    public bool IsIdentified => Hash != null;
+    public bool IsIdentified => Hash is not null;
 
     /// <summary>
     /// Checks the commit options without touching git.
@@ -132,17 +132,17 @@ public sealed class CommitInfo
         string subject = null;
         bool dirty = false;
 
-        var origin = hash != null ? CommitOrigin.CommandLine : CommitOrigin.None;
+        var origin = hash is not null ? CommitOrigin.CommandLine : CommitOrigin.None;
 
-        if (repository != null)
+        if (repository is not null)
         {
-            if (hash == null && GitProbe.TryHead(repository, out string head))
+            if (hash is null && GitProbe.TryHead(repository, out string head))
             {
                 hash = head;
                 origin = CommitOrigin.Git;
             }
 
-            if (hash != null && GitProbe.TryDescribe(repository, hash, out var described))
+            if (hash is not null && GitProbe.TryDescribe(repository, hash, out var described))
             {
                 // The described hash rather than what was asked for: a job may pass a
                 // short hash or a ref, and the history keys on one spelling.
@@ -154,7 +154,7 @@ public sealed class CommitInfo
                 subject = described.Subject;
             }
 
-            if (branch == null && GitProbe.TryBranch(repository, out string checkedOut))
+            if (branch is null && GitProbe.TryBranch(repository, out string checkedOut))
                 branch = checkedOut;
 
             if (GitProbe.TryIsDirty(repository, out bool worktreeDirty))
@@ -180,7 +180,7 @@ public sealed class CommitInfo
             return "(unidentified)";
 
         string who = AuthorName ?? "unknown author";
-        string where = Branch == null ? "" : $" on {Branch}";
+        string where = Branch is null ? "" : $" on {Branch}";
 
         return $"{ShortHash}{where} by {who}{(IsDirty ? " (working tree dirty)" : "")}";
     }
@@ -267,7 +267,7 @@ public sealed class CommitInfo
 
         var xlsx = recipe?.Sources?.Xlsx;
 
-        if (xlsx != null)
+        if (xlsx is not null)
         {
             foreach (var source in xlsx.Where(s => !string.IsNullOrWhiteSpace(s?.Path)))
                 yield return source.Path;

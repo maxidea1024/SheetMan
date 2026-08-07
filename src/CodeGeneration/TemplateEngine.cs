@@ -140,7 +140,7 @@ internal static class TemplateEngine
         string resourceName = "SheetMan.Templates." + templateName;
 
         using var stream = typeof(TemplateEngine).Assembly.GetManifestResourceStream(resourceName);
-        if (stream == null)
+        if (stream is null)
             throw new SheetManException($"Embedded template `{resourceName}` is missing from the build.");
 
         using var reader = new StreamReader(stream);

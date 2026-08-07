@@ -74,7 +74,7 @@ public class MySqlExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGroup.
         // The primary index is the table's key everywhere else, so it is the
         // primary key here too.
         var indexColumn = Columns(table).FirstOrDefault(sf => sf.IsIndexer);
-        if (indexColumn != null)
+        if (indexColumn is not null)
             definitions.Add($"  PRIMARY KEY ({Quote(ColumnName(indexColumn))})");
 
         var sql = new StringBuilder();

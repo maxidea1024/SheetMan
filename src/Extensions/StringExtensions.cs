@@ -20,7 +20,7 @@ public static class StringExtensions
 {
     public static string SafeTrim(this string s)
     {
-        return s != null ? s.Trim() : "";
+        return s is not null ? s.Trim() : "";
     }
 
     //https://stackoverflow.com/questions/1904252/is-there-a-method-in-c-sharp-to-check-if-a-string-is-a-valid-identifier
@@ -77,9 +77,7 @@ public static class StringExtensions
 
     public static string ToCamelCase(this string source)
     {
-        //if (source == null)
-        //    throw new ArgumentNullException(nameof(source));
-        if (source == null)
+        if (source is null)
             return null;
 
         return SymbolsPipe(
@@ -88,30 +86,26 @@ public static class StringExtensions
             (s, disableFrontDelimeter) =>
             {
                 if (disableFrontDelimeter)
-                    return new char[] { char.ToLowerInvariant(s) };
+                    return [char.ToLowerInvariant(s)];
 
-                return new char[] { char.ToUpperInvariant(s) };
+                return [char.ToUpperInvariant(s)];
             });
     }
 
     public static string ToPascalCase(this string source)
     {
-        //if (source == null)
-        //    throw new ArgumentNullException(nameof(source));
-        if (source == null)
+        if (source is null)
             return null;
 
         return SymbolsPipe(
             source,
             '\0',
-            (s, i) => new char[] { char.ToUpperInvariant(s) });
+            (s, i) => [char.ToUpperInvariant(s)]);
     }
 
     public static string ToKebabCase(this string source)
     {
-        //if (source == null)
-        //    throw new ArgumentNullException(nameof(source));
-        if (source == null)
+        if (source is null)
             return null;
 
         return SymbolsPipe(
@@ -120,18 +114,16 @@ public static class StringExtensions
             (s, disableFrontDelimeter) =>
             {
                 if (disableFrontDelimeter)
-                    return new char[] { char.ToLowerInvariant(s) };
+                    return [char.ToLowerInvariant(s)];
 
-                return new char[] { '-', char.ToLowerInvariant(s) };
+                return ['-', char.ToLowerInvariant(s)];
             },
             Lower);
     }
 
     public static string ToSnakeCase(this string source)
     {
-        //if (source == null)
-        //    throw new ArgumentNullException(nameof(source));
-        if (source == null)
+        if (source is null)
             return null;
 
         return SymbolsPipe(
@@ -140,18 +132,16 @@ public static class StringExtensions
             (s, disableFrontDelimeter) =>
             {
                 if (disableFrontDelimeter)
-                    return new char[] { char.ToLowerInvariant(s) };
+                    return [char.ToLowerInvariant(s)];
 
-                return new char[] { '_', char.ToLowerInvariant(s) };
+                return ['_', char.ToLowerInvariant(s)];
             },
             Lower);
     }
 
     public static string ToTrainCase(this string source)
     {
-        //if (source == null)
-        //    throw new ArgumentNullException(nameof(source));
-        if (source == null)
+        if (source is null)
             return null;
 
         return SymbolsPipe(
@@ -160,9 +150,9 @@ public static class StringExtensions
             (s, disableFrontDelimeter) =>
             {
                 if (disableFrontDelimeter)
-                    return new char[] { char.ToUpperInvariant(s) };
+                    return [char.ToUpperInvariant(s)];
 
-                return new char[] { '-', char.ToUpperInvariant(s) };
+                return ['-', char.ToUpperInvariant(s)];
             },
             Keep);
     }
@@ -204,7 +194,7 @@ public static class StringExtensions
     }
 
 
-    private static readonly char[] Delimeters = { ' ', '-', '_' };
+    private static readonly char[] Delimeters = [ ' ', '-', '_' ];
 
     /// <summary>
     /// What happens to a character that continues the word it is in, rather than opening
@@ -303,7 +293,7 @@ public static class StringExtensions
                 }
                 else
                 {
-                    builder.Append(continuationHandler == null ? symbol : continuationHandler(symbol));
+                    builder.Append(continuationHandler is null ? symbol : continuationHandler(symbol));
                 }
             }
         }

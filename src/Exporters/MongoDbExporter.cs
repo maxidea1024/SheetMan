@@ -83,7 +83,7 @@ public class MongoDbExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGrou
             // The primary index doubles as the document _id, so a lookup by index
             // uses the identity index Mongo maintains anyway rather than a second one.
             var indexColumn = columns.FirstOrDefault(sf => sf.IsIndexer);
-            if (indexColumn != null)
+            if (indexColumn is not null)
                 document["_id"] = document[ColumnName(indexColumn)];
 
             documents.Add(document);
@@ -120,7 +120,7 @@ public class MongoDbExporter : DatabaseExporterBase<RecipeModel.ExportRecipeGrou
     {
         var array = new BsonArray();
 
-        if (elements != null)
+        if (elements is not null)
         {
             foreach (var element in elements)
                 array.Add(ToBsonScalar(element, elementType));

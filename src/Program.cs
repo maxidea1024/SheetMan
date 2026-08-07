@@ -52,7 +52,7 @@ class Program
         // WithParsed only fires on success, so a rejected argument leaves `options`
         // null. Every path below dereferences it, so bail out here instead.
         // CommandLineParser has already written the error and the help text.
-        if (options == null)
+        if (options is null)
             return 1;
 
         SetupLogging(options.Verbose, options.Silent);
@@ -251,10 +251,10 @@ class Program
 
         if (ex is SheetManException sheetManEx)
         {
-            if (sheetManEx.Location != null)
+            if (sheetManEx.Location is not null)
                 Log.Fatal($"   at {sheetManEx.Location}");
 
-            if (sheetManEx.Details != null && sheetManEx.Details.Count > 0)
+            if (sheetManEx.Details is not null && sheetManEx.Details.Count > 0)
             {
                 // Header printed once, ahead of the list. It used to be inside the
                 // loop, so it was repeated before every single entry.
@@ -266,13 +266,13 @@ class Program
                     var detail = sheetManEx.Details[detailIndex];
 
                     Log.Fatal($"  [{detailIndex + 1,3}] {detail.Message}");
-                    if (detail.Location != null)
+                    if (detail.Location is not null)
                         Log.Fatal($"        at {detail.Location}");
                 }
             }
         }
 
-        if (options.Debugging && ex.StackTrace != null)
+        if (options.Debugging && ex.StackTrace is not null)
         {
             Log.Fatal("");
             Log.Fatal("Callstack:");

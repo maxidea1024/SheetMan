@@ -56,7 +56,7 @@ internal static class HistoryView
 
         using var stream = typeof(HistoryView).Assembly.GetManifestResourceStream(resource);
 
-        if (stream == null)
+        if (stream is null)
             throw new SheetManException($"Embedded resource `{resource}` is missing from the build.");
 
         using var reader = new StreamReader(stream, new UTF8Encoding(false));

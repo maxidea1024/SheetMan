@@ -73,7 +73,7 @@ public static class SourceRegistry
 
                 // A null in the list means the recipe had a stray comma or a bare
                 // `null`; skipping it beats a NullReferenceException from the source.
-                if (entry == null)
+                if (entry is null)
                     continue;
 
                 descriptor.Source.Import(new SourceContext(options, recipe, model, entry, section));
@@ -88,7 +88,7 @@ public static class SourceRegistry
         foreach (var type in typeof(SourceRegistry).Assembly.GetTypes())
         {
             var attribute = type.GetCustomAttribute<SheetManSourceAttribute>();
-            if (attribute == null)
+            if (attribute is null)
                 continue;
 
             if (type.IsAbstract || !typeof(ISource).IsAssignableFrom(type))
@@ -109,7 +109,7 @@ public static class SourceRegistry
 
         var duplicate = descriptors.GroupBy(d => d.Id, StringComparer.OrdinalIgnoreCase)
                                    .FirstOrDefault(g => g.Count() > 1);
-        if (duplicate != null)
+        if (duplicate is not null)
             throw new SheetManException($"Two sources both claim the id `{duplicate.Key}`.");
 
         descriptors.Sort((left, right) =>

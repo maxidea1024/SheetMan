@@ -63,7 +63,7 @@ public class Enum
     /// <summary>
     /// Whether a label with this name or value exists.
     /// </summary>
-    public bool Contains(object labelNameOrValue) => FindLabel(labelNameOrValue) != null;
+    public bool Contains(object labelNameOrValue) => FindLabel(labelNameOrValue) is not null;
 
     /// <summary>
     /// Finds a label, or throws naming the cell that asked for it.
@@ -71,7 +71,7 @@ public class Enum
     public Label GetLabel(object labelNameOrValue, Location callerLocation)
     {
         var found = FindLabel(labelNameOrValue);
-        if (found == null)
+        if (found is null)
         {
             if (labelNameOrValue is string name)
                 throw new SheetManException(callerLocation, $"Label '{name}' was not found in the enum '{Name}'");
@@ -96,7 +96,7 @@ public class Enum
         if (labelNameOrValue is string text)
         {
             var byName = FindLabelByName(text);
-            if (byName != null)
+            if (byName is not null)
                 return byName;
 
             // A cell holding the number instead of the label name. Designers do
@@ -132,11 +132,11 @@ public class Enum
             return null;
 
         var byName = Labels.Find(x => x.Name == name);
-        if (byName != null)
+        if (byName is not null)
             return byName;
 
         var byRawName = Labels.Find(x => x.RawName == name);
-        if (byRawName != null)
+        if (byRawName is not null)
             return byRawName;
 
         string normalized = name.ToPascalCase();

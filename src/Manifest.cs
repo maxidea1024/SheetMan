@@ -42,7 +42,7 @@ public class Manifest
         var hash = Helper.CalculateMD5HashFromFile(filename);
 
         var existing = Items.Find(x => x.Name == name);
-        if (existing != null)
+        if (existing is not null)
         {
             existing.Filename = filename;
 
@@ -91,7 +91,7 @@ public class Manifest
     public void BuildAndWriteToFile(string filename)
     {
         // Drop what is no longer there.
-        _dirtyCount += Items.RemoveAll(x => x.Filename == null);
+        _dirtyCount += Items.RemoveAll(x => x.Filename is null);
 
         if (_dirtyCount > 0 || Items.Count == 0)
         {

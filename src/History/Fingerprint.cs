@@ -41,7 +41,7 @@ public sealed class Fingerprint : IDisposable
     /// <summary>Adds one component. A null is recorded as absent, not as empty.</summary>
     public Fingerprint Add(string text)
     {
-        if (text == null)
+        if (text is null)
             return AddAbsent();
 
         int byteCount = Encoding.UTF8.GetByteCount(text);

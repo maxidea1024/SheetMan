@@ -16,7 +16,7 @@ namespace SheetMan;
 /// </summary>
 public sealed class Diagnostics
 {
-    private readonly List<SheetManException.Detail> _errors = new List<SheetManException.Detail>();
+    private readonly List<SheetManException.Detail> _errors = [];
 
     /// <summary>Number of problems recorded so far.</summary>
     public int Count => _errors.Count;

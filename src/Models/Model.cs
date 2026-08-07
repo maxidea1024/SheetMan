@@ -146,7 +146,7 @@ public class Model
     #region Tables
 
     /// <summary>Whether a table of this name exists.</summary>
-    public bool ContainsTable(string name) => FindTable(name) != null;
+    public bool ContainsTable(string name) => FindTable(name) is not null;
 
     /// <summary>
     /// Finds a table, or throws naming the cell that asked for it.
@@ -154,7 +154,7 @@ public class Model
     public Table GetTable(string name, Location callerLocation)
     {
         var found = FindTable(name);
-        if (found == null)
+        if (found is null)
             throw new SheetManException(callerLocation, $"No found table '{name}'");
 
         return found;
@@ -173,7 +173,7 @@ public class Model
     ///
     /// Also how a type name in a sheet is recognized as an enum rather than rejected.
     /// </summary>
-    public bool ContainsEnum(string name) => FindEnum(name) != null;
+    public bool ContainsEnum(string name) => FindEnum(name) is not null;
 
     /// <summary>
     /// Finds an enum, or throws naming the cell that asked for it.
@@ -181,7 +181,7 @@ public class Model
     public Enum GetEnum(string name, Location callerLocation)
     {
         var found = FindEnum(name);
-        if (found == null)
+        if (found is null)
             throw new SheetManException(callerLocation, $"No found enum '{name}'");
 
         return found;
@@ -195,7 +195,7 @@ public class Model
     #region Constants
 
     /// <summary>Whether a constant set of this name exists.</summary>
-    private bool ContainsConstantSet(string name) => FindConstantSet(name) != null;
+    private bool ContainsConstantSet(string name) => FindConstantSet(name) is not null;
 
     /// <summary>Finds a constant set by name, or null.</summary>
     private ConstantSet FindConstantSet(string name) => ConstantSets.Find(x => x.Name == name);
@@ -242,7 +242,7 @@ public class Model
                 if (!TryResolveReference(table, field, diagnostics, out var referenceChain))
                     continue;
 
-                if (field.ResolvedRefField == null)
+                if (field.ResolvedRefField is null)
                 {
                     field.Type = Models.ValueType.ForeignRecord; // the value is a row of the referenced table, not its key
                     field.TypeName = $"{field.ResolvedRefTable.Name}.Record";
@@ -283,7 +283,7 @@ public class Model
         for (; ; )
         {
             var refTable = FindTable(fieldNode.RefTableName);
-            if (refTable == null)
+            if (refTable is null)
             {
                 diagnostics.Error(fieldNode.DetailTypeLocation,
                     $"Field `{table.Name}.{refererField.Name}` references table `{fieldNode.RefTableName}`, which does not exist.");
@@ -307,7 +307,7 @@ public class Model
             }
 
             var refField = refTable.FindField(fieldNode.RefFieldName);
-            if (refField == null)
+            if (refField is null)
             {
                 diagnostics.Error(fieldNode.DetailTypeLocation,
                     $"Field `{table.Name}.{refererField.Name}` references `{fieldNode.RefTableName}.{fieldNode.RefFieldName}`, " +

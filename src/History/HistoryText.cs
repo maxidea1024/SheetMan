@@ -75,9 +75,9 @@ internal static class HistoryText
     {
         var filters = new List<string>();
 
-        if (query.Table != null) filters.Add($"table {query.Table}");
-        if (query.Field != null) filters.Add($"field {query.Field}");
-        if (query.Author != null) filters.Add($"author {query.Author}");
+        if (query.Table is not null) filters.Add($"table {query.Table}");
+        if (query.Field is not null) filters.Add($"field {query.Field}");
+        if (query.Author is not null) filters.Add($"author {query.Author}");
 
         return filters.Count == 0 ? "" : "   [" + string.Join(", ", filters) + "]";
     }
@@ -103,7 +103,7 @@ internal static class HistoryText
                 "    ! this snapshot's change detail was pruned; its statistics are still here");
         }
 
-        if (!snapshot.FollowsParent && snapshot.PreviousCommit != null)
+        if (!snapshot.FollowsParent && snapshot.PreviousCommit is not null)
         {
             text.AppendLine(
                 $"    ! measured from {Short(snapshot.PreviousCommit)}, which is not this commit's " +
@@ -114,7 +114,7 @@ internal static class HistoryText
         // anybody made. Counted on the rename's own line rather than listed.
         var renamed = new HashSet<(string, string)>();
 
-        foreach (var change in snapshot.Schema.Where(c => c.RenamedFrom != null))
+        foreach (var change in snapshot.Schema.Where(c => c.RenamedFrom is not null))
         {
             renamed.Add((change.Entity, change.RenamedFrom));
             renamed.Add((change.Entity, change.Member));
@@ -122,7 +122,7 @@ internal static class HistoryText
 
         foreach (var change in snapshot.Schema)
         {
-            if (change.RenamedFrom != null)
+            if (change.RenamedFrom is not null)
             {
                 int carried = snapshot.Cells.Count(
                     c => c.Table == change.Entity && c.Field == change.Member);
@@ -134,7 +134,7 @@ internal static class HistoryText
                 continue;
             }
 
-            string what = change.Member == null
+            string what = change.Member is null
                 ? $"{change.Entity}"
                 : $"{change.Entity}.{change.Member}";
 
@@ -166,33 +166,33 @@ internal static class HistoryText
 
     private static string Who(HistorySnapshotView snapshot)
     {
-        if (snapshot.AuthorName == null)
+        if (snapshot.AuthorName is null)
             return "(unknown author)";
 
-        return snapshot.AuthorEmail == null
+        return snapshot.AuthorEmail is null
             ? snapshot.AuthorName
             : $"{snapshot.AuthorName} <{snapshot.AuthorEmail}>";
     }
 
     private static string Mark(string kind)
     {
-        switch (kind)
+        return kind switch
         {
-            case "Added": return "+";
-            case "Removed": return "-";
-            default: return "~";
-        }
+            "Added" => "+",
+            "Removed" => "-",
+            _ => "~",
+        };
     }
 
     private static string Transition(string before, string after)
     {
-        if (before == null && after == null)
+        if (before is null && after is null)
             return "";
 
-        if (before == null)
+        if (before is null)
             return $"  {Value(after)}";
 
-        if (after == null)
+        if (after is null)
             return $"  {Value(before)} -> (blank)";
 
         return $"  {Value(before)} -> {Value(after)}";
@@ -207,7 +207,7 @@ internal static class HistoryText
     {
         const int Limit = 60;
 
-        if (text == null)
+        if (text is null)
             return "(blank)";
 
         string single = text.Replace("\r", "").Replace("\n", "\\n");
@@ -216,7 +216,7 @@ internal static class HistoryText
     }
 
     private static string At(SummaryLocation location)
-        => location?.Sheet == null ? "" : $"    {location.File} : {location.Sheet} : {location.Cell}";
+        => location?.Sheet is null ? "" : $"    {location.File} : {location.Sheet} : {location.Cell}";
 
     // -------------------------------------------------------------- statistics
 
@@ -231,7 +231,7 @@ internal static class HistoryText
         if (!string.IsNullOrEmpty(commit.Subject))
             text.AppendLine($"  {commit.Subject}");
 
-        if (commit.AuthorName != null)
+        if (commit.AuthorName is not null)
             text.AppendLine($"  by {commit.AuthorName}");
 
         text.AppendLine();
@@ -272,5 +272,5 @@ internal static class HistoryText
     }
 
     private static string Short(string hash)
-        => hash == null ? null : hash.Substring(0, Math.Min(12, hash.Length));
+        => hash is null ? null : hash.Substring(0, Math.Min(12, hash.Length));
 }

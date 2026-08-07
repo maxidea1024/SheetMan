@@ -8,7 +8,7 @@ using SheetMan.Models.Raw;
 namespace SheetMan.Cooking.Layouts;
 
 /// <summary>
-/// The layout an existing project already had: one table per sheet, named by the sheet tab,
+/// A layout for sheets written to another convention: one table per sheet, named by its tab,
 /// with three header rows above the data.
 /// </summary>
 /// <remarks>
@@ -105,7 +105,7 @@ public sealed class RescueLayoutParser : ILayoutParser
                 continue;
 
             var table = ParseTableSheet(sheet);
-            if (table == null)
+            if (table is null)
                 continue;
 
             if (Model.ContainsTable(table.Name))
@@ -366,7 +366,7 @@ public sealed class RescueLayoutParser : ILayoutParser
             _context.RequiresIdentifier(fieldName, nameCell.Location);
 
             var clash = table.FindField(fieldName);
-            if (clash != null)
+            if (clash is not null)
             {
                 // Named in full because the two columns usually do not look alike in the
                 // sheet: `IconPath` and `Icon_Path` are different headings to whoever
@@ -445,7 +445,7 @@ public sealed class RescueLayoutParser : ILayoutParser
         string declared = typeCell.Value.Trim();
         var spelling = ReadTypeSpelling(declared);
 
-        if (spelling.EnumName != null)
+        if (spelling.EnumName is not null)
         {
             string enumName = spelling.EnumName.ToPascalCase();
 
@@ -537,7 +537,7 @@ public sealed class RescueLayoutParser : ILayoutParser
 
         var spelling = ReadTypeSpelling(declared);
 
-        if (spelling.EnumName != null)
+        if (spelling.EnumName is not null)
             return spelling.EnumName.Length > 0;
 
         return _context.IsValidTypeName(spelling.Name);
@@ -717,7 +717,9 @@ public sealed class RescueLayoutParser : ILayoutParser
             row.Add(new Cell
             {
                 RawCell = rawCell,
-                Value = _context.ParseValue(field.Type, field.EnumOrNull, rawCell.Value, rawCell.Location),
+                Value = _context.ParseValue(
+                    field.Type, field.EnumOrNull, rawCell.Value, rawCell.Location,
+                    sheet.Layout?.ArrayDelimiter),
             });
         }
 

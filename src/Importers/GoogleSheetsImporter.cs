@@ -21,7 +21,7 @@ namespace SheetMan.Importers;
 public class GoogleSheetsImporter : Source<RecipeModel.SourceRecipeGroup.GoogleSheetsRecipe>
 {
     static string ApplicationName = "SheetMan";
-    static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
+    static string[] Scopes = [SheetsService.Scope.SpreadsheetsReadonly];
 
     private RawModel _model;
 
@@ -134,12 +134,12 @@ public class GoogleSheetsImporter : Source<RecipeModel.SourceRecipeGroup.GoogleS
                 continue;
             }
 
-            if (sheet.Data == null)
+            if (sheet.Data is null)
                 continue;
 
             foreach (var d in sheet.Data)
             {
-                if (d == null || d.RowData == null)
+                if (d is null || d.RowData is null)
                     continue;
 
                 int startColumn = d.StartColumn ?? 0;
@@ -167,13 +167,13 @@ public class GoogleSheetsImporter : Source<RecipeModel.SourceRecipeGroup.GoogleS
 
                 foreach (var r in d.RowData)
                 {
-                    if (r.Values == null)
+                    if (r.Values is null)
                     {
                         rowIndex++;
                         continue;
                     }
 
-                    List<RawCell> rawRow = new List<RawCell>();
+                    List<RawCell> rawRow = [];
 
                     int colIndex = startColumn;
                     foreach (var v in r.Values)

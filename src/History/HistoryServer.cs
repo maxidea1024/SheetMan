@@ -76,10 +76,10 @@ internal static class HistoryServer
 
         Log.Information($"Serving the history of `{projectKey}` on http://{bind}:{port}/");
 
-        if (token != null)
+        if (token is not null)
             Log.Information($"A bearer token is required; it comes from ${TokenVariable}.");
 
-        Log.Information(repository == null
+        Log.Information(repository is null
             ? "No working copy was found, so a range can only be asked for by commit hash."
             : $"Tags and revisions will be resolved against `{repository}`.");
 
@@ -140,7 +140,7 @@ internal static class HistoryServer
     private static void Map(
         WebApplication app, string connectionString, string project, string token, string repository)
     {
-        if (token != null)
+        if (token is not null)
             app.Use((context, next) => Authorize(context, token, next));
 
         app.MapGet("/", () => Html(HistoryView.Live()));
@@ -425,7 +425,7 @@ internal static class HistoryServer
     {
         string value = Str(request, name);
 
-        if (value == null)
+        if (value is null)
             return fallback;
 
         if (!int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int parsed))

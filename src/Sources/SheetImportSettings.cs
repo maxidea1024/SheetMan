@@ -31,7 +31,7 @@ public sealed class SheetImportSettings
     /// <param name="section">Recipe path of the entry, for messages.</param>
     public static SheetImportSettings From(SheetSourceRecipe recipe, string section)
     {
-        if (recipe == null)
+        if (recipe is null)
             return new SheetImportSettings(SheetFilter.All, SheetLayout.Default);
 
         string layoutId = (recipe.Layout ?? "").Trim();
@@ -40,7 +40,35 @@ public sealed class SheetImportSettings
 
         return new SheetImportSettings(
             SheetFilter.From(recipe),
-            new SheetLayout(layoutId.ToLowerInvariant(), ParseDuplicateIndexPolicy(recipe.OnDuplicateIndex, section)));
+            new SheetLayout(
+                layoutId.ToLowerInvariant(),
+                ParseDuplicateIndexPolicy(recipe.OnDuplicateIndex, section),
+                ParseArrayDelimiter(recipe.ArrayDelimiter, section)));
+    }
+
+    /// <summary>
+    /// Reads an entry's array delimiter, or null when it does not set one.
+    /// </summary>
+    /// <remarks>
+    /// Blank means "whatever the recipe says" rather than "no delimiter": an entry written
+    /// before this setting existed holds blank, and so does one where the line was deleted.
+    /// A value that is present but not one character is an error, because the alternative is
+    /// splitting on the first character of it and reporting nothing.
+    /// </remarks>
+    private static char? ParseArrayDelimiter(string value, string section)
+    {
+        string text = value ?? "";
+        if (text.Length == 0)
+            return null;
+
+        if (text.Length != 1)
+        {
+            throw new SheetManException(
+                $"Recipe `{section}` sets `ArrayDelimiter` to `{text}`, " +
+                "but it must be exactly one character.");
+        }
+
+        return text[0];
     }
 
     private static DuplicateIndexPolicy ParseDuplicateIndexPolicy(string value, string section)

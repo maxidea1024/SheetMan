@@ -45,7 +45,7 @@ public sealed class SheetFilter
     /// <summary>Builds a filter from a recipe entry's two lists.</summary>
     public static SheetFilter From(SheetSourceRecipe recipe)
     {
-        if (recipe == null)
+        if (recipe is null)
             return All;
 
         return new SheetFilter(Compile(recipe.IncludeSheets), Compile(recipe.ExcludeSheets));
@@ -103,7 +103,7 @@ public sealed class SheetFilter
     {
         var result = new List<Pattern>();
 
-        if (patterns == null)
+        if (patterns is null)
             return result;
 
         foreach (var raw in patterns)

@@ -61,7 +61,7 @@ public sealed class TargetDescriptor
     /// </summary>
     internal Func<RecipeModel, IEnumerable> SectionEntries { get; }
 
-    public override string ToString() => Section == null ? Id : $"{Id} ({Section})";
+    public override string ToString() => Section is null ? Id : $"{Id} ({Section})";
 }
 
 /// <summary>
@@ -212,7 +212,7 @@ public static class TargetRegistry
     private static IEnumerable<(IOutputRecipe Entry, string Section)> EntriesOf(
         TargetDescriptor descriptor, RecipeModel recipe)
     {
-        if (descriptor.SectionEntries != null)
+        if (descriptor.SectionEntries is not null)
         {
             int index = 0;
             foreach (var entry in descriptor.SectionEntries(recipe))
@@ -227,13 +227,13 @@ public static class TargetRegistry
         }
 
         var dynamicEntries = recipe.Targets;
-        if (dynamicEntries == null)
+        if (dynamicEntries is null)
             yield break;
 
         for (int index = 0; index < dynamicEntries.Count; index++)
         {
             var json = dynamicEntries[index];
-            if (json == null)
+            if (json is null)
                 continue;
 
             string id = TypeOf(json);
@@ -291,13 +291,13 @@ public static class TargetRegistry
     private static void VerifyDynamicEntries(RecipeModel recipe)
     {
         var dynamicEntries = recipe.Targets;
-        if (dynamicEntries == null)
+        if (dynamicEntries is null)
             return;
 
         for (int index = 0; index < dynamicEntries.Count; index++)
         {
             var json = dynamicEntries[index];
-            if (json == null)
+            if (json is null)
                 continue;
 
             string id = TypeOf(json);
@@ -327,7 +327,7 @@ public static class TargetRegistry
         foreach (var type in typeof(TargetRegistry).Assembly.GetTypes())
         {
             var attribute = type.GetCustomAttribute<SheetManTargetAttribute>();
-            if (attribute == null)
+            if (attribute is null)
                 continue;
 
             if (type.IsAbstract || !typeof(ITarget).IsAssignableFrom(type))
@@ -344,14 +344,14 @@ public static class TargetRegistry
                 attribute.Section,
                 attribute.Order,
                 target,
-                attribute.Section == null
+                attribute.Section is null
                     ? null
                     : RecipeSectionReader.Build(attribute.Section, target.EntryType, type)));
         }
 
         var duplicate = descriptors.GroupBy(d => d.Id, StringComparer.OrdinalIgnoreCase)
                                    .FirstOrDefault(g => g.Count() > 1);
-        if (duplicate != null)
+        if (duplicate is not null)
             throw new SheetManException($"Two targets both claim the id `{duplicate.Key}`.");
 
         descriptors.Sort((left, right) =>

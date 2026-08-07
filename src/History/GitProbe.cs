@@ -258,7 +258,7 @@ internal static class GitProbe
         try
         {
             using var process = Process.Start(psi);
-            if (process == null)
+            if (process is null)
                 return false;
 
             // Read before waiting: a process whose output fills the pipe buffer blocks

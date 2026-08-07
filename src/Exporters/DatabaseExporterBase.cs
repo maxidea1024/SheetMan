@@ -153,19 +153,19 @@ public abstract class DatabaseExporterBase<TEntry> : Target<TEntry>
     /// </summary>
     protected static string ToText(object value)
     {
-        switch (value)
+        return value switch
         {
-            case null: return "";
-            case bool b: return b ? "1" : "0";
-            case string s: return s;
-            case float f: return f.ToString("R", CultureInfo.InvariantCulture);
-            case double d: return d.ToString("R", CultureInfo.InvariantCulture);
-            case DateTime dt: return dt.ToString("o", CultureInfo.InvariantCulture);
-            case TimeSpan span: return span.Ticks.ToString(CultureInfo.InvariantCulture);
-            case Guid guid: return guid.ToString();
-            case Array _: return JsonConvert.SerializeObject(NormalizeForJson(value));
-            default: return Convert.ToString(value, CultureInfo.InvariantCulture);
-        }
+            null => "",
+            bool b => b ? "1" : "0",
+            string s => s,
+            float f => f.ToString("R", CultureInfo.InvariantCulture),
+            double d => d.ToString("R", CultureInfo.InvariantCulture),
+            DateTime dt => dt.ToString("o", CultureInfo.InvariantCulture),
+            TimeSpan span => span.Ticks.ToString(CultureInfo.InvariantCulture),
+            Guid guid => guid.ToString(),
+            Array _ => JsonConvert.SerializeObject(NormalizeForJson(value)),
+            _ => Convert.ToString(value, CultureInfo.InvariantCulture),
+        };
     }
 
     /// <summary>

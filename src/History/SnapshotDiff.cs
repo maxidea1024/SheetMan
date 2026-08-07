@@ -35,8 +35,8 @@ public static class SnapshotDiff
     /// </summary>
     public static SnapshotChanges Compute(ModelFingerprint fingerprint, IHistoryState state)
     {
-        if (fingerprint == null) throw new ArgumentNullException(nameof(fingerprint));
-        if (state == null) throw new ArgumentNullException(nameof(state));
+        ArgumentNullException.ThrowIfNull(fingerprint);
+        ArgumentNullException.ThrowIfNull(state);
 
         var schema = new List<SchemaChange>();
         var rows = new List<RowChange>();
@@ -230,7 +230,7 @@ public static class SnapshotDiff
                 // A blank cell in a new row is not a change. There was nothing, and
                 // there is nothing; recording it would fill the history with rows
                 // saying so.
-                if (cell.Value == null)
+                if (cell.Value is null)
                     continue;
 
                 cells.Add(new CellChange
@@ -283,7 +283,7 @@ public static class SnapshotDiff
         {
             foreach (var cell in table.CellsOf(row))
             {
-                if (cell.Value == null)
+                if (cell.Value is null)
                     continue;
 
                 cells.Add(new CellChange
@@ -326,7 +326,7 @@ public static class SnapshotDiff
                     // blank now, because the row's shape changed. A column that did
                     // exist and is now blank is a modification to nothing, which is a
                     // real edit and has to be recorded as one.
-                    if (!had && cell.Value == null)
+                    if (!had && cell.Value is null)
                         continue;
 
                     cells.Add(new CellChange
@@ -374,7 +374,7 @@ public static class SnapshotDiff
                 // What the row held is recorded on the way out. Without it a range
                 // query can say a row was deleted but not what was lost, which is the
                 // question actually asked when one goes missing.
-                if (stored[address] == null)
+                if (stored[address] is null)
                     continue;
 
                 cells.Add(new CellChange
@@ -600,17 +600,17 @@ public static class SnapshotDiff
 
     private static string SideOf(TargetSide side)
     {
-        switch (side)
+        return side switch
         {
-            case TargetSide.ClientOnly: return "c";
-            case TargetSide.ServerOnly: return "s";
-            default: return "cs";
-        }
+            TargetSide.ClientOnly => "c",
+            TargetSide.ServerOnly => "s",
+            _ => "cs",
+        };
     }
 
     private static SummaryLocation LocationOf(Location location)
     {
-        if (location == null)
+        if (location is null)
             return null;
 
         return new SummaryLocation

@@ -305,7 +305,7 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                 // chain to the table actually being pointed at.
                 var refTable = sf.FirstField.ResolvedRefTable;
 
-                if (refTable != null && refTable.Name != table.Name)
+                if (refTable is not null && refTable.Name != table.Name)
                     Add($"import {{ {refTable.Name.ToPascalCase()}Record }} from './{TsFileName(refTable.Name)}'");
             }
         }
@@ -528,18 +528,15 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
 
     private string BinaryReadExpression(SerialField sf)
     {
-        switch (sf.ElementType)
+        return sf.ElementType switch
         {
-
             // Enum values travel zig-zag encoded rather than fixed width.
-            case ValueType.Enum: return $"reader.readEnum() as {ToTypescriptTypename(sf.FirstField)}";
-
-            case ValueType.ForeignRecord: return "reader.readInt32()";
-
+            ValueType.Enum => $"reader.readEnum() as {ToTypescriptTypename(sf.FirstField)}",
+            ValueType.ForeignRecord => "reader.readInt32()",
             // Everything else is a plain call named in the profile, which is where the
             // nine of them live now rather than here and in eight other generators.
-            default: return LanguageProfile.Typescript.ReadCall(sf.ElementType);
-        }
+            _ => LanguageProfile.Typescript.ReadCall(sf.ElementType),
+        };
     }
 
     /// <summary>
@@ -572,12 +569,12 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// </summary>
     private string FromJsonExpression(SerialField sf, string source)
     {
-        switch (sf.ElementType)
+        return sf.ElementType switch
         {
-            case ValueType.Int64: return $"BigInt({source})";
-            case ValueType.Float: return $"Math.fround({source})";
-            default: return source;
-        }
+            ValueType.Int64 => $"BigInt({source})",
+            ValueType.Float => $"Math.fround({source})",
+            _ => source,
+        };
     }
 
     /// <summary>

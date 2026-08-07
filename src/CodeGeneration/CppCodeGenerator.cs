@@ -494,13 +494,13 @@ public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGr
 
         // The three promotable members read through the as-helpers, so a file written
         // before the column was widened still reads.
-        switch (sf.ElementType)
+        return sf.ElementType switch
         {
-            case ValueType.Int32: return $"reader.read_i32_as(column.element, {target})";
-            case ValueType.Int64: return $"reader.read_i64_as(column.element, {target})";
-            case ValueType.Double: return $"reader.read_f64_as(column.element, {target})";
-            default: return $"reader.read({target})";
-        }
+            ValueType.Int32 => $"reader.read_i32_as(column.element, {target})",
+            ValueType.Int64 => $"reader.read_i64_as(column.element, {target})",
+            ValueType.Double => $"reader.read_f64_as(column.element, {target})",
+            _ => $"reader.read({target})",
+        };
     }
 
     /// <summary>
@@ -633,14 +633,14 @@ public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGr
 
     private string DefaultValueLiteral(ValueType type)
     {
-        switch (ValueTypes.ElementOf(type))
+        return ValueTypes.ElementOf(type) switch
         {
-            case ValueType.Bool: return "false";
-            case ValueType.Float: return "0.0f";
-            case ValueType.Double: return "0.0";
-            case ValueType.String: return "std::string()";
-            default: return "0";
-        }
+            ValueType.Bool => "false",
+            ValueType.Float => "0.0f",
+            ValueType.Double => "0.0",
+            ValueType.String => "std::string()",
+            _ => "0",
+        };
     }
 
     private string RenderConstantValue(ConstantSet.Constant constant)

@@ -75,7 +75,7 @@ public class Table
     /// other is how an array is written and the columns are therefore expected to agree on
     /// a type.
     ///
-    /// Off for a layout adopted from a project that never had the convention. There the
+    /// Off for a layout whose sheets never had the convention. There the
     /// numbers are just part of the names - `Condition_1`, `Condition_2` and `Condition_3`
     /// of one real workbook are three different enums - and folding them is not a nicer API
     /// but a wrong one, which the type check turns into a conversion that refuses to run.
@@ -94,7 +94,7 @@ public class Table
     {
         get
         {
-            if (_serialFields == null)
+            if (_serialFields is null)
             {
                 _serialFields = FoldSerialFields
                     ? BuildSerialFieldsFromPlainFields(Fields)
@@ -125,7 +125,7 @@ public class Table
     /// <summary>
     /// Checks whether the specified field exists. It is not case sensitive.
     /// </summary>
-    public bool ContainsField(string nameToFind) => FindField(nameToFind) != null;
+    public bool ContainsField(string nameToFind) => FindField(nameToFind) is not null;
 
     /// <summary>
     /// Get the specified field. Throws a SheetManException if not found.
@@ -133,7 +133,7 @@ public class Table
     public Field GetField(string nameToFind, Location callerLocation)
     {
         var found = FindField(nameToFind);
-        if (found == null)
+        if (found is null)
             throw new SheetManException(callerLocation, $"No found field '{nameToFind}' in table '{Name}'");
 
         return found;
@@ -191,7 +191,7 @@ public class Table
                 continue;
 
             var serialField = BeginSerialField(fields, i);
-            if (serialField != null)
+            if (serialField is not null)
             {
                 for (int j = i + 1; j < fields.Count; j++)
                 {

@@ -118,7 +118,7 @@ public partial class ModelCooker
             // A reference that failed to resolve has already been reported by
             // SolveTableCrossReferencings, which knows exactly which link in the
             // chain broke. Repeating it here would just say the same thing twice.
-            if (field.ResolvedRefTable == null)
+            if (field.ResolvedRefTable is null)
                 continue;
 
             ValidateReferencedKeysExist(table, field, field.ResolvedRefTable, diagnostics);
@@ -192,7 +192,7 @@ public partial class ModelCooker
 
                     // Already reported as unresolvable; whether it would also be
                     // filtered out is beside the point.
-                    if (field.ResolvedRefTable == null)
+                    if (field.ResolvedRefTable is null)
                         continue;
 
                     if (!TargetSides.Includes(side, field.TargetSide))

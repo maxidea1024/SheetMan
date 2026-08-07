@@ -34,7 +34,7 @@ public sealed class HistoryQuery : IDisposable
 
     private readonly MySqlConnection _connection;
 
-    private readonly List<string> _notes = new List<string>();
+    private readonly List<string> _notes = [];
 
     private HistoryQuery(MySqlConnection connection) => _connection = connection;
 
@@ -153,7 +153,7 @@ public sealed class HistoryQuery : IDisposable
     {
         long? id = ResolveSnapshot(project, branch, commit);
 
-        if (id == null)
+        if (id is null)
             return null;
 
         using var command = Command(
@@ -161,7 +161,7 @@ public sealed class HistoryQuery : IDisposable
 
         var blob = command.ExecuteScalar();
 
-        if (blob == null || blob == DBNull.Value)
+        if (blob is null || blob == DBNull.Value)
             return null;
 
         return Newtonsoft.Json.JsonConvert.DeserializeObject<SummaryDocument>(
@@ -179,9 +179,9 @@ public sealed class HistoryQuery : IDisposable
     public IReadOnlyList<TrendPoint> Trend(
         string project, string branch, string metric, string table = null, int limit = 500)
     {
-        string column = TrendColumn(metric, table != null);
+        string column = TrendColumn(metric, table is not null);
 
-        string sql = table == null
+        string sql = table is null
             ? $@"SELECT s.commit_hash, s.committed_at, {column}
                  FROM snapshot s
                  JOIN project p ON p.id = s.project_id
@@ -204,7 +204,7 @@ public sealed class HistoryQuery : IDisposable
             CommittedAt = Time(r, 1),
             Value = r.GetInt64(2),
         },
-        table == null
+        table is null
             ? new[] { ("@project", (object)project), ("@branch", branch ?? "") }
             : new[] { ("@project", (object)project), ("@branch", branch ?? ""), ("@table", table) });
 
@@ -284,13 +284,13 @@ public sealed class HistoryQuery : IDisposable
             ("@project", project), ("@branch", branch ?? ""), ("@table", table),
         };
 
-        if (rowKey != null)
+        if (rowKey is not null)
         {
             conditions.Add("c.row_key_hash = @rowKey");
             args.Add(("@rowKey", HistoryStore.KeyHash(rowKey)));
         }
 
-        if (field != null)
+        if (field is not null)
         {
             conditions.Add("c.field_name = @field");
             args.Add(("@field", field));
@@ -456,7 +456,7 @@ public sealed class HistoryQuery : IDisposable
     private IReadOnlyList<SchemaChangeView> ReadSchemaChanges(
         long snapshotId, string table, ref long budget, ref long omitted)
     {
-        string filter = table == null ? "" : " AND entity_name = @table";
+        string filter = table is null ? "" : " AND entity_name = @table";
 
         long total = Count("schema_change", snapshotId, filter, table);
         int take = Take(total, ref budget, ref omitted);
@@ -464,7 +464,7 @@ public sealed class HistoryQuery : IDisposable
         if (take == 0)
             return Array.Empty<SchemaChangeView>();
 
-        var args = table == null
+        var args = table is null
             ? new[] { ("@id", (object)snapshotId) }
             : new[] { ("@id", (object)snapshotId), ("@table", table) };
 
@@ -492,7 +492,7 @@ public sealed class HistoryQuery : IDisposable
     private IReadOnlyList<RowChangeView> ReadRowChanges(
         long snapshotId, string table, ref long budget, ref long omitted)
     {
-        string filter = table == null ? "" : " AND table_name = @table";
+        string filter = table is null ? "" : " AND table_name = @table";
 
         long total = Count("row_change", snapshotId, filter, table);
         int take = Take(total, ref budget, ref omitted);
@@ -500,7 +500,7 @@ public sealed class HistoryQuery : IDisposable
         if (take == 0)
             return Array.Empty<RowChangeView>();
 
-        var args = table == null
+        var args = table is null
             ? new[] { ("@id", (object)snapshotId) }
             : new[] { ("@id", (object)snapshotId), ("@table", table) };
 
@@ -525,13 +525,13 @@ public sealed class HistoryQuery : IDisposable
         var conditions = new List<string>();
         var args = new List<(string, object)> { ("@id", snapshotId) };
 
-        if (table != null)
+        if (table is not null)
         {
             conditions.Add(" AND c.table_name = @table");
             args.Add(("@table", table));
         }
 
-        if (field != null)
+        if (field is not null)
         {
             conditions.Add(" AND c.field_name = @field");
             args.Add(("@field", field));
@@ -582,7 +582,7 @@ public sealed class HistoryQuery : IDisposable
 
     private long Count(string table, long snapshotId, string filter, string tableName)
     {
-        var args = tableName == null
+        var args = tableName is null
             ? new[] { ("@id", (object)snapshotId) }
             : new[] { ("@id", (object)snapshotId), ("@table", tableName) };
 
@@ -596,8 +596,8 @@ public sealed class HistoryQuery : IDisposable
     {
         var args = new List<(string, object)> { ("@id", snapshotId) };
 
-        if (table != null) args.Add(("@table", table));
-        if (field != null) args.Add(("@field", field));
+        if (table is not null) args.Add(("@table", table));
+        if (field is not null) args.Add(("@field", field));
 
         using var command = Command(
             $"SELECT COUNT(*) FROM cell_change c WHERE c.snapshot_id = @id{filter}", args.ToArray());
@@ -668,7 +668,7 @@ public sealed class HistoryQuery : IDisposable
                 ("@project", project), ("@branch", branch ?? ""));
 
             var id = head.ExecuteScalar();
-            return id == null || id == DBNull.Value ? (long?)null : Convert.ToInt64(id);
+            return id is null || id == DBNull.Value ? (long?)null : Convert.ToInt64(id);
         }
 
         var matches = Read(@"
@@ -704,7 +704,7 @@ public sealed class HistoryQuery : IDisposable
     /// </summary>
     private long? ResolveThroughGit(string project, string branch, string name)
     {
-        if (RepositoryPath == null
+        if (RepositoryPath is null
             || !GitProbe.TryResolveCommit(RepositoryPath, name, out string hash))
         {
             return null;
@@ -857,7 +857,7 @@ public sealed class HistoryQuery : IDisposable
     }
 
     private static string Short(string hash)
-        => hash == null ? null : hash.Substring(0, Math.Min(12, hash.Length));
+        => hash is null ? null : hash.Substring(0, Math.Min(12, hash.Length));
 
     private static int Bounded(int requested, int maximum)
         => requested <= 0 ? maximum : Math.Min(requested, maximum);

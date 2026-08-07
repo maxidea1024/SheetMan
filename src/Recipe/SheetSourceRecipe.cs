@@ -22,12 +22,21 @@ public abstract class SheetSourceRecipe
     /// `sheetman` is the layout this tool defines: entities are declared with
     /// `~~table:Name~~` markers and can sit anywhere on a sheet.
     ///
-    /// `rescue` reads the shape a particular existing project already had - one table per
-    /// sheet, named by the sheet tab, with three header rows. It exists so a project can be
-    /// converted without first rewriting every workbook, and it is not the layout to start
-    /// a new project in.
+    /// `rescue` reads sheets written to another convention - one table per sheet, named by its
+    /// tab, with three header rows - as they are, without rewriting them first.
     /// </remarks>
     public string Layout { get; set; } = "sheetman";
+
+    /// <summary>
+    /// Separator for array cells in these sheets. Blank takes the recipe-wide setting.
+    /// </summary>
+    /// <remarks>
+    /// The delimiter is a property of how a set of sheets was written, so it belongs beside
+    /// the entry that reads them: two sets read in one run were authored under different
+    /// conventions, and one of them using `|` should not force the other to. Set here, it
+    /// wins over the recipe-wide `ArrayDelimiter` for this entry only.
+    /// </remarks>
+    public string ArrayDelimiter { get; set; } = "";
 
     /// <summary>
     /// Sheets to read. An empty list means every sheet.
@@ -57,13 +66,13 @@ public abstract class SheetSourceRecipe
     /// </summary>
     /// <remarks>
     /// `error` is the default and the only one that keeps the guarantee an index is for.
-    /// The other two exist for a layout being adopted rather than authored - a workbook
-    /// that has been in use for years may have duplicates in it, and refusing to convert
-    /// any of it until every one is fixed helps nobody. Both log every row they drop, so
-    /// the choice is visible in the run rather than only in the recipe.
+    /// The other two are for sheets whose source cannot be corrected right away: refusing to
+    /// convert anything until every duplicate is fixed blocks the rest of the data for a
+    /// reason that is not the reader's to fix. Both log every row they drop, so the choice is
+    /// visible in the run rather than only here.
     ///
-    /// Only the `rescue` layout honours this. Sheets in the `sheetman` layout are always
-    /// checked, because a project authoring in it has no legacy to carry.
+    /// Only the `rescue` layout honours this. Sheets written in the `sheetman` layout are
+    /// always checked, because there the duplicate can be fixed where it is.
     /// </remarks>
     public string OnDuplicateIndex { get; set; } = "error";
 }

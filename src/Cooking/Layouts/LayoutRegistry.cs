@@ -57,7 +57,7 @@ public static class LayoutRegistry
     public static LayoutDescriptor Get(string id)
     {
         var found = All.FirstOrDefault(d => string.Equals(d.Id, id, StringComparison.OrdinalIgnoreCase));
-        if (found != null)
+        if (found is not null)
             return found;
 
         throw new SheetManException(
@@ -72,7 +72,7 @@ public static class LayoutRegistry
         foreach (var type in typeof(LayoutRegistry).Assembly.GetTypes())
         {
             var attribute = type.GetCustomAttribute<SheetManLayoutAttribute>();
-            if (attribute == null)
+            if (attribute is null)
                 continue;
 
             if (type.IsAbstract || !typeof(ILayoutParser).IsAssignableFrom(type))
@@ -86,7 +86,7 @@ public static class LayoutRegistry
 
         var duplicate = descriptors.GroupBy(d => d.Id, StringComparer.OrdinalIgnoreCase)
                                    .FirstOrDefault(g => g.Count() > 1);
-        if (duplicate != null)
+        if (duplicate is not null)
             throw new SheetManException($"Two layouts both claim the id `{duplicate.Key}`.");
 
         descriptors.Sort((left, right) => string.CompareOrdinal(left.Id, right.Id));

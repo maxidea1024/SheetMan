@@ -31,7 +31,7 @@ public static class CanonicalValue
     /// </summary>
     public static string Of(object value, Field field)
     {
-        if (value == null)
+        if (value is null)
             return null;
 
         // A delimited array is one cell holding several values. Serial arrays are not
@@ -47,7 +47,7 @@ public static class CanonicalValue
     /// </summary>
     public static string OfScalar(object value, ValueType type)
     {
-        if (value == null)
+        if (value is null)
             return null;
 
         switch (type)
@@ -116,7 +116,7 @@ public static class CanonicalValue
 
             string element = OfScalar(elements.GetValue(i), elementType);
 
-            if (element == null)
+            if (element is null)
                 text.Append("null");
             else if (quoted)
                 Quote(text, element);

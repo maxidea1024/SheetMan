@@ -422,19 +422,16 @@ public class RubyCodeGenerator : CodeGenerator<RubyRecipe>
 
     private string ReadExpression(SerialField sf)
     {
-        switch (sf.ElementType)
+        return sf.ElementType switch
         {
-
             // Enum values travel zig-zag encoded rather than fixed width, and arrive as
             // the integer the sheet declared.
-            case ValueType.Enum: return "reader.read_enum";
-
-            case ValueType.ForeignRecord: return "reader.read_int32";
-
+            ValueType.Enum => "reader.read_enum",
+            ValueType.ForeignRecord => "reader.read_int32",
             // Everything else is a plain call named in the profile, which is where the
             // nine of them live now rather than here and in nine other generators.
-            default: return LanguageProfile.Ruby.ReadCall(sf.ElementType);
-        }
+            _ => LanguageProfile.Ruby.ReadCall(sf.ElementType),
+        };
     }
 
     private string RenderConstantValue(ConstantSet.Constant constant)

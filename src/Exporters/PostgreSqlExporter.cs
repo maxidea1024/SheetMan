@@ -73,7 +73,7 @@ public class PostgreSqlExporter : DatabaseExporterBase<RecipeModel.ExportRecipeG
             .ToList();
 
         var indexColumn = Columns(table).FirstOrDefault(sf => sf.IsIndexer);
-        if (indexColumn != null)
+        if (indexColumn is not null)
             definitions.Add($"  PRIMARY KEY ({Quote(ColumnName(indexColumn))})");
 
         var sql = new StringBuilder();

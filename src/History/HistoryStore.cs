@@ -342,7 +342,7 @@ internal sealed class HistoryStore : IHistoryState, IDisposable
         // have moved the branch on.
         var head = ReadHead();
 
-        if (head != null && write.Seq <= head.Seq)
+        if (head is not null && write.Seq <= head.Seq)
         {
             write.Seq = head.Seq + 1;
             write.ParentId = head.Id;
@@ -428,8 +428,8 @@ internal sealed class HistoryStore : IHistoryState, IDisposable
 
         foreach (var cell in changes.Cells)
         {
-            if (cell.OldValue != null) texts.Add(cell.OldValue);
-            if (cell.NewValue != null) texts.Add(cell.NewValue);
+            if (cell.OldValue is not null) texts.Add(cell.OldValue);
+            if (cell.NewValue is not null) texts.Add(cell.NewValue);
         }
 
         var ids = new Dictionary<string, long>(StringComparer.Ordinal);
@@ -565,7 +565,7 @@ internal sealed class HistoryStore : IHistoryState, IDisposable
     /// </summary>
     internal static object ValueId(IReadOnlyDictionary<string, long> values, string text)
     {
-        if (text == null)
+        if (text is null)
             return DBNull.Value;
 
         if (values.TryGetValue(text, out long id))
@@ -977,7 +977,7 @@ internal sealed class HistoryStore : IHistoryState, IDisposable
                                    System.Globalization.DateTimeStyles.RoundtripKind).UtcDateTime;
 
     private static string Truncate(string value, int length)
-        => value == null || value.Length <= length ? value : value.Substring(0, length);
+        => value is null || value.Length <= length ? value : value.Substring(0, length);
 }
 
 /// <summary>One snapshot, as the store reads it back.</summary>

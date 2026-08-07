@@ -75,7 +75,7 @@ internal static class HistoryRecorder
 
         var existing = store.FindSnapshot(commit.Hash);
 
-        if (existing != null)
+        if (existing is not null)
         {
             if (string.Equals(existing.ModelHash, summary.Data.Hash, StringComparison.Ordinal))
             {
@@ -102,7 +102,7 @@ internal static class HistoryRecorder
 
         var changes = SnapshotDiff.Compute(fingerprint, store);
 
-        if (changes.IsEmpty && head != null)
+        if (changes.IsEmpty && head is not null)
         {
             // A commit that touched something other than the sheets. Recorded anyway:
             // without it the next real change would be measured from further back and
@@ -139,7 +139,7 @@ internal static class HistoryRecorder
     /// </summary>
     private static bool MayFollow(SnapshotRow head, CommitInfo commit, HistoryRecipe recipe)
     {
-        if (head == null || recipe.AllowOutOfOrder || !IsBehind(head, commit))
+        if (head is null || recipe.AllowOutOfOrder || !IsBehind(head, commit))
             return true;
 
         Log.Error(
@@ -161,7 +161,7 @@ internal static class HistoryRecorder
     /// </summary>
     private static bool IsBehind(SnapshotRow head, CommitInfo commit)
     {
-        if (commit.RepositoryPath != null
+        if (commit.RepositoryPath is not null
             && GitProbe.TryIsAncestor(commit.RepositoryPath, head.CommitHash, commit.Hash, out bool descends))
         {
             return !descends;
@@ -184,10 +184,10 @@ internal static class HistoryRecorder
     /// </summary>
     private static bool FollowsParent(SnapshotRow head, CommitInfo commit)
     {
-        if (head == null)
+        if (head is null)
             return true;
 
-        if (commit.RepositoryPath != null
+        if (commit.RepositoryPath is not null
             && GitProbe.TryIsDirectParent(commit.RepositoryPath, head.CommitHash, commit.Hash, out bool direct))
         {
             return direct;
@@ -236,5 +236,5 @@ internal static class HistoryRecorder
     private static string BranchOf(CommitInfo commit) => commit.Branch ?? "(no branch)";
 
     private static string Short(string hash)
-        => hash == null ? null : hash.Substring(0, Math.Min(12, hash.Length));
+        => hash is null ? null : hash.Substring(0, Math.Min(12, hash.Length));
 }
