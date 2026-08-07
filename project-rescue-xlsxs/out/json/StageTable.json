@@ -1,0 +1,3782 @@
+[
+  {
+    "id": 3010001,
+    "name": "챕터1",
+    "stageName": "1-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120101,
+      120102,
+      120112
+    ],
+    "spawnPointCount": 2,
+    "spawnMaxCount": 3,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.0,
+    "defUpPercent": 0.0,
+    "mHPUpPercent": 0.0,
+    "bossAtkUpPercent": 0.0,
+    "bossDefUpPercent": 0.0,
+    "bossMHPUpPercent": 0.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010002,
+    "name": "챕터1",
+    "stageName": "1-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120101,
+      120102,
+      120112
+    ],
+    "spawnPointCount": 2,
+    "spawnMaxCount": 6,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.015,
+    "defUpPercent": 0.015,
+    "mHPUpPercent": 0.02,
+    "bossAtkUpPercent": 0.0225,
+    "bossDefUpPercent": 0.0225,
+    "bossMHPUpPercent": 0.03,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010003,
+    "name": "챕터1",
+    "stageName": "1-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120101,
+      120102,
+      120112
+    ],
+    "spawnPointCount": 2,
+    "spawnMaxCount": 12,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.017,
+    "defUpPercent": 0.017,
+    "mHPUpPercent": 0.1,
+    "bossAtkUpPercent": 0.0255,
+    "bossDefUpPercent": 0.0255,
+    "bossMHPUpPercent": 0.15,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010004,
+    "name": "챕터1",
+    "stageName": "1-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120101,
+      120102,
+      120112
+    ],
+    "spawnPointCount": 2,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.02,
+    "defUpPercent": 0.02,
+    "mHPUpPercent": 0.12,
+    "bossAtkUpPercent": 0.03,
+    "bossDefUpPercent": 0.03,
+    "bossMHPUpPercent": 0.18,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010005,
+    "name": "챕터1",
+    "stageName": "1-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120201,
+      120143,
+      120122
+    ],
+    "spawnPointCount": 2,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.023,
+    "defUpPercent": 0.023,
+    "mHPUpPercent": 0.144,
+    "bossAtkUpPercent": 0.0345,
+    "bossDefUpPercent": 0.0345,
+    "bossMHPUpPercent": 0.216,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010006,
+    "name": "챕터1",
+    "stageName": "1-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120201,
+      120143,
+      120122
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.026,
+    "defUpPercent": 0.026,
+    "mHPUpPercent": 0.173,
+    "bossAtkUpPercent": 0.039,
+    "bossDefUpPercent": 0.039,
+    "bossMHPUpPercent": 0.2595,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010007,
+    "name": "챕터1",
+    "stageName": "1-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120201,
+      120143,
+      120122
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.03,
+    "defUpPercent": 0.03,
+    "mHPUpPercent": 0.208,
+    "bossAtkUpPercent": 0.045,
+    "bossDefUpPercent": 0.045,
+    "bossMHPUpPercent": 0.312,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010008,
+    "name": "챕터1",
+    "stageName": "1-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120201,
+      120143,
+      120122
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.035,
+    "defUpPercent": 0.035,
+    "mHPUpPercent": 0.25,
+    "bossAtkUpPercent": 0.0525,
+    "bossDefUpPercent": 0.0525,
+    "bossMHPUpPercent": 0.375,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010009,
+    "name": "챕터1",
+    "stageName": "1-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120201,
+      120143,
+      120122
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.04,
+    "defUpPercent": 0.04,
+    "mHPUpPercent": 0.3,
+    "bossAtkUpPercent": 0.06,
+    "bossDefUpPercent": 0.06,
+    "bossMHPUpPercent": 0.45,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010010,
+    "name": "챕터1",
+    "stageName": "1-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120211,
+      120134,
+      120103
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      130101
+    ],
+    "atkUpPercent": 0.046,
+    "defUpPercent": 0.046,
+    "mHPUpPercent": 0.36,
+    "bossAtkUpPercent": 0.069,
+    "bossDefUpPercent": 0.069,
+    "bossMHPUpPercent": 0.54,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010011,
+    "name": "챕터1",
+    "stageName": "2-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120211,
+      120134,
+      120103
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.053,
+    "defUpPercent": 0.053,
+    "mHPUpPercent": 0.432,
+    "bossAtkUpPercent": 0.0795,
+    "bossDefUpPercent": 0.0795,
+    "bossMHPUpPercent": 0.648,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010012,
+    "name": "챕터1",
+    "stageName": "2-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120211,
+      120134,
+      120103
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.061,
+    "defUpPercent": 0.061,
+    "mHPUpPercent": 0.518,
+    "bossAtkUpPercent": 0.0915,
+    "bossDefUpPercent": 0.0915,
+    "bossMHPUpPercent": 0.777,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010013,
+    "name": "챕터1",
+    "stageName": "2-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120211,
+      120134,
+      120103
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.07,
+    "defUpPercent": 0.07,
+    "mHPUpPercent": 0.622,
+    "bossAtkUpPercent": 0.105,
+    "bossDefUpPercent": 0.105,
+    "bossMHPUpPercent": 0.933,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010014,
+    "name": "챕터1",
+    "stageName": "2-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120211,
+      120134,
+      120103
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.081,
+    "defUpPercent": 0.081,
+    "mHPUpPercent": 0.746,
+    "bossAtkUpPercent": 0.1215,
+    "bossDefUpPercent": 0.1215,
+    "bossMHPUpPercent": 1.119,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010015,
+    "name": "챕터1",
+    "stageName": "2-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120211,
+      120134,
+      120103
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.093,
+    "defUpPercent": 0.093,
+    "mHPUpPercent": 0.895,
+    "bossAtkUpPercent": 0.1395,
+    "bossDefUpPercent": 0.1395,
+    "bossMHPUpPercent": 1.3425,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010016,
+    "name": "챕터1",
+    "stageName": "2-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.107,
+    "defUpPercent": 0.107,
+    "mHPUpPercent": 1.074,
+    "bossAtkUpPercent": 0.1605,
+    "bossDefUpPercent": 0.1605,
+    "bossMHPUpPercent": 1.611,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010017,
+    "name": "챕터1",
+    "stageName": "2-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.123,
+    "defUpPercent": 0.123,
+    "mHPUpPercent": 1.289,
+    "bossAtkUpPercent": 0.1845,
+    "bossDefUpPercent": 0.1845,
+    "bossMHPUpPercent": 1.9335,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010018,
+    "name": "챕터1",
+    "stageName": "2-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.141,
+    "defUpPercent": 0.141,
+    "mHPUpPercent": 1.547,
+    "bossAtkUpPercent": 0.2115,
+    "bossDefUpPercent": 0.2115,
+    "bossMHPUpPercent": 2.3205,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010019,
+    "name": "챕터1",
+    "stageName": "2-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.162,
+    "defUpPercent": 0.162,
+    "mHPUpPercent": 1.856,
+    "bossAtkUpPercent": 0.243,
+    "bossDefUpPercent": 0.243,
+    "bossMHPUpPercent": 2.784,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010020,
+    "name": "챕터1",
+    "stageName": "2-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      130201
+    ],
+    "atkUpPercent": 0.186,
+    "defUpPercent": 0.186,
+    "mHPUpPercent": 2.227,
+    "bossAtkUpPercent": 0.279,
+    "bossDefUpPercent": 0.279,
+    "bossMHPUpPercent": 3.3405,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010021,
+    "name": "챕터1",
+    "stageName": "3-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.214,
+    "defUpPercent": 0.214,
+    "mHPUpPercent": 2.672,
+    "bossAtkUpPercent": 0.321,
+    "bossDefUpPercent": 0.321,
+    "bossMHPUpPercent": 4.008,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010022,
+    "name": "챕터1",
+    "stageName": "3-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.246,
+    "defUpPercent": 0.246,
+    "mHPUpPercent": 3.206,
+    "bossAtkUpPercent": 0.369,
+    "bossDefUpPercent": 0.369,
+    "bossMHPUpPercent": 4.809,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010023,
+    "name": "챕터1",
+    "stageName": "3-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.283,
+    "defUpPercent": 0.283,
+    "mHPUpPercent": 3.847,
+    "bossAtkUpPercent": 0.4245,
+    "bossDefUpPercent": 0.4245,
+    "bossMHPUpPercent": 5.7705,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010024,
+    "name": "챕터1",
+    "stageName": "3-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.325,
+    "defUpPercent": 0.325,
+    "mHPUpPercent": 4.616,
+    "bossAtkUpPercent": 0.4875,
+    "bossDefUpPercent": 0.4875,
+    "bossMHPUpPercent": 6.924,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010025,
+    "name": "챕터1",
+    "stageName": "3-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.374,
+    "defUpPercent": 0.374,
+    "mHPUpPercent": 5.539,
+    "bossAtkUpPercent": 0.561,
+    "bossDefUpPercent": 0.561,
+    "bossMHPUpPercent": 8.3085,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010026,
+    "name": "챕터1",
+    "stageName": "3-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.43,
+    "defUpPercent": 0.43,
+    "mHPUpPercent": 6.647,
+    "bossAtkUpPercent": 0.645,
+    "bossDefUpPercent": 0.645,
+    "bossMHPUpPercent": 9.9705,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010027,
+    "name": "챕터1",
+    "stageName": "3-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120213,
+      120203,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 40,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.495,
+    "defUpPercent": 0.495,
+    "mHPUpPercent": 7.976,
+    "bossAtkUpPercent": 0.7425,
+    "bossDefUpPercent": 0.7425,
+    "bossMHPUpPercent": 11.964,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010028,
+    "name": "챕터1",
+    "stageName": "3-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.569,
+    "defUpPercent": 0.569,
+    "mHPUpPercent": 9.571,
+    "bossAtkUpPercent": 0.8535,
+    "bossDefUpPercent": 0.8535,
+    "bossMHPUpPercent": 14.3565,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010029,
+    "name": "챕터1",
+    "stageName": "3-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.654,
+    "defUpPercent": 0.654,
+    "mHPUpPercent": 11.485,
+    "bossAtkUpPercent": 0.981,
+    "bossDefUpPercent": 0.981,
+    "bossMHPUpPercent": 17.2275,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3010030,
+    "name": "챕터1",
+    "stageName": "3-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Daylight01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140101
+    ],
+    "atkUpPercent": 0.752,
+    "defUpPercent": 0.752,
+    "mHPUpPercent": 13.782,
+    "bossAtkUpPercent": 1.128,
+    "bossDefUpPercent": 1.128,
+    "bossMHPUpPercent": 20.673,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020001,
+    "name": "챕터2",
+    "stageName": "1-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.865,
+    "defUpPercent": 0.865,
+    "mHPUpPercent": 16.538,
+    "bossAtkUpPercent": 1.2975,
+    "bossDefUpPercent": 1.2975,
+    "bossMHPUpPercent": 24.807,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020002,
+    "name": "챕터2",
+    "stageName": "1-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 0.995,
+    "defUpPercent": 0.995,
+    "mHPUpPercent": 19.846,
+    "bossAtkUpPercent": 1.4925,
+    "bossDefUpPercent": 1.4925,
+    "bossMHPUpPercent": 29.769,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020003,
+    "name": "챕터2",
+    "stageName": "1-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1.144,
+    "defUpPercent": 1.144,
+    "mHPUpPercent": 23.815,
+    "bossAtkUpPercent": 1.716,
+    "bossDefUpPercent": 1.716,
+    "bossMHPUpPercent": 35.7225,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020004,
+    "name": "챕터2",
+    "stageName": "1-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1.316,
+    "defUpPercent": 1.316,
+    "mHPUpPercent": 28.578,
+    "bossAtkUpPercent": 1.974,
+    "bossDefUpPercent": 1.974,
+    "bossMHPUpPercent": 42.867,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020005,
+    "name": "챕터2",
+    "stageName": "1-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1.513,
+    "defUpPercent": 1.513,
+    "mHPUpPercent": 34.294,
+    "bossAtkUpPercent": 2.2695,
+    "bossDefUpPercent": 2.2695,
+    "bossMHPUpPercent": 51.441,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020006,
+    "name": "챕터2",
+    "stageName": "1-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1.74,
+    "defUpPercent": 1.74,
+    "mHPUpPercent": 41.153,
+    "bossAtkUpPercent": 2.61,
+    "bossDefUpPercent": 2.61,
+    "bossMHPUpPercent": 61.7295,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020007,
+    "name": "챕터2",
+    "stageName": "1-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120214,
+      120124,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 2.001,
+    "defUpPercent": 2.001,
+    "mHPUpPercent": 49.384,
+    "bossAtkUpPercent": 3.0015,
+    "bossDefUpPercent": 3.0015,
+    "bossMHPUpPercent": 74.076,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020008,
+    "name": "챕터2",
+    "stageName": "1-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 2.301,
+    "defUpPercent": 2.301,
+    "mHPUpPercent": 59.261,
+    "bossAtkUpPercent": 3.4515,
+    "bossDefUpPercent": 3.4515,
+    "bossMHPUpPercent": 88.8915,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020009,
+    "name": "챕터2",
+    "stageName": "1-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 2.646,
+    "defUpPercent": 2.646,
+    "mHPUpPercent": 71.113,
+    "bossAtkUpPercent": 3.969,
+    "bossDefUpPercent": 3.969,
+    "bossMHPUpPercent": 106.6695,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020010,
+    "name": "챕터2",
+    "stageName": "1-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      130221
+    ],
+    "atkUpPercent": 3.043,
+    "defUpPercent": 3.043,
+    "mHPUpPercent": 85.336,
+    "bossAtkUpPercent": 4.5645,
+    "bossDefUpPercent": 4.5645,
+    "bossMHPUpPercent": 128.004,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020011,
+    "name": "챕터2",
+    "stageName": "2-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 3.499,
+    "defUpPercent": 3.499,
+    "mHPUpPercent": 102.403,
+    "bossAtkUpPercent": 5.2485,
+    "bossDefUpPercent": 5.2485,
+    "bossMHPUpPercent": 153.6045,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020012,
+    "name": "챕터2",
+    "stageName": "2-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 4.024,
+    "defUpPercent": 4.024,
+    "mHPUpPercent": 122.884,
+    "bossAtkUpPercent": 6.036,
+    "bossDefUpPercent": 6.036,
+    "bossMHPUpPercent": 184.326,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020013,
+    "name": "챕터2",
+    "stageName": "2-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 4.628,
+    "defUpPercent": 4.628,
+    "mHPUpPercent": 147.461,
+    "bossAtkUpPercent": 6.942,
+    "bossDefUpPercent": 6.942,
+    "bossMHPUpPercent": 221.1915,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020014,
+    "name": "챕터2",
+    "stageName": "2-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 5.322,
+    "defUpPercent": 5.322,
+    "mHPUpPercent": 176.953,
+    "bossAtkUpPercent": 7.983,
+    "bossDefUpPercent": 7.983,
+    "bossMHPUpPercent": 265.4295,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020015,
+    "name": "챕터2",
+    "stageName": "2-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 6.12,
+    "defUpPercent": 6.12,
+    "mHPUpPercent": 212.344,
+    "bossAtkUpPercent": 9.18,
+    "bossDefUpPercent": 9.18,
+    "bossMHPUpPercent": 318.516,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020016,
+    "name": "챕터2",
+    "stageName": "2-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 7.038,
+    "defUpPercent": 7.038,
+    "mHPUpPercent": 254.813,
+    "bossAtkUpPercent": 10.557,
+    "bossDefUpPercent": 10.557,
+    "bossMHPUpPercent": 382.2195,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020017,
+    "name": "챕터2",
+    "stageName": "2-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 8.094,
+    "defUpPercent": 8.094,
+    "mHPUpPercent": 305.776,
+    "bossAtkUpPercent": 12.141,
+    "bossDefUpPercent": 12.141,
+    "bossMHPUpPercent": 458.664,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020018,
+    "name": "챕터2",
+    "stageName": "2-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 9.308,
+    "defUpPercent": 9.308,
+    "mHPUpPercent": 366.931,
+    "bossAtkUpPercent": 13.962,
+    "bossDefUpPercent": 13.962,
+    "bossMHPUpPercent": 550.3965,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020019,
+    "name": "챕터2",
+    "stageName": "2-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120232,
+      120135,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 10.704,
+    "defUpPercent": 10.704,
+    "mHPUpPercent": 440.317,
+    "bossAtkUpPercent": 16.056,
+    "bossDefUpPercent": 16.056,
+    "bossMHPUpPercent": 660.4755,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020020,
+    "name": "챕터2",
+    "stageName": "2-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140102
+    ],
+    "atkUpPercent": 12.31,
+    "defUpPercent": 12.31,
+    "mHPUpPercent": 528.38,
+    "bossAtkUpPercent": 18.465,
+    "bossDefUpPercent": 18.465,
+    "bossMHPUpPercent": 792.57,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020021,
+    "name": "챕터2",
+    "stageName": "3-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 14.157,
+    "defUpPercent": 14.157,
+    "mHPUpPercent": 634.056,
+    "bossAtkUpPercent": 21.2355,
+    "bossDefUpPercent": 21.2355,
+    "bossMHPUpPercent": 951.084,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020022,
+    "name": "챕터2",
+    "stageName": "3-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 16.281,
+    "defUpPercent": 16.281,
+    "mHPUpPercent": 760.867,
+    "bossAtkUpPercent": 24.4215,
+    "bossDefUpPercent": 24.4215,
+    "bossMHPUpPercent": 1141.3005,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020023,
+    "name": "챕터2",
+    "stageName": "3-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 18.723,
+    "defUpPercent": 18.723,
+    "mHPUpPercent": 913.04,
+    "bossAtkUpPercent": 28.0845,
+    "bossDefUpPercent": 28.0845,
+    "bossMHPUpPercent": 1369.56,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020024,
+    "name": "챕터2",
+    "stageName": "3-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 21.531,
+    "defUpPercent": 21.531,
+    "mHPUpPercent": 1095.648,
+    "bossAtkUpPercent": 32.2965,
+    "bossDefUpPercent": 32.2965,
+    "bossMHPUpPercent": 1643.472,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020025,
+    "name": "챕터2",
+    "stageName": "3-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 24.761,
+    "defUpPercent": 24.761,
+    "mHPUpPercent": 1314.778,
+    "bossAtkUpPercent": 37.1415,
+    "bossDefUpPercent": 37.1415,
+    "bossMHPUpPercent": 1972.167,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020026,
+    "name": "챕터2",
+    "stageName": "3-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 28.475,
+    "defUpPercent": 28.475,
+    "mHPUpPercent": 1577.734,
+    "bossAtkUpPercent": 42.7125,
+    "bossDefUpPercent": 42.7125,
+    "bossMHPUpPercent": 2366.601,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020027,
+    "name": "챕터2",
+    "stageName": "3-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 32.746,
+    "defUpPercent": 32.746,
+    "mHPUpPercent": 1893.281,
+    "bossAtkUpPercent": 49.119,
+    "bossDefUpPercent": 49.119,
+    "bossMHPUpPercent": 2839.9214,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020028,
+    "name": "챕터2",
+    "stageName": "3-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 37.658,
+    "defUpPercent": 37.658,
+    "mHPUpPercent": 2271.937,
+    "bossAtkUpPercent": 56.487,
+    "bossDefUpPercent": 56.487,
+    "bossMHPUpPercent": 3407.9055,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020029,
+    "name": "챕터2",
+    "stageName": "3-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 43.307,
+    "defUpPercent": 43.307,
+    "mHPUpPercent": 2726.324,
+    "bossAtkUpPercent": 64.9605,
+    "bossDefUpPercent": 64.9605,
+    "bossMHPUpPercent": 4089.486,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020030,
+    "name": "챕터2",
+    "stageName": "3-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120212,
+      120251,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      130241
+    ],
+    "atkUpPercent": 49.803,
+    "defUpPercent": 49.803,
+    "mHPUpPercent": 3271.589,
+    "bossAtkUpPercent": 74.7045,
+    "bossDefUpPercent": 74.7045,
+    "bossMHPUpPercent": 4907.3833,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020031,
+    "name": "챕터2",
+    "stageName": "4-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 57.273,
+    "defUpPercent": 57.273,
+    "mHPUpPercent": 3925.907,
+    "bossAtkUpPercent": 85.9095,
+    "bossDefUpPercent": 85.9095,
+    "bossMHPUpPercent": 5888.8604,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020032,
+    "name": "챕터2",
+    "stageName": "4-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 65.864,
+    "defUpPercent": 65.864,
+    "mHPUpPercent": 4711.088,
+    "bossAtkUpPercent": 98.796,
+    "bossDefUpPercent": 98.796,
+    "bossMHPUpPercent": 7066.632,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020033,
+    "name": "챕터2",
+    "stageName": "4-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 75.744,
+    "defUpPercent": 75.744,
+    "mHPUpPercent": 5653.306,
+    "bossAtkUpPercent": 113.616,
+    "bossDefUpPercent": 113.616,
+    "bossMHPUpPercent": 8479.959,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020034,
+    "name": "챕터2",
+    "stageName": "4-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 87.106,
+    "defUpPercent": 87.106,
+    "mHPUpPercent": 6783.967,
+    "bossAtkUpPercent": 130.659,
+    "bossDefUpPercent": 130.659,
+    "bossMHPUpPercent": 10175.95,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020035,
+    "name": "챕터2",
+    "stageName": "4-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 100.172,
+    "defUpPercent": 100.172,
+    "mHPUpPercent": 8140.76,
+    "bossAtkUpPercent": 150.258,
+    "bossDefUpPercent": 150.258,
+    "bossMHPUpPercent": 12211.14,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020036,
+    "name": "챕터2",
+    "stageName": "4-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 115.198,
+    "defUpPercent": 115.198,
+    "mHPUpPercent": 9768.912,
+    "bossAtkUpPercent": 172.797,
+    "bossDefUpPercent": 172.797,
+    "bossMHPUpPercent": 14653.368,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020037,
+    "name": "챕터2",
+    "stageName": "4-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 132.478,
+    "defUpPercent": 132.478,
+    "mHPUpPercent": 11722.694,
+    "bossAtkUpPercent": 198.717,
+    "bossDefUpPercent": 198.717,
+    "bossMHPUpPercent": 17584.041,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020038,
+    "name": "챕터2",
+    "stageName": "4-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 152.35,
+    "defUpPercent": 152.35,
+    "mHPUpPercent": 14067.233,
+    "bossAtkUpPercent": 228.525,
+    "bossDefUpPercent": 228.525,
+    "bossMHPUpPercent": 21100.85,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020039,
+    "name": "챕터2",
+    "stageName": "4-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 175.203,
+    "defUpPercent": 175.203,
+    "mHPUpPercent": 16880.68,
+    "bossAtkUpPercent": 262.8045,
+    "bossDefUpPercent": 262.8045,
+    "bossMHPUpPercent": 25321.02,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020040,
+    "name": "챕터2",
+    "stageName": "4-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140201
+    ],
+    "atkUpPercent": 201.483,
+    "defUpPercent": 201.483,
+    "mHPUpPercent": 20256.816,
+    "bossAtkUpPercent": 302.2245,
+    "bossDefUpPercent": 302.2245,
+    "bossMHPUpPercent": 30385.225,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020041,
+    "name": "챕터2",
+    "stageName": "5-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 231.705,
+    "defUpPercent": 231.705,
+    "mHPUpPercent": 24308.18,
+    "bossAtkUpPercent": 347.5575,
+    "bossDefUpPercent": 347.5575,
+    "bossMHPUpPercent": 36462.27,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020042,
+    "name": "챕터2",
+    "stageName": "5-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120111,
+      120205,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 266.461,
+    "defUpPercent": 266.461,
+    "mHPUpPercent": 29169.814,
+    "bossAtkUpPercent": 399.6915,
+    "bossDefUpPercent": 399.6915,
+    "bossMHPUpPercent": 43754.723,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020043,
+    "name": "챕터2",
+    "stageName": "5-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 306.43,
+    "defUpPercent": 306.43,
+    "mHPUpPercent": 35003.777,
+    "bossAtkUpPercent": 459.645,
+    "bossDefUpPercent": 459.645,
+    "bossMHPUpPercent": 52505.668,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020044,
+    "name": "챕터2",
+    "stageName": "5-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 352.395,
+    "defUpPercent": 352.395,
+    "mHPUpPercent": 42004.535,
+    "bossAtkUpPercent": 528.5925,
+    "bossDefUpPercent": 528.5925,
+    "bossMHPUpPercent": 63006.8,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020045,
+    "name": "챕터2",
+    "stageName": "5-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 405.254,
+    "defUpPercent": 405.254,
+    "mHPUpPercent": 50405.44,
+    "bossAtkUpPercent": 607.881,
+    "bossDefUpPercent": 607.881,
+    "bossMHPUpPercent": 75608.164,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020046,
+    "name": "챕터2",
+    "stageName": "5-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 466.042,
+    "defUpPercent": 466.042,
+    "mHPUpPercent": 60486.527,
+    "bossAtkUpPercent": 699.063,
+    "bossDefUpPercent": 699.063,
+    "bossMHPUpPercent": 90729.8,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020047,
+    "name": "챕터2",
+    "stageName": "5-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 535.948,
+    "defUpPercent": 535.948,
+    "mHPUpPercent": 72583.836,
+    "bossAtkUpPercent": 803.922,
+    "bossDefUpPercent": 803.922,
+    "bossMHPUpPercent": 108875.75,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020048,
+    "name": "챕터2",
+    "stageName": "5-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 616.34,
+    "defUpPercent": 616.34,
+    "mHPUpPercent": 87100.6,
+    "bossAtkUpPercent": 924.51,
+    "bossDefUpPercent": 924.51,
+    "bossMHPUpPercent": 130650.91,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020049,
+    "name": "챕터2",
+    "stageName": "5-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 708.791,
+    "defUpPercent": 708.791,
+    "mHPUpPercent": 104520.72,
+    "bossAtkUpPercent": 1063.1865,
+    "bossDefUpPercent": 1063.1865,
+    "bossMHPUpPercent": 156781.08,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3020050,
+    "name": "챕터2",
+    "stageName": "5-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest02_Overcast01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140202
+    ],
+    "atkUpPercent": 815.11,
+    "defUpPercent": 815.11,
+    "mHPUpPercent": 125424.87,
+    "bossAtkUpPercent": 1222.665,
+    "bossDefUpPercent": 1222.665,
+    "bossMHPUpPercent": 188137.3,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030001,
+    "name": "챕터3",
+    "stageName": "1-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 937.377,
+    "defUpPercent": 937.377,
+    "mHPUpPercent": 150509.84,
+    "bossAtkUpPercent": 1406.0656,
+    "bossDefUpPercent": 1406.0656,
+    "bossMHPUpPercent": 225764.77,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030002,
+    "name": "챕터3",
+    "stageName": "1-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1077.984,
+    "defUpPercent": 1077.984,
+    "mHPUpPercent": 180611.81,
+    "bossAtkUpPercent": 1616.976,
+    "bossDefUpPercent": 1616.976,
+    "bossMHPUpPercent": 270917.72,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030003,
+    "name": "챕터3",
+    "stageName": "1-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1239.682,
+    "defUpPercent": 1239.682,
+    "mHPUpPercent": 216734.17,
+    "bossAtkUpPercent": 1859.523,
+    "bossDefUpPercent": 1859.523,
+    "bossMHPUpPercent": 325101.25,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030004,
+    "name": "챕터3",
+    "stageName": "1-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1425.634,
+    "defUpPercent": 1425.634,
+    "mHPUpPercent": 260081.0,
+    "bossAtkUpPercent": 2138.451,
+    "bossDefUpPercent": 2138.451,
+    "bossMHPUpPercent": 390121.5,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030005,
+    "name": "챕터3",
+    "stageName": "1-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1639.479,
+    "defUpPercent": 1639.479,
+    "mHPUpPercent": 312097.2,
+    "bossAtkUpPercent": 2459.2185,
+    "bossDefUpPercent": 2459.2185,
+    "bossMHPUpPercent": 468145.8,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030006,
+    "name": "챕터3",
+    "stageName": "1-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1885.401,
+    "defUpPercent": 1885.401,
+    "mHPUpPercent": 374516.66,
+    "bossAtkUpPercent": 2828.1016,
+    "bossDefUpPercent": 2828.1016,
+    "bossMHPUpPercent": 561774.94,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030007,
+    "name": "챕터3",
+    "stageName": "1-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 2168.211,
+    "defUpPercent": 2168.211,
+    "mHPUpPercent": 449419.97,
+    "bossAtkUpPercent": 3252.3164,
+    "bossDefUpPercent": 3252.3164,
+    "bossMHPUpPercent": 674129.94,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030008,
+    "name": "챕터3",
+    "stageName": "1-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 2493.443,
+    "defUpPercent": 2493.443,
+    "mHPUpPercent": 539303.94,
+    "bossAtkUpPercent": 3740.1646,
+    "bossDefUpPercent": 3740.1646,
+    "bossMHPUpPercent": 808955.94,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030009,
+    "name": "챕터3",
+    "stageName": "1-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 2867.459,
+    "defUpPercent": 2867.459,
+    "mHPUpPercent": 647164.75,
+    "bossAtkUpPercent": 4301.1885,
+    "bossDefUpPercent": 4301.1885,
+    "bossMHPUpPercent": 970747.1,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030010,
+    "name": "챕터3",
+    "stageName": "1-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120211
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140302
+    ],
+    "atkUpPercent": 3297.578,
+    "defUpPercent": 3297.578,
+    "mHPUpPercent": 776597.7,
+    "bossAtkUpPercent": 4946.367,
+    "bossDefUpPercent": 4946.367,
+    "bossMHPUpPercent": 1164896.5,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030011,
+    "name": "챕터3",
+    "stageName": "2-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120212
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 3792.215,
+    "defUpPercent": 3792.215,
+    "mHPUpPercent": 931917.25,
+    "bossAtkUpPercent": 5688.3223,
+    "bossDefUpPercent": 5688.3223,
+    "bossMHPUpPercent": 1397875.9,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030012,
+    "name": "챕터3",
+    "stageName": "2-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120213
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 4361.047,
+    "defUpPercent": 4361.047,
+    "mHPUpPercent": 1118300.8,
+    "bossAtkUpPercent": 6541.5703,
+    "bossDefUpPercent": 6541.5703,
+    "bossMHPUpPercent": 1677451.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030013,
+    "name": "챕터3",
+    "stageName": "2-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120214
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 5015.204,
+    "defUpPercent": 5015.204,
+    "mHPUpPercent": 1341960.9,
+    "bossAtkUpPercent": 7522.806,
+    "bossDefUpPercent": 7522.806,
+    "bossMHPUpPercent": 2012941.2,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030014,
+    "name": "챕터3",
+    "stageName": "2-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120215
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 5767.485,
+    "defUpPercent": 5767.485,
+    "mHPUpPercent": 1610353.0,
+    "bossAtkUpPercent": 8651.228,
+    "bossDefUpPercent": 8651.228,
+    "bossMHPUpPercent": 2415529.5,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030015,
+    "name": "챕터3",
+    "stageName": "2-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120216
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 6632.608,
+    "defUpPercent": 6632.608,
+    "mHPUpPercent": 1932423.6,
+    "bossAtkUpPercent": 9948.912,
+    "bossDefUpPercent": 9948.912,
+    "bossMHPUpPercent": 2898635.5,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030016,
+    "name": "챕터3",
+    "stageName": "2-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120217
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 7627.499,
+    "defUpPercent": 7627.499,
+    "mHPUpPercent": 2318908.2,
+    "bossAtkUpPercent": 11441.248,
+    "bossDefUpPercent": 11441.248,
+    "bossMHPUpPercent": 3478362.5,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030017,
+    "name": "챕터3",
+    "stageName": "2-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120218
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 8771.624,
+    "defUpPercent": 8771.624,
+    "mHPUpPercent": 2782690.0,
+    "bossAtkUpPercent": 13157.436,
+    "bossDefUpPercent": 13157.436,
+    "bossMHPUpPercent": 4174035.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030018,
+    "name": "챕터3",
+    "stageName": "2-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120219
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 10087.368,
+    "defUpPercent": 10087.368,
+    "mHPUpPercent": 3339228.0,
+    "bossAtkUpPercent": 15131.052,
+    "bossDefUpPercent": 15131.052,
+    "bossMHPUpPercent": 5008842.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030019,
+    "name": "챕터3",
+    "stageName": "2-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120220
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 11600.473,
+    "defUpPercent": 11600.473,
+    "mHPUpPercent": 4007073.5,
+    "bossAtkUpPercent": 17400.709,
+    "bossDefUpPercent": 17400.709,
+    "bossMHPUpPercent": 6010610.5,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030020,
+    "name": "챕터3",
+    "stageName": "2-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120221
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140402
+    ],
+    "atkUpPercent": 13340.544,
+    "defUpPercent": 13340.544,
+    "mHPUpPercent": 4808488.5,
+    "bossAtkUpPercent": 20010.816,
+    "bossDefUpPercent": 20010.816,
+    "bossMHPUpPercent": 7212732.5,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030021,
+    "name": "챕터3",
+    "stageName": "3-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120222
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 15341.626,
+    "defUpPercent": 15341.626,
+    "mHPUpPercent": 5770186.0,
+    "bossAtkUpPercent": 23012.44,
+    "bossDefUpPercent": 23012.44,
+    "bossMHPUpPercent": 8655279.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030022,
+    "name": "챕터3",
+    "stageName": "3-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120223
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 17642.87,
+    "defUpPercent": 17642.87,
+    "mHPUpPercent": 6924223.0,
+    "bossAtkUpPercent": 26464.305,
+    "bossDefUpPercent": 26464.305,
+    "bossMHPUpPercent": 10386335.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030023,
+    "name": "챕터3",
+    "stageName": "3-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120224
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 20289.3,
+    "defUpPercent": 20289.3,
+    "mHPUpPercent": 8309068.0,
+    "bossAtkUpPercent": 30433.951,
+    "bossDefUpPercent": 30433.951,
+    "bossMHPUpPercent": 12463602.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030024,
+    "name": "챕터3",
+    "stageName": "3-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120225
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 23332.695,
+    "defUpPercent": 23332.695,
+    "mHPUpPercent": 9970881.0,
+    "bossAtkUpPercent": 34999.043,
+    "bossDefUpPercent": 34999.043,
+    "bossMHPUpPercent": 14956322.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030025,
+    "name": "챕터3",
+    "stageName": "3-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120226
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 26832.6,
+    "defUpPercent": 26832.6,
+    "mHPUpPercent": 11965058.0,
+    "bossAtkUpPercent": 40248.9,
+    "bossDefUpPercent": 40248.9,
+    "bossMHPUpPercent": 17947586.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030026,
+    "name": "챕터3",
+    "stageName": "3-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120227
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 30857.49,
+    "defUpPercent": 30857.49,
+    "mHPUpPercent": 14358069.0,
+    "bossAtkUpPercent": 46286.234,
+    "bossDefUpPercent": 46286.234,
+    "bossMHPUpPercent": 21537104.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030027,
+    "name": "챕터3",
+    "stageName": "3-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120228
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 35486.113,
+    "defUpPercent": 35486.113,
+    "mHPUpPercent": 17229684.0,
+    "bossAtkUpPercent": 53229.17,
+    "bossDefUpPercent": 53229.17,
+    "bossMHPUpPercent": 25844524.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030028,
+    "name": "챕터3",
+    "stageName": "3-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120229
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 40809.03,
+    "defUpPercent": 40809.03,
+    "mHPUpPercent": 20675620.0,
+    "bossAtkUpPercent": 61213.547,
+    "bossDefUpPercent": 61213.547,
+    "bossMHPUpPercent": 31013430.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030029,
+    "name": "챕터3",
+    "stageName": "3-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120230
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 46930.387,
+    "defUpPercent": 46930.387,
+    "mHPUpPercent": 24810744.0,
+    "bossAtkUpPercent": 70395.58,
+    "bossDefUpPercent": 70395.58,
+    "bossMHPUpPercent": 37216116.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030030,
+    "name": "챕터3",
+    "stageName": "3-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120231
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140501
+    ],
+    "atkUpPercent": 53969.945,
+    "defUpPercent": 53969.945,
+    "mHPUpPercent": 29772892.0,
+    "bossAtkUpPercent": 80954.914,
+    "bossDefUpPercent": 80954.914,
+    "bossMHPUpPercent": 44659340.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030031,
+    "name": "챕터3",
+    "stageName": "4-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120232
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 62065.438,
+    "defUpPercent": 62065.438,
+    "mHPUpPercent": 35727470.0,
+    "bossAtkUpPercent": 93098.16,
+    "bossDefUpPercent": 93098.16,
+    "bossMHPUpPercent": 53591210.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030032,
+    "name": "챕터3",
+    "stageName": "4-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120233
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 71375.25,
+    "defUpPercent": 71375.25,
+    "mHPUpPercent": 42872964.0,
+    "bossAtkUpPercent": 107062.875,
+    "bossDefUpPercent": 107062.875,
+    "bossMHPUpPercent": 64309450.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030033,
+    "name": "챕터3",
+    "stageName": "4-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120234
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 82081.54,
+    "defUpPercent": 82081.54,
+    "mHPUpPercent": 51447556.0,
+    "bossAtkUpPercent": 123122.305,
+    "bossDefUpPercent": 123122.305,
+    "bossMHPUpPercent": 77171336.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030034,
+    "name": "챕터3",
+    "stageName": "4-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120235
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 94393.77,
+    "defUpPercent": 94393.77,
+    "mHPUpPercent": 61737068.0,
+    "bossAtkUpPercent": 141590.66,
+    "bossDefUpPercent": 141590.66,
+    "bossMHPUpPercent": 92605610.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030035,
+    "name": "챕터3",
+    "stageName": "4-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120236
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 108552.836,
+    "defUpPercent": 108552.836,
+    "mHPUpPercent": 74084480.0,
+    "bossAtkUpPercent": 162829.25,
+    "bossDefUpPercent": 162829.25,
+    "bossMHPUpPercent": 111126730.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030036,
+    "name": "챕터3",
+    "stageName": "4-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120237
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 124835.76,
+    "defUpPercent": 124835.76,
+    "mHPUpPercent": 88901380.0,
+    "bossAtkUpPercent": 187253.64,
+    "bossDefUpPercent": 187253.64,
+    "bossMHPUpPercent": 133352070.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030037,
+    "name": "챕터3",
+    "stageName": "4-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120238
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 143561.12,
+    "defUpPercent": 143561.12,
+    "mHPUpPercent": 106681656.0,
+    "bossAtkUpPercent": 215341.69,
+    "bossDefUpPercent": 215341.69,
+    "bossMHPUpPercent": 160022480.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030038,
+    "name": "챕터3",
+    "stageName": "4-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120239
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 165095.3,
+    "defUpPercent": 165095.3,
+    "mHPUpPercent": 128017980.0,
+    "bossAtkUpPercent": 247642.94,
+    "bossDefUpPercent": 247642.94,
+    "bossMHPUpPercent": 192026980.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030039,
+    "name": "챕터3",
+    "stageName": "4-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120240
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 189859.6,
+    "defUpPercent": 189859.6,
+    "mHPUpPercent": 153621580.0,
+    "bossAtkUpPercent": 284789.38,
+    "bossDefUpPercent": 284789.38,
+    "bossMHPUpPercent": 230432380.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030040,
+    "name": "챕터3",
+    "stageName": "4-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120241
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140702
+    ],
+    "atkUpPercent": 218338.53,
+    "defUpPercent": 218338.53,
+    "mHPUpPercent": 184345900.0,
+    "bossAtkUpPercent": 327507.78,
+    "bossDefUpPercent": 327507.78,
+    "bossMHPUpPercent": 276518850.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030041,
+    "name": "챕터3",
+    "stageName": "5-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120242
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 251089.31,
+    "defUpPercent": 251089.31,
+    "mHPUpPercent": 221215090.0,
+    "bossAtkUpPercent": 376633.97,
+    "bossDefUpPercent": 376633.97,
+    "bossMHPUpPercent": 331822620.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030042,
+    "name": "챕터3",
+    "stageName": "5-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120243
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 288752.7,
+    "defUpPercent": 288752.7,
+    "mHPUpPercent": 265458100.0,
+    "bossAtkUpPercent": 433129.06,
+    "bossDefUpPercent": 433129.06,
+    "bossMHPUpPercent": 398187140.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030043,
+    "name": "챕터3",
+    "stageName": "5-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120244
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 332065.6,
+    "defUpPercent": 332065.6,
+    "mHPUpPercent": 318549730.0,
+    "bossAtkUpPercent": 498098.4,
+    "bossDefUpPercent": 498098.4,
+    "bossMHPUpPercent": 477824580.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030044,
+    "name": "챕터3",
+    "stageName": "5-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120245
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 381875.44,
+    "defUpPercent": 381875.44,
+    "mHPUpPercent": 382259650.0,
+    "bossAtkUpPercent": 572813.2,
+    "bossDefUpPercent": 572813.2,
+    "bossMHPUpPercent": 573389500.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030045,
+    "name": "챕터3",
+    "stageName": "5-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120246
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 439156.75,
+    "defUpPercent": 439156.75,
+    "mHPUpPercent": 458711580.0,
+    "bossAtkUpPercent": 658735.1,
+    "bossDefUpPercent": 658735.1,
+    "bossMHPUpPercent": 688067400.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030046,
+    "name": "챕터3",
+    "stageName": "5-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120247
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 505030.28,
+    "defUpPercent": 505030.28,
+    "mHPUpPercent": 550453900.0,
+    "bossAtkUpPercent": 757545.44,
+    "bossDefUpPercent": 757545.44,
+    "bossMHPUpPercent": 825680900.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030047,
+    "name": "챕터3",
+    "stageName": "5-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120248
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 580784.8,
+    "defUpPercent": 580784.8,
+    "mHPUpPercent": 660544700.0,
+    "bossAtkUpPercent": 871177.25,
+    "bossDefUpPercent": 871177.25,
+    "bossMHPUpPercent": 990817000.0,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030048,
+    "name": "챕터3",
+    "stageName": "5-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120249
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 667902.56,
+    "defUpPercent": 667902.56,
+    "mHPUpPercent": 792653630.0,
+    "bossAtkUpPercent": 1001853.8,
+    "bossDefUpPercent": 1001853.8,
+    "bossMHPUpPercent": 1.1889805E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030049,
+    "name": "챕터3",
+    "stageName": "5-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120250
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 768087.94,
+    "defUpPercent": 768087.94,
+    "mHPUpPercent": 951184400.0,
+    "bossAtkUpPercent": 1152131.9,
+    "bossDefUpPercent": 1152131.9,
+    "bossMHPUpPercent": 1.4267766E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030050,
+    "name": "챕터3",
+    "stageName": "5-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120251
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140601
+    ],
+    "atkUpPercent": 883301.1,
+    "defUpPercent": 883301.1,
+    "mHPUpPercent": 1.1414212E+09,
+    "bossAtkUpPercent": 1324951.6,
+    "bossDefUpPercent": 1324951.6,
+    "bossMHPUpPercent": 1.7121318E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030051,
+    "name": "챕터3",
+    "stageName": "6-1",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120252
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1015796.3,
+    "defUpPercent": 1015796.3,
+    "mHPUpPercent": 1.3697055E+09,
+    "bossAtkUpPercent": 1523694.4,
+    "bossDefUpPercent": 1523694.4,
+    "bossMHPUpPercent": 2.0545582E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030052,
+    "name": "챕터3",
+    "stageName": "6-2",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120253
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1168165.8,
+    "defUpPercent": 1168165.8,
+    "mHPUpPercent": 1.6436466E+09,
+    "bossAtkUpPercent": 1752248.6,
+    "bossDefUpPercent": 1752248.6,
+    "bossMHPUpPercent": 2.46547E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030053,
+    "name": "챕터3",
+    "stageName": "6-3",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120254
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1343390.6,
+    "defUpPercent": 1343390.6,
+    "mHPUpPercent": 1.9723759E+09,
+    "bossAtkUpPercent": 2015085.9,
+    "bossDefUpPercent": 2015085.9,
+    "bossMHPUpPercent": 2.9585638E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030054,
+    "name": "챕터3",
+    "stageName": "6-4",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120255
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1544899.1,
+    "defUpPercent": 1544899.1,
+    "mHPUpPercent": 2.366851E+09,
+    "bossAtkUpPercent": 2317348.8,
+    "bossDefUpPercent": 2317348.8,
+    "bossMHPUpPercent": 3.5502766E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030055,
+    "name": "챕터3",
+    "stageName": "6-5",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120256
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 1776634.0,
+    "defUpPercent": 1776634.0,
+    "mHPUpPercent": 2.8402212E+09,
+    "bossAtkUpPercent": 2664951.0,
+    "bossDefUpPercent": 2664951.0,
+    "bossMHPUpPercent": 4.260332E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030056,
+    "name": "챕터3",
+    "stageName": "6-6",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120257
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 2043129.1,
+    "defUpPercent": 2043129.1,
+    "mHPUpPercent": 3.4082655E+09,
+    "bossAtkUpPercent": 3064693.8,
+    "bossDefUpPercent": 3064693.8,
+    "bossMHPUpPercent": 5.1123983E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030057,
+    "name": "챕터3",
+    "stageName": "6-7",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120258
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 2349598.5,
+    "defUpPercent": 2349598.5,
+    "mHPUpPercent": 4.0899187E+09,
+    "bossAtkUpPercent": 3524397.8,
+    "bossDefUpPercent": 3524397.8,
+    "bossMHPUpPercent": 6.134878E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030058,
+    "name": "챕터3",
+    "stageName": "6-8",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120259
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 2702038.2,
+    "defUpPercent": 2702038.2,
+    "mHPUpPercent": 4.9079025E+09,
+    "bossAtkUpPercent": 4053057.5,
+    "bossDefUpPercent": 4053057.5,
+    "bossMHPUpPercent": 7.3618534E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030059,
+    "name": "챕터3",
+    "stageName": "6-9",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120260
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      -1
+    ],
+    "atkUpPercent": 3107344.0,
+    "defUpPercent": 3107344.0,
+    "mHPUpPercent": 5.889483E+09,
+    "bossAtkUpPercent": 4661016.0,
+    "bossDefUpPercent": 4661016.0,
+    "bossMHPUpPercent": 8.834224E+09,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  },
+  {
+    "id": 3030060,
+    "name": "챕터3",
+    "stageName": "6-10",
+    "assetDataPath": "Assets/Data/StageAssets/StageData_M_CO_Forest01_Night01_00.asset",
+    "spawnIds": [
+      120134,
+      120206,
+      120261
+    ],
+    "spawnPointCount": 4,
+    "spawnMaxCount": 20,
+    "spawnNextTime": 1.0,
+    "stageClearCount": 10,
+    "bossID": [
+      140602
+    ],
+    "atkUpPercent": 3573445.8,
+    "defUpPercent": 3573445.8,
+    "mHPUpPercent": 7.067379E+09,
+    "bossAtkUpPercent": 5360168.5,
+    "bossDefUpPercent": 5360168.5,
+    "bossMHPUpPercent": 1.060107E+10,
+    "stageDropListID": 5100001,
+    "stageBGMID": 8000002,
+    "bossStageBGMID": 8000003
+  }
+]

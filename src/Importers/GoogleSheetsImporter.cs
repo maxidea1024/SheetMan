@@ -25,6 +25,8 @@ namespace SheetMan.Importers
 
         private RawModel _model;
 
+        private SheetImportSettings _settings;
+
         protected override void Import(
             SourceContext context, RecipeModel.SourceRecipeGroup.GoogleSheetsRecipe googleSheets)
         {
@@ -51,9 +53,10 @@ namespace SheetMan.Importers
             }
 
             _model = context.Model;
+            _settings = SheetImportSettings.From(googleSheets, context.Section);
 
             var sheetsService = AcquireSheetsService(googleSheets);
-            ImportSheets(sheetsService, googleSheets);
+            ImportSheets(sheetsService, googleSheets, context.Section);
         }
 
         private SheetsService AcquireSheetsService(RecipeModel.SourceRecipeGroup.GoogleSheetsRecipe recipe)
@@ -87,7 +90,8 @@ namespace SheetMan.Importers
             return sheetsService;
         }
 
-        private void ImportSheets(SheetsService sheetsService, RecipeModel.SourceRecipeGroup.GoogleSheetsRecipe recipe)
+        private void ImportSheets(
+            SheetsService sheetsService, RecipeModel.SourceRecipeGroup.GoogleSheetsRecipe recipe, string section)
         {
             var sheetsId = recipe.SheetsId;
             var request = sheetsService.Spreadsheets.Get(sheetsId);
@@ -109,6 +113,8 @@ namespace SheetMan.Importers
                 return;
             }
 
+            var sheetNamesSeen = new List<string>();
+
             foreach (var sheet in response.Sheets)
             {
                 string sheetTitle = sheet.Properties.Title.Trim();
@@ -116,6 +122,14 @@ namespace SheetMan.Importers
                 if (sheetTitle.StartsWith("#") || sheetTitle.StartsWith("//"))
                 {
                     Log.Warning($"Sheet `{sheetsTitle}.{sheetTitle}` is marked as excluded and is ignored.");
+                    continue;
+                }
+
+                sheetNamesSeen.Add(sheetTitle);
+
+                if (!_settings.Filter.Includes(sheetTitle))
+                {
+                    Log.Information($"Skipping sheet `{sheetsTitle}.{sheetTitle}`: the recipe does not ask for it.");
                     continue;
                 }
 
@@ -132,6 +146,7 @@ namespace SheetMan.Importers
 
                     RawSheet rawSheet = new RawSheet
                     {
+                        Layout = _settings.Layout,
                         Location = new Location
                         {
                             //Filename = spreadsheetsId,
@@ -195,6 +210,8 @@ namespace SheetMan.Importers
                         _model.Sheets.Add(rawSheet);
                 }
             }
+
+            _settings.Filter.ReportUnmatchedIncludes(section, sheetNamesSeen);
         }
 
         //https://webapps.stackexchange.com/questions/44473/link-to-a-cell-in-a-google-sheets-via-url

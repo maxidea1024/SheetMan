@@ -9,6 +9,7 @@ using SheetMan.Recipe;
 using System.Linq;
 using System.Globalization;
 using SheetMan.Sources;
+using Serilog;
 
 namespace SheetMan.Importers
 {
@@ -19,6 +20,14 @@ namespace SheetMan.Importers
 
         private string _currentFilename = "";
         private string _currentSheetName = "";
+
+        private SheetImportSettings _settings;
+
+        /// <summary>
+        /// Every sheet name the workbooks held, so an unmatched `IncludeSheets` entry can be
+        /// answered with what was actually there.
+        /// </summary>
+        private readonly List<string> _sheetNamesSeen = [];
 
         protected override void Import(SourceContext context, RecipeModel.SourceRecipeGroup.XlsxRecipe xlsx)
         {
@@ -32,6 +41,8 @@ namespace SheetMan.Importers
             }
 
             _model = context.Model;
+            _settings = SheetImportSettings.From(xlsx, context.Section);
+            _sheetNamesSeen.Clear();
 
             var fileExtensionPatterns = xlsx.FileExtensionPatterns.Split(";");
             if (fileExtensionPatterns == null || fileExtensionPatterns.Length == 0)
@@ -56,12 +67,24 @@ namespace SheetMan.Importers
                 if (filename.Contains("/#") || filename.Contains("\\#"))
                     continue;
 
+                // Excel's lock file for a workbook somebody has open: `~$Book.xlsx`, same
+                // extension and a few hundred bytes of nothing usable. Reading one throws,
+                // so leaving a workbook open in Excel used to fail the whole run - and the
+                // message named a file the author never created.
+                if (Path.GetFileName(filename).StartsWith("~$"))
+                {
+                    Log.Debug($"Skipping `{filename}`: an Excel lock file, not a workbook.");
+                    continue;
+                }
+
                 string fileExtensions = Path.GetExtension(filename).ToLowerInvariant();
                 if (!fileExtensionPatterns.Contains(fileExtensions))
                     continue;
 
                 ImportXlsx(filename);
             }
+
+            _settings.Filter.ReportUnmatchedIncludes(context.Section, _sheetNamesSeen);
         }
 
         private void ImportXlsx(string filename)
@@ -85,6 +108,14 @@ namespace SheetMan.Importers
                 if (sheetName.StartsWith("#") || sheetName.StartsWith("//"))
                     continue;
 
+                _sheetNamesSeen.Add(sheetName);
+
+                if (!_settings.Filter.Includes(sheetName))
+                {
+                    Log.Information($"Skipping sheet `{sheetName}` of `{filename}`: the recipe does not ask for it.");
+                    continue;
+                }
+
                 ImportSheet(sheet, filename, sheetName);
             }
         }
@@ -98,6 +129,7 @@ namespace SheetMan.Importers
 
             RawSheet rawSheet = new RawSheet
             {
+                Layout = _settings.Layout,
                 Location = new Location
                 {
                     Filename = filename,

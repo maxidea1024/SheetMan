@@ -49,9 +49,17 @@ namespace SheetMan.CodeGeneration
                 // over with an empty string in somebody's generated header.
                 StrictVariables = true,
 
-                // Templates are written for a fixed model, so there is no reason to allow
-                // the recursion that a runaway `include` would need.
-                LoopLimit = 100_000,
+                // A backstop against a template of ours looping forever, and nothing else.
+                //
+                // It used to be 100,000, which is not a bound on template bugs but a bound on
+                // the data: a template that walks rows does one iteration per row, so the
+                // limit was really a cap on how many rows a project may have. A real workbook
+                // with a 103,398-row table hit it, and what it produced was a template error
+                // naming a line number - which reads as a bug in this repository and is not
+                // one. Nothing here loops over anything a template author controls, so the
+                // number only has to be past what any sheet can reach; a genuinely runaway
+                // loop still stops rather than hanging.
+                LoopLimit = int.MaxValue,
 
                 // So a template can `include` the pieces several pages share - a page head,
                 // a footer - instead of each carrying its own copy.

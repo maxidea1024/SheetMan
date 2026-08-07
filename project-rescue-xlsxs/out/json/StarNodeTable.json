@@ -1,0 +1,2122 @@
+[
+  {
+    "id": 4001001,
+    "name": "Atk1",
+    "infuluenceStep": 0,
+    "starNodeName": "별자리1",
+    "statType": 2,
+    "starNodeValue": 2,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Vagabond01"
+  },
+  {
+    "id": 4001002,
+    "name": "Def1",
+    "infuluenceStep": 0,
+    "starNodeName": "별자리1",
+    "statType": 3,
+    "starNodeValue": 2,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001001
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Vagabond01"
+  },
+  {
+    "id": 4001003,
+    "name": "MHP1",
+    "infuluenceStep": 0,
+    "starNodeName": "별자리1",
+    "statType": 13,
+    "starNodeValue": 12,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001002
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Vagabond01"
+  },
+  {
+    "id": 4001004,
+    "name": "Atk2",
+    "infuluenceStep": 0,
+    "starNodeName": "별자리1",
+    "statType": 2,
+    "starNodeValue": 4,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001002
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Vagabond01"
+  },
+  {
+    "id": 4001005,
+    "name": "Def2",
+    "infuluenceStep": 0,
+    "starNodeName": "별자리1",
+    "statType": 3,
+    "starNodeValue": 4,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001003
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Vagabond01"
+  },
+  {
+    "id": 4001006,
+    "name": "MHP2",
+    "infuluenceStep": 0,
+    "starNodeName": "별자리1",
+    "statType": 13,
+    "starNodeValue": 24,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001004
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Vagabond01"
+  },
+  {
+    "id": 4001007,
+    "name": "Atk3",
+    "infuluenceStep": 0,
+    "starNodeName": "별자리1",
+    "statType": 2,
+    "starNodeValue": 6,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001005
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Vagabond01"
+  },
+  {
+    "id": 4001008,
+    "name": "Def3",
+    "infuluenceStep": 0,
+    "starNodeName": "별자리1",
+    "statType": 3,
+    "starNodeValue": 6,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001006
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Vagabond01"
+  },
+  {
+    "id": 4001009,
+    "name": "MHP3",
+    "infuluenceStep": 0,
+    "starNodeName": "별자리1",
+    "statType": 13,
+    "starNodeValue": 36,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001007,
+      4001008
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Vagabond01"
+  },
+  {
+    "id": 4001010,
+    "name": "Atk1",
+    "infuluenceStep": 1,
+    "starNodeName": "별자리2",
+    "statType": 2,
+    "starNodeValue": 3,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Shadowbane01"
+  },
+  {
+    "id": 4001011,
+    "name": "Def1",
+    "infuluenceStep": 1,
+    "starNodeName": "별자리2",
+    "statType": 3,
+    "starNodeValue": 3,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001010
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Shadowbane01"
+  },
+  {
+    "id": 4001012,
+    "name": "MHP1",
+    "infuluenceStep": 1,
+    "starNodeName": "별자리2",
+    "statType": 13,
+    "starNodeValue": 16,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001011
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Shadowbane01"
+  },
+  {
+    "id": 4001013,
+    "name": "Atk2",
+    "infuluenceStep": 1,
+    "starNodeName": "별자리2",
+    "statType": 2,
+    "starNodeValue": 5,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001012
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Shadowbane01"
+  },
+  {
+    "id": 4001014,
+    "name": "Def2",
+    "infuluenceStep": 1,
+    "starNodeName": "별자리2",
+    "statType": 3,
+    "starNodeValue": 5,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001013
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Shadowbane01"
+  },
+  {
+    "id": 4001015,
+    "name": "MHP2",
+    "infuluenceStep": 1,
+    "starNodeName": "별자리2",
+    "statType": 13,
+    "starNodeValue": 32,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001011
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Shadowbane01"
+  },
+  {
+    "id": 4001016,
+    "name": "Atk3",
+    "infuluenceStep": 1,
+    "starNodeName": "별자리2",
+    "statType": 2,
+    "starNodeValue": 8,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001015
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Shadowbane01"
+  },
+  {
+    "id": 4001017,
+    "name": "Def3",
+    "infuluenceStep": 1,
+    "starNodeName": "별자리2",
+    "statType": 3,
+    "starNodeValue": 8,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001016
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Shadowbane01"
+  },
+  {
+    "id": 4001018,
+    "name": "MHP3",
+    "infuluenceStep": 1,
+    "starNodeName": "별자리2",
+    "statType": 13,
+    "starNodeValue": 49,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001017
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Shadowbane01"
+  },
+  {
+    "id": 4001019,
+    "name": "Atk1",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 2,
+    "starNodeValue": 4,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001020,
+    "name": "Def1",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 6,
+    "starNodeValue": 0,
+    "starNodeRate": 0.46,
+    "unlockCondition": [
+      4001019
+    ],
+    "description": "치명타 확률이 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001021,
+    "name": "MHP1",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 7,
+    "starNodeValue": 0,
+    "starNodeRate": 3.7,
+    "unlockCondition": [
+      4001020
+    ],
+    "description": "치명타 피해가 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001022,
+    "name": "Atk2",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 2,
+    "starNodeValue": 7,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001021
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001023,
+    "name": "Def2",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 6,
+    "starNodeValue": 0,
+    "starNodeRate": 0.6,
+    "unlockCondition": [
+      4001021
+    ],
+    "description": "치명타 확률이 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001024,
+    "name": "MHP2",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 7,
+    "starNodeValue": 0,
+    "starNodeRate": 4.8,
+    "unlockCondition": [
+      4001023
+    ],
+    "description": "치명타 피해가 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001025,
+    "name": "Atk3",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 2,
+    "starNodeValue": 11,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001024
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001026,
+    "name": "Def3",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 6,
+    "starNodeValue": 0,
+    "starNodeRate": 0.74,
+    "unlockCondition": [
+      4001025
+    ],
+    "description": "치명타 확률이 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001027,
+    "name": "MHP3",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 7,
+    "starNodeValue": 0,
+    "starNodeRate": 6.0,
+    "unlockCondition": [
+      4001026
+    ],
+    "description": "치명타 피해가 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001028,
+    "name": "Atk4",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 2,
+    "starNodeValue": 15,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001025
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001029,
+    "name": "Def4",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 6,
+    "starNodeValue": 0,
+    "starNodeRate": 0.88,
+    "unlockCondition": [
+      4001028
+    ],
+    "description": "치명타 확률이 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001030,
+    "name": "MHP4",
+    "infuluenceStep": 2,
+    "starNodeName": "별자리3",
+    "statType": 7,
+    "starNodeValue": 0,
+    "starNodeRate": 7.1,
+    "unlockCondition": [
+      4001029
+    ],
+    "description": "치명타 피해가 증가합니다.",
+    "iconPath": "Phedas01"
+  },
+  {
+    "id": 4001031,
+    "name": "Atk1",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 3,
+    "starNodeValue": 5,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001032,
+    "name": "Def1",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 13,
+    "starNodeValue": 30,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001031
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001033,
+    "name": "MHP1",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 5,
+    "starNodeValue": 0,
+    "starNodeRate": 0.5,
+    "unlockCondition": [
+      4001032
+    ],
+    "description": "회피율이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001034,
+    "name": "Atk2",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 3,
+    "starNodeValue": 10,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001032
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001035,
+    "name": "Def2",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 13,
+    "starNodeValue": 59,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001033
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001036,
+    "name": "MHP2",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 5,
+    "starNodeValue": 0,
+    "starNodeRate": 0.64,
+    "unlockCondition": [
+      4001034
+    ],
+    "description": "회피율이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001037,
+    "name": "Atk3",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 3,
+    "starNodeValue": 15,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001033
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001038,
+    "name": "Def3",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 13,
+    "starNodeValue": 89,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001034
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001039,
+    "name": "MHP3",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 5,
+    "starNodeValue": 0,
+    "starNodeRate": 0.79,
+    "unlockCondition": [
+      4001037
+    ],
+    "description": "회피율이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001040,
+    "name": "Atk4",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 3,
+    "starNodeValue": 20,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001038
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001041,
+    "name": "Def4",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 13,
+    "starNodeValue": 118,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001039
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001042,
+    "name": "MHP4",
+    "infuluenceStep": 3,
+    "starNodeName": "별자리4",
+    "statType": 5,
+    "starNodeValue": 0,
+    "starNodeRate": 0.94,
+    "unlockCondition": [
+      4001040
+    ],
+    "description": "회피율이 증가합니다.",
+    "iconPath": "Saintwest01"
+  },
+  {
+    "id": 4001043,
+    "name": "Atk1",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 8,
+    "starNodeValue": 0,
+    "starNodeRate": 0.53,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "막기 확률이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001044,
+    "name": "Def1",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 9,
+    "starNodeValue": 0,
+    "starNodeRate": 4.4,
+    "unlockCondition": [
+      4001043
+    ],
+    "description": "막기 피해 감소량이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001045,
+    "name": "MHP1",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 13,
+    "starNodeValue": 40,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001043
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001046,
+    "name": "Atk2",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 8,
+    "starNodeValue": 0,
+    "starNodeRate": 0.69,
+    "unlockCondition": [
+      4001044,
+      4001045
+    ],
+    "description": "막기 확률이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001047,
+    "name": "Def2",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 9,
+    "starNodeValue": 0,
+    "starNodeRate": 5.8,
+    "unlockCondition": [
+      4001043
+    ],
+    "description": "막기 피해 감소량이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001048,
+    "name": "MHP2",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 13,
+    "starNodeValue": 80,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001047
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001049,
+    "name": "Atk3",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 8,
+    "starNodeValue": 0,
+    "starNodeRate": 0.84,
+    "unlockCondition": [
+      4001048
+    ],
+    "description": "막기 확률이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001050,
+    "name": "Def3",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 9,
+    "starNodeValue": 0,
+    "starNodeRate": 7.1,
+    "unlockCondition": [
+      4001048
+    ],
+    "description": "막기 피해 감소량이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001051,
+    "name": "MHP3",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 13,
+    "starNodeValue": 120,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001050
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001052,
+    "name": "Atk4",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 8,
+    "starNodeValue": 0,
+    "starNodeRate": 1.0,
+    "unlockCondition": [
+      4001051
+    ],
+    "description": "막기 확률이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001053,
+    "name": "Def4",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 9,
+    "starNodeValue": 0,
+    "starNodeRate": 8.4,
+    "unlockCondition": [
+      4001050
+    ],
+    "description": "막기 피해 감소량이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001054,
+    "name": "MHP4",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 13,
+    "starNodeValue": 159,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001053
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001055,
+    "name": "Atk5",
+    "infuluenceStep": 4,
+    "starNodeName": "별자리5",
+    "statType": 8,
+    "starNodeValue": 0,
+    "starNodeRate": 1.16,
+    "unlockCondition": [
+      4001054
+    ],
+    "description": "막기 확률이 증가합니다.",
+    "iconPath": "Marinos01"
+  },
+  {
+    "id": 4001056,
+    "name": "Atk1",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 11,
+    "starNodeValue": 0,
+    "starNodeRate": 0.42,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "공격 속도가 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001057,
+    "name": "Def1",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 12,
+    "starNodeValue": 0,
+    "starNodeRate": 0.42,
+    "unlockCondition": [
+      4001056
+    ],
+    "description": "재사용 대기시간이 감소합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001058,
+    "name": "MHP1",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 4,
+    "starNodeValue": 7,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001057
+    ],
+    "description": "명중률이 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001059,
+    "name": "Atk2",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 11,
+    "starNodeValue": 0,
+    "starNodeRate": 0.55,
+    "unlockCondition": [
+      4001058
+    ],
+    "description": "공격 속도가 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001060,
+    "name": "Def2",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 12,
+    "starNodeValue": 0,
+    "starNodeRate": 0.55,
+    "unlockCondition": [
+      4001059
+    ],
+    "description": "재사용 대기시간이 감소합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001061,
+    "name": "MHP2",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 4,
+    "starNodeValue": 13,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001060
+    ],
+    "description": "명중률이 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001062,
+    "name": "Atk3",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 11,
+    "starNodeValue": 0,
+    "starNodeRate": 0.67,
+    "unlockCondition": [
+      4001061
+    ],
+    "description": "공격 속도가 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001063,
+    "name": "Def3",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 12,
+    "starNodeValue": 0,
+    "starNodeRate": 0.67,
+    "unlockCondition": [
+      4001062
+    ],
+    "description": "재사용 대기시간이 감소합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001064,
+    "name": "MHP3",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 4,
+    "starNodeValue": 20,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001063
+    ],
+    "description": "명중률이 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001065,
+    "name": "Atk4",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 11,
+    "starNodeValue": 0,
+    "starNodeRate": 0.8,
+    "unlockCondition": [
+      4001064
+    ],
+    "description": "공격 속도가 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001066,
+    "name": "Def4",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 12,
+    "starNodeValue": 0,
+    "starNodeRate": 0.8,
+    "unlockCondition": [
+      4001065
+    ],
+    "description": "재사용 대기시간이 감소합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001067,
+    "name": "MHP4",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 4,
+    "starNodeValue": 27,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001066
+    ],
+    "description": "명중률이 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001068,
+    "name": "Atk5",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 11,
+    "starNodeValue": 0,
+    "starNodeRate": 0.92,
+    "unlockCondition": [
+      4001066
+    ],
+    "description": "공격 속도가 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001069,
+    "name": "Def5",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 12,
+    "starNodeValue": 0,
+    "starNodeRate": 0.92,
+    "unlockCondition": [
+      4001068
+    ],
+    "description": "재사용 대기시간이 감소합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001070,
+    "name": "MHP5",
+    "infuluenceStep": 5,
+    "starNodeName": "별자리6",
+    "statType": 4,
+    "starNodeValue": 34,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001069
+    ],
+    "description": "명중률이 증가합니다.",
+    "iconPath": "Lenombe01"
+  },
+  {
+    "id": 4001071,
+    "name": "Atk1",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 18,
+    "starNodeValue": 0,
+    "starNodeRate": 3.4,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "보스에게 주는 피해가 증가합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001072,
+    "name": "Def1",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 20,
+    "starNodeValue": 0,
+    "starNodeRate": 2.6,
+    "unlockCondition": [
+      4001071
+    ],
+    "description": "보스에게 받는 피해가 감소합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001073,
+    "name": "MHP1",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 2,
+    "starNodeValue": 12,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001071
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001074,
+    "name": "Atk2",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 18,
+    "starNodeValue": 0,
+    "starNodeRate": 4.5,
+    "unlockCondition": [
+      4001072
+    ],
+    "description": "보스에게 주는 피해가 증가합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001075,
+    "name": "Def2",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 20,
+    "starNodeValue": 0,
+    "starNodeRate": 3.4,
+    "unlockCondition": [
+      4001072
+    ],
+    "description": "보스에게 받는 피해가 감소합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001076,
+    "name": "MHP2",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 2,
+    "starNodeValue": 24,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001074
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001077,
+    "name": "Atk3",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 18,
+    "starNodeValue": 0,
+    "starNodeRate": 5.5,
+    "unlockCondition": [
+      4001075
+    ],
+    "description": "보스에게 주는 피해가 증가합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001078,
+    "name": "Def3",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 20,
+    "starNodeValue": 0,
+    "starNodeRate": 4.1,
+    "unlockCondition": [
+      4001076
+    ],
+    "description": "보스에게 받는 피해가 감소합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001079,
+    "name": "MHP3",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 2,
+    "starNodeValue": 36,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001077
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001080,
+    "name": "Atk4",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 18,
+    "starNodeValue": 0,
+    "starNodeRate": 6.5,
+    "unlockCondition": [
+      4001078
+    ],
+    "description": "보스에게 주는 피해가 증가합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001081,
+    "name": "Def4",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 20,
+    "starNodeValue": 0,
+    "starNodeRate": 4.9,
+    "unlockCondition": [
+      4001079
+    ],
+    "description": "보스에게 받는 피해가 감소합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001082,
+    "name": "MHP4",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 2,
+    "starNodeValue": 48,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001080,
+      4001081
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001083,
+    "name": "Atk5",
+    "infuluenceStep": 6,
+    "starNodeName": "별자리7",
+    "statType": 18,
+    "starNodeValue": 0,
+    "starNodeRate": 7.6,
+    "unlockCondition": [
+      4001082
+    ],
+    "description": "보스에게 주는 피해가 증가합니다.",
+    "iconPath": "Green01"
+  },
+  {
+    "id": 4001084,
+    "name": "Atk1",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 14,
+    "starNodeValue": 0,
+    "starNodeRate": 7.4,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "골드 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001085,
+    "name": "Def1",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 15,
+    "starNodeValue": 0,
+    "starNodeRate": 7.4,
+    "unlockCondition": [
+      4001084
+    ],
+    "description": "경험치 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001086,
+    "name": "MHP1",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 14,
+    "starNodeValue": 0,
+    "starNodeRate": 7.4,
+    "unlockCondition": [
+      4001084
+    ],
+    "description": "골드 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001087,
+    "name": "Atk2",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 15,
+    "starNodeValue": 0,
+    "starNodeRate": 9.6,
+    "unlockCondition": [
+      4001085
+    ],
+    "description": "경험치 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001088,
+    "name": "Def2",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 14,
+    "starNodeValue": 0,
+    "starNodeRate": 9.6,
+    "unlockCondition": [
+      4001086
+    ],
+    "description": "골드 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001089,
+    "name": "MHP2",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 15,
+    "starNodeValue": 0,
+    "starNodeRate": 9.6,
+    "unlockCondition": [
+      4001087
+    ],
+    "description": "경험치 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001090,
+    "name": "Atk2",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 14,
+    "starNodeValue": 0,
+    "starNodeRate": 9.6,
+    "unlockCondition": [
+      4001088
+    ],
+    "description": "골드 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001091,
+    "name": "Def2",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 15,
+    "starNodeValue": 0,
+    "starNodeRate": 9.6,
+    "unlockCondition": [
+      4001089
+    ],
+    "description": "경험치 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001092,
+    "name": "MHP2",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 14,
+    "starNodeValue": 0,
+    "starNodeRate": 9.6,
+    "unlockCondition": [
+      4001090
+    ],
+    "description": "골드 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001093,
+    "name": "Atk3",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 15,
+    "starNodeValue": 0,
+    "starNodeRate": 11.8,
+    "unlockCondition": [
+      4001091
+    ],
+    "description": "경험치 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001094,
+    "name": "Def3",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 14,
+    "starNodeValue": 0,
+    "starNodeRate": 11.8,
+    "unlockCondition": [
+      4001092
+    ],
+    "description": "골드 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001095,
+    "name": "MHP3",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 15,
+    "starNodeValue": 0,
+    "starNodeRate": 11.8,
+    "unlockCondition": [
+      4001093,
+      4001094
+    ],
+    "description": "경험치 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001096,
+    "name": "Atk4",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 14,
+    "starNodeValue": 0,
+    "starNodeRate": 14.0,
+    "unlockCondition": [
+      4001095
+    ],
+    "description": "골드 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001097,
+    "name": "Def4",
+    "infuluenceStep": 7,
+    "starNodeName": "별자리8",
+    "statType": 15,
+    "starNodeValue": 0,
+    "starNodeRate": 14.0,
+    "unlockCondition": [
+      4001095
+    ],
+    "description": "경험치 획득량이 증가합니다.",
+    "iconPath": "Frosti01"
+  },
+  {
+    "id": 4001098,
+    "name": "Atk1",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 16,
+    "starNodeValue": 0,
+    "starNodeRate": 5.9,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "방치 골드 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001099,
+    "name": "Def1",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 17,
+    "starNodeValue": 0,
+    "starNodeRate": 5.9,
+    "unlockCondition": [
+      4001098
+    ],
+    "description": "방치 경험치 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001100,
+    "name": "MHP1",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 16,
+    "starNodeValue": 0,
+    "starNodeRate": 5.9,
+    "unlockCondition": [
+      4001099
+    ],
+    "description": "방치 골드 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001101,
+    "name": "Atk2",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 17,
+    "starNodeValue": 0,
+    "starNodeRate": 7.6,
+    "unlockCondition": [
+      4001100
+    ],
+    "description": "방치 경험치 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001102,
+    "name": "Def2",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 16,
+    "starNodeValue": 0,
+    "starNodeRate": 7.6,
+    "unlockCondition": [
+      4001101
+    ],
+    "description": "방치 골드 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001103,
+    "name": "MHP2",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 17,
+    "starNodeValue": 0,
+    "starNodeRate": 7.6,
+    "unlockCondition": [
+      4001102
+    ],
+    "description": "방치 경험치 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001104,
+    "name": "Atk3",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 16,
+    "starNodeValue": 0,
+    "starNodeRate": 9.4,
+    "unlockCondition": [
+      4001103
+    ],
+    "description": "방치 골드 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001105,
+    "name": "Def3",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 17,
+    "starNodeValue": 0,
+    "starNodeRate": 9.4,
+    "unlockCondition": [
+      4001104
+    ],
+    "description": "방치 경험치 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001106,
+    "name": "MHP3",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 16,
+    "starNodeValue": 0,
+    "starNodeRate": 9.4,
+    "unlockCondition": [
+      4001105
+    ],
+    "description": "방치 골드 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001107,
+    "name": "Atk4",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 17,
+    "starNodeValue": 0,
+    "starNodeRate": 11.2,
+    "unlockCondition": [
+      4001106
+    ],
+    "description": "방치 경험치 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001108,
+    "name": "Def4",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 16,
+    "starNodeValue": 0,
+    "starNodeRate": 11.2,
+    "unlockCondition": [
+      4001105
+    ],
+    "description": "방치 골드 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001109,
+    "name": "MHP4",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 17,
+    "starNodeValue": 0,
+    "starNodeRate": 11.2,
+    "unlockCondition": [
+      4001108
+    ],
+    "description": "방치 경험치 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001110,
+    "name": "Atk5",
+    "infuluenceStep": 8,
+    "starNodeName": "별자리9",
+    "statType": 16,
+    "starNodeValue": 0,
+    "starNodeRate": 12.9,
+    "unlockCondition": [
+      4001109
+    ],
+    "description": "방치 골드 획득량이 증가합니다.",
+    "iconPath": "Estoris01"
+  },
+  {
+    "id": 4001111,
+    "name": "Atk1",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 2,
+    "starNodeValue": 30,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001112,
+    "name": "Def1",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 6,
+    "starNodeValue": 0,
+    "starNodeRate": 0.69,
+    "unlockCondition": [
+      4001111
+    ],
+    "description": "치명타 확률이 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001113,
+    "name": "MHP1",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 7,
+    "starNodeValue": 0,
+    "starNodeRate": 6.2,
+    "unlockCondition": [
+      4001112
+    ],
+    "description": "치명타 피해가 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001114,
+    "name": "Atk2",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 11,
+    "starNodeValue": 0,
+    "starNodeRate": 0.67,
+    "unlockCondition": [
+      4001113
+    ],
+    "description": "공격 속도가 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001115,
+    "name": "Def2",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 2,
+    "starNodeValue": 60,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001114
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001116,
+    "name": "MHP2",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 6,
+    "starNodeValue": 0,
+    "starNodeRate": 0.89,
+    "unlockCondition": [
+      4001115
+    ],
+    "description": "치명타 확률이 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001117,
+    "name": "Atk3",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 7,
+    "starNodeValue": 0,
+    "starNodeRate": 10.0,
+    "unlockCondition": [
+      4001116
+    ],
+    "description": "치명타 피해가 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001118,
+    "name": "Def3",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 11,
+    "starNodeValue": 0,
+    "starNodeRate": 0.83,
+    "unlockCondition": [
+      4001117
+    ],
+    "description": "공격 속도가 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001119,
+    "name": "MHP3",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 2,
+    "starNodeValue": 89,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001118
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001120,
+    "name": "Atk4",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 6,
+    "starNodeValue": 0,
+    "starNodeRate": 1.31,
+    "unlockCondition": [
+      4001119
+    ],
+    "description": "치명타 확률이 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001121,
+    "name": "Def4",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 7,
+    "starNodeValue": 0,
+    "starNodeRate": 11.9,
+    "unlockCondition": [
+      4001120
+    ],
+    "description": "치명타 피해가 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001122,
+    "name": "MHP4",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 11,
+    "starNodeValue": 0,
+    "starNodeRate": 0.98,
+    "unlockCondition": [
+      4001121
+    ],
+    "description": "공격 속도가 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001123,
+    "name": "Atk5",
+    "infuluenceStep": 9,
+    "starNodeName": "별자리10",
+    "statType": 2,
+    "starNodeValue": 149,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001122
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Brunn01"
+  },
+  {
+    "id": 4001124,
+    "name": "Atk1",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 3,
+    "starNodeValue": 40,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001125,
+    "name": "Def1",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 13,
+    "starNodeValue": 241,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001124
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001126,
+    "name": "MHP1",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 5,
+    "starNodeValue": 0,
+    "starNodeRate": 0.72,
+    "unlockCondition": [
+      4001125
+    ],
+    "description": "회피율이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001127,
+    "name": "Atk2",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 8,
+    "starNodeValue": 0,
+    "starNodeRate": 0.94,
+    "unlockCondition": [
+      4001126
+    ],
+    "description": "막기 확률이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001128,
+    "name": "Def2",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 9,
+    "starNodeValue": 0,
+    "starNodeRate": 8.6,
+    "unlockCondition": [
+      4001127
+    ],
+    "description": "막기 피해 감소량이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001129,
+    "name": "MHP2",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 3,
+    "starNodeValue": 80,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001126
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001130,
+    "name": "Atk3",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 13,
+    "starNodeValue": 724,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001124
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001131,
+    "name": "Def3",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 5,
+    "starNodeValue": 0,
+    "starNodeRate": 1.15,
+    "unlockCondition": [
+      4001130
+    ],
+    "description": "회피율이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001132,
+    "name": "MHP3",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 8,
+    "starNodeValue": 0,
+    "starNodeRate": 1.15,
+    "unlockCondition": [
+      4001131
+    ],
+    "description": "막기 확률이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001133,
+    "name": "Atk4",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 9,
+    "starNodeValue": 0,
+    "starNodeRate": 12.5,
+    "unlockCondition": [
+      4001132
+    ],
+    "description": "막기 피해 감소량이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001134,
+    "name": "Def4",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 3,
+    "starNodeValue": 161,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001124
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001135,
+    "name": "MHP4",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 13,
+    "starNodeValue": 965,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001134
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001136,
+    "name": "Atk5",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 5,
+    "starNodeValue": 0,
+    "starNodeRate": 1.58,
+    "unlockCondition": [
+      4001135
+    ],
+    "description": "회피율이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001137,
+    "name": "Def5",
+    "infuluenceStep": 10,
+    "starNodeName": "별자리11",
+    "statType": 8,
+    "starNodeValue": 0,
+    "starNodeRate": 1.58,
+    "unlockCondition": [
+      4001136
+    ],
+    "description": "막기 확률이 증가합니다.",
+    "iconPath": "Wasted01"
+  },
+  {
+    "id": 4001138,
+    "name": "Atk1",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 2,
+    "starNodeValue": 54,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      -1
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001139,
+    "name": "Def1",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 3,
+    "starNodeValue": 54,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001138
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001140,
+    "name": "MHP1",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 13,
+    "starNodeValue": 326,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001139
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001141,
+    "name": "Atk2",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 18,
+    "starNodeValue": 0,
+    "starNodeRate": 6.0,
+    "unlockCondition": [
+      4001140
+    ],
+    "description": "보스에게 주는 피해가 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001142,
+    "name": "Def2",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 14,
+    "starNodeValue": 0,
+    "starNodeRate": 12.1,
+    "unlockCondition": [
+      4001141
+    ],
+    "description": "골드 획득량이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001143,
+    "name": "MHP2",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 2,
+    "starNodeValue": 109,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001142
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001144,
+    "name": "Atk3",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 3,
+    "starNodeValue": 163,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001143
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001145,
+    "name": "Def3",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 13,
+    "starNodeValue": 977,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001144
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001146,
+    "name": "MHP3",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 18,
+    "starNodeValue": 0,
+    "starNodeRate": 7.4,
+    "unlockCondition": [
+      4001145
+    ],
+    "description": "보스에게 주는 피해가 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001147,
+    "name": "Atk4",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 14,
+    "starNodeValue": 0,
+    "starNodeRate": 17.6,
+    "unlockCondition": [
+      4001146
+    ],
+    "description": "골드 획득량이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001148,
+    "name": "Def4",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 2,
+    "starNodeValue": 217,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001146
+    ],
+    "description": "영웅의 공격력이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001149,
+    "name": "MHP4",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 3,
+    "starNodeValue": 217,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001147,
+      4001148
+    ],
+    "description": "영웅의 방어력이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001150,
+    "name": "Atk5",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 13,
+    "starNodeValue": 1629,
+    "starNodeRate": 0.0,
+    "unlockCondition": [
+      4001148
+    ],
+    "description": "영웅의 최대 체력이 증가합니다.",
+    "iconPath": "Accor01"
+  },
+  {
+    "id": 4001151,
+    "name": "Def5",
+    "infuluenceStep": 11,
+    "starNodeName": "별자리12",
+    "statType": 18,
+    "starNodeValue": 0,
+    "starNodeRate": 10.2,
+    "unlockCondition": [
+      4001149,
+      4001150
+    ],
+    "description": "보스에게 주는 피해가 증가합니다.",
+    "iconPath": "Accor01"
+  }
+]

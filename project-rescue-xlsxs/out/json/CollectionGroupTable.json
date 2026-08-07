@@ -1,0 +1,287 @@
+[
+  {
+    "id": 1,
+    "name": "CollectionName.Hero",
+    "index": 1,
+    "characterList": [
+      10101,
+      11301,
+      11601,
+      11801,
+      12301
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 2,
+    "name": "CollectionName.King",
+    "index": 2,
+    "characterList": [
+      10201,
+      10401,
+      10501,
+      13001
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 3,
+    "name": "CollectionName.Lemonbe",
+    "index": 3,
+    "characterList": [
+      10601,
+      12001
+    ],
+    "prefabPath": "Assets/ART/GUI/Prefab/Popup/Slot/BookNationSelect/BookNationSelectSlot_Lemonbe.prefab"
+  },
+  {
+    "id": 4,
+    "name": "CollectionName.GreenLand",
+    "index": 4,
+    "characterList": [
+      10901,
+      11701,
+      12801,
+      12901
+    ],
+    "prefabPath": "Assets/ART/GUI/Prefab/Popup/Slot/BookNationSelect/BookNationSelectSlot_GreenLand.prefab"
+  },
+  {
+    "id": 5,
+    "name": "CollectionName.Estoris",
+    "index": 5,
+    "characterList": [
+      11101,
+      11901,
+      12101,
+      12501,
+      13301
+    ],
+    "prefabPath": "Assets/ART/GUI/Prefab/Popup/Slot/BookNationSelect/BookNationSelectSlot_Estoris.prefab"
+  },
+  {
+    "id": 6,
+    "name": "CollectionName.Saintwest",
+    "index": 6,
+    "characterList": [
+      10701,
+      11001,
+      12201,
+      12401,
+      12701,
+      13101,
+      13401
+    ],
+    "prefabPath": "Assets/ART/GUI/Prefab/Popup/Slot/BookNationSelect/BookNationSelectSlot_Saintwest.prefab"
+  },
+  {
+    "id": 7,
+    "name": "CollectionName.Frosti",
+    "index": 7,
+    "characterList": [
+      10801,
+      11501
+    ],
+    "prefabPath": "Assets/ART/GUI/Prefab/Popup/Slot/BookNationSelect/BookNationSelectSlot_Frosti.prefab"
+  },
+  {
+    "id": 8,
+    "name": "CollectionName.Marinos",
+    "index": 8,
+    "characterList": [
+      13201
+    ],
+    "prefabPath": "Assets/ART/GUI/Prefab/Popup/Slot/BookNationSelect/BookNationSelectSlot_Marinos.prefab"
+  },
+  {
+    "id": 9,
+    "name": "CollectionName.Brunn",
+    "index": 9,
+    "characterList": [
+      10301,
+      11201,
+      11401
+    ],
+    "prefabPath": "Assets/ART/GUI/Prefab/Popup/Slot/BookNationSelect/BookNationSelectSlot_Brunn.prefab"
+  },
+  {
+    "id": 10,
+    "name": "CollectionName.Phedas",
+    "index": 10,
+    "characterList": [
+      12601,
+      13501
+    ],
+    "prefabPath": "Assets/ART/GUI/Prefab/Popup/Slot/BookNationSelect/BookNationSelectSlot_Phedas.prefab"
+  },
+  {
+    "id": 11,
+    "name": "CollectionName.Wested",
+    "index": 11,
+    "characterList": [
+      -1
+    ],
+    "prefabPath": "Assets/ART/GUI/Prefab/Popup/Slot/BookNationSelect/BookNationSelectSlot_Wested.prefab"
+  },
+  {
+    "id": 12,
+    "name": "CollectionName.BlueDeer",
+    "index": 12,
+    "characterList": [
+      12009,
+      12109,
+      12209,
+      12309,
+      12409
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 13,
+    "name": "CollectionName.",
+    "index": 13,
+    "characterList": [
+      16009,
+      16109,
+      16209,
+      16309,
+      16409,
+      16509
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 14,
+    "name": "CollectionName.",
+    "index": 14,
+    "characterList": [
+      10109,
+      10209,
+      10309,
+      10409,
+      10509,
+      10609
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 15,
+    "name": "CollectionName.",
+    "index": 15,
+    "characterList": [
+      10709,
+      10809,
+      10909
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 16,
+    "name": "CollectionName.",
+    "index": 16,
+    "characterList": [
+      11009,
+      11109,
+      11209,
+      11309,
+      11409,
+      11509
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 17,
+    "name": "CollectionName.",
+    "index": 17,
+    "characterList": [
+      11609,
+      11709,
+      11809,
+      11909
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 18,
+    "name": "CollectionName.",
+    "index": 18,
+    "characterList": [
+      12509,
+      12609,
+      12709,
+      12809,
+      12909,
+      13009
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 19,
+    "name": "CollectionName.",
+    "index": 19,
+    "characterList": [
+      14809,
+      14909,
+      15009,
+      15109,
+      15209,
+      15309,
+      15409
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 20,
+    "name": "CollectionName.",
+    "index": 20,
+    "characterList": [
+      15509,
+      15609,
+      15709,
+      15809,
+      15909
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 21,
+    "name": "CollectionName.",
+    "index": 21,
+    "characterList": [
+      13109,
+      13209,
+      13309,
+      13409,
+      13509
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 22,
+    "name": "CollectionName.",
+    "index": 22,
+    "characterList": [
+      14209,
+      14309,
+      14409,
+      14509,
+      14609,
+      14709
+    ],
+    "prefabPath": "none"
+  },
+  {
+    "id": 23,
+    "name": "CollectionName.",
+    "index": 23,
+    "characterList": [
+      13609,
+      13709,
+      13809,
+      13909,
+      14009,
+      14109
+    ],
+    "prefabPath": "none"
+  }
+]

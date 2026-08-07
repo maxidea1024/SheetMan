@@ -1,0 +1,142 @@
+[
+  {
+    "iD": 91001,
+    "name": "ShortCut.StatGrowth",
+    "type": 4,
+    "subIndex": 0,
+    "description": "영웅 성장 탭으로 이동"
+  },
+  {
+    "iD": 91002,
+    "name": "ShortCut.Trait",
+    "type": 4,
+    "subIndex": 1,
+    "description": "특성 성장 탭으로 이동"
+  },
+  {
+    "iD": 91003,
+    "name": "ShortCut.Relic",
+    "type": 4,
+    "subIndex": 2,
+    "description": "유물 성장 탭으로 이동"
+  },
+  {
+    "iD": 91004,
+    "name": "ShortCut.Ooparts",
+    "type": 4,
+    "subIndex": 3,
+    "description": "오파츠 성장 탭으로 이동"
+  },
+  {
+    "iD": 92001,
+    "name": "ShortCut.Hero",
+    "type": 5,
+    "subIndex": 0,
+    "description": "영웅 관리 탭으로 이동"
+  },
+  {
+    "iD": 92002,
+    "name": "ShortCut.Artifact",
+    "type": 5,
+    "subIndex": 1,
+    "description": "아티팩트 탭으로 이동"
+  },
+  {
+    "iD": 92003,
+    "name": "ShortCut.Collection",
+    "type": 5,
+    "subIndex": 2,
+    "description": "도감 탭으로 이동"
+  },
+  {
+    "iD": 92004,
+    "name": "ShortCut.Battle",
+    "type": 1,
+    "subIndex": 0,
+    "description": "메인 전투 화면으로 이동"
+  },
+  {
+    "iD": 93001,
+    "name": "ShortCut.GoldDun",
+    "type": 3,
+    "subIndex": 0,
+    "description": "골드 던전 탭으로 이동"
+  },
+  {
+    "iD": 93002,
+    "name": "ShortCut.XPDun",
+    "type": 3,
+    "subIndex": 1,
+    "description": "경험치 던전 탭으로 이동"
+  },
+  {
+    "iD": 93003,
+    "name": "ShortCut.ArtifactDun",
+    "type": 3,
+    "subIndex": 2,
+    "description": "아티팩트 던전 탭으로 이동"
+  },
+  {
+    "iD": 93004,
+    "name": "ShortCut.EquipDun",
+    "type": 3,
+    "subIndex": 3,
+    "description": "장비 던전 탭으로 이동"
+  },
+  {
+    "iD": 93005,
+    "name": "ShortCut.RelicDun",
+    "type": 3,
+    "subIndex": 4,
+    "description": "유물 던전 탭으로 이동"
+  },
+  {
+    "iD": 94001,
+    "name": "ShortCut.SDAgency",
+    "type": 2,
+    "subIndex": 0,
+    "description": "none"
+  },
+  {
+    "iD": 94002,
+    "name": "ShortCut.SDHotel",
+    "type": 2,
+    "subIndex": 1,
+    "description": "none"
+  },
+  {
+    "iD": 94003,
+    "name": "ShortCut.SDGarden",
+    "type": 2,
+    "subIndex": 2,
+    "description": "none"
+  },
+  {
+    "iD": 94004,
+    "name": "ShortCut.SDDun",
+    "type": 2,
+    "subIndex": 3,
+    "description": "none"
+  },
+  {
+    "iD": 94005,
+    "name": "ShortCut.SDAlchemy",
+    "type": 2,
+    "subIndex": 4,
+    "description": "none"
+  },
+  {
+    "iD": 94006,
+    "name": "ShortCut.SDPub",
+    "type": 2,
+    "subIndex": 5,
+    "description": "none"
+  },
+  {
+    "iD": 95001,
+    "name": "ShortCut.HeroDetail",
+    "type": 6,
+    "subIndex": 0,
+    "description": "none"
+  }
+]

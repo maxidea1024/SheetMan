@@ -1,0 +1,699 @@
+[
+  {
+    "id": 521001,
+    "name": "ItemName.Mat.HeroCoinSR",
+    "itemName": "SR 영웅 조각",
+    "itemType": 2,
+    "type": 38,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "N 등급 영웅 조각",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521002,
+    "name": "ItemName.Mat.HeroCoinSSR",
+    "itemName": "SSR 영웅 조각",
+    "itemType": 2,
+    "type": 39,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "R 등급 영웅 조각",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521003,
+    "name": "ItemName.Mat.HeroCoinUR",
+    "itemName": "UR 영웅 조각",
+    "itemType": 2,
+    "type": 40,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "UR 등급 영웅 조각",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521004,
+    "name": "ItemName.Mat.ArtifactCoinSR",
+    "itemName": "SR 아티펙트 조각",
+    "itemType": 2,
+    "type": 58,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521005,
+    "name": "ItemName.Mat.ArtifactCoinSSR",
+    "itemName": "SSR 아티펙트 조각",
+    "itemType": 2,
+    "type": 59,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521006,
+    "name": "ItemName.Mat.ArtifactCoinUR",
+    "itemName": "UR 아티펙트 조각",
+    "itemType": 2,
+    "type": 60,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "None",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521007,
+    "name": "ItemName.Mat.EquipLevel_M",
+    "itemName": "장비 레벨업_근거리",
+    "itemType": 2,
+    "type": 46,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqLevelUp_M",
+    "dropPrefabPath": "None",
+    "description": "근거리 장비 레벨업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521008,
+    "name": "ItemName.Mat.EquipLevel_R",
+    "itemName": "장비 레벨업_원거리",
+    "itemType": 2,
+    "type": 47,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqLevelUp_R",
+    "dropPrefabPath": "None",
+    "description": "원거리 장비 레벨업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521009,
+    "name": "ItemName.Mat.EquipLevel_T",
+    "itemName": "장비 레벨업_탱커",
+    "itemType": 2,
+    "type": 48,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqLevelUp_T",
+    "dropPrefabPath": "None",
+    "description": "탱커 장비 레벨업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521010,
+    "name": "ItemName.Mat.EquipLevel_S",
+    "itemName": "장비 레벨업_서포트",
+    "itemType": 2,
+    "type": 49,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqLevelUp_S",
+    "dropPrefabPath": "None",
+    "description": "서포트 장비 레벨업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521011,
+    "name": "ItemName.Mat.EquipClass_M",
+    "itemName": "장비 성급업_근거리",
+    "itemType": 2,
+    "type": 50,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqClassUp_M",
+    "dropPrefabPath": "None",
+    "description": "근거리 장비 성급업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521012,
+    "name": "ItemName.Mat.EquipClass_R",
+    "itemName": "장비 성급업_원거리",
+    "itemType": 2,
+    "type": 51,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqClassUp_R",
+    "dropPrefabPath": "None",
+    "description": "원거리 장비 성급업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521013,
+    "name": "ItemName.Mat.EquipClass_T",
+    "itemName": "장비 성급업_탱커",
+    "itemType": 2,
+    "type": 52,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqClassUp_T",
+    "dropPrefabPath": "None",
+    "description": "탱커 장비 성급업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521014,
+    "name": "ItemName.Mat.EquipClass_S",
+    "itemName": "장비 성급업_서포트",
+    "itemType": 2,
+    "type": 53,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqClassUp_S",
+    "dropPrefabPath": "None",
+    "description": "서포트 장비 성급업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521015,
+    "name": "ItemName.Mat.EquipGrade_M",
+    "itemName": "장비 등급업_근거리",
+    "itemType": 2,
+    "type": 54,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqGradeUp_M",
+    "dropPrefabPath": "None",
+    "description": "근거리 장비 등급업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521016,
+    "name": "ItemName.Mat.EquipGrade_R",
+    "itemName": "장비 등급업_원거리",
+    "itemType": 2,
+    "type": 55,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqGradeUp_R",
+    "dropPrefabPath": "None",
+    "description": "원거리 장비 등급업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521017,
+    "name": "ItemName.Mat.EquipGrade_T",
+    "itemName": "장비 등급업_탱커",
+    "itemType": 2,
+    "type": 56,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqGradeUp_T",
+    "dropPrefabPath": "None",
+    "description": "탱커 장비 등급업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521018,
+    "name": "ItemName.Mat.EquipGrade_S",
+    "itemName": "장비 등급업_서포트",
+    "itemType": 2,
+    "type": 57,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "EqGradeUp_S",
+    "dropPrefabPath": "None",
+    "description": "서포트 장비 등급업 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521019,
+    "name": "ItemName.Mat.Training1",
+    "itemName": "훈련 재료1",
+    "itemType": 2,
+    "type": 33,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Training4",
+    "dropPrefabPath": "None",
+    "description": "현재 사용하지 않음",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521020,
+    "name": "ItemName.Mat.Training2",
+    "itemName": "훈련 재료2",
+    "itemType": 2,
+    "type": 64,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Training4",
+    "dropPrefabPath": "None",
+    "description": "현재 사용하지 않음",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521021,
+    "name": "ItemName.Mat.Training3",
+    "itemName": "훈련 재료3",
+    "itemType": 2,
+    "type": 65,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Training4",
+    "dropPrefabPath": "None",
+    "description": "현재 사용하지 않음",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521022,
+    "name": "ItemName.Mat.Training4",
+    "itemName": "훈련 재료4",
+    "itemType": 2,
+    "type": 66,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Training4",
+    "dropPrefabPath": "None",
+    "description": "[훈련소] 콘텐츠에 필요한 재료4",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521023,
+    "name": "ItemName.Alchemy1",
+    "itemName": "공통 연구 재료1",
+    "itemType": 2,
+    "type": 76,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Alchemy_all_1",
+    "dropPrefabPath": "None",
+    "description": "[연금술] 콘텐츠에 사용하는 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521024,
+    "name": "ItemName.Alchemy2",
+    "itemName": "공통 연구 재료2",
+    "itemType": 2,
+    "type": 77,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Alchemy_all_2",
+    "dropPrefabPath": "None",
+    "description": "[연금술] 콘텐츠에 사용하는 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521025,
+    "name": "ItemName.AlchemyCritDMG",
+    "itemName": "크리티컬 데미지 연구 재료",
+    "itemType": 2,
+    "type": 78,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Alchemy_CritDMG_1",
+    "dropPrefabPath": "None",
+    "description": "[연금술] 콘텐츠에 사용하는 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521026,
+    "name": "ItemName.AlchemyCritRATE",
+    "itemName": "크리티컬 확률 연구 재료",
+    "itemType": 2,
+    "type": 79,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Alchemy_CritDMG_2",
+    "dropPrefabPath": "None",
+    "description": "[연금술] 콘텐츠에 사용하는 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521027,
+    "name": "ItemName.AlchemyBlockRATE",
+    "itemName": "블록 확률 연구 재료",
+    "itemType": 2,
+    "type": 80,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Alchemy_CritDMG_3",
+    "dropPrefabPath": "None",
+    "description": "[연금술] 콘텐츠에 사용하는 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521028,
+    "name": "ItemName.AlchemyHIT",
+    "itemName": "명중률 연구 재료",
+    "itemType": 2,
+    "type": 81,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "Alchemy_CritDMG_4",
+    "dropPrefabPath": "None",
+    "description": "[연금술] 콘텐츠에 사용하는 재료",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521029,
+    "name": "ItemName.AlchemyAccelTicket",
+    "itemName": "연금술 가속권",
+    "itemType": 2,
+    "type": 82,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": -1,
+    "duration": -1,
+    "iconPath": "Accel_Ticket",
+    "dropPrefabPath": "None",
+    "description": "[연금술] SD 콘텐츠에서 사용하는 가속권 아이템",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521030,
+    "name": "ItemName.PubItem1",
+    "itemName": "광고 버프 아이템1",
+    "itemType": 2,
+    "type": 31,
+    "stackable": false,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "AD01",
+    "dropPrefabPath": "None",
+    "description": "[주점] SD 콘텐츠에서 획득하는 아이템",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521031,
+    "name": "ItemName.PubItem2",
+    "itemName": "광고 버프 아이템2",
+    "itemType": 2,
+    "type": 31,
+    "stackable": false,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "AD02",
+    "dropPrefabPath": "None",
+    "description": "[주점] SD 콘텐츠에서 획득하는 아이템",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521032,
+    "name": "ItemName.PubItem3",
+    "itemName": "광고 버프 아이템3",
+    "itemType": 2,
+    "type": 31,
+    "stackable": false,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "AD03",
+    "dropPrefabPath": "None",
+    "description": "[주점] SD 콘텐츠에서 획득하는 아이템",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521033,
+    "name": "ItemName.PubItem4",
+    "itemName": "광고 버프 아이템4",
+    "itemType": 2,
+    "type": 31,
+    "stackable": false,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "AD04",
+    "dropPrefabPath": "None",
+    "description": "[주점] SD 콘텐츠에서 획득하는 아이템",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521034,
+    "name": "ItemName.PubItem5",
+    "itemName": "광고 버프 아이템5",
+    "itemType": 2,
+    "type": 31,
+    "stackable": false,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "AD05",
+    "dropPrefabPath": "None",
+    "description": "[주점] SD 콘텐츠에서 획득하는 아이템",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521035,
+    "name": "ItemName.PubItem6",
+    "itemName": "광고 버프 아이템6",
+    "itemType": 2,
+    "type": 31,
+    "stackable": false,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "AD06",
+    "dropPrefabPath": "None",
+    "description": "[주점] SD 콘텐츠에서 획득하는 아이템",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521036,
+    "name": "ItemName.HeroCoinFire",
+    "itemName": "불속성 영웅 조각",
+    "itemType": 2,
+    "type": 3,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "조각을 모아 불속성 캐릭터 1종 랜덤 획득",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521037,
+    "name": "ItemName.HeroCoinIce",
+    "itemName": "물속성 영웅 조각",
+    "itemType": 2,
+    "type": 3,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "조각을 모아 물속성 캐릭터 1종 랜덤 획득",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521038,
+    "name": "ItemName.HeroCoinNature",
+    "itemName": "자연속성 영웅 조각",
+    "itemType": 2,
+    "type": 3,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "조각을 모아 자연속성 캐릭터 1종 랜덤 획득",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521039,
+    "name": "ItemName.HeroCoinIron",
+    "itemName": "기계속성 영웅 조각",
+    "itemType": 2,
+    "type": 3,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "조각을 모아 기계속성 캐릭터 1종 랜덤 획득",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521040,
+    "name": "ItemName.HeroCoinHoly",
+    "itemName": "빛속성 영웅 조각",
+    "itemType": 2,
+    "type": 3,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "조각을 모아 빛속성 캐릭터 1종 랜덤 획득",
+    "shortCutIndex": [
+      94001
+    ]
+  },
+  {
+    "id": 521041,
+    "name": "ItemName.HeroCoinDark",
+    "itemName": "암흑속성 영웅 조각",
+    "itemType": 2,
+    "type": 3,
+    "stackable": true,
+    "maxStack": "-1",
+    "cooltime": 10,
+    "duration": -1,
+    "iconPath": "None",
+    "dropPrefabPath": "None",
+    "description": "조각을 모아 암흑속성 캐릭터 1종 랜덤 획득",
+    "shortCutIndex": [
+      94001
+    ]
+  }
+]

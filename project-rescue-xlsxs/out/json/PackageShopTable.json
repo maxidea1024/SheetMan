@@ -1,0 +1,206 @@
+[
+  {
+    "id": 6100001,
+    "name": "ShopName.HeroGrowth1",
+    "productName": "영웅 성장 패키지1",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 1,
+    "itemID": [
+      60900001,
+      60130001
+    ],
+    "itemValue": [
+      1,
+      1
+    ],
+    "cycleType": 1,
+    "limitValue": 1,
+    "currencyType": 67,
+    "priceValue": 3000,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  },
+  {
+    "id": 6100002,
+    "name": "ShopName.HeroGrowth2",
+    "productName": "영웅 성장 패키지2",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 2,
+    "itemID": [
+      60900002,
+      60130001
+    ],
+    "itemValue": [
+      1,
+      1
+    ],
+    "cycleType": 1,
+    "limitValue": 1,
+    "currencyType": 67,
+    "priceValue": 3000,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  },
+  {
+    "id": 6100003,
+    "name": "ShopName.HeroEXP",
+    "productName": "영웅 패키지",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 3,
+    "itemID": [
+      511001
+    ],
+    "itemValue": [
+      1
+    ],
+    "cycleType": 1,
+    "limitValue": 10,
+    "currencyType": 67,
+    "priceValue": 100,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  },
+  {
+    "id": 6100004,
+    "name": "ShopName.GoldBox",
+    "productName": "골드 패키지",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 4,
+    "itemID": [
+      511001
+    ],
+    "itemValue": [
+      1
+    ],
+    "cycleType": 1,
+    "limitValue": 10,
+    "currencyType": 67,
+    "priceValue": 100,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  },
+  {
+    "id": 6100005,
+    "name": "ShopName.TraitBox",
+    "productName": "특성 패키지",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 5,
+    "itemID": [
+      511001
+    ],
+    "itemValue": [
+      1
+    ],
+    "cycleType": 1,
+    "limitValue": 10,
+    "currencyType": 67,
+    "priceValue": 100,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  },
+  {
+    "id": 6100006,
+    "name": "ShopName.RelicBox",
+    "productName": "유물 패키지",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 6,
+    "itemID": [
+      511001
+    ],
+    "itemValue": [
+      1
+    ],
+    "cycleType": 1,
+    "limitValue": 10,
+    "currencyType": 67,
+    "priceValue": 100,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  },
+  {
+    "id": 6100007,
+    "name": "ShopName.EquipBox_P",
+    "productName": "장비 패키지",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 7,
+    "itemID": [
+      511001
+    ],
+    "itemValue": [
+      1
+    ],
+    "cycleType": 1,
+    "limitValue": 10,
+    "currencyType": 67,
+    "priceValue": 100,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  },
+  {
+    "id": 6100008,
+    "name": "ShopName.DunTicketBox",
+    "productName": "던전 입장권 패키지",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 8,
+    "itemID": [
+      511001
+    ],
+    "itemValue": [
+      1
+    ],
+    "cycleType": 1,
+    "limitValue": 10,
+    "currencyType": 67,
+    "priceValue": 100,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  },
+  {
+    "id": 6110001,
+    "name": "ShopName.Monthly",
+    "productName": "기본 월정액",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 9,
+    "itemID": [
+      511001
+    ],
+    "itemValue": [
+      1
+    ],
+    "cycleType": 3,
+    "limitValue": 1,
+    "currencyType": 67,
+    "priceValue": 10000,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  },
+  {
+    "id": 6110002,
+    "name": "ShopName.Monthly_premium",
+    "productName": "프리미엄 월정액",
+    "shopType": 2,
+    "shopSlotID": 6930001,
+    "priority": 10,
+    "itemID": [
+      511001
+    ],
+    "itemValue": [
+      1
+    ],
+    "cycleType": 3,
+    "limitValue": 1,
+    "currencyType": 67,
+    "priceValue": 10000,
+    "conditionID": 30100022,
+    "iconPath": "none"
+  }
+]

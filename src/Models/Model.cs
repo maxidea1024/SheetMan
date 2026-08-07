@@ -102,6 +102,11 @@ namespace SheetMan.Models
                     Name = table.Name,
                     Comment = table.Comment,
                     Data = table.Data,
+
+                    // Carried, not defaulted: the projection recomputes SerialFields from its
+                    // narrowed field list, and a table that must not fold must not start
+                    // folding because a target side was asked for.
+                    FoldSerialFields = table.FoldSerialFields,
                 };
 
                 foreach (var field in table.Fields)

@@ -22,7 +22,7 @@ namespace SheetMan.Recipe
             /// <summary>
             /// A directory of Excel workbooks.
             /// </summary>
-            public class XlsxRecipe
+            public class XlsxRecipe : SheetSourceRecipe
             {
                 /// <summary>
                 /// Directory to search, including subdirectories.
@@ -42,7 +42,7 @@ namespace SheetMan.Recipe
             /// <summary>
             /// A Google Sheets document, fetched over the API.
             /// </summary>
-            public class GoogleSheetsRecipe
+            public class GoogleSheetsRecipe : SheetSourceRecipe
             {
                 /// <summary>
                 /// Path to the OAuth client secret downloaded from the Google Cloud

@@ -415,7 +415,23 @@ dotnet run --project src/SheetMan.csproj -- --recipe showcases/showcase.json
     "Xlsx": [
       {
         "Path": "./sheets",
-        "FileExtensionPatterns": ".xls;.xlsx"
+        "FileExtensionPatterns": ".xls;.xlsx",
+
+        // 시트를 읽는 방식. 기본은 `sheetman` — 마커로 엔티티를 선언하는 우리 레이아웃입니다.
+        // 다른 프로젝트의 기존 엑셀을 그대로 읽으려면 `rescue`. 자세한 건 sheets.md 참고.
+        "Layout": "sheetman",
+
+        // 읽을 시트 목록. 비우면 전부. 배열로도, `;`로 이은 문자열로도 쓸 수 있습니다.
+        // `*` `?` 와일드카드가 파일 글롭과 같게 동작하고, 여기 적었는데 없는 시트는
+        // 조용히 빠지는 대신 오류로 알려줍니다.
+        "IncludeSheets": [],
+
+        // 제외할 시트. IncludeSheets 다음에 적용됩니다.
+        "ExcludeSheets": "*참고용*",
+
+        // 인덱스 값이 겹칠 때: `error`(기본) / `keep-first` / `keep-last`.
+        // 뒤의 둘은 `rescue` 레이아웃 전용이며, 버린 행을 전부 로그에 남깁니다.
+        "OnDuplicateIndex": "error"
       }
     ],
     "GoogleSheets": [
@@ -423,6 +439,8 @@ dotnet run --project src/SheetMan.csproj -- --recipe showcases/showcase.json
         // 이 파일은 커밋하지 마세요. .gitignore에 등록되어 있습니다.
         "ClientSecretFilename": "./googlesheets-client-secret.json",
         "SheetsId": "10NXZAeyFaxRFsC8BPVTS9A6DzsM57Z1tizpJMCokJwU"
+
+        // Layout / IncludeSheets / ExcludeSheets / OnDuplicateIndex 는 여기서도 같습니다.
       }
     ]
   },

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 81500001,
+    "name": "Card_TRAP",
+    "sDDunName": "함정 카드",
+    "sDCardType": 1,
+    "cardCount": 4,
+    "statIconPath": "None",
+    "iconPath": "SD_Private01"
+  },
+  {
+    "id": 81500002,
+    "name": "Card_1",
+    "sDDunName": "1번 카드",
+    "sDCardType": 2,
+    "cardCount": 2,
+    "statIconPath": "SdDungeon_BLOCK_INT",
+    "iconPath": "SD_Dorka"
+  },
+  {
+    "id": 81500003,
+    "name": "Card_2",
+    "sDDunName": "2번 카드",
+    "sDCardType": 3,
+    "cardCount": 2,
+    "statIconPath": "SdDungeon_CRI_DAMAGE_FLOAT",
+    "iconPath": "SD_Bathory"
+  },
+  {
+    "id": 81500004,
+    "name": "Card_3",
+    "sDDunName": "3번 카드",
+    "sDCardType": 4,
+    "cardCount": 2,
+    "statIconPath": "SdDungeon_CRI_INT",
+    "iconPath": "SD_Baraka"
+  },
+  {
+    "id": 81500005,
+    "name": "Card_4",
+    "sDDunName": "4번 카드",
+    "sDCardType": 5,
+    "cardCount": 2,
+    "statIconPath": "SdDungeon_EFFECTIVENESS_FLOAT",
+    "iconPath": "SD_Rera"
+  }
+]

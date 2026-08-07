@@ -1,0 +1,157 @@
+{
+  // Converting an existing project's workbooks, in that project's own layout.
+  //
+  // The sheets these files came from are read by a Unity editor tool that downloads each
+  // one as CSV and generates a class from it. What it downloads is decided by a list in
+  // Assets/Editor/GoogleSheetsConfig.asset, and the workbooks here hold considerably more
+  // than that list names - reference tabs, unregistered systems, notes.
+  //
+  // `IncludeSheets` below is that list, so this recipe converts exactly what the game
+  // actually loads. Sheets left out of it are not converted and their contents are not
+  // checked; see 데이터-이슈-보고-20260807.md for what is in them and why that matters the
+  // day one of them is registered.
+  //
+  // Run from the repository root:
+  //
+  //     dotnet run --project src/SheetMan.csproj -- --recipe project-rescue-xlsxs/recipe.jsonc
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "project-rescue-xlsxs",
+        "FileExtensionPatterns": ".xlsx",
+
+        // Not `sheetman`: these workbooks have no entity markers. One table per sheet,
+        // named by the sheet tab, three header rows. See doc/sheets.md.
+        "Layout": "rescue",
+
+        // `ArtifactLevelTable` rows 48-104 all carry index 45, which is a copy-fill
+        // mistake in the source spreadsheet rather than anything this tool can resolve:
+        // levels 46 to 101 are unreachable either way. Keeping the first row lets the
+        // rest of the conversion run while that is fixed, and every dropped row is
+        // logged. Put this back to `error` once it is.
+        "OnDuplicateIndex": "keep-first",
+
+        "IncludeSheets": [
+          // The enum collection. Every `enum:Name` column below resolves against it.
+          "TableEnums",
+
+          // ItemData.xlsx
+          "CurrencyTable",
+          "PackageTable",
+          "EquipTable",
+          "EquipItemLevelTable",
+          "EquipItemClassTable",
+          "EquipItemGradeTable",
+          "MaterialTable",
+          "ClassUpCurrencyListTable",
+
+          // MasterData.xlsx
+          "CharacterTable",
+          "SkillTable",
+          "CharacterLevelTable",
+          "CharacterTranscendenceTable",
+          "ArtifactTable",
+          "ArtifactLevelTable",
+          "ArtifactTranscendenceTable",
+          "StageTable",
+          "BuffTable",
+          "BuffSelectTable",
+          "ConfigTable",
+          "DropGroupTable",
+          "AttributeTable",
+          "ShortCutTable",
+
+          // SD_Contens.xlsx
+          "SDContensInfoTable",
+          "SDAgencyTable",
+          "SDAgencyInfoTable",
+          // "SDShopInfoTable" is registered in the game but cannot be converted yet: it has
+          // both an `IconPath` column (J, "아이콘", empty in every row) and an `Icon_Path`
+          // one (L, "아이콘 경로", the one actually used). Those normalize to one name.
+          // Put a `#` in front of J's description in the spreadsheet and this line goes back.
+          "SDPubInfoTable",
+          "SDTrainingInfoTable",
+          "SDTrainingLevelTable",
+          "SDDungeonInfoTable",
+          "SDDungeonCardTable",
+          "SDDungeonRewardTable",
+          "SDAlchemyInfoTable",
+          "SDAlchemyStepTable",
+          "SDAlchemyLevelTable",
+
+          // DailyDungeon.xlsx
+          "DailyDungeonInfoTable",
+          "GoldDungeonStageTable",
+          "GoldDungeonRewardTable",
+          "ExpDungeonStageTable",
+          "ExpDungeonRewardTable",
+          "TraitDungeonStageTable",
+          "TraitDungeonRewardTable",
+          "RelicDungeonStageTable",
+          "RelicDungeonRewardTable",
+          "OopartsDungeonStageTable",
+          "OopartsDungeonRewardTable",
+
+          // StageGrowth.xlsx
+          "InfoGrowthTable",
+          "StatGrowthTable",
+          "TraitTable",
+          "RelicTable",
+          "StarNodeTable",
+          "CostCurveTable",
+          "CostCurveRangeTable",
+
+          // CollectionData.xlsx
+          "CollectionGroupTable",
+          "CollectionTable",
+
+          // ConditionData.xlsx
+          "ConditionTable",
+
+          // SoundData.xlsx
+          "BGMSoundTable",
+          "SFXSoundTable",
+
+          // ShopData.xlsx
+          "ShopInfoTable",
+          "MainShopTable",
+          "PackageShopTable",
+          "SeasonShopTable",
+          "CashShopTable",
+
+          // GachaData.xlsx
+          "GachaInfoTable",
+          "GachaRateTable",
+          "GachaCharacterListTable",
+          "GachaArtifactListTable",
+          "GachaArtifactInfoTable"
+        ]
+      }
+    ]
+  },
+
+  "Exports": {
+    "Json": [
+      { "Path": "project-rescue-xlsxs/out/json", "UseCompactRowFormat": false, "Indented": true }
+    ],
+    "Binary": [
+      { "Path": "project-rescue-xlsxs/out/binary" }
+    ]
+  },
+
+  "CodeGenerations": {
+    "CSharp": [
+      {
+        "Path": "project-rescue-xlsxs/out/cs",
+        "Namespace": "Rescue.Tables",
+        "AccessorName": "Tables"
+      }
+    ],
+
+    // For reading: what came out, table by table, without opening a binary.
+    "Html": [
+      { "Path": "project-rescue-xlsxs/out/html" }
+    ]
+  }
+}

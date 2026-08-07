@@ -14,6 +14,17 @@ namespace SheetMan.Models.Raw
         [JsonIgnore]
         public Location Location { get; set; }
 
+        /// <summary>
+        /// How this sheet is to be read, from the recipe entry that imported it.
+        /// </summary>
+        /// <remarks>
+        /// Never null by the time the cooker sees it - the importers stamp every sheet - but
+        /// defaulted here as well, so a sheet built by a test or a fixture generator reads the
+        /// way an unconfigured one would.
+        /// </remarks>
+        [JsonIgnore]
+        public SheetLayout Layout { get; set; } = SheetLayout.Default;
+
         /// <summary>Width after trimming and padding. Every row has exactly this many cells.</summary>
         public int ColumnCount { get; set; }
 

@@ -1,0 +1,590 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="color-scheme" content="light">
+<style>
+:root { color-scheme: light; }
+body {
+  margin: 0; padding: 16px 20px 40px;
+  background: #fff; color: #24292f;
+  font: 14px/1.5 -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+        "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+}
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 17px; margin: 0 0 8px; }
+h3 { font-size: 15px; font-weight: 600; margin: 0 0 6px; }
+h4 { font-size: 12px; font-weight: 400; color: #6e7781; margin: 24px 0 0; }
+a { color: #0969da; text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul { margin: 0; padding-left: 20px; }
+li { margin: 2px 0; }
+code { font-family: Consolas, "SF Mono", Menlo, monospace; font-size: 12px; }
+.definition { margin: 0 0 6px; }
+.comment { color: #57606a; margin: 0 0 8px; white-space: pre-wrap; }
+table { border-collapse: collapse; margin: 0; }
+th, td {
+  border: 1px solid #d0d7de; padding: 3px 8px;
+  text-align: left; vertical-align: top; white-space: nowrap;
+}
+th { background: #f6f8fa; font-weight: 600; position: sticky; top: 0; z-index: 1; }
+thead:nth-of-type(2) th { top: 25px; font-weight: 400; color: #57606a; }
+thead:nth-of-type(3) th { top: 50px; font-weight: 400; }
+thead:nth-of-type(4) th { top: 75px; font-weight: 400; }
+tbody tr:nth-child(even), tr:nth-child(even) { background: #f6f8fa; }
+tr:hover > td { background: #fff8c5; }
+td[valign=top] { background: none; white-space: normal; }
+</style>
+<title>Enum CurrencyType</title></head><body>
+<h1>Enum CurrencyType</h1>
+<div class="definition">
+<h3 id="enum_CurrencyType"><i>Enumeration: CurrencyType</i></h3>
+<div class="comment">타입</div>
+<table>
+<thead><th>No</th><th>Name</th><th>Value</th><th>Description</th></thead>
+<tr>
+<td>1</td>
+<td id="const_CurrencyType.None">None</td>
+<td><code>0</code></td>
+<td>없음</td>
+</tr>
+<tr>
+<td>2</td>
+<td id="const_CurrencyType.Gold">Gold</td>
+<td><code>1</code></td>
+<td>골드</td>
+</tr>
+<tr>
+<td>3</td>
+<td id="const_CurrencyType.RealCash">RealCash</td>
+<td><code>2</code></td>
+<td>유료 다이아</td>
+</tr>
+<tr>
+<td>4</td>
+<td id="const_CurrencyType.Dia">Dia</td>
+<td><code>3</code></td>
+<td>무료 다이아</td>
+</tr>
+<tr>
+<td>5</td>
+<td id="const_CurrencyType.Exp">Exp</td>
+<td><code>4</code></td>
+<td>영웅 경험치</td>
+</tr>
+<tr>
+<td>6</td>
+<td id="const_CurrencyType.TraitCost">TraitCost</td>
+<td><code>5</code></td>
+<td>특성 코인</td>
+</tr>
+<tr>
+<td>7</td>
+<td id="const_CurrencyType.RelicCost">RelicCost</td>
+<td><code>6</code></td>
+<td>유물 재화</td>
+</tr>
+<tr>
+<td>8</td>
+<td id="const_CurrencyType.AncientRelicCost">AncientRelicCost</td>
+<td><code>7</code></td>
+<td>고대 유물 재화</td>
+</tr>
+<tr>
+<td>9</td>
+<td id="const_CurrencyType.OopartsCost">OopartsCost</td>
+<td><code>8</code></td>
+<td>오파츠 코인</td>
+</tr>
+<tr>
+<td>10</td>
+<td id="const_CurrencyType.HolyRelicCost">HolyRelicCost</td>
+<td><code>9</code></td>
+<td>시그니처 포스 재화</td>
+</tr>
+<tr>
+<td>11</td>
+<td id="const_CurrencyType.TicketCharacterN">TicketCharacterN</td>
+<td><code>10</code></td>
+<td>영웅 일반소환 티켓</td>
+</tr>
+<tr>
+<td>12</td>
+<td id="const_CurrencyType.TicketCharacterP">TicketCharacterP</td>
+<td><code>11</code></td>
+<td>영웅 픽업소환 티켓</td>
+</tr>
+<tr>
+<td>13</td>
+<td id="const_CurrencyType.TicketCharacterUR">TicketCharacterUR</td>
+<td><code>12</code></td>
+<td>영웅 UR소환 티켓</td>
+</tr>
+<tr>
+<td>14</td>
+<td id="const_CurrencyType.TicketArtifactN">TicketArtifactN</td>
+<td><code>13</code></td>
+<td>아티팩트 일반소환 티켓</td>
+</tr>
+<tr>
+<td>15</td>
+<td id="const_CurrencyType.TicketArtifactP">TicketArtifactP</td>
+<td><code>14</code></td>
+<td>아티팩트 픽업소환 티켓</td>
+</tr>
+<tr>
+<td>16</td>
+<td id="const_CurrencyType.CoinSDAgency">CoinSDAgency</td>
+<td><code>15</code></td>
+<td>파견 입장 재화</td>
+</tr>
+<tr>
+<td>17</td>
+<td id="const_CurrencyType.CoinSDGarden">CoinSDGarden</td>
+<td><code>16</code></td>
+<td>농장 입장 재화</td>
+</tr>
+<tr>
+<td>18</td>
+<td id="const_CurrencyType.CoinSDDungen">CoinSDDungen</td>
+<td><code>17</code></td>
+<td>토벌 입장 재화</td>
+</tr>
+<tr>
+<td>19</td>
+<td id="const_CurrencyType.CoinPet">CoinPet</td>
+<td><code>18</code></td>
+<td>펫 소환 재화</td>
+</tr>
+<tr>
+<td>20</td>
+<td id="const_CurrencyType.GuildCoin1">GuildCoin1</td>
+<td><code>19</code></td>
+<td>길드 코인(은)</td>
+</tr>
+<tr>
+<td>21</td>
+<td id="const_CurrencyType.GuildCoin2">GuildCoin2</td>
+<td><code>20</code></td>
+<td>길드 코인(금)</td>
+</tr>
+<tr>
+<td>22</td>
+<td id="const_CurrencyType.GuildCoin3">GuildCoin3</td>
+<td><code>21</code></td>
+<td>길드 코인(프리미엄)</td>
+</tr>
+<tr>
+<td>23</td>
+<td id="const_CurrencyType.GuildCostA">GuildCostA</td>
+<td><code>22</code></td>
+<td>길드 연금술 재화</td>
+</tr>
+<tr>
+<td>24</td>
+<td id="const_CurrencyType.WorldCoin">WorldCoin</td>
+<td><code>23</code></td>
+<td>월드 보스 보상</td>
+</tr>
+<tr>
+<td>25</td>
+<td id="const_CurrencyType.TicketD1Gold">TicketD1Gold</td>
+<td><code>24</code></td>
+<td>골드 던전 입장권</td>
+</tr>
+<tr>
+<td>26</td>
+<td id="const_CurrencyType.TicketD2Exp">TicketD2Exp</td>
+<td><code>25</code></td>
+<td>영웅 경험치 던전 입장권</td>
+</tr>
+<tr>
+<td>27</td>
+<td id="const_CurrencyType.TicketD3Artifact">TicketD3Artifact</td>
+<td><code>26</code></td>
+<td>아티펙트 소환 던전 입장권</td>
+</tr>
+<tr>
+<td>28</td>
+<td id="const_CurrencyType.TicketD4Equipment">TicketD4Equipment</td>
+<td><code>27</code></td>
+<td>장비 던전 입장권</td>
+</tr>
+<tr>
+<td>29</td>
+<td id="const_CurrencyType.TicketD5Trait">TicketD5Trait</td>
+<td><code>28</code></td>
+<td>특성 던전 입장권</td>
+</tr>
+<tr>
+<td>30</td>
+<td id="const_CurrencyType.MertarialEquipment">MertarialEquipment</td>
+<td><code>29</code></td>
+<td>장비 제작 재료</td>
+</tr>
+<tr>
+<td>31</td>
+<td id="const_CurrencyType.HeroClassUp">HeroClassUp</td>
+<td><code>30</code></td>
+<td>영웅 성급 재화</td>
+</tr>
+<tr>
+<td>32</td>
+<td id="const_CurrencyType.ADBuffItem">ADBuffItem</td>
+<td><code>31</code></td>
+<td>광고 버프 아이템</td>
+</tr>
+<tr>
+<td>33</td>
+<td id="const_CurrencyType.MertarialPlant">MertarialPlant</td>
+<td><code>32</code></td>
+<td>농장 보상</td>
+</tr>
+<tr>
+<td>34</td>
+<td id="const_CurrencyType.MertarialRequest">MertarialRequest</td>
+<td><code>33</code></td>
+<td>훈련 재료1</td>
+</tr>
+<tr>
+<td>35</td>
+<td id="const_CurrencyType.GuildTicket1">GuildTicket1</td>
+<td><code>34</code></td>
+<td>길드 레이드 티켓</td>
+</tr>
+<tr>
+<td>36</td>
+<td id="const_CurrencyType.GuildTicket2">GuildTicket2</td>
+<td><code>35</code></td>
+<td>길드 방어전 티켓</td>
+</tr>
+<tr>
+<td>37</td>
+<td id="const_CurrencyType.WorldTicket1">WorldTicket1</td>
+<td><code>36</code></td>
+<td>월드 보스 티켓</td>
+</tr>
+<tr>
+<td>38</td>
+<td id="const_CurrencyType.WorldTicket2">WorldTicket2</td>
+<td><code>37</code></td>
+<td>월드 레이드 티켓</td>
+</tr>
+<tr>
+<td>39</td>
+<td id="const_CurrencyType.PieceCharacterSR">PieceCharacterSR</td>
+<td><code>38</code></td>
+<td>SR 영웅 조각</td>
+</tr>
+<tr>
+<td>40</td>
+<td id="const_CurrencyType.PieceCharacterSSR">PieceCharacterSSR</td>
+<td><code>39</code></td>
+<td>SSR 영웅 조각</td>
+</tr>
+<tr>
+<td>41</td>
+<td id="const_CurrencyType.PieceCharacterUR">PieceCharacterUR</td>
+<td><code>40</code></td>
+<td>UR 영웅 조각</td>
+</tr>
+<tr>
+<td>42</td>
+<td id="const_CurrencyType.TicketCharacterSR">TicketCharacterSR</td>
+<td><code>41</code></td>
+<td>SR 영웅 성급업</td>
+</tr>
+<tr>
+<td>43</td>
+<td id="const_CurrencyType.TicketCharacterSSR">TicketCharacterSSR</td>
+<td><code>42</code></td>
+<td>SSR 영웅 성급업</td>
+</tr>
+<tr>
+<td>44</td>
+<td id="const_CurrencyType.TicketCharacterGrade">TicketCharacterGrade</td>
+<td><code>43</code></td>
+<td>SSR 영웅 등급업</td>
+</tr>
+<tr>
+<td>45</td>
+<td id="const_CurrencyType.ArtifactLevelUp">ArtifactLevelUp</td>
+<td><code>44</code></td>
+<td>아티팩트 레벨 재화</td>
+</tr>
+<tr>
+<td>46</td>
+<td id="const_CurrencyType.ArtifactClassUp">ArtifactClassUp</td>
+<td><code>45</code></td>
+<td>아티팩트 성급 재화</td>
+</tr>
+<tr>
+<td>47</td>
+<td id="const_CurrencyType.MertarialEqLevelM">MertarialEqLevelM</td>
+<td><code>46</code></td>
+<td>장비 레벨업_근거리</td>
+</tr>
+<tr>
+<td>48</td>
+<td id="const_CurrencyType.MertarialEqLevelR">MertarialEqLevelR</td>
+<td><code>47</code></td>
+<td>장비 레벨업_원거리</td>
+</tr>
+<tr>
+<td>49</td>
+<td id="const_CurrencyType.MertarialEqLevelT">MertarialEqLevelT</td>
+<td><code>48</code></td>
+<td>장비 레벨업_탱커</td>
+</tr>
+<tr>
+<td>50</td>
+<td id="const_CurrencyType.MertarialEqLevelS">MertarialEqLevelS</td>
+<td><code>49</code></td>
+<td>장비 레벨업_서포트</td>
+</tr>
+<tr>
+<td>51</td>
+<td id="const_CurrencyType.MertarialEqClassM">MertarialEqClassM</td>
+<td><code>50</code></td>
+<td>장비 성급업_근거리</td>
+</tr>
+<tr>
+<td>52</td>
+<td id="const_CurrencyType.MertarialEqClassR">MertarialEqClassR</td>
+<td><code>51</code></td>
+<td>장비 성급업_원거리</td>
+</tr>
+<tr>
+<td>53</td>
+<td id="const_CurrencyType.MertarialEqClassT">MertarialEqClassT</td>
+<td><code>52</code></td>
+<td>장비 성급업_탱커</td>
+</tr>
+<tr>
+<td>54</td>
+<td id="const_CurrencyType.MertarialEqClassS">MertarialEqClassS</td>
+<td><code>53</code></td>
+<td>장비 성급업_서포트</td>
+</tr>
+<tr>
+<td>55</td>
+<td id="const_CurrencyType.MertarialEqGradeM">MertarialEqGradeM</td>
+<td><code>54</code></td>
+<td>장비 등급업_근거리</td>
+</tr>
+<tr>
+<td>56</td>
+<td id="const_CurrencyType.MertarialEqGradeR">MertarialEqGradeR</td>
+<td><code>55</code></td>
+<td>장비 등급업_원거리</td>
+</tr>
+<tr>
+<td>57</td>
+<td id="const_CurrencyType.MertarialEqGradeT">MertarialEqGradeT</td>
+<td><code>56</code></td>
+<td>장비 등급업_탱커</td>
+</tr>
+<tr>
+<td>58</td>
+<td id="const_CurrencyType.MertarialEqGradeS">MertarialEqGradeS</td>
+<td><code>57</code></td>
+<td>장비 등급업_서포트</td>
+</tr>
+<tr>
+<td>59</td>
+<td id="const_CurrencyType.PieceArtifactSR">PieceArtifactSR</td>
+<td><code>58</code></td>
+<td>SR 등급 아티펙트 조각</td>
+</tr>
+<tr>
+<td>60</td>
+<td id="const_CurrencyType.PieceArtifactSSR">PieceArtifactSSR</td>
+<td><code>59</code></td>
+<td>SSR 등급 아티펙트 조각</td>
+</tr>
+<tr>
+<td>61</td>
+<td id="const_CurrencyType.PieceArtifactUR">PieceArtifactUR</td>
+<td><code>60</code></td>
+<td>UR 등급 아티펙트 조각</td>
+</tr>
+<tr>
+<td>62</td>
+<td id="const_CurrencyType.TicketCostum">TicketCostum</td>
+<td><code>61</code></td>
+<td>영웅 코스튬 티켓</td>
+</tr>
+<tr>
+<td>63</td>
+<td id="const_CurrencyType.ShopMileage">ShopMileage</td>
+<td><code>62</code></td>
+<td>마일리지 재화</td>
+</tr>
+<tr>
+<td>64</td>
+<td id="const_CurrencyType.AD">AD</td>
+<td><code>63</code></td>
+<td>광고 시청</td>
+</tr>
+<tr>
+<td>65</td>
+<td id="const_CurrencyType.MertarialRequest2">MertarialRequest2</td>
+<td><code>64</code></td>
+<td>훈련 재료2</td>
+</tr>
+<tr>
+<td>66</td>
+<td id="const_CurrencyType.MertarialRequest3">MertarialRequest3</td>
+<td><code>65</code></td>
+<td>훈련 재료3</td>
+</tr>
+<tr>
+<td>67</td>
+<td id="const_CurrencyType.MertarialRequest4">MertarialRequest4</td>
+<td><code>66</code></td>
+<td>훈련 재료4</td>
+</tr>
+<tr>
+<td>68</td>
+<td id="const_CurrencyType.Payment">Payment</td>
+<td><code>67</code></td>
+<td>유료 결제</td>
+</tr>
+<tr>
+<td>69</td>
+<td id="const_CurrencyType.FriendCost">FriendCost</td>
+<td><code>68</code></td>
+<td>우정 재화</td>
+</tr>
+<tr>
+<td>70</td>
+<td id="const_CurrencyType.SDCost">SDCost</td>
+<td><code>69</code></td>
+<td>SD 재화</td>
+</tr>
+<tr>
+<td>71</td>
+<td id="const_CurrencyType.PubItem1">PubItem1</td>
+<td><code>70</code></td>
+<td>광고 버프 아이템1</td>
+</tr>
+<tr>
+<td>72</td>
+<td id="const_CurrencyType.PubItem2">PubItem2</td>
+<td><code>71</code></td>
+<td>광고 버프 아이템2</td>
+</tr>
+<tr>
+<td>73</td>
+<td id="const_CurrencyType.PubItem3">PubItem3</td>
+<td><code>72</code></td>
+<td>광고 버프 아이템3</td>
+</tr>
+<tr>
+<td>74</td>
+<td id="const_CurrencyType.PubItem4">PubItem4</td>
+<td><code>73</code></td>
+<td>광고 버프 아이템4</td>
+</tr>
+<tr>
+<td>75</td>
+<td id="const_CurrencyType.PubItem5">PubItem5</td>
+<td><code>74</code></td>
+<td>광고 버프 아이템5</td>
+</tr>
+<tr>
+<td>76</td>
+<td id="const_CurrencyType.PubItem6">PubItem6</td>
+<td><code>75</code></td>
+<td>광고 버프 아이템6</td>
+</tr>
+<tr>
+<td>77</td>
+<td id="const_CurrencyType.MertarialAlchemy1">MertarialAlchemy1</td>
+<td><code>76</code></td>
+<td>공통 연구 재료1</td>
+</tr>
+<tr>
+<td>78</td>
+<td id="const_CurrencyType.MertarialAlchemy2">MertarialAlchemy2</td>
+<td><code>77</code></td>
+<td>공통 연구 재료2</td>
+</tr>
+<tr>
+<td>79</td>
+<td id="const_CurrencyType.AlchemyCritDMG">AlchemyCritDMG</td>
+<td><code>78</code></td>
+<td>크리티컬 데미지 연구 재료</td>
+</tr>
+<tr>
+<td>80</td>
+<td id="const_CurrencyType.AlchemyCritRATE">AlchemyCritRATE</td>
+<td><code>79</code></td>
+<td>크리티컬 확률 연구 재료</td>
+</tr>
+<tr>
+<td>81</td>
+<td id="const_CurrencyType.AlchemyBlockRATE">AlchemyBlockRATE</td>
+<td><code>80</code></td>
+<td>블록 확률 연구 재료</td>
+</tr>
+<tr>
+<td>82</td>
+<td id="const_CurrencyType.AlchemyHIT">AlchemyHIT</td>
+<td><code>81</code></td>
+<td>명중률 연구 재료</td>
+</tr>
+<tr>
+<td>83</td>
+<td id="const_CurrencyType.AccelTicket">AccelTicket</td>
+<td><code>82</code></td>
+<td>연금술 가속권</td>
+</tr>
+<tr>
+<td>84</td>
+<td id="const_CurrencyType.HeroLevelBT">HeroLevelBT</td>
+<td><code>83</code></td>
+<td>레벨 돌파 재화</td>
+</tr>
+<tr>
+<td>85</td>
+<td id="const_CurrencyType.TicketD6Relic">TicketD6Relic</td>
+<td><code>84</code></td>
+<td>유물 던전 입장권</td>
+</tr>
+<tr>
+<td>86</td>
+<td id="const_CurrencyType.TicketD7Ooparts">TicketD7Ooparts</td>
+<td><code>85</code></td>
+<td>오파츠 던전 입장권</td>
+</tr>
+<tr>
+<td>87</td>
+<td id="const_CurrencyType.FREETicketD1Gold">FREETicketD1Gold</td>
+<td><code>86</code></td>
+<td>골드 던전 무료 입장권</td>
+</tr>
+<tr>
+<td>88</td>
+<td id="const_CurrencyType.FREETicketD2Exp">FREETicketD2Exp</td>
+<td><code>87</code></td>
+<td>경험치 던전 무료 입장권</td>
+</tr>
+<tr>
+<td>89</td>
+<td id="const_CurrencyType.FREETicketD5Trait">FREETicketD5Trait</td>
+<td><code>88</code></td>
+<td>특성 던전 무료 입장권</td>
+</tr>
+<tr>
+<td>90</td>
+<td id="const_CurrencyType.FREETicketD6Relic">FREETicketD6Relic</td>
+<td><code>89</code></td>
+<td>유물 던전 무료 입장권</td>
+</tr>
+<tr>
+<td>91</td>
+<td id="const_CurrencyType.FREETicketD7Ooparts">FREETicketD7Ooparts</td>
+<td><code>90</code></td>
+<td>오파츠 던전 무료 입장권</td>
+</tr>
+</table>
+</div>
+<br>

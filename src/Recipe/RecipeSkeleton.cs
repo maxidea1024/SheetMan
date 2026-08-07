@@ -162,6 +162,12 @@ namespace SheetMan.Recipe
                     if (elementType == typeof(JObject))
                         continue;
 
+                    // A list of plain values - `IncludeSheets` and its like - is one setting
+                    // rather than a list of entries, and empty is what it means. Activator
+                    // also has nothing to construct for a string, so filling it would throw.
+                    if (elementType.IsPrimitive || elementType == typeof(string))
+                        continue;
+
                     var list = (IList)value;
                     if (list.Count == 0)
                         list.Add(Activator.CreateInstance(elementType));

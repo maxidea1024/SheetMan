@@ -130,3 +130,6 @@ classes/
 # Cargo's lockfile in a generated crate. The crate is generated, so a lockfile
 # committed here would be one nobody chose and nobody updates.
 /showcases/rust/Cargo.lock
+
+# 설계 근거 문서 — 다른 팀의 데이터 문제를 구체적으로 다루므로 저장소에는 두지 않습니다.
+/doc/rescue-레이아웃-지원-분석-및-계획-20260807.md

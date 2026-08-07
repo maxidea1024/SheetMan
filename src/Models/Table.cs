@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using SheetMan.Models.Raw;
 using SheetMan.Helpers;
 using Serilog;
@@ -67,6 +68,22 @@ namespace SheetMan.Models
         public string Comment { get; set; }
 
         /// <summary>
+        /// Whether consecutively numbered columns fold into one array-valued entry.
+        /// </summary>
+        /// <remarks>
+        /// On for a table authored in SheetMan's own layout, where `Text1`/`Text2` next to each
+        /// other is how an array is written and the columns are therefore expected to agree on
+        /// a type.
+        ///
+        /// Off for a layout adopted from a project that never had the convention. There the
+        /// numbers are just part of the names - `Condition_1`, `Condition_2` and `Condition_3`
+        /// of one real workbook are three different enums - and folding them is not a nicer API
+        /// but a wrong one, which the type check turns into a conversion that refuses to run.
+        /// </remarks>
+        [JsonIgnore]
+        public bool FoldSerialFields { get; set; } = true;
+
+        /// <summary>
         /// The fields as the exporters and generators see them, with consecutively
         /// numbered columns folded into single array-valued entries.
         ///
@@ -78,12 +95,32 @@ namespace SheetMan.Models
             get
             {
                 if (_serialFields == null)
-                    _serialFields = BuildSerialFieldsFromPlainFields(Fields);
+                {
+                    _serialFields = FoldSerialFields
+                        ? BuildSerialFieldsFromPlainFields(Fields)
+                        : Fields.Select(OneColumnSerialField).ToList();
+                }
 
                 return _serialFields;
             }
         }
         private List<SerialField> _serialFields;
+
+        /// <summary>
+        /// Presents one column as its own group, for a table that does not fold.
+        /// </summary>
+        private static SerialField OneColumnSerialField(Field field)
+        {
+            // Pattern deliberately None: it is what stops NextSerialField taking anything,
+            // and a group of one is what every non-folding column is anyway.
+            return new SerialField
+            {
+                Name = field.Name,
+                NamePart = field.Name,
+                Pattern = SerialFieldPattern.None,
+                Fields = new List<Field> { field },
+            };
+        }
 
         /// <summary>
         /// Checks whether the specified field exists. It is not case sensitive.
