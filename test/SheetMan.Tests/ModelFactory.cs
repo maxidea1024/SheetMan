@@ -42,6 +42,7 @@ internal static class ModelFactory
             RawName = name,
             TargetSide = TargetSide.Both,
             Location = At(name, 0, 0),
+            Comment = "",
         };
 
         for (int column = 0; column < columns.Count; column++)
@@ -56,7 +57,15 @@ internal static class ModelFactory
                 Index = column,
                 Indexing = column == 0,
                 OwnerTable = table,
+
+                // A field carries a location per header row so a diagnostic can point at the
+                // cell actually at fault. Nothing here reads them apart from NameLocation,
+                // but a fixture that left them out would be a shape no sheet produces.
                 NameLocation = At(name, column, 1),
+                TypeLocation = At(name, column, 2),
+                DetailTypeLocation = At(name, column, 3),
+                TargetSideLocation = At(name, column, 4),
+                Comment = "",
             });
         }
 
@@ -69,7 +78,12 @@ internal static class ModelFactory
                 cells.Add(new Cell
                 {
                     Value = rows[row][column],
-                    RawCell = new Models.Raw.RawCell { Location = At(name, column, row + 2) },
+                    RawCell = new Models.Raw.RawCell
+                    {
+                        Location = At(name, column, row + 2),
+                        Value = rows[row][column]?.ToString() ?? "",
+                        Note = "",
+                    },
                 });
             }
 

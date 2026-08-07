@@ -6,5 +6,12 @@
  * ------------------------------------------------------------------------------
  */
 
+/* Before any include. glibc reads this in the first libc header a translation unit pulls
+ * in, so asking later has no effect - and the updater needs nanosleep and strcasecmp,
+ * which are POSIX rather than ISO C and are not declared without it. The header asks for
+ * it too, for whoever includes it first, but a translation unit that includes something
+ * else before it would be past the point where that could work. */
+#define _POSIX_C_SOURCE 200809L
+
 #define SHEETMAN_UPDATER_IMPLEMENTATION
 #include "sheetman/sheetman_updater.h"

@@ -27,16 +27,28 @@ public class HistoryViewTests
             Rows = Array.Empty<TrendPoint>(),
             Churn = Array.Empty<TrendPoint>(),
             Authors = Array.Empty<AuthorSummary>(),
+            Stats = new SummaryDocument
+            {
+                // The dashboard test does not read these; they are here because the
+                // document says every summary has them, and a fixture that skipped them
+                // would be a shape production never produces.
+                Run = new SummaryRun
+                {
+                    GeneratedAt = "", ToolVersion = "", Recipe = "",
+                    Commit = new SummaryCommit { Origin = "none" }, RequestedTargetSide = "cs",
+                },
+                Data = new SummaryData { Hash = "", Totals = new SummaryTotals() },
+            },
 
             History = new HistoryDocument
             {
-                Query = new HistoryQueryInfo { Project = "p", Branch = "main" },
+                Query = new HistoryQueryInfo { Project = "p", Branch = "main", GeneratedAt = "" },
                 Totals = new HistoryTotals(),
                 Snapshots = new[]
                 {
                     new HistorySnapshotView
                     {
-                        Commit = "abc", ShortCommit = "abc", AuthorName = "Kim",
+                        Commit = "abc", ShortCommit = "abc", Branch = "main", AuthorName = "Kim",
                         FollowsParent = true, Attributable = true,
                         Counts = new HistoryChangeCounts { Cells = cells.Length },
                         Schema = Array.Empty<SchemaChangeView>(),

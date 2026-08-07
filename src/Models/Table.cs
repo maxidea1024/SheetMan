@@ -15,16 +15,16 @@ public class Table
 {
     /// <summary>Cell holding the entity marker that declared this table.</summary>
     [JsonIgnore]
-    public Location Location { get; set; }
+    public required Location Location { get; set; }
 
     /// <summary>Target side filtering option</summary>
     public TargetSide TargetSide { get; set; }
 
     /// <summary>Name exactly as written in the sheet.</summary>
-    public string RawName { get; set; }
+    public required string RawName { get; set; }
 
     /// <summary>Name normalized to Pascal case, which is what generated code uses.</summary>
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>
     /// Columns of the table, excluding any commented out with `#`.
@@ -65,7 +65,7 @@ public class Table
     public List<List<Cell>> Data { get; set; } = new List<List<Cell>>();
 
     /// <summary>Description from the sheet, emitted as a doc comment.</summary>
-    public string Comment { get; set; }
+    public required string Comment { get; set; }
 
     /// <summary>
     /// Whether consecutively numbered columns fold into one array-valued entry.

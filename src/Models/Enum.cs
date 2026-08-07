@@ -24,16 +24,16 @@ public class Enum
         [JsonIgnore] public Location Location { get; set; }
 
         /// <summary>Name exactly as written in the sheet.</summary>
-        public string RawName { get; set; }
+        public required string RawName { get; set; }
 
         /// <summary>Name normalized to Pascal case, which is what generated code uses.</summary>
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         /// <summary>The integer this label stands for. This is what gets stored and exported.</summary>
         public int Value { get; set; }
 
         /// <summary>Description from the sheet, emitted as a doc comment.</summary>
-        public string Comment { get; set; }
+        public required string Comment { get; set; }
     }
 
     /// <summary>Cell holding the entity marker that declared this enum.</summary>
@@ -43,10 +43,10 @@ public class Enum
     public TargetSide TargetSide { get; set; }
 
     /// <summary>Name exactly as written in the sheet.</summary>
-    public string RawName { get; set; }
+    public required string RawName { get; set; }
 
     /// <summary>Name normalized to Pascal case, which is what generated code uses.</summary>
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>
     /// The labels, in declaration order.
@@ -58,7 +58,7 @@ public class Enum
     public List<Label> Labels { get; set; } = new List<Label>();
 
     /// <summary>Description from the sheet, emitted as a doc comment.</summary>
-    public string Comment { get; set; }
+    public required string Comment { get; set; }
 
     /// <summary>
     /// Whether a label with this name or value exists.

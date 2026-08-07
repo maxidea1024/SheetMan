@@ -60,21 +60,21 @@ public sealed class SchemaChange
     public EntityKind EntityKind { get; set; }
 
     /// <summary>The table, enum or constant set this concerns.</summary>
-    public string EntityName { get; set; }
+    public required string EntityName { get; set; }
 
     /// <summary>The column, label or constant within it. Null when the entity itself changed.</summary>
-    public string MemberName { get; set; }
+    public string? MemberName { get; set; }
 
     public ChangeKind Kind { get; set; }
 
     /// <summary>How it was. Null for something that was added.</summary>
-    public string Before { get; set; }
+    public string? Before { get; set; }
 
     /// <summary>How it is. Null for something that was removed.</summary>
-    public string After { get; set; }
+    public string? After { get; set; }
 
     /// <summary>Where in the sheets it is now, so a report can link to it.</summary>
-    public SummaryLocation Location { get; set; }
+    public SummaryLocation? Location { get; set; }
 
     /// <summary>
     /// The name this column used to have, when it was renamed rather than replaced.
@@ -84,16 +84,16 @@ public sealed class SchemaChange
     /// produces ten thousand cell changes for an edit that changed no value at all.
     /// Recognising it is what stops that burying the edits that did.
     /// </summary>
-    public string RenamedFrom { get; set; }
+    public string? RenamedFrom { get; set; }
 }
 
 /// <summary>A row that appeared, changed or went.</summary>
 public sealed class RowChange
 {
-    public string Table { get; set; }
+    public required string Table { get; set; }
 
     /// <summary>The row's primary index, as text.</summary>
-    public string RowKey { get; set; }
+    public required string RowKey { get; set; }
 
     public ChangeKind Kind { get; set; }
 }
@@ -106,20 +106,20 @@ public sealed class RowChange
 /// </summary>
 public sealed class CellChange
 {
-    public string Table { get; set; }
+    public required string Table { get; set; }
 
-    public string RowKey { get; set; }
+    public required string RowKey { get; set; }
 
-    public string Field { get; set; }
+    public required string Field { get; set; }
 
     public ChangeKind Kind { get; set; }
 
     /// <summary>The value before. Null means the cell was blank, or is new.</summary>
-    public string OldValue { get; set; }
+    public string? OldValue { get; set; }
 
     /// <summary>The value after. Null means the cell is blank now, or the row is gone.</summary>
-    public string NewValue { get; set; }
+    public string? NewValue { get; set; }
 
     /// <summary>The cell in the sheet, which is what a report links to.</summary>
-    public SummaryLocation Location { get; set; }
+    public SummaryLocation? Location { get; set; }
 }

@@ -15,38 +15,38 @@ public class Field
 {
     /// <summary>Cell holding the field's name.</summary>
     [JsonIgnore]
-    public Location NameLocation { get; set; }
+    public required Location NameLocation { get; set; }
 
     /// <summary>Cell holding the field's type.</summary>
     [JsonIgnore]
-    public Location TypeLocation { get; set; }
+    public required Location TypeLocation { get; set; }
 
     /// <summary>
     /// Cell holding the detail type - the enum name, or the reference target. Blank
     /// for a plain scalar field.
     /// </summary>
     [JsonIgnore]
-    public Location DetailTypeLocation { get; set; }
+    public required Location DetailTypeLocation { get; set; }
 
     /// <summary>Cell holding the field's target side.</summary>
     [JsonIgnore]
-    public Location TargetSideLocation { get; set; }
+    public required Location TargetSideLocation { get; set; }
 
     /// <summary>
     /// Table this field belongs to. Used by diagnostics that need to name the field
     /// in full.
     /// </summary>
     [JsonIgnore]
-    public Table OwnerTable { get; set; }
+    public required Table OwnerTable { get; set; }
 
     /// <summary>Name exactly as written in the sheet, `*` prefix included.</summary>
-    public string RawName { get; set; }
+    public string RawName { get; set; } = "";
 
     /// <summary>
     /// Name normalized to Pascal case with any `*` prefix removed. This is what
     /// generated code uses.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = "";
 
     /// <summary>Target side filtering option</summary>
     public TargetSide TargetSide { get; set; }
@@ -55,7 +55,7 @@ public class Field
     /// Type as written in the sheet. For an enum field this is the enum's name, and
     /// for a resolved reference it becomes the referenced field's type name.
     /// </summary>
-    public string TypeName { get; set; }
+    public string TypeName { get; set; } = "";
 
     /// <summary>
     /// Position of this field's column within the table.
@@ -70,7 +70,7 @@ public class Field
     public ValueType Type { get; set; }
 
     /// <summary>Description from the sheet, emitted as a doc comment.</summary>
-    public string Comment { get; set; }
+    public required string Comment { get; set; }
 
     /// <summary>
     /// Whether this field is an index, so its values must be unique.
@@ -85,26 +85,26 @@ public class Field
     /// Table this field references, as written in the detail-type cell. Empty when
     /// the field is not a reference.
     /// </summary>
-    public string RefTableName { get; set; }
+    public string? RefTableName { get; set; }
 
     /// <summary>
     /// Field within the referenced table, for the `RefTable.RefFieldName` form.
     /// Null or empty when the reference names the whole row.
     /// </summary>
-    public string RefFieldName { get; set; }
+    public string? RefFieldName { get; set; }
 
     /// <summary>
     /// The table actually pointed at, filled in once references are resolved. Null
     /// when resolution failed, which the diagnostics will have reported.
     /// </summary>
     [JsonIgnore]
-    public Table ResolvedRefTable { get; set; }
+    public Table? ResolvedRefTable { get; set; }
 
     /// <summary>
     /// The field actually pointed at, or null for a whole-row reference.
     /// </summary>
     [JsonIgnore]
-    public Field ResolvedRefField { get; set; }
+    public Field? ResolvedRefField { get; set; }
 
     /// <summary>
     /// The chain a reference walks, joined with underscores: a field pointing through
@@ -114,7 +114,7 @@ public class Field
     /// through different paths do not collide.
     /// </summary>
     [JsonIgnore]
-    public string RefChainPath { get; set; }
+    public string? RefChainPath { get; set; }
 
     /// <summary>Whether this field references another table.</summary>
     [JsonIgnore]

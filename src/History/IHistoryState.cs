@@ -88,25 +88,25 @@ public readonly struct EntityAddress : System.IEquatable<EntityAddress>
 /// <summary>A table as the history last saw it.</summary>
 public sealed class StoredTable
 {
-    public string Name { get; set; }
-    public string Hash { get; set; }
-    public string SchemaHash { get; set; }
+    public required string Name { get; set; }
+    public required string Hash { get; set; }
+    public required string SchemaHash { get; set; }
 }
 
 /// <summary>A column as the history last saw it.</summary>
 public sealed class StoredField
 {
-    public string Name { get; set; }
-    public string Hash { get; set; }
+    public required string Name { get; set; }
+    public required string Hash { get; set; }
 
     /// <summary>The column's attributes, as the JSON a schema change reports.</summary>
-    public string Descriptor { get; set; }
+    public required string Descriptor { get; set; }
 }
 
 /// <summary>An enum or constant set as the history last saw it.</summary>
 public sealed class StoredEntity
 {
     public EntityKind Kind { get; set; }
-    public string Name { get; set; }
-    public string Hash { get; set; }
+    public required string Name { get; set; }
+    public required string Hash { get; set; }
 }

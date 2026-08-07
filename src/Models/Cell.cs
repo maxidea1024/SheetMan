@@ -6,8 +6,8 @@ namespace SheetMan.Models;
 public class Cell
 {
     /// <summary>Raw cell</summary>
-    public RawCell RawCell { get; set; }
+    public required RawCell RawCell { get; set; }
 
     /// <summary>Imported value</summary>
-    public object Value { get; set; }
+    public required object Value { get; set; }
 }

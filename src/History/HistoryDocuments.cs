@@ -13,19 +13,20 @@ public sealed class HistoryDocument
 {
     public int SchemaVersion { get; set; } = 1;
 
-    public HistoryQueryInfo Query { get; set; }
+    public required HistoryQueryInfo Query { get; set; }
 
     /// <summary>Oldest first, so a reader follows the changes forwards.</summary>
-    public IReadOnlyList<HistorySnapshotView> Snapshots { get; set; }
+    public IReadOnlyList<HistorySnapshotView> Snapshots { get; set; } = [];
 
-    public HistoryTotals Totals { get; set; }
+    /// <remarks>Filled once every snapshot has been read, so it cannot be supplied at construction.</remarks>
+    public HistoryTotals? Totals { get; set; }
 }
 
 /// <summary>What was asked, echoed back so a stored answer explains itself.</summary>
 public sealed class HistoryQueryInfo
 {
-    public string Project { get; set; }
-    public string Branch { get; set; }
+    public required string Project { get; set; }
+    public required string Branch { get; set; }
 
     /// <summary>
     /// The commit the range starts after.
@@ -33,16 +34,16 @@ public sealed class HistoryQueryInfo
     /// Exclusive: it is the state being compared from, so its own changes belong to the
     /// range before this one. Null means from the beginning of the branch.
     /// </summary>
-    public string From { get; set; }
+    public string? From { get; set; }
 
     /// <summary>The commit the range ends at, inclusive. Null means the branch's head.</summary>
-    public string To { get; set; }
+    public string? To { get; set; }
 
-    public string Table { get; set; }
-    public string Field { get; set; }
-    public string Author { get; set; }
+    public string? Table { get; set; }
+    public string? Field { get; set; }
+    public string? Author { get; set; }
 
-    public string GeneratedAt { get; set; }
+    public required string GeneratedAt { get; set; }
 
     /// <summary>How many changes were asked for at most.</summary>
     public int Limit { get; set; }
@@ -66,7 +67,7 @@ public sealed class HistoryQueryInfo
     /// behind it. Each is a reasonable thing to do and each changes what the numbers
     /// describe, so each is said rather than assumed to be fine.
     /// </summary>
-    public IReadOnlyList<string> Notes { get; set; }
+    public IReadOnlyList<string> Notes { get; set; } = [];
 }
 
 /// <summary>One snapshot, and what changed to reach it.</summary>
@@ -75,15 +76,15 @@ public sealed class HistorySnapshotView
     public long Id { get; set; }
     public long Seq { get; set; }
 
-    public string Commit { get; set; }
-    public string ShortCommit { get; set; }
-    public string Branch { get; set; }
-    public string AuthorName { get; set; }
-    public string AuthorEmail { get; set; }
-    public string CommittedAt { get; set; }
-    public string Subject { get; set; }
-    public string ConvertedAt { get; set; }
-    public string ConvertedBy { get; set; }
+    public required string Commit { get; set; }
+    public required string ShortCommit { get; set; }
+    public required string Branch { get; set; }
+    public string? AuthorName { get; set; }
+    public string? AuthorEmail { get; set; }
+    public string? CommittedAt { get; set; }
+    public string? Subject { get; set; }
+    public string? ConvertedAt { get; set; }
+    public string? ConvertedBy { get; set; }
 
     public bool Dirty { get; set; }
 
@@ -100,7 +101,7 @@ public sealed class HistorySnapshotView
     public bool FollowsParent { get; set; }
 
     /// <summary>The commit these changes are measured from. Null for a branch's first.</summary>
-    public string PreviousCommit { get; set; }
+    public string? PreviousCommit { get; set; }
 
     /// <summary>
     /// Whether this snapshot's change detail has been removed to reclaim space.
@@ -111,11 +112,18 @@ public sealed class HistorySnapshotView
     /// </summary>
     public bool Pruned { get; set; }
 
-    public HistoryChangeCounts Counts { get; set; }
+    /// <remarks>Counted once the snapshot's changes have been read, so it cannot be
+    /// supplied where the snapshot row is.</remarks>
+    public HistoryChangeCounts Counts { get; set; } = new();
 
-    public IReadOnlyList<SchemaChangeView> Schema { get; set; }
-    public IReadOnlyList<CellChangeView> Cells { get; set; }
-    public IReadOnlyList<RowChangeView> Rows { get; set; }
+    /// <remarks>Filled after the snapshot row is read, when its changes are fetched.</remarks>
+    public IReadOnlyList<SchemaChangeView> Schema { get; set; } = [];
+    /// <remarks>Filled with the same pass as Schema and Rows, once the snapshot row
+    /// itself has been read. Not required for that reason.</remarks>
+    public IReadOnlyList<CellChangeView> Cells { get; set; } = [];
+    /// <remarks>Filled after the snapshot row is read, with the same pass that fetches
+    /// its schema changes. Not required for that reason.</remarks>
+    public IReadOnlyList<RowChangeView> Rows { get; set; } = [];
 }
 
 public sealed class HistoryChangeCounts
@@ -141,34 +149,34 @@ public sealed class HistoryTotals
 
 public sealed class SchemaChangeView
 {
-    public string EntityKind { get; set; }
-    public string Entity { get; set; }
-    public string Member { get; set; }
-    public string Kind { get; set; }
-    public string Before { get; set; }
-    public string After { get; set; }
-    public SummaryLocation Location { get; set; }
+    public required string EntityKind { get; set; }
+    public required string Entity { get; set; }
+    public required string Member { get; set; }
+    public required string Kind { get; set; }
+    public string? Before { get; set; }
+    public string? After { get; set; }
+    public SummaryLocation? Location { get; set; }
 
     /// <summary>The name this column had before, when it was renamed rather than replaced.</summary>
-    public string RenamedFrom { get; set; }
+    public string? RenamedFrom { get; set; }
 }
 
 public sealed class RowChangeView
 {
-    public string Table { get; set; }
-    public string RowKey { get; set; }
-    public string Kind { get; set; }
+    public string? Table { get; set; }
+    public required string RowKey { get; set; }
+    public required string Kind { get; set; }
 }
 
 public sealed class CellChangeView
 {
-    public string Table { get; set; }
-    public string RowKey { get; set; }
-    public string Field { get; set; }
-    public string Kind { get; set; }
-    public string Before { get; set; }
-    public string After { get; set; }
-    public SummaryLocation Location { get; set; }
+    public string? Table { get; set; }
+    public required string RowKey { get; set; }
+    public string? Field { get; set; }
+    public required string Kind { get; set; }
+    public string? Before { get; set; }
+    public string? After { get; set; }
+    public SummaryLocation? Location { get; set; }
 }
 
 // -------------------------------------------------------------- listings
@@ -178,54 +186,54 @@ public sealed class SnapshotListing
 {
     public long Id { get; set; }
     public long Seq { get; set; }
-    public string Commit { get; set; }
-    public string ShortCommit { get; set; }
-    public string Branch { get; set; }
-    public string AuthorName { get; set; }
-    public string AuthorEmail { get; set; }
-    public string CommittedAt { get; set; }
-    public string Subject { get; set; }
-    public string ConvertedAt { get; set; }
+    public required string Commit { get; set; }
+    public required string ShortCommit { get; set; }
+    public required string Branch { get; set; }
+    public string? AuthorName { get; set; }
+    public string? AuthorEmail { get; set; }
+    public string? CommittedAt { get; set; }
+    public string? Subject { get; set; }
+    public string? ConvertedAt { get; set; }
     public bool Dirty { get; set; }
     public bool Attributable { get; set; }
     public bool Pruned { get; set; }
 
-    public HistoryChangeCounts Counts { get; set; }
+    public required HistoryChangeCounts Counts { get; set; }
 }
 
 /// <summary>One point of a trend line.</summary>
 public sealed class TrendPoint
 {
-    public string Commit { get; set; }
-    public string ShortCommit { get; set; }
-    public string CommittedAt { get; set; }
+    public required string Commit { get; set; }
+    public required string ShortCommit { get; set; }
+    public string? CommittedAt { get; set; }
     public long Value { get; set; }
 }
 
 /// <summary>How much one person changed over a range.</summary>
 public sealed class AuthorSummary
 {
-    public string Name { get; set; }
-    public string Email { get; set; }
+    public required string Name { get; set; }
+    public required string Email { get; set; }
     public int Snapshots { get; set; }
     public long Cells { get; set; }
     public long Rows { get; set; }
     public long Schema { get; set; }
-    public string FirstAt { get; set; }
-    public string LastAt { get; set; }
+    public required string FirstAt { get; set; }
+    public required string LastAt { get; set; }
 }
 
 /// <summary>Every value one cell has held, newest first.</summary>
 public sealed class CellHistoryEntry
 {
-    public string Commit { get; set; }
-    public string ShortCommit { get; set; }
-    public string AuthorName { get; set; }
-    public string CommittedAt { get; set; }
-    public string Table { get; set; }
-    public string RowKey { get; set; }
-    public string Field { get; set; }
-    public string Kind { get; set; }
-    public string Before { get; set; }
-    public string After { get; set; }
+    public required string Commit { get; set; }
+    public required string ShortCommit { get; set; }
+    public string? AuthorName { get; set; }
+    public string? CommittedAt { get; set; }
+    public string? Table { get; set; }
+    public required string RowKey { get; set; }
+    public string? Field { get; set; }
+    public required string Kind { get; set; }
+    public string? Before { get; set; }
+    public string? After { get; set; }
 }

@@ -254,21 +254,24 @@ public sealed class SheetManLayoutParser : ILayoutParser
             }
 
             // Add a constant.
-            var constant = new Models.ConstantSet.Constant
+            // The type is worked out first so the value can be parsed in the initializer
+            // rather than assigned after it. An enum names its type in the detail cell, so
+            // a diagnostic about it should point there.
+            var type = _context.ParseValueType(
+                typeName, enumm != null ? detailTypeCol.Location : typeCol.Location);
+
+            result.Constants.Add(new Models.ConstantSet.Constant
             {
                 Location = nameCol.Location,
                 RawName = rawName,
                 Name = name,
                 TypeName = typeName,
-                Type = _context.ParseValueType(typeName, enumm != null ? detailTypeCol.Location : typeCol.Location), // an enum names its type in the detail cell, so point there
+                Type = type,
                 Enum = enumm,
                 Comment = descCol.Value,
-                ValueString = valueCol.Value
-            };
-
-            constant.Value = _context.ParseValue(constant.Type, constant.Enum, valueCol.Value, valueCol.Location);
-
-            result.Constants.Add(constant);
+                ValueString = valueCol.Value,
+                Value = _context.ParseValue(type, enumm, valueCol.Value, valueCol.Location),
+            });
         }
 
         return result;

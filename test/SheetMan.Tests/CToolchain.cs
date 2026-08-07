@@ -164,6 +164,14 @@ internal static class CToolchain
         File.WriteAllText(implementation, string.Join(Environment.NewLine, new[]
         {
             "/* Written by the test suite. */",
+
+            // Before any include, and this is the reason the generated updater source
+            // says it too: glibc reads the macro in the first libc header a translation
+            // unit pulls in. This file includes the reader first, so asking inside the
+            // updater header would already be too late - and the updater needs nanosleep
+            // and strcasecmp, neither of which is ISO C.
+            "#define _POSIX_C_SOURCE 200809L",
+            "",
             "#define SHEETMAN_LITE_BINARY_IMPLEMENTATION",
             "#include \"sheetman/sheetman_lite_binary_reader.h\"",
             "#define SHEETMAN_UPDATER_IMPLEMENTATION",

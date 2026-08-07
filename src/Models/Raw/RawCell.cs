@@ -18,14 +18,14 @@ public class RawCell
     /// the sheet - and at a clickable URL, for Google Sheets sources.
     /// </summary>
     [JsonIgnore]
-    public Location Location { get; set; }
+    public required Location Location { get; set; }
 
     /// <summary>Cell contents as text, trimmed.</summary>
-    public string Value { get; set; }
+    public required string Value { get; set; }
 
     /// <summary>
     /// The cell's note or comment, with the author prefix that Excel and Google
     /// Sheets prepend removed. Becomes the doc comment of whatever the cell defines.
     /// </summary>
-    public string Note { get; set; }
+    public required string Note { get; set; }
 }

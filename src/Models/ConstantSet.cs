@@ -19,59 +19,59 @@ public class ConstantSet
     {
         /// <summary>Cell the constant was declared in.</summary>
         [JsonIgnore]
-        public Location Location { get; set; }
+        public required Location Location { get; set; }
 
         /// <summary>Name normalized to Pascal case, which is what generated code uses.</summary>
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         /// <summary>Name exactly as written in the sheet.</summary>
-        public string RawName { get; set; }
+        public required string RawName { get; set; }
 
         /// <summary>
         /// Type as written in the sheet, or the enum's name when the type is `enum`.
         /// </summary>
-        public string TypeName { get; set; }
+        public required string TypeName { get; set; }
 
         /// <summary>Resolved type.</summary>
         public ValueType Type { get; set; }
 
         /// <summary>The enum declaration, when <see cref="Type"/> is Enum. Null otherwise.</summary>
-        public Enum Enum { get; set; }
+        public required Enum Enum { get; set; }
 
         /// <summary>
         /// The value cell's text, kept alongside the parsed value so a generator can
         /// show what the author actually wrote.
         /// </summary>
-        public string ValueString { get; set; }
+        public required string ValueString { get; set; }
 
         /// <summary>
         /// The parsed value, boxed. Its runtime type follows <see cref="Type"/>; an
         /// enum constant holds the label's integer.
         /// </summary>
-        public object Value { get; set; }
+        public required object Value { get; set; }
 
         /// <summary>Description from the sheet, emitted as a doc comment.</summary>
-        public string Comment { get; set; }
+        public required string Comment { get; set; }
     }
 
     /// <summary>Cell holding the entity marker that declared this set.</summary>
     [JsonIgnore]
-    public Location Location { get; set; }
+    public required Location Location { get; set; }
 
     /// <summary>Target side filtering option.</summary>
     public TargetSide TargetSide { get; set; }
 
     /// <summary>Name normalized to Pascal case, which is what generated code uses.</summary>
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>Name exactly as written in the sheet.</summary>
-    public string RawName { get; set; }
+    public required string RawName { get; set; }
 
     /// <summary>The constants, in declaration order.</summary>
     public List<Constant> Constants { get; set; } = new List<Constant>();
 
     /// <summary>Description from the sheet, emitted as a doc comment.</summary>
-    public string Comment { get; set; }
+    public required string Comment { get; set; }
 
     /// <summary>Whether a constant of this name exists in the set.</summary>
     public bool ContainsConstant(string constantName) => FindConstant(constantName) != null;
