@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
   "run": {
-    "generatedAt": "2026-08-08T15:27:49.1763388+09:00",
+    "generatedAt": "2026-08-08T16:09:13.1994013+09:00",
     "toolVersion": "0.0.0.0",
     "recipe": "showcase.json",
     "requestedTargetSide": "cs",
     "commit": {
-      "hash": "4a4fc6c071b72e4c4452b871b77305c1a808b65c",
-      "shortHash": "4a4fc6c071b7",
+      "hash": "736578f405ecc2a3054b131d8dd30d1687175c17",
+      "shortHash": "736578f405ec",
       "branch": "main",
       "authorName": null,
       "authorEmail": null,
-      "committedAt": "2026-08-08T15:11:40.0000000+09:00",
-      "subject": "Sweep the exporters' output too, using the manifest as the permission",
+      "committedAt": "2026-08-08T15:38:43.0000000+09:00",
+      "subject": "Fold the prefixes too: front-coded dictionaries, and dictionaries past strings",
       "origin": "git",
       "dirty": true,
       "attributable": false

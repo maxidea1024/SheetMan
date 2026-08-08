@@ -186,6 +186,24 @@ internal sealed class CsFieldView
     /// </summary>
     public required IReadOnlyList<string> ElementRead { get; set; }
 
+    /// <summary>
+    /// The cursor's run method for a scalar whose column can arrive run-length encoded -
+    /// `NextSameI32` or `NextSameString` - or empty for one that reads row by row.
+    /// </summary>
+    /// <remarks>
+    /// A run of a hundred thousand rows costs one call through this and a hundred
+    /// thousand plain assignments, instead of a hundred thousand calls that each
+    /// re-dispatch on the encoding. On real data most of a load's CPU was exactly that
+    /// re-dispatch.
+    /// </remarks>
+    public required string RunCall { get; set; }
+
+    /// <summary>
+    /// The lines assigning one row from `value`, the run's decoded value, inside the
+    /// loop <see cref="RunCall"/> opens. Empty exactly when <see cref="RunCall"/> is.
+    /// </summary>
+    public required IReadOnlyList<string> RunRead { get; set; }
+
     /// <summary>Type of the setter a resolved reference is assigned through.</summary>
     public required string ReferenceSetterType { get; set; }
 

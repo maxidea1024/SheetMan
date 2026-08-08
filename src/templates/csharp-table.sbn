@@ -249,6 +249,21 @@
 {{~ end ~}}
                             }
                         }
+{{~ else if field.run_call != '' ~}}
+                        {{ field.cursor_open }}
+                        for (int i = 0; i < count; )
+                        {
+                            // One call per run of equal values, not one per row - over a
+                            // run-length encoded column this is most of the decode.
+                            int n = cursor.{{ field.run_call }}(count - i, out var value);
+                            do
+                            {
+                                var record = records[i++];
+{{~ for line in field.run_read ~}}
+                                {{ line }}
+{{~ end ~}}
+                            } while (--n > 0);
+                        }
 {{~ else ~}}
 {{~ if field.cursor_open != '' ~}}
                         {{ field.cursor_open }}

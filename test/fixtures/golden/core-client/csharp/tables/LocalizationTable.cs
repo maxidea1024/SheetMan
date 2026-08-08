@@ -188,20 +188,32 @@ namespace SheetMan.Fixtures.Core.Client
                     case 1:
                         ScbTable.CheckColumn(column, "Localization.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         cursor = new ScbColumnCursor(reader, column, count, "Localization.Index");
-                        for (int i = 0; i < count; i++)
+                        for (int i = 0; i < count; )
                         {
-                            var record = records[i];
-                            record._index = cursor.NextI32();
+                            // One call per run of equal values, not one per row - over a
+                            // run-length encoded column this is most of the decode.
+                            int n = cursor.NextSameI32(count - i, out var value);
+                            do
+                            {
+                                var record = records[i++];
+                                record._index = value;
+                            } while (--n > 0);
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Localization.Key", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         cursor = new ScbColumnCursor(reader, column, count, "Localization.Key");
-                        for (int i = 0; i < count; i++)
+                        for (int i = 0; i < count; )
                         {
-                            var record = records[i];
-                            record._key = cursor.NextString();
+                            // One call per run of equal values, not one per row - over a
+                            // run-length encoded column this is most of the decode.
+                            int n = cursor.NextSameString(count - i, out var value);
+                            do
+                            {
+                                var record = records[i++];
+                                record._key = value;
+                            } while (--n > 0);
                         }
                         break;
 

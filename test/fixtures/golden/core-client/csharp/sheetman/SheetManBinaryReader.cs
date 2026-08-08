@@ -689,6 +689,76 @@ namespace SheetMan.Binary
             }
         }
 
+        /// <summary>
+        /// Up to <paramref name="limit"/> rows that all hold the next value, and that
+        /// value. Always at least 1.
+        ///
+        /// This is what makes a run cost one call instead of one per row: the generated
+        /// loop asks once, then assigns the value that many times. An encoding that
+        /// cannot promise sameness cheaply answers 1, so the caller's loop is correct
+        /// over every encoding and only faster over runs.
+        /// </summary>
+        public int NextSameI32(int limit, out int value)
+        {
+            if (_encoding == ScbTable.EncodingRle)
+            {
+                _rowsRemaining--;
+                if (_runRemaining == 0)
+                    ReadRun();
+
+                int n = _runRemaining < limit ? _runRemaining : limit;
+                _runRemaining -= n;
+                _rowsRemaining -= n - 1;
+                value = _runValue;
+                return n;
+            }
+
+            if (_encoding == ScbTable.EncodingDeltaRle && _started)
+            {
+                _rowsRemaining--;
+                if (_runRemaining == 0)
+                    ReadRun();
+
+                if (_runValue == 0)
+                {
+                    // A zero-delta run is a run of one value.
+                    int n = _runRemaining < limit ? _runRemaining : limit;
+                    _runRemaining -= n;
+                    _rowsRemaining -= n - 1;
+                    value = _previous;
+                    return n;
+                }
+
+                _runRemaining--;
+                _previous = unchecked(_previous + _runValue);
+                value = _previous;
+                return 1;
+            }
+
+            value = NextI32();
+            return 1;
+        }
+
+        /// <summary>The string counterpart of <see cref="NextSameI32"/>.</summary>
+        public int NextSameString(int limit, out string value)
+        {
+            if (_encoding == ScbTable.EncodingDictRle || _encoding == ScbTable.EncodingDictFrontRle)
+            {
+                _rowsRemaining--;
+                if (_runRemaining == 0)
+                    ReadRun();
+
+                int n = _runRemaining < limit ? _runRemaining : limit;
+                _runRemaining -= n;
+                _rowsRemaining -= n - 1;
+                value = DictionaryEntry(_runValue);
+                return n;
+            }
+
+            value = NextString();
+            return 1;
+        }
+
         private void ReadRun()
         {
             int length = _reader.ReadCounter32();

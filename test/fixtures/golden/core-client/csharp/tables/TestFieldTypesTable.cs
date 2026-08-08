@@ -228,20 +228,32 @@ namespace SheetMan.Fixtures.Core.Client
                     case 1:
                         ScbTable.CheckColumn(column, "TestFieldTypes.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.Index");
-                        for (int i = 0; i < count; i++)
+                        for (int i = 0; i < count; )
                         {
-                            var record = records[i];
-                            record._index = cursor.NextI32();
+                            // One call per run of equal values, not one per row - over a
+                            // run-length encoded column this is most of the decode.
+                            int n = cursor.NextSameI32(count - i, out var value);
+                            do
+                            {
+                                var record = records[i++];
+                                record._index = value;
+                            } while (--n > 0);
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "TestFieldTypes.StringField", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.StringField");
-                        for (int i = 0; i < count; i++)
+                        for (int i = 0; i < count; )
                         {
-                            var record = records[i];
-                            record._stringField = cursor.NextString();
+                            // One call per run of equal values, not one per row - over a
+                            // run-length encoded column this is most of the decode.
+                            int n = cursor.NextSameString(count - i, out var value);
+                            do
+                            {
+                                var record = records[i++];
+                                record._stringField = value;
+                            } while (--n > 0);
                         }
                         break;
 
@@ -317,10 +329,16 @@ namespace SheetMan.Fixtures.Core.Client
                     case 11:
                         ScbTable.CheckColumn(column, "TestFieldTypes.ValueTypeField", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.ValueTypeField");
-                        for (int i = 0; i < count; i++)
+                        for (int i = 0; i < count; )
                         {
-                            var record = records[i];
-                            record._valueTypeField = (global::SheetMan.Fixtures.Core.Client.ValueType)cursor.NextI32();
+                            // One call per run of equal values, not one per row - over a
+                            // run-length encoded column this is most of the decode.
+                            int n = cursor.NextSameI32(count - i, out var value);
+                            do
+                            {
+                                var record = records[i++];
+                                record._valueTypeField = (global::SheetMan.Fixtures.Core.Client.ValueType)value;
+                            } while (--n > 0);
                         }
                         break;
 

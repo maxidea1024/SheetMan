@@ -185,32 +185,50 @@ namespace SheetMan.Fixtures.X
                     case 1:
                         ScbTable.CheckColumn(column, "Item.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         cursor = new ScbColumnCursor(reader, column, count, "Item.Index");
-                        for (int i = 0; i < count; i++)
+                        for (int i = 0; i < count; )
                         {
-                            var record = records[i];
-                            record._index = cursor.NextI32();
+                            // One call per run of equal values, not one per row - over a
+                            // run-length encoded column this is most of the decode.
+                            int n = cursor.NextSameI32(count - i, out var value);
+                            do
+                            {
+                                var record = records[i++];
+                                record._index = value;
+                            } while (--n > 0);
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Item.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         cursor = new ScbColumnCursor(reader, column, count, "Item.Name");
-                        for (int i = 0; i < count; i++)
+                        for (int i = 0; i < count; )
                         {
-                            var record = records[i];
-                            record._name = cursor.NextString();
+                            // One call per run of equal values, not one per row - over a
+                            // run-length encoded column this is most of the decode.
+                            int n = cursor.NextSameString(count - i, out var value);
+                            do
+                            {
+                                var record = records[i++];
+                                record._name = value;
+                            } while (--n > 0);
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Item.CategoryName", ScbTable.KindScalar, 1, ScbTable.ElementI32);
                         cursor = new ScbColumnCursor(reader, column, count, "Item.CategoryName");
-                        for (int i = 0; i < count; i++)
+                        for (int i = 0; i < count; )
                         {
-                            var record = records[i];
-                            record._categoryName_ItemCategory_index = cursor.NextI32();
-                            record._categoryName = default(string); // will be assigned.
-                            record._categoryName_F = false;
+                            // One call per run of equal values, not one per row - over a
+                            // run-length encoded column this is most of the decode.
+                            int n = cursor.NextSameI32(count - i, out var value);
+                            do
+                            {
+                                var record = records[i++];
+                                record._categoryName_ItemCategory_index = value;
+                                record._categoryName = default(string); // will be assigned.
+                                record._categoryName_F = false;
+                            } while (--n > 0);
                         }
                         break;
 

@@ -249,6 +249,8 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
             CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementRead = ElementReadLines(sf, fieldName, fieldType, refTable),
+            RunCall = RunCall(sf),
+            RunRead = RunReadLines(sf, fieldName, fieldType, refTable),
 
             // A reference to a whole row is assigned the target record; one that names a
             // field is assigned that field's value, which is the field's own type.
@@ -417,6 +419,61 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
         => UsesCursor(sf)
             ? $"cursor = new ScbColumnCursor(reader, column, count, \"{tableName}.{sf.Name}\");"
             : "";
+
+    /// <summary>
+    /// The cursor's run method for a scalar whose values the run encodings cover, or
+    /// empty for everything else - which then reads row by row as before.
+    /// </summary>
+    /// <remarks>
+    /// Exactly the scalars whose cursor calls come down to NextI32 or NextString: int32
+    /// members, enums, references and strings. The other cursor scalars stay per-row -
+    /// their encodings are dictionaries, where the per-row work is already one index
+    /// lookup - as do arrays, which are always raw.
+    /// </remarks>
+    private static string RunCall(SerialField sf)
+    {
+        if (sf.IsArray || !UsesCursor(sf))
+            return "";
+
+        if (sf.IsRef || sf.ElementType == Models.ValueType.Enum)
+            return "NextSameI32";
+
+        switch (sf.ElementType)
+        {
+            case Models.ValueType.Int32:
+                return "NextSameI32";
+            case Models.ValueType.String:
+                return "NextSameString";
+            default:
+                return "";
+        }
+    }
+
+    /// <summary>
+    /// The lines assigning one row from `value`, a run's decoded value, inside the loop
+    /// the template builds around <see cref="RunCall"/>.
+    /// </summary>
+    private static IReadOnlyList<string> RunReadLines(
+        SerialField sf, string fieldName, string fieldType, string refTable)
+    {
+        if (RunCall(sf).Length == 0)
+            return Array.Empty<string>();
+
+        if (sf.ElementType == Models.ValueType.Enum)
+            return new[] { $"record.{fieldName} = ({fieldType})value;" };
+
+        if (sf.IsRef)
+        {
+            return new[]
+            {
+                $"record.{fieldName}_{refTable}_index = value;",
+                $"record.{fieldName} = default({fieldType}); // will be assigned.",
+                $"record.{fieldName}_F = false;",
+            };
+        }
+
+        return new[] { $"record.{fieldName} = value;" };
+    }
 
     private static IReadOnlyList<string> ElementReadLines(
         SerialField sf, string fieldName, string fieldType, string refTable)
