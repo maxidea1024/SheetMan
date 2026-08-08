@@ -35,7 +35,9 @@ module Sheetman
   # The format is column-oriented and self-describing: the header names every column
   # and how long its block is, and a reader that meets a version it does not know stops
   # rather than guessing.
-  FORMAT_VERSION = 101
+  # 102 replaced 101 outright - a descriptor gained its encoding byte - before any
+  # 101 file had shipped.
+  FORMAT_VERSION = 102
 
   # The wire element types and kinds, as a column descriptor spells them.
   ELEMENT_VARINT = 0
@@ -51,8 +53,18 @@ module Sheetman
   KIND_FIXED_ARRAY = 1
   KIND_VAR_ARRAY = 2
 
+  # How a block's values are laid out. Raw is the layout 101 had; the others compress
+  # a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+  ENCODING_RAW = 0
+  ENCODING_VARINT = 1
+  ENCODING_DELTA = 2
+  ENCODING_RLE = 3
+  ENCODING_DELTA_RLE = 4
+  ENCODING_DICT = 5
+  ENCODING_DICT_RLE = 6
+
   # One column as the file describes it.
-  Column = Struct.new(:tag, :element, :kind, :count, :byte_length)
+  Column = Struct.new(:tag, :element, :kind, :encoding, :count, :byte_length)
 
   # A table file is truncated, malformed, or not a table file.
   class ScbError < StandardError; end
@@ -287,16 +299,19 @@ module Sheetman
     columns = Array.new(column_count) do
       tag = reader.read_counter32
       wire = reader.read_uint8
+      encoding = reader.read_uint8
       element_count = reader.read_counter32
       byte_length = reader.read_uint32
-      Column.new(tag, wire & 0x0F, (wire >> 4) & 0x03, element_count, byte_length)
+      Column.new(tag, wire & 0x0F, (wire >> 4) & 0x03, encoding, element_count, byte_length)
     end
 
     # What the descriptors say about the file, checked before anybody allocates for the
     # row count. The blocks are all that follows the header, so their declared lengths have
-    # to add up to the bytes left, and every row costs at least one byte in every block - a
-    # varint's shortest form, an empty string's length prefix, a variable array's counter.
-    # A row count larger than that is one the exporter could not have written.
+    # to add up to the bytes left. A raw block also costs at least one byte per
+    # row - a varint's shortest form, an empty string's length prefix, a variable
+    # array's counter - so a larger row count is one the exporter could not have
+    # written. An encoded block has no such floor; its decode checks run sums and
+    # dictionary bounds instead.
 
     available = reader.remaining
     declared = 0
@@ -310,7 +325,7 @@ module Sheetman
 
       declared += column.byte_length
 
-      if count > column.byte_length
+      if column.encoding == ENCODING_RAW && count > column.byte_length
         raise ScbError,
               "the row count #{count} is larger than column tag #{column.tag} can hold in its " \
               "#{column.byte_length} bytes"
@@ -333,6 +348,14 @@ module Sheetman
             "#{field_name}: the file column (kind #{column.kind}, count #{column.count}) " \
             "does not match the generated member (kind #{kind}, count #{count}). The schema " \
             'changed shape; regenerate the code or rebuild the data.'
+    end
+
+    # An encoding this build cannot decode is refused by name, exactly like an
+    # element it cannot read. An unknown column's encoding never gets here - a skip
+    # is a skip whatever the block's layout.
+    if column.encoding != ENCODING_RAW
+      raise ScbError,
+            "#{field_name}: the file's column uses encoding #{column.encoding}, which this "             'reader does not support. Regenerate the code or rebuild the data.'
     end
 
     return if accepted.include?(column.element)

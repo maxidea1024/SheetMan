@@ -55,8 +55,9 @@ extern "C" {
  *
  * The format is column-oriented and self-describing: the header names every column
  * and how long its block is, and a reader that meets a version it does not know
- * stops rather than guessing. */
-#define SHEETMAN_BINARY_FILE_FORMAT_VERSION 101u
+ * stops rather than guessing. 102 replaced 101 outright - a descriptor gained its
+ * encoding byte - before any 101 file had shipped. */
+#define SHEETMAN_BINARY_FILE_FORMAT_VERSION 102u
 
 /* The wire element types and kinds, as a column descriptor spells them. */
 #define SM_ELEMENT_VARINT 0
@@ -72,6 +73,16 @@ extern "C" {
 #define SM_KIND_FIXED_ARRAY 1
 #define SM_KIND_VAR_ARRAY 2
 
+/* How a block's values are laid out. Raw is the layout 101 had; the others compress
+ * a column that repeats itself. spec/scb-v102-column-encoding.md is the contract. */
+#define SM_ENCODING_RAW 0
+#define SM_ENCODING_VARINT 1
+#define SM_ENCODING_DELTA 2
+#define SM_ENCODING_RLE 3
+#define SM_ENCODING_DELTA_RLE 4
+#define SM_ENCODING_DICT 5
+#define SM_ENCODING_DICT_RLE 6
+
 /* One element type as a bit, so the set a member accepts is one integer argument.
  * A set rather than an array because the generated code has to spell it inline, and
  * C89 has no array literal to spell it with. */
@@ -83,6 +94,8 @@ typedef struct sm_column {
   int32_t tag;
   uint8_t element;
   uint8_t kind;
+  /* How the block's values are laid out: one of the SM_ENCODING_* constants. */
+  uint8_t encoding;
   /* Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
   int32_t count;
   /* Total bytes of the column block - what a skip advances by. */
@@ -673,15 +686,18 @@ bool sm_read_table_header(sm_reader* reader, int32_t* out_row_count,
 
   for (at = 0; at < column_count; ++at) {
     uint8_t wire = 0;
+    uint8_t encoding = 0;
     uint32_t byte_length = 0;
 
     (void)sm_read_counter32(reader, &columns[at].tag);
     (void)sm_read_fixed8(reader, &wire);
+    (void)sm_read_fixed8(reader, &encoding);
     (void)sm_read_counter32(reader, &columns[at].count);
     (void)sm_read_fixed32(reader, &byte_length);
 
     columns[at].element = (uint8_t)(wire & 0x0f);
     columns[at].kind = (uint8_t)((wire >> 4) & 0x03);
+    columns[at].encoding = encoding;
     columns[at].byte_length = (int32_t)byte_length;
   }
 
@@ -690,10 +706,11 @@ bool sm_read_table_header(sm_reader* reader, int32_t* out_row_count,
 
   /* What the descriptors themselves say about the file, checked before the generated
    * code allocates for the row count. The blocks are all that follows the header, so
-   * their declared lengths have to add up to the bytes left, and every row costs at
-   * least one byte in every block - a varint's shortest form, an empty string's
-   * length prefix, a variable array's counter. A row count larger than that is one
-   * the exporter could not have written. */
+   * their declared lengths have to add up to the bytes left. A raw block also costs
+   * at least one byte per row - a varint's shortest form, an empty string's length
+   * prefix, a variable array's counter - so a larger row count is one the exporter
+   * could not have written. An encoded block has no such floor; its decode checks
+   * run sums and dictionary bounds instead. */
   {
     int32_t remaining = reader->length - reader->position;
     int32_t declared = 0;
@@ -707,7 +724,8 @@ bool sm_read_table_header(sm_reader* reader, int32_t* out_row_count,
 
       declared += columns[at].byte_length;
 
-      if (*out_row_count > columns[at].byte_length) {
+      if (columns[at].encoding == SM_ENCODING_RAW
+          && *out_row_count > columns[at].byte_length) {
         int32_t bad = *out_row_count;
 
         *out_row_count = 0;
@@ -824,6 +842,16 @@ bool sm_check_column(sm_reader* reader, const sm_column* column, const char* fie
            "member (kind %d, count %d). The schema changed shape; regenerate the "
            "code or rebuild the data.",
            field_name, (int)column->kind, column->count, (int)kind, count);
+  }
+
+  /* An encoding this build cannot decode is refused by name, exactly like an
+   * element it cannot read. An unknown column's encoding never gets here - a skip
+   * is a skip whatever the block's layout. */
+  if (column->encoding != SM_ENCODING_RAW) {
+    return sm_fail(reader,
+           "%s: the file's column uses encoding %d, which this reader does not "
+           "support. Regenerate the code or rebuild the data.",
+           field_name, (int)column->encoding);
   }
 
   if ((accepted & SM_ELEMENT_MASK(column->element)) != 0)

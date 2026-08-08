@@ -172,6 +172,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -195,10 +196,11 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "GachaRate.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaRate.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 

@@ -186,7 +186,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -210,48 +210,51 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Attribute.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Attribute.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Attribute.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Attribute.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Attribute.AttributeName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Attribute.AttributeName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._attributeName);
+                            record._attributeName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "Attribute.AttributeType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Attribute.AttributeType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._attributeType = (global::Rescue.Tables.AttributeType)tempEnumInt;
+                            record._attributeType = (global::Rescue.Tables.AttributeType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "Attribute.TargetAttributeType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Attribute.TargetAttributeType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._targetAttributeType = (global::Rescue.Tables.AttributeType)tempEnumInt;
+                            record._targetAttributeType = (global::Rescue.Tables.AttributeType)cursor.NextI32();
                         }
                         break;
 
@@ -275,10 +278,11 @@ namespace Rescue.Tables
 
                     case 8:
                         ScbTable.CheckColumn(column, "Attribute.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Attribute.IconPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._iconPath);
+                            record._iconPath = cursor.NextString();
                         }
                         break;
 

@@ -168,6 +168,7 @@ namespace SheetMan.Fixtures.X
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -191,19 +192,21 @@ namespace SheetMan.Fixtures.X
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "ExcelTyped.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExcelTyped.Index");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._index = reader.ReadI32As(column.Element);
+                            record._index = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "ExcelTyped.IntFromNumeric", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExcelTyped.IntFromNumeric");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._intFromNumeric = reader.ReadI32As(column.Element);
+                            record._intFromNumeric = cursor.NextI32();
                         }
                         break;
 
@@ -227,10 +230,11 @@ namespace SheetMan.Fixtures.X
 
                     case 5:
                         ScbTable.CheckColumn(column, "ExcelTyped.BigFromNumeric", ScbTable.KindScalar, 1, ScbTable.ElementI64, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExcelTyped.BigFromNumeric");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._bigFromNumeric = reader.ReadI64As(column.Element);
+                            record._bigFromNumeric = cursor.NextI64();
                         }
                         break;
 

@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
   "run": {
-    "generatedAt": "2026-08-08T09:53:56.4944018+09:00",
+    "generatedAt": "2026-08-08T10:18:27.3098910+09:00",
     "toolVersion": "0.0.0.0",
     "recipe": "recipe.jsonc",
     "requestedTargetSide": "cs",
     "commit": {
-      "hash": "da802cf982d7a0f7ca56c7794a9e7cf98372f3d7",
-      "shortHash": "da802cf982d7",
+      "hash": "ef49beed379fa4b0316e6a04992dcf4c131723b4",
+      "shortHash": "ef49beed379f",
       "branch": "main",
       "authorName": null,
       "authorEmail": null,
-      "committedAt": "2026-08-08T09:49:40.0000000+09:00",
-      "subject": "Specify format v102: column encodings, an encryption envelope, the Scb name",
+      "committedAt": "2026-08-08T09:57:21.0000000+09:00",
+      "subject": "Rename LiteBinary to Scb across the converter, runtimes and docs",
       "origin": "git",
       "dirty": true,
       "attributable": false

@@ -329,8 +329,19 @@ inline std::vector<std::uint8_t> read_all_bytes(const std::string& filename) {
 /// Version stamped at the head of every table file by the exporter.
 // The format is column-oriented and self-describing: the header names every column
 // and how long its block is, and a reader that meets a version it does not know stops
-// rather than guessing.
-constexpr std::uint32_t kBinaryFileFormatVersion = 101;
+// rather than guessing. 102 replaced 101 outright - a descriptor gained its encoding
+// byte - before any 101 file had shipped.
+constexpr std::uint32_t kBinaryFileFormatVersion = 102;
+
+// How a block's values are laid out. Raw is the layout 101 had; the others compress
+// a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+constexpr std::uint8_t kEncodingRaw = 0;
+constexpr std::uint8_t kEncodingVarint = 1;
+constexpr std::uint8_t kEncodingDelta = 2;
+constexpr std::uint8_t kEncodingRle = 3;
+constexpr std::uint8_t kEncodingDeltaRle = 4;
+constexpr std::uint8_t kEncodingDict = 5;
+constexpr std::uint8_t kEncodingDictRle = 6;
 
 // One column as the file describes it.
 struct Column {
@@ -338,6 +349,8 @@ struct Column {
   std::int32_t tag;
   std::uint8_t element;
   std::uint8_t kind;
+  // How the block's values are laid out: one of the kEncoding* constants.
+  std::uint8_t encoding;
   // Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one.
   std::int32_t count;
   // Total bytes of the column block - what a skip advances by.
@@ -382,6 +395,8 @@ inline Header read_table_header(ScbReader& reader) {
     column.element = static_cast<std::uint8_t>(wire & 0x0f);
     column.kind = static_cast<std::uint8_t>((wire >> 4) & 0x03);
 
+    column.encoding = reader.read_fixed8();
+
     column.count = reader.read_counter32();
     column.byte_length = static_cast<std::int32_t>(reader.read_fixed32());
 
@@ -390,9 +405,10 @@ inline Header read_table_header(ScbReader& reader) {
 
   // What the descriptors say about the file, checked before anybody allocates for the
   // row count. The blocks are all that follows the header, so their declared lengths have
-  // to add up to the bytes left, and every row costs at least one byte in every block - a
-  // varint's shortest form, an empty string's length prefix, a variable array's counter.
-  // A row count larger than that is one the exporter could not have written.
+  // to add up to the bytes left. A raw block also costs at least one byte per row - a
+  // varint's shortest form, an empty string's length prefix, a variable array's counter -
+  // so a larger row count is one the exporter could not have written. An encoded block
+  // has no such floor; its decode checks run sums and dictionary bounds instead.
 
   const std::int32_t available = static_cast<std::int32_t>(reader.remaining());
   std::int32_t declared = 0;
@@ -406,7 +422,7 @@ inline Header read_table_header(ScbReader& reader) {
 
     declared += column.byte_length;
 
-    if (header.row_count > column.byte_length) {
+    if (column.encoding == kEncodingRaw && header.row_count > column.byte_length) {
       throw ScbError("the row count " + std::to_string(header.row_count) +
                             " is larger than column tag " + std::to_string(column.tag) +
                             " can hold in its " + std::to_string(column.byte_length) + " bytes");
@@ -429,6 +445,16 @@ inline void check_column(const Column& column, const char* field_name, std::uint
     throw ScbError(std::string(field_name) +
                           ": the file's column does not match the generated member's shape; "
                           "the schema changed shape, regenerate the code or rebuild the data");
+  }
+
+  // An encoding this build cannot decode is refused by name, exactly like an element
+  // it cannot read. An unknown column's encoding never gets here - a skip is a skip
+  // whatever the block's layout.
+  if (column.encoding != kEncodingRaw) {
+    throw ScbError(std::string(field_name) + ": the file's column uses encoding " +
+                          std::to_string(column.encoding) +
+                          ", which this reader does not support; regenerate the code "
+                          "or rebuild the data");
   }
 
   for (const std::uint8_t candidate : accepted) {

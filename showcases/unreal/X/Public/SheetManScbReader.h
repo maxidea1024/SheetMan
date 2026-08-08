@@ -53,8 +53,11 @@
 
 namespace SheetMan
 {
-    /** Version stamped at the head of every table file by the exporter. */
-    static constexpr uint32 BinaryFileFormatVersion = 101;
+    /**
+     * Version stamped at the head of every table file by the exporter. 102 replaced 101
+     * outright - a descriptor gained its encoding byte - before any 101 file had shipped.
+     */
+    static constexpr uint32 BinaryFileFormatVersion = 102;
 
     // The wire element types and kinds, as a column descriptor spells them.
     static constexpr uint8 ElementVarint = 0;
@@ -78,6 +81,16 @@ namespace SheetMan
     static constexpr uint8 KindFixedArray = 1;
     static constexpr uint8 KindVarArray = 2;
 
+    // How a block's values are laid out. Raw is the layout 101 had; the others compress
+    // a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+    static constexpr uint8 EncodingRaw = 0;
+    static constexpr uint8 EncodingVarint = 1;
+    static constexpr uint8 EncodingDelta = 2;
+    static constexpr uint8 EncodingRle = 3;
+    static constexpr uint8 EncodingDeltaRle = 4;
+    static constexpr uint8 EncodingDict = 5;
+    static constexpr uint8 EncodingDictRle = 6;
+
     /** One column as the file describes it. */
     struct FSheetManColumn
     {
@@ -86,6 +99,9 @@ namespace SheetMan
 
         uint8 Element = 0;
         uint8 Kind = 0;
+
+        /** How the block's values are laid out: one of the Encoding* constants. */
+        uint8 Encoding = 0;
 
         /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
         int32 Count = 0;
@@ -651,6 +667,8 @@ namespace SheetMan
             Column.Element = static_cast<uint8>(Wire & 0x0F);
             Column.Kind = static_cast<uint8>((Wire >> 4) & 0x03);
 
+            Reader.Read(Column.Encoding);
+
             Reader.ReadCounter32(Column.Count);
 
             uint32 ByteLength = 0;
@@ -679,7 +697,7 @@ namespace SheetMan
 
             Declared += Column.ByteLength;
 
-            if (OutHeader.RowCount > Column.ByteLength)
+            if (Column.Encoding == EncodingRaw && OutHeader.RowCount > Column.ByteLength)
             {
                 const int32 Bad = OutHeader.RowCount;
 
@@ -721,6 +739,17 @@ namespace SheetMan
                 TEXT("member (kind %d, count %d). The schema changed shape; regenerate the ")
                 TEXT("code or rebuild the data."),
                 FieldName, Column.Kind, Column.Count, Kind, Count));
+        }
+
+        // An encoding this build cannot decode is refused by name, exactly like an
+        // element it cannot read. An unknown column's encoding never gets here - a skip
+        // is a skip whatever the block's layout.
+        if (Column.Encoding != EncodingRaw)
+        {
+            return Reader.FailWith(FString::Printf(
+                TEXT("%s: the file's column uses encoding %d, which this reader does not ")
+                TEXT("support. Regenerate the code or rebuild the data."),
+                FieldName, Column.Encoding));
         }
 
         if ((Accepted & ElementMask(Column.Element)) != 0)

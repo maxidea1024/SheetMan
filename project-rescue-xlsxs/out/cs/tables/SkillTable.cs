@@ -221,7 +221,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -245,77 +245,81 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Skill.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Skill.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Skill.SkillName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.SkillName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._skillName);
+                            record._skillName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "Skill.SkillType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.SkillType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._skillType = (global::Rescue.Tables.SkillType)tempEnumInt;
+                            record._skillType = (global::Rescue.Tables.SkillType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "Skill.SkillSubType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.SkillSubType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._skillSubType = (global::Rescue.Tables.SkillSubType)tempEnumInt;
+                            record._skillSubType = (global::Rescue.Tables.SkillSubType)cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "Skill.AttributeType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.AttributeType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._attributeType = (global::Rescue.Tables.AttributeType)tempEnumInt;
+                            record._attributeType = (global::Rescue.Tables.AttributeType)cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "Skill.TargetType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.TargetType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._targetType = (global::Rescue.Tables.TargetType)tempEnumInt;
+                            record._targetType = (global::Rescue.Tables.TargetType)cursor.NextI32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "Skill.AniPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.AniPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._aniPath);
+                            record._aniPath = cursor.NextString();
                         }
                         break;
 
@@ -353,19 +357,21 @@ namespace Rescue.Tables
 
                     case 12:
                         ScbTable.CheckColumn(column, "Skill.SkillIcon", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.SkillIcon");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._skillIcon);
+                            record._skillIcon = cursor.NextString();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "Skill.Description", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.Description");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._description);
+                            record._description = cursor.NextString();
                         }
                         break;
 

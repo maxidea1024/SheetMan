@@ -249,7 +249,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -273,48 +273,51 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Package.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Package.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Package.ClassName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.ClassName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._className);
+                            record._className = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "Package.ItemType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.ItemType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._itemType = (global::Rescue.Tables.ItemType)tempEnumInt;
+                            record._itemType = (global::Rescue.Tables.ItemType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "Package.PackageType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.PackageType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._packageType = (global::Rescue.Tables.ConsumablesType)tempEnumInt;
+                            record._packageType = (global::Rescue.Tables.ConsumablesType)cursor.NextI32();
                         }
                         break;
 
@@ -329,38 +332,41 @@ namespace Rescue.Tables
 
                     case 7:
                         ScbTable.CheckColumn(column, "Package.MaxStack", ScbTable.KindScalar, 1, ScbTable.ElementI64, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.MaxStack");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._maxStack = reader.ReadI64As(column.Element);
+                            record._maxStack = cursor.NextI64();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "Package.PackageCondition", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.PackageCondition");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._packageCondition = (global::Rescue.Tables.ConditionType)tempEnumInt;
+                            record._packageCondition = (global::Rescue.Tables.ConditionType)cursor.NextI32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "Package.Cooltime", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.Cooltime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._cooltime = reader.ReadI32As(column.Element);
+                            record._cooltime = cursor.NextI32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "Package.Duration", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.Duration");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._duration = reader.ReadI32As(column.Element);
+                            record._duration = cursor.NextI32();
                         }
                         break;
 
@@ -422,28 +428,31 @@ namespace Rescue.Tables
 
                     case 15:
                         ScbTable.CheckColumn(column, "Package.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.IconPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._iconPath);
+                            record._iconPath = cursor.NextString();
                         }
                         break;
 
                     case 16:
                         ScbTable.CheckColumn(column, "Package.DropPrefabPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.DropPrefabPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._dropPrefabPath);
+                            record._dropPrefabPath = cursor.NextString();
                         }
                         break;
 
                     case 17:
                         ScbTable.CheckColumn(column, "Package.ItemDescription", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.ItemDescription");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._itemDescription);
+                            record._itemDescription = cursor.NextString();
                         }
                         break;
 

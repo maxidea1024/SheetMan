@@ -48,8 +48,17 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
         ScbWriter writer = new ScbWriter();
         var serials = table.SerialFields;
 
+        // Every column is encoded into its own buffer before a byte of the file
+        // exists, because the descriptor states each block's encoding and length up
+        // front - and which encoding wins is only known once the candidates have
+        // actually been written out and measured.
+        var blocks = new ColumnBlock[serials.Count];
+
+        for (int at = 0; at < serials.Count; at++)
+            blocks[at] = EncodeColumn(table, serials[at]);
+
         writer.Write(ScbFormat.Version);
-        writer.Write((byte)0);                      // Reserved (compression/encryption)
+        writer.Write((byte)0);                      // flags: no compression, no encryption
         writer.WriteCounter32(table.Data.Count);
 
         // The descriptors: one per logical column, so the file says what it holds. A
@@ -58,42 +67,22 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
         // which between them is the whole of what makes schema changes survivable.
         writer.WriteCounter32(serials.Count);
 
-        var lengthSlots = new int[serials.Count];
-
         for (int at = 0; at < serials.Count; at++)
         {
             var sf = serials[at];
 
             writer.WriteCounter32(sf.FirstField.Tag.Value);
             writer.Write(ScbFormat.Wire(ScbFormat.ElementFor(sf), ScbFormat.KindFor(sf)));
+            writer.Write(blocks[at].Encoding);
             writer.WriteCounter32(ScbFormat.CountFor(sf));
-
-            // Patched after the block is written; a varint cannot be.
-            lengthSlots[at] = writer.ReserveUInt32Slot();
+            writer.Write((uint)blocks[at].Payload.Length);
         }
 
         // Column-oriented: each column's rows are one contiguous block. That is what
         // lets an unknown column be skipped in a single advance, with no per-type skip
         // logic for thirteen readers to each get subtly wrong.
         for (int at = 0; at < serials.Count; at++)
-        {
-            var sf = serials[at];
-            int blockStart = writer.Length;
-
-            foreach (var row in table.Data)
-            {
-                if (sf.IsVariableLengthArray)
-                {
-                    ExportArrayValue(writer, row[sf.FirstField.Index].Value, sf.FirstField);
-                    continue;
-                }
-
-                foreach (var field in sf.Fields)
-                    ExportValue(writer, row[field.Index].Value, field);
-            }
-
-            writer.PatchUInt32(lengthSlots[at], (uint)(writer.Length - blockStart));
-        }
+            writer.Write(blocks[at].Payload.WrittenSpan);
 
         var filename = Path.Combine(recipe.Path, table.Name + recipe.FileExtension);
         filename = Path.GetFullPath(filename);
@@ -104,6 +93,278 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
         string stagingFilename = StagingFiles.WriteAllBytesToFile(filename, writer.WrittenSpan);
 
         _manifest.Add(table.Name + recipe.FileExtension, stagingFilename);
+    }
+
+    /// <summary>
+    /// One column's data block: the buffer its values were encoded into, and which
+    /// encoding that buffer uses - what the descriptor states and the file carries.
+    /// </summary>
+    private readonly struct ColumnBlock
+    {
+        public ColumnBlock(byte encoding, ScbWriter payload)
+        {
+            Encoding = encoding;
+            Payload = payload;
+        }
+
+        public byte Encoding { get; }
+        public ScbWriter Payload { get; }
+    }
+
+    /// <summary>
+    /// Encodes one column into its own buffer and says which encoding it chose.
+    ///
+    /// No statistics, no heuristics: every applicable candidate is written out in
+    /// full and the smallest kept, ties going to the lowest encoding number. Encode
+    /// time is the one resource this format's design does not care about, and a
+    /// measured byte count is the one selector that is never wrong. The candidates
+    /// and their layouts are spec/scb-v102-column-encoding.md.
+    /// </summary>
+    private ColumnBlock EncodeColumn(Table table, SerialField sf)
+    {
+        var raw = new ScbWriter();
+
+        foreach (var row in table.Data)
+        {
+            if (sf.IsVariableLengthArray)
+            {
+                ExportArrayValue(raw, row[sf.FirstField.Index].Value, sf.FirstField);
+                continue;
+            }
+
+            foreach (var field in sf.Fields)
+                ExportValue(raw, row[field.Index].Value, field);
+        }
+
+        var best = new ColumnBlock(ScbFormat.EncodingRaw, raw);
+
+        // Only a scalar column repeats itself in a way the encodings model; arrays
+        // stay raw, as do the elements whose blocks are all but noise (i64, floats,
+        // bool, uuid - together under two percent of a real dataset's bytes).
+        if (ScbFormat.KindFor(sf) != ScbFormat.KindScalar)
+            return best;
+
+        switch (ScbFormat.ElementFor(sf))
+        {
+            case ScbFormat.ElementI32:
+            {
+                int[] values = CollectInt32Column(table, sf);
+
+                best = Smaller(best, ScbFormat.EncodingVarint, EncodeVarint(values));
+                best = Smaller(best, ScbFormat.EncodingDelta, EncodeDelta(values));
+                best = Smaller(best, ScbFormat.EncodingRle, EncodeRle(values));
+                best = Smaller(best, ScbFormat.EncodingDeltaRle, EncodeDeltaRle(values));
+                break;
+            }
+
+            case ScbFormat.ElementVarint:
+            {
+                // Raw already is a varint stream, so of the integer candidates only
+                // run-length encoding can say anything raw does not.
+                best = Smaller(best, ScbFormat.EncodingRle, EncodeRle(CollectInt32Column(table, sf)));
+                break;
+            }
+
+            case ScbFormat.ElementString:
+            {
+                string[] values = CollectStringColumn(table, sf);
+
+                best = Smaller(best, ScbFormat.EncodingDict, EncodeDict(values));
+                best = Smaller(best, ScbFormat.EncodingDictRle, EncodeDictRle(values));
+                break;
+            }
+        }
+
+        return best;
+    }
+
+    /// <summary>
+    /// The incumbent, unless the challenger is strictly smaller. Candidates arrive in
+    /// ascending encoding order, so a tie keeps the lower number - which keeps the
+    /// choice deterministic and the golden trees still.
+    /// </summary>
+    private static ColumnBlock Smaller(ColumnBlock incumbent, byte encoding, ScbWriter challenger)
+        => challenger.Length < incumbent.Payload.Length
+            ? new ColumnBlock(encoding, challenger)
+            : incumbent;
+
+    // ------------------------------------------------- column value collection
+
+    /// <summary>A scalar int32 column's values: ints, enums and reference indexes alike.</summary>
+    private static int[] CollectInt32Column(Table table, SerialField sf)
+    {
+        int index = sf.FirstField.Index;
+        var values = new int[table.Data.Count];
+
+        for (int at = 0; at < values.Length; at++)
+            values[at] = (int)table.Data[at][index].Value;
+
+        return values;
+    }
+
+    private static string[] CollectStringColumn(Table table, SerialField sf)
+    {
+        int index = sf.FirstField.Index;
+        var values = new string[table.Data.Count];
+
+        for (int at = 0; at < values.Length; at++)
+            values[at] = (string)table.Data[at][index].Value ?? string.Empty;
+
+        return values;
+    }
+
+    // -------------------------------------------------------------- encoders
+
+    private static ScbWriter EncodeVarint(int[] values)
+    {
+        var payload = new ScbWriter();
+
+        foreach (int value in values)
+            payload.WriteOptimalInt32(value);
+
+        return payload;
+    }
+
+    /// <summary>
+    /// The first value, then each step from its predecessor.
+    ///
+    /// The subtraction wraps on purpose: two int32s can be further apart than an int32
+    /// holds, and two's-complement wrapping makes the round trip exact for every pair
+    /// anyway. Readers add the delta back with the same wrapping.
+    /// </summary>
+    private static ScbWriter EncodeDelta(int[] values)
+    {
+        var payload = new ScbWriter();
+
+        if (values.Length == 0)
+            return payload;
+
+        payload.WriteOptimalInt32(values[0]);
+
+        for (int at = 1; at < values.Length; at++)
+            payload.WriteOptimalInt32(unchecked(values[at] - values[at - 1]));
+
+        return payload;
+    }
+
+    /// <summary>(run length, value) pairs whose run lengths sum to the row count.</summary>
+    private static ScbWriter EncodeRle(int[] values)
+    {
+        var payload = new ScbWriter();
+
+        for (int at = 0; at < values.Length;)
+        {
+            int run = 1;
+            while (at + run < values.Length && values[at + run] == values[at])
+                run++;
+
+            payload.WriteCounter32(run);
+            payload.WriteOptimalInt32(values[at]);
+
+            at += run;
+        }
+
+        return payload;
+    }
+
+    /// <summary>
+    /// The first value, then the delta stream of <see cref="EncodeDelta"/> run-length
+    /// encoded - which is what flattens an id column stepping by one into a few bytes.
+    /// </summary>
+    private static ScbWriter EncodeDeltaRle(int[] values)
+    {
+        var payload = new ScbWriter();
+
+        if (values.Length == 0)
+            return payload;
+
+        payload.WriteOptimalInt32(values[0]);
+
+        var deltas = new int[values.Length - 1];
+        for (int at = 0; at < deltas.Length; at++)
+            deltas[at] = unchecked(values[at + 1] - values[at]);
+
+        for (int at = 0; at < deltas.Length;)
+        {
+            int run = 1;
+            while (at + run < deltas.Length && deltas[at + run] == deltas[at])
+                run++;
+
+            payload.WriteCounter32(run);
+            payload.WriteOptimalInt32(deltas[at]);
+
+            at += run;
+        }
+
+        return payload;
+    }
+
+    /// <summary>
+    /// The distinct strings once, in first-appearance order, then an index per row.
+    ///
+    /// First-appearance order rather than sorted: one pass builds it, and the output
+    /// stays deterministic without saying anything about collation.
+    /// </summary>
+    private static ScbWriter EncodeDict(string[] values)
+    {
+        var payload = new ScbWriter();
+        int[] indexes = BuildDictionary(values, payload);
+
+        foreach (int index in indexes)
+            payload.WriteCounter32(index);
+
+        return payload;
+    }
+
+    /// <summary>The dictionary of <see cref="EncodeDict"/>, with the index stream run-length encoded.</summary>
+    private static ScbWriter EncodeDictRle(string[] values)
+    {
+        var payload = new ScbWriter();
+        int[] indexes = BuildDictionary(values, payload);
+
+        for (int at = 0; at < indexes.Length;)
+        {
+            int run = 1;
+            while (at + run < indexes.Length && indexes[at + run] == indexes[at])
+                run++;
+
+            payload.WriteCounter32(run);
+            payload.WriteCounter32(indexes[at]);
+
+            at += run;
+        }
+
+        return payload;
+    }
+
+    /// <summary>
+    /// Writes the dictionary block - entry count, then the entries - and hands back
+    /// each row's index into it.
+    /// </summary>
+    private static int[] BuildDictionary(string[] values, ScbWriter payload)
+    {
+        var seen = new Dictionary<string, int>();
+        var entries = new List<string>();
+        var indexes = new int[values.Length];
+
+        for (int at = 0; at < values.Length; at++)
+        {
+            if (!seen.TryGetValue(values[at], out int index))
+            {
+                index = entries.Count;
+                seen.Add(values[at], index);
+                entries.Add(values[at]);
+            }
+
+            indexes[at] = index;
+        }
+
+        payload.WriteCounter32(entries.Count);
+
+        foreach (string entry in entries)
+            payload.Write(entry);
+
+        return indexes;
     }
 
     /// <summary>

@@ -225,6 +225,7 @@ namespace X
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -248,28 +249,31 @@ namespace X
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Template.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Template.Index");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._index = reader.ReadI32As(column.Element);
+                            record._index = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Template.Class", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Template.Class");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._class);
+                            record._class = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Template.Int", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Template.Int");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._int = reader.ReadI32As(column.Element);
+                            record._int = cursor.NextI32();
                         }
                         break;
 
@@ -284,37 +288,41 @@ namespace X
 
                     case 5:
                         ScbTable.CheckColumn(column, "Template.Operator", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Template.Operator");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._operator);
+                            record._operator = cursor.NextString();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "Template.Namespace", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Template.Namespace");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._namespace);
+                            record._namespace = cursor.NextString();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "Template.Constructor", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Template.Constructor");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._constructor);
+                            record._constructor = cursor.NextString();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "Template.Function", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Template.Function");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._function);
+                            record._function = cursor.NextString();
                         }
                         break;
 

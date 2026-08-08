@@ -27,8 +27,8 @@ public class BinaryFormatTests
     /// The smallest table in the corpus: three scalar columns, one row.
     ///
     /// `layout-edge` is a workbook whose sheets start away from A1, which is beside the
-    /// point here - it is used because SecondTable is 42 bytes, and 42 bytes can be
-    /// accounted for one at a time.
+    /// point here - it is used because SecondTable is small enough to be accounted for
+    /// one byte at a time.
     /// </summary>
     private const string Scenario = "layout-edge";
 
@@ -49,43 +49,50 @@ public class BinaryFormatTests
         var expected = new Segments();
 
         // ---------------------------------------------------------------- header
-        expected.Add("version", 0x65, 0x00, 0x00, 0x00);     // 101, fixed32
+        expected.Add("version", 0x66, 0x00, 0x00, 0x00);     // 102, fixed32
         expected.Add("flags", 0x00);                         // no compression, no encryption
         expected.Add("row count", 0x02);                     // counter32: zig-zag of 1
         expected.Add("column count", 0x06);                  // counter32: zig-zag of 3
 
         // ----------------------------------------------------------- descriptors
         //
-        // Four fields each: the tag, the wire byte (element in the low nibble, kind in
-        // bits 4-5), the elements per row, and the block's length in bytes. The length
-        // is a plain fixed32 rather than a counter because the writer patches it once
-        // the block is behind it, and a varint cannot be patched.
+        // Five fields each: the tag, the wire byte (element in the low nibble, kind in
+        // bits 4-5), the encoding byte, the elements per row, and the block's length in
+        // bytes. The length is a plain fixed32 rather than a counter because the writer
+        // states it before the block, when a varint's size could not be known yet.
+        // The encodings show the writer's measure-and-keep-the-smallest selection at
+        // work even on one row: an i32 whose value fits a byte travels as a varint
+        // (1 byte beats raw's fixed 4), while a one-row string column stays raw - a
+        // dictionary of one entry would cost more than the string it deduplicates.
         expected.Add("index: tag", 0x02);                    // counter32: zig-zag of 1
         expected.Add("index: wire", 0x02);                   // element i32, kind scalar
+        expected.Add("index: encoding", 0x01);               // varint
         expected.Add("index: count", 0x02);                  // counter32: zig-zag of 1
-        expected.Add("index: block length", 0x04, 0x00, 0x00, 0x00);
+        expected.Add("index: block length", 0x01, 0x00, 0x00, 0x00);
 
         expected.Add("label: tag", 0x04);                    // zig-zag of 2
         expected.Add("label: wire", 0x06);                   // element string, kind scalar
+        expected.Add("label: encoding", 0x00);               // raw
         expected.Add("label: count", 0x02);
         expected.Add("label: block length", 0x06, 0x00, 0x00, 0x00);
 
         expected.Add("amount: tag", 0x06);                   // zig-zag of 3
         expected.Add("amount: wire", 0x02);                  // element i32, kind scalar
+        expected.Add("amount: encoding", 0x01);              // varint
         expected.Add("amount: count", 0x02);
-        expected.Add("amount: block length", 0x04, 0x00, 0x00, 0x00);
+        expected.Add("amount: block length", 0x01, 0x00, 0x00, 0x00);
 
         // ---------------------------------------------------------------- blocks
         //
         // One contiguous block per column, in descriptor order. This is the whole of
         // what makes an unknown column skippable in a single advance.
-        expected.Add("index block: row 1", 0x01, 0x00, 0x00, 0x00);
+        expected.Add("index block: row 1", 0x02);            // counter32: zig-zag of 1
 
         expected.Add("label block: row 1 length", 0x0a);     // counter32: zig-zag of 5
         expected.Add("label block: row 1 bytes",
             Encoding.UTF8.GetBytes("gamma"));
 
-        expected.Add("amount block: row 1", 0x1e, 0x00, 0x00, 0x00);
+        expected.Add("amount block: row 1", 0x3c);           // counter32: zig-zag of 30
 
         byte[] produced = File.ReadAllBytes(Path.Combine(
             RepoLayout.OutputDir(Scenario), "binary", "SecondTable.scb"));
@@ -96,7 +103,8 @@ public class BinaryFormatTests
     /// <summary>
     /// The invariant every reader checks before it allocates: the blocks are all that
     /// follows the header, so their declared lengths add up to the bytes left, and no
-    /// row costs less than one byte in any block.
+    /// row costs less than one byte in any raw block. An encoded block has no such
+    /// floor - one run can cover any number of rows - so the floor applies to raw only.
     ///
     /// Asserted over every table in every scenario's golden tree, because a writer that
     /// gets this wrong writes a file no reader will take - and there is no reason to
@@ -122,7 +130,7 @@ public class BinaryFormatTests
 
             var reader = new FormatWalker(bytes);
 
-            Assert.Equal(101u, reader.ReadFixed32());
+            Assert.Equal(102u, reader.ReadFixed32());
             Assert.Equal(0, reader.ReadByte());
 
             int rowCount = reader.ReadCounter32();
@@ -134,6 +142,7 @@ public class BinaryFormatTests
             {
                 reader.ReadCounter32();                      // tag
                 byte wire = reader.ReadByte();
+                byte encoding = reader.ReadByte();
                 reader.ReadCounter32();                      // elements per row
                 int byteLength = (int)reader.ReadFixed32();
 
@@ -142,7 +151,10 @@ public class BinaryFormatTests
                 if (kind > 2)
                     failures.Add($"{relative}: column {at} declares kind {kind}");
 
-                if (rowCount > byteLength)
+                if (encoding > 6)
+                    failures.Add($"{relative}: column {at} declares encoding {encoding}");
+
+                if (encoding == 0 && rowCount > byteLength)
                 {
                     failures.Add(
                         $"{relative}: column {at} holds {byteLength} bytes for {rowCount} rows");

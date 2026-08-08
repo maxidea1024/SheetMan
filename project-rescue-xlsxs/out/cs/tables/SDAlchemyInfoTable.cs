@@ -242,7 +242,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -266,58 +266,61 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.NameKR", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.NameKR");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._nameKR);
+                            record._nameKR = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.MaterialType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._materialType = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._materialType = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.CommonMaterialType1", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._commonMaterialType1 = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._commonMaterialType1 = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.CommonMaterialType2", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._commonMaterialType2 = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._commonMaterialType2 = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
@@ -332,86 +335,91 @@ namespace Rescue.Tables
 
                     case 8:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.StatType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.StatType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._statType = (global::Rescue.Tables.StatType)tempEnumInt;
+                            record._statType = (global::Rescue.Tables.StatType)cursor.NextI32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.TargetType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.TargetType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._targetType = (global::Rescue.Tables.TargetType)tempEnumInt;
+                            record._targetType = (global::Rescue.Tables.TargetType)cursor.NextI32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.MaxLevelId", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.MaxLevelId");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._maxLevelId = reader.ReadI32As(column.Element);
+                            record._maxLevelId = cursor.NextI32();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.AccelerateTime", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._accelerateTime = reader.ReadI32As(column.Element);
+                            record._accelerateTime = cursor.NextI32();
                         }
                         break;
 
                     case 12:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.AccelerateItemType1", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._accelerateItemType1 = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._accelerateItemType1 = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.AccelerateItemCost1", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._accelerateItemCost1 = reader.ReadI32As(column.Element);
+                            record._accelerateItemCost1 = cursor.NextI32();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.AccelerateItemType2", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._accelerateItemType2 = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._accelerateItemType2 = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 15:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.AccelerateItemCost2", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._accelerateItemCost2 = reader.ReadI32As(column.Element);
+                            record._accelerateItemCost2 = cursor.NextI32();
                         }
                         break;
 
                     case 16:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.IconPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._iconPath);
+                            record._iconPath = cursor.NextString();
                         }
                         break;
 

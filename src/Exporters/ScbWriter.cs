@@ -87,6 +87,12 @@ public sealed class ScbWriter
         => BinaryPrimitives.WriteUInt32LittleEndian(_buffer.AsSpan(offset, 4), value);
 
     /// <summary>
+    /// Bytes already encoded elsewhere, appended as they are. This is how a column
+    /// block encoded in its own buffer reaches the file's writer.
+    /// </summary>
+    public void Write(ReadOnlySpan<byte> bytes) => bytes.CopyTo(Reserve(bytes.Length));
+
+    /// <summary>
     /// A 64-bit integer.
     ///
     /// Written as a full eight bytes. The original cast through uint, truncating every

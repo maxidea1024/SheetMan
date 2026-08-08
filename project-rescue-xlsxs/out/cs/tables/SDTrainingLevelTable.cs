@@ -200,6 +200,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -223,46 +224,51 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.LevelName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.LevelName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._levelName);
+                            record._levelName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.CurrencyValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.CurrencyValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._currencyValue = reader.ReadI32As(column.Element);
+                            record._currencyValue = cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.CurrencyResult", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.CurrencyResult");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._currencyResult = reader.ReadI32As(column.Element);
+                            record._currencyResult = cursor.NextI32();
                         }
                         break;
 
@@ -304,10 +310,11 @@ namespace Rescue.Tables
 
                     case 10:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.CommonUnlockStageID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.CommonUnlockStageID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._commonUnlockStageID = reader.ReadI32As(column.Element);
+                            record._commonUnlockStageID = cursor.NextI32();
                         }
                         break;
 

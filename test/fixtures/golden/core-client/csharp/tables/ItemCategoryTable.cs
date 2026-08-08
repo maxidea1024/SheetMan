@@ -154,6 +154,7 @@ namespace SheetMan.Fixtures.Core.Client
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -177,28 +178,31 @@ namespace SheetMan.Fixtures.Core.Client
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "ItemCategory.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ItemCategory.Index");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._index = reader.ReadI32As(column.Element);
+                            record._index = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "ItemCategory.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ItemCategory.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "ItemCategory.Description", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ItemCategory.Description");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._description);
+                            record._description = cursor.NextString();
                         }
                         break;
 

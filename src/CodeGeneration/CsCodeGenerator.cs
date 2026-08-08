@@ -195,8 +195,14 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                                    .ToList(),
 
             // One scratch int for the whole method rather than one per field: the reader
-            // hands back an int and an enum field needs a cast through something.
-            NeedsEnumTemp = table.SerialFields.Any(sf => sf.ElementType == Models.ValueType.Enum),
+            // hands back an int and an enum field needs a cast through something. Scalar
+            // enums read through the cursor and cast inline, so only arrays still need it.
+            NeedsEnumTemp = table.SerialFields.Any(
+                sf => sf.ElementType == Models.ValueType.Enum && sf.IsArray),
+
+            // One cursor variable for the whole method: switch cases share a scope, so
+            // each encodable column assigns it rather than declaring its own.
+            NeedsCursor = table.SerialFields.Any(UsesCursor),
 
             // Pascal-casing a folded group's name gives the property it is exposed under
             // - `TextEn_array` becomes `TextEnArray` - so these literals name the very
@@ -241,6 +247,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             ReadKind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementRead = ElementReadLines(sf, fieldName, fieldType, refTable),
 
             // A reference to a whole row is assigned the target record; one that names a
@@ -364,6 +371,44 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// `record` is the row being filled and `column` the descriptor in scope; an array
     /// element is at `[j]`, the template's inner loop variable.
     /// </summary>
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case Models.ValueType.Int32:
+            case Models.ValueType.Int64:
+            case Models.ValueType.Double:
+            case Models.ValueType.Enum:
+            case Models.ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"cursor = new ScbColumnCursor(reader, column, count, \"{tableName}.{sf.Name}\");"
+            : "";
+
     private static IReadOnlyList<string> ElementReadLines(
         SerialField sf, string fieldName, string fieldType, string refTable)
     {
@@ -372,6 +417,39 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
         string index = sf.IsArray
             ? $"record.{fieldName}_{refTable}_index[j]"
             : $"record.{fieldName}_{refTable}_index";
+
+        // A scalar column can arrive encoded, so it reads through the cursor - which
+        // also carries the lossless promotions. Arrays are always raw and keep the
+        // direct reads further down.
+        if (UsesCursor(sf))
+        {
+            if (sf.ElementType == Models.ValueType.Enum)
+                return new[] { $"{target} = ({fieldType})cursor.NextI32();" };
+
+            if (sf.IsRef)
+            {
+                // Only the stored index is on the wire; the value is filled in once
+                // every table is loaded, and the flag records whether that happened.
+                return new[]
+                {
+                    $"{index} = cursor.NextI32();",
+                    $"{target} = default({fieldType}); // will be assigned.",
+                    $"{flag} = false;",
+                };
+            }
+
+            switch (sf.ElementType)
+            {
+                case Models.ValueType.Int32:
+                    return new[] { $"{target} = cursor.NextI32();" };
+                case Models.ValueType.Int64:
+                    return new[] { $"{target} = cursor.NextI64();" };
+                case Models.ValueType.Double:
+                    return new[] { $"{target} = cursor.NextF64();" };
+                default:
+                    return new[] { $"{target} = cursor.NextString();" };
+            }
+        }
 
         if (sf.ElementType == Models.ValueType.Enum)
         {
@@ -385,8 +463,6 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
 
         if (sf.IsRef)
         {
-            // Only the stored index is on the wire; the value is filled in once every
-            // table is loaded, and the flag records whether that happened.
             return new[]
             {
                 $"reader.Read(out {index});",

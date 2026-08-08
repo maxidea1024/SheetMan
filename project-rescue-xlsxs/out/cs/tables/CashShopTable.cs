@@ -228,7 +228,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -252,56 +252,61 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "CashShop.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "CashShop.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "CashShop.ProductName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.ProductName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._productName);
+                            record._productName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "CashShop.ShopType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.ShopType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._shopType = (global::Rescue.Tables.ShopType)tempEnumInt;
+                            record._shopType = (global::Rescue.Tables.ShopType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "CashShop.ShopSlotID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.ShopSlotID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._shopSlotID = reader.ReadI32As(column.Element);
+                            record._shopSlotID = cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "CashShop.Priority", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.Priority");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._priority = reader.ReadI32As(column.Element);
+                            record._priority = cursor.NextI32();
                         }
                         break;
 
@@ -335,57 +340,61 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "CashShop.CycleType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.CycleType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._cycleType = (global::Rescue.Tables.CycleType)tempEnumInt;
+                            record._cycleType = (global::Rescue.Tables.CycleType)cursor.NextI32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "CashShop.LimitValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.LimitValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._limitValue = reader.ReadI32As(column.Element);
+                            record._limitValue = cursor.NextI32();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "CashShop.CurrencyType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.CurrencyType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._currencyType = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._currencyType = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 12:
                         ScbTable.CheckColumn(column, "CashShop.PriceValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.PriceValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._priceValue = reader.ReadI32As(column.Element);
+                            record._priceValue = cursor.NextI32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "CashShop.ConditionID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.ConditionID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._conditionID = reader.ReadI32As(column.Element);
+                            record._conditionID = cursor.NextI32();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "CashShop.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "CashShop.IconPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._iconPath);
+                            record._iconPath = cursor.NextString();
                         }
                         break;
 

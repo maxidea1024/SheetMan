@@ -179,6 +179,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -202,64 +203,71 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "SDPubInfo.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDPubInfo.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "SDPubInfo.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDPubInfo.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "SDPubInfo.PubName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDPubInfo.PubName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._pubName);
+                            record._pubName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "SDPubInfo.UnlockCondition", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDPubInfo.UnlockCondition");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._unlockCondition = reader.ReadI32As(column.Element);
+                            record._unlockCondition = cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "SDPubInfo.LimitValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDPubInfo.LimitValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._limitValue = reader.ReadI32As(column.Element);
+                            record._limitValue = cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "SDPubInfo.BuffID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDPubInfo.BuffID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._buffID = reader.ReadI32As(column.Element);
+                            record._buffID = cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "SDPubInfo.Description", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDPubInfo.Description");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._description);
+                            record._description = cursor.NextString();
                         }
                         break;
 

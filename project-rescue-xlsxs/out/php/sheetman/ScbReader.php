@@ -118,7 +118,9 @@ final class ScbReader
      * and how long its block is, and a reader that meets a version it does not know stops
      * rather than guessing.
      */
-    public const FILE_FORMAT_VERSION = 101;
+    // 102 replaced 101 outright - a descriptor gained its encoding byte - before any
+    // 101 file had shipped.
+    public const FILE_FORMAT_VERSION = 102;
 
     // The wire element types and kinds, as a column descriptor spells them.
     public const ELEMENT_VARINT = 0;
@@ -133,6 +135,16 @@ final class ScbReader
     public const KIND_SCALAR = 0;
     public const KIND_FIXED_ARRAY = 1;
     public const KIND_VAR_ARRAY = 2;
+
+    // How a block's values are laid out. Raw is the layout 101 had; the others compress
+    // a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+    public const ENCODING_RAW = 0;
+    public const ENCODING_VARINT = 1;
+    public const ENCODING_DELTA = 2;
+    public const ENCODING_RLE = 3;
+    public const ENCODING_DELTA_RLE = 4;
+    public const ENCODING_DICT = 5;
+    public const ENCODING_DICT_RLE = 6;
 
     private int $position = 0;
     private readonly int $length;
@@ -372,6 +384,7 @@ final class ScbReader
         for ($at = 0; $at < $columnCount; $at++) {
             $tag = $this->readCounter32();
             $wire = $this->readFixed8();
+            $encoding = $this->readFixed8();
             $count = $this->readCounter32();
             $byteLength = $this->readFixed32();
 
@@ -379,6 +392,7 @@ final class ScbReader
                 'tag' => $tag,
                 'element' => $wire & 0x0F,
                 'kind' => ($wire >> 4) & 0x03,
+                'encoding' => $encoding,
                 'count' => $count,
                 'byteLength' => $byteLength,
             ];
@@ -386,9 +400,10 @@ final class ScbReader
 
         // What the descriptors say about the file, checked before anybody allocates for the
         // row count. The blocks are all that follows the header, so their declared lengths have
-        // to add up to the bytes left, and every row costs at least one byte in every block - a
-        // varint's shortest form, an empty string's length prefix, a variable array's counter.
-        // A row count larger than that is one the exporter could not have written.
+        // to add up to the bytes left. A raw block also costs at least one byte per row - a
+        // varint's shortest form, an empty string's length prefix, a variable array's counter -
+        // so a larger row count is one the exporter could not have written. An encoded block
+        // has no such floor; its decode checks run sums and dictionary bounds instead.
 
         $available = $this->remaining();
         $declared = 0;
@@ -402,7 +417,7 @@ final class ScbReader
 
             $declared += $column['byteLength'];
 
-            if ($rowCount > $column['byteLength']) {
+            if ($column['encoding'] === self::ENCODING_RAW && $rowCount > $column['byteLength']) {
                 throw new ScbException(
                     "The row count {$rowCount} is larger than column tag {$column['tag']} can " .
                     "hold in its {$column['byteLength']} bytes.");
@@ -429,6 +444,15 @@ final class ScbReader
                 . "does not match the generated member (kind {$kind}, count {$count}). The schema "
                 . 'changed shape; regenerate the code or rebuild the data.'
             );
+        }
+
+        // An encoding this build cannot decode is refused by name, exactly like an
+        // element it cannot read. An unknown column's encoding never gets here - a skip
+        // is a skip whatever the block's layout.
+        if ($column['encoding'] !== self::ENCODING_RAW) {
+            throw new ScbException(
+                "{$fieldName}: the file's column uses encoding {$column['encoding']}, which "
+                . 'this reader does not support. Regenerate the code or rebuild the data.');
         }
 
         if (!\in_array($column['element'], $accepted, true)) {

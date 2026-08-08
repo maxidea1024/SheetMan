@@ -200,7 +200,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -224,66 +224,71 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "GoldDungeonReward.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonReward.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "GoldDungeonReward.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonReward.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "GoldDungeonReward.RewardName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonReward.RewardName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._rewardName);
+                            record._rewardName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "GoldDungeonReward.RewardType1", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonReward.RewardType1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._rewardType1 = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._rewardType1 = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "GoldDungeonReward.RewardValue1", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonReward.RewardValue1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._rewardValue1 = reader.ReadI32As(column.Element);
+                            record._rewardValue1 = cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "GoldDungeonReward.RewardType2", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonReward.RewardType2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._rewardType2 = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._rewardType2 = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "GoldDungeonReward.RewardValue2", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonReward.RewardValue2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._rewardValue2 = reader.ReadI32As(column.Element);
+                            record._rewardValue2 = cursor.NextI32();
                         }
                         break;
 
@@ -298,20 +303,21 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "GoldDungeonReward.FirstClearRewardType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonReward.FirstClearRewardType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._firstClearRewardType = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._firstClearRewardType = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "GoldDungeonReward.FirstClearRewardValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonReward.FirstClearRewardValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._firstClearRewardValue = reader.ReadI32As(column.Element);
+                            record._firstClearRewardValue = cursor.NextI32();
                         }
                         break;
 

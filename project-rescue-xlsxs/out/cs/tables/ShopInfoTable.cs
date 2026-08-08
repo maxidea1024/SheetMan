@@ -193,7 +193,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -217,83 +217,91 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "ShopInfo.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ShopInfo.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "ShopInfo.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ShopInfo.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "ShopInfo.InfoName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ShopInfo.InfoName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._infoName);
+                            record._infoName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "ShopInfo.ShopType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ShopInfo.ShopType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._shopType = (global::Rescue.Tables.ShopType)tempEnumInt;
+                            record._shopType = (global::Rescue.Tables.ShopType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "ShopInfo.ConditionID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ShopInfo.ConditionID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._conditionID = reader.ReadI32As(column.Element);
+                            record._conditionID = cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "ShopInfo.SheetName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ShopInfo.SheetName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._sheetName);
+                            record._sheetName = cursor.NextString();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "ShopInfo.Priority", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ShopInfo.Priority");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._priority = reader.ReadI32As(column.Element);
+                            record._priority = cursor.NextI32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "ShopInfo.UIPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ShopInfo.UIPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._uIPath);
+                            record._uIPath = cursor.NextString();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "ShopInfo.ListPrefabPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ShopInfo.ListPrefabPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._listPrefabPath);
+                            record._listPrefabPath = cursor.NextString();
                         }
                         break;
 

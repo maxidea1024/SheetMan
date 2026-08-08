@@ -179,7 +179,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -203,38 +203,41 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "BuffSelect.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "BuffSelect.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "BuffSelect.BuffName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "BuffSelect.BuffName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._buffName);
+                            record._buffName = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "BuffSelect.BuffID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "BuffSelect.BuffID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._buffID = reader.ReadI32As(column.Element);
+                            record._buffID = cursor.NextI32();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "BuffSelect.Grade", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "BuffSelect.Grade");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._grade = (global::Rescue.Tables.GradeType)tempEnumInt;
+                            record._grade = (global::Rescue.Tables.GradeType)cursor.NextI32();
                         }
                         break;
 
@@ -249,19 +252,21 @@ namespace Rescue.Tables
 
                     case 6:
                         ScbTable.CheckColumn(column, "BuffSelect.BuffTooltip", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "BuffSelect.BuffTooltip");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._buffTooltip);
+                            record._buffTooltip = cursor.NextString();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "BuffSelect.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "BuffSelect.IconPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._iconPath);
+                            record._iconPath = cursor.NextString();
                         }
                         break;
 

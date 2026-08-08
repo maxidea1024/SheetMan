@@ -221,6 +221,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -244,118 +245,131 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.NameKR", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.NameKR");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._nameKR);
+                            record._nameKR = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.TotalCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.TotalCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._totalCount = reader.ReadI32As(column.Element);
+                            record._totalCount = cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.TrapCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.TrapCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._trapCount = reader.ReadI32As(column.Element);
+                            record._trapCount = cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.ActionCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.ActionCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._actionCount = reader.ReadI32As(column.Element);
+                            record._actionCount = cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.MatchCost", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.MatchCost");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._matchCost = reader.ReadI32As(column.Element);
+                            record._matchCost = cursor.NextI32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.MismatchCost", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.MismatchCost");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._mismatchCost = reader.ReadI32As(column.Element);
+                            record._mismatchCost = cursor.NextI32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.TrapCost", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.TrapCost");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._trapCost = reader.ReadI32As(column.Element);
+                            record._trapCost = cursor.NextI32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.ViewTime", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.ViewTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._viewTime = reader.ReadI32As(column.Element);
+                            record._viewTime = cursor.NextI32();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.Time", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.Time");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._time = reader.ReadI32As(column.Element);
+                            record._time = cursor.NextI32();
                         }
                         break;
 
                     case 12:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.ADCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.ADCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._aDCount = reader.ReadI32As(column.Element);
+                            record._aDCount = cursor.NextI32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "SDDungeonInfo.DailyFreeCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonInfo.DailyFreeCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._dailyFreeCount = reader.ReadI32As(column.Element);
+                            record._dailyFreeCount = cursor.NextI32();
                         }
                         break;
 

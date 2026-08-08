@@ -291,7 +291,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -315,101 +315,111 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "GachaInfo.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "GachaInfo.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "GachaInfo.GachaType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.GachaType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._gachaType = (global::Rescue.Tables.GachaType)tempEnumInt;
+                            record._gachaType = (global::Rescue.Tables.GachaType)cursor.NextI32();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "GachaInfo.Priority", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.Priority");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._priority = reader.ReadI32As(column.Element);
+                            record._priority = cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "GachaInfo.ConditionID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.ConditionID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._conditionID = reader.ReadI32As(column.Element);
+                            record._conditionID = cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "GachaInfo.RateId", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.RateId");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._rateId = reader.ReadI32As(column.Element);
+                            record._rateId = cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "GachaInfo.TriggerCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.TriggerCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._triggerCount = reader.ReadI32As(column.Element);
+                            record._triggerCount = cursor.NextI32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "GachaInfo.TriggerRateId", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.TriggerRateId");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._triggerRateId = reader.ReadI32As(column.Element);
+                            record._triggerRateId = cursor.NextI32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "GachaInfo.EndCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.EndCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._endCount = reader.ReadI32As(column.Element);
+                            record._endCount = cursor.NextI32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "GachaInfo.EndRateId", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.EndRateId");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._endRateId = reader.ReadI32As(column.Element);
+                            record._endRateId = cursor.NextI32();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "GachaInfo.EndCharacterId", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.EndCharacterId");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._endCharacterId = reader.ReadI32As(column.Element);
+                            record._endCharacterId = cursor.NextI32();
                         }
                         break;
 
@@ -433,19 +443,21 @@ namespace Rescue.Tables
 
                     case 14:
                         ScbTable.CheckColumn(column, "GachaInfo.WishListConditionID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.WishListConditionID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._wishListConditionID = reader.ReadI32As(column.Element);
+                            record._wishListConditionID = cursor.NextI32();
                         }
                         break;
 
                     case 15:
                         ScbTable.CheckColumn(column, "GachaInfo.WishListMaxValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.WishListMaxValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._wishListMaxValue = reader.ReadI32As(column.Element);
+                            record._wishListMaxValue = cursor.NextI32();
                         }
                         break;
 
@@ -469,48 +481,51 @@ namespace Rescue.Tables
 
                     case 18:
                         ScbTable.CheckColumn(column, "GachaInfo.CurrencyType1", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.CurrencyType1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._currencyType1 = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._currencyType1 = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 19:
                         ScbTable.CheckColumn(column, "GachaInfo.SingleCost1", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.SingleCost1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._singleCost1 = reader.ReadI32As(column.Element);
+                            record._singleCost1 = cursor.NextI32();
                         }
                         break;
 
                     case 20:
                         ScbTable.CheckColumn(column, "GachaInfo.CurrencyType2", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.CurrencyType2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._currencyType2 = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._currencyType2 = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 21:
                         ScbTable.CheckColumn(column, "GachaInfo.SingleCost2", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.SingleCost2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._singleCost2 = reader.ReadI32As(column.Element);
+                            record._singleCost2 = cursor.NextI32();
                         }
                         break;
 
                     case 22:
                         ScbTable.CheckColumn(column, "GachaInfo.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.IconPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._iconPath);
+                            record._iconPath = cursor.NextString();
                         }
                         break;
 

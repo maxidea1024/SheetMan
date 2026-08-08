@@ -177,6 +177,7 @@ namespace SheetMan.Fixtures.Core.Client
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
             int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -200,10 +201,11 @@ namespace SheetMan.Fixtures.Core.Client
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "ArrayTypes.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArrayTypes.Index");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._index = reader.ReadI32As(column.Element);
+                            record._index = cursor.NextI32();
                         }
                         break;
 

@@ -197,6 +197,9 @@
 {{~ if table.needs_enum_temp ~}}
             int tempEnumInt = 0;
 {{~ end ~}}
+{{~ if table.needs_cursor ~}}
+            ScbColumnCursor cursor;
+{{~ end ~}}
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -247,6 +250,9 @@
                             }
                         }
 {{~ else ~}}
+{{~ if field.cursor_open != '' ~}}
+                        {{ field.cursor_open }}
+{{~ end ~}}
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];

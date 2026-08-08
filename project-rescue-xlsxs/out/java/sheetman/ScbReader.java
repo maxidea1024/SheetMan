@@ -45,9 +45,10 @@ public final class ScbReader {
     /**
      * The format is column-oriented and self-describing: the header names every column
      * and how long its block is, and a reader that meets a version it does not know stops
-     * rather than guessing.
+     * rather than guessing. 102 replaced 101 outright - a descriptor gained its encoding
+     * byte - before any 101 file had shipped.
      */
-    public static final int FORMAT_VERSION = 101;
+    public static final int FORMAT_VERSION = 102;
 
     // The wire's element types and kinds, as a column descriptor spells them.
     public static final int ELEMENT_VARINT = 0;
@@ -63,12 +64,24 @@ public final class ScbReader {
     public static final int KIND_FIXED_ARRAY = 1;
     public static final int KIND_VAR_ARRAY = 2;
 
+    // How a block's values are laid out. Raw is the layout 101 had; the others compress
+    // a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+    public static final int ENCODING_RAW = 0;
+    public static final int ENCODING_VARINT = 1;
+    public static final int ENCODING_DELTA = 2;
+    public static final int ENCODING_RLE = 3;
+    public static final int ENCODING_DELTA_RLE = 4;
+    public static final int ENCODING_DICT = 5;
+    public static final int ENCODING_DICT_RLE = 6;
+
     /** One column as the file describes it. */
     public static final class Column {
         /** What identifies the column, instead of its position. */
         public int tag;
         public int element;
         public int kind;
+        /** How the block's values are laid out: one of the ENCODING_* constants. */
+        public int encoding;
         /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
         public int count;
         /** Total bytes of the column's block - what a skip advances by. */
@@ -377,6 +390,8 @@ public final class ScbReader {
             column.element = wire & 0x0F;
             column.kind = (wire >> 4) & 0x03;
 
+            column.encoding = reader.readUInt8();
+
             column.count = reader.readCounter32();
             column.byteLength = reader.readInt32();
 
@@ -385,9 +400,10 @@ public final class ScbReader {
 
         // What the descriptors say about the file, checked before anybody allocates for the
         // row count. The blocks are all that follows the header, so their declared lengths have
-        // to add up to the bytes left, and every row costs at least one byte in every block - a
-        // varint's shortest form, an empty string's length prefix, a variable array's counter.
-        // A row count larger than that is one the exporter could not have written.
+        // to add up to the bytes left. A raw block also costs at least one byte per row - a
+        // varint's shortest form, an empty string's length prefix, a variable array's counter -
+        // so a larger row count is one the exporter could not have written. An encoded block
+        // has no such floor; its decode checks run sums and dictionary bounds instead.
 
         int available = reader.remaining();
         int declared = 0;
@@ -401,7 +417,7 @@ public final class ScbReader {
 
             declared += column.byteLength;
 
-            if (header.rowCount > column.byteLength) {
+            if (column.encoding == ENCODING_RAW && header.rowCount > column.byteLength) {
                 throw new ScbException(String.format(
                     "the row count %d is larger than column tag %d can hold in its %d bytes",
                     header.rowCount, column.tag, column.byteLength));
@@ -432,6 +448,15 @@ public final class ScbReader {
                 fieldName + ": the file's column (kind " + column.kind + ", count " + column.count
                     + ") does not match the generated member (kind " + kind + ", count " + count
                     + "). The schema changed shape; regenerate the code or rebuild the data.");
+        }
+
+        // An encoding this build cannot decode is refused by name, exactly like an element
+        // it cannot read. An unknown column's encoding never gets here - a skip is a skip
+        // whatever the block's layout.
+        if (column.encoding != ENCODING_RAW) {
+            throw new ScbException(
+                fieldName + ": the file's column uses encoding " + column.encoding + ", which "
+                    + "this reader does not support. Regenerate the code or rebuild the data.");
         }
 
         for (int candidate : accepted) {

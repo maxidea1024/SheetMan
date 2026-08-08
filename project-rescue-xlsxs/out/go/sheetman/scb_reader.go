@@ -43,9 +43,10 @@ import (
 
 // FormatVersion is stamped at the head of every table file by the exporter.
 //
-// 101 is column-oriented and self-describing; it replaced 100 outright, before the tool
-// fed anything live, so nothing reads or writes 100 any more.
-const FormatVersion uint32 = 101
+// 101 was column-oriented and self-describing; it replaced 100 outright, before the
+// tool fed anything live. 102 replaced 101 the same way - a descriptor gained its
+// encoding byte - before any 101 file had shipped.
+const FormatVersion uint32 = 102
 
 // The wire's element types and kinds, as a column descriptor spells them.
 const (
@@ -61,6 +62,17 @@ const (
 	KindScalar     uint8 = 0
 	KindFixedArray uint8 = 1
 	KindVarArray   uint8 = 2
+
+	// How a block's values are laid out. Raw is the layout 101 had; the others
+	// compress a column that repeats itself. spec/scb-v102-column-encoding.md is
+	// the contract.
+	EncodingRaw      uint8 = 0
+	EncodingVarint   uint8 = 1
+	EncodingDelta    uint8 = 2
+	EncodingRle      uint8 = 3
+	EncodingDeltaRle uint8 = 4
+	EncodingDict     uint8 = 5
+	EncodingDictRle  uint8 = 6
 )
 
 // Column is one column as the file describes it.
@@ -69,6 +81,8 @@ type Column struct {
 	Tag int32
 	Element uint8
 	Kind    uint8
+	// Encoding says how the block's values are laid out: one of the Encoding* constants.
+	Encoding uint8
 	// Count is the elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one.
 	Count int32
 	// ByteLength is the column block's total bytes - what a skip advances by.
@@ -402,6 +416,7 @@ func ReadTableHeader(r *Reader) (int32, []Column) {
 		wire := r.ReadUint8()
 		columns[at].Element = wire & 0x0f
 		columns[at].Kind = (wire >> 4) & 0x03
+		columns[at].Encoding = r.ReadUint8()
 		columns[at].Count = r.ReadCounter32()
 		columns[at].ByteLength = int32(r.ReadUint32())
 	}
@@ -412,9 +427,10 @@ func ReadTableHeader(r *Reader) (int32, []Column) {
 
 	// What the descriptors say about the file, checked before anybody allocates for the
 	// row count. The blocks are all that follows the header, so their declared lengths have
-	// to add up to the bytes left, and every row costs at least one byte in every block - a
-	// varint's shortest form, an empty string's length prefix, a variable array's counter.
-	// A row count larger than that is one the exporter could not have written.
+	// to add up to the bytes left. A raw block also costs at least one byte per row - a
+	// varint's shortest form, an empty string's length prefix, a variable array's counter -
+	// so a larger row count is one the exporter could not have written. An encoded block
+	// has no such floor; its decode checks run sums and dictionary bounds instead.
 	available := int32(r.Remaining())
 	declared := int32(0)
 
@@ -429,7 +445,7 @@ func ReadTableHeader(r *Reader) (int32, []Column) {
 
 		declared += column.ByteLength
 
-		if count > column.ByteLength {
+		if column.Encoding == EncodingRaw && count > column.ByteLength {
 			r.err = fmt.Errorf(
 				"sheetman: the row count %d is larger than column tag %d can hold in its %d bytes",
 				count, column.Tag, column.ByteLength)
@@ -460,6 +476,16 @@ func CheckColumn(r *Reader, col Column, fieldName string, kind uint8, count int3
 			"sheetman: %s: the file's column (kind %d, count %d) does not match the generated "+
 				"member (kind %d, count %d); the schema changed shape, regenerate the code or "+
 				"rebuild the data", fieldName, col.Kind, col.Count, kind, count)
+		return false
+	}
+
+	// An encoding this build cannot decode is refused by name, exactly like an element
+	// it cannot read. An unknown column's encoding never gets here - a skip is a skip
+	// whatever the block's layout.
+	if col.Encoding != EncodingRaw {
+		r.err = fmt.Errorf(
+			"sheetman: %s: the file's column uses encoding %d, which this reader does not "+
+				"support; regenerate the code or rebuild the data", fieldName, col.Encoding)
 		return false
 	}
 

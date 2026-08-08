@@ -1,42 +1,42 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "b9660612af9b6933cf72314d994cce66",
-  "TotalSize": 979,
+  "MasterHash": "aa090a0e18bf12293787dbcdffa9668d",
+  "TotalSize": 950,
   "Items": [
     {
       "Name": "TestFieldTypes.scb",
-      "Size": 265,
-      "Hash": "f5a63e44446cef7b1b6a55e9f880e1ce",
+      "Size": 266,
+      "Hash": "4e518f5f57a2971fbcf4e0948b812f06",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ItemCategory.scb",
-      "Size": 112,
-      "Hash": "abe0486be7d635895d20f251097aa770",
+      "Size": 106,
+      "Hash": "be17c34da5ed47d1bd524ba614dcb2a4",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Item.scb",
-      "Size": 213,
-      "Hash": "479cda3909ce6e8258aa1323c05acdba",
+      "Size": 201,
+      "Hash": "dc2b67c6f4210347c9149ab5181eb237",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Localization.scb",
-      "Size": 131,
-      "Hash": "4cff3527887d1b608dfd9b153fa00810",
+      "Size": 129,
+      "Hash": "5230506e0c1df847e9b91d9615dab97d",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ArrayTypes.scb",
-      "Size": 196,
-      "Hash": "f8c33409a1ca7b8fdfc92323f43544e4",
+      "Size": 189,
+      "Hash": "c0fde719ce24c3793717319d28e20674",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ClientStrings.scb",
-      "Size": 62,
-      "Hash": "e5b5b8d421ae83d391e9a7459acc66c6",
+      "Size": 59,
+      "Hash": "6ecd03990367532604ac188c750d4000",
       "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]

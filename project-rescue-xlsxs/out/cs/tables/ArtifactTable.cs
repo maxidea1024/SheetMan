@@ -214,7 +214,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -238,39 +238,41 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Artifact.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Artifact.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Artifact.ArtifactType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.ArtifactType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._artifactType = (global::Rescue.Tables.ArtifactJobType)tempEnumInt;
+                            record._artifactType = (global::Rescue.Tables.ArtifactJobType)cursor.NextI32();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "Artifact.Grade", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.Grade");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._grade = (global::Rescue.Tables.GradeType)tempEnumInt;
+                            record._grade = (global::Rescue.Tables.GradeType)cursor.NextI32();
                         }
                         break;
 
@@ -290,11 +292,11 @@ namespace Rescue.Tables
 
                     case 6:
                         ScbTable.CheckColumn(column, "Artifact.EquipStatType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.EquipStatType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._equipStatType = (global::Rescue.Tables.StatType)tempEnumInt;
+                            record._equipStatType = (global::Rescue.Tables.StatType)cursor.NextI32();
                         }
                         break;
 
@@ -309,11 +311,11 @@ namespace Rescue.Tables
 
                     case 8:
                         ScbTable.CheckColumn(column, "Artifact.CollectionType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.CollectionType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._collectionType = (global::Rescue.Tables.StatType)tempEnumInt;
+                            record._collectionType = (global::Rescue.Tables.StatType)cursor.NextI32();
                         }
                         break;
 
@@ -328,28 +330,31 @@ namespace Rescue.Tables
 
                     case 10:
                         ScbTable.CheckColumn(column, "Artifact.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.IconPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._iconPath);
+                            record._iconPath = cursor.NextString();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "Artifact.MaterialPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.MaterialPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._materialPath);
+                            record._materialPath = cursor.NextString();
                         }
                         break;
 
                     case 12:
                         ScbTable.CheckColumn(column, "Artifact.Description", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.Description");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._description);
+                            record._description = cursor.NextString();
                         }
                         break;
 

@@ -203,7 +203,7 @@ namespace SheetMan.Fixtures.Core.Client
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -227,19 +227,21 @@ namespace SheetMan.Fixtures.Core.Client
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "TestFieldTypes.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.Index");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._index = reader.ReadI32As(column.Element);
+                            record._index = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "TestFieldTypes.StringField", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.StringField");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._stringField);
+                            record._stringField = cursor.NextString();
                         }
                         break;
 
@@ -254,10 +256,11 @@ namespace SheetMan.Fixtures.Core.Client
 
                     case 5:
                         ScbTable.CheckColumn(column, "TestFieldTypes.BigIntField", ScbTable.KindScalar, 1, ScbTable.ElementI64, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.BigIntField");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._bigIntField = reader.ReadI64As(column.Element);
+                            record._bigIntField = cursor.NextI64();
                         }
                         break;
 
@@ -272,10 +275,11 @@ namespace SheetMan.Fixtures.Core.Client
 
                     case 7:
                         ScbTable.CheckColumn(column, "TestFieldTypes.DoubleField", ScbTable.KindScalar, 1, ScbTable.ElementF64, ScbTable.ElementF32, ScbTable.ElementI32);
+                        cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.DoubleField");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._doubleField = reader.ReadF64As(column.Element);
+                            record._doubleField = cursor.NextF64();
                         }
                         break;
 
@@ -308,11 +312,11 @@ namespace SheetMan.Fixtures.Core.Client
 
                     case 11:
                         ScbTable.CheckColumn(column, "TestFieldTypes.ValueTypeField", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.ValueTypeField");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._valueTypeField = (global::SheetMan.Fixtures.Core.Client.ValueType)tempEnumInt;
+                            record._valueTypeField = (global::SheetMan.Fixtures.Core.Client.ValueType)cursor.NextI32();
                         }
                         break;
 

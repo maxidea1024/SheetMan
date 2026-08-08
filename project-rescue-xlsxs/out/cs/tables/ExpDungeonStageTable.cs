@@ -270,7 +270,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -294,56 +294,61 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.StageName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.StageName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._stageName);
+                            record._stageName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.DungeonType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.DungeonType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._dungeonType = (global::Rescue.Tables.DungeonType)tempEnumInt;
+                            record._dungeonType = (global::Rescue.Tables.DungeonType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.DungeonFloor", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.DungeonFloor");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._dungeonFloor = reader.ReadI32As(column.Element);
+                            record._dungeonFloor = cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.TimeLimit", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.TimeLimit");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._timeLimit = reader.ReadI32As(column.Element);
+                            record._timeLimit = cursor.NextI32();
                         }
                         break;
 
@@ -377,19 +382,21 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.SpawnPointCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.SpawnPointCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._spawnPointCount = reader.ReadI32As(column.Element);
+                            record._spawnPointCount = cursor.NextI32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.SpawnMaxCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.SpawnMaxCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._spawnMaxCount = reader.ReadI32As(column.Element);
+                            record._spawnMaxCount = cursor.NextI32();
                         }
                         break;
 
@@ -404,28 +411,31 @@ namespace Rescue.Tables
 
                     case 12:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.StageClearCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.StageClearCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._stageClearCount = reader.ReadI32As(column.Element);
+                            record._stageClearCount = cursor.NextI32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.RecommendPower", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.RecommendPower");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._recommendPower);
+                            record._recommendPower = cursor.NextString();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.RewardID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.RewardID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._rewardID = reader.ReadI32As(column.Element);
+                            record._rewardID = cursor.NextI32();
                         }
                         break;
 
@@ -458,28 +468,31 @@ namespace Rescue.Tables
 
                     case 18:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.DungeonImagePath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.DungeonImagePath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._dungeonImagePath);
+                            record._dungeonImagePath = cursor.NextString();
                         }
                         break;
 
                     case 19:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.MonsterImagePath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.MonsterImagePath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._monsterImagePath);
+                            record._monsterImagePath = cursor.NextString();
                         }
                         break;
 
                     case 20:
                         ScbTable.CheckColumn(column, "ExpDungeonStage.AssetDataPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExpDungeonStage.AssetDataPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._assetDataPath);
+                            record._assetDataPath = cursor.NextString();
                         }
                         break;
 

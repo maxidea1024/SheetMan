@@ -193,7 +193,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -217,83 +217,91 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "GachaArtifactList.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaArtifactList.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "GachaArtifactList.ArtifactID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaArtifactList.ArtifactID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._artifactID = reader.ReadI32As(column.Element);
+                            record._artifactID = cursor.NextI32();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "GachaArtifactList.GradeType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaArtifactList.GradeType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._gradeType = (global::Rescue.Tables.GradeType)tempEnumInt;
+                            record._gradeType = (global::Rescue.Tables.GradeType)cursor.NextI32();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "GachaArtifactList.BaseWeight", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaArtifactList.BaseWeight");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._baseWeight = reader.ReadI32As(column.Element);
+                            record._baseWeight = cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "GachaArtifactList.ClassUpCurrencyID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaArtifactList.ClassUpCurrencyID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._classUpCurrencyID = reader.ReadI32As(column.Element);
+                            record._classUpCurrencyID = cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "GachaArtifactList.ClassUpCurrencyValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaArtifactList.ClassUpCurrencyValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._classUpCurrencyValue = reader.ReadI32As(column.Element);
+                            record._classUpCurrencyValue = cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "GachaArtifactList.ExConditionID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaArtifactList.ExConditionID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._exConditionID = reader.ReadI32As(column.Element);
+                            record._exConditionID = cursor.NextI32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "GachaArtifactList.ExCurrencyID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaArtifactList.ExCurrencyID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._exCurrencyID = reader.ReadI32As(column.Element);
+                            record._exCurrencyID = cursor.NextI32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "GachaArtifactList.ExCurrencyValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaArtifactList.ExCurrencyValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._exCurrencyValue = reader.ReadI32As(column.Element);
+                            record._exCurrencyValue = cursor.NextI32();
                         }
                         break;
 

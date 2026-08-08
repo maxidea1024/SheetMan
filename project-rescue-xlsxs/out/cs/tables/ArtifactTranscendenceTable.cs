@@ -200,7 +200,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -224,75 +224,81 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.NameKR", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.NameKR");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._nameKR);
+                            record._nameKR = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.GradeType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.GradeType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._gradeType = (global::Rescue.Tables.GradeType)tempEnumInt;
+                            record._gradeType = (global::Rescue.Tables.GradeType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.TranscendStep", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.TranscendStep");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._transcendStep = reader.ReadI32As(column.Element);
+                            record._transcendStep = cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.MaxLevel", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.MaxLevel");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._maxLevel = reader.ReadI32As(column.Element);
+                            record._maxLevel = cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.MaterialType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.MaterialType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._materialType = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._materialType = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.MaterialCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.MaterialCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._materialCount = reader.ReadI32As(column.Element);
+                            record._materialCount = cursor.NextI32();
                         }
                         break;
 
@@ -307,10 +313,11 @@ namespace Rescue.Tables
 
                     case 10:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.NextStepID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.NextStepID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._nextStepID = reader.ReadI32As(column.Element);
+                            record._nextStepID = cursor.NextI32();
                         }
                         break;
 

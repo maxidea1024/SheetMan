@@ -193,6 +193,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -216,55 +217,61 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "ArtifactLevel.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactLevel.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "ArtifactLevel.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactLevel.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "ArtifactLevel.NameKR", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactLevel.NameKR");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._nameKR);
+                            record._nameKR = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "ArtifactLevel.Level", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactLevel.Level");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._level = reader.ReadI32As(column.Element);
+                            record._level = cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "ArtifactLevel.CharacterEXP", ScbTable.KindScalar, 1, ScbTable.ElementI64, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactLevel.CharacterEXP");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._characterEXP = reader.ReadI64As(column.Element);
+                            record._characterEXP = cursor.NextI64();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "ArtifactLevel.AccumulatedEXP", ScbTable.KindScalar, 1, ScbTable.ElementI64, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactLevel.AccumulatedEXP");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._accumulatedEXP = reader.ReadI64As(column.Element);
+                            record._accumulatedEXP = cursor.NextI64();
                         }
                         break;
 

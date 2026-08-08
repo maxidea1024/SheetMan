@@ -172,7 +172,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -196,57 +196,61 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Condition.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Condition.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Condition.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Condition.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Condition.ConditionTargetType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Condition.ConditionTargetType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._conditionTargetType = (global::Rescue.Tables.ConditionTargetType)tempEnumInt;
+                            record._conditionTargetType = (global::Rescue.Tables.ConditionTargetType)cursor.NextI32();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "Condition.ConditionTargetValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Condition.ConditionTargetValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._conditionTargetValue = reader.ReadI32As(column.Element);
+                            record._conditionTargetValue = cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "Condition.ConditionType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Condition.ConditionType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._conditionType = (global::Rescue.Tables.ConditionType)tempEnumInt;
+                            record._conditionType = (global::Rescue.Tables.ConditionType)cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "Condition.ConditionValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Condition.ConditionValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._conditionValue = reader.ReadI32As(column.Element);
+                            record._conditionValue = cursor.NextI32();
                         }
                         break;
 

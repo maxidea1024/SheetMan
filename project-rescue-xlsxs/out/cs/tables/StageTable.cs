@@ -263,6 +263,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -286,37 +287,41 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Stage.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Stage.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Stage.StageName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.StageName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._stageName);
+                            record._stageName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "Stage.AssetDataPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.AssetDataPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._assetDataPath);
+                            record._assetDataPath = cursor.NextString();
                         }
                         break;
 
@@ -336,19 +341,21 @@ namespace Rescue.Tables
 
                     case 6:
                         ScbTable.CheckColumn(column, "Stage.SpawnPointCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.SpawnPointCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._spawnPointCount = reader.ReadI32As(column.Element);
+                            record._spawnPointCount = cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "Stage.SpawnMaxCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.SpawnMaxCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._spawnMaxCount = reader.ReadI32As(column.Element);
+                            record._spawnMaxCount = cursor.NextI32();
                         }
                         break;
 
@@ -363,10 +370,11 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "Stage.StageClearCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.StageClearCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._stageClearCount = reader.ReadI32As(column.Element);
+                            record._stageClearCount = cursor.NextI32();
                         }
                         break;
 
@@ -440,28 +448,31 @@ namespace Rescue.Tables
 
                     case 17:
                         ScbTable.CheckColumn(column, "Stage.StageDropListID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.StageDropListID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._stageDropListID = reader.ReadI32As(column.Element);
+                            record._stageDropListID = cursor.NextI32();
                         }
                         break;
 
                     case 18:
                         ScbTable.CheckColumn(column, "Stage.StageBGMID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.StageBGMID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._stageBGMID = reader.ReadI32As(column.Element);
+                            record._stageBGMID = cursor.NextI32();
                         }
                         break;
 
                     case 19:
                         ScbTable.CheckColumn(column, "Stage.BossStageBGMID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.BossStageBGMID");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._bossStageBGMID = reader.ReadI32As(column.Element);
+                            record._bossStageBGMID = cursor.NextI32();
                         }
                         break;
 

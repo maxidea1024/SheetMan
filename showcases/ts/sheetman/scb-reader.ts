@@ -49,8 +49,11 @@ export class ScbError extends Error {
   }
 }
 
-/** Version stamped at the head of every table file by the exporter. */
-export const BINARY_FILE_FORMAT_VERSION = 101
+/**
+ * Version stamped at the head of every table file by the exporter. 102 replaced 101
+ * outright - a descriptor gained its encoding byte - before any 101 file had shipped.
+ */
+export const BINARY_FILE_FORMAT_VERSION = 102
 
 // The wire's element types and kinds, as a column descriptor spells them.
 export const ELEMENT_VARINT = 0
@@ -66,12 +69,24 @@ export const KIND_SCALAR = 0
 export const KIND_FIXED_ARRAY = 1
 export const KIND_VAR_ARRAY = 2
 
+// How a block's values are laid out. Raw is the layout 101 had; the others compress
+// a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+export const ENCODING_RAW = 0
+export const ENCODING_VARINT = 1
+export const ENCODING_DELTA = 2
+export const ENCODING_RLE = 3
+export const ENCODING_DELTA_RLE = 4
+export const ENCODING_DICT = 5
+export const ENCODING_DICT_RLE = 6
+
 /** One column as the file describes it. */
 export interface ScbColumn {
   /** What identifies the column, instead of its position. */
   tag: number
   element: number
   kind: number
+  /** How the block's values are laid out: one of the ENCODING_* constants. */
+  encoding: number
   /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
   count: number
   /** Total bytes of the column's block - what a skip advances by. */
@@ -305,16 +320,18 @@ export function readTableHeader(reader: ScbReader): { rowCount: number, columns:
   for (let at = 0; at < columnCount; ++at) {
     const tag = reader.readCounter32()
     const wire = reader.readFixed8()
+    const encoding = reader.readFixed8()
     const count = reader.readCounter32()
     const byteLength = reader.readFixed32()
-    columns.push({ tag, element: wire & 0x0f, kind: (wire >> 4) & 0x03, count, byteLength })
+    columns.push({ tag, element: wire & 0x0f, kind: (wire >> 4) & 0x03, encoding, count, byteLength })
   }
 
   // What the descriptors say about the file, checked before anybody allocates for the
   // row count. The blocks are all that follows the header, so their declared lengths have
-  // to add up to the bytes left, and every row costs at least one byte in every block - a
-  // varint's shortest form, an empty string's length prefix, a variable array's counter.
-  // A row count larger than that is one the exporter could not have written.
+  // to add up to the bytes left. A raw block also costs at least one byte per row - a
+  // varint's shortest form, an empty string's length prefix, a variable array's counter -
+  // so a larger row count is one the exporter could not have written. An encoded block
+  // has no such floor; its decode checks run sums and dictionary bounds instead.
 
   const available = reader.remaining
   let declared = 0
@@ -327,7 +344,7 @@ export function readTableHeader(reader: ScbReader): { rowCount: number, columns:
 
     declared += column.byteLength
 
-    if (rowCount > column.byteLength) {
+    if (column.encoding === ENCODING_RAW && rowCount > column.byteLength) {
       throw new ScbError(
         `the row count ${rowCount} is larger than column tag ${column.tag} can hold in ` +
         `its ${column.byteLength} bytes`)
@@ -353,6 +370,14 @@ export function checkColumn(
       `${fieldName}: the file's column (kind ${column.kind}, count ${column.count}) does not ` +
       `match the generated member (kind ${kind}, count ${count}). The schema changed shape; ` +
       'regenerate the code or rebuild the data.')
+  }
+  // An encoding this build cannot decode is refused by name, exactly like an element
+  // it cannot read. An unknown column's encoding never gets here - a skip is a skip
+  // whatever the block's layout.
+  if (column.encoding !== ENCODING_RAW) {
+    throw new ScbError(
+      `${fieldName}: the file's column uses encoding ${column.encoding}, which this ` +
+      'reader does not support. Regenerate the code or rebuild the data.')
   }
   if (!accepted.includes(column.element)) {
     throw new ScbError(

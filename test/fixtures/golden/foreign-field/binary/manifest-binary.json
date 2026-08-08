@@ -1,18 +1,18 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "0637378a801495f482f1cf613bb12e80",
-  "TotalSize": 154,
+  "MasterHash": "413567abc9ef567c0e9819b1cc4caed2",
+  "TotalSize": 142,
   "Items": [
     {
       "Name": "ItemCategory.scb",
-      "Size": 84,
-      "Hash": "0c74d68d16b3d10cd7e295c655beb979",
+      "Size": 81,
+      "Hash": "0f2a175a59ce42b26384fea48bd12933",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Item.scb",
-      "Size": 70,
-      "Hash": "3afd5635fc13835dc66edf24861e43cf",
+      "Size": 61,
+      "Hash": "0a93aead8ccec6aee2d5ab14d7a11427",
       "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]

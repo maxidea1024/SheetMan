@@ -33,7 +33,9 @@ import 'dart:typed_data';
 /// The format is column-oriented and self-describing: the header names every column
 /// and how long its block is, and a reader that meets a version it does not know stops
 /// rather than guessing.
-const int formatVersion = 101;
+// 102 replaced 101 outright - a descriptor gained its encoding byte - before any
+// 101 file had shipped.
+const int formatVersion = 102;
 
 // The wire element types and kinds, as a column descriptor spells them.
 const int elementVarint = 0;
@@ -49,13 +51,26 @@ const int kindScalar = 0;
 const int kindFixedArray = 1;
 const int kindVarArray = 2;
 
+// How a block's values are laid out. Raw is the layout 101 had; the others compress
+// a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+const int encodingRaw = 0;
+const int encodingVarint = 1;
+const int encodingDelta = 2;
+const int encodingRle = 3;
+const int encodingDeltaRle = 4;
+const int encodingDict = 5;
+const int encodingDictRle = 6;
+
 /// One column as the file describes it.
 class Column {
-  Column(this.tag, this.element, this.kind, this.count, this.byteLength);
+  Column(this.tag, this.element, this.kind, this.encoding, this.count, this.byteLength);
 
   /// What identifies the column, instead of its position.
   final int tag;
   final int element;
+
+  /// How the block's values are laid out: one of the encoding* constants.
+  final int encoding;
   final int kind;
 
   /// Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one.
@@ -325,16 +340,19 @@ Header readTableHeader(ScbReader reader) {
   for (var at = 0; at < columnCount; at++) {
     final tag = reader.readCounter32();
     final wire = reader.readUint8();
+    final encoding = reader.readUint8();
     final elementCount = reader.readCounter32();
     final byteLength = reader.readUint32();
-    columns.add(Column(tag, wire & 0x0f, (wire >> 4) & 0x03, elementCount, byteLength));
+    columns.add(
+        Column(tag, wire & 0x0f, (wire >> 4) & 0x03, encoding, elementCount, byteLength));
   }
 
   // What the descriptors say about the file, checked before anybody allocates for the
   // row count. The blocks are all that follows the header, so their declared lengths have
-  // to add up to the bytes left, and every row costs at least one byte in every block - a
-  // varint's shortest form, an empty string's length prefix, a variable array's counter.
-  // A row count larger than that is one the exporter could not have written.
+  // to add up to the bytes left. A raw block also costs at least one byte per row - a
+  // varint's shortest form, an empty string's length prefix, a variable array's counter -
+  // so a larger row count is one the exporter could not have written. An encoded block
+  // has no such floor; its decode checks run sums and dictionary bounds instead.
 
   final available = reader.remaining;
   var declared = 0;
@@ -348,7 +366,7 @@ Header readTableHeader(ScbReader reader) {
 
     declared += column.byteLength;
 
-    if (count > column.byteLength) {
+    if (column.encoding == encodingRaw && count > column.byteLength) {
       throw ScbException(
           'the row count $count is larger than column tag ${column.tag} can hold in its '
           '${column.byteLength} bytes');
@@ -371,6 +389,15 @@ void checkColumn(Column column, String fieldName, int kind, int count, List<int>
         '$fieldName: the file column (kind ${column.kind}, count ${column.count}) does not '
         'match the generated member (kind $kind, count $count). The schema changed shape; '
         'regenerate the code or rebuild the data.');
+  }
+
+  // An encoding this build cannot decode is refused by name, exactly like an element
+  // it cannot read. An unknown column's encoding never gets here - a skip is a skip
+  // whatever the block's layout.
+  if (column.encoding != encodingRaw) {
+    throw ScbException(
+        "$fieldName: the file's column uses encoding ${column.encoding}, which this "
+        'reader does not support. Regenerate the code or rebuild the data.');
   }
 
   if (!accepted.contains(column.element)) {

@@ -38,7 +38,7 @@ import struct
 # The format is column-oriented and self-describing: the header names every column
 # and how long its block is, and a reader that meets a version it does not know stops
 # rather than guessing.
-FORMAT_VERSION = 101
+FORMAT_VERSION = 102
 
 # The wire's element types and kinds, as a column descriptor spells them.
 ELEMENT_VARINT = 0
@@ -54,16 +54,27 @@ KIND_SCALAR = 0
 KIND_FIXED_ARRAY = 1
 KIND_VAR_ARRAY = 2
 
+# How a block's values are laid out. Raw is the layout 101 had; the others compress
+# a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+ENCODING_RAW = 0
+ENCODING_VARINT = 1
+ENCODING_DELTA = 2
+ENCODING_RLE = 3
+ENCODING_DELTA_RLE = 4
+ENCODING_DICT = 5
+ENCODING_DICT_RLE = 6
+
 
 class Column:
     """One column as the file describes it."""
 
-    __slots__ = ("tag", "element", "kind", "count", "byte_length")
+    __slots__ = ("tag", "element", "kind", "encoding", "count", "byte_length")
 
-    def __init__(self, tag, element, kind, count, byte_length):
+    def __init__(self, tag, element, kind, encoding, count, byte_length):
         self.tag = tag
         self.element = element
         self.kind = kind
+        self.encoding = encoding
         self.count = count
         self.byte_length = byte_length
 
@@ -299,15 +310,19 @@ def read_table_header(reader):
     for _ in range(column_count):
         tag = reader.read_counter32()
         wire = reader.read_uint8()
+        encoding = reader.read_uint8()
         element_count = reader.read_counter32()
         byte_length = reader.read_uint32()
-        columns.append(Column(tag, wire & 0x0F, (wire >> 4) & 0x03, element_count, byte_length))
+        columns.append(
+            Column(tag, wire & 0x0F, (wire >> 4) & 0x03, encoding, element_count, byte_length))
 
     # What the descriptors say about the file, checked before anybody allocates for the
     # row count. The blocks are all that follows the header, so their declared lengths have
-    # to add up to the bytes left, and every row costs at least one byte in every block - a
-    # varint's shortest form, an empty string's length prefix, a variable array's counter.
-    # A row count larger than that is one the exporter could not have written.
+    # to add up to the bytes left. A raw block also costs at least one byte per
+    # row - a varint's shortest form, an empty string's length prefix, a variable
+    # array's counter - so a larger row count is one the exporter could not have
+    # written. An encoded block has no such floor; its decode checks run sums and
+    # dictionary bounds instead.
 
     available = reader.remaining
     declared = 0
@@ -320,7 +335,7 @@ def read_table_header(reader):
 
         declared += column.byte_length
 
-        if count > column.byte_length:
+        if column.encoding == ENCODING_RAW and count > column.byte_length:
             raise ScbError(
                 "the row count %d is larger than column tag %d can hold in its %d bytes"
                 % (count, column.tag, column.byte_length))
@@ -342,6 +357,14 @@ def check_column(column, field_name, kind, count, accepted):
             "%s: the file's column (kind %d, count %d) does not match the generated member "
             "(kind %d, count %d). The schema changed shape; regenerate the code or rebuild "
             "the data." % (field_name, column.kind, column.count, kind, count))
+
+    # An encoding this build cannot decode is refused by name, exactly like an
+    # element it cannot read. An unknown column's encoding never gets here - a skip
+    # is a skip whatever the block's layout.
+    if column.encoding != ENCODING_RAW:
+        raise ScbError(
+            "%s: the file's column uses encoding %d, which this reader does not support. "
+            "Regenerate the code or rebuild the data." % (field_name, column.encoding))
 
     if column.element not in accepted:
         raise ScbError(

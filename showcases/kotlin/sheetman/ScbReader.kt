@@ -39,8 +39,9 @@ import java.nio.charset.StandardCharsets
 /** Stamped at the head of every table file by the exporter. */
 // The format is column-oriented and self-describing: the header names every column
 // and how long its block is, and a reader that meets a version it does not know stops
-// rather than guessing.
-const val FORMAT_VERSION: Int = 101
+// rather than guessing. 102 replaced 101 outright - a descriptor gained its encoding
+// byte - before any 101 file had shipped.
+const val FORMAT_VERSION: Int = 102
 
 // The wire element types and kinds, as a column descriptor spells them.
 const val ELEMENT_VARINT = 0
@@ -56,12 +57,24 @@ const val KIND_SCALAR = 0
 const val KIND_FIXED_ARRAY = 1
 const val KIND_VAR_ARRAY = 2
 
+// How a block's values are laid out. Raw is the layout 101 had; the others compress
+// a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+const val ENCODING_RAW = 0
+const val ENCODING_VARINT = 1
+const val ENCODING_DELTA = 2
+const val ENCODING_RLE = 3
+const val ENCODING_DELTA_RLE = 4
+const val ENCODING_DICT = 5
+const val ENCODING_DICT_RLE = 6
+
 /** One column as the file describes it. */
 class Column(
     /** What identifies the column, instead of its position. */
     val tag: Int,
     val element: Int,
     val kind: Int,
+    /** How the block's values are laid out: one of the ENCODING_* constants. */
+    val encoding: Int,
     /** Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one. */
     val count: Int,
     /** Total bytes of the column block - what a skip advances by. */
@@ -299,16 +312,19 @@ fun readTableHeader(reader: ScbReader): Header {
     repeat(columnCount) {
         val tag = reader.readCounter32()
         val wire = reader.readUInt8()
+        val encoding = reader.readUInt8()
         val elementCount = reader.readCounter32()
         val byteLength = reader.readInt32()
-        columns.add(Column(tag, wire and 0x0F, (wire shr 4) and 0x03, elementCount, byteLength))
+        columns.add(
+            Column(tag, wire and 0x0F, (wire shr 4) and 0x03, encoding, elementCount, byteLength))
     }
 
     // What the descriptors say about the file, checked before anybody allocates for the
     // row count. The blocks are all that follows the header, so their declared lengths have
-    // to add up to the bytes left, and every row costs at least one byte in every block - a
-    // varint's shortest form, an empty string's length prefix, a variable array's counter.
-    // A row count larger than that is one the exporter could not have written.
+    // to add up to the bytes left. A raw block also costs at least one byte per row - a
+    // varint's shortest form, an empty string's length prefix, a variable array's counter -
+    // so a larger row count is one the exporter could not have written. An encoded block
+    // has no such floor; its decode checks run sums and dictionary bounds instead.
 
     val available = reader.remaining
     var declared = 0
@@ -322,7 +338,7 @@ fun readTableHeader(reader: ScbReader): Header {
 
         declared += column.byteLength
 
-        if (count > column.byteLength) {
+        if (column.encoding == ENCODING_RAW && count > column.byteLength) {
             throw ScbException(
                 "the row count $count is larger than column tag ${column.tag} can hold in its " +
                     "${column.byteLength} bytes")
@@ -347,6 +363,15 @@ fun checkColumn(column: Column, fieldName: String, kind: Int, count: Int, vararg
             "$fieldName: the file column (kind ${column.kind}, count ${column.count}) does not " +
                 "match the generated member (kind $kind, count $count). The schema changed shape; " +
                 "regenerate the code or rebuild the data.")
+    }
+
+    // An encoding this build cannot decode is refused by name, exactly like an element
+    // it cannot read. An unknown column's encoding never gets here - a skip is a skip
+    // whatever the block's layout.
+    if (column.encoding != ENCODING_RAW) {
+        throw ScbException(
+            "$fieldName: the file's column uses encoding ${column.encoding}, which this " +
+                "reader does not support. Regenerate the code or rebuild the data.")
     }
 
     if (column.element !in accepted) {

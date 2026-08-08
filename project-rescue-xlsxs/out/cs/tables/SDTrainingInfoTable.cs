@@ -214,7 +214,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -238,75 +238,81 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.TrainingName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.TrainingName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._trainingName);
+                            record._trainingName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.AttributeType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.AttributeType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._attributeType = (global::Rescue.Tables.AttributeType)tempEnumInt;
+                            record._attributeType = (global::Rescue.Tables.AttributeType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.StatType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.StatType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._statType = (global::Rescue.Tables.StatType)tempEnumInt;
+                            record._statType = (global::Rescue.Tables.StatType)cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.UnlockCondition", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.UnlockCondition");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._unlockCondition = reader.ReadI32As(column.Element);
+                            record._unlockCondition = cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.LevelUpCondition", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.LevelUpCondition");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._levelUpCondition = reader.ReadI32As(column.Element);
+                            record._levelUpCondition = cursor.NextI32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.MaxLevel", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.MaxLevel");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._maxLevel = reader.ReadI32As(column.Element);
+                            record._maxLevel = cursor.NextI32();
                         }
                         break;
 
@@ -321,29 +327,31 @@ namespace Rescue.Tables
 
                     case 10:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.LvResetCurrencyType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._lvResetCurrencyType = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._lvResetCurrencyType = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.LvResetCurrencyValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._lvResetCurrencyValue = reader.ReadI32As(column.Element);
+                            record._lvResetCurrencyValue = cursor.NextI32();
                         }
                         break;
 
                     case 12:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.Description", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.Description");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._description);
+                            record._description = cursor.NextString();
                         }
                         break;
 

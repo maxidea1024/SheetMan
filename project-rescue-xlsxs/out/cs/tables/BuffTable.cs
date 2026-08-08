@@ -256,7 +256,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -280,96 +280,101 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Buff.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Buff.BuffName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.BuffName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._buffName);
+                            record._buffName = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Buff.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "Buff.SkillType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.SkillType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._skillType = (global::Rescue.Tables.SkillType)tempEnumInt;
+                            record._skillType = (global::Rescue.Tables.SkillType)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "Buff.StatType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.StatType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._statType = (global::Rescue.Tables.StatType)tempEnumInt;
+                            record._statType = (global::Rescue.Tables.StatType)cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "Buff.Priority", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.Priority");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._priority = reader.ReadI32As(column.Element);
+                            record._priority = cursor.NextI32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "Buff.AttributeType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.AttributeType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._attributeType = (global::Rescue.Tables.AttributeType)tempEnumInt;
+                            record._attributeType = (global::Rescue.Tables.AttributeType)cursor.NextI32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "Buff.TargetType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.TargetType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._targetType = (global::Rescue.Tables.TargetType)tempEnumInt;
+                            record._targetType = (global::Rescue.Tables.TargetType)cursor.NextI32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "Buff.BuffConditionType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.BuffConditionType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._buffConditionType = (global::Rescue.Tables.BuffConditionType)tempEnumInt;
+                            record._buffConditionType = (global::Rescue.Tables.BuffConditionType)cursor.NextI32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "Buff.BuffValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.BuffValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._buffValue = reader.ReadI32As(column.Element);
+                            record._buffValue = cursor.NextI32();
                         }
                         break;
 
@@ -384,28 +389,31 @@ namespace Rescue.Tables
 
                     case 12:
                         ScbTable.CheckColumn(column, "Buff.BuffTime", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.BuffTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._buffTime = reader.ReadI32As(column.Element);
+                            record._buffTime = cursor.NextI32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "Buff.BuffTickTime", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.BuffTickTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._buffTickTime = reader.ReadI32As(column.Element);
+                            record._buffTickTime = cursor.NextI32();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "Buff.BuffMaxStack", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.BuffMaxStack");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._buffMaxStack = reader.ReadI32As(column.Element);
+                            record._buffMaxStack = cursor.NextI32();
                         }
                         break;
 
@@ -429,19 +437,21 @@ namespace Rescue.Tables
 
                     case 17:
                         ScbTable.CheckColumn(column, "Buff.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.IconPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._iconPath);
+                            record._iconPath = cursor.NextString();
                         }
                         break;
 
                     case 18:
                         ScbTable.CheckColumn(column, "Buff.Description", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.Description");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._description);
+                            record._description = cursor.NextString();
                         }
                         break;
 

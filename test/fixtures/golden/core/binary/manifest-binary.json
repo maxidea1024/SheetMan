@@ -1,48 +1,48 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "117f8189875ff7e11d813749b3d0da46",
-  "TotalSize": 1082,
+  "MasterHash": "b045ad8ea1d1226e2f4a7ecd6ffa2bf2",
+  "TotalSize": 1031,
   "Items": [
     {
       "Name": "TestFieldTypes.scb",
-      "Size": 284,
-      "Hash": "8a7ace8b6d5602a80dd354b736f61f1c",
+      "Size": 278,
+      "Hash": "abab6d0c63744ccbfb9cb3c4b749b06e",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ItemCategory.scb",
-      "Size": 112,
-      "Hash": "abe0486be7d635895d20f251097aa770",
+      "Size": 106,
+      "Hash": "be17c34da5ed47d1bd524ba614dcb2a4",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Item.scb",
-      "Size": 232,
-      "Hash": "f76019ffc1e22b4f169a4048a4393aab",
+      "Size": 214,
+      "Hash": "42a39fbfcaabd15df07e97ca3f9acbd2",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "Localization.scb",
-      "Size": 131,
-      "Hash": "4cff3527887d1b608dfd9b153fa00810",
+      "Size": 129,
+      "Hash": "5230506e0c1df847e9b91d9615dab97d",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ArrayTypes.scb",
-      "Size": 196,
-      "Hash": "f8c33409a1ca7b8fdfc92323f43544e4",
+      "Size": 189,
+      "Hash": "c0fde719ce24c3793717319d28e20674",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ServerTuning.scb",
-      "Size": 65,
-      "Hash": "88ccf82351e9f85572217b011bece178",
+      "Size": 56,
+      "Hash": "a9ce862de6154705b9c5f0c1d82eff9e",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "ClientStrings.scb",
-      "Size": 62,
-      "Hash": "e5b5b8d421ae83d391e9a7459acc66c6",
+      "Size": 59,
+      "Hash": "6ecd03990367532604ac188c750d4000",
       "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]

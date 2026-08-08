@@ -28,8 +28,9 @@ use std::path::Path;
 /// Stamped at the head of every table file by the exporter.
 /// The format is column-oriented and self-describing: the header names every column
 /// and how long its block is, and a reader that meets a version it does not know stops
-/// rather than guessing.
-pub const FORMAT_VERSION: u32 = 101;
+/// rather than guessing. 102 replaced 101 outright - a descriptor gained its encoding
+/// byte - before any 101 file had shipped.
+pub const FORMAT_VERSION: u32 = 102;
 
 // The wire element types and kinds, as a column descriptor spells them.
 pub const ELEMENT_VARINT: u8 = 0;
@@ -45,6 +46,16 @@ pub const KIND_SCALAR: u8 = 0;
 pub const KIND_FIXED_ARRAY: u8 = 1;
 pub const KIND_VAR_ARRAY: u8 = 2;
 
+// How a block's values are laid out. Raw is the layout 101 had; the others compress
+// a column that repeats itself. spec/scb-v102-column-encoding.md is the contract.
+pub const ENCODING_RAW: u8 = 0;
+pub const ENCODING_VARINT: u8 = 1;
+pub const ENCODING_DELTA: u8 = 2;
+pub const ENCODING_RLE: u8 = 3;
+pub const ENCODING_DELTA_RLE: u8 = 4;
+pub const ENCODING_DICT: u8 = 5;
+pub const ENCODING_DICT_RLE: u8 = 6;
+
 /// One column as the file describes it.
 #[derive(Clone, Copy, Debug)]
 pub struct Column {
@@ -52,6 +63,8 @@ pub struct Column {
     pub tag: i32,
     pub element: u8,
     pub kind: u8,
+    /// How the block's values are laid out: one of the ENCODING_* constants.
+    pub encoding: u8,
     /// Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one.
     pub count: i32,
     /// Total bytes of the column block - what a skip advances by.
@@ -412,6 +425,7 @@ pub fn read_table_header(reader: &mut Reader<'_>) -> Result<Header> {
     for _ in 0..column_count {
         let tag = reader.read_counter32()?;
         let wire = reader.read_u8()?;
+        let encoding = reader.read_u8()?;
         let element_count = reader.read_counter32()?;
         let byte_length = reader.read_u32()? as i32;
 
@@ -419,6 +433,7 @@ pub fn read_table_header(reader: &mut Reader<'_>) -> Result<Header> {
             tag,
             element: wire & 0x0f,
             kind: (wire >> 4) & 0x03,
+            encoding,
             count: element_count,
             byte_length,
         });
@@ -426,9 +441,10 @@ pub fn read_table_header(reader: &mut Reader<'_>) -> Result<Header> {
 
     // What the descriptors say about the file, checked before anybody allocates for the
     // row count. The blocks are all that follows the header, so their declared lengths have
-    // to add up to the bytes left, and every row costs at least one byte in every block - a
-    // varint's shortest form, an empty string's length prefix, a variable array's counter.
-    // A row count larger than that is one the exporter could not have written.
+    // to add up to the bytes left. A raw block also costs at least one byte per row - a
+    // varint's shortest form, an empty string's length prefix, a variable array's counter -
+    // so a larger row count is one the exporter could not have written. An encoded block
+    // has no such floor; its decode checks run sums and dictionary bounds instead.
 
     let available = reader.remaining() as i32;
     let mut declared: i32 = 0;
@@ -443,7 +459,7 @@ pub fn read_table_header(reader: &mut Reader<'_>) -> Result<Header> {
 
         declared += column.byte_length;
 
-        if count > column.byte_length {
+        if column.encoding == ENCODING_RAW && count > column.byte_length {
             return Err(Error::RowCountImplausible {
                 rows: count,
                 tag: column.tag,
@@ -468,6 +484,16 @@ pub fn check_column(
             field,
             detail: "the column's shape does not match the generated member; the schema \
                      changed shape, regenerate the code or rebuild the data",
+        });
+    }
+
+    // An encoding this build cannot decode is refused by name, exactly like an element
+    // it cannot read. An unknown column's encoding never gets here - a skip is a skip
+    // whatever the block's layout.
+    if column.encoding != ENCODING_RAW {
+        return Err(Error::ColumnMismatch {
+            field,
+            detail: "the column uses an encoding this reader does not support;                      regenerate the code or rebuild the data",
         });
     }
 

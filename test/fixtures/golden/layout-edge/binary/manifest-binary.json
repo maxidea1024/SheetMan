@@ -1,18 +1,18 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "9b6cf472bddc27b0304dc324fc28ea19",
-  "TotalSize": 97,
+  "MasterHash": "d5be647430b47f38ab25cb2ac7e1cbcb",
+  "TotalSize": 85,
   "Items": [
     {
       "Name": "OffsetTable.scb",
-      "Size": 55,
-      "Hash": "098b8cc1c35e80ef1ea1d736d919bcf4",
+      "Size": 46,
+      "Hash": "e8c24e814b2eb75e9c37d6af2eb1e6f3",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {
       "Name": "SecondTable.scb",
-      "Size": 42,
-      "Hash": "f08b0c412115bf825de17524ae80010a",
+      "Size": 39,
+      "Hash": "2d369bb9b89eb42aa9f6c7c108decccb",
       "LastUpdatedDate": "<TIMESTAMP>"
     }
   ]

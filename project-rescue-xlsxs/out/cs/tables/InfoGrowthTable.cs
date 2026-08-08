@@ -228,7 +228,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -252,47 +252,51 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "InfoGrowth.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "InfoGrowth.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "InfoGrowth.InfoName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.InfoName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._infoName);
+                            record._infoName = cursor.NextString();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "InfoGrowth.SheetName", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.SheetName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._sheetName);
+                            record._sheetName = cursor.NextString();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "InfoGrowth.GrowthType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.GrowthType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._growthType = (global::Rescue.Tables.GrowthType)tempEnumInt;
+                            record._growthType = (global::Rescue.Tables.GrowthType)cursor.NextI32();
                         }
                         break;
 
@@ -307,74 +311,81 @@ namespace Rescue.Tables
 
                     case 7:
                         ScbTable.CheckColumn(column, "InfoGrowth.ResetCostType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.ResetCostType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._resetCostType = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._resetCostType = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "InfoGrowth.ResetCostValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.ResetCostValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._resetCostValue = reader.ReadI32As(column.Element);
+                            record._resetCostValue = cursor.NextI32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "InfoGrowth.MaxStep", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.MaxStep");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._maxStep = reader.ReadI32As(column.Element);
+                            record._maxStep = cursor.NextI32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "InfoGrowth.MaxLevel", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.MaxLevel");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._maxLevel = reader.ReadI32As(column.Element);
+                            record._maxLevel = cursor.NextI32();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "InfoGrowth.UnlockConditionType", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.UnlockConditionType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._unlockConditionType);
+                            record._unlockConditionType = cursor.NextString();
                         }
                         break;
 
                     case 12:
                         ScbTable.CheckColumn(column, "InfoGrowth.UnlockConditionValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.UnlockConditionValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._unlockConditionValue = reader.ReadI32As(column.Element);
+                            record._unlockConditionValue = cursor.NextI32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "InfoGrowth.Description", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.Description");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._description);
+                            record._description = cursor.NextString();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "InfoGrowth.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.IconPath");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._iconPath);
+                            record._iconPath = cursor.NextString();
                         }
                         break;
 

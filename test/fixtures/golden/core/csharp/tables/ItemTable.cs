@@ -188,7 +188,7 @@ namespace SheetMan.Fixtures.Core
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -212,28 +212,31 @@ namespace SheetMan.Fixtures.Core
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Item.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.Index");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._index = reader.ReadI32As(column.Element);
+                            record._index = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Item.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Item.CategoryId", ScbTable.KindScalar, 1, ScbTable.ElementI32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.CategoryId");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._categoryId_ItemCategory_index);
+                            record._categoryId_ItemCategory_index = cursor.NextI32();
                             record._categoryId = default(ItemCategoryTable.Record); // will be assigned.
                             record._categoryId_F = false;
                         }
@@ -241,39 +244,41 @@ namespace SheetMan.Fixtures.Core
 
                     case 4:
                         ScbTable.CheckColumn(column, "Item.GradeField", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.GradeField");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._gradeField = (global::SheetMan.Fixtures.Core.Grade)tempEnumInt;
+                            record._gradeField = (global::SheetMan.Fixtures.Core.Grade)cursor.NextI32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "Item.SkillField", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.SkillField");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._skillField = (global::SheetMan.Fixtures.Core.SkillType)tempEnumInt;
+                            record._skillField = (global::SheetMan.Fixtures.Core.SkillType)cursor.NextI32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "Item.Description", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.Description");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._description);
+                            record._description = cursor.NextString();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "Item.Price", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.Price");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._price = reader.ReadI32As(column.Element);
+                            record._price = cursor.NextI32();
                         }
                         break;
 

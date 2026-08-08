@@ -331,11 +331,229 @@ namespace SheetMan.Binary
         /// <summary>Kind: scalar, fixed array or variable array.</summary>
         public byte Kind;
 
+        /// <summary>How the block's values are laid out: one of the Encoding* constants.</summary>
+        public byte Encoding;
+
         /// <summary>Elements per row: 1 for a scalar, N for a fixed array, 0 for a variable one.</summary>
         public int Count;
 
         /// <summary>Total bytes of the column's data block - what a skip advances by.</summary>
         public int ByteLength;
+    }
+
+    /// <summary>
+    /// Reads one scalar column's values in row order, whatever the block's encoding.
+    ///
+    /// The generated row loop stays a row loop; this is the one place that knows how
+    /// a delta accumulates, how long a run has left, or that a dictionary index is a
+    /// reference into strings decoded once. That last one matters beyond file size: a
+    /// hundred-thousand-row column with three distinct strings allocates three strings,
+    /// not a hundred thousand.
+    ///
+    /// CheckColumn has already refused any (element, encoding) pair the spec does not
+    /// define, so the switches here do not re-litigate that.
+    /// </summary>
+    public sealed class ScbColumnCursor
+    {
+        private readonly ScbReader _reader;
+        private readonly string _fieldName;
+        private readonly byte _element;
+        private readonly byte _encoding;
+
+        /// <summary>The block's dictionary, decoded once and handed out per row.</summary>
+        private readonly string[] _dictionary;
+
+        // A run-length family's current run: what remains of it, and its value - which
+        // is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+        private int _runRemaining;
+        private int _runValue;
+
+        // The delta family's accumulator, once _started.
+        private int _previous;
+        private bool _started;
+
+        // Rows not yet handed out. A run that claims more than this is corrupt, and
+        // catching it here names the field instead of leaving it to the block-end check.
+        private int _rowsRemaining;
+
+        public ScbColumnCursor(ScbReader reader, in ScbColumn column, int rowCount, string fieldName)
+        {
+            _reader = reader;
+            _fieldName = fieldName;
+            _element = column.Element;
+            _encoding = column.Encoding;
+            _rowsRemaining = rowCount;
+
+            if (_encoding == ScbTable.EncodingDict || _encoding == ScbTable.EncodingDictRle)
+            {
+                int count = reader.ReadCounter32();
+                if (count < 0)
+                    throw new ScbException($"{fieldName}: the dictionary entry count is negative");
+
+                _dictionary = new string[count];
+
+                for (int at = 0; at < count; at++)
+                    reader.Read(out _dictionary[at]);
+            }
+            else
+            {
+                _dictionary = null;
+            }
+        }
+
+        /// <summary>The next int32 - which also serves enums, and reference indexes.</summary>
+        public int NextI32()
+        {
+            _rowsRemaining--;
+
+            switch (_encoding)
+            {
+                case ScbTable.EncodingRaw:
+                {
+                    if (_element == ScbTable.ElementI32)
+                    {
+                        _reader.Read(out int exact);
+                        return exact;
+                    }
+
+                    return _reader.ReadOptimalInt32();
+                }
+
+                case ScbTable.EncodingVarint:
+                    return _reader.ReadOptimalInt32();
+
+                case ScbTable.EncodingDelta:
+                {
+                    // The addition wraps on purpose, mirroring the writer's wrapping
+                    // subtraction; together they are exact for every int32 pair.
+                    if (_started)
+                        _previous = unchecked(_previous + _reader.ReadOptimalInt32());
+                    else
+                    {
+                        _previous = _reader.ReadOptimalInt32();
+                        _started = true;
+                    }
+
+                    return _previous;
+                }
+
+                case ScbTable.EncodingRle:
+                {
+                    if (_runRemaining == 0)
+                        ReadRun();
+
+                    _runRemaining--;
+                    return _runValue;
+                }
+
+                default: // EncodingDeltaRle; CheckColumn refused everything else.
+                {
+                    if (!_started)
+                    {
+                        _previous = _reader.ReadOptimalInt32();
+                        _started = true;
+                        return _previous;
+                    }
+
+                    if (_runRemaining == 0)
+                        ReadRun();
+
+                    _runRemaining--;
+                    _previous = unchecked(_previous + _runValue);
+                    return _previous;
+                }
+            }
+        }
+
+        /// <summary>An int64 member: an i64 column is always raw, anything narrower decodes as int32.</summary>
+        public long NextI64()
+        {
+            if (_element == ScbTable.ElementI64)
+            {
+                _reader.Read(out long exact);
+                return exact;
+            }
+
+            return NextI32();
+        }
+
+        /// <summary>A double member: float columns are always raw, an i32 column decodes then widens.</summary>
+        public double NextF64()
+        {
+            switch (_element)
+            {
+                case ScbTable.ElementF64:
+                {
+                    _reader.Read(out double exact);
+                    return exact;
+                }
+
+                case ScbTable.ElementF32:
+                {
+                    _reader.Read(out float single);
+                    return single;
+                }
+
+                default:
+                    return NextI32();
+            }
+        }
+
+        /// <summary>The next string - the dictionary's instance where the block has one.</summary>
+        public string NextString()
+        {
+            _rowsRemaining--;
+
+            switch (_encoding)
+            {
+                case ScbTable.EncodingRaw:
+                {
+                    _reader.Read(out string value);
+                    return value;
+                }
+
+                case ScbTable.EncodingDict:
+                    return DictionaryEntry(_reader.ReadCounter32());
+
+                default: // EncodingDictRle
+                {
+                    if (_runRemaining == 0)
+                        ReadRun();
+
+                    _runRemaining--;
+                    return DictionaryEntry(_runValue);
+                }
+            }
+        }
+
+        private void ReadRun()
+        {
+            int length = _reader.ReadCounter32();
+
+            // + 1 because the row this run was read for is already counted out of
+            // _rowsRemaining by its Next call.
+            if (length < 1 || length > _rowsRemaining + 1)
+            {
+                throw new ScbException(
+                    $"{_fieldName}: a run of {length} values cannot cover the " +
+                    $"{_rowsRemaining + 1} rows left in the column");
+            }
+
+            _runRemaining = length;
+            _runValue = _reader.ReadOptimalInt32();
+        }
+
+        private string DictionaryEntry(int index)
+        {
+            if ((uint)index >= (uint)_dictionary.Length)
+            {
+                throw new ScbException(
+                    $"{_fieldName}: dictionary index {index} is out of range - the " +
+                    $"dictionary holds {_dictionary.Length} entries");
+            }
+
+            return _dictionary[index];
+        }
     }
 
     /// <summary>
@@ -347,9 +565,10 @@ namespace SheetMan.Binary
         /// <remarks>
         /// The format is column-oriented and self-describing: the header names every column
         /// and how long its block is, and a reader that meets a version it does not know
-        /// stops rather than guessing.
+        /// stops rather than guessing. 102 replaced 101 outright - a descriptor gained its
+        /// encoding byte - before any 101 file had shipped.
         /// </remarks>
-        public const uint FormatVersion = 101;
+        public const uint FormatVersion = 102;
 
         public const byte ElementVarint = 0;
         public const byte ElementBool = 1;
@@ -363,6 +582,17 @@ namespace SheetMan.Binary
         public const byte KindScalar = 0;
         public const byte KindFixedArray = 1;
         public const byte KindVarArray = 2;
+
+        // How a block's values are laid out. Raw is the layout 101 had; the others
+        // compress a column that repeats itself, which static game data does
+        // relentlessly. spec/scb-v102-column-encoding.md is the byte-level contract.
+        public const byte EncodingRaw = 0;
+        public const byte EncodingVarint = 1;
+        public const byte EncodingDelta = 2;
+        public const byte EncodingRle = 3;
+        public const byte EncodingDeltaRle = 4;
+        public const byte EncodingDict = 5;
+        public const byte EncodingDictRle = 6;
 
         /// <summary>
         /// Reads and checks the file header, returning the row count and the column
@@ -399,6 +629,8 @@ namespace SheetMan.Binary
                 columns[at].Element = (byte)(wire & 0x0F);
                 columns[at].Kind = (byte)((wire >> 4) & 0x03);
 
+                reader.Read(out columns[at].Encoding);
+
                 columns[at].Count = reader.ReadCounter32();
 
                 reader.Read(out uint byteLength);
@@ -407,9 +639,11 @@ namespace SheetMan.Binary
 
             // What the descriptors say about the file, checked before anybody allocates for the
             // row count. The blocks are all that follows the header, so their declared lengths have
-            // to add up to the bytes left, and every row costs at least one byte in every block - a
-            // varint's shortest form, an empty string's length prefix, a variable array's counter.
-            // A row count larger than that is one the exporter could not have written.
+            // to add up to the bytes left. A raw block also costs at least one byte per row - a
+            // varint's shortest form, an empty string's length prefix, a variable array's counter -
+            // so a larger row count is one the exporter could not have written. An encoded block
+            // has no such floor (one run can cover any number of rows); its decode checks run
+            // sums and dictionary bounds instead.
 
             int available = reader.Remaining;
             int declared = 0;
@@ -425,7 +659,7 @@ namespace SheetMan.Binary
 
                 declared += column.ByteLength;
 
-                if (rowCount > column.ByteLength)
+                if (column.Encoding == EncodingRaw && rowCount > column.ByteLength)
                 {
                     throw new ScbException(
                         $"the row count {rowCount} is larger than column tag {column.Tag} can " +
@@ -499,6 +733,46 @@ namespace SheetMan.Binary
                     $"match the generated member (kind {kind}, count {count}). The schema changed shape; " +
                     "regenerate the code or rebuild the data.");
             }
+
+            // An encoding this build cannot decode - or one the spec does not define
+            // for this element - is refused by name, exactly like an element it cannot
+            // read. An unknown column's encoding never gets here: a skip is a skip
+            // whatever the block's layout.
+            if (!EncodingSupported(column))
+            {
+                throw new ScbException(
+                    $"{fieldName}: the file's column uses encoding {column.Encoding}, which this " +
+                    "reader cannot decode for its element type. Regenerate the code or rebuild " +
+                    "the data.");
+            }
+        }
+
+        /// <summary>
+        /// The (element, encoding) pairs the spec defines. Arrays are always raw;
+        /// integers take the integer encodings, strings the dictionary ones.
+        /// </summary>
+        private static bool EncodingSupported(in ScbColumn column)
+        {
+            if (column.Encoding == EncodingRaw)
+                return true;
+
+            if (column.Kind != KindScalar)
+                return false;
+
+            switch (column.Element)
+            {
+                case ElementVarint:
+                    return column.Encoding == EncodingRle;
+
+                case ElementI32:
+                    return column.Encoding >= EncodingVarint && column.Encoding <= EncodingDeltaRle;
+
+                case ElementString:
+                    return column.Encoding == EncodingDict || column.Encoding == EncodingDictRle;
+
+                default:
+                    return false;
+            }
         }
 
         private static ScbException ElementMismatch(
@@ -514,13 +788,7 @@ namespace SheetMan.Binary
         public static void CheckColumn(
             in ScbColumn column, string fieldName, byte kind, int count, params byte[] acceptedElements)
         {
-            if (column.Kind != kind || (kind != KindVarArray && column.Count != count))
-            {
-                throw new ScbException(
-                    $"{fieldName}: the file's column (kind {column.Kind}, count {column.Count}) does not " +
-                    $"match the generated member (kind {kind}, count {count}). The schema changed shape; " +
-                    "regenerate the code or rebuild the data.");
-            }
+            CheckShape(column, fieldName, kind, count);
 
             for (int at = 0; at < acceptedElements.Length; at++)
             {

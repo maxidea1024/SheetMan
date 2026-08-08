@@ -160,6 +160,7 @@ namespace SheetMan.Fixtures.X
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -183,28 +184,31 @@ namespace SheetMan.Fixtures.X
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "Item.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.Index");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._index = reader.ReadI32As(column.Element);
+                            record._index = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "Item.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "Item.CategoryName", ScbTable.KindScalar, 1, ScbTable.ElementI32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Item.CategoryName");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._categoryName_ItemCategory_index);
+                            record._categoryName_ItemCategory_index = cursor.NextI32();
                             record._categoryName = default(string); // will be assigned.
                             record._categoryName_F = false;
                         }

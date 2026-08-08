@@ -1,409 +1,409 @@
 {
-  "LastUpdatedDate": "2026-08-07T23:35:48.5021407+09:00",
-  "MasterHash": "3bc164a3775903e8b205f823c124276e",
-  "TotalSize": 7837225,
+  "LastUpdatedDate": "2026-08-08T10:18:22.6937789+09:00",
+  "MasterHash": "1b5d10815c3c552e615d0f2eae30947e",
+  "TotalSize": 360105,
   "Items": [
     {
       "Name": "CollectionGroup.scb",
-      "Size": 1951,
-      "Hash": "37143196920d9b667d2d15efa057e1c5",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3410362+09:00"
+      "Size": 1600,
+      "Hash": "decca4a258e5dbd859b647b77db6963e",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4775013+09:00"
     },
     {
       "Name": "Collection.scb",
-      "Size": 130336,
-      "Hash": "e7751f0b21dd2984260bd113730fafc4",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3443803+09:00"
+      "Size": 13137,
+      "Hash": "e257e71d1eaa4502faeccfc15d9a1691",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4811643+09:00"
     },
     {
       "Name": "Condition.scb",
-      "Size": 1372,
-      "Hash": "4904792eeab3b445b86462cb610b74ad",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3453369+09:00"
+      "Size": 352,
+      "Hash": "cfdf509ef3abbd1f94c70ae5c034e24a",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4879984+09:00"
     },
     {
       "Name": "DailyDungeonInfo.scb",
-      "Size": 693,
-      "Hash": "ad63b42f0e876f8df141ddb65d670ac3",
-      "LastUpdatedDate": "2026-08-07T23:35:48.346155+09:00"
+      "Size": 562,
+      "Hash": "3e9cbdfa8853dc80d83e452fc47dc1c8",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4892507+09:00"
     },
     {
       "Name": "GoldDungeonStage.scb",
-      "Size": 4252,
-      "Hash": "e896b72cdba1979f19a594e9edc6ca84",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3470245+09:00"
+      "Size": 1223,
+      "Hash": "d0e56d555679a00f2e194c1089527043",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4911622+09:00"
     },
     {
       "Name": "GoldDungeonReward.scb",
-      "Size": 1288,
-      "Hash": "c76c7cb938eaa4512bf208038ce90e75",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3477183+09:00"
+      "Size": 614,
+      "Hash": "9d7b703fcde7e0fad3563da501b14d83",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4924409+09:00"
     },
     {
       "Name": "ExpDungeonStage.scb",
-      "Size": 4212,
-      "Hash": "59b8413747d756022f34b6823025167d",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3482628+09:00"
+      "Size": 1202,
+      "Hash": "4e07e81d4af309fdac0d7ad17f287093",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4942832+09:00"
     },
     {
       "Name": "ExpDungeonReward.scb",
-      "Size": 1328,
-      "Hash": "6c9bfc86b71efddaa686b8b2b5ab0aca",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3490708+09:00"
+      "Size": 639,
+      "Hash": "153b75465efc47ad09f55629e384e86a",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4948003+09:00"
     },
     {
       "Name": "TraitDungeonStage.scb",
-      "Size": 4468,
-      "Hash": "0703608272106a724597b839f5e88056",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3497611+09:00"
+      "Size": 1268,
+      "Hash": "89d0a54a3a98212875ad60918303eb2e",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4954361+09:00"
     },
     {
       "Name": "TraitDungeonReward.scb",
-      "Size": 1308,
-      "Hash": "cd8745dec755b78fc9285214a2fc74c5",
-      "LastUpdatedDate": "2026-08-07T23:35:48.350305+09:00"
+      "Size": 634,
+      "Hash": "75c738e3db9c224372894d66cda63f70",
+      "LastUpdatedDate": "2026-08-08T10:18:22.4959331+09:00"
     },
     {
       "Name": "RelicDungeonStage.scb",
-      "Size": 4308,
-      "Hash": "ec0e2ff1a1070b22176f665239656dd8",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3511147+09:00"
+      "Size": 1260,
+      "Hash": "ebb5cf1530210f017b8d8b6702ce6364",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5000235+09:00"
     },
     {
       "Name": "RelicDungeonReward.scb",
-      "Size": 1308,
-      "Hash": "4f6dfe70861e8d79fd769cfbab3034ac",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3518694+09:00"
+      "Size": 634,
+      "Hash": "59572a2563da0906e9410fb78dc663f4",
+      "LastUpdatedDate": "2026-08-08T10:18:22.500582+09:00"
     },
     {
       "Name": "OopartsDungeonStage.scb",
-      "Size": 4448,
-      "Hash": "199c241e4e0df07a7d4bf05687cfa8a9",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3526691+09:00"
+      "Size": 1305,
+      "Hash": "103242328363e90c78bb15811dc53102",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5012486+09:00"
     },
     {
       "Name": "OopartsDungeonReward.scb",
-      "Size": 1408,
-      "Hash": "1a74bdaecaac4feb89f82123c30755d8",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3530967+09:00"
+      "Size": 677,
+      "Hash": "986ebd9dd31446ea77dd7875efbb38cb",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5017676+09:00"
     },
     {
       "Name": "GachaInfo.scb",
-      "Size": 350,
-      "Hash": "87ed19c5712eabcf1938b17148e77a4b",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3535898+09:00"
+      "Size": 308,
+      "Hash": "ea8d0825298a148763c718c6552cad2a",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5026351+09:00"
     },
     {
       "Name": "GachaCharacterList.scb",
-      "Size": 3885,
-      "Hash": "41125f866bed8238c488cae6adbe5de4",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3543261+09:00"
+      "Size": 368,
+      "Hash": "82923ad9c9eb6b922ee10c445e85a2e1",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5032642+09:00"
     },
     {
       "Name": "GachaArtifactInfo.scb",
-      "Size": 358,
-      "Hash": "89422ef54c9a42a41a62c586f2a58be2",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3547446+09:00"
+      "Size": 311,
+      "Hash": "6ad3ee6d5b6e8f6dd717ecbad2cf529e",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5039544+09:00"
     },
     {
       "Name": "GachaArtifactList.scb",
-      "Size": 730,
-      "Hash": "a2d97c2429537af8824a50c3ad428d16",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3551677+09:00"
+      "Size": 172,
+      "Hash": "1b98b6c023f40f2bacc3e37d0c1c230b",
+      "LastUpdatedDate": "2026-08-08T10:18:22.504676+09:00"
     },
     {
       "Name": "GachaRate.scb",
-      "Size": 217,
-      "Hash": "2a8b64dbc330a3d30ed4f9d1afed3485",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3555108+09:00"
+      "Size": 198,
+      "Hash": "e782d8942ba25d7b0217d0dd8ee573b9",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5050399+09:00"
     },
     {
       "Name": "Currency.scb",
-      "Size": 7319,
-      "Hash": "b340e8f65b96e0035aa2fb371e3888db",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3561015+09:00"
+      "Size": 5339,
+      "Hash": "8efb7adc630a1cad962039b4dec213bb",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5059025+09:00"
     },
     {
       "Name": "Material.scb",
-      "Size": 5390,
-      "Hash": "92008b68d17bce00d7d46d6bdf7916ae",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3565192+09:00"
+      "Size": 4143,
+      "Hash": "5c5221a6a2cf4759ec0dc2dff9362364",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5065384+09:00"
     },
     {
       "Name": "Package.scb",
-      "Size": 19374,
-      "Hash": "ac95f479f30e5eae89cfd243a36fa762",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3571059+09:00"
+      "Size": 15998,
+      "Hash": "00d98cb14b5bfc597e5508cbe779419f",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5074195+09:00"
     },
     {
       "Name": "ClassUpCurrencyList.scb",
-      "Size": 8614,
-      "Hash": "c1812e64ac19e42b9edd92471a248454",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3576438+09:00"
+      "Size": 5871,
+      "Hash": "c522c1d06a8826937e7bdf234796ae05",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5083014+09:00"
     },
     {
       "Name": "EquipItemLevel.scb",
-      "Size": 38477,
-      "Hash": "ae05ec9e08ce0c6428e65ce12fe9bef7",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3586579+09:00"
+      "Size": 33755,
+      "Hash": "c3c5022f8beeffb0912afd35ad1f5e6d",
+      "LastUpdatedDate": "2026-08-08T10:18:22.509787+09:00"
     },
     {
       "Name": "EquipItemClass.scb",
-      "Size": 24739,
-      "Hash": "1ec20768dbf79dedd7cd1d090de79a38",
-      "LastUpdatedDate": "2026-08-07T23:35:48.359393+09:00"
+      "Size": 21734,
+      "Hash": "892058c491decad6fdc8bf2b7b5e331e",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5108343+09:00"
     },
     {
       "Name": "Equip.scb",
-      "Size": 16139,
-      "Hash": "6492aae187572ddc35b449ab5b39c916",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3599839+09:00"
+      "Size": 9664,
+      "Hash": "0ba7c52281e225b8b15ae1cce879f17f",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5116557+09:00"
     },
     {
       "Name": "EquipItemGrade.scb",
-      "Size": 1992,
-      "Hash": "7361a0f4b547b8272cf2918b53311465",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3603739+09:00"
+      "Size": 1857,
+      "Hash": "e7f6bc748998608365e3986906a21e49",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5122802+09:00"
     },
     {
       "Name": "Character.scb",
-      "Size": 211159,
-      "Hash": "071fa147e71fb27720dd66e12ba68aec",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3630712+09:00"
+      "Size": 114033,
+      "Hash": "427636ed5a1986b7cb2d4aa89170fbbd",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5165783+09:00"
     },
     {
       "Name": "Skill.scb",
-      "Size": 48656,
-      "Hash": "3cdb937d2e3471d871788430a98eba37",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3639801+09:00"
+      "Size": 38639,
+      "Hash": "47a0d125f075c195c16a9313feee1c1e",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5180237+09:00"
     },
     {
       "Name": "Buff.scb",
-      "Size": 21283,
-      "Hash": "755bec57cdfe702e3d97b05c84a89528",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3646935+09:00"
+      "Size": 14751,
+      "Hash": "f9a35348db866def69f24f8db1852027",
+      "LastUpdatedDate": "2026-08-08T10:18:22.519541+09:00"
     },
     {
       "Name": "CharacterLevel.scb",
-      "Size": 5355,
-      "Hash": "6b10967724956371030b00cb78090512",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3651612+09:00"
+      "Size": 4572,
+      "Hash": "4d2cc0b99064123afcac84ff680d7a8b",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5201184+09:00"
     },
     {
       "Name": "CharacterTranscendence.scb",
-      "Size": 3255,
-      "Hash": "1455c18b62a0bb22f8f6e088229aaea2",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3655986+09:00"
+      "Size": 2223,
+      "Hash": "528d24b211c3147f8f65dfc6708229bb",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5206808+09:00"
     },
     {
       "Name": "Artifact.scb",
-      "Size": 13258,
-      "Hash": "298d4cfb84cd1431b5799b829eacc382",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3660996+09:00"
+      "Size": 12212,
+      "Hash": "8ecb169754d582ce308b53b0bfe1bad1",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5213096+09:00"
     },
     {
       "Name": "ArtifactLevel.scb",
-      "Size": 2437,
-      "Hash": "a0544d38d33662d17bac8e6fa592d4c0",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3665424+09:00"
+      "Size": 2092,
+      "Hash": "a981bc4542733fc50e17160f04444989",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5218132+09:00"
     },
     {
       "Name": "ArtifactTranscendence.scb",
-      "Size": 3255,
-      "Hash": "a5672a1c0ccd2fff1d2257dd5f7f6265",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3669962+09:00"
+      "Size": 2223,
+      "Hash": "86796cc8f44b08356117c2e2568f9584",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5224963+09:00"
     },
     {
       "Name": "BuffSelect.scb",
-      "Size": 998,
-      "Hash": "d88e016f92c8e53eaf21352e2b53a1cb",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3673823+09:00"
+      "Size": 519,
+      "Hash": "600318b583117d9999563fb8e5216155",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5230569+09:00"
     },
     {
       "Name": "ShortCut.scb",
-      "Size": 1013,
-      "Hash": "85a6762172922537643f15fbfcfd2d68",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3677604+09:00"
+      "Size": 883,
+      "Hash": "41daa4979f56b2c7782645d13d13c853",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5237359+09:00"
     },
     {
       "Name": "Stage.scb",
-      "Size": 21675,
-      "Hash": "87897c9598d4d00ffeba7def750cb016",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3683675+09:00"
+      "Size": 7284,
+      "Hash": "8102ef4829ff8774126e6eedb6b94494",
+      "LastUpdatedDate": "2026-08-08T10:18:22.524673+09:00"
     },
     {
       "Name": "Config.scb",
-      "Size": 879,
-      "Hash": "d59a06df91f02b475e7f97a767acc8a8",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3687845+09:00"
+      "Size": 784,
+      "Hash": "9e78ce34dfebd93f2dbdf9edc31e389d",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5251552+09:00"
     },
     {
       "Name": "DropGroup.scb",
-      "Size": 561,
-      "Hash": "a2c627889a98219a21c98a91da4884f3",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3692637+09:00"
+      "Size": 544,
+      "Hash": "8233e93934a01fe638156d5224c284de",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5255907+09:00"
     },
     {
       "Name": "Attribute.scb",
-      "Size": 338,
-      "Hash": "f5be93ad7d14ce3b43a5061a251c17e9",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3697401+09:00"
+      "Size": 326,
+      "Hash": "fbfbc6ebdd64001199d4e04c69d437c2",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5260314+09:00"
     },
     {
       "Name": "SDContensInfo.scb",
-      "Size": 763,
-      "Hash": "65fdf7918c654a2dce5063dd525a2a31",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3702747+09:00"
+      "Size": 722,
+      "Hash": "f298c0cbd34140fe771e416219d6908d",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5265295+09:00"
     },
     {
       "Name": "SDAgencyInfo.scb",
-      "Size": 525,
-      "Hash": "205e4977c431d94e7552d551364e2af2",
-      "LastUpdatedDate": "2026-08-07T23:35:48.370663+09:00"
+      "Size": 443,
+      "Hash": "fcebf7a280ae23e222d16740005b2ef5",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5271686+09:00"
     },
     {
       "Name": "SDAgency.scb",
-      "Size": 3529,
-      "Hash": "601927795536daabe057acf2dc89447a",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3710807+09:00"
+      "Size": 2067,
+      "Hash": "ad0eb34e9cd4c651615e810d3d3c37b0",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5280656+09:00"
     },
     {
       "Name": "SDPubInfo.scb",
-      "Size": 680,
-      "Hash": "ab2f7f9696c5ee087390fbb752d34d5b",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3858743+09:00"
+      "Size": 613,
+      "Hash": "26068bb6fbb49de4fbdc73be4f46f1cc",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5286168+09:00"
     },
     {
       "Name": "SDTrainingInfo.scb",
-      "Size": 1030,
-      "Hash": "8637ad71bbdbca18fd85b8619c0da847",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3863702+09:00"
+      "Size": 927,
+      "Hash": "80686e130859bf5d8a60a3a161e7be53",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5291871+09:00"
     },
     {
       "Name": "SDTrainingLevel.scb",
-      "Size": 2556,
-      "Hash": "52c90fd32e836aaa2411cbde659d56c1",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3868304+09:00"
+      "Size": 1839,
+      "Hash": "595fc1ffd6f61db4c10a248e166ac902",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5297389+09:00"
     },
     {
       "Name": "SDDungeonInfo.scb",
-      "Size": 176,
-      "Hash": "cd1c5c7edf7a2c9804cb4b2ffe9f1cf9",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3872296+09:00"
+      "Size": 158,
+      "Hash": "5fd49a38772900046a01e6e8b4e40d11",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5304852+09:00"
     },
     {
       "Name": "SDDungeonCard.scb",
-      "Size": 352,
-      "Hash": "813224030b94118929aab7f56bee9a55",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3875965+09:00"
+      "Size": 329,
+      "Hash": "17012515907dd92b1b36e30594766122",
+      "LastUpdatedDate": "2026-08-08T10:18:22.530991+09:00"
     },
     {
       "Name": "SDDungeonReward.scb",
-      "Size": 537,
-      "Hash": "07886177362afcab1f0fb089e490ba59",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3880059+09:00"
+      "Size": 304,
+      "Hash": "0de8403e097bac03daf771445e3d8177",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5316034+09:00"
     },
     {
       "Name": "SDAlchemyInfo.scb",
-      "Size": 503,
-      "Hash": "9f8b2874e07e18ca4d050a0c08462ed1",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3884257+09:00"
+      "Size": 437,
+      "Hash": "8fa30a5f2b6d8e56a994a66885bcf437",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5324934+09:00"
     },
     {
       "Name": "SDAlchemyStep.scb",
-      "Size": 491,
-      "Hash": "cd20d9ed35a430f29ee65a4b34de3c53",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3887907+09:00"
+      "Size": 402,
+      "Hash": "38977ab40519cae9120c0dfc09e62932",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5329937+09:00"
     },
     {
       "Name": "SDAlchemyLevel.scb",
-      "Size": 8586,
-      "Hash": "e54fc9255d09adfa6c2c9678bebd3712",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3892567+09:00"
+      "Size": 6772,
+      "Hash": "3d475d8428bdc34a90a2407ad457225e",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5337019+09:00"
     },
     {
       "Name": "ShopInfo.scb",
-      "Size": 455,
-      "Hash": "a892c1a5eaa1c95e80e759884936cc30",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3895775+09:00"
+      "Size": 377,
+      "Hash": "3e7842168365fb6097baf33b22c738f9",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5342698+09:00"
     },
     {
       "Name": "MainShop.scb",
-      "Size": 1143,
-      "Hash": "9afc981ab108fa7578e53a4f804dbf73",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3899236+09:00"
+      "Size": 740,
+      "Hash": "628b2cdf867564a3724877a045e2ef95",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5348757+09:00"
     },
     {
       "Name": "PackageShop.scb",
-      "Size": 949,
-      "Hash": "f30e39496f4671f713eeedf929d4a55f",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3902506+09:00"
+      "Size": 691,
+      "Hash": "0c53a966153f5b59b30a6da785e71160",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5356332+09:00"
     },
     {
       "Name": "SeasonShop.scb",
-      "Size": 4130,
-      "Hash": "5765143fce218e9dc2bdad90b40b4cb2",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3906989+09:00"
+      "Size": 2846,
+      "Hash": "9460980a131fbff3397be27080e96ab6",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5362732+09:00"
     },
     {
       "Name": "CashShop.scb",
-      "Size": 1632,
-      "Hash": "f6ac6b834cbf4c9aa0852b3e71a305cb",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3911226+09:00"
+      "Size": 1179,
+      "Hash": "103f9d31bb275dea7ff263b010a314e8",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5368742+09:00"
     },
     {
       "Name": "BGMSound.scb",
-      "Size": 550,
-      "Hash": "6468a14b1677ce5c29b43ec64e529edb",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3915065+09:00"
+      "Size": 519,
+      "Hash": "802048e730f64175d370c9df9e4c9b69",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5372863+09:00"
     },
     {
       "Name": "SFXSound.scb",
-      "Size": 2158,
-      "Hash": "7041c6166c2afe75e2418fb808f96a3f",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3919117+09:00"
+      "Size": 1662,
+      "Hash": "f79ba96df6c0667f97f9af1798a48dff",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5377521+09:00"
     },
     {
       "Name": "InfoGrowth.scb",
-      "Size": 381,
-      "Hash": "d492cf91f4eaf8481d24ac32e8cbb9ca",
-      "LastUpdatedDate": "2026-08-07T23:35:48.3922414+09:00"
+      "Size": 306,
+      "Hash": "115425403d85a062e40fdff3eb9c925c",
+      "LastUpdatedDate": "2026-08-08T10:18:22.5382627+09:00"
     },
     {
       "Name": "StatGrowth.scb",
-      "Size": 7164030,
-      "Hash": "b61dd20a3716fc5ab31f63b0f08f8874",
-      "LastUpdatedDate": "2026-08-07T23:35:48.4981885+09:00"
+      "Size": 5435,
+      "Hash": "46b9c958185de4d5a1a2a1df77e278fa",
+      "LastUpdatedDate": "2026-08-08T10:18:22.6903249+09:00"
     },
     {
       "Name": "Trait.scb",
-      "Size": 532,
-      "Hash": "a9b75460846ccfff36ce18a321e2f996",
-      "LastUpdatedDate": "2026-08-07T23:35:48.4987817+09:00"
+      "Size": 426,
+      "Hash": "15538cfa10163ceb65567f247677da26",
+      "LastUpdatedDate": "2026-08-08T10:18:22.6908633+09:00"
     },
     {
       "Name": "Relic.scb",
-      "Size": 3182,
-      "Hash": "34972dc04ef3b92ef53000225552a091",
-      "LastUpdatedDate": "2026-08-07T23:35:48.4992412+09:00"
+      "Size": 1506,
+      "Hash": "0e81d210843a2260d7d38f373c2701d5",
+      "LastUpdatedDate": "2026-08-08T10:18:22.6914889+09:00"
     },
     {
       "Name": "StarNode.scb",
-      "Size": 13359,
-      "Hash": "2cc3a9777718fe209b0dc9b8b141c7d8",
-      "LastUpdatedDate": "2026-08-07T23:35:48.4999299+09:00"
+      "Size": 3179,
+      "Hash": "427b6a8e59e1c05a2e3bb7c44f57e034",
+      "LastUpdatedDate": "2026-08-08T10:18:22.6923562+09:00"
     },
     {
       "Name": "CostCurve.scb",
-      "Size": 120,
-      "Hash": "d902066914ef8699abc2194b790f3835",
-      "LastUpdatedDate": "2026-08-07T23:35:48.500652+09:00"
+      "Size": 103,
+      "Hash": "e146a88dd9ecf738b61dcd83b89329e7",
+      "LastUpdatedDate": "2026-08-08T10:18:22.6928055+09:00"
     },
     {
       "Name": "CostCurveRange.scb",
-      "Size": 490,
-      "Hash": "a15ef5cfa099340f72fd627de58eebc4",
-      "LastUpdatedDate": "2026-08-07T23:35:48.5013371+09:00"
+      "Size": 213,
+      "Hash": "e5979ec0650696c5fbe23675b7757d82",
+      "LastUpdatedDate": "2026-08-08T10:18:22.693326+09:00"
     }
   ]
 }

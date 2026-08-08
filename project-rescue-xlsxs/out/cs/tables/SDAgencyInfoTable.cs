@@ -228,7 +228,7 @@ namespace Rescue.Tables
         public Task ReadAsync(ScbReader reader)
         {
             var columns = ScbTable.ReadHeader(reader, out int count);
-            int tempEnumInt = 0;
+            ScbColumnCursor cursor;
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -252,38 +252,41 @@ namespace Rescue.Tables
                 {
                     case 1:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.Id");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._id = reader.ReadI32As(column.Element);
+                            record._id = cursor.NextI32();
                         }
                         break;
 
                     case 2:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.Name");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._name);
+                            record._name = cursor.NextString();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.AgencyGrade", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.AgencyGrade");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._agencyGrade = (global::Rescue.Tables.AgencyGrade)tempEnumInt;
+                            record._agencyGrade = (global::Rescue.Tables.AgencyGrade)cursor.NextI32();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.DispatchCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.DispatchCount");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._dispatchCount = reader.ReadI32As(column.Element);
+                            record._dispatchCount = cursor.NextI32();
                         }
                         break;
 
@@ -352,29 +355,31 @@ namespace Rescue.Tables
 
                     case 12:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.FreeRefresh", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.FreeRefresh");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._freeRefresh = reader.ReadI32As(column.Element);
+                            record._freeRefresh = cursor.NextI32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.RefreshCurrencyType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyType");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.ReadOptimalInt32(out tempEnumInt);
-                            record._refreshCurrencyType = (global::Rescue.Tables.CurrencyType)tempEnumInt;
+                            record._refreshCurrencyType = (global::Rescue.Tables.CurrencyType)cursor.NextI32();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.RefreshCurrencyValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record._refreshCurrencyValue = reader.ReadI32As(column.Element);
+                            record._refreshCurrencyValue = cursor.NextI32();
                         }
                         break;
 

@@ -34,8 +34,11 @@ public static class ScbFormat
     /// One version exists, and a reader that meets any other stops rather than guessing.
     /// There is no compatibility path to an older layout and none is planned: a file this
     /// build cannot read is a file to write again, not one to interpret.
+    ///
+    /// 102 replaced 101 outright - a descriptor gained its encoding byte - before any
+    /// 101 file had shipped.
     /// </summary>
-    public const uint Version = 101;
+    public const uint Version = 102;
 
     // ------------------------------------------------------- element types
 
@@ -72,6 +75,35 @@ public static class ScbFormat
 
     /// <summary>Each row carries its own counter32 length ahead of its elements.</summary>
     public const byte KindVarArray = 2;
+
+    // ----------------------------------------------------------- encodings
+    //
+    // How a column block's values are laid out, chosen per column by measuring every
+    // applicable candidate and keeping the smallest (ties go to the lowest number).
+    // The spec is spec/scb-v102-column-encoding.md; the reason is that a static
+    // table's columns repeat themselves - the same string thousands of times, ids
+    // that step by one - and one byte per column is all it costs to say so.
+
+    /// <summary>The value stream as v101 wrote it. The only encoding for arrays.</summary>
+    public const byte EncodingRaw = 0;
+
+    /// <summary>Each value as a counter32. i32 scalars whose values are small.</summary>
+    public const byte EncodingVarint = 1;
+
+    /// <summary>First value, then counter32 deltas (32-bit wrapping). i32 scalars.</summary>
+    public const byte EncodingDelta = 2;
+
+    /// <summary>(counter32 run length, counter32 value) pairs. i32 and varint scalars.</summary>
+    public const byte EncodingRle = 3;
+
+    /// <summary>First value, then the delta stream run-length encoded. i32 scalars.</summary>
+    public const byte EncodingDeltaRle = 4;
+
+    /// <summary>A dictionary of the distinct strings, then a counter32 index per row.</summary>
+    public const byte EncodingDict = 5;
+
+    /// <summary>The dictionary, then the index stream run-length encoded.</summary>
+    public const byte EncodingDictRle = 6;
 
     /// <summary>The wire byte: element in the low four bits, kind in the next two.</summary>
     public static byte Wire(byte element, byte kind) => (byte)(element | (kind << 4));
