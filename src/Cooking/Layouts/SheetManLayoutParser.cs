@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Serilog;
 using SheetMan.Extensions;
+using SheetMan.Helpers;
 using SheetMan.Models;
 using SheetMan.Models.Raw;
 
@@ -301,6 +302,58 @@ public sealed class SheetManLayoutParser : ILayoutParser
         return result;
     }
 
+    /// <summary>
+    /// Separates a record group's name from the element number on it: `Slot1` is group
+    /// `Slot`, element 1, and `Pos` is group `Pos` with no number and therefore one
+    /// element.
+    /// </summary>
+    /// <remarks>
+    /// The same digit rule the serial-field folding uses - exactly one run of them, or
+    /// none - because the two notations mean the same thing by a number and disagreeing
+    /// about it would be the kind of difference nobody would look for. `Slot1A2` is
+    /// refused rather than guessed at.
+    /// </remarks>
+    private (string groupName, int ordinal) SplitGroupOrdinal(string groupPart, string rawFieldName, Location location)
+    {
+        string pascal = groupPart.ToPascalCase();
+        string digits = Helper.ExtractNumber(pascal);
+
+        if (digits.Length == 0)
+            return (pascal, 0);
+
+        int runs = 0;
+        bool inRun = false;
+        for (int i = 0; i < pascal.Length; i++)
+        {
+            if (char.IsDigit(pascal[i]))
+            {
+                if (!inRun)
+                    runs++;
+                inRun = true;
+            }
+            else
+            {
+                inRun = false;
+            }
+        }
+
+        if (runs > 1)
+        {
+            throw new SheetManException(location,
+                $"Field name `{rawFieldName}` has more than one run of digits before the "
+                + $"`{NestedName.MemberSeparator}`, so which one numbers the record's elements is ambiguous. "
+                + $"Use a single number, as in `Slot1{NestedName.MemberSeparator}Id`.");
+        }
+
+        if (!int.TryParse(digits, NumberStyles.Integer, CultureInfo.InvariantCulture, out int ordinal))
+        {
+            throw new SheetManException(location,
+                $"Field name `{rawFieldName}` has element number `{digits}`, which is not an integer.");
+        }
+
+        return (Helper.StripNumber(pascal), ordinal);
+    }
+
     private List<int> ParseTableFields(Models.Table table, EntityDefinition def)
     {
         var dataColumnOffsets = new List<int>();
@@ -361,6 +414,44 @@ public sealed class SheetManLayoutParser : ILayoutParser
                 Index = table.Fields.Count,
                 Comment = fieldCommentCell.Value
             };
+
+            // `Group.Member` folds several columns into a record. Split off the raw name
+            // rather than the Pascal-cased one, so the separator cannot be produced or
+            // swallowed by the case rules, and each part is normalized on its own.
+            //
+            // After the commented-out check above, so a column somebody parked with `#`
+            // is never held to the notation's rules.
+            if (!NestedName.TrySplit(rawFieldName, out string groupPart, out string memberPart, out string nestingProblem))
+                throw new SheetManException(fieldNameCell.Location, $"Field name `{rawFieldName}` {nestingProblem}");
+
+            if (memberPart is not null)
+            {
+                // The primary index is what every row is addressed by and every reference
+                // points at, so it has to be one value.
+                if (colIdx == def.rect.x)
+                {
+                    throw new SheetManException(fieldNameCell.Location,
+                        $"The primary index field cannot be part of a record group, but `{rawFieldName}` is.");
+                }
+
+                if (groupPart.StartsWith("*"))
+                {
+                    throw new SheetManException(fieldNameCell.Location,
+                        $"Field name `{rawFieldName}` marks a record member as a secondary index. "
+                        + $"An index must be a single value, so `*` cannot be used on a record group.");
+                }
+
+                (string groupName, int groupOrdinal) = SplitGroupOrdinal(groupPart, rawFieldName, fieldNameCell.Location);
+
+                field.GroupName = groupName;
+                field.MemberName = memberPart.ToPascalCase();
+                field.GroupOrdinal = groupOrdinal;
+
+                // The generated identifier stays one name, so duplicate detection, lookup
+                // and every language's spelling rules keep working untouched. `Slot1.Id`
+                // is `Slot1Id` here and reaches a consumer as `Slot[0].Id`.
+                fieldName = groupPart.ToPascalCase() + field.MemberName;
+            }
 
             // A single leading `*` marks a secondary index.
             bool indexing = false;

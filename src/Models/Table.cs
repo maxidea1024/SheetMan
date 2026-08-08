@@ -190,6 +190,16 @@ public class Table
             if (visits[i])
                 continue;
 
+            // A record group claims its columns by name rather than by the serial-number
+            // rules, so it is decided first and separately. The two cannot be confused:
+            // only the `Group.Member` notation produces a record member, and a name with
+            // a `.` in it was an error before that notation existed.
+            if (fields[i].IsRecordMember)
+            {
+                result.Add(BuildRecordField(fields, i, visits));
+                continue;
+            }
+
             var serialField = BeginSerialField(fields, i);
             if (serialField is not null)
             {
@@ -204,6 +214,107 @@ public class Table
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Collects every column of one record group into a single entry.
+    /// </summary>
+    /// <remarks>
+    /// Members keep the order their columns first appear in the sheet, and each member's
+    /// columns are ordered by <see cref="Field.GroupOrdinal"/> - so the generated record
+    /// reads down the sheet and its array reads in the sheet's numbering, whatever base
+    /// that numbering uses.
+    /// </remarks>
+    private SerialField BuildRecordField(List<Field> fields, int index, bool[] visits)
+    {
+        string groupName = fields[index].GroupName;
+
+        var result = new SerialField
+        {
+            Kind = SerialFieldKind.Record,
+            Name = groupName,
+            NamePart = groupName,
+            // None, so the serial-number folding never takes anything from this group and
+            // never adds anything to it. A record group's membership is settled here.
+            Pattern = SerialFieldPattern.None,
+        };
+
+        var byMember = new Dictionary<string, RecordMember>();
+
+        for (int j = index; j < fields.Count; j++)
+        {
+            if (visits[j])
+                continue;
+
+            var field = fields[j];
+            if (!field.IsRecordMember || field.GroupName != groupName)
+                continue;
+
+            visits[j] = true;
+
+            if (!byMember.TryGetValue(field.MemberName, out var member))
+            {
+                member = new RecordMember { Name = field.MemberName };
+                byMember.Add(field.MemberName, member);
+                result.Members.Add(member);
+            }
+
+            member.Fields.Add(field);
+        }
+
+        foreach (var member in result.Members)
+            member.Fields.Sort((a, b) => a.GroupOrdinal.CompareTo(b.GroupOrdinal));
+
+        ValidateRecordGroup(result);
+
+        return result;
+    }
+
+    /// <summary>
+    /// Checks the two things a record group has to satisfy for the generated code to be
+    /// writable at all.
+    /// </summary>
+    private void ValidateRecordGroup(SerialField group)
+    {
+        var first = group.Members[0];
+
+        foreach (var member in group.Members)
+        {
+            // Every member present in every element. A hole would generate a record with
+            // a value that nothing ever writes - which reads as a default rather than as
+            // the missing column it is.
+            if (member.Fields.Count != first.Fields.Count)
+            {
+                throw new SheetManException(member.FirstField.NameLocation,
+                    $"Record group `{Name}.{group.Name}` has {first.Fields.Count} element(s) for member "
+                    + $"`{first.Name}` but {member.Fields.Count} for `{member.Name}`. "
+                    + $"Every element of a record must declare every member.");
+            }
+
+            // And the elements lined up: element k of one member has to be element k of
+            // the next, or the record built from position k mixes two of the sheet's rows
+            // of columns.
+            for (int i = 0; i < member.Fields.Count; i++)
+            {
+                if (member.Fields[i].GroupOrdinal == first.Fields[i].GroupOrdinal)
+                    continue;
+
+                throw new SheetManException(member.Fields[i].NameLocation,
+                    $"Record group `{Name}.{group.Name}` is numbered inconsistently: member `{first.Name}` "
+                    + $"has element {first.Fields[i].GroupOrdinal} where `{member.Name}` has "
+                    + $"{member.Fields[i].GroupOrdinal}. Every member must use the same element numbers.");
+            }
+
+            // Target side belongs to the record, not to its members. Half a record in one
+            // build is not a shape any generator has.
+            if (member.FirstField.TargetSide != first.FirstField.TargetSide)
+            {
+                throw new SheetManException(member.FirstField.TargetSideLocation,
+                    $"Record group `{Name}.{group.Name}` mixes target sides: `{first.Name}` is "
+                    + $"`{first.FirstField.TargetSide}` and `{member.Name}` is `{member.FirstField.TargetSide}`. "
+                    + $"A record is included in a build or not, so its members must agree.");
+            }
+        }
     }
 
     /// <summary>

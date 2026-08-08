@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SheetMan.Models;
 
@@ -22,15 +23,94 @@ public enum SerialFieldPattern
 }
 
 /// <summary>
+/// What one entry of a table holds: a scalar, or a record built from several columns.
+///
+/// The distinction is what separates `Slot1`/`Slot2` - two numbers folded into one
+/// `int[]` - from `Slot1.Id`/`Slot1.Count`/`Slot2.Id`/`Slot2.Count`, which is an array of
+/// two records. spec/nested-fields.md has the notation and why it looks like that.
+/// </summary>
+public enum SerialFieldKind
+{
+    /// <summary>One value per element. Every table written before nesting existed.</summary>
+    Scalar,
+
+    /// <summary>
+    /// Several named values per element, each from its own column with its own type.
+    /// The members are in <see cref="SerialField.Members"/> and
+    /// <see cref="SerialField.Fields"/> is not used.
+    /// </summary>
+    Record,
+}
+
+/// <summary>
+/// One member of a record group: its name, and the column filling it in each element.
+/// </summary>
+public class RecordMember
+{
+    /// <summary>Member name as generated code sees it, Pascal cased.</summary>
+    public string Name { get; set; } = "";
+
+    /// <summary>
+    /// The column holding this member, one per element, in element order.
+    ///
+    /// Its length is the array length, and it is the same for every member of a group -
+    /// the folding requires that, because an element missing one member would generate a
+    /// record with a value nothing ever writes.
+    /// </summary>
+    public List<Field> Fields { get; set; } = new List<Field>();
+
+    /// <summary>The member's column in the first element, which carries the shared properties.</summary>
+    public Field FirstField => (Fields.Count > 0) ? Fields[0] : null;
+
+    /// <summary>Type of this member. The folding has already required the elements to agree.</summary>
+    public ValueType Type => (Fields.Count > 0) ? Fields[0].Type : ValueType.None;
+
+    /// <summary>Element type behind this member, looking through the array kinds.</summary>
+    public ValueType ElementType => (Fields.Count > 0) ? ValueTypes.ElementOf(Fields[0].Type) : ValueType.None;
+
+    /// <summary>Whether this member references another table.</summary>
+    public bool IsRef => (Fields.Count > 0) && Fields[0].IsRef;
+}
+
+/// <summary>
 /// How a table's columns are presented to the exporters and generators.
 ///
 /// Every column belongs to exactly one of these. Most are a group of one, but
 /// consecutively numbered columns fold into a single array-valued entry - so
 /// `Text1`, `Text2` become one `TextArray` rather than two fields, which is what
 /// makes them usable as an array in generated code.
+///
+/// A group's element is a scalar or a record; see <see cref="SerialFieldKind"/>.
 /// </summary>
 public class SerialField
 {
+    /// <summary>Whether one element of this group is a scalar or a record.</summary>
+    public SerialFieldKind Kind { get; set; } = SerialFieldKind.Scalar;
+
+    /// <summary>
+    /// Members of the record, in the order their columns appear in the sheet. Empty
+    /// unless <see cref="Kind"/> is Record.
+    /// </summary>
+    public List<RecordMember> Members { get; set; } = new List<RecordMember>();
+
+    /// <summary>Whether one element of this group is a record rather than a scalar.</summary>
+    public bool IsRecord => Kind == SerialFieldKind.Record;
+
+    /// <summary>
+    /// How many elements a record group has, which is how many columns each of its
+    /// members has. Zero for a scalar group, which reports its length through
+    /// <see cref="Fields"/> instead.
+    /// </summary>
+    public int RecordElementCount => (Members.Count > 0) ? Members[0].Fields.Count : 0;
+
+    /// <summary>
+    /// Every column this group covers, whichever kind it is. For the passes that need to
+    /// reach each underlying column - tag assignment, target-side filtering, the data
+    /// walk - and should not have to know which shape they are looking at.
+    /// </summary>
+    public IEnumerable<Field> AllFields
+        => IsRecord ? Members.SelectMany(m => m.Fields) : Fields;
+
     /// <summary>
     /// Name this group is exposed under. The field's own name for a group of one, or
     /// the shared stem with `_array` appended when several columns folded together.
@@ -61,19 +141,34 @@ public class SerialField
     /// Arrays are excluded: uniqueness of a list of values is not a useful key, and
     /// none of the generated lookups can index by one.
     /// </summary>
-    public bool IsIndexer => (Fields.Count > 0) && !IsArray && FirstField.Indexing;
+    /// <remarks>
+    /// A record group is never one. There is nothing to be unique about - the key would
+    /// have to be the whole record - and none of the generated lookups can index by one.
+    /// </remarks>
+    public bool IsIndexer => !IsRecord && (Fields.Count > 0) && !IsArray && FirstField.Indexing;
 
     /// <summary>Whether this group references another table.</summary>
-    public bool IsRef => (Fields.Count > 0 ) ? Fields[0].IsRef : false;
+    /// <remarks>
+    /// False for a record group: a reference belongs to a member rather than to the
+    /// record, so the question is asked of <see cref="RecordMember.IsRef"/> instead.
+    /// </remarks>
+    public bool IsRef => !IsRecord && (Fields.Count > 0) && Fields[0].IsRef;
 
     /// <summary>
     /// Whether consumers should see this as an array, from either cause: several
     /// numbered columns folded together, or a single column holding a delimited
     /// list.
     /// </summary>
-    public bool IsArray => Fields.Count > 1
-                        || (Fields.Count == 1 && TreatAsArrayEvenIfSingleItem)
-                        || IsVariableLengthArray;
+    /// <remarks>
+    /// For a record group the count of elements decides it, exactly as the count of
+    /// columns does for a scalar group: `Pos.X`/`Pos.Y` is one record and
+    /// `Slot1.Id`/`Slot2.Id` is two.
+    /// </remarks>
+    public bool IsArray => IsRecord
+                        ? (RecordElementCount > 1 || (RecordElementCount == 1 && TreatAsArrayEvenIfSingleItem))
+                        : Fields.Count > 1
+                          || (Fields.Count == 1 && TreatAsArrayEvenIfSingleItem)
+                          || IsVariableLengthArray;
 
     /// <summary>
     /// Whether the length varies per row, which is true only of delimited array
@@ -99,11 +194,36 @@ public class SerialField
     public ValueType Type => (Fields.Count > 0 ) ? Fields[0].Type : ValueType.None;
 
     /// <summary>Target side of the group's columns.</summary>
-    public TargetSide TargetSide => (Fields.Count > 0 ) ? Fields[0].TargetSide : TargetSide.Both;
+    /// <remarks>
+    /// Taken from the first column whichever kind the group is. The folding requires a
+    /// record group's members to agree on it, because a record half of whose members are
+    /// absent from a build is not a shape any generator has.
+    /// </remarks>
+    public TargetSide TargetSide
+    {
+        get
+        {
+            var first = AnyField;
+            return (first is not null) ? first.TargetSide : TargetSide.Both;
+        }
+    }
 
     /// <summary>
     /// First column of the group, which carries the properties shared by all of them.
     /// Null only for an empty group, which should not occur.
     /// </summary>
-    public Field FirstField => (Fields.Count > 0) ? Fields[0] : null;
+    /// <remarks>
+    /// Scalar groups only. A record group has no single column that speaks for it, so it
+    /// answers null here on purpose - a caller reaching for this on a record is asking a
+    /// question that has no answer, and null surfaces that rather than hiding it behind
+    /// one arbitrary member's column. Use <see cref="AnyField"/> for the properties every
+    /// column of the group does share, such as target side.
+    /// </remarks>
+    public Field FirstField => (!IsRecord && Fields.Count > 0) ? Fields[0] : null;
+
+    /// <summary>
+    /// Some column of this group, for the properties every column shares regardless of
+    /// kind. Null only for an empty group.
+    /// </summary>
+    public Field AnyField => IsRecord ? Members.FirstOrDefault()?.FirstField : FirstField;
 }

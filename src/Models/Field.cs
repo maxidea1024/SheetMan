@@ -52,6 +52,45 @@ public class Field
     public TargetSide TargetSide { get; set; }
 
     /// <summary>
+    /// Record group this column belongs to, or null for an ordinary column.
+    /// </summary>
+    /// <remarks>
+    /// From the `Group.Member` notation: `Slot1.Id` is group `Slot`, element 1, member
+    /// `Id`. Pascal cased, and **without** the serial number - the number is
+    /// <see cref="GroupOrdinal"/>.
+    ///
+    /// <see cref="Name"/> stays a single valid identifier (`Slot1Id`) so duplicate
+    /// detection, lookup and every language's spelling rules keep working unchanged;
+    /// these three are what the folding uses to build the record.
+    /// </remarks>
+    public string? GroupName { get; set; }
+
+    /// <summary>
+    /// Member of the record group this column fills, or null for an ordinary column.
+    /// </summary>
+    public string? MemberName { get; set; }
+
+    /// <summary>
+    /// Which element of the record group this column belongs to, as the sheet numbered
+    /// it. Zero when the group has no number at all, which makes it a single record
+    /// rather than an array.
+    /// </summary>
+    /// <remarks>
+    /// Carried rather than derived so the folding never re-reads digits out of a name.
+    /// Each layout works it out its own way - SheetMan's from the serial number on
+    /// `Slot1`, another project's from the `[0]` in `character[0]["Id"]` - and they meet
+    /// here, which is what keeps one model behind two notations.
+    ///
+    /// Only the order matters, not the base: the folding sorts by it. So a sheet counting
+    /// from 1 and a sheet counting from 0 both come out right.
+    /// </remarks>
+    public int GroupOrdinal { get; set; }
+
+    /// <summary>Whether this column is one member of one element of a record group.</summary>
+    [JsonIgnore]
+    public bool IsRecordMember => GroupName is not null;
+
+    /// <summary>
     /// Type as written in the sheet. For an enum field this is the enum's name, and
     /// for a resolved reference it becomes the referenced field's type name.
     /// </summary>
