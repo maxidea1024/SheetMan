@@ -1,3 +1,10 @@
+# The .xlsb workbooks of samples/uwo, saved as .xlsx so NPOI can read them.
+#
+# Derived, not authored, and about twice the size - 104 MB against the 55 MB of .xlsb
+# they come from. samples/uwo/convert-xlsb.ps1 regenerates them and says why the
+# conversion is needed at all.
+samples/uwo/converted/
+
 # Created by https://www.toptal.com/developers/gitignore/api/unity
 # Edit at https://www.toptal.com/developers/gitignore?templates=unity
 

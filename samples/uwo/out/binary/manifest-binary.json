@@ -1,0 +1,49 @@
+{
+  "LastUpdatedDate": "2026-08-09T00:20:24.6881831+09:00",
+  "MasterHash": "0fd9d30f7130b14a5900c42d24d0e6be",
+  "TotalSize": 11470,
+  "Items": [
+    {
+      "Name": "Guild.scb",
+      "Size": 137,
+      "Hash": "de34c95ae27d85ada57ab24da0954595",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6387568+09:00"
+    },
+    {
+      "Name": "GuildEmblemBorder.scb",
+      "Size": 613,
+      "Hash": "c2f2e4c2facff0383f39f13694415e93",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6483461+09:00"
+    },
+    {
+      "Name": "GuildEmblemColor.scb",
+      "Size": 260,
+      "Hash": "64c8a597907f5a2b200b67ba08167a86",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6489633+09:00"
+    },
+    {
+      "Name": "GuildEmblemImage.scb",
+      "Size": 543,
+      "Hash": "0c5885fc43dc86ce6364caba090d005b",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6496094+09:00"
+    },
+    {
+      "Name": "GuildShop.scb",
+      "Size": 3402,
+      "Hash": "db30aa9caa35fbef06fe3863a1e6b601",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6512812+09:00"
+    },
+    {
+      "Name": "GuildReward.scb",
+      "Size": 227,
+      "Hash": "fbc7b91cf706e57dec6999ddd6982d6e",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6521257+09:00"
+    },
+    {
+      "Name": "GuildCraft.scb",
+      "Size": 6288,
+      "Hash": "71640935061617ac094c33dc88507c7c",
+      "LastUpdatedDate": "2026-08-09T00:20:24.6878055+09:00"
+    }
+  ]
+}

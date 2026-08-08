@@ -1,0 +1,65 @@
+{
+  // The first uwo workbook converted with SheetMan, and the smallest that is real data:
+  // seven tables, every one of them plain columns with the `key`/`number`/`text`/`bit`
+  // types this layout uses most.
+  //
+  // Deliberately one workbook rather than the folder. What a first conversion has to
+  // establish is that the layout reads at all - defined names as boundaries, two header
+  // rows, ':'-keyed constraint rows skipped - and a folder of 29 workbooks answers that
+  // question with several hundred others mixed in.
+  //
+  // Run from the repository root:
+  //
+  //     dotnet run --project src/SheetMan.csproj -- --recipe samples/uwo/recipe-guild.jsonc
+  //
+  // Layout and survey: doc/uwo-레이아웃-분석-20260808.md
+
+  "Sources": {
+    "Xlsx": [
+      {
+        // The whole folder, narrowed by the sheets asked for below rather than by a copy
+        // of the one workbook. `.xlsx` only, which leaves out the `.xlsb` originals -
+        // NPOI cannot open one, and convert-xlsb.ps1 says what to do about that.
+        "Path": "samples/uwo",
+        "FileExtensionPatterns": ".xlsx",
+
+        // Not `sheetman` and not `rescue`: a table here is a rectangle the workbook has a
+        // name for, so neither markers nor sheet tabs locate one.
+        "Layout": "uwo",
+
+        // The seven sheets of UWO_상회.xlsx. Naming them is also the check that they are
+        // there: an entry that matches nothing is an error, with the sheets that do exist
+        // listed beside it.
+        "IncludeSheets": [
+          "Guild", "GuildCraft", "GuildEmblemBorder", "GuildEmblemColor",
+          "GuildEmblemImage", "GuildReward", "GuildShop"
+        ]
+      }
+    ],
+    "GoogleSheets": []
+  },
+
+  "Exports": {
+    // JSON both ways, because the point of converting uwo at all is comparing our output
+    // against the answer key its own exporter writes.
+    "Json": [
+      {
+        "Path": "samples/uwo/out/json",
+        "UseCompactRowFormat": false,
+        "Indented": true
+      }
+    ],
+    "Binary": [
+      {
+        "Path": "samples/uwo/out/binary",
+        "FileExtension": ".scb"
+      }
+    ]
+  },
+
+  // No code or document targets yet. These workbooks use record groups - `material[0]["Id"]`
+  // and the like - and of the thirteen only csharp and typescript read one so far, while
+  // html and the databases refuse by name. Adding them here as they land is the point of
+  // the refusal being a message rather than a silent difference.
+  "CodeGenerations": {}
+}

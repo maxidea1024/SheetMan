@@ -9,10 +9,11 @@ namespace SheetMan.Cooking.Layouts;
 /// <summary>One registered layout parser and what its attribute declared.</summary>
 public sealed class LayoutDescriptor
 {
-    internal LayoutDescriptor(string id, string summary, Type type)
+    internal LayoutDescriptor(string id, string summary, bool usesNamedRanges, Type type)
     {
         Id = id;
         Summary = summary;
+        UsesNamedRanges = usesNamedRanges;
         Type = type;
     }
 
@@ -21,6 +22,9 @@ public sealed class LayoutDescriptor
 
     /// <summary>One line on what the layout is.</summary>
     public string Summary { get; }
+
+    /// <summary>Whether this layout takes a workbook's defined names as table boundaries.</summary>
+    public bool UsesNamedRanges { get; }
 
     private Type Type { get; }
 
@@ -65,6 +69,18 @@ public static class LayoutRegistry
             $"Use one of: {KnownIds}.");
     }
 
+    /// <summary>
+    /// Whether the named layout wants a workbook's defined names collected for it.
+    /// </summary>
+    /// <remarks>
+    /// Asked by the importers before they resolve any, and tolerant of an unknown id: the
+    /// recipe's own validation reports that, and answering false here means an importer
+    /// does no work rather than throwing a second, worse-placed message about it.
+    /// </remarks>
+    public static bool UsesNamedRanges(string id)
+        => All.FirstOrDefault(d => string.Equals(d.Id, id, StringComparison.OrdinalIgnoreCase))
+              ?.UsesNamedRanges ?? false;
+
     private static IReadOnlyList<LayoutDescriptor> Discover()
     {
         var descriptors = new List<LayoutDescriptor>();
@@ -81,7 +97,8 @@ public static class LayoutRegistry
                     $"`{type.Name}` is marked [SheetManLayout] but is not a concrete {nameof(ILayoutParser)}.");
             }
 
-            descriptors.Add(new LayoutDescriptor(attribute.Id, attribute.Summary, type));
+            descriptors.Add(new LayoutDescriptor(
+                attribute.Id, attribute.Summary, attribute.UsesNamedRanges, type));
         }
 
         var duplicate = descriptors.GroupBy(d => d.Id, StringComparer.OrdinalIgnoreCase)

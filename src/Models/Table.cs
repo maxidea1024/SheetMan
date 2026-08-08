@@ -94,12 +94,15 @@ public class Table
     {
         get
         {
-            if (_serialFields is null)
-            {
-                _serialFields = FoldSerialFields
-                    ? BuildSerialFieldsFromPlainFields(Fields)
-                    : Fields.Select(OneColumnSerialField).ToList();
-            }
+            // Record groups are collected whichever way this table folds. The two are not
+            // the same decision: serial folding reads digits and can be wrong about what a
+            // number in a name means, which is why a layout may switch it off, while a
+            // record group is stated outright by the column's name. Switching one off used
+            // to switch the other off with it, and a table's records then came out as the
+            // flat columns they were written as.
+            _serialFields ??= FoldSerialFields
+                ? BuildSerialFieldsFromPlainFields(Fields)
+                : BuildRecordGroupsOnly(Fields);
 
             return _serialFields;
         }
@@ -117,6 +120,36 @@ public class Table
     [JsonIgnore]
     public List<WireColumn> WireColumns => _wireColumns ??= WireColumn.Of(this);
     private List<WireColumn> _wireColumns;
+
+    /// <summary>
+    /// Every column its own group, except that record members still gather.
+    /// </summary>
+    /// <remarks>
+    /// For a layout that does not fold by serial number. The columns of a record are named
+    /// as one - the notation says so rather than the digits implying it - so there is
+    /// nothing here for the type check that folding needs, and no way for it to be wrong.
+    /// </remarks>
+    private List<SerialField> BuildRecordGroupsOnly(List<Field> fields)
+    {
+        var result = new List<SerialField>();
+        var visits = new bool[fields.Count];
+
+        for (int i = 0; i < fields.Count; i++)
+        {
+            if (visits[i])
+                continue;
+
+            if (fields[i].IsRecordMember)
+            {
+                result.Add(BuildRecordField(fields, i, visits));
+                continue;
+            }
+
+            result.Add(OneColumnSerialField(fields[i]));
+        }
+
+        return result;
+    }
 
     /// <summary>
     /// Presents one column as its own group, for a table that does not fold.

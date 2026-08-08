@@ -29,6 +29,20 @@ public class RawSheet
     public int ColumnCount { get; set; }
 
     /// <summary>
+    /// The workbook's defined names that point into this sheet, in grid coordinates.
+    /// </summary>
+    /// <remarks>
+    /// For the layouts that take a defined name as a table's boundary rather than a marker
+    /// or a sheet tab. Attached by the importer, because that is the only place the
+    /// workbook is still open - by the time the cooker runs there is a cell grid and
+    /// nothing to ask about names.
+    ///
+    /// Empty for every other layout, which is every sheet unless the recipe entry asked
+    /// for one that uses them.
+    /// </remarks>
+    public List<RawNamedRange> NamedRanges { get; set; } = [];
+
+    /// <summary>
     /// Rows of cells.
     ///
     /// Rectangular after <see cref="Optimize"/>: the entity scanner indexes rows and

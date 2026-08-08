@@ -1,0 +1,4237 @@
+[
+  {
+    "id": 2000,
+    "craftCategory": 0,
+    "craftResultId": 70100335,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2001,
+    "craftCategory": 0,
+    "craftResultId": 70100739,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2002,
+    "craftCategory": 0,
+    "craftResultId": 70100553,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2003,
+    "craftCategory": 0,
+    "craftResultId": 70100329,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2004,
+    "craftCategory": 0,
+    "craftResultId": 70100330,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2005,
+    "craftCategory": 0,
+    "craftResultId": 70100331,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2006,
+    "craftCategory": 0,
+    "craftResultId": 70101375,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2007,
+    "craftCategory": 0,
+    "craftResultId": 70100476,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2008,
+    "craftCategory": 0,
+    "craftResultId": 70100477,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2009,
+    "craftCategory": 0,
+    "craftResultId": 70100551,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2010,
+    "craftCategory": 0,
+    "craftResultId": 70100734,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2011,
+    "craftCategory": 0,
+    "craftResultId": 70100735,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2012,
+    "craftCategory": 0,
+    "craftResultId": 70101377,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2013,
+    "craftCategory": 0,
+    "craftResultId": 70101378,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2014,
+    "craftCategory": 0,
+    "craftResultId": 70101379,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2015,
+    "craftCategory": 0,
+    "craftResultId": 70101380,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2016,
+    "craftCategory": 0,
+    "craftResultId": 70100332,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2017,
+    "craftCategory": 0,
+    "craftResultId": 70100333,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2018,
+    "craftCategory": 0,
+    "craftResultId": 70100334,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2019,
+    "craftCategory": 0,
+    "craftResultId": 70101376,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2020,
+    "craftCategory": 0,
+    "craftResultId": 70100478,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2021,
+    "craftCategory": 0,
+    "craftResultId": 70100479,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2022,
+    "craftCategory": 0,
+    "craftResultId": 70100552,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2023,
+    "craftCategory": 0,
+    "craftResultId": 70100736,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2024,
+    "craftCategory": 0,
+    "craftResultId": 70100737,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2025,
+    "craftCategory": 0,
+    "craftResultId": 70100738,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2026,
+    "craftCategory": 0,
+    "craftResultId": 70101381,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2027,
+    "craftCategory": 0,
+    "craftResultId": 70101382,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2028,
+    "craftCategory": 0,
+    "craftResultId": 70101383,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2029,
+    "craftCategory": 0,
+    "craftResultId": 70101385,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2030,
+    "craftCategory": 0,
+    "craftResultId": 70101386,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2031,
+    "craftCategory": 0,
+    "craftResultId": 70101387,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2032,
+    "craftCategory": 0,
+    "craftResultId": 70101388,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2033,
+    "craftCategory": 0,
+    "craftResultId": 70101389,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2034,
+    "craftCategory": 0,
+    "craftResultId": 70101390,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2035,
+    "craftCategory": 0,
+    "craftResultId": 70101391,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2036,
+    "craftCategory": 0,
+    "craftResultId": 70101392,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2037,
+    "craftCategory": 0,
+    "craftResultId": 70101393,
+    "craftTime": 1800,
+    "guildLevelRequired": 2,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 360000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550013,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2038,
+    "craftCategory": 0,
+    "craftResultId": 70101394,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2039,
+    "craftCategory": 0,
+    "craftResultId": 70101395,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2040,
+    "craftCategory": 0,
+    "craftResultId": 70101396,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2041,
+    "craftCategory": 0,
+    "craftResultId": 70101397,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2042,
+    "craftCategory": 0,
+    "craftResultId": 70101398,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2043,
+    "craftCategory": 0,
+    "craftResultId": 70101399,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2044,
+    "craftCategory": 0,
+    "craftResultId": 70101400,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2045,
+    "craftCategory": 0,
+    "craftResultId": 70101401,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2046,
+    "craftCategory": 0,
+    "craftResultId": 70101402,
+    "craftTime": 21600,
+    "guildLevelRequired": 5,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 2000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550017,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2047,
+    "craftCategory": 0,
+    "craftResultId": 70101403,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2048,
+    "craftCategory": 0,
+    "craftResultId": 70101404,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2049,
+    "craftCategory": 0,
+    "craftResultId": 70101405,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2050,
+    "craftCategory": 0,
+    "craftResultId": 70101406,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2051,
+    "craftCategory": 0,
+    "craftResultId": 70101407,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2052,
+    "craftCategory": 0,
+    "craftResultId": 70101408,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2053,
+    "craftCategory": 0,
+    "craftResultId": 70101409,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2054,
+    "craftCategory": 0,
+    "craftResultId": 70101410,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2055,
+    "craftCategory": 0,
+    "craftResultId": 70101411,
+    "craftTime": 86400,
+    "guildLevelRequired": 8,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 7000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550021,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550022,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550023,
+        "val": 50
+      },
+      {
+        "type": 2,
+        "id": 23550024,
+        "val": 50
+      }
+    ]
+  },
+  {
+    "id": 2500,
+    "craftCategory": 1,
+    "craftResultId": 22172013,
+    "craftTime": 1800,
+    "guildLevelRequired": 1,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 20000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550001,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550002,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2501,
+    "craftCategory": 1,
+    "craftResultId": 22272005,
+    "craftTime": 1800,
+    "guildLevelRequired": 1,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 20000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550001,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550003,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2502,
+    "craftCategory": 1,
+    "craftResultId": 22372005,
+    "craftTime": 1800,
+    "guildLevelRequired": 1,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 100,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 20000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550001,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550004,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2503,
+    "craftCategory": 1,
+    "craftResultId": 22173007,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2504,
+    "craftCategory": 1,
+    "craftResultId": 22173008,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2505,
+    "craftCategory": 1,
+    "craftResultId": 22173009,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2506,
+    "craftCategory": 1,
+    "craftResultId": 22173010,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2507,
+    "craftCategory": 1,
+    "craftResultId": 22173011,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2508,
+    "craftCategory": 1,
+    "craftResultId": 22173012,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2509,
+    "craftCategory": 1,
+    "craftResultId": 22173013,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2510,
+    "craftCategory": 1,
+    "craftResultId": 22173014,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2511,
+    "craftCategory": 1,
+    "craftResultId": 22173015,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2512,
+    "craftCategory": 1,
+    "craftResultId": 22173016,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2513,
+    "craftCategory": 1,
+    "craftResultId": 22273005,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550007,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2514,
+    "craftCategory": 1,
+    "craftResultId": 22273007,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550007,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2515,
+    "craftCategory": 1,
+    "craftResultId": 22273009,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550007,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2516,
+    "craftCategory": 1,
+    "craftResultId": 22373013,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550008,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2517,
+    "craftCategory": 1,
+    "craftResultId": 22373015,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550008,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2518,
+    "craftCategory": 1,
+    "craftResultId": 22373017,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550008,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2519,
+    "craftCategory": 1,
+    "craftResultId": 22473007,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2520,
+    "craftCategory": 1,
+    "craftResultId": 22473008,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2521,
+    "craftCategory": 1,
+    "craftResultId": 22473009,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2522,
+    "craftCategory": 1,
+    "craftResultId": 22573001,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550007,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2523,
+    "craftCategory": 1,
+    "craftResultId": 22573002,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550007,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2524,
+    "craftCategory": 1,
+    "craftResultId": 22573003,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550007,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2525,
+    "craftCategory": 1,
+    "craftResultId": 22673007,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550008,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2526,
+    "craftCategory": 1,
+    "craftResultId": 22673008,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550008,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2527,
+    "craftCategory": 1,
+    "craftResultId": 22673009,
+    "craftTime": 21600,
+    "guildLevelRequired": 4,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 250,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 600000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550005,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550008,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2528,
+    "craftCategory": 1,
+    "craftResultId": 22174017,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2529,
+    "craftCategory": 1,
+    "craftResultId": 22174018,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2530,
+    "craftCategory": 1,
+    "craftResultId": 22174019,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2531,
+    "craftCategory": 1,
+    "craftResultId": 22174020,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2532,
+    "craftCategory": 1,
+    "craftResultId": 22174021,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2533,
+    "craftCategory": 1,
+    "craftResultId": 22174022,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2534,
+    "craftCategory": 1,
+    "craftResultId": 22174023,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2535,
+    "craftCategory": 1,
+    "craftResultId": 22174024,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2536,
+    "craftCategory": 1,
+    "craftResultId": 22174025,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2537,
+    "craftCategory": 1,
+    "craftResultId": 22174026,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2538,
+    "craftCategory": 1,
+    "craftResultId": 22274017,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550011,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2539,
+    "craftCategory": 1,
+    "craftResultId": 22274019,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550011,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2540,
+    "craftCategory": 1,
+    "craftResultId": 22274021,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550011,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2541,
+    "craftCategory": 1,
+    "craftResultId": 22374003,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550012,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2542,
+    "craftCategory": 1,
+    "craftResultId": 22374005,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550012,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2543,
+    "craftCategory": 1,
+    "craftResultId": 22374007,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550012,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2544,
+    "craftCategory": 1,
+    "craftResultId": 22474005,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2545,
+    "craftCategory": 1,
+    "craftResultId": 22474006,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2546,
+    "craftCategory": 1,
+    "craftResultId": 22474007,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550010,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2547,
+    "craftCategory": 1,
+    "craftResultId": 22574001,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550011,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2548,
+    "craftCategory": 1,
+    "craftResultId": 22574002,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550011,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2549,
+    "craftCategory": 1,
+    "craftResultId": 22574003,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550011,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2550,
+    "craftCategory": 1,
+    "craftResultId": 22674007,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550012,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2551,
+    "craftCategory": 1,
+    "craftResultId": 22674008,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550012,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 2552,
+    "craftCategory": 1,
+    "craftResultId": 22674009,
+    "craftTime": 86400,
+    "guildLevelRequired": 7,
+    "craftResultType": 0,
+    "craftCritical": 100,
+    "craftGuildPoint": 500,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 5000000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550009,
+        "val": 10
+      },
+      {
+        "type": 2,
+        "id": 23550012,
+        "val": 100
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3000,
+    "craftCategory": 2,
+    "craftResultId": 23550006,
+    "craftTime": 0,
+    "guildLevelRequired": 3,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 20000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550002,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3001,
+    "craftCategory": 2,
+    "craftResultId": 23550007,
+    "craftTime": 0,
+    "guildLevelRequired": 3,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 20000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550003,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3002,
+    "craftCategory": 2,
+    "craftResultId": 23550008,
+    "craftTime": 0,
+    "guildLevelRequired": 3,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 20000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550004,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3003,
+    "craftCategory": 2,
+    "craftResultId": 23550018,
+    "craftTime": 0,
+    "guildLevelRequired": 3,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 70000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550014,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3004,
+    "craftCategory": 2,
+    "craftResultId": 23550019,
+    "craftTime": 0,
+    "guildLevelRequired": 3,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 70000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550015,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3005,
+    "craftCategory": 2,
+    "craftResultId": 23550020,
+    "craftTime": 0,
+    "guildLevelRequired": 3,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 70000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550016,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3006,
+    "craftCategory": 2,
+    "craftResultId": 23550010,
+    "craftTime": 0,
+    "guildLevelRequired": 6,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 200000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550006,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3007,
+    "craftCategory": 2,
+    "craftResultId": 23550011,
+    "craftTime": 0,
+    "guildLevelRequired": 6,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 200000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550007,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3008,
+    "craftCategory": 2,
+    "craftResultId": 23550012,
+    "craftTime": 0,
+    "guildLevelRequired": 6,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 200000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550008,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3009,
+    "craftCategory": 2,
+    "craftResultId": 23550022,
+    "craftTime": 0,
+    "guildLevelRequired": 6,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 300000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550018,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3010,
+    "craftCategory": 2,
+    "craftResultId": 23550023,
+    "craftTime": 0,
+    "guildLevelRequired": 6,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 300000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550019,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  },
+  {
+    "id": 3011,
+    "craftCategory": 2,
+    "craftResultId": 23550024,
+    "craftTime": 0,
+    "guildLevelRequired": 6,
+    "craftResultType": 2,
+    "craftCritical": 0,
+    "craftGuildPoint": 0,
+    "productLocalBitflag": "127",
+    "craftPointId": 100001,
+    "craftPointVal": 300000,
+    "material": [
+      {
+        "type": 2,
+        "id": 23550020,
+        "val": 20
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      },
+      {
+        "type": 0,
+        "id": 0,
+        "val": 0
+      }
+    ]
+  }
+]

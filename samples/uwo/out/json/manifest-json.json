@@ -1,0 +1,49 @@
+{
+  "LastUpdatedDate": "2026-08-09T00:20:24.7100557+09:00",
+  "MasterHash": "d9f30b58bf9f839b84f84e34acfdd969",
+  "TotalSize": 114903,
+  "Items": [
+    {
+      "Name": "Guild.json",
+      "Size": 1541,
+      "Hash": "e855217618271d636dc86cbbb46565a5",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6789316+09:00"
+    },
+    {
+      "Name": "GuildEmblemBorder.json",
+      "Size": 3531,
+      "Hash": "cec771a89f32071c24877515cd6d46a1",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6798303+09:00"
+    },
+    {
+      "Name": "GuildEmblemColor.json",
+      "Size": 3955,
+      "Hash": "9b9d7d0ba0fbeab7ae5739d3d3a9d0a6",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6804961+09:00"
+    },
+    {
+      "Name": "GuildEmblemImage.json",
+      "Size": 3363,
+      "Hash": "b7b3920f50e413f3092a2eec4ab47b57",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6811421+09:00"
+    },
+    {
+      "Name": "GuildShop.json",
+      "Size": 23995,
+      "Hash": "8410fc485a1c65f5023cddd73eb82572",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6824578+09:00"
+    },
+    {
+      "Name": "GuildReward.json",
+      "Size": 2765,
+      "Hash": "d1451a346510fbab6f09568040a2b380",
+      "LastUpdatedDate": "2026-08-09T00:18:03.6830037+09:00"
+    },
+    {
+      "Name": "GuildCraft.json",
+      "Size": 75753,
+      "Hash": "ddeba6ebe5c72b6080cc5e9b948bfea2",
+      "LastUpdatedDate": "2026-08-09T00:20:24.7100541+09:00"
+    }
+  ]
+}

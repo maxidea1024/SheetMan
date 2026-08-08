@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "level": 1,
+    "exp": 98400,
+    "expStack": 98400,
+    "maxUser": 30,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  },
+  {
+    "id": 2,
+    "level": 2,
+    "exp": 216480,
+    "expStack": 314880,
+    "maxUser": 35,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  },
+  {
+    "id": 3,
+    "level": 3,
+    "exp": 303072,
+    "expStack": 617952,
+    "maxUser": 40,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  },
+  {
+    "id": 4,
+    "level": 4,
+    "exp": 393993,
+    "expStack": 1011945,
+    "maxUser": 45,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  },
+  {
+    "id": 5,
+    "level": 5,
+    "exp": 492491,
+    "expStack": 1504436,
+    "maxUser": 50,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  },
+  {
+    "id": 6,
+    "level": 6,
+    "exp": 590989,
+    "expStack": 2095425,
+    "maxUser": 55,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  },
+  {
+    "id": 7,
+    "level": 7,
+    "exp": 709186,
+    "expStack": 2804611,
+    "maxUser": 60,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  },
+  {
+    "id": 8,
+    "level": 8,
+    "exp": 815563,
+    "expStack": 3620174,
+    "maxUser": 65,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  },
+  {
+    "id": 9,
+    "level": 9,
+    "exp": 946053,
+    "expStack": 4566227,
+    "maxUser": 70,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  },
+  {
+    "id": 10,
+    "level": 10,
+    "exp": 1182566,
+    "expStack": 5748793,
+    "maxUser": 75,
+    "makeShipPartsLevel": 0,
+    "makeEquipLevel": 0
+  }
+]

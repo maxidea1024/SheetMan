@@ -56,4 +56,14 @@ public sealed class SheetManLayoutAttribute : Attribute
 
     /// <summary>One line on what the layout is, for the message that lists them.</summary>
     public string Summary { get; set; } = "";
+
+    /// <summary>
+    /// Whether this layout takes a workbook's defined names as its table boundaries.
+    /// </summary>
+    /// <remarks>
+    /// Declared here so the importer can ask before it does the work: resolving every name
+    /// of a workbook means parsing every reference, and a workbook can hold hundreds that
+    /// no layout will ever look at.
+    /// </remarks>
+    public bool UsesNamedRanges { get; set; }
 }
