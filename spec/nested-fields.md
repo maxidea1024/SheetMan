@@ -189,6 +189,32 @@ Slot2.Id Slot2.Label                 → 와이어 컬럼 2개(Slot.Id, Slot.Lab
    골든 무변경이 합격 기준입니다. 바이너리 writer를 이 순서로 했고 실제로 그렇게 나왔습니다.
 2. 그 위에 레코드 지원 — 원소 타입 선언 + `record.<그룹>[j].<멤버>` 대입.
 
+### TypeScript만 다른 점
+
+다음 언어로 TypeScript를 고른 이유는 **왕복 테스트**입니다 — 같은 테이블을 JSON과 바이너리
+양쪽에서 읽어 필드 단위로 비교하므로, 중첩의 JSON 모양과 바이너리 레이아웃이 **서로 맞는지**를
+다른 언어로는 못 하는 방식으로 확인해 줍니다.
+
+대신 **JSON을 읽는 유일한 언어**라서 경로가 둘 더 있습니다.
+
+|경로|레코드에서 필요한 것|
+|--|--|
+|named 행|`this._slot = dataRow.slot.map(e => ({ id: e.id, label: e.label }))`. 레코드 하나면 `map` 없이|
+|compact 행|멤버마다 `slice`로 N개를 집고, 그것들을 **zip해서** 객체 배열을 만듭니다|
+
+compact 경로는 **컬럼 순서 수정이 선행 조건이었습니다.** 그전에는 멤버의 항목이 행에 흩어져
+있어서 `slice`로 집을 수가 없었습니다. 지금은 와이어 컬럼 순서라 멤버마다 붙어 있습니다.
+
+```ts
+const _slot_id    = dataRow.slice(offset, offset + 2); offset += 2
+const _slot_label = dataRow.slice(offset, offset + 2); offset += 2
+this._slot = _slot_id.map((v, k) => ({ id: v, label: _slot_label[k] }))
+```
+
+바이너리 switch는 C#과 같습니다 — `fields` 대신 `columns`를 돌고, 멤버 컬럼은 배열을
+새로 만들지 않고 `record._slot[j].id`에 대입합니다. TS의 템플릿은 `read_kind`가 따로 없고
+`field.kind`로 분기하므로, 컬럼 뷰에 `kind`를 두는 것이 C#과 유일하게 다른 점입니다.
+
 ## 7. 단계 — 언어를 하나씩
 
 13개 템플릿을 한 번에 고치지 않습니다. 중첩을 아직 모르는 타깃은 **그 사실을 말하는 오류**를
