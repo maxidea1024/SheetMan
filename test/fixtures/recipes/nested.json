@@ -30,6 +30,11 @@
         "Namespace": "SheetMan.Fixtures.Nested",
         "AccessorName": "NestedAccessor"
       }
+    ],
+    "Typescript": [
+      {
+        "Path": "test/fixtures/output/nested/typescript"
+      }
     ]
   },
 

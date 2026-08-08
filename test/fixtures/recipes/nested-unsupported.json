@@ -18,11 +18,14 @@
     "GoogleSheets": []
   },
 
-  "CodeGenerations": {
-    "Typescript": [
-      {
-        "Path": "test/fixtures/output/nested-unsupported/typescript"
-      }
-    ]
-  }
+  // Go has no recipe section of its own - the targets added since the `Targets` list
+  // exists are reached only through it - so it is named here by type.
+  "Targets": [
+    {
+      "Type": "go",
+      "Path": "test/fixtures/output/nested-unsupported/go",
+      "PackageName": "nested",
+      "ModulePath": "nested"
+    }
+  ]
 }

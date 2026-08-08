@@ -430,10 +430,10 @@ Loadout.Record.Slot_N; // 2
 
 ### 어느 타깃이 되는가
 
-> **지금은 `csharp` · `json` · `binary` 세 타깃뿐입니다.** 나머지는 전부 — 코드 생성기 12개와
-> `html` · 데이터베이스 · `summary` · `history` 까지 — 레코드를 만나면 **이름을 대며 거부**합니다.
-> 조용히 다른 모양으로 내보내는 것보다 낫기 때문입니다. 하나씩 늘리는 중이고,
-> 진행 상황은 [중첩 필드 스펙](../spec/nested-fields.md)에 있습니다.
+> **지금은 `csharp` · `typescript` · `json` · `binary` 네 타깃입니다.** 나머지는 전부 —
+> 코드 생성기 11개와 `html` · 데이터베이스 · `summary` · `history` 까지 — 레코드를 만나면
+> **이름을 대며 거부**합니다. 조용히 다른 모양으로 내보내는 것보다 낫기 때문입니다.
+> 하나씩 늘리는 중이고, 진행 상황은 [중첩 필드 스펙](../spec/nested-fields.md)에 있습니다.
 >
 > ```
 > Target `go` does not support nested fields yet.

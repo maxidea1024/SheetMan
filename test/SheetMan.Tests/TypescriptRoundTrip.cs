@@ -28,7 +28,11 @@ internal static class TypescriptRoundTrip
 {
     private static bool OnWindows => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
-    public static RoundTripResult Run(string scenario)
+    /// <param name="driver">
+    /// Which driver to compile in, under test/fixtures/tools. Each names the tables of its
+    /// own fixture, so a scenario with different tables needs its own.
+    /// </param>
+    public static RoundTripResult Run(string scenario, string driver = "ts-check")
     {
         string workDir = Path.Combine(RepoLayout.OutputDir("_tsroundtrip"), scenario);
 
@@ -42,7 +46,7 @@ internal static class TypescriptRoundTrip
         CopyDirectory(Path.Combine(RepoLayout.OutputDir(scenario), "typescript"),
                       Path.Combine(workDir, "generated"));
 
-        File.Copy(Path.Combine(RepoLayout.Root, "test", "fixtures", "tools", "ts-check", "main.ts"),
+        File.Copy(Path.Combine(RepoLayout.Root, "test", "fixtures", "tools", driver, "main.ts"),
                   Path.Combine(workDir, "main.ts"));
 
         // Ambient declarations instead of @types/node.

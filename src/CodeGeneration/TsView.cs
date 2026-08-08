@@ -154,6 +154,16 @@ internal sealed class TsTableView
 
     public required IReadOnlyList<TsFieldView> Fields { get; set; }
 
+    /// <summary>
+    /// The columns of a data file, which is what the binary read switch dispatches on.
+    /// </summary>
+    /// <remarks>
+    /// A separate list from <see cref="Fields"/>: declaring a member is per field and
+    /// reading is per column. They are the same list for every table written before
+    /// records existed, and a record group is one column per member.
+    /// </remarks>
+    public required IReadOnlyList<TsColumnView> Columns { get; set; }
+
 /// <summary>The fields that reference another table, and so get a wiring method.</summary>
     public required IReadOnlyList<TsFieldView> ReferenceFields { get; set; }
 
@@ -168,10 +178,92 @@ internal sealed class TsTableView
 }
 
 /// <summary>
+/// One column of a data file, as the binary read switch sees it.
+/// </summary>
+/// <remarks>
+/// Everything here answers "how is this column read". Where the value lands comes along
+/// because the read has to assign somewhere; the shape of the declaration is
+/// <see cref="TsFieldView"/>'s business. spec/nested-fields.md has the split.
+/// </remarks>
+internal sealed class TsColumnView
+{
+    /// <summary>The column's wire tag.</summary>
+    public required int Tag { get; set; }
+
+    /// <summary>The rendered checkColumn call.</summary>
+    public required string ColumnCheck { get; set; }
+
+    /// <summary>
+    /// The rendered cursor construction placed ahead of the row loop, or empty for a
+    /// column that never arrives encoded.
+    /// </summary>
+    public required string CursorOpen { get; set; }
+
+    /// <summary>
+    /// Which read shape applies: `var_array`, `array_ref`, `array`, `scalar_ref`,
+    /// `record_array_member`, `record_member` or `scalar`.
+    /// </summary>
+    public required string Kind { get; set; }
+
+    /// <summary>The expression reading one value of the element type.</summary>
+    public required string BinaryRead { get; set; }
+
+    /// <summary>Backing member this column fills, including its leading underscore.</summary>
+    public required string FieldName { get; set; }
+
+    /// <summary>
+    /// The field of the element type this column fills, with a leading dot, or empty when
+    /// the column is not a record member.
+    /// </summary>
+    public required string MemberAccess { get; set; }
+
+    /// <summary>Element count of a fixed array.</summary>
+    public required int ElementCount { get; set; }
+
+    /// <summary>Referenced table's name, for the stored-index member.</summary>
+    public required string RefTable { get; set; }
+}
+
+/// <summary>
+/// One member of a record group: a property of the generated element interface.
+/// </summary>
+internal sealed class TsRecordMemberView
+{
+    public required IReadOnlyList<string> Comment { get; set; }
+
+    /// <summary>Property name on the element interface, camelCase and escaped.</summary>
+    public required string PropName { get; set; }
+
+    /// <summary>That property's type.</summary>
+    public required string FieldType { get; set; }
+
+    /// <summary>
+    /// Its type in the JSON export, which is not always the member type: a 64-bit integer
+    /// is exported as a string because JSON's single numeric type would round it.
+    /// </summary>
+    public required string JsonWireType { get; set; }
+
+    /// <summary>An empty value of the member's own type.</summary>
+    public required string DefaultValue { get; set; }
+}
+
+/// <summary>
 /// One serial field, in every shape the generated module distinguishes.
 /// </summary>
 internal sealed class TsFieldView
 {
+    /// <summary>
+    /// Whether this field is a record group, so the module declares an element interface
+    /// for it and the member is of that type.
+    /// </summary>
+    public required bool IsRecord { get; set; }
+
+    /// <summary>Name of the generated element interface, for a record group.</summary>
+    public required string RecordTypeName { get; set; }
+
+    /// <summary>Properties of that interface. Empty unless <see cref="IsRecord"/>.</summary>
+    public required IReadOnlyList<TsRecordMemberView> Members { get; set; }
+
     public required IReadOnlyList<string> Comment { get; set; }
 
     /// <summary>Public accessor name, camelCase and escaped.</summary>
@@ -225,19 +317,4 @@ internal sealed class TsFieldView
 
     /// <summary>The statements reading this field out of a compact JSON row.</summary>
     public required IReadOnlyList<string> FromCompactRow { get; set; }
-
-    /// <summary>The call reading one value of the element type from binary.</summary>
-    public required string BinaryRead { get; set; }
-
-    /// <summary>The column's wire tag.</summary>
-    public required int Tag { get; set; }
-
-    /// <summary>The rendered checkColumn call for this member.</summary>
-    public required string ColumnCheck { get; set; }
-
-    /// <summary>
-    /// The rendered cursor construction placed ahead of the row loop, or empty for a
-    /// column that never arrives encoded and keeps reading the reader directly.
-    /// </summary>
-    public required string CursorOpen { get; set; }
 }

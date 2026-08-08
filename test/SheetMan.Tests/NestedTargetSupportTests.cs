@@ -38,7 +38,7 @@ public class NestedTargetSupportTests
         string output = result.StdOut + result.StdErr;
 
         // The target, so it is clear which of the thirteen is the one that cannot.
-        Assert.Contains("typescript", output);
+        Assert.Contains("go", output);
         Assert.Contains("does not support nested fields", output);
 
         // And the table and the first group it could not take, so it is clear what to

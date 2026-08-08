@@ -33,6 +33,16 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     private Model _model;
     private RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe _typescriptRecipe;
 
+    /// <summary>
+    /// A record group generates an element interface and a member of it, in both read
+    /// paths.
+    /// </summary>
+    /// <remarks>
+    /// The second of the thirteen, and the only one where records had to reach the JSON
+    /// paths as well - it is the one language that reads JSON.
+    /// </remarks>
+    protected override bool SupportsNestedFields => true;
+
     protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.TypescriptRecipe typescriptRecipe)
     {
         // A blank path means the entry is inert, as it is in the skeleton recipe.
@@ -266,6 +276,7 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             Comment = CommentLines(table.Comment),
             Imports = BuildImports(table),
             Fields = fields,
+            Columns = table.WireColumns.Select(wire => BuildColumn(table, wire)).ToList(),
 
             IndexedFields = table.SerialFields
                                  .Select((sf, i) => new { sf, view = fields[i] })
@@ -282,8 +293,50 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             // One cursor variable for the whole method: switch cases share a scope in
             // JavaScript too, so each encodable column assigns it rather than declaring
             // its own.
-            NeedsCursor = table.SerialFields.Any(UsesCursor),
+            NeedsCursor = table.WireColumns.Any(UsesCursor),
         };
+    }
+
+    /// <summary>
+    /// One column of the file: how it is checked, how it is decoded, and where its value
+    /// lands.
+    /// </summary>
+    private TsColumnView BuildColumn(Models.Table table, WireColumn wire)
+    {
+        // A record's member column assigns one field of the element rather than the member
+        // itself, which is the whole of what makes it different to read.
+        string memberAccess = (wire.Member is null) ? "" : "." + TsName(wire.Member.Name);
+
+        return new TsColumnView
+        {
+            Tag = wire.TagCarrier.Tag.Value,
+            ColumnCheck = ColumnCheck(wire, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(wire, table.Name.ToPascalCase()),
+            Kind = ColumnKind(wire),
+            BinaryRead = BinaryReadExpression(wire),
+            FieldName = "_" + TsName(wire.Group.Name),
+            MemberAccess = memberAccess,
+            ElementCount = wire.Cells.Count,
+            RefTable = wire.TagCarrier.RefTableName.ToPascalCase(),
+        };
+    }
+
+    /// <summary>
+    /// Which read shape a column takes, which is the field's declaration kind for
+    /// everything that is not part of a record.
+    /// </summary>
+    private static string ColumnKind(WireColumn wire)
+    {
+        if (wire.Member is not null)
+            return wire.IsFixedArray ? "record_array_member" : "record_member";
+
+        if (wire.IsVariableLengthArray)
+            return "var_array";
+
+        if (wire.IsFixedArray)
+            return wire.IsRef ? "array_ref" : "array";
+
+        return wire.IsRef ? "scalar_ref" : "scalar";
     }
 
     /// <summary>
@@ -326,12 +379,18 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
 
     private TsFieldView BuildField(Table table, SerialField sf)
     {
+        if (sf.IsRecord)
+            return BuildRecordField(sf);
+
         string prop = TsName(sf.Name);
         string field = "_" + prop;
         string fieldType = ToTypescriptTypename(sf.FirstField);
 
         return new TsFieldView
         {
+            IsRecord = false,
+            RecordTypeName = "",
+            Members = Array.Empty<TsRecordMemberView>(),
             Comment = CommentLines(sf.FirstField.Comment),
             PropName = prop,
             FieldName = field,
@@ -352,11 +411,136 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
 
             FromNamedRow = NamedRowAssignment(sf, field, prop),
             FromCompactRow = CompactRowStatements(sf, field, prop),
-            BinaryRead = BinaryReadExpression(sf),
-            Tag = sf.FirstField.Tag.Value,
-            ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
-            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
+
         };
+    }
+
+    /// <summary>
+    /// A record group: the element interface to declare, and the member holding one or an
+    /// array of them.
+    /// </summary>
+    /// <remarks>
+    /// An interface and object literals rather than a class, because that is what the JSON
+    /// paths produce anyway - a compact row is zipped into literals and a named row's
+    /// entries already are them - and nothing about a record needs a prototype.
+    /// </remarks>
+    private TsFieldView BuildRecordField(SerialField sf)
+    {
+        string prop = TsName(sf.Name);
+        string field = "_" + prop;
+        string typeName = sf.Name.ToPascalCase() + "Entry";
+
+        var members = sf.Members.Select(member => new TsRecordMemberView
+        {
+            Comment = CommentLines(member.FirstField.Comment),
+            PropName = TsName(member.Name),
+            FieldType = ToTypescriptTypename(member.FirstField),
+            JsonWireType = JsonWireTypeOfMember(member),
+            DefaultValue = DefaultValueOf(member.ElementType, member.FirstField),
+        }).ToList();
+
+        return new TsFieldView
+        {
+            IsRecord = true,
+            RecordTypeName = typeName,
+            Members = members,
+
+            // A record has no header cell of its own, so the first member's column comment
+            // is the nearest thing the sheet said about the group.
+            Comment = CommentLines(sf.Members[0].FirstField.Comment),
+            PropName = prop,
+            FieldName = field,
+            PascalName = sf.Name.ToPascalCase(),
+            FieldType = typeName,
+            // An array of records is declared already filled, because each member column
+            // fills a property of an element that has to be there - and a member whose
+            // column the file does not carry then holds its empty value rather than
+            // undefined, which is the guarantee every other member of a record has.
+            DefaultValue = sf.IsArray
+                ? $"Array.from({{ length: {sf.RecordElementCount} }}, () => ({RecordLiteral(members)}))"
+                : RecordLiteral(members),
+
+            // The JSON shape gets an interface of its own, because a member's exported
+            // type is not always its member type - a 64-bit integer arrives as a string.
+            JsonWireType = typeName + "Json",
+            ElementCount = sf.RecordElementCount,
+            Kind = sf.IsArray ? "record_array" : "record",
+            IsArray = sf.IsArray,
+
+            FromNamedRow = RecordNamedRowAssignment(sf, members, field, prop),
+            FromCompactRow = RecordCompactRowStatements(sf, members, field),
+
+            // None of these apply: a reference belongs to a member, and a member cannot be
+            // one yet - the model refuses it.
+            RefTable = "",
+            ReferenceSetterType = "",
+            ReferenceIsRecord = false,
+        };
+    }
+
+    /// <summary>An object literal of every member's empty value.</summary>
+    private static string RecordLiteral(IReadOnlyList<TsRecordMemberView> members)
+        => "{ " + string.Join(", ", members.Select(m => $"{m.PropName}: {m.DefaultValue}")) + " }";
+
+    /// <summary>
+    /// The assignment reading a record group out of a named JSON row.
+    /// </summary>
+    /// <remarks>
+    /// The JSON carries a record as an object and an array of records as an array of them,
+    /// so this rebuilds the literal member by member rather than assigning through. It has
+    /// to: a member whose value needs converting on the way in from JSON - a 64-bit
+    /// integer arrives as a string - would otherwise land as whatever the file held.
+    /// </remarks>
+    private string RecordNamedRowAssignment(
+        SerialField sf, IReadOnlyList<TsRecordMemberView> members, string field, string prop)
+    {
+        string literal = "{ " + string.Join(", ", sf.Members.Select((member, at) =>
+            $"{members[at].PropName}: {FromJsonExpressionOf(member.ElementType, $"e.{members[at].PropName}")}")) + " }";
+
+        return sf.IsArray
+            ? $"this.{field} = dataRow.{prop}.map(e => ({literal}))"
+            : $"this.{field} = ((e: any) => ({literal}))(dataRow.{prop})";
+    }
+
+    /// <summary>
+    /// The statements reading a record group out of a compact JSON row.
+    /// </summary>
+    /// <remarks>
+    /// A compact row holds one entry per cell in wire-column order, so each member's
+    /// entries are adjacent and can be taken with a slice - then zipped into the objects.
+    /// That adjacency is the whole reason the exporter emits wire-column order: a member's
+    /// columns are never adjacent in sheet order, because members interleave.
+    /// </remarks>
+    private IReadOnlyList<string> RecordCompactRowStatements(
+        SerialField sf, IReadOnlyList<TsRecordMemberView> members, string field)
+    {
+        var lines = new List<string>();
+
+        if (!sf.IsArray)
+        {
+            // One element, so one entry per member and no slicing.
+            var parts = sf.Members.Select((member, at) =>
+                $"{members[at].PropName}: {FromJsonExpressionOf(member.ElementType, "dataRow[offset++]")}");
+
+            lines.Add($"this.{field} = {{ {string.Join(", ", parts)} }}");
+            return lines;
+        }
+
+        // Each member's run of entries first, because a single expression would have to
+        // advance the offset inside a map callback and the order of that is not something
+        // a reader should have to reason about.
+        for (int at = 0; at < sf.Members.Count; at++)
+        {
+            lines.Add($"const {field}_{members[at].PropName} = dataRow.slice(offset, offset + {sf.RecordElementCount})");
+            lines.Add($"offset += {sf.RecordElementCount}");
+        }
+
+        string zipped = "{ " + string.Join(", ", sf.Members.Select((member, at) =>
+            $"{members[at].PropName}: {FromJsonExpressionOf(member.ElementType, $"{field}_{members[at].PropName}[k]")}")) + " }";
+
+        lines.Add($"this.{field} = Array.from({{ length: {sf.RecordElementCount} }}, (_, k) => ({zipped}))");
+
+        return lines;
     }
 
     /// <summary>
@@ -375,7 +559,16 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
         if (sf.IsRef)
             return "undefined";
 
-        switch (sf.ElementType)
+        return DefaultValueOf(sf.ElementType, sf.FirstField);
+    }
+
+    /// <summary>
+    /// The same, asked of an element type directly - for a record's members, which are not
+    /// serial fields of their own.
+    /// </summary>
+    private string DefaultValueOf(ValueType elementType, Models.Field field)
+    {
+        switch (elementType)
         {
             case ValueType.String: return "''";
             case ValueType.Bool: return "false";
@@ -390,7 +583,7 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             case ValueType.Uuid: return "''";
 
             // A numeric enum, so its zero is a value whether or not a label names it.
-            case ValueType.Enum: return $"0 as {sf.FirstField.Enum.Name}";
+            case ValueType.Enum: return $"0 as {field.Enum.Name}";
 
             default: return "0";
         }
@@ -490,21 +683,21 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// The rendered checkColumn call: kind, count, and the elements this member accepts -
     /// its own plus the lossless promotions, decided here at generation time.
     /// </summary>
-    private static string ColumnCheck(SerialField sf, string tableName)
+    private static string ColumnCheck(WireColumn wire, string tableName)
     {
-        string kind = sf.IsVariableLengthArray
+        string kind = wire.IsVariableLengthArray
             ? "sheetman.KIND_VAR_ARRAY"
-            : (sf.Fields.Count > 1 ? "sheetman.KIND_FIXED_ARRAY" : "sheetman.KIND_SCALAR");
+            : (wire.IsFixedArray ? "sheetman.KIND_FIXED_ARRAY" : "sheetman.KIND_SCALAR");
 
-        int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+        int count = wire.IsVariableLengthArray ? 0 : wire.Cells.Count;
 
         string accepted;
 
-        if (sf.IsRef)
+        if (wire.IsRef)
             accepted = "sheetman.ELEMENT_I32";
         else
         {
-            switch (sf.ElementType)
+            switch (wire.ElementType)
             {
                 case ValueType.Int32:
                     accepted = "sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT"; break;
@@ -525,11 +718,11 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                     accepted = "sheetman.ELEMENT_I64"; break;
 
                 default:
-                    throw new SheetManException($"The typescript generator cannot check type `{sf.Type}`.");
+                    throw new SheetManException($"The typescript generator cannot check type `{wire.Type}`.");
             }
         }
 
-        return $"sheetman.checkColumn(column, '{tableName}.{sf.Name}', {kind}, {count}, [{accepted}])";
+        return $"sheetman.checkColumn(column, '{tableName}.{wire.Name}', {kind}, {count}, [{accepted}])";
     }
 
     /// <summary>
@@ -537,15 +730,15 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// element the encodings apply to, or promote from. Arrays are always raw and keep
     /// reading the reader directly, as do the scalar elements that stay raw by spec.
     /// </summary>
-    private static bool UsesCursor(SerialField sf)
+    private static bool UsesCursor(WireColumn wire)
     {
-        if (sf.IsArray)
+        if ((wire.IsFixedArray || wire.IsVariableLengthArray))
             return false;
 
-        if (sf.IsRef)
+        if (wire.IsRef)
             return true;
 
-        switch (sf.ElementType)
+        switch (wire.ElementType)
         {
             // Int64 and Double are here for their promotions as well as their own
             // dictionaries: the file may carry an i32 column - encoded - where the
@@ -574,27 +767,27 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// The cursor construction ahead of an encodable column's row loop, or nothing for
     /// a column that reads the reader directly.
     /// </summary>
-    private static string CursorOpen(SerialField sf, string tableName)
-        => UsesCursor(sf)
-            ? $"cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, '{tableName}.{sf.Name}')"
+    private static string CursorOpen(WireColumn wire, string tableName)
+        => UsesCursor(wire)
+            ? $"cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, '{tableName}.{wire.Name}')"
             : "";
 
-    private string BinaryReadExpression(SerialField sf)
+    private string BinaryReadExpression(WireColumn wire)
     {
         // A scalar column can arrive encoded, so it reads through the cursor - which
         // also carries the lossless promotions. Arrays are always raw and keep the
         // direct reads below.
-        if (UsesCursor(sf))
+        if (UsesCursor(wire))
         {
-            if (sf.ElementType == ValueType.Enum)
-                return $"cursor.nextI32() as {ToTypescriptTypename(sf.FirstField)}";
+            if (wire.ElementType == ValueType.Enum)
+                return $"cursor.nextI32() as {ToTypescriptTypename(wire.TagCarrier)}";
 
             // Only the stored index is on the wire; the value is filled in once
             // every table is loaded.
-            if (sf.IsRef)
+            if (wire.IsRef)
                 return "cursor.nextI32()";
 
-            return sf.ElementType switch
+            return wire.ElementType switch
             {
                 ValueType.Int32 => "cursor.nextI32()",
                 ValueType.Int64 => "cursor.nextI64()",
@@ -611,14 +804,14 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             };
         }
 
-        return sf.ElementType switch
+        return wire.ElementType switch
         {
             // Enum values travel zig-zag encoded rather than fixed width.
-            ValueType.Enum => $"reader.readEnum() as {ToTypescriptTypename(sf.FirstField)}",
+            ValueType.Enum => $"reader.readEnum() as {ToTypescriptTypename(wire.TagCarrier)}",
             ValueType.ForeignRecord => "reader.readInt32()",
             // Everything else is a plain call named in the profile, which is where the
             // nine of them live now rather than here and in eight other generators.
-            _ => LanguageProfile.Typescript.ReadCall(sf.ElementType),
+            _ => LanguageProfile.Typescript.ReadCall(wire.ElementType),
         };
     }
 
@@ -651,14 +844,25 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// is rounded back to float precision, and both read paths then agree.
     /// </summary>
     private string FromJsonExpression(SerialField sf, string source)
+        => FromJsonExpressionOf(sf.ElementType, source);
+
+    /// <summary>The same, asked of an element type directly - for a record's members.</summary>
+    private string FromJsonExpressionOf(ValueType elementType, string source)
     {
-        return sf.ElementType switch
+        return elementType switch
         {
             ValueType.Int64 => $"BigInt({source})",
             ValueType.Float => $"Math.fround({source})",
             _ => source,
         };
     }
+
+    /// <summary>
+    /// The type a record member's value has in the JSON export, which is not always the
+    /// member type - a 64-bit integer is exported as a string.
+    /// </summary>
+    private string JsonWireTypeOfMember(RecordMember member)
+        => member.ElementType == ValueType.Int64 ? "string" : ToTypescriptTypename(member.FirstField);
 
     /// <summary>
     /// Whether values of this column need converting on the way in from JSON.
