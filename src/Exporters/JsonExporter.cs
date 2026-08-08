@@ -108,11 +108,21 @@ public class JsonExporter : Target<RecipeModel.ExportRecipeGroup.JsonRecipe>
         {
             var writableRows = new List<object[]>();
 
-            // Projected through the table's fields rather than over the raw row.
-            // A row always carries every column the sheet declared, while the
-            // table's field list is what this output is meant to contain - they
-            // differ as soon as a field is filtered out by target side.
-            var columns = table.Fields.ToArray();
+            // Projected through the table's wire columns rather than over the raw row or
+            // the field list. A row always carries every column the sheet declared, while
+            // this output is meant to hold what the table has - they differ as soon as a
+            // field is filtered out by target side.
+            //
+            // Wire-column order, which is what "compact" has always claimed to be: the
+            // generated readers walk a compact row with a running offset, taking N entries
+            // per group, and that only lines up if a group's entries are adjacent. Sheet
+            // order does not guarantee it - a group's columns are allowed to sit apart -
+            // and for a record group it is never true, because the members interleave.
+            //
+            // No existing output moves: every group in every committed fixture happens to
+            // have its columns adjacent and in order, which is why the two orders agreed
+            // for as long as nothing tested otherwise.
+            var columns = table.WireColumns.SelectMany(wire => wire.Cells).ToArray();
 
             foreach (var row in table.Data)
             {
