@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of ExpDungeonStage. */
 public final class ExpDungeonStageTable {
@@ -51,7 +51,7 @@ public final class ExpDungeonStageTable {
         ExpDungeonStageRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `ExpDungeonStage` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class ExpDungeonStageTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,54 +83,54 @@ public final class ExpDungeonStageTable {
             loaded.add(new ExpDungeonStageRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.StageName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.StageName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.stageName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.DungeonType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.DungeonType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.dungeonType = DungeonType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.DungeonFloor", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.DungeonFloor", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.dungeonFloor = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.TimeLimit", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.TimeLimit", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.timeLimit = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.SpawnIds", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.SpawnIds", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.spawnIds = new int[elementCount];
@@ -141,7 +141,7 @@ public final class ExpDungeonStageTable {
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.BossID", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.BossID", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.bossID = new int[elementCount];
@@ -152,84 +152,84 @@ public final class ExpDungeonStageTable {
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.SpawnPointCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.SpawnPointCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.spawnPointCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.SpawnMaxCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.SpawnMaxCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.spawnMaxCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.SpawnNextTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.SpawnNextTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.spawnNextTime = reader.readFloat();
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.StageClearCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.StageClearCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.stageClearCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.RecommendPower", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.RecommendPower", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.recommendPower = reader.readString();
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.RewardID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.RewardID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.rewardID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.AtkUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.AtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.atkUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.DefUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.DefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.defUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.MHPUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.MHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.mHPUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 18: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.DungeonImagePath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.DungeonImagePath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.dungeonImagePath = reader.readString();
                     }
                     break;
                 }
                 case 19: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.MonsterImagePath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.MonsterImagePath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.monsterImagePath = reader.readString();
                     }
                     break;
                 }
                 case 20: {
-                    LiteBinaryReader.checkColumn(column, "ExpDungeonStage.AssetDataPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ExpDungeonStage.AssetDataPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ExpDungeonStageRecord record : loaded) {
                         record.assetDataPath = reader.readString();
                     }
@@ -241,7 +241,7 @@ public final class ExpDungeonStageTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (ExpDungeonStageRecord record : loaded) {

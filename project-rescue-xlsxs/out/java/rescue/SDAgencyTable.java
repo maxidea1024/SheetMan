@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of SDAgency. */
 public final class SDAgencyTable {
@@ -51,7 +51,7 @@ public final class SDAgencyTable {
         SDAgencyRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `SDAgency` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class SDAgencyTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,152 +83,152 @@ public final class SDAgencyTable {
             loaded.add(new SDAgencyRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDAgency.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDAgencyRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.InfoName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDAgency.InfoName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDAgencyRecord record : loaded) {
                         record.infoName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.AgencyType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.AgencyType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.agencyType = AgencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.AgencyGrade", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.AgencyGrade", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.agencyGrade = AgencyGrade.of(reader.readEnum());
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.Time", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.Time", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.time = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.AgencyWeight", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.AgencyWeight", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.agencyWeight = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.Condition1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.Condition1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.condition1 = JobType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.Condition1value", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.Condition1value", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.condition1value = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.Condition2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.Condition2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.condition2 = GradeType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.Condition2value", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.Condition2value", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.condition2value = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.Condition3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.Condition3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.condition3 = ConditionType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.ClassMinValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.ClassMinValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.classMinValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.Condition3value", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.Condition3value", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.condition3value = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.RewardType1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.RewardType1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.rewardType1 = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.RewardValue1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.RewardValue1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.rewardValue1 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.RewardType2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.RewardType2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.rewardType2 = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 18: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.RewardValue2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.RewardValue2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.rewardValue2 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 19: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.RewardType3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.RewardType3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.rewardType3 = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 20: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.RewardValue3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAgency.RewardValue3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAgencyRecord record : loaded) {
                         record.rewardValue3 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 21: {
-                    LiteBinaryReader.checkColumn(column, "SDAgency.IconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDAgency.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDAgencyRecord record : loaded) {
                         record.iconPath = reader.readString();
                     }
@@ -240,7 +240,7 @@ public final class SDAgencyTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (SDAgencyRecord record : loaded) {

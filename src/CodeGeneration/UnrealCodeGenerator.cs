@@ -175,8 +175,8 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
         // Public, because the generated header includes it and anything including that
         // header needs to find it.
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Unreal.SheetManLiteBinaryReader.h",
-            System.IO.Path.Combine(ModuleDir, "Public", "SheetManLiteBinaryReader.h"));
+            "SheetMan.Runtime.Unreal.SheetManScbReader.h",
+            System.IO.Path.Combine(ModuleDir, "Public", "SheetManScbReader.h"));
 
         // Asked for rather than assumed: it reaches the network, and it is what puts the
         // HTTP module into this module's dependencies.

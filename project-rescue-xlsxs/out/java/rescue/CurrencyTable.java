@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of Currency. */
 public final class CurrencyTable {
@@ -51,7 +51,7 @@ public final class CurrencyTable {
         CurrencyRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `Currency` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class CurrencyTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,103 +83,103 @@ public final class CurrencyTable {
             loaded.add(new CurrencyRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "Currency.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Currency.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CurrencyRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "Currency.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Currency.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CurrencyRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "Currency.ItemName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Currency.ItemName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CurrencyRecord record : loaded) {
                         record.itemName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "Currency.ItemType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Currency.ItemType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CurrencyRecord record : loaded) {
                         record.itemType = ItemType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "Currency.Type", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Currency.Type", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CurrencyRecord record : loaded) {
                         record.type = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "Currency.CycleType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Currency.CycleType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CurrencyRecord record : loaded) {
                         record.cycleType = CycleType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "Currency.Stackable", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_BOOL);
+                    ScbReader.checkColumn(column, "Currency.Stackable", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
                     for (CurrencyRecord record : loaded) {
                         record.stackable = reader.readBool();
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "Currency.MaxStack", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I64, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Currency.MaxStack", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CurrencyRecord record : loaded) {
                         record.maxStack = reader.readI64As(column.element);
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "Currency.Cooltime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Currency.Cooltime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CurrencyRecord record : loaded) {
                         record.cooltime = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "Currency.Duration", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Currency.Duration", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CurrencyRecord record : loaded) {
                         record.duration = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "Currency.IconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Currency.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CurrencyRecord record : loaded) {
                         record.iconPath = reader.readString();
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "Currency.DropPrefabPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Currency.DropPrefabPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CurrencyRecord record : loaded) {
                         record.dropPrefabPath = reader.readString();
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "Currency.Description", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Currency.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CurrencyRecord record : loaded) {
                         record.description = reader.readString();
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "Currency.ShortCutIndex", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Currency.ShortCutIndex", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CurrencyRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.shortCutIndex = new int[elementCount];
@@ -195,7 +195,7 @@ public final class CurrencyTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (CurrencyRecord record : loaded) {

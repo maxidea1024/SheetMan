@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of GachaArtifactList. */
 public final class GachaArtifactListTable {
@@ -51,7 +51,7 @@ public final class GachaArtifactListTable {
         GachaArtifactListRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `GachaArtifactList` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class GachaArtifactListTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,68 +83,68 @@ public final class GachaArtifactListTable {
             loaded.add(new GachaArtifactListRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "GachaArtifactList.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaArtifactList.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GachaArtifactListRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "GachaArtifactList.ArtifactID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaArtifactList.ArtifactID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GachaArtifactListRecord record : loaded) {
                         record.artifactID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "GachaArtifactList.GradeType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaArtifactList.GradeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (GachaArtifactListRecord record : loaded) {
                         record.gradeType = GradeType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "GachaArtifactList.BaseWeight", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaArtifactList.BaseWeight", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GachaArtifactListRecord record : loaded) {
                         record.baseWeight = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "GachaArtifactList.ClassUpCurrencyID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaArtifactList.ClassUpCurrencyID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GachaArtifactListRecord record : loaded) {
                         record.classUpCurrencyID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "GachaArtifactList.ClassUpCurrencyValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaArtifactList.ClassUpCurrencyValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GachaArtifactListRecord record : loaded) {
                         record.classUpCurrencyValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "GachaArtifactList.ExConditionID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaArtifactList.ExConditionID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GachaArtifactListRecord record : loaded) {
                         record.exConditionID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "GachaArtifactList.ExCurrencyID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaArtifactList.ExCurrencyID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GachaArtifactListRecord record : loaded) {
                         record.exCurrencyID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "GachaArtifactList.ExCurrencyValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaArtifactList.ExCurrencyValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GachaArtifactListRecord record : loaded) {
                         record.exCurrencyValue = reader.readI32As(column.element);
                     }
@@ -156,7 +156,7 @@ public final class GachaArtifactListTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (GachaArtifactListRecord record : loaded) {

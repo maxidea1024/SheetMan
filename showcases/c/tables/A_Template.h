@@ -9,7 +9,7 @@
 #ifndef A_TEMPLATE_H
 #define A_TEMPLATE_H
 
-#include "sheetman/sheetman_lite_binary_reader.h"
+#include "sheetman/sheetman_scb_reader.h"
 
 #include "A_Forward.h"
 

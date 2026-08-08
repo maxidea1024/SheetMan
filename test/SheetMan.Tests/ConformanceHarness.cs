@@ -674,7 +674,7 @@ internal static class ConformanceHarness
             return lintAccessor;
 
         // And the reader beside it, so a broken one is not blamed on the generator.
-        return Execute(PhpExecutable, root, "-l", Path.Combine("sheetman", "LiteBinaryReader.php"));
+        return Execute(PhpExecutable, root, "-l", Path.Combine("sheetman", "ScbReader.php"));
     }
 
     public static ToolResult CompileRuby(string scenario)

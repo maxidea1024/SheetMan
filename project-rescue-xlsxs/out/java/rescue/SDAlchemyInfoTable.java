@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of SDAlchemyInfo. */
 public final class SDAlchemyInfoTable {
@@ -51,7 +51,7 @@ public final class SDAlchemyInfoTable {
         SDAlchemyInfoRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `SDAlchemyInfo` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class SDAlchemyInfoTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,117 +83,117 @@ public final class SDAlchemyInfoTable {
             loaded.add(new SDAlchemyInfoRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.NameKR", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.nameKR = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.MaterialType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.MaterialType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.materialType = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.CommonMaterialType1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.CommonMaterialType1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.commonMaterialType1 = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.CommonMaterialType2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.CommonMaterialType2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.commonMaterialType2 = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.MaterialType2Rate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.MaterialType2Rate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.materialType2Rate = reader.readFloat();
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.StatType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.StatType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.statType = StatType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.TargetType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.TargetType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.targetType = TargetType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.MaxLevelId", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.MaxLevelId", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.maxLevelId = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.AccelerateTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.accelerateTime = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemType1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemType1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.accelerateItemType1 = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemCost1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemCost1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.accelerateItemCost1 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemType2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemType2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.accelerateItemType2 = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemCost2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemCost2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.accelerateItemCost2 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyInfo.IconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDAlchemyInfo.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDAlchemyInfoRecord record : loaded) {
                         record.iconPath = reader.readString();
                     }
@@ -205,7 +205,7 @@ public final class SDAlchemyInfoTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (SDAlchemyInfoRecord record : loaded) {

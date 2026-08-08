@@ -11,12 +11,12 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/ShopType.php';
 require_once __DIR__ . '/../enums/CycleType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -111,7 +111,7 @@ final class CashShopTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -127,49 +127,49 @@ final class CashShopTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'CashShop.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.ProductName', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'CashShop.ProductName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->productName = $reader->readString();
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.ShopType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.ShopType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->shopType = ShopType::tryFrom($reader->readEnum()) ?? ShopType::None;
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.ShopSlotID', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.ShopSlotID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->shopSlotID = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.Priority', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.Priority', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->priority = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.ItemID', LiteBinaryReader::KIND_VAR_ARRAY, 0, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.ItemID', ScbReader::KIND_VAR_ARRAY, 0, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $elementCount = $reader->readCounter32();
                         $record->itemID = [];
@@ -180,7 +180,7 @@ final class CashShopTable
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.ItemValue', LiteBinaryReader::KIND_VAR_ARRAY, 0, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.ItemValue', ScbReader::KIND_VAR_ARRAY, 0, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $elementCount = $reader->readCounter32();
                         $record->itemValue = [];
@@ -191,42 +191,42 @@ final class CashShopTable
                     break;
 
                 case 9:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.CycleType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.CycleType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->cycleType = CycleType::tryFrom($reader->readEnum()) ?? CycleType::None;
                     }
                     break;
 
                 case 10:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.LimitValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.LimitValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->limitValue = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 11:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.CurrencyType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.CurrencyType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->currencyType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 12:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.PriceValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.PriceValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->priceValue = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 13:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.ConditionID', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'CashShop.ConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->conditionID = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 14:
-                    LiteBinaryReader::checkColumn($column, 'CashShop.IconPath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'CashShop.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->iconPath = $reader->readString();
                     }

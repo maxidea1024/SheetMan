@@ -162,8 +162,8 @@ public class DartCodeGenerator : CodeGenerator<DartRecipe>
     private void WriteBinaryReaderRuntime()
     {
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Dart.lite_binary_reader.dart",
-            System.IO.Path.Combine(_recipe.Path, "sheetman", "lite_binary_reader.dart"));
+            "SheetMan.Runtime.Dart.scb_reader.dart",
+            System.IO.Path.Combine(_recipe.Path, "sheetman", "scb_reader.dart"));
 
         // Asked for rather than assumed. It reaches the network and it is of no use to a
         // program that ships its data alongside its code.

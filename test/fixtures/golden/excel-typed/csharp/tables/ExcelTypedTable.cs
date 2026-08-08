@@ -152,7 +152,7 @@ namespace SheetMan.Fixtures.X
         public async Task ReadAsync(string filename)
         {
             var bytes = await Tables.ReadAllBytesAsync(filename);
-            var reader = new LiteBinaryReader(bytes);
+            var reader = new ScbReader(bytes);
             await ReadAsync(reader);
         }
 
@@ -165,9 +165,9 @@ namespace SheetMan.Fixtures.X
         /// changed incompatibly - fails naming the field. Order, names and columns added or
         /// removed on either side are therefore all survivable.
         /// </remarks>
-        public Task ReadAsync(LiteBinaryReader reader)
+        public Task ReadAsync(ScbReader reader)
         {
-            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            var columns = ScbTable.ReadHeader(reader, out int count);
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -190,7 +190,7 @@ namespace SheetMan.Fixtures.X
                 switch (column.Tag)
                 {
                     case 1:
-                        LiteBinaryTable.CheckColumn(column, "ExcelTyped.Index", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExcelTyped.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -199,7 +199,7 @@ namespace SheetMan.Fixtures.X
                         break;
 
                     case 2:
-                        LiteBinaryTable.CheckColumn(column, "ExcelTyped.IntFromNumeric", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExcelTyped.IntFromNumeric", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -208,7 +208,7 @@ namespace SheetMan.Fixtures.X
                         break;
 
                     case 3:
-                        LiteBinaryTable.CheckColumn(column, "ExcelTyped.FloatFromNumeric", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "ExcelTyped.FloatFromNumeric", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -217,7 +217,7 @@ namespace SheetMan.Fixtures.X
                         break;
 
                     case 4:
-                        LiteBinaryTable.CheckColumn(column, "ExcelTyped.WhenFromDateCell", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI64);
+                        ScbTable.CheckColumn(column, "ExcelTyped.WhenFromDateCell", ScbTable.KindScalar, 1, ScbTable.ElementI64);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -226,7 +226,7 @@ namespace SheetMan.Fixtures.X
                         break;
 
                     case 5:
-                        LiteBinaryTable.CheckColumn(column, "ExcelTyped.BigFromNumeric", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI64, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExcelTyped.BigFromNumeric", ScbTable.KindScalar, 1, ScbTable.ElementI64, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -241,7 +241,7 @@ namespace SheetMan.Fixtures.X
                         break;
                 }
 
-                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
+                ScbTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a

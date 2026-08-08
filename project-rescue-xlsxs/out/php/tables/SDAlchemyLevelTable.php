@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -110,7 +110,7 @@ final class SDAlchemyLevelTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -126,112 +126,112 @@ final class SDAlchemyLevelTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.NameKR', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.NameKR', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->nameKR = $reader->readString();
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.LevelUpCost', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.LevelUpCost', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->levelUpCost = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.LevelUpTotal', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.LevelUpTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->levelUpTotal = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.Time', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I64, LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.Time', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I64, ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->time = $reader->readI64As($column['element']);
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.UseDiaCost', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.UseDiaCost', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->useDiaCost = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.UseItemCost', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.UseItemCost', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->useItemCost = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 9:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.CritDMGValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.CritDMGValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->critDMGValue = $reader->readFloat();
                     }
                     break;
 
                 case 10:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.CritDMGTotal', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.CritDMGTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->critDMGTotal = $reader->readFloat();
                     }
                     break;
 
                 case 11:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.CritRateValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.CritRateValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->critRateValue = $reader->readFloat();
                     }
                     break;
 
                 case 12:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.CritRateTotal', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.CritRateTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->critRateTotal = $reader->readFloat();
                     }
                     break;
 
                 case 13:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.BlockRateValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.BlockRateValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->blockRateValue = $reader->readFloat();
                     }
                     break;
 
                 case 14:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.BlockRateTotal', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.BlockRateTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->blockRateTotal = $reader->readFloat();
                     }
                     break;
 
                 case 15:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.HITValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.HITValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->hITValue = $reader->readFloat();
                     }
                     break;
 
                 case 16:
-                    LiteBinaryReader::checkColumn($column, 'SDAlchemyLevel.HITTotal', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDAlchemyLevel.HITTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->hITTotal = $reader->readFloat();
                     }

@@ -9,7 +9,7 @@
 #ifndef RESCUE_SD_DUNGEON_INFO_H
 #define RESCUE_SD_DUNGEON_INFO_H
 
-#include "sheetman/sheetman_lite_binary_reader.h"
+#include "sheetman/sheetman_scb_reader.h"
 
 #include "Rescue_Forward.h"
 

@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -98,7 +98,7 @@ final class SDTrainingLevelTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -114,70 +114,70 @@ final class SDTrainingLevelTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.LevelName', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.LevelName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->levelName = $reader->readString();
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.CurrencyValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.CurrencyValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->currencyValue = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.CurrencyResult', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.CurrencyResult', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->currencyResult = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.MHPGrowth', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.MHPGrowth', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->mHPGrowth = $reader->readFloat();
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.MHPTotal', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.MHPTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->mHPTotal = $reader->readFloat();
                     }
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.DEFGrowth', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.DEFGrowth', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->dEFGrowth = $reader->readFloat();
                     }
                     break;
 
                 case 9:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.DEFTotal', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.DEFTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->dEFTotal = $reader->readFloat();
                     }
                     break;
 
                 case 10:
-                    LiteBinaryReader::checkColumn($column, 'SDTrainingLevel.CommonUnlockStageID', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'SDTrainingLevel.CommonUnlockStageID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->commonUnlockStageID = $reader->readI32As($column['element']);
                     }

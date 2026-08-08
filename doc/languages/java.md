@@ -14,7 +14,7 @@
   <Enum>.java             enum당 하나
   <Set>.java              상수 세트당 하나
 <Path>/sheetman/
-  LiteBinaryReader.java   바이너리 리더 (함께 생성됩니다)
+  ScbReader.java   바이너리 리더 (함께 생성됩니다)
   SheetManUpdater.java    데이터 갱신 (WriteUpdater를 켰을 때만)
 ```
 
@@ -101,7 +101,7 @@ if (result.succeeded) {
 
 **`datetime`과 `timespan`은 `long`입니다.** .NET 틱이 그대로 들어옵니다. `Instant`나 `Duration`으로 바꾸고 싶으면 직접 변환하세요.
 
-**`uuid`는 `LiteBinaryReader.Uuid`입니다.** `java.util.UUID`가 아닙니다 — 바이트 순서가 .NET의 것이라 그대로 담습니다.
+**`uuid`는 `ScbReader.Uuid`입니다.** `java.util.UUID`가 아닙니다 — 바이트 순서가 .NET의 것이라 그대로 담습니다.
 
 **멤버 이름은 camelCase입니다.** Java 키워드는 전부 소문자라 대부분 부딪히지 않지만, 부딪히는 경우는 이스케이프됩니다.
 

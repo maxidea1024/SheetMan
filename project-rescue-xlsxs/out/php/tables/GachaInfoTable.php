@@ -11,11 +11,11 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/GachaType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -126,7 +126,7 @@ final class GachaInfoTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -142,161 +142,161 @@ final class GachaInfoTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'GachaInfo.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.GachaType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.GachaType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->gachaType = GachaType::tryFrom($reader->readEnum()) ?? GachaType::None;
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.Priority', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.Priority', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->priority = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.ConditionID', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.ConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->conditionID = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.RateId', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.RateId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->rateId = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.TriggerCount', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.TriggerCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->triggerCount = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.TriggerRateId', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.TriggerRateId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->triggerRateId = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 9:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.EndCount', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.EndCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->endCount = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 10:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.EndRateId', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.EndRateId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->endRateId = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 11:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.EndCharacterId', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.EndCharacterId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->endCharacterId = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 12:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.EnableReset', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
+                    ScbReader::checkColumn($column, 'GachaInfo.EnableReset', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
                     foreach ($records as $record) {
                         $record->enableReset = $reader->readBool();
                     }
                     break;
 
                 case 13:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.IsSharedCounter', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
+                    ScbReader::checkColumn($column, 'GachaInfo.IsSharedCounter', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
                     foreach ($records as $record) {
                         $record->isSharedCounter = $reader->readBool();
                     }
                     break;
 
                 case 14:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.WishListConditionID', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.WishListConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->wishListConditionID = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 15:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.WishListMaxValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.WishListMaxValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->wishListMaxValue = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 16:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.IsSingle', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
+                    ScbReader::checkColumn($column, 'GachaInfo.IsSingle', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
                     foreach ($records as $record) {
                         $record->isSingle = $reader->readBool();
                     }
                     break;
 
                 case 17:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.IsTen', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
+                    ScbReader::checkColumn($column, 'GachaInfo.IsTen', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
                     foreach ($records as $record) {
                         $record->isTen = $reader->readBool();
                     }
                     break;
 
                 case 18:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.CurrencyType1', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.CurrencyType1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->currencyType1 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 19:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.SingleCost1', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.SingleCost1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->singleCost1 = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 20:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.CurrencyType2', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.CurrencyType2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->currencyType2 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 21:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.SingleCost2', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GachaInfo.SingleCost2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->singleCost2 = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 22:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.IconPath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'GachaInfo.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->iconPath = $reader->readString();
                     }
                     break;
 
                 case 23:
-                    LiteBinaryReader::checkColumn($column, 'GachaInfo.EnableSkip', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
+                    ScbReader::checkColumn($column, 'GachaInfo.EnableSkip', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
                     foreach ($records as $record) {
                         $record->enableSkip = $reader->readBool();
                     }

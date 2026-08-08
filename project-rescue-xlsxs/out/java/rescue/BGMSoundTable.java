@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of BGMSound. */
 public final class BGMSoundTable {
@@ -51,7 +51,7 @@ public final class BGMSoundTable {
         BGMSoundRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `BGMSound` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class BGMSoundTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,47 +83,47 @@ public final class BGMSoundTable {
             loaded.add(new BGMSoundRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "BGMSound.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "BGMSound.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (BGMSoundRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "BGMSound.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "BGMSound.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (BGMSoundRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "BGMSound.Path", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "BGMSound.Path", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (BGMSoundRecord record : loaded) {
                         record.path = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "BGMSound.Loop", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_BOOL);
+                    ScbReader.checkColumn(column, "BGMSound.Loop", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
                     for (BGMSoundRecord record : loaded) {
                         record.loop = reader.readBool();
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "BGMSound.FadeTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "BGMSound.FadeTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (BGMSoundRecord record : loaded) {
                         record.fadeTime = reader.readFloat();
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "BGMSound.Description", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "BGMSound.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (BGMSoundRecord record : loaded) {
                         record.description = reader.readString();
                     }
@@ -135,7 +135,7 @@ public final class BGMSoundTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (BGMSoundRecord record : loaded) {

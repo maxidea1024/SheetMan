@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of DailyDungeonInfo. */
 public final class DailyDungeonInfoTable {
@@ -51,7 +51,7 @@ public final class DailyDungeonInfoTable {
         DailyDungeonInfoRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `DailyDungeonInfo` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class DailyDungeonInfoTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,124 +83,124 @@ public final class DailyDungeonInfoTable {
             loaded.add(new DailyDungeonInfoRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.DungeonName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.DungeonName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.dungeonName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.DungeonType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.DungeonType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.dungeonType = DungeonType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.Priority", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.Priority", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.priority = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.CycleType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.CycleType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.cycleType = CycleType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.EnterCondition", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.EnterCondition", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.enterCondition = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.EnterCurrencyType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.EnterCurrencyType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.enterCurrencyType = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.DungeonBuffID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.DungeonBuffID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.dungeonBuffID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.BuffValueRate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.BuffValueRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.buffValueRate = reader.readFloat();
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.EnterCurrencyValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.EnterCurrencyValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.enterCurrencyValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.FreeEnterCurrencyType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.FreeEnterCurrencyType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.freeEnterCurrencyType = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.ADEnterCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.ADEnterCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.aDEnterCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.EnterCurrencyCountMax", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.EnterCurrencyCountMax", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.enterCurrencyCountMax = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.DungeonImagePath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.DungeonImagePath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.dungeonImagePath = reader.readString();
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.DungeonBGMID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.DungeonBGMID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.dungeonBGMID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "DailyDungeonInfo.Description", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "DailyDungeonInfo.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (DailyDungeonInfoRecord record : loaded) {
                         record.description = reader.readString();
                     }
@@ -212,7 +212,7 @@ public final class DailyDungeonInfoTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (DailyDungeonInfoRecord record : loaded) {

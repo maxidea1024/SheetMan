@@ -11,12 +11,12 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/ItemType.php';
 require_once __DIR__ . '/../enums/ConsumablesType.php';
 require_once __DIR__ . '/../enums/ConditionType.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -119,7 +119,7 @@ final class PackageTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -135,77 +135,77 @@ final class PackageTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'Package.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'Package.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Package.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'Package.ClassName', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Package.ClassName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->className = $reader->readString();
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'Package.ItemType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.ItemType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->itemType = ItemType::tryFrom($reader->readEnum()) ?? ItemType::None;
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'Package.PackageType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.PackageType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->packageType = ConsumablesType::tryFrom($reader->readEnum()) ?? ConsumablesType::None;
                     }
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'Package.Stackable', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
+                    ScbReader::checkColumn($column, 'Package.Stackable', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
                     foreach ($records as $record) {
                         $record->stackable = $reader->readBool();
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'Package.MaxStack', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I64, LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.MaxStack', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I64, ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->maxStack = $reader->readI64As($column['element']);
                     }
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'Package.PackageCondition', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.PackageCondition', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->packageCondition = ConditionType::tryFrom($reader->readEnum()) ?? ConditionType::None;
                     }
                     break;
 
                 case 9:
-                    LiteBinaryReader::checkColumn($column, 'Package.Cooltime', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.Cooltime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->cooltime = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 10:
-                    LiteBinaryReader::checkColumn($column, 'Package.Duration', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.Duration', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->duration = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 11:
-                    LiteBinaryReader::checkColumn($column, 'Package.CurrencyID', LiteBinaryReader::KIND_VAR_ARRAY, 0, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.CurrencyID', ScbReader::KIND_VAR_ARRAY, 0, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $elementCount = $reader->readCounter32();
                         $record->currencyID = [];
@@ -216,7 +216,7 @@ final class PackageTable
                     break;
 
                 case 12:
-                    LiteBinaryReader::checkColumn($column, 'Package.CurrencyItemMin', LiteBinaryReader::KIND_VAR_ARRAY, 0, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.CurrencyItemMin', ScbReader::KIND_VAR_ARRAY, 0, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $elementCount = $reader->readCounter32();
                         $record->currencyItemMin = [];
@@ -227,7 +227,7 @@ final class PackageTable
                     break;
 
                 case 13:
-                    LiteBinaryReader::checkColumn($column, 'Package.CurrencyItemMax', LiteBinaryReader::KIND_VAR_ARRAY, 0, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.CurrencyItemMax', ScbReader::KIND_VAR_ARRAY, 0, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $elementCount = $reader->readCounter32();
                         $record->currencyItemMax = [];
@@ -238,7 +238,7 @@ final class PackageTable
                     break;
 
                 case 14:
-                    LiteBinaryReader::checkColumn($column, 'Package.CurrencyItemRate', LiteBinaryReader::KIND_VAR_ARRAY, 0, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Package.CurrencyItemRate', ScbReader::KIND_VAR_ARRAY, 0, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $elementCount = $reader->readCounter32();
                         $record->currencyItemRate = [];
@@ -249,21 +249,21 @@ final class PackageTable
                     break;
 
                 case 15:
-                    LiteBinaryReader::checkColumn($column, 'Package.IconPath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Package.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->iconPath = $reader->readString();
                     }
                     break;
 
                 case 16:
-                    LiteBinaryReader::checkColumn($column, 'Package.DropPrefabPath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Package.DropPrefabPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->dropPrefabPath = $reader->readString();
                     }
                     break;
 
                 case 17:
-                    LiteBinaryReader::checkColumn($column, 'Package.ItemDescription', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Package.ItemDescription', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->itemDescription = $reader->readString();
                     }

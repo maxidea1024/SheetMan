@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of ShopInfo. */
 public final class ShopInfoTable {
@@ -51,7 +51,7 @@ public final class ShopInfoTable {
         ShopInfoRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `ShopInfo` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class ShopInfoTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,68 +83,68 @@ public final class ShopInfoTable {
             loaded.add(new ShopInfoRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "ShopInfo.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ShopInfo.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ShopInfoRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "ShopInfo.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ShopInfo.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ShopInfoRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "ShopInfo.InfoName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ShopInfo.InfoName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ShopInfoRecord record : loaded) {
                         record.infoName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "ShopInfo.ShopType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ShopInfo.ShopType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (ShopInfoRecord record : loaded) {
                         record.shopType = ShopType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "ShopInfo.ConditionID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ShopInfo.ConditionID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ShopInfoRecord record : loaded) {
                         record.conditionID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "ShopInfo.SheetName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ShopInfo.SheetName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ShopInfoRecord record : loaded) {
                         record.sheetName = reader.readString();
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "ShopInfo.Priority", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ShopInfo.Priority", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ShopInfoRecord record : loaded) {
                         record.priority = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "ShopInfo.UIPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ShopInfo.UIPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ShopInfoRecord record : loaded) {
                         record.uIPath = reader.readString();
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "ShopInfo.ListPrefabPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ShopInfo.ListPrefabPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ShopInfoRecord record : loaded) {
                         record.listPrefabPath = reader.readString();
                     }
@@ -156,7 +156,7 @@ public final class ShopInfoTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (ShopInfoRecord record : loaded) {

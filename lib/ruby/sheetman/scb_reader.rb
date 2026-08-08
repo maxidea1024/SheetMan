@@ -1,0 +1,351 @@
+# SheetMan's binary reader.
+#
+# Copied in beside the generated accessor so the emitted code needs nothing
+# installed. Edit it in the SheetMan repository.
+#
+#
+# Reads the .scb files SheetMan's binary exporter writes:
+#
+#   fixed8      one byte
+#   fixed32     four bytes, little endian
+#   fixed64     eight bytes, little endian
+#   varint32    seven bits per byte, high bit set while more bytes follow,
+#               at most five bytes
+#   counter32   zig-zag encoded int32 written as a varint32
+#   string      counter32 byte length, then that many UTF-8 bytes
+#
+# One of several readers of one format the exporter defines. The conformance corpus is
+# what keeps them agreeing.
+#
+# Ruby's Integer is arbitrary precision, so a 64-bit value needs no special handling on
+# the way in. It has no single-precision float, so a float32 read widens to a Float,
+# which is a double - the value is exactly the one stored, held in a wider type.
+
+module Sheetman
+  # Stamped at the head of every table file by the exporter.
+  # The format is column-oriented and self-describing: the header names every column
+  # and how long its block is, and a reader that meets a version it does not know stops
+  # rather than guessing.
+  FORMAT_VERSION = 101
+
+  # The wire element types and kinds, as a column descriptor spells them.
+  ELEMENT_VARINT = 0
+  ELEMENT_BOOL = 1
+  ELEMENT_I32 = 2
+  ELEMENT_I64 = 3
+  ELEMENT_F32 = 4
+  ELEMENT_F64 = 5
+  ELEMENT_STRING = 6
+  ELEMENT_UUID = 7
+
+  KIND_SCALAR = 0
+  KIND_FIXED_ARRAY = 1
+  KIND_VAR_ARRAY = 2
+
+  # One column as the file describes it.
+  Column = Struct.new(:tag, :element, :kind, :count, :byte_length)
+
+  # A table file is truncated, malformed, or not a table file.
+  class ScbError < StandardError; end
+
+  # A lookup for a key no row carries.
+  #
+  # Raised by the generated `get_by_*_or_throw` lookups, which is where a caller has
+  # said the key has to be there. `find_by_*` answers the same question with nil.
+  #
+  # Its own class rather than ScbError: nothing is wrong with the file, and a
+  # caller rescuing one of these is not rescuing the other.
+  class RecordNotFoundError < StandardError; end
+
+  # A 128 bit identifier, stored in .NET Guid byte order.
+  #
+  # That order is not plain big-endian: the first three components are little endian and
+  # the trailing eight bytes are not, which is what to_s has to account for.
+  class Uuid
+    # Component order matching .NET's Guid.ToString("D").
+    ORDER = [3, 2, 1, 0, 5, 4, 7, 6, 8, 9, 10, 11, 12, 13, 14, 15].freeze
+
+    attr_reader :bytes
+
+    def initialize(bytes = ("\0" * 16).b)
+      @bytes = bytes.b
+    end
+
+    def to_s
+      out = +''
+
+      ORDER.each_with_index do |index, position|
+        out << '-' if [4, 6, 8, 10].include?(position)
+        out << format('%02x', @bytes.getbyte(index))
+      end
+
+      out
+    end
+
+    def ==(other)
+      other.is_a?(Uuid) && other.bytes == @bytes
+    end
+
+    alias eql? ==
+
+    def hash
+      @bytes.hash
+    end
+  end
+
+  # Sequential reader over a table file's bytes.
+  #
+  # Every read either advances the cursor or raises, so a caller need not check a return
+  # value.
+  class Reader
+    attr_reader :position
+
+    # Advances past bytes without interpreting them: an unknown column whole block.
+    # The column-oriented layout is what makes this one call the entirety of skipping.
+    def skip(byte_count)
+      if byte_count.negative? || byte_count > remaining
+        raise ScbError, "cannot skip #{byte_count} bytes with #{remaining} remaining"
+      end
+
+      @position += byte_count
+    end
+
+    # Promotions: a member reading a file element narrower than itself. Only the
+    # mathematically lossless directions exist; check_column already refused the rest.
+
+    # An int member from i32 or varint.
+    def read_i32_as(element)
+      element == ELEMENT_I32 ? read_int32 : read_counter32
+    end
+
+    # A 64-bit member from i64, i32 or varint.
+    def read_i64_as(element)
+      case element
+      when ELEMENT_I64 then read_int64
+      when ELEMENT_I32 then read_int32
+      else read_counter32
+      end
+    end
+
+    # A float member from f64, f32 or i32 - all exact in a Ruby Float.
+    def read_f64_as(element)
+      case element
+      when ELEMENT_F64 then read_double
+      when ELEMENT_F32 then read_float
+      else read_int32
+      end
+    end
+
+    def initialize(data)
+      @data = data.b
+      @position = 0
+    end
+
+    # Bytes left to read.
+    def remaining
+      @data.bytesize - @position
+    end
+
+    def read_uint8
+      take(1).getbyte(0)
+    end
+
+    def read_bool
+      read_uint8 != 0
+    end
+
+    def read_int32
+      take(4).unpack1('l<')
+    end
+
+    def read_uint32
+      take(4).unpack1('L<')
+    end
+
+    def read_int64
+      take(8).unpack1('q<')
+    end
+
+    # A single-precision value.
+    #
+    # Read as its stored bit pattern and widened to a Float, which is a double. Printing
+    # it shows digits the original 32 bits never carried, which is why the conformance
+    # comparison narrows before comparing.
+    def read_float
+      take(4).unpack1('e')
+    end
+
+    def read_double
+      take(8).unpack1('E')
+    end
+
+    # A length-prefixed UTF-8 string.
+    def read_string
+      length = read_counter32
+      raise ScbError, 'string length is negative' if length.negative?
+      return '' if length.zero?
+
+      take(length).force_encoding(Encoding::UTF_8)
+    end
+
+    # A timestamp as .NET ticks: 100 ns units since 0001-01-01.
+    #
+    # Ticks rather than a Time: a tick is finer than what Time keeps, and the corpus
+    # reaches both 0001-01-01 and 9999-12-31.
+    def read_datetime_ticks
+      read_int64
+    end
+
+    # A duration as .NET ticks.
+    def read_duration_ticks
+      read_int64
+    end
+
+    def read_uuid
+      Uuid.new(take(16))
+    end
+
+    # An int32 written in as few bytes as its magnitude needed, either sign.
+    def read_optimal_int32
+      encoded = read_varint32
+
+      # Undoes the zig-zag fold: the low bit carried the sign.
+      (encoded >> 1) ^ -(encoded & 1)
+    end
+
+    # A count, in the same encoding as read_optimal_int32.
+    def read_counter32
+      read_optimal_int32
+    end
+
+    # An enum value, which travels zig-zag encoded rather than fixed width.
+    def read_enum
+      read_optimal_int32
+    end
+
+    private
+
+    def take(count)
+      if remaining < count
+        raise ScbError,
+              "table data ended after #{@position} of #{@data.bytesize} bytes " \
+              "while #{count} more were expected"
+      end
+
+      slice = @data.byteslice(@position, count)
+      @position += count
+
+      slice
+    end
+
+    def read_varint32
+      value = 0
+
+      shift = 0
+      while shift < 35
+        byte = read_uint8
+        value |= (byte & 0x7F) << shift
+
+        return value if (byte & 0x80).zero?
+
+        shift += 7
+      end
+
+      raise ScbError, 'varint32 is longer than five bytes'
+    end
+  end
+
+  # Reads and checks a table file's header, returning the row count that follows it.
+  #
+  # The reserved byte is written as zero and is where compression or encryption flags
+  # would go; a non-zero value means the file needs handling this build does not have.
+  def self.read_table_header(reader)
+    version = reader.read_uint32
+
+    unless version == FORMAT_VERSION
+      raise ScbError,
+            "table format version #{version} is not supported (expected #{FORMAT_VERSION})"
+    end
+
+    raise ScbError, 'table declares unsupported features' unless reader.read_uint8.zero?
+
+    count = reader.read_counter32
+    raise ScbError, 'table row count is negative' if count.negative?
+
+    column_count = reader.read_counter32
+    raise ScbError, 'table column count is negative' if column_count.negative?
+
+    columns = Array.new(column_count) do
+      tag = reader.read_counter32
+      wire = reader.read_uint8
+      element_count = reader.read_counter32
+      byte_length = reader.read_uint32
+      Column.new(tag, wire & 0x0F, (wire >> 4) & 0x03, element_count, byte_length)
+    end
+
+    # What the descriptors say about the file, checked before anybody allocates for the
+    # row count. The blocks are all that follows the header, so their declared lengths have
+    # to add up to the bytes left, and every row costs at least one byte in every block - a
+    # varint's shortest form, an empty string's length prefix, a variable array's counter.
+    # A row count larger than that is one the exporter could not have written.
+
+    available = reader.remaining
+    declared = 0
+
+    columns.each do |column|
+      if column.byte_length.negative? || column.byte_length > available - declared
+        raise ScbError,
+              "column tag #{column.tag} declares #{column.byte_length} bytes, which the file " \
+              'cannot hold'
+      end
+
+      declared += column.byte_length
+
+      if count > column.byte_length
+        raise ScbError,
+              "the row count #{count} is larger than column tag #{column.tag} can hold in its " \
+              "#{column.byte_length} bytes"
+      end
+    end
+
+    if declared != available
+      raise ScbError,
+            "the columns declare #{declared} bytes but #{available} follow the header"
+    end
+
+    [count, columns]
+  end
+
+  # That a column is what the generated member expects, or a lossless promotion of it.
+  # Refusal is by name and both types, never by reading anyway.
+  def self.check_column(column, field_name, kind, count, accepted)
+    if column.kind != kind || (kind != KIND_VAR_ARRAY && column.count != count)
+      raise ScbError,
+            "#{field_name}: the file column (kind #{column.kind}, count #{column.count}) " \
+            "does not match the generated member (kind #{kind}, count #{count}). The schema " \
+            'changed shape; regenerate the code or rebuild the data.'
+    end
+
+    return if accepted.include?(column.element)
+
+    raise ScbError,
+          "#{field_name}: the file carries element type #{column.element}, which this member " \
+          "cannot read (accepts #{accepted}). The column changed type incompatibly; " \
+          'regenerate the code or rebuild the data.'
+  end
+
+  # That a block was consumed exactly: a mismatch is a format disagreement, and stopping
+  # here names the column instead of corrupting the next.
+  def self.check_block_end(reader, column, expected_end)
+    return if reader.position == expected_end
+
+    raise ScbError,
+          "column tag #{column.tag}: its block declared #{column.byte_length} bytes but the " \
+          "read ended #{expected_end - reader.position} bytes short of its boundary"
+  end
+
+  # Reads a whole file into memory.
+  def self.read_all_bytes(filename)
+    File.binread(filename)
+  end
+end

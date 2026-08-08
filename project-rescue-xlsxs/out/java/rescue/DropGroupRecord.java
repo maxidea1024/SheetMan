@@ -7,7 +7,7 @@
 
 package rescue;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 // Generated from project-rescue-xlsxs/MasterData.xlsx : DropGroupTable : A1
 public final class DropGroupRecord {

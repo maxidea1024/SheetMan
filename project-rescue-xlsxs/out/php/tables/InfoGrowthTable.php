@@ -11,11 +11,11 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/GrowthType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -108,7 +108,7 @@ final class InfoGrowthTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -124,98 +124,98 @@ final class InfoGrowthTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.InfoName', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.InfoName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->infoName = $reader->readString();
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.SheetName', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.SheetName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->sheetName = $reader->readString();
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.GrowthType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.GrowthType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->growthType = GrowthType::tryFrom($reader->readEnum()) ?? GrowthType::None;
                     }
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.Reset', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.Reset', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
                     foreach ($records as $record) {
                         $record->reset = $reader->readBool();
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.ResetCostType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.ResetCostType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->resetCostType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.ResetCostValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.ResetCostValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->resetCostValue = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 9:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.MaxStep', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.MaxStep', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->maxStep = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 10:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.MaxLevel', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.MaxLevel', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->maxLevel = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 11:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.UnlockConditionType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.UnlockConditionType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->unlockConditionType = $reader->readString();
                     }
                     break;
 
                 case 12:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.UnlockConditionValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.UnlockConditionValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->unlockConditionValue = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 13:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.Description', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->description = $reader->readString();
                     }
                     break;
 
                 case 14:
-                    LiteBinaryReader::checkColumn($column, 'InfoGrowth.IconPath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'InfoGrowth.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->iconPath = $reader->readString();
                     }

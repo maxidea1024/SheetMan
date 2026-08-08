@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of SDDungeonCard. */
 public final class SDDungeonCardTable {
@@ -51,7 +51,7 @@ public final class SDDungeonCardTable {
         SDDungeonCardRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `SDDungeonCard` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class SDDungeonCardTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,54 +83,54 @@ public final class SDDungeonCardTable {
             loaded.add(new SDDungeonCardRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonCard.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonCard.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonCardRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonCard.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDDungeonCard.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDDungeonCardRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonCard.SDDunName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDDungeonCard.SDDunName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDDungeonCardRecord record : loaded) {
                         record.sDDunName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonCard.SDCardType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonCard.SDCardType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonCardRecord record : loaded) {
                         record.sDCardType = SDCardType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonCard.CardCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonCard.CardCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonCardRecord record : loaded) {
                         record.cardCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonCard.StatIconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDDungeonCard.StatIconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDDungeonCardRecord record : loaded) {
                         record.statIconPath = reader.readString();
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonCard.IconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDDungeonCard.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDDungeonCardRecord record : loaded) {
                         record.iconPath = reader.readString();
                     }
@@ -142,7 +142,7 @@ public final class SDDungeonCardTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (SDDungeonCardRecord record : loaded) {

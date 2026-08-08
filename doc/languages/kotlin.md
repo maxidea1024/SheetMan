@@ -13,7 +13,7 @@
   enums/<Enum>.kt            enum당 하나
   constants/<Set>.kt         상수 세트당 하나
 <Path>/sheetman/
-  LiteBinaryReader.kt        바이너리 리더 (함께 생성됩니다)
+  ScbReader.kt        바이너리 리더 (함께 생성됩니다)
   SheetManUpdater.kt         데이터 갱신 (WriteUpdater를 켰을 때만)
 ```
 

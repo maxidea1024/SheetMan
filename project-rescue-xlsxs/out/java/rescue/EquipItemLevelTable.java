@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of EquipItemLevel. */
 public final class EquipItemLevelTable {
@@ -51,7 +51,7 @@ public final class EquipItemLevelTable {
         EquipItemLevelRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `EquipItemLevel` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class EquipItemLevelTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,138 +83,138 @@ public final class EquipItemLevelTable {
             loaded.add(new EquipItemLevelRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "EquipItemLevel.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (EquipItemLevelRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "EquipItemLevel.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (EquipItemLevelRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.NameKR", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "EquipItemLevel.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (EquipItemLevelRecord record : loaded) {
                         record.nameKR = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.Type", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "EquipItemLevel.Type", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (EquipItemLevelRecord record : loaded) {
                         record.type = JobType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.MaterialType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "EquipItemLevel.MaterialType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (EquipItemLevelRecord record : loaded) {
                         record.materialType = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.MaterialValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "EquipItemLevel.MaterialValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (EquipItemLevelRecord record : loaded) {
                         record.materialValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.MaterialValue1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "EquipItemLevel.MaterialValue1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (EquipItemLevelRecord record : loaded) {
                         record.materialValue1 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.WeaponStatRate1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.WeaponStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.weaponStatRate1 = reader.readFloat();
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.WeaponStatRate2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.WeaponStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.weaponStatRate2 = reader.readFloat();
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.ArmorStatRate1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.ArmorStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.armorStatRate1 = reader.readFloat();
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.ArmorStatRate2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.ArmorStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.armorStatRate2 = reader.readFloat();
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.GauntletStatRate1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.GauntletStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.gauntletStatRate1 = reader.readFloat();
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.GauntletStatRate2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.GauntletStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.gauntletStatRate2 = reader.readFloat();
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.BootsStatRate1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.BootsStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.bootsStatRate1 = reader.readFloat();
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.BootsStatRate2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.BootsStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.bootsStatRate2 = reader.readFloat();
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.HelmetStatRate1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.HelmetStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.helmetStatRate1 = reader.readFloat();
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.HelmetStatRate2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.HelmetStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.helmetStatRate2 = reader.readFloat();
                     }
                     break;
                 }
                 case 18: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.AccStatRate1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.AccStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.accStatRate1 = reader.readFloat();
                     }
                     break;
                 }
                 case 19: {
-                    LiteBinaryReader.checkColumn(column, "EquipItemLevel.AccStatRate2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "EquipItemLevel.AccStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (EquipItemLevelRecord record : loaded) {
                         record.accStatRate2 = reader.readFloat();
                     }
@@ -226,7 +226,7 @@ public final class EquipItemLevelTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (EquipItemLevelRecord record : loaded) {

@@ -15,7 +15,7 @@
   tables/<AccessorName>_<table>.h   테이블당 하나
   enums/<AccessorName>_enum_<enum>.h      enum당 하나
   constants/<AccessorName>_const_<set>.h  상수 세트당 하나
-  sheetman/lite_binary_reader.h     바이너리 리더 (함께 생성됩니다)
+  sheetman/scb_reader.h     바이너리 리더 (함께 생성됩니다)
   sheetman/updater.h                데이터 갱신 (WriteUpdater를 켰을 때만)
 ```
 
@@ -136,7 +136,7 @@ if (result.succeeded) {
 
 |증상|원인과 조치|
 |--|--|
-|`lite_binary_reader.h`를 찾을 수 없음|생성 폴더가 include 경로에 있는지 확인하세요. 테이블 리더는 그 아래 `sheetman/`에 함께 생성됩니다|
+|`scb_reader.h`를 찾을 수 없음|생성 폴더가 include 경로에 있는지 확인하세요. 테이블 리더는 그 아래 `sheetman/`에 함께 생성됩니다|
 |`incomplete type` 오류|우산 헤더 대신 테이블 헤더만 include하고 다른 테이블의 레코드를 **역참조**했습니다. 전방선언은 포인터까지만 허용합니다 — 그 테이블의 헤더도 include하세요|
 |참조가 `nullptr`|테이블 하나만 읽었거나, 시트가 그 셀에 `0`을 넣었습니다 (0은 "참조 없음")|
 |`std::` 관련 링크 오류|헤더 온리라 링크할 것이 없습니다. 다른 문제입니다|

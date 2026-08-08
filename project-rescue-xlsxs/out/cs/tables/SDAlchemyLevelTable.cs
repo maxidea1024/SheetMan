@@ -226,7 +226,7 @@ namespace Rescue.Tables
         public async Task ReadAsync(string filename)
         {
             var bytes = await Tables.ReadAllBytesAsync(filename);
-            var reader = new LiteBinaryReader(bytes);
+            var reader = new ScbReader(bytes);
             await ReadAsync(reader);
         }
 
@@ -239,9 +239,9 @@ namespace Rescue.Tables
         /// changed incompatibly - fails naming the field. Order, names and columns added or
         /// removed on either side are therefore all survivable.
         /// </remarks>
-        public Task ReadAsync(LiteBinaryReader reader)
+        public Task ReadAsync(ScbReader reader)
         {
-            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            var columns = ScbTable.ReadHeader(reader, out int count);
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -264,7 +264,7 @@ namespace Rescue.Tables
                 switch (column.Tag)
                 {
                     case 1:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.Id", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -273,7 +273,7 @@ namespace Rescue.Tables
                         break;
 
                     case 2:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.Name", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -282,7 +282,7 @@ namespace Rescue.Tables
                         break;
 
                     case 3:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.NameKR", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.NameKR", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -291,7 +291,7 @@ namespace Rescue.Tables
                         break;
 
                     case 4:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.LevelUpCost", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.LevelUpCost", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -300,7 +300,7 @@ namespace Rescue.Tables
                         break;
 
                     case 5:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.LevelUpTotal", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.LevelUpTotal", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -309,7 +309,7 @@ namespace Rescue.Tables
                         break;
 
                     case 6:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.Time", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI64, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.Time", ScbTable.KindScalar, 1, ScbTable.ElementI64, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -318,7 +318,7 @@ namespace Rescue.Tables
                         break;
 
                     case 7:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.UseDiaCost", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.UseDiaCost", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -327,7 +327,7 @@ namespace Rescue.Tables
                         break;
 
                     case 8:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.UseItemCost", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.UseItemCost", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -336,7 +336,7 @@ namespace Rescue.Tables
                         break;
 
                     case 9:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.CritDMGValue", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.CritDMGValue", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -345,7 +345,7 @@ namespace Rescue.Tables
                         break;
 
                     case 10:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.CritDMGTotal", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.CritDMGTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -354,7 +354,7 @@ namespace Rescue.Tables
                         break;
 
                     case 11:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.CritRateValue", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.CritRateValue", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -363,7 +363,7 @@ namespace Rescue.Tables
                         break;
 
                     case 12:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.CritRateTotal", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.CritRateTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -372,7 +372,7 @@ namespace Rescue.Tables
                         break;
 
                     case 13:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.BlockRateValue", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.BlockRateValue", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -381,7 +381,7 @@ namespace Rescue.Tables
                         break;
 
                     case 14:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.BlockRateTotal", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.BlockRateTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -390,7 +390,7 @@ namespace Rescue.Tables
                         break;
 
                     case 15:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.HITValue", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.HITValue", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -399,7 +399,7 @@ namespace Rescue.Tables
                         break;
 
                     case 16:
-                        LiteBinaryTable.CheckColumn(column, "SDAlchemyLevel.HITTotal", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "SDAlchemyLevel.HITTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -414,7 +414,7 @@ namespace Rescue.Tables
                         break;
                 }
 
-                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
+                ScbTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a

@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of GoldDungeonStage. */
 public final class GoldDungeonStageTable {
@@ -51,7 +51,7 @@ public final class GoldDungeonStageTable {
         GoldDungeonStageRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `GoldDungeonStage` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class GoldDungeonStageTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,54 +83,54 @@ public final class GoldDungeonStageTable {
             loaded.add(new GoldDungeonStageRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.StageName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.StageName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.stageName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.DungeonType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.DungeonType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.dungeonType = DungeonType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.DungeonFloor", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.DungeonFloor", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.dungeonFloor = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.TimeLimit", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.TimeLimit", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.timeLimit = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.SpawnIds", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.SpawnIds", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.spawnIds = new int[elementCount];
@@ -141,7 +141,7 @@ public final class GoldDungeonStageTable {
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.BossID", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.BossID", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.bossID = new int[elementCount];
@@ -152,84 +152,84 @@ public final class GoldDungeonStageTable {
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.SpawnPointCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.SpawnPointCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.spawnPointCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.SpawnMaxCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.SpawnMaxCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.spawnMaxCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.SpawnNextTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.SpawnNextTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.spawnNextTime = reader.readFloat();
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.StageClearCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.StageClearCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.stageClearCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.RecommendPower", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.RecommendPower", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.recommendPower = reader.readString();
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.RewardID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.RewardID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.rewardID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.AtkUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.AtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.atkUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.DefUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.DefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.defUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.MHPUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.MHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.mHPUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 18: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.DungeonImagePath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.DungeonImagePath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.dungeonImagePath = reader.readString();
                     }
                     break;
                 }
                 case 19: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.MonsterImagePath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.MonsterImagePath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.monsterImagePath = reader.readString();
                     }
                     break;
                 }
                 case 20: {
-                    LiteBinaryReader.checkColumn(column, "GoldDungeonStage.AssetDataPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "GoldDungeonStage.AssetDataPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (GoldDungeonStageRecord record : loaded) {
                         record.assetDataPath = reader.readString();
                     }
@@ -241,7 +241,7 @@ public final class GoldDungeonStageTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (GoldDungeonStageRecord record : loaded) {

@@ -8,7 +8,7 @@
 // ------------------------------------------------------------------------------
 
 import * as fs from 'fs'
-import * as sheetman from '../sheetman/lite-binary-reader'
+import * as sheetman from '../sheetman/scb-reader'
 
 // Automatically import to handle external type references.
 import { ItemType } from '../enums/item-type'
@@ -248,7 +248,7 @@ export class PackageTable {
    * naming the field.
    */
   public readBinaryFrom(data: Uint8Array): void {
-    const reader = new sheetman.LiteBinaryReader(data)
+    const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
 
     // Built here and published at the end, so a file that turns out to be truncated - or

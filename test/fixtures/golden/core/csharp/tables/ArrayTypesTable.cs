@@ -160,7 +160,7 @@ namespace SheetMan.Fixtures.Core
         public async Task ReadAsync(string filename)
         {
             var bytes = await Tables.ReadAllBytesAsync(filename);
-            var reader = new LiteBinaryReader(bytes);
+            var reader = new ScbReader(bytes);
             await ReadAsync(reader);
         }
 
@@ -173,9 +173,9 @@ namespace SheetMan.Fixtures.Core
         /// changed incompatibly - fails naming the field. Order, names and columns added or
         /// removed on either side are therefore all survivable.
         /// </remarks>
-        public Task ReadAsync(LiteBinaryReader reader)
+        public Task ReadAsync(ScbReader reader)
         {
-            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            var columns = ScbTable.ReadHeader(reader, out int count);
             int tempEnumInt = 0;
 
             // Read into storage of its own and published at the end, which is what makes a
@@ -199,7 +199,7 @@ namespace SheetMan.Fixtures.Core
                 switch (column.Tag)
                 {
                     case 1:
-                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Index", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ArrayTypes.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -208,7 +208,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 2:
-                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Tags", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "ArrayTypes.Tags", ScbTable.KindVarArray, 0, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -222,7 +222,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 3:
-                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Costs", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ArrayTypes.Costs", ScbTable.KindVarArray, 0, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -236,7 +236,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 4:
-                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Weights", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "ArrayTypes.Weights", ScbTable.KindVarArray, 0, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -250,7 +250,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 5:
-                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Grades", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ArrayTypes.Grades", ScbTable.KindVarArray, 0, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -265,7 +265,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 6:
-                        LiteBinaryTable.CheckColumn(column, "ArrayTypes.Slot_array", LiteBinaryTable.KindFixedArray, 2, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ArrayTypes.Slot_array", ScbTable.KindFixedArray, 2, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -284,7 +284,7 @@ namespace SheetMan.Fixtures.Core
                         break;
                 }
 
-                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
+                ScbTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a

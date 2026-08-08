@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of CollectionGroup. */
 public final class CollectionGroupTable {
@@ -51,7 +51,7 @@ public final class CollectionGroupTable {
         CollectionGroupRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `CollectionGroup` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class CollectionGroupTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,33 +83,33 @@ public final class CollectionGroupTable {
             loaded.add(new CollectionGroupRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "CollectionGroup.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CollectionGroup.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CollectionGroupRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "CollectionGroup.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "CollectionGroup.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CollectionGroupRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "CollectionGroup.Index", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CollectionGroup.Index", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CollectionGroupRecord record : loaded) {
                         record.index = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "CollectionGroup.CharacterList", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CollectionGroup.CharacterList", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CollectionGroupRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.characterList = new int[elementCount];
@@ -120,7 +120,7 @@ public final class CollectionGroupTable {
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "CollectionGroup.PrefabPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "CollectionGroup.PrefabPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CollectionGroupRecord record : loaded) {
                         record.prefabPath = reader.readString();
                     }
@@ -132,7 +132,7 @@ public final class CollectionGroupTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (CollectionGroupRecord record : loaded) {

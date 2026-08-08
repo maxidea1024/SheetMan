@@ -107,7 +107,7 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     }
 
     /// <summary>
-    /// Writes the LiteBinary reader into the output, beside the generated modules.
+    /// Writes the Scb reader into the output, beside the generated modules.
     ///
     /// Emitted rather than left for the consumer to copy: the generated tables import
     /// it by a relative path, and TypeScript has no include-path setting that would
@@ -137,8 +137,8 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     private void WriteBinaryReaderRuntime()
     {
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Ts.lite_binary_reader.ts",
-            GetTsFilename("sheetman/lite-binary-reader.ts"));
+            "SheetMan.Runtime.Ts.scb_reader.ts",
+            GetTsFilename("sheetman/scb-reader.ts"));
 
         // Asked for rather than assumed. It reaches the network and it is of no use to a
         // project that ships its data with its code.

@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/sheetman/ScbReader.php';
 require_once __DIR__ . '/enums/CharacterType.php';
 require_once __DIR__ . '/enums/JobType.php';
 require_once __DIR__ . '/enums/ArtifactJobType.php';
@@ -117,7 +117,7 @@ require_once __DIR__ . '/tables/StarNodeTable.php';
 require_once __DIR__ . '/tables/CostCurveTable.php';
 require_once __DIR__ . '/tables/CostCurveRangeTable.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 

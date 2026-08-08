@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/AttributeType.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -95,7 +95,7 @@ final class AttributeTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -111,56 +111,56 @@ final class AttributeTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'Attribute.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Attribute.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'Attribute.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Attribute.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'Attribute.AttributeName', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Attribute.AttributeName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->attributeName = $reader->readString();
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'Attribute.AttributeType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Attribute.AttributeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->attributeType = AttributeType::tryFrom($reader->readEnum()) ?? AttributeType::None;
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'Attribute.TargetAttributeType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Attribute.TargetAttributeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->targetAttributeType = AttributeType::tryFrom($reader->readEnum()) ?? AttributeType::None;
                     }
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'Attribute.DamageValueRate', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'Attribute.DamageValueRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->damageValueRate = $reader->readFloat();
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'Attribute.IsVisible', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_BOOL]);
+                    ScbReader::checkColumn($column, 'Attribute.IsVisible', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
                     foreach ($records as $record) {
                         $record->isVisible = $reader->readBool();
                     }
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'Attribute.IconPath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Attribute.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->iconPath = $reader->readString();
                     }

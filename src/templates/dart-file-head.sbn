@@ -21,7 +21,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'sheetman/lite_binary_reader.dart';
+import 'sheetman/scb_reader.dart';
 {{~ if parts | array.size > 0 ~}}
 
 {{~ for line in parts ~}}

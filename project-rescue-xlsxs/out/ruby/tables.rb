@@ -5,7 +5,7 @@
 # regenerated.
 # ------------------------------------------------------------------------------
 
-require_relative 'sheetman/lite_binary_reader'
+require_relative 'sheetman/scb_reader'
 
 require_relative 'enums/character_type'
 

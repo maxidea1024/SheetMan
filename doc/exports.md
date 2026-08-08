@@ -12,7 +12,7 @@
 
 |대상|설명|
 |--|--|
-|Binary|자체 포맷(LiteBinary) 바이너리 파일. 확장자는 `.scb` — SheetMan Compiled Binary|
+|Binary|자체 포맷(Scb) 바이너리 파일. 확장자는 `.scb` — SheetMan Compiled Binary|
 |Json|`.json` 파일. 이름 있는 형식과 배열만 담는 compact 형식을 선택할 수 있습니다.|
 |MySql|MySQL로 직접 적재합니다.|
 |PostgreSql|PostgreSQL로 직접 적재합니다.|

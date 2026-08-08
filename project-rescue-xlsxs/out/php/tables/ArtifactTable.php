@@ -11,12 +11,12 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/ArtifactJobType.php';
 require_once __DIR__ . '/../enums/GradeType.php';
 require_once __DIR__ . '/../enums/StatType.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -106,7 +106,7 @@ final class ArtifactTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -122,35 +122,35 @@ final class ArtifactTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Artifact.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Artifact.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.ArtifactType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Artifact.ArtifactType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->artifactType = ArtifactJobType::tryFrom($reader->readEnum()) ?? ArtifactJobType::None;
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.Grade', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Artifact.Grade', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->grade = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.EquipSkillID', LiteBinaryReader::KIND_VAR_ARRAY, 0, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Artifact.EquipSkillID', ScbReader::KIND_VAR_ARRAY, 0, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $elementCount = $reader->readCounter32();
                         $record->equipSkillID = [];
@@ -161,49 +161,49 @@ final class ArtifactTable
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.EquipStatType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Artifact.EquipStatType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->equipStatType = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.EquipStatRate', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'Artifact.EquipStatRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->equipStatRate = $reader->readFloat();
                     }
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.CollectionType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'Artifact.CollectionType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->collectionType = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
                     }
                     break;
 
                 case 9:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.CollectionVlaue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'Artifact.CollectionVlaue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->collectionVlaue = $reader->readFloat();
                     }
                     break;
 
                 case 10:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.IconPath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Artifact.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->iconPath = $reader->readString();
                     }
                     break;
 
                 case 11:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.MaterialPath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Artifact.MaterialPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->materialPath = $reader->readString();
                     }
                     break;
 
                 case 12:
-                    LiteBinaryReader::checkColumn($column, 'Artifact.Description', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'Artifact.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->description = $reader->readString();
                     }

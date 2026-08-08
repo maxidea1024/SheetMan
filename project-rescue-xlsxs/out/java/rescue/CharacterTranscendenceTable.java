@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of CharacterTranscendence. */
 public final class CharacterTranscendenceTable {
@@ -51,7 +51,7 @@ public final class CharacterTranscendenceTable {
         CharacterTranscendenceRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `CharacterTranscendence` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class CharacterTranscendenceTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,75 +83,75 @@ public final class CharacterTranscendenceTable {
             loaded.add(new CharacterTranscendenceRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.NameKR", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.nameKR = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.GradeType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.GradeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.gradeType = GradeType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.TranscendStep", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.TranscendStep", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.transcendStep = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.MaxLevel", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.MaxLevel", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.maxLevel = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.MaterialType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.MaterialType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.materialType = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.MaterialCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.MaterialCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.materialCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.PowerMultiplier", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.PowerMultiplier", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.powerMultiplier = reader.readFloat();
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "CharacterTranscendence.NextStepID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CharacterTranscendence.NextStepID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterTranscendenceRecord record : loaded) {
                         record.nextStepID = reader.readI32As(column.element);
                     }
@@ -163,7 +163,7 @@ public final class CharacterTranscendenceTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (CharacterTranscendenceRecord record : loaded) {

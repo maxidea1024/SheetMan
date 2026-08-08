@@ -46,9 +46,9 @@ using System.Text;
 namespace SheetMan.Binary
 {
     /// <summary>Thrown when a table file is truncated, malformed, or not a table file.</summary>
-    public class LiteBinaryException : Exception
+    public class ScbException : Exception
     {
-        public LiteBinaryException(string message) : base(message) { }
+        public ScbException(string message) : base(message) { }
     }
 
     /// <summary>
@@ -63,12 +63,12 @@ namespace SheetMan.Binary
     /// return value - except <see cref="TryReadCounter32"/>, kept for generated code
     /// that reads a length it wants to handle itself.
     /// </summary>
-    public sealed class LiteBinaryReader
+    public sealed class ScbReader
     {
         private readonly ReadOnlyMemory<byte> _data;
         private int _position;
 
-        public LiteBinaryReader(byte[] data)
+        public ScbReader(byte[] data)
             : this(new ReadOnlyMemory<byte>(data ?? throw new ArgumentNullException(nameof(data))))
         {
         }
@@ -77,7 +77,7 @@ namespace SheetMan.Binary
         /// Reads from memory the caller already has, without copying it - a slice of a
         /// pooled buffer, or bytes that arrived over the network.
         /// </summary>
-        public LiteBinaryReader(ReadOnlyMemory<byte> data)
+        public ScbReader(ReadOnlyMemory<byte> data)
         {
             _data = data;
             _position = 0;
@@ -137,7 +137,7 @@ namespace SheetMan.Binary
         {
             int length = ReadCounter32();
             if (length < 0)
-                throw new LiteBinaryException("string length is negative");
+                throw new ScbException("string length is negative");
 
             if (length == 0)
             {
@@ -200,7 +200,7 @@ namespace SheetMan.Binary
         public void Skip(int byteCount)
         {
             if (byteCount < 0 || byteCount > Remaining)
-                throw new LiteBinaryException($"cannot skip {byteCount} bytes with {Remaining} remaining");
+                throw new ScbException($"cannot skip {byteCount} bytes with {Remaining} remaining");
 
             _position += byteCount;
         }
@@ -215,7 +215,7 @@ namespace SheetMan.Binary
         /// <summary>An int32 member from i32 or varint.</summary>
         public int ReadI32As(byte element)
         {
-            if (element == LiteBinaryTable.ElementI32)
+            if (element == ScbTable.ElementI32)
             {
                 Read(out int exact);
                 return exact;
@@ -229,13 +229,13 @@ namespace SheetMan.Binary
         {
             switch (element)
             {
-                case LiteBinaryTable.ElementI64:
+                case ScbTable.ElementI64:
                 {
                     Read(out long exact);
                     return exact;
                 }
 
-                case LiteBinaryTable.ElementI32:
+                case ScbTable.ElementI32:
                 {
                     Read(out int narrower);
                     return narrower;
@@ -251,13 +251,13 @@ namespace SheetMan.Binary
         {
             switch (element)
             {
-                case LiteBinaryTable.ElementF64:
+                case ScbTable.ElementF64:
                 {
                     Read(out double exact);
                     return exact;
                 }
 
-                case LiteBinaryTable.ElementF32:
+                case ScbTable.ElementF32:
                 {
                     Read(out float single);
                     return single;
@@ -300,7 +300,7 @@ namespace SheetMan.Binary
         {
             if (Remaining < count)
             {
-                throw new LiteBinaryException(
+                throw new ScbException(
                     $"table data ended after {_position} of {_data.Length} bytes " +
                     $"while {count} more were expected");
             }
@@ -324,14 +324,14 @@ namespace SheetMan.Binary
                     return value;
             }
 
-            throw new LiteBinaryException("varint32 is longer than five bytes");
+            throw new ScbException("varint32 is longer than five bytes");
         }
     }
 
     /// <summary>
     /// One column as the file describes it: the descriptor the header carries per column.
     /// </summary>
-    public struct LiteBinaryColumn
+    public struct ScbColumn
     {
         /// <summary>What identifies the column, instead of its position.</summary>
         public int Tag;
@@ -352,7 +352,7 @@ namespace SheetMan.Binary
     /// <summary>
     /// The file-level parts of the format, shared by every generated table.
     /// </summary>
-    public static class LiteBinaryTable
+    public static class ScbTable
     {
         /// <summary>Version stamped at the head of every table file by the exporter.</summary>
         /// <remarks>
@@ -379,28 +379,28 @@ namespace SheetMan.Binary
         /// Reads and checks the file header, returning the row count and the column
         /// descriptors the data blocks follow.
         /// </summary>
-        public static LiteBinaryColumn[] ReadHeader(LiteBinaryReader reader, out int rowCount)
+        public static ScbColumn[] ReadHeader(ScbReader reader, out int rowCount)
         {
             reader.Read(out uint version);
             if (version != FormatVersion)
             {
-                throw new LiteBinaryException(
+                throw new ScbException(
                     $"table format version {version} is not supported (expected {FormatVersion})");
             }
 
             reader.Read(out byte reserved);
             if (reserved != 0)
-                throw new LiteBinaryException("table declares unsupported features");
+                throw new ScbException("table declares unsupported features");
 
             rowCount = reader.ReadCounter32();
             if (rowCount < 0)
-                throw new LiteBinaryException("table row count is negative");
+                throw new ScbException("table row count is negative");
 
             int columnCount = reader.ReadCounter32();
             if (columnCount < 0)
-                throw new LiteBinaryException("table column count is negative");
+                throw new ScbException("table column count is negative");
 
-            var columns = new LiteBinaryColumn[columnCount];
+            var columns = new ScbColumn[columnCount];
 
             for (int at = 0; at < columnCount; at++)
             {
@@ -429,7 +429,7 @@ namespace SheetMan.Binary
             {
                 if (column.ByteLength < 0 || column.ByteLength > available - declared)
                 {
-                    throw new LiteBinaryException(
+                    throw new ScbException(
                         $"column tag {column.Tag} declares {column.ByteLength} bytes, which the " +
                         "file cannot hold");
                 }
@@ -438,7 +438,7 @@ namespace SheetMan.Binary
 
                 if (rowCount > column.ByteLength)
                 {
-                    throw new LiteBinaryException(
+                    throw new ScbException(
                         $"the row count {rowCount} is larger than column tag {column.Tag} can " +
                         $"hold in its {column.ByteLength} bytes");
                 }
@@ -446,7 +446,7 @@ namespace SheetMan.Binary
 
             if (declared != available)
             {
-                throw new LiteBinaryException(
+                throw new ScbException(
                     $"the columns declare {declared} bytes but {available} follow the header");
             }
 
@@ -469,7 +469,7 @@ namespace SheetMan.Binary
         /// for a list that is never longer than three and is known at generation time.
         /// </remarks>
         public static void CheckColumn(
-            in LiteBinaryColumn column, string fieldName, byte kind, int count, byte accepted)
+            in ScbColumn column, string fieldName, byte kind, int count, byte accepted)
         {
             CheckShape(column, fieldName, kind, count);
 
@@ -478,7 +478,7 @@ namespace SheetMan.Binary
         }
 
         public static void CheckColumn(
-            in LiteBinaryColumn column, string fieldName, byte kind, int count,
+            in ScbColumn column, string fieldName, byte kind, int count,
             byte accepted, byte alsoAccepted)
         {
             CheckShape(column, fieldName, kind, count);
@@ -488,7 +488,7 @@ namespace SheetMan.Binary
         }
 
         public static void CheckColumn(
-            in LiteBinaryColumn column, string fieldName, byte kind, int count,
+            in ScbColumn column, string fieldName, byte kind, int count,
             byte accepted, byte alsoAccepted, byte andAccepted)
         {
             CheckShape(column, fieldName, kind, count);
@@ -501,20 +501,20 @@ namespace SheetMan.Binary
         }
 
         private static void CheckShape(
-            in LiteBinaryColumn column, string fieldName, byte kind, int count)
+            in ScbColumn column, string fieldName, byte kind, int count)
         {
             if (column.Kind != kind || (kind != KindVarArray && column.Count != count))
             {
-                throw new LiteBinaryException(
+                throw new ScbException(
                     $"{fieldName}: the file's column (kind {column.Kind}, count {column.Count}) does not " +
                     $"match the generated member (kind {kind}, count {count}). The schema changed shape; " +
                     "regenerate the code or rebuild the data.");
             }
         }
 
-        private static LiteBinaryException ElementMismatch(
-            in LiteBinaryColumn column, string fieldName)
-            => new LiteBinaryException(
+        private static ScbException ElementMismatch(
+            in ScbColumn column, string fieldName)
+            => new ScbException(
                 $"{fieldName}: the file carries element type {column.Element}, which this member " +
                 "cannot read. The column changed type incompatibly; regenerate the code or " +
                 "rebuild the data.");
@@ -523,11 +523,11 @@ namespace SheetMan.Binary
         /// The general form, for an accepted list longer than three. Nothing emits one today.
         /// </summary>
         public static void CheckColumn(
-            in LiteBinaryColumn column, string fieldName, byte kind, int count, params byte[] acceptedElements)
+            in ScbColumn column, string fieldName, byte kind, int count, params byte[] acceptedElements)
         {
             if (column.Kind != kind || (kind != KindVarArray && column.Count != count))
             {
-                throw new LiteBinaryException(
+                throw new ScbException(
                     $"{fieldName}: the file's column (kind {column.Kind}, count {column.Count}) does not " +
                     $"match the generated member (kind {kind}, count {count}). The schema changed shape; " +
                     "regenerate the code or rebuild the data.");
@@ -539,7 +539,7 @@ namespace SheetMan.Binary
                     return;
             }
 
-            throw new LiteBinaryException(
+            throw new ScbException(
                 $"{fieldName}: the file carries element type {column.Element}, which this member " +
                 $"cannot read (accepts: {string.Join(", ", acceptedElements)}). The column changed " +
                 "type incompatibly; regenerate the code or rebuild the data.");
@@ -549,11 +549,11 @@ namespace SheetMan.Binary
         /// That a block was consumed exactly. A mismatch means the reader and writer disagree
         /// about the format, and stopping here names the column instead of corrupting the next.
         /// </summary>
-        public static void CheckBlockEnd(LiteBinaryReader reader, in LiteBinaryColumn column, int expectedEnd)
+        public static void CheckBlockEnd(ScbReader reader, in ScbColumn column, int expectedEnd)
         {
             if (reader.Position != expectedEnd)
             {
-                throw new LiteBinaryException(
+                throw new ScbException(
                     $"column tag {column.Tag}: its block declared {column.ByteLength} bytes but the " +
                     $"read ended {expectedEnd - reader.Position} bytes short of its boundary");
             }

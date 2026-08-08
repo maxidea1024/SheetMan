@@ -105,7 +105,7 @@ public class RecipeModel
     public class ExportRecipeGroup
     {
         /// <summary>
-        /// One binary file per table, in SheetMan's own LiteBinary format.
+        /// One binary file per table, in SheetMan's own Scb format.
         ///
         /// This is what the generated C# and C++ readers consume.
         /// </summary>

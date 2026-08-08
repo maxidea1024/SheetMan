@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of GachaRate. */
 public final class GachaRateTable {
@@ -51,7 +51,7 @@ public final class GachaRateTable {
         GachaRateRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `GachaRate` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class GachaRateTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,47 +83,47 @@ public final class GachaRateTable {
             loaded.add(new GachaRateRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "GachaRate.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "GachaRate.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (GachaRateRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "GachaRate.URRate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "GachaRate.URRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (GachaRateRecord record : loaded) {
                         record.uRRate = reader.readFloat();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "GachaRate.SSRRate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "GachaRate.SSRRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (GachaRateRecord record : loaded) {
                         record.sSRRate = reader.readFloat();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "GachaRate.SRRate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "GachaRate.SRRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (GachaRateRecord record : loaded) {
                         record.sRRate = reader.readFloat();
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "GachaRate.RRate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "GachaRate.RRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (GachaRateRecord record : loaded) {
                         record.rRate = reader.readFloat();
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "GachaRate.NRate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "GachaRate.NRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (GachaRateRecord record : loaded) {
                         record.nRate = reader.readFloat();
                     }
@@ -135,7 +135,7 @@ public final class GachaRateTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (GachaRateRecord record : loaded) {

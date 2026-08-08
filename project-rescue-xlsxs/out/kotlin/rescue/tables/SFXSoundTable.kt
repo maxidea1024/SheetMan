@@ -10,7 +10,7 @@
 package rescue
 
 import java.io.File
-import sheetman.LiteBinaryReader
+import sheetman.ScbReader
 import sheetman.RecordNotFoundException
 import sheetman.Uuid
 import sheetman.readAllBytes
@@ -90,7 +90,7 @@ class SFXSoundTable {
      * naming the field.
      */
     fun read(filename: String) {
-        val reader = LiteBinaryReader(readAllBytes(filename))
+        val reader = ScbReader(readAllBytes(filename))
         val header = readTableHeader(reader)
         val count = header.rowCount
 

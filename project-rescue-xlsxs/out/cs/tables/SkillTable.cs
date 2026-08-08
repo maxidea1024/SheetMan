@@ -205,7 +205,7 @@ namespace Rescue.Tables
         public async Task ReadAsync(string filename)
         {
             var bytes = await Tables.ReadAllBytesAsync(filename);
-            var reader = new LiteBinaryReader(bytes);
+            var reader = new ScbReader(bytes);
             await ReadAsync(reader);
         }
 
@@ -218,9 +218,9 @@ namespace Rescue.Tables
         /// changed incompatibly - fails naming the field. Order, names and columns added or
         /// removed on either side are therefore all survivable.
         /// </remarks>
-        public Task ReadAsync(LiteBinaryReader reader)
+        public Task ReadAsync(ScbReader reader)
         {
-            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            var columns = ScbTable.ReadHeader(reader, out int count);
             int tempEnumInt = 0;
 
             // Read into storage of its own and published at the end, which is what makes a
@@ -244,7 +244,7 @@ namespace Rescue.Tables
                 switch (column.Tag)
                 {
                     case 1:
-                        LiteBinaryTable.CheckColumn(column, "Skill.Id", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "Skill.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -253,7 +253,7 @@ namespace Rescue.Tables
                         break;
 
                     case 2:
-                        LiteBinaryTable.CheckColumn(column, "Skill.Name", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "Skill.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -262,7 +262,7 @@ namespace Rescue.Tables
                         break;
 
                     case 3:
-                        LiteBinaryTable.CheckColumn(column, "Skill.SkillName", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "Skill.SkillName", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -271,7 +271,7 @@ namespace Rescue.Tables
                         break;
 
                     case 4:
-                        LiteBinaryTable.CheckColumn(column, "Skill.SkillType", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "Skill.SkillType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -281,7 +281,7 @@ namespace Rescue.Tables
                         break;
 
                     case 5:
-                        LiteBinaryTable.CheckColumn(column, "Skill.SkillSubType", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "Skill.SkillSubType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -291,7 +291,7 @@ namespace Rescue.Tables
                         break;
 
                     case 6:
-                        LiteBinaryTable.CheckColumn(column, "Skill.AttributeType", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "Skill.AttributeType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -301,7 +301,7 @@ namespace Rescue.Tables
                         break;
 
                     case 7:
-                        LiteBinaryTable.CheckColumn(column, "Skill.TargetType", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "Skill.TargetType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -311,7 +311,7 @@ namespace Rescue.Tables
                         break;
 
                     case 8:
-                        LiteBinaryTable.CheckColumn(column, "Skill.AniPath", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "Skill.AniPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -320,7 +320,7 @@ namespace Rescue.Tables
                         break;
 
                     case 9:
-                        LiteBinaryTable.CheckColumn(column, "Skill.SkillUseRange", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "Skill.SkillUseRange", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -329,7 +329,7 @@ namespace Rescue.Tables
                         break;
 
                     case 10:
-                        LiteBinaryTable.CheckColumn(column, "Skill.CoolTime", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "Skill.CoolTime", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -338,7 +338,7 @@ namespace Rescue.Tables
                         break;
 
                     case 11:
-                        LiteBinaryTable.CheckColumn(column, "Skill.BuffID", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "Skill.BuffID", ScbTable.KindVarArray, 0, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -352,7 +352,7 @@ namespace Rescue.Tables
                         break;
 
                     case 12:
-                        LiteBinaryTable.CheckColumn(column, "Skill.SkillIcon", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "Skill.SkillIcon", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -361,7 +361,7 @@ namespace Rescue.Tables
                         break;
 
                     case 13:
-                        LiteBinaryTable.CheckColumn(column, "Skill.Description", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "Skill.Description", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -376,7 +376,7 @@ namespace Rescue.Tables
                         break;
                 }
 
-                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
+                ScbTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a

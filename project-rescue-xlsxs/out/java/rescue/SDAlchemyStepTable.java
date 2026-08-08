@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of SDAlchemyStep. */
 public final class SDAlchemyStepTable {
@@ -51,7 +51,7 @@ public final class SDAlchemyStepTable {
         SDAlchemyStepRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `SDAlchemyStep` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class SDAlchemyStepTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,47 +83,47 @@ public final class SDAlchemyStepTable {
             loaded.add(new SDAlchemyStepRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyStep.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyStep.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyStepRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyStep.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDAlchemyStep.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDAlchemyStepRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyStep.NameKR", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDAlchemyStep.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDAlchemyStepRecord record : loaded) {
                         record.nameKR = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyStep.MaxLevel", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyStep.MaxLevel", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyStepRecord record : loaded) {
                         record.maxLevel = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyStep.RewardType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyStep.RewardType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyStepRecord record : loaded) {
                         record.rewardType = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "SDAlchemyStep.RewardValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDAlchemyStep.RewardValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDAlchemyStepRecord record : loaded) {
                         record.rewardValue = reader.readI32As(column.element);
                     }
@@ -135,7 +135,7 @@ public final class SDAlchemyStepTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (SDAlchemyStepRecord record : loaded) {

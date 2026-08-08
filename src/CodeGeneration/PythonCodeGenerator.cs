@@ -190,13 +190,13 @@ public class PythonCodeGenerator : CodeGenerator<PythonRecipe>
         string runtime = System.IO.Path.Combine(PackageDir, "sheetman");
 
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Python.lite_binary_reader.py",
-            System.IO.Path.Combine(runtime, "lite_binary_reader.py"));
+            "SheetMan.Runtime.Python.scb_reader.py",
+            System.IO.Path.Combine(runtime, "scb_reader.py"));
 
         // The subpackage's `__init__`, so `from . import sheetman` keeps naming the
         // reader's own symbols - which is what every generated module reaches for.
         // Two lines rather than making the reader itself the `__init__`: the file is
-        // called lite_binary_reader in all thirteen languages, and it should be here
+        // called scb_reader in all thirteen languages, and it should be here
         // too.
         StagingFiles.WriteAllTextToFile(
             System.IO.Path.GetFullPath(System.IO.Path.Combine(runtime, "__init__.py")),
@@ -206,7 +206,7 @@ public class PythonCodeGenerator : CodeGenerator<PythonRecipe>
                 $"# {GeneratedFileMarker.TextWithWarning}",
                 "# ------------------------------------------------------------------------------",
                 "",
-                "from .lite_binary_reader import *  # noqa: F401,F403",
+                "from .scb_reader import *  # noqa: F401,F403",
                 "",
             }));
 

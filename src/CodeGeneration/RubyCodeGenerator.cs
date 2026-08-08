@@ -113,7 +113,7 @@ public class RubyCodeGenerator : CodeGenerator<RubyRecipe>
 
         // Forward slashes, which `require_relative` takes on every platform, and no
         // extension, which is how Ruby spells it.
-        var parts = new List<string> { "sheetman/lite_binary_reader" };
+        var parts = new List<string> { "sheetman/scb_reader" };
 
         parts.AddRange(view.Enums.Select(e => "enums/" + e.Name.ToSnakeCase()));
         parts.AddRange(view.ConstantSets.Select(s => "constants/" + s.Name.ToSnakeCase()));
@@ -134,7 +134,7 @@ public class RubyCodeGenerator : CodeGenerator<RubyRecipe>
                       ModuleName = _recipe.ModuleName,
 
                       // One directory down, and its `read` names the reader.
-                      Requires = new[] { "../sheetman/lite_binary_reader" },
+                      Requires = new[] { "../sheetman/scb_reader" },
                       Table = table,
                   });
         }
@@ -174,8 +174,8 @@ public class RubyCodeGenerator : CodeGenerator<RubyRecipe>
     private void WriteBinaryReaderRuntime()
     {
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Ruby.lite_binary_reader.rb",
-            System.IO.Path.Combine(_recipe.Path, "sheetman", "lite_binary_reader.rb"));
+            "SheetMan.Runtime.Ruby.scb_reader.rb",
+            System.IO.Path.Combine(_recipe.Path, "sheetman", "scb_reader.rb"));
 
         // Asked for rather than assumed. It reaches the network and it is of no use to a
         // program that ships its data alongside its code.

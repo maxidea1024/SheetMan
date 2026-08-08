@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of Buff. */
 public final class BuffTable {
@@ -51,7 +51,7 @@ public final class BuffTable {
         BuffRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `Buff` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class BuffTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,131 +83,131 @@ public final class BuffTable {
             loaded.add(new BuffRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "Buff.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "Buff.BuffName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Buff.BuffName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (BuffRecord record : loaded) {
                         record.buffName = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "Buff.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Buff.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (BuffRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "Buff.SkillType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.SkillType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.skillType = SkillType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "Buff.StatType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.StatType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.statType = StatType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "Buff.Priority", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.Priority", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.priority = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "Buff.AttributeType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.AttributeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.attributeType = AttributeType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "Buff.TargetType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.TargetType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.targetType = TargetType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "Buff.BuffConditionType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.BuffConditionType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.buffConditionType = BuffConditionType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "Buff.BuffValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.BuffValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.buffValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "Buff.BuffValueRate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Buff.BuffValueRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (BuffRecord record : loaded) {
                         record.buffValueRate = reader.readFloat();
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "Buff.BuffTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.BuffTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.buffTime = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "Buff.BuffTickTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.BuffTickTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.buffTickTime = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "Buff.BuffMaxStack", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Buff.BuffMaxStack", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (BuffRecord record : loaded) {
                         record.buffMaxStack = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "Buff.BuffCoolDownTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Buff.BuffCoolDownTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (BuffRecord record : loaded) {
                         record.buffCoolDownTime = reader.readFloat();
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "Buff.IsVisible", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_BOOL);
+                    ScbReader.checkColumn(column, "Buff.IsVisible", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
                     for (BuffRecord record : loaded) {
                         record.isVisible = reader.readBool();
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "Buff.IconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Buff.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (BuffRecord record : loaded) {
                         record.iconPath = reader.readString();
                     }
                     break;
                 }
                 case 18: {
-                    LiteBinaryReader.checkColumn(column, "Buff.Description", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Buff.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (BuffRecord record : loaded) {
                         record.description = reader.readString();
                     }
@@ -219,7 +219,7 @@ public final class BuffTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (BuffRecord record : loaded) {

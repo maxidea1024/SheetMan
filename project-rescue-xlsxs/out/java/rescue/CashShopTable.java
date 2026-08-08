@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of CashShop. */
 public final class CashShopTable {
@@ -51,7 +51,7 @@ public final class CashShopTable {
         CashShopRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `CashShop` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class CashShopTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,54 +83,54 @@ public final class CashShopTable {
             loaded.add(new CashShopRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "CashShop.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CashShopRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.ProductName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "CashShop.ProductName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CashShopRecord record : loaded) {
                         record.productName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.ShopType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.ShopType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         record.shopType = ShopType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.ShopSlotID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.ShopSlotID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         record.shopSlotID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.Priority", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.Priority", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         record.priority = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.ItemID", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.ItemID", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.itemID = new int[elementCount];
@@ -141,7 +141,7 @@ public final class CashShopTable {
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.ItemValue", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.ItemValue", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.itemValue = new int[elementCount];
@@ -152,42 +152,42 @@ public final class CashShopTable {
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.CycleType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.CycleType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         record.cycleType = CycleType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.LimitValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.LimitValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         record.limitValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.CurrencyType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.CurrencyType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         record.currencyType = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.PriceValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.PriceValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         record.priceValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.ConditionID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CashShop.ConditionID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CashShopRecord record : loaded) {
                         record.conditionID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "CashShop.IconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "CashShop.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CashShopRecord record : loaded) {
                         record.iconPath = reader.readString();
                     }
@@ -199,7 +199,7 @@ public final class CashShopTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (CashShopRecord record : loaded) {

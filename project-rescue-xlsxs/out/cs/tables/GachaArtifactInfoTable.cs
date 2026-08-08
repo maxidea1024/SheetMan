@@ -275,7 +275,7 @@ namespace Rescue.Tables
         public async Task ReadAsync(string filename)
         {
             var bytes = await Tables.ReadAllBytesAsync(filename);
-            var reader = new LiteBinaryReader(bytes);
+            var reader = new ScbReader(bytes);
             await ReadAsync(reader);
         }
 
@@ -288,9 +288,9 @@ namespace Rescue.Tables
         /// changed incompatibly - fails naming the field. Order, names and columns added or
         /// removed on either side are therefore all survivable.
         /// </remarks>
-        public Task ReadAsync(LiteBinaryReader reader)
+        public Task ReadAsync(ScbReader reader)
         {
-            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            var columns = ScbTable.ReadHeader(reader, out int count);
             int tempEnumInt = 0;
 
             // Read into storage of its own and published at the end, which is what makes a
@@ -314,7 +314,7 @@ namespace Rescue.Tables
                 switch (column.Tag)
                 {
                     case 1:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.Id", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -323,7 +323,7 @@ namespace Rescue.Tables
                         break;
 
                     case 2:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.Name", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -332,7 +332,7 @@ namespace Rescue.Tables
                         break;
 
                     case 3:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.GachaType", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.GachaType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -342,7 +342,7 @@ namespace Rescue.Tables
                         break;
 
                     case 4:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.Priority", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.Priority", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -351,7 +351,7 @@ namespace Rescue.Tables
                         break;
 
                     case 5:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.ConditionID", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.ConditionID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -360,7 +360,7 @@ namespace Rescue.Tables
                         break;
 
                     case 6:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.RateId", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.RateId", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -369,7 +369,7 @@ namespace Rescue.Tables
                         break;
 
                     case 7:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.TriggerCount", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.TriggerCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -378,7 +378,7 @@ namespace Rescue.Tables
                         break;
 
                     case 8:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.TriggerRateId", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.TriggerRateId", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -387,7 +387,7 @@ namespace Rescue.Tables
                         break;
 
                     case 9:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.EndCount", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.EndCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -396,7 +396,7 @@ namespace Rescue.Tables
                         break;
 
                     case 10:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.EndRateId", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.EndRateId", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -405,7 +405,7 @@ namespace Rescue.Tables
                         break;
 
                     case 11:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.EndCharacterId", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.EndCharacterId", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -414,7 +414,7 @@ namespace Rescue.Tables
                         break;
 
                     case 12:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.EnableReset", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementBool);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.EnableReset", ScbTable.KindScalar, 1, ScbTable.ElementBool);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -423,7 +423,7 @@ namespace Rescue.Tables
                         break;
 
                     case 13:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.IsSharedCounter", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementBool);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.IsSharedCounter", ScbTable.KindScalar, 1, ScbTable.ElementBool);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -432,7 +432,7 @@ namespace Rescue.Tables
                         break;
 
                     case 14:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.WishListConditionID", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.WishListConditionID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -441,7 +441,7 @@ namespace Rescue.Tables
                         break;
 
                     case 15:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.WishListMaxValue", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.WishListMaxValue", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -450,7 +450,7 @@ namespace Rescue.Tables
                         break;
 
                     case 16:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.IsSingle", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementBool);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.IsSingle", ScbTable.KindScalar, 1, ScbTable.ElementBool);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -459,7 +459,7 @@ namespace Rescue.Tables
                         break;
 
                     case 17:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.IsTen", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementBool);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.IsTen", ScbTable.KindScalar, 1, ScbTable.ElementBool);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -468,7 +468,7 @@ namespace Rescue.Tables
                         break;
 
                     case 18:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.CurrencyType1", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.CurrencyType1", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -478,7 +478,7 @@ namespace Rescue.Tables
                         break;
 
                     case 19:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.SingleCost1", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.SingleCost1", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -487,7 +487,7 @@ namespace Rescue.Tables
                         break;
 
                     case 20:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.CurrencyType2", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.CurrencyType2", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -497,7 +497,7 @@ namespace Rescue.Tables
                         break;
 
                     case 21:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.SingleCost2", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.SingleCost2", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -506,7 +506,7 @@ namespace Rescue.Tables
                         break;
 
                     case 22:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.IconPath", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.IconPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -515,7 +515,7 @@ namespace Rescue.Tables
                         break;
 
                     case 23:
-                        LiteBinaryTable.CheckColumn(column, "GachaArtifactInfo.EnableSkip", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementBool);
+                        ScbTable.CheckColumn(column, "GachaArtifactInfo.EnableSkip", ScbTable.KindScalar, 1, ScbTable.ElementBool);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -530,7 +530,7 @@ namespace Rescue.Tables
                         break;
                 }
 
-                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
+                ScbTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a

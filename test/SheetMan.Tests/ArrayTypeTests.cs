@@ -132,7 +132,7 @@ public class ArrayTypeTests
 
         // Delimited: the column declares no per-row count, so every row carries its
         // own on the wire and the array is allocated to it.
-        Assert.Contains("\"ArrayTypes.Tags\", LiteBinaryTable.KindVarArray, 0", cs);
+        Assert.Contains("\"ArrayTypes.Tags\", ScbTable.KindVarArray, 0", cs);
         Assert.Contains("reader.TryReadCounter32(out int elementCount);", cs);
         Assert.Contains("record._tags = new string[elementCount];", cs);
 
@@ -140,7 +140,7 @@ public class ArrayTypeTests
         // so there is no counter on the wire to read.
         Assert.Contains("SlotArray_N", cs);
         Assert.Contains(
-            "\"ArrayTypes.Slot_array\", LiteBinaryTable.KindFixedArray, 2", cs);
+            "\"ArrayTypes.Slot_array\", ScbTable.KindFixedArray, 2", cs);
 
         string ts = File.ReadAllText(
             Path.Combine(RepoLayout.OutputDir("core"), "typescript", "tables", "array-types.ts"));

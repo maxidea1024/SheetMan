@@ -147,7 +147,7 @@ namespace SheetMan.Fixtures.Core.Server
         public async Task ReadAsync(string filename)
         {
             var bytes = await Tables.ReadAllBytesAsync(filename);
-            var reader = new LiteBinaryReader(bytes);
+            var reader = new ScbReader(bytes);
             await ReadAsync(reader);
         }
 
@@ -160,9 +160,9 @@ namespace SheetMan.Fixtures.Core.Server
         /// changed incompatibly - fails naming the field. Order, names and columns added or
         /// removed on either side are therefore all survivable.
         /// </remarks>
-        public Task ReadAsync(LiteBinaryReader reader)
+        public Task ReadAsync(ScbReader reader)
         {
-            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            var columns = ScbTable.ReadHeader(reader, out int count);
 
             // Read into storage of its own and published at the end, which is what makes a
             // refresh atomic: nothing here touches what the table is currently holding, so a
@@ -185,7 +185,7 @@ namespace SheetMan.Fixtures.Core.Server
                 switch (column.Tag)
                 {
                     case 1:
-                        LiteBinaryTable.CheckColumn(column, "Localization.Index", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "Localization.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -194,7 +194,7 @@ namespace SheetMan.Fixtures.Core.Server
                         break;
 
                     case 2:
-                        LiteBinaryTable.CheckColumn(column, "Localization.Key", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "Localization.Key", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -203,7 +203,7 @@ namespace SheetMan.Fixtures.Core.Server
                         break;
 
                     case 3:
-                        LiteBinaryTable.CheckColumn(column, "Localization.TextEn_array", LiteBinaryTable.KindFixedArray, 2, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "Localization.TextEn_array", ScbTable.KindFixedArray, 2, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -216,7 +216,7 @@ namespace SheetMan.Fixtures.Core.Server
                         break;
 
                     case 4:
-                        LiteBinaryTable.CheckColumn(column, "Localization.TextKo_array", LiteBinaryTable.KindFixedArray, 2, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "Localization.TextKo_array", ScbTable.KindFixedArray, 2, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -235,7 +235,7 @@ namespace SheetMan.Fixtures.Core.Server
                         break;
                 }
 
-                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
+                ScbTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a

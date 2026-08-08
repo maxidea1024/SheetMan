@@ -11,12 +11,12 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/JobType.php';
 require_once __DIR__ . '/../enums/GradeType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -121,7 +121,7 @@ final class EquipItemClassTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -137,140 +137,140 @@ final class EquipItemClassTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.NameKR', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.NameKR', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->nameKR = $reader->readString();
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.Type', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->type = JobType::tryFrom($reader->readEnum()) ?? JobType::None;
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.Grade', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.Grade', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->grade = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
                     }
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.TranscendStep', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.TranscendStep', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->transcendStep = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.MaterialType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.MaterialType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->materialType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.MaterialValue', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.MaterialValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->materialValue = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 9:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.WeaponStatRate1', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.WeaponStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->weaponStatRate1 = $reader->readFloat();
                     }
                     break;
 
                 case 10:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.WeaponStatRate2', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.WeaponStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->weaponStatRate2 = $reader->readFloat();
                     }
                     break;
 
                 case 11:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.ArmorStatRate1', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.ArmorStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->armorStatRate1 = $reader->readFloat();
                     }
                     break;
 
                 case 12:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.ArmorStatRate2', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.ArmorStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->armorStatRate2 = $reader->readFloat();
                     }
                     break;
 
                 case 13:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.GauntletStatRate1', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.GauntletStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->gauntletStatRate1 = $reader->readFloat();
                     }
                     break;
 
                 case 14:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.GauntletStatRate2', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.GauntletStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->gauntletStatRate2 = $reader->readFloat();
                     }
                     break;
 
                 case 15:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.BootsStatRate1', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.BootsStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->bootsStatRate1 = $reader->readFloat();
                     }
                     break;
 
                 case 16:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.BootsStatRate2', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.BootsStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->bootsStatRate2 = $reader->readFloat();
                     }
                     break;
 
                 case 17:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.HelmetStatRate1', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.HelmetStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->helmetStatRate1 = $reader->readFloat();
                     }
                     break;
 
                 case 18:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.HelmetStatRate2', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.HelmetStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->helmetStatRate2 = $reader->readFloat();
                     }
                     break;
 
                 case 19:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.AccStatRate1', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.AccStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->accStatRate1 = $reader->readFloat();
                     }
                     break;
 
                 case 20:
-                    LiteBinaryReader::checkColumn($column, 'EquipItemClass.AccStatRate2', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'EquipItemClass.AccStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->accStatRate2 = $reader->readFloat();
                     }

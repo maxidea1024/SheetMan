@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-require_once __DIR__ . '/../sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/DungeonType.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -121,7 +121,7 @@ final class GoldDungeonStageTable
      */
     public function read(string $filename): void
     {
-        $reader = LiteBinaryReader::fromFile($filename);
+        $reader = ScbReader::fromFile($filename);
         [$count, $columns] = $reader->readTableHeader();
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -137,49 +137,49 @@ final class GoldDungeonStageTable
 
             switch ($column['tag']) {
                 case 1:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.Id', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->id = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 2:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.Name', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->name = $reader->readString();
                     }
                     break;
 
                 case 3:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.StageName', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.StageName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->stageName = $reader->readString();
                     }
                     break;
 
                 case 4:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.DungeonType', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.DungeonType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->dungeonType = DungeonType::tryFrom($reader->readEnum()) ?? DungeonType::None;
                     }
                     break;
 
                 case 5:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.DungeonFloor', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.DungeonFloor', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->dungeonFloor = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 6:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.TimeLimit', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.TimeLimit', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->timeLimit = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 7:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.SpawnIds', LiteBinaryReader::KIND_VAR_ARRAY, 0, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.SpawnIds', ScbReader::KIND_VAR_ARRAY, 0, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $elementCount = $reader->readCounter32();
                         $record->spawnIds = [];
@@ -190,7 +190,7 @@ final class GoldDungeonStageTable
                     break;
 
                 case 8:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.BossID', LiteBinaryReader::KIND_VAR_ARRAY, 0, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.BossID', ScbReader::KIND_VAR_ARRAY, 0, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $elementCount = $reader->readCounter32();
                         $record->bossID = [];
@@ -201,84 +201,84 @@ final class GoldDungeonStageTable
                     break;
 
                 case 9:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.SpawnPointCount', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.SpawnPointCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->spawnPointCount = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 10:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.SpawnMaxCount', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.SpawnMaxCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->spawnMaxCount = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 11:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.SpawnNextTime', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.SpawnNextTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->spawnNextTime = $reader->readFloat();
                     }
                     break;
 
                 case 12:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.StageClearCount', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.StageClearCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->stageClearCount = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 13:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.RecommendPower', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.RecommendPower', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->recommendPower = $reader->readString();
                     }
                     break;
 
                 case 14:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.RewardID', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.RewardID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
                     foreach ($records as $record) {
                         $record->rewardID = $reader->readI32As($column['element']);
                     }
                     break;
 
                 case 15:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.AtkUpPercent', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.AtkUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->atkUpPercent = $reader->readFloat();
                     }
                     break;
 
                 case 16:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.DefUpPercent', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.DefUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->defUpPercent = $reader->readFloat();
                     }
                     break;
 
                 case 17:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.MHPUpPercent', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_F32]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.MHPUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
                     foreach ($records as $record) {
                         $record->mHPUpPercent = $reader->readFloat();
                     }
                     break;
 
                 case 18:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.DungeonImagePath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.DungeonImagePath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->dungeonImagePath = $reader->readString();
                     }
                     break;
 
                 case 19:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.MonsterImagePath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.MonsterImagePath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->monsterImagePath = $reader->readString();
                     }
                     break;
 
                 case 20:
-                    LiteBinaryReader::checkColumn($column, 'GoldDungeonStage.AssetDataPath', LiteBinaryReader::KIND_SCALAR, 1, [LiteBinaryReader::ELEMENT_STRING]);
+                    ScbReader::checkColumn($column, 'GoldDungeonStage.AssetDataPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
                     foreach ($records as $record) {
                         $record->assetDataPath = $reader->readString();
                     }

@@ -37,7 +37,7 @@ namespace SheetMan.CodeGeneration;
 /// spread through string literals across several hundred lines, which made the part a
 /// reviewer cares about the part hardest to see.
 ///
-/// Reading is done by lib/cpp/sheetman/lite_binary_reader.h, which the emitted
+/// Reading is done by lib/cpp/sheetman/scb_reader.h, which the emitted
 /// header includes. That reader is the C++ half of the format the binary exporter
 /// writes, so the two have to change together.
 /// </summary>
@@ -65,7 +65,7 @@ public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGr
     }
 
     /// <summary>
-    /// Writes the LiteBinary reader beside the generated header.
+    /// Writes the Scb reader beside the generated header.
     ///
     /// Emitted rather than left in lib/cpp for the consumer to put on an include
     /// path. The generated header includes it by a relative path, so the output
@@ -78,8 +78,8 @@ public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGr
     private void WriteBinaryReaderRuntime()
     {
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Cpp.lite_binary_reader.h",
-            Path.Combine(_cppRecipe.Path, "sheetman", "lite_binary_reader.h"));
+            "SheetMan.Runtime.Cpp.scb_reader.h",
+            Path.Combine(_cppRecipe.Path, "sheetman", "scb_reader.h"));
 
         // Asked for rather than assumed. It reaches the network, and it is the only
         // emitted file that needs a link flag.
@@ -186,7 +186,7 @@ public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGr
 
     private string TableHeader(CppTableView table) => $"tables/{_cppRecipe.AccessorName}_{table.RawName.ToSnakeCase()}.h";
 
-    private const string ReaderInclude = "\"sheetman/lite_binary_reader.h\"";
+    private const string ReaderInclude = "\"sheetman/scb_reader.h\"";
 
     private string Guard(string suffix) => IncludeGuard($"{_cppRecipe.AccessorName}_{suffix}");
 

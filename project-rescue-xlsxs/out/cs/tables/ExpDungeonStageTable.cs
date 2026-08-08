@@ -254,7 +254,7 @@ namespace Rescue.Tables
         public async Task ReadAsync(string filename)
         {
             var bytes = await Tables.ReadAllBytesAsync(filename);
-            var reader = new LiteBinaryReader(bytes);
+            var reader = new ScbReader(bytes);
             await ReadAsync(reader);
         }
 
@@ -267,9 +267,9 @@ namespace Rescue.Tables
         /// changed incompatibly - fails naming the field. Order, names and columns added or
         /// removed on either side are therefore all survivable.
         /// </remarks>
-        public Task ReadAsync(LiteBinaryReader reader)
+        public Task ReadAsync(ScbReader reader)
         {
-            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            var columns = ScbTable.ReadHeader(reader, out int count);
             int tempEnumInt = 0;
 
             // Read into storage of its own and published at the end, which is what makes a
@@ -293,7 +293,7 @@ namespace Rescue.Tables
                 switch (column.Tag)
                 {
                     case 1:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.Id", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.Id", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -302,7 +302,7 @@ namespace Rescue.Tables
                         break;
 
                     case 2:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.Name", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.Name", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -311,7 +311,7 @@ namespace Rescue.Tables
                         break;
 
                     case 3:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.StageName", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.StageName", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -320,7 +320,7 @@ namespace Rescue.Tables
                         break;
 
                     case 4:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.DungeonType", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.DungeonType", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -330,7 +330,7 @@ namespace Rescue.Tables
                         break;
 
                     case 5:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.DungeonFloor", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.DungeonFloor", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -339,7 +339,7 @@ namespace Rescue.Tables
                         break;
 
                     case 6:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.TimeLimit", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.TimeLimit", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -348,7 +348,7 @@ namespace Rescue.Tables
                         break;
 
                     case 7:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.SpawnIds", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.SpawnIds", ScbTable.KindVarArray, 0, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -362,7 +362,7 @@ namespace Rescue.Tables
                         break;
 
                     case 8:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.BossID", LiteBinaryTable.KindVarArray, 0, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.BossID", ScbTable.KindVarArray, 0, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -376,7 +376,7 @@ namespace Rescue.Tables
                         break;
 
                     case 9:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.SpawnPointCount", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.SpawnPointCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -385,7 +385,7 @@ namespace Rescue.Tables
                         break;
 
                     case 10:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.SpawnMaxCount", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.SpawnMaxCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -394,7 +394,7 @@ namespace Rescue.Tables
                         break;
 
                     case 11:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.SpawnNextTime", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.SpawnNextTime", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -403,7 +403,7 @@ namespace Rescue.Tables
                         break;
 
                     case 12:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.StageClearCount", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.StageClearCount", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -412,7 +412,7 @@ namespace Rescue.Tables
                         break;
 
                     case 13:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.RecommendPower", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.RecommendPower", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -421,7 +421,7 @@ namespace Rescue.Tables
                         break;
 
                     case 14:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.RewardID", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.RewardID", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -430,7 +430,7 @@ namespace Rescue.Tables
                         break;
 
                     case 15:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.AtkUpPercent", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.AtkUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -439,7 +439,7 @@ namespace Rescue.Tables
                         break;
 
                     case 16:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.DefUpPercent", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.DefUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -448,7 +448,7 @@ namespace Rescue.Tables
                         break;
 
                     case 17:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.MHPUpPercent", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.MHPUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -457,7 +457,7 @@ namespace Rescue.Tables
                         break;
 
                     case 18:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.DungeonImagePath", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.DungeonImagePath", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -466,7 +466,7 @@ namespace Rescue.Tables
                         break;
 
                     case 19:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.MonsterImagePath", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.MonsterImagePath", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -475,7 +475,7 @@ namespace Rescue.Tables
                         break;
 
                     case 20:
-                        LiteBinaryTable.CheckColumn(column, "ExpDungeonStage.AssetDataPath", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "ExpDungeonStage.AssetDataPath", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -490,7 +490,7 @@ namespace Rescue.Tables
                         break;
                 }
 
-                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
+                ScbTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a

@@ -12,7 +12,7 @@
   tables/<table>_table.dart        테이블당 하나 (part)
   enums/<enum>.dart                enum당 하나 (part)
   constants/<set>.dart             상수 세트당 하나 (part)
-  sheetman/lite_binary_reader.dart 바이너리 리더 (함께 생성됩니다)
+  sheetman/scb_reader.dart 바이너리 리더 (함께 생성됩니다)
   sheetman/updater.dart            데이터 갱신 (WriteUpdater를 켰을 때만)
 ```
 

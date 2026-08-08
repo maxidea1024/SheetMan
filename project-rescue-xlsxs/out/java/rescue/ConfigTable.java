@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of Config. */
 public final class ConfigTable {
@@ -52,7 +52,7 @@ public final class ConfigTable {
         ConfigRecord record = byIndex.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `Config` that corresponds to field "
                 + "`Index` value " + key);
         }
@@ -86,7 +86,7 @@ public final class ConfigTable {
         ConfigRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `Config` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -106,8 +106,8 @@ public final class ConfigTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -119,47 +119,47 @@ public final class ConfigTable {
             loaded.add(new ConfigRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "Config.Index", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Config.Index", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ConfigRecord record : loaded) {
                         record.index = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "Config.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Config.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ConfigRecord record : loaded) {
                         record.id = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "Config.Category", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Config.Category", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ConfigRecord record : loaded) {
                         record.category = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "Config.DataType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Config.DataType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ConfigRecord record : loaded) {
                         record.dataType = reader.readString();
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "Config.DefaultValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Config.DefaultValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ConfigRecord record : loaded) {
                         record.defaultValue = reader.readString();
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "Config.Description", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Config.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ConfigRecord record : loaded) {
                         record.description = reader.readString();
                     }
@@ -171,7 +171,7 @@ public final class ConfigTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (ConfigRecord record : loaded) {

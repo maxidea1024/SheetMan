@@ -203,7 +203,7 @@ public class GoCodeGenerator : CodeGenerator<GoRecipe>
     }
 
     /// <summary>
-    /// Writes the LiteBinary reader into a `sheetman` package beside the generated file.
+    /// Writes the Scb reader into a `sheetman` package beside the generated file.
     ///
     /// Emitted rather than fetched, as for the other languages: the output directory is
     /// then self-contained and there is no way to pair generated code with a reader of a
@@ -212,8 +212,8 @@ public class GoCodeGenerator : CodeGenerator<GoRecipe>
     private void WriteBinaryReaderRuntime()
     {
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Go.lite_binary_reader.go",
-            System.IO.Path.Combine(_recipe.Path, "sheetman", "lite_binary_reader.go"));
+            "SheetMan.Runtime.Go.scb_reader.go",
+            System.IO.Path.Combine(_recipe.Path, "sheetman", "scb_reader.go"));
 
         // Asked for rather than assumed. It reaches the network and it is of no use to a
         // service that ships its data with its binary.

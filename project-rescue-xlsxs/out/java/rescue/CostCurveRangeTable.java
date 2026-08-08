@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of CostCurveRange. */
 public final class CostCurveRangeTable {
@@ -51,7 +51,7 @@ public final class CostCurveRangeTable {
         CostCurveRangeRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `CostCurveRange` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class CostCurveRangeTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,47 +83,47 @@ public final class CostCurveRangeTable {
             loaded.add(new CostCurveRangeRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "CostCurveRange.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CostCurveRange.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CostCurveRangeRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "CostCurveRange.GrowthType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CostCurveRange.GrowthType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CostCurveRangeRecord record : loaded) {
                         record.growthType = GrowthType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "CostCurveRange.RangeIndex", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CostCurveRange.RangeIndex", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CostCurveRangeRecord record : loaded) {
                         record.rangeIndex = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "CostCurveRange.StartStep", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CostCurveRange.StartStep", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CostCurveRangeRecord record : loaded) {
                         record.startStep = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "CostCurveRange.EndStep", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "CostCurveRange.EndStep", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CostCurveRangeRecord record : loaded) {
                         record.endStep = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "CostCurveRange.AddMultiplier", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "CostCurveRange.AddMultiplier", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (CostCurveRangeRecord record : loaded) {
                         record.addMultiplier = reader.readFloat();
                     }
@@ -135,7 +135,7 @@ public final class CostCurveRangeTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (CostCurveRangeRecord record : loaded) {

@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Rescue;
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 

@@ -9,7 +9,7 @@
 #ifndef RESCUE_STAGE_H
 #define RESCUE_STAGE_H
 
-#include "sheetman/sheetman_lite_binary_reader.h"
+#include "sheetman/sheetman_scb_reader.h"
 
 #include "Rescue_Forward.h"
 

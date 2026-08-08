@@ -12,7 +12,7 @@
 
 |위치|역할|
 |--|--|
-|`src/Exporters/LiteBinaryWriter.cs`|**포맷을 정의하는 writer.** 익스포터 내부에 있고 외부 의존이 없습니다.|
+|`src/Exporters/ScbWriter.cs`|**포맷을 정의하는 writer.** 익스포터 내부에 있고 외부 의존이 없습니다.|
 |`lib/<언어>/sheetman/...`|언어별 리더. `cs` `cpp` `c` `ts` `go` `rust` `python` `java` `kotlin` `ruby` `php` `dart` `unreal` 13개|
 
 테이블 리더가 `lib/` 아래에 실제 파일로 존재하는 이유는 편집과 리뷰가 가능해야 하기 때문이고, 임베디드 리소스로 읽어 쓰는 이유는 배포본과 커밋된 소스가 어긋날 수 없게 하기 위함입니다.

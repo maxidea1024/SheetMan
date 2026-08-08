@@ -67,7 +67,7 @@ class {{ table.table_name }} {
      * naming the field.
      */
     fun read(filename: String) {
-        val reader = LiteBinaryReader(readAllBytes(filename))
+        val reader = ScbReader(readAllBytes(filename))
         val header = readTableHeader(reader)
         val count = header.rowCount
 

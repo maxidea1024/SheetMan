@@ -12,7 +12,7 @@
   tables/<Table>Table.php          테이블당 하나
   enums/<Enum>.php                 enum당 하나 (PHP 8.1 backed enum)
   constants/<Set>.php              상수 세트당 하나
-  sheetman/LiteBinaryReader.php    바이너리 리더 (함께 생성됩니다)
+  sheetman/ScbReader.php    바이너리 리더 (함께 생성됩니다)
   sheetman/SheetManUpdater.php     데이터 갱신 (WriteUpdater를 켰을 때만)
 ```
 

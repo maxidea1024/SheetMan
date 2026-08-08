@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of SDTrainingLevel. */
 public final class SDTrainingLevelTable {
@@ -51,7 +51,7 @@ public final class SDTrainingLevelTable {
         SDTrainingLevelRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `SDTrainingLevel` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class SDTrainingLevelTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,75 +83,75 @@ public final class SDTrainingLevelTable {
             loaded.add(new SDTrainingLevelRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.LevelName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.LevelName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.levelName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.CurrencyValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.CurrencyValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.currencyValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.CurrencyResult", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.CurrencyResult", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.currencyResult = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.MHPGrowth", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.MHPGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.mHPGrowth = reader.readFloat();
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.MHPTotal", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.MHPTotal", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.mHPTotal = reader.readFloat();
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.DEFGrowth", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.DEFGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.dEFGrowth = reader.readFloat();
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.DEFTotal", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.DEFTotal", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.dEFTotal = reader.readFloat();
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "SDTrainingLevel.CommonUnlockStageID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDTrainingLevel.CommonUnlockStageID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDTrainingLevelRecord record : loaded) {
                         record.commonUnlockStageID = reader.readI32As(column.element);
                     }
@@ -163,7 +163,7 @@ public final class SDTrainingLevelTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (SDTrainingLevelRecord record : loaded) {

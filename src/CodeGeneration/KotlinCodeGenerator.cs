@@ -155,8 +155,8 @@ public class KotlinCodeGenerator : CodeGenerator<KotlinRecipe>
     private void WriteBinaryReaderRuntime()
     {
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Kotlin.LiteBinaryReader.kt",
-            System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.kt"));
+            "SheetMan.Runtime.Kotlin.ScbReader.kt",
+            System.IO.Path.Combine(_recipe.Path, "sheetman", "ScbReader.kt"));
 
         // Asked for rather than assumed. It reaches the network and it is of no use to a
         // program that ships its data alongside its code.

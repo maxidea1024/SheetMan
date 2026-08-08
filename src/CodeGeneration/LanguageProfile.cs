@@ -556,7 +556,7 @@ public sealed class LanguageProfile
             { ValueType.Double, "double" },
             { ValueType.DateTime, "long" },
             { ValueType.TimeSpan, "long" },
-            { ValueType.Uuid, "LiteBinaryReader.Uuid" },
+            { ValueType.Uuid, "ScbReader.Uuid" },
         },
         "{0}[]",
 

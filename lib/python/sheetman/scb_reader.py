@@ -1,0 +1,359 @@
+# SheetMan's binary reader.
+#
+# Copied in beside the generated accessor so the emitted code needs nothing
+# installed. Edit it in the SheetMan repository.
+#
+#
+# Reads the .scb files SheetMan's binary exporter writes:
+#
+#   fixed8      one byte
+#   fixed32     four bytes, little endian
+#   fixed64     eight bytes, little endian
+#   varint32    seven bits per byte, high bit set while more bytes follow,
+#               at most five bytes
+#   counter32   zig-zag encoded int32 written as a varint32
+#   string      counter32 byte length, then that many UTF-8 bytes
+#
+# One of several readers of one format the exporter defines. The conformance corpus is
+# what keeps them agreeing.
+#
+# Two things about Python are worth knowing here. Its int is arbitrary precision, so a
+# 64-bit value needs no special handling on the way in - unlike JavaScript, where the
+# same value silently rounds. And it has no single-precision float, so a float32 read
+# widens to a double; the value is exactly the one that was stored, just held in a
+# wider type, and writing it back out at single precision is the caller's business.
+
+import struct
+
+# Stamped at the head of every table file by the exporter.
+# The format is column-oriented and self-describing: the header names every column
+# and how long its block is, and a reader that meets a version it does not know stops
+# rather than guessing.
+FORMAT_VERSION = 101
+
+# The wire's element types and kinds, as a column descriptor spells them.
+ELEMENT_VARINT = 0
+ELEMENT_BOOL = 1
+ELEMENT_I32 = 2
+ELEMENT_I64 = 3
+ELEMENT_F32 = 4
+ELEMENT_F64 = 5
+ELEMENT_STRING = 6
+ELEMENT_UUID = 7
+
+KIND_SCALAR = 0
+KIND_FIXED_ARRAY = 1
+KIND_VAR_ARRAY = 2
+
+
+class Column:
+    """One column as the file describes it."""
+
+    __slots__ = ("tag", "element", "kind", "count", "byte_length")
+
+    def __init__(self, tag, element, kind, count, byte_length):
+        self.tag = tag
+        self.element = element
+        self.kind = kind
+        self.count = count
+        self.byte_length = byte_length
+
+
+class ScbError(Exception):
+    """A table file is truncated, malformed, or not a table file."""
+
+
+class RecordNotFoundError(Exception):
+    """A lookup for a key no row carries.
+
+    Raised by the generated `get_by_*_or_throw` lookups, which is where a caller has
+    said the key has to be there. `find_by_*` answers the same question with None.
+
+    Its own type rather than ScbError: nothing is wrong with the file, and a
+    caller catching one of these is not catching the other.
+    """
+
+
+class Uuid:
+    """A 128 bit identifier, stored in .NET Guid byte order.
+
+    That order is not plain big-endian: the first three components are little endian
+    and the trailing eight bytes are not, which is what __str__ has to account for.
+    """
+
+    # Component order matching .NET's Guid.ToString("D").
+    _ORDER = (3, 2, 1, 0, 5, 4, 7, 6, 8, 9, 10, 11, 12, 13, 14, 15)
+
+    __slots__ = ("raw",)
+
+    def __init__(self, raw=None):
+        self.raw = bytes(raw) if raw is not None else bytes(16)
+
+    def __str__(self):
+        out = []
+
+        for position, index in enumerate(self._ORDER):
+            if position in (4, 6, 8, 10):
+                out.append("-")
+
+            out.append("%02x" % self.raw[index])
+
+        return "".join(out)
+
+    def __repr__(self):
+        return "Uuid('%s')" % self
+
+    def __eq__(self, other):
+        return isinstance(other, Uuid) and self.raw == other.raw
+
+    def __hash__(self):
+        return hash(self.raw)
+
+
+class Reader:
+    """Sequential reader over a table file's bytes.
+
+    Every read either advances the cursor or raises, so a caller need not check a
+    return value.
+    """
+
+    __slots__ = ("_data", "_position")
+
+    def __init__(self, data):
+        self._data = data
+        self._position = 0
+
+    @property
+    def position(self):
+        """Bytes consumed so far."""
+        return self._position
+
+    @property
+    def remaining(self):
+        """Bytes left to read."""
+        return len(self._data) - self._position
+
+    def _take(self, count):
+        if self.remaining < count:
+            raise ScbError(
+                "table data ended after %d of %d bytes while %d more were expected"
+                % (self._position, len(self._data), count))
+
+        start = self._position
+        self._position += count
+
+        return self._data[start:self._position]
+
+    def read_uint8(self):
+        return self._take(1)[0]
+
+    def read_bool(self):
+        return self.read_uint8() != 0
+
+    def read_int32(self):
+        return struct.unpack_from("<i", self._take(4))[0]
+
+    def read_uint32(self):
+        return struct.unpack_from("<I", self._take(4))[0]
+
+    def read_int64(self):
+        return struct.unpack_from("<q", self._take(8))[0]
+
+    def read_float(self):
+        """A single-precision value.
+
+        Read as its stored bit pattern and widened to Python's float, which is a
+        double. The value is exactly the one that was stored; printing it at double
+        precision shows digits the original 32 bits never carried, which is why the
+        conformance comparison narrows before comparing.
+        """
+        return struct.unpack_from("<f", self._take(4))[0]
+
+    def read_double(self):
+        return struct.unpack_from("<d", self._take(8))[0]
+
+    def read_string(self):
+        length = self.read_counter32()
+
+        if length < 0:
+            raise ScbError("string length is negative")
+
+        if length == 0:
+            return ""
+
+        return self._take(length).decode("utf-8")
+
+    def skip(self, byte_count):
+        """Advances past bytes without interpreting them: an unknown column's block.
+
+        The column-oriented layout is what makes this one call the entirety of skipping.
+        """
+        if byte_count < 0 or byte_count > self.remaining:
+            raise ScbError(
+                "cannot skip %d bytes with %d remaining" % (byte_count, self.remaining))
+        self._position += byte_count
+
+    # Promotions: a member reading a file element narrower than itself. Only the
+    # mathematically lossless directions exist; check_column already refused the rest.
+
+    def read_i32_as(self, element):
+        """An int32 member from i32 or varint."""
+        return self.read_int32() if element == ELEMENT_I32 else self.read_counter32()
+
+    def read_i64_as(self, element):
+        """An int64 member from i64, i32 or varint."""
+        if element == ELEMENT_I64:
+            return self.read_int64()
+        if element == ELEMENT_I32:
+            return self.read_int32()
+        return self.read_counter32()
+
+    def read_f64_as(self, element):
+        """A double member from f64, f32 or i32 - all exact in a double."""
+        if element == ELEMENT_F64:
+            return self.read_double()
+        if element == ELEMENT_F32:
+            return self.read_float()
+        return self.read_int32()
+
+    def read_datetime_ticks(self):
+        """A timestamp as .NET ticks: 100 ns units since 0001-01-01.
+
+        Ticks rather than a datetime, because the corpus reaches 0001-01-01 and
+        9999-12-31 and a tick is finer than datetime's microsecond, so the conversion
+        would lose both ends and the last two digits.
+        """
+        return self.read_int64()
+
+    def read_duration_ticks(self):
+        """A duration as .NET ticks.
+
+        Ticks rather than a timedelta: TimeSpan.MaxValue is about 29,000 years and
+        timedelta tops out near 2,700,000 days.
+        """
+        return self.read_int64()
+
+    def read_uuid(self):
+        return Uuid(self._take(16))
+
+    def read_optimal_int32(self):
+        """An int32 written in as few bytes as its magnitude needed, either sign."""
+        encoded = self._read_varint32()
+
+        # Undoes the zig-zag fold: the low bit carried the sign.
+        return (encoded >> 1) ^ -(encoded & 1)
+
+    def read_counter32(self):
+        """A count, in the same encoding as read_optimal_int32."""
+        return self.read_optimal_int32()
+
+    def read_enum(self):
+        """An enum value, which travels zig-zag encoded rather than fixed width."""
+        return self.read_optimal_int32()
+
+    def _read_varint32(self):
+        value = 0
+
+        for shift in range(0, 35, 7):
+            byte = self.read_uint8()
+            value |= (byte & 0x7F) << shift
+
+            if not byte & 0x80:
+                return value
+
+        raise ScbError("varint32 is longer than five bytes")
+
+
+def read_table_header(reader):
+    """Reads and checks a table file's header.
+
+    Returns (row_count, columns): the column descriptors the data blocks follow.
+    """
+    version = reader.read_uint32()
+    if version != FORMAT_VERSION:
+        raise ScbError(
+            "table format version %d is not supported (expected %d)"
+            % (version, FORMAT_VERSION))
+
+    if reader.read_uint8() != 0:
+        raise ScbError("table declares unsupported features")
+
+    count = reader.read_counter32()
+    if count < 0:
+        raise ScbError("table row count is negative")
+
+    column_count = reader.read_counter32()
+    if column_count < 0:
+        raise ScbError("table column count is negative")
+
+    columns = []
+    for _ in range(column_count):
+        tag = reader.read_counter32()
+        wire = reader.read_uint8()
+        element_count = reader.read_counter32()
+        byte_length = reader.read_uint32()
+        columns.append(Column(tag, wire & 0x0F, (wire >> 4) & 0x03, element_count, byte_length))
+
+    # What the descriptors say about the file, checked before anybody allocates for the
+    # row count. The blocks are all that follows the header, so their declared lengths have
+    # to add up to the bytes left, and every row costs at least one byte in every block - a
+    # varint's shortest form, an empty string's length prefix, a variable array's counter.
+    # A row count larger than that is one the exporter could not have written.
+
+    available = reader.remaining
+    declared = 0
+
+    for column in columns:
+        if column.byte_length < 0 or column.byte_length > available - declared:
+            raise ScbError(
+                "column tag %d declares %d bytes, which the file cannot hold"
+                % (column.tag, column.byte_length))
+
+        declared += column.byte_length
+
+        if count > column.byte_length:
+            raise ScbError(
+                "the row count %d is larger than column tag %d can hold in its %d bytes"
+                % (count, column.tag, column.byte_length))
+
+    if declared != available:
+        raise ScbError(
+            "the columns declare %d bytes but %d follow the header" % (declared, available))
+
+    return count, columns
+
+
+def check_column(column, field_name, kind, count, accepted):
+    """That a column is what the generated member expects, or a lossless promotion.
+
+    Refusal is by name and both types, never by reading anyway.
+    """
+    if column.kind != kind or (kind != KIND_VAR_ARRAY and column.count != count):
+        raise ScbError(
+            "%s: the file's column (kind %d, count %d) does not match the generated member "
+            "(kind %d, count %d). The schema changed shape; regenerate the code or rebuild "
+            "the data." % (field_name, column.kind, column.count, kind, count))
+
+    if column.element not in accepted:
+        raise ScbError(
+            "%s: the file carries element type %d, which this member cannot read "
+            "(accepts %s). The column changed type incompatibly; regenerate the code or "
+            "rebuild the data." % (field_name, column.element, accepted))
+
+
+def check_block_end(reader, column, expected_end):
+    """That a block was consumed exactly.
+
+    A mismatch is a format disagreement, and stopping here names the column instead of
+    corrupting the next.
+    """
+    if reader.position != expected_end:
+        raise ScbError(
+            "column tag %d: its block declared %d bytes but the read ended %d bytes short "
+            "of its boundary" % (column.tag, column.byte_length, expected_end - reader.position))
+
+
+def read_all_bytes(filename):
+    """Reads a whole file into memory."""
+    with open(filename, "rb") as handle:
+        return handle.read()

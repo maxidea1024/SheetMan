@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of RelicDungeonStage. */
 public final class RelicDungeonStageTable {
@@ -51,7 +51,7 @@ public final class RelicDungeonStageTable {
         RelicDungeonStageRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `RelicDungeonStage` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class RelicDungeonStageTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,54 +83,54 @@ public final class RelicDungeonStageTable {
             loaded.add(new RelicDungeonStageRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.StageName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.StageName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.stageName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.DungeonType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.DungeonType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.dungeonType = DungeonType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.DungeonFloor", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.DungeonFloor", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.dungeonFloor = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.TimeLimit", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.TimeLimit", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.timeLimit = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.SpawnIds", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.SpawnIds", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.spawnIds = new int[elementCount];
@@ -141,7 +141,7 @@ public final class RelicDungeonStageTable {
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.BossID", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.BossID", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.bossID = new int[elementCount];
@@ -152,84 +152,84 @@ public final class RelicDungeonStageTable {
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.SpawnPointCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.SpawnPointCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.spawnPointCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.SpawnMaxCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.SpawnMaxCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.spawnMaxCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.SpawnNextTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.SpawnNextTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.spawnNextTime = reader.readFloat();
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.StageClearCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.StageClearCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.stageClearCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.RecommendPower", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.RecommendPower", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.recommendPower = reader.readString();
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.RewardID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.RewardID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.rewardID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.AtkUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.AtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.atkUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.DefUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.DefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.defUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.MHPUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.MHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.mHPUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 18: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.DungeonImagePath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.DungeonImagePath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.dungeonImagePath = reader.readString();
                     }
                     break;
                 }
                 case 19: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.MonsterImagePath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.MonsterImagePath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.monsterImagePath = reader.readString();
                     }
                     break;
                 }
                 case 20: {
-                    LiteBinaryReader.checkColumn(column, "RelicDungeonStage.AssetDataPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "RelicDungeonStage.AssetDataPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicDungeonStageRecord record : loaded) {
                         record.assetDataPath = reader.readString();
                     }
@@ -241,7 +241,7 @@ public final class RelicDungeonStageTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (RelicDungeonStageRecord record : loaded) {

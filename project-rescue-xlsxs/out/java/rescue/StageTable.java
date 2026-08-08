@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of Stage. */
 public final class StageTable {
@@ -51,7 +51,7 @@ public final class StageTable {
         StageRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `Stage` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class StageTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,40 +83,40 @@ public final class StageTable {
             loaded.add(new StageRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "Stage.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Stage.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (StageRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "Stage.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Stage.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (StageRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "Stage.StageName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Stage.StageName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (StageRecord record : loaded) {
                         record.stageName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "Stage.AssetDataPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Stage.AssetDataPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (StageRecord record : loaded) {
                         record.assetDataPath = reader.readString();
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "Stage.SpawnIds", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Stage.SpawnIds", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (StageRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.spawnIds = new int[elementCount];
@@ -127,35 +127,35 @@ public final class StageTable {
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "Stage.SpawnPointCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Stage.SpawnPointCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (StageRecord record : loaded) {
                         record.spawnPointCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "Stage.SpawnMaxCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Stage.SpawnMaxCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (StageRecord record : loaded) {
                         record.spawnMaxCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "Stage.SpawnNextTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Stage.SpawnNextTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (StageRecord record : loaded) {
                         record.spawnNextTime = reader.readFloat();
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "Stage.StageClearCount", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Stage.StageClearCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (StageRecord record : loaded) {
                         record.stageClearCount = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "Stage.BossID", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Stage.BossID", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (StageRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.bossID = new int[elementCount];
@@ -166,63 +166,63 @@ public final class StageTable {
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "Stage.AtkUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Stage.AtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (StageRecord record : loaded) {
                         record.atkUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "Stage.DefUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Stage.DefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (StageRecord record : loaded) {
                         record.defUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "Stage.MHPUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Stage.MHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (StageRecord record : loaded) {
                         record.mHPUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "Stage.BossAtkUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Stage.BossAtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (StageRecord record : loaded) {
                         record.bossAtkUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "Stage.BossDefUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Stage.BossDefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (StageRecord record : loaded) {
                         record.bossDefUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "Stage.BossMHPUpPercent", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Stage.BossMHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (StageRecord record : loaded) {
                         record.bossMHPUpPercent = reader.readFloat();
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "Stage.StageDropListID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Stage.StageDropListID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (StageRecord record : loaded) {
                         record.stageDropListID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 18: {
-                    LiteBinaryReader.checkColumn(column, "Stage.StageBGMID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Stage.StageBGMID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (StageRecord record : loaded) {
                         record.stageBGMID = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 19: {
-                    LiteBinaryReader.checkColumn(column, "Stage.BossStageBGMID", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Stage.BossStageBGMID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (StageRecord record : loaded) {
                         record.bossStageBGMID = reader.readI32As(column.element);
                     }
@@ -234,7 +234,7 @@ public final class StageTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (StageRecord record : loaded) {

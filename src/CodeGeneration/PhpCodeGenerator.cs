@@ -124,7 +124,7 @@ public class PhpCodeGenerator : CodeGenerator<PhpRecipe>
         Log.Information($"Generating codes for PHP into `{System.IO.Path.GetFullPath(_recipe.Path)}`");
 
         // Root level, so the reader is one directory down and the parts are beside it.
-        var accessorRequires = new List<string> { Require(0, "sheetman/LiteBinaryReader.php") };
+        var accessorRequires = new List<string> { Require(0, "sheetman/ScbReader.php") };
 
         accessorRequires.AddRange(view.Enums.Select(e => Require(0, $"enums/{e.Name}.php")));
         accessorRequires.AddRange(view.ConstantSets.Select(s => Require(0, $"constants/{s.Name}.php")));
@@ -141,7 +141,7 @@ public class PhpCodeGenerator : CodeGenerator<PhpRecipe>
         foreach (var pair in _model.Tables.Zip(view.Tables, (model, rendered) => (model, rendered)))
         {
             // One directory down, and it needs whatever enums its properties name.
-            var requires = new List<string> { Require(1, "sheetman/LiteBinaryReader.php") };
+            var requires = new List<string> { Require(1, "sheetman/ScbReader.php") };
 
             requires.AddRange(TypeDependencies.EnumsNamedBy(pair.model)
                 .Select(enumm => Require(1, $"enums/{EnumName(enumm)}.php")));
@@ -206,8 +206,8 @@ public class PhpCodeGenerator : CodeGenerator<PhpRecipe>
     private void WriteBinaryReaderRuntime()
     {
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Php.LiteBinaryReader.php",
-            System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.php"));
+            "SheetMan.Runtime.Php.ScbReader.php",
+            System.IO.Path.Combine(_recipe.Path, "sheetman", "ScbReader.php"));
 
         // Asked for rather than assumed. It reaches the network, it wants `ext-curl`,
         // and it is of no use to a program that ships its data alongside its code.
@@ -404,43 +404,43 @@ public class PhpCodeGenerator : CodeGenerator<PhpRecipe>
     private static string ColumnCheck(SerialField sf, string tableName)
     {
         string kind = sf.IsVariableLengthArray
-            ? "LiteBinaryReader::KIND_VAR_ARRAY"
-            : (sf.Fields.Count > 1 ? "LiteBinaryReader::KIND_FIXED_ARRAY" : "LiteBinaryReader::KIND_SCALAR");
+            ? "ScbReader::KIND_VAR_ARRAY"
+            : (sf.Fields.Count > 1 ? "ScbReader::KIND_FIXED_ARRAY" : "ScbReader::KIND_SCALAR");
 
         int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
 
         string accepted;
 
         if (sf.IsRef)
-            accepted = "LiteBinaryReader::ELEMENT_I32";
+            accepted = "ScbReader::ELEMENT_I32";
         else
         {
             switch (sf.ElementType)
             {
                 case ValueType.Int32:
-                    accepted = "LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT"; break;
+                    accepted = "ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT"; break;
                 case ValueType.Int64:
-                    accepted = "LiteBinaryReader::ELEMENT_I64, LiteBinaryReader::ELEMENT_I32, LiteBinaryReader::ELEMENT_VARINT"; break;
+                    accepted = "ScbReader::ELEMENT_I64, ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT"; break;
                 case ValueType.Double:
-                    accepted = "LiteBinaryReader::ELEMENT_F64, LiteBinaryReader::ELEMENT_F32, LiteBinaryReader::ELEMENT_I32"; break;
-                case ValueType.Float: accepted = "LiteBinaryReader::ELEMENT_F32"; break;
-                case ValueType.Bool: accepted = "LiteBinaryReader::ELEMENT_BOOL"; break;
-                case ValueType.String: accepted = "LiteBinaryReader::ELEMENT_STRING"; break;
-                case ValueType.Uuid: accepted = "LiteBinaryReader::ELEMENT_UUID"; break;
-                case ValueType.Enum: accepted = "LiteBinaryReader::ELEMENT_VARINT"; break;
+                    accepted = "ScbReader::ELEMENT_F64, ScbReader::ELEMENT_F32, ScbReader::ELEMENT_I32"; break;
+                case ValueType.Float: accepted = "ScbReader::ELEMENT_F32"; break;
+                case ValueType.Bool: accepted = "ScbReader::ELEMENT_BOOL"; break;
+                case ValueType.String: accepted = "ScbReader::ELEMENT_STRING"; break;
+                case ValueType.Uuid: accepted = "ScbReader::ELEMENT_UUID"; break;
+                case ValueType.Enum: accepted = "ScbReader::ELEMENT_VARINT"; break;
 
                 // Ticks are exact i64: reading an int as a datetime would be lossless
                 // and semantically wrong, so no promotion.
                 case ValueType.DateTime:
                 case ValueType.TimeSpan:
-                    accepted = "LiteBinaryReader::ELEMENT_I64"; break;
+                    accepted = "ScbReader::ELEMENT_I64"; break;
 
                 default:
                     throw new SheetManException($"The php generator cannot check type `{sf.Type}`.");
             }
         }
 
-        return $"LiteBinaryReader::checkColumn($column, '{tableName}.{sf.Name}', {kind}, {count}, [{accepted}]);";
+        return $"ScbReader::checkColumn($column, '{tableName}.{sf.Name}', {kind}, {count}, [{accepted}]);";
     }
 
     private static string ReadKind(SerialField sf)

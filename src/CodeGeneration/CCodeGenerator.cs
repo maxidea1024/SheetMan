@@ -292,7 +292,7 @@ public class CCodeGenerator : CodeGenerator<CRecipe>
         var lines = new List<string>();
 
         if (reader)
-            lines.Add("#include \"sheetman/sheetman_lite_binary_reader.h\"");
+            lines.Add("#include \"sheetman/sheetman_scb_reader.h\"");
 
         var own = headers.Distinct().ToList();
 
@@ -340,8 +340,8 @@ public class CCodeGenerator : CodeGenerator<CRecipe>
     private void WriteBinaryReaderRuntime()
     {
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.C.sheetman_lite_binary_reader.h",
-            System.IO.Path.Combine(_recipe.Path, "sheetman", "sheetman_lite_binary_reader.h"));
+            "SheetMan.Runtime.C.sheetman_scb_reader.h",
+            System.IO.Path.Combine(_recipe.Path, "sheetman", "sheetman_scb_reader.h"));
 
         if (_recipe.WriteUpdater)
         {

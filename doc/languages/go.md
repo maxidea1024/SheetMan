@@ -13,7 +13,7 @@
   <table>_table.go                테이블당 하나
   enum_<enum>.go                  enum당 하나
   const_<set>.go                  상수 세트당 하나
-  sheetman/lite_binary_reader.go  바이너리 리더 (함께 생성됩니다)
+  sheetman/scb_reader.go  바이너리 리더 (함께 생성됩니다)
 ```
 
 파일은 폴더 하나에 평평하게 놓입니다. Go에서는 디렉터리가 곧 패키지라 하위 폴더는 다른 패키지가 되고, 그러면 생성된 타입끼리 서로를 import해야 하기 때문입니다. 이름이 그 구분을 대신합니다.

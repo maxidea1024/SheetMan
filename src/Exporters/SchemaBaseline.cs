@@ -247,9 +247,9 @@ public class SchemaBaseline
             columns[sf.FirstField.Tag.Value.ToString()] = new Column
             {
                 Name = sf.Name,
-                Element = LiteBinaryFormat.ElementFor(sf),
-                Kind = LiteBinaryFormat.KindFor(sf),
-                Count = LiteBinaryFormat.CountFor(sf),
+                Element = ScbFormat.ElementFor(sf),
+                Kind = ScbFormat.KindFor(sf),
+                Count = ScbFormat.CountFor(sf),
                 ExplicitTag = table.HasExplicitTags,
             };
         }
@@ -262,21 +262,21 @@ public class SchemaBaseline
     {
         string element = column.Element switch
         {
-            LiteBinaryFormat.ElementVarint => "a varint",
-            LiteBinaryFormat.ElementBool => "a bool",
-            LiteBinaryFormat.ElementI32 => "a 32 bit integer",
-            LiteBinaryFormat.ElementI64 => "a 64 bit integer",
-            LiteBinaryFormat.ElementF32 => "a single",
-            LiteBinaryFormat.ElementF64 => "a double",
-            LiteBinaryFormat.ElementString => "a string",
-            LiteBinaryFormat.ElementUuid => "a uuid",
+            ScbFormat.ElementVarint => "a varint",
+            ScbFormat.ElementBool => "a bool",
+            ScbFormat.ElementI32 => "a 32 bit integer",
+            ScbFormat.ElementI64 => "a 64 bit integer",
+            ScbFormat.ElementF32 => "a single",
+            ScbFormat.ElementF64 => "a double",
+            ScbFormat.ElementString => "a string",
+            ScbFormat.ElementUuid => "a uuid",
             _ => $"element type {column.Element}",
         };
 
         return column.Kind switch
         {
-            LiteBinaryFormat.KindFixedArray => $"{column.Count} of {element}",
-            LiteBinaryFormat.KindVarArray => $"a variable length array of {element}",
+            ScbFormat.KindFixedArray => $"{column.Count} of {element}",
+            ScbFormat.KindVarArray => $"a variable length array of {element}",
             _ => element,
         };
     }

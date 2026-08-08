@@ -12,7 +12,7 @@
   tables/<table>_table.rb          테이블당 하나
   enums/<enum>.rb                  enum당 하나
   constants/<set>.rb               상수 세트당 하나
-  sheetman/lite_binary_reader.rb   바이너리 리더 (함께 생성됩니다)
+  sheetman/scb_reader.rb   바이너리 리더 (함께 생성됩니다)
   sheetman/updater.rb              데이터 갱신 (WriteUpdater를 켰을 때만)
 ```
 

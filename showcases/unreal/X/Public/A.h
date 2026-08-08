@@ -11,7 +11,7 @@
 #include "UObject/ObjectMacros.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
-#include "SheetManLiteBinaryReader.h"
+#include "SheetManScbReader.h"
 
 // Must be the last include. UHT requires it, and moving it produces an error that
 // names some other line entirely.

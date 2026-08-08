@@ -55,7 +55,7 @@
 
   <ItemGroup>
     <!--
-      The LiteBinary readers, embedded so the generators can write them into their
+      The Scb readers, embedded so the generators can write them into their
       output. Each generated target is then self-contained: nothing to install, no
       include path to configure, and no chance of a consumer pairing generated code
       with a reader of a different vintage.
@@ -63,52 +63,52 @@
       One copy of each source, living under lib/ for anyone reading or editing it
       directly, so what ships cannot drift from what is committed.
     -->
-    <EmbeddedResource Include="..\lib\ts\sheetman\lite_binary_reader.ts"
-                      LogicalName="SheetMan.Runtime.Ts.lite_binary_reader.ts" />
+    <EmbeddedResource Include="..\lib\ts\sheetman\scb_reader.ts"
+                      LogicalName="SheetMan.Runtime.Ts.scb_reader.ts" />
     <EmbeddedResource Include="..\lib\ts\sheetman\updater.ts"
                       LogicalName="SheetMan.Runtime.Ts.updater.ts" />
-    <EmbeddedResource Include="..\lib\cs\sheetman\LiteBinaryReader.cs"
-                      LogicalName="SheetMan.Runtime.Cs.LiteBinaryReader.cs" />
+    <EmbeddedResource Include="..\lib\cs\sheetman\ScbReader.cs"
+                      LogicalName="SheetMan.Runtime.Cs.ScbReader.cs" />
     <EmbeddedResource Include="..\lib\cs\sheetman\SheetManUpdater.cs"
                       LogicalName="SheetMan.Runtime.Cs.SheetManUpdater.cs" />
-    <EmbeddedResource Include="..\lib\cpp\sheetman\lite_binary_reader.h"
-                      LogicalName="SheetMan.Runtime.Cpp.lite_binary_reader.h" />
+    <EmbeddedResource Include="..\lib\cpp\sheetman\scb_reader.h"
+                      LogicalName="SheetMan.Runtime.Cpp.scb_reader.h" />
     <EmbeddedResource Include="..\lib\cpp\sheetman\updater.h"
                       LogicalName="SheetMan.Runtime.Cpp.updater.h" />
-    <EmbeddedResource Include="..\lib\go\sheetman\lite_binary_reader.go"
-                      LogicalName="SheetMan.Runtime.Go.lite_binary_reader.go" />
+    <EmbeddedResource Include="..\lib\go\sheetman\scb_reader.go"
+                      LogicalName="SheetMan.Runtime.Go.scb_reader.go" />
     <EmbeddedResource Include="..\lib\go\sheetman\updater.go"
                       LogicalName="SheetMan.Runtime.Go.updater.go" />
-    <EmbeddedResource Include="..\lib\rust\sheetman\lite_binary_reader.rs"
-                      LogicalName="SheetMan.Runtime.Rust.lite_binary_reader.rs" />
+    <EmbeddedResource Include="..\lib\rust\sheetman\scb_reader.rs"
+                      LogicalName="SheetMan.Runtime.Rust.scb_reader.rs" />
     <EmbeddedResource Include="..\lib\rust\sheetman\updater.rs"
                       LogicalName="SheetMan.Runtime.Rust.updater.rs" />
-    <EmbeddedResource Include="..\lib\python\sheetman\lite_binary_reader.py"
-                      LogicalName="SheetMan.Runtime.Python.lite_binary_reader.py" />
+    <EmbeddedResource Include="..\lib\python\sheetman\scb_reader.py"
+                      LogicalName="SheetMan.Runtime.Python.scb_reader.py" />
     <EmbeddedResource Include="..\lib\python\sheetman\updater.py"
                       LogicalName="SheetMan.Runtime.Python.updater.py" />
-    <EmbeddedResource Include="..\lib\java\sheetman\LiteBinaryReader.java"
-                      LogicalName="SheetMan.Runtime.Java.LiteBinaryReader.java" />
+    <EmbeddedResource Include="..\lib\java\sheetman\ScbReader.java"
+                      LogicalName="SheetMan.Runtime.Java.ScbReader.java" />
     <EmbeddedResource Include="..\lib\java\sheetman\SheetManUpdater.java"
                       LogicalName="SheetMan.Runtime.Java.SheetManUpdater.java" />
-    <EmbeddedResource Include="..\lib\kotlin\sheetman\LiteBinaryReader.kt"
-                      LogicalName="SheetMan.Runtime.Kotlin.LiteBinaryReader.kt" />
+    <EmbeddedResource Include="..\lib\kotlin\sheetman\ScbReader.kt"
+                      LogicalName="SheetMan.Runtime.Kotlin.ScbReader.kt" />
     <EmbeddedResource Include="..\lib\kotlin\sheetman\SheetManUpdater.kt"
                       LogicalName="SheetMan.Runtime.Kotlin.SheetManUpdater.kt" />
-    <EmbeddedResource Include="..\lib\ruby\sheetman\lite_binary_reader.rb"
-                      LogicalName="SheetMan.Runtime.Ruby.lite_binary_reader.rb" />
+    <EmbeddedResource Include="..\lib\ruby\sheetman\scb_reader.rb"
+                      LogicalName="SheetMan.Runtime.Ruby.scb_reader.rb" />
     <EmbeddedResource Include="..\lib\ruby\sheetman\updater.rb"
                       LogicalName="SheetMan.Runtime.Ruby.updater.rb" />
-    <EmbeddedResource Include="..\lib\dart\sheetman\lite_binary_reader.dart"
-                      LogicalName="SheetMan.Runtime.Dart.lite_binary_reader.dart" />
+    <EmbeddedResource Include="..\lib\dart\sheetman\scb_reader.dart"
+                      LogicalName="SheetMan.Runtime.Dart.scb_reader.dart" />
     <EmbeddedResource Include="..\lib\dart\sheetman\updater.dart"
                       LogicalName="SheetMan.Runtime.Dart.updater.dart" />
-    <EmbeddedResource Include="..\lib\c\sheetman\sheetman_lite_binary_reader.h"
-                      LogicalName="SheetMan.Runtime.C.sheetman_lite_binary_reader.h" />
+    <EmbeddedResource Include="..\lib\c\sheetman\sheetman_scb_reader.h"
+                      LogicalName="SheetMan.Runtime.C.sheetman_scb_reader.h" />
     <EmbeddedResource Include="..\lib\c\sheetman\sheetman_updater.h"
                       LogicalName="SheetMan.Runtime.C.sheetman_updater.h" />
-    <EmbeddedResource Include="..\lib\php\sheetman\LiteBinaryReader.php"
-                      LogicalName="SheetMan.Runtime.Php.LiteBinaryReader.php" />
+    <EmbeddedResource Include="..\lib\php\sheetman\ScbReader.php"
+                      LogicalName="SheetMan.Runtime.Php.ScbReader.php" />
     <EmbeddedResource Include="..\lib\php\sheetman\SheetManUpdater.php"
                       LogicalName="SheetMan.Runtime.Php.SheetManUpdater.php" />
 
@@ -120,8 +120,8 @@
       the throwing reader could not report a malformed file at all - the throw was a
       termination inside a function whose signature promised a bool.
     -->
-    <EmbeddedResource Include="..\lib\unreal\sheetman\SheetManLiteBinaryReader.h"
-                      LogicalName="SheetMan.Runtime.Unreal.SheetManLiteBinaryReader.h" />
+    <EmbeddedResource Include="..\lib\unreal\sheetman\SheetManScbReader.h"
+                      LogicalName="SheetMan.Runtime.Unreal.SheetManScbReader.h" />
     <EmbeddedResource Include="..\lib\unreal\sheetman\SheetManUpdater.h"
                       LogicalName="SheetMan.Runtime.Unreal.SheetManUpdater.h" />
     <EmbeddedResource Include="..\lib\unreal\sheetman\SheetManUpdater.cpp"

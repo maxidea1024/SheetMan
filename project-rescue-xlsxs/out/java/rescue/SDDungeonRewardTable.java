@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of SDDungeonReward. */
 public final class SDDungeonRewardTable {
@@ -51,7 +51,7 @@ public final class SDDungeonRewardTable {
         SDDungeonRewardRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `SDDungeonReward` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class SDDungeonRewardTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,145 +83,145 @@ public final class SDDungeonRewardTable {
             loaded.add(new SDDungeonRewardRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.RewardName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "SDDungeonReward.RewardName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.rewardName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.ConditionId", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.ConditionId", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.conditionId = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.RewardCommon", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.RewardCommon", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.rewardCommon = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.CommonValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.CommonValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.commonValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Reward1Type", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Reward1Type", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.reward1Type = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Reward1Value", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Reward1Value", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.reward1Value = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Reward2Type", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Reward2Type", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.reward2Type = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Reward2Value", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Reward2Value", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.reward2Value = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Reward3Type", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Reward3Type", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.reward3Type = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Reward3Value", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Reward3Value", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.reward3Value = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Reward4Type", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Reward4Type", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.reward4Type = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.Reward4Value", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.Reward4Value", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.reward4Value = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.IsPerfect", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_BOOL);
+                    ScbReader.checkColumn(column, "SDDungeonReward.IsPerfect", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.isPerfect = reader.readBool();
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.RewardPerfect", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.RewardPerfect", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.rewardPerfect = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.PerfectValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.PerfectValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.perfectValue = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 18: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.IsMinReward", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_BOOL);
+                    ScbReader.checkColumn(column, "SDDungeonReward.IsMinReward", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.isMinReward = reader.readBool();
                     }
                     break;
                 }
                 case 19: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.RewardMin", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.RewardMin", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.rewardMin = CurrencyType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 20: {
-                    LiteBinaryReader.checkColumn(column, "SDDungeonReward.MinRewardValue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "SDDungeonReward.MinRewardValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (SDDungeonRewardRecord record : loaded) {
                         record.minRewardValue = reader.readI32As(column.element);
                     }
@@ -233,7 +233,7 @@ public final class SDDungeonRewardTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (SDDungeonRewardRecord record : loaded) {

@@ -329,8 +329,8 @@ public class RustCodeGenerator : CodeGenerator<RustRecipe>
         string runtime = System.IO.Path.Combine(SourceDir, "sheetman");
 
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Rust.lite_binary_reader.rs",
-            System.IO.Path.Combine(runtime, "lite_binary_reader.rs"));
+            "SheetMan.Runtime.Rust.scb_reader.rs",
+            System.IO.Path.Combine(runtime, "scb_reader.rs"));
 
         // Asked for rather than assumed. It reaches the network, and it is the only
         // thing in this output that wants a crate.
@@ -350,8 +350,8 @@ public class RustCodeGenerator : CodeGenerator<RustRecipe>
         module.Append($"// {GeneratedFileMarker.TextWithWarning}\n");
         module.Append("// ------------------------------------------------------------------------------\n");
         module.Append('\n');
-        module.Append("mod lite_binary_reader;\n");
-        module.Append("pub use lite_binary_reader::*;\n");
+        module.Append("mod scb_reader;\n");
+        module.Append("pub use scb_reader::*;\n");
 
         if (_recipe.WriteUpdater)
             module.Append("\npub mod updater;\n");

@@ -6,5 +6,5 @@
  * ------------------------------------------------------------------------------
  */
 
-#define SHEETMAN_LITE_BINARY_IMPLEMENTATION
-#include "sheetman/sheetman_lite_binary_reader.h"
+#define SHEETMAN_SCB_IMPLEMENTATION
+#include "sheetman/sheetman_scb_reader.h"

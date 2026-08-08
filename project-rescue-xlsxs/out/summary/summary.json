@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
   "run": {
-    "generatedAt": "2026-08-07T23:56:57.6591354+09:00",
+    "generatedAt": "2026-08-08T09:53:56.4944018+09:00",
     "toolVersion": "0.0.0.0",
     "recipe": "recipe.jsonc",
     "requestedTargetSide": "cs",
     "commit": {
-      "hash": "60abfb74a87dae03cbc161ce02eceb52fc8e8afd",
-      "shortHash": "60abfb74a87d",
+      "hash": "da802cf982d7a0f7ca56c7794a9e7cf98372f3d7",
+      "shortHash": "da802cf982d7",
       "branch": "main",
       "authorName": null,
       "authorEmail": null,
-      "committedAt": "2026-08-07T23:40:57.0000000+09:00",
-      "subject": "Call the file of sheets a workbook, as the rest of the docs already do",
+      "committedAt": "2026-08-08T09:49:40.0000000+09:00",
+      "subject": "Specify format v102: column encodings, an encryption envelope, the Scb name",
       "origin": "git",
       "dirty": true,
       "attributable": false

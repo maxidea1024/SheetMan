@@ -15,7 +15,7 @@
   tables/<AccessorName>_<Table>.h / .c   테이블당 하나씩
   enums/<AccessorName>_Enum<Enum>.h      enum당 하나
   constants/<AccessorName>_Const<Set>.h / .c  상수 세트당. `.c`는 헤더가 담을 수 없는 값이 있을 때만
-  sheetman/sheetman_lite_binary_reader.h 바이너리 리더 (함께 생성됩니다)
+  sheetman/sheetman_scb_reader.h 바이너리 리더 (함께 생성됩니다)
   sheetman/sheetman_updater.h            데이터 갱신 (WriteUpdater를 켰을 때만)
   <AccessorName>_Updater.c               그 구현을 담는 번역 단위 (같은 조건)
 ```
@@ -138,7 +138,7 @@ if (sm_update("https://cdn.example.com/data", "./data", &options, &result)) {
 |증상|원인과 조치|
 |--|--|
 |`sm_read_int32` 등이 정의되지 않음 (링크 오류)|`<AccessorName>_Reader.c`를 빌드에 넣지 않았습니다|
-|`sm_read_*`가 두 번 정의됨|`SHEETMAN_LITE_BINARY_IMPLEMENTATION`을 다른 곳에서 또 정의했습니다. 그 일은 `_Reader.c`만 합니다|
+|`sm_read_*`가 두 번 정의됨|`SHEETMAN_SCB_IMPLEMENTATION`을 다른 곳에서 또 정의했습니다. 그 일은 `_Reader.c`만 합니다|
 |`incomplete type` 오류|테이블 헤더만 include하고 다른 테이블의 레코드를 역참조했습니다. 그 테이블의 헤더도 include하세요|
 |C++에서 컴파일 오류|헤더는 C++로도 컴파일되도록 검사됩니다. 재현되면 버그입니다|
 |해제 후 문자열이 깨짐|레코드의 포인터는 테이블 아레나를 가리킵니다. `Free` 뒤에는 유효하지 않습니다|

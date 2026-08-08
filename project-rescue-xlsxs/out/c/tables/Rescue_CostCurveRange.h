@@ -9,7 +9,7 @@
 #ifndef RESCUE_COST_CURVE_RANGE_H
 #define RESCUE_COST_CURVE_RANGE_H
 
-#include "sheetman/sheetman_lite_binary_reader.h"
+#include "sheetman/sheetman_scb_reader.h"
 
 #include "Rescue_Forward.h"
 #include "enums/Rescue_EnumGrowthType.h"

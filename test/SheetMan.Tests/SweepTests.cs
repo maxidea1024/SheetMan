@@ -112,7 +112,7 @@ public class SweepTests
                      Path.Combine("enums", "grade.ts"),
                      Path.Combine("constants", "game-config.ts"),
                      "index.ts",
-                     Path.Combine("sheetman", "lite-binary-reader.ts"),
+                     Path.Combine("sheetman", "scb-reader.ts"),
                  })
         {
             Assert.True(File.Exists(Path.Combine(TypescriptDir, expected)),

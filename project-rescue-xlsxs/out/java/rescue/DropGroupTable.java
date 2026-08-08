@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of DropGroup. */
 public final class DropGroupTable {
@@ -51,7 +51,7 @@ public final class DropGroupTable {
         DropGroupRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `DropGroup` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class DropGroupTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,40 +83,40 @@ public final class DropGroupTable {
             loaded.add(new DropGroupRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "DropGroup.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DropGroup.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DropGroupRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "DropGroup.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "DropGroup.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (DropGroupRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "DropGroup.DropName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "DropGroup.DropName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (DropGroupRecord record : loaded) {
                         record.dropName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "DropGroup.DropArea", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "DropGroup.DropArea", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (DropGroupRecord record : loaded) {
                         record.dropArea = reader.readString();
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "DropGroup.DropItemIds", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DropGroup.DropItemIds", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DropGroupRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.dropItemIds = new int[elementCount];
@@ -127,7 +127,7 @@ public final class DropGroupTable {
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "DropGroup.DropItemMin", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DropGroup.DropItemMin", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DropGroupRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.dropItemMin = new int[elementCount];
@@ -138,7 +138,7 @@ public final class DropGroupTable {
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "DropGroup.DropItemMax", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "DropGroup.DropItemMax", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (DropGroupRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.dropItemMax = new int[elementCount];
@@ -149,7 +149,7 @@ public final class DropGroupTable {
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "DropGroup.ItemDropRate", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "DropGroup.ItemDropRate", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_F32);
                     for (DropGroupRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.itemDropRate = new float[elementCount];
@@ -165,7 +165,7 @@ public final class DropGroupTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (DropGroupRecord record : loaded) {

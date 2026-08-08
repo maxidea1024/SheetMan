@@ -93,7 +93,7 @@ public class UnrealTargetTests
         Assert.True(File.Exists(Path.Combine(module, "SheetManCore.Build.cs")));
         Assert.True(File.Exists(Path.Combine(module, "Public", "FSheetManCore.h")));
         Assert.True(File.Exists(Path.Combine(module, "Private", "FSheetManCore.cpp")));
-        Assert.True(File.Exists(Path.Combine(module, "Public", "SheetManLiteBinaryReader.h")));
+        Assert.True(File.Exists(Path.Combine(module, "Public", "SheetManScbReader.h")));
     }
 
     /// <summary>

@@ -16,7 +16,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "sheetman/lite_binary_reader.h"
+#include "sheetman/scb_reader.h"
 #include "A_forward.h"
 
 namespace x {
@@ -111,7 +111,7 @@ class TemplateTable {
   /// Loads the table from a .scb file written by SheetMan.
   void read(const std::string& filename) {
     const std::vector<std::uint8_t> buffer = sheetman::read_all_bytes(filename);
-    sheetman::LiteBinaryReader reader(buffer);
+    sheetman::ScbReader reader(buffer);
 
     // Column by column, matched by tag rather than position: a column this build
     // does not know is skipped by its block length, and one whose type changed

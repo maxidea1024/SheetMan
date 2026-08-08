@@ -13,7 +13,7 @@
   tables/<Table>.ts              테이블당 하나
   enums/<Enum>.ts                enum당 하나
   constants/<Set>.ts             상수 세트당 하나
-  sheetman/lite_binary_reader.ts 바이너리 리더 (함께 생성됩니다)
+  sheetman/scb_reader.ts 바이너리 리더 (함께 생성됩니다)
 ```
 
 ## 필요한 것

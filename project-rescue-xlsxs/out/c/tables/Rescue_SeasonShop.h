@@ -9,7 +9,7 @@
 #ifndef RESCUE_SEASON_SHOP_H
 #define RESCUE_SEASON_SHOP_H
 
-#include "sheetman/sheetman_lite_binary_reader.h"
+#include "sheetman/sheetman_scb_reader.h"
 
 #include "Rescue_Forward.h"
 #include "enums/Rescue_EnumShopType.h"

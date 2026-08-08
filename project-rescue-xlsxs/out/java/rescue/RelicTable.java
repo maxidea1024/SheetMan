@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of Relic. */
 public final class RelicTable {
@@ -51,7 +51,7 @@ public final class RelicTable {
         RelicRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `Relic` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class RelicTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,110 +83,110 @@ public final class RelicTable {
             loaded.add(new RelicRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "Relic.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Relic.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "Relic.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Relic.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Relic.RelicName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicRecord record : loaded) {
                         record.relicName = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "Relic.InfuluenceStep", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Relic.InfuluenceStep", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (RelicRecord record : loaded) {
                         record.infuluenceStep = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicType1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Relic.RelicType1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (RelicRecord record : loaded) {
                         record.relicType1 = StatType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicValue1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Relic.RelicValue1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicRecord record : loaded) {
                         record.relicValue1 = reader.readFloat();
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicIncValue1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Relic.RelicIncValue1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicRecord record : loaded) {
                         record.relicIncValue1 = reader.readFloat();
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicType2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Relic.RelicType2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (RelicRecord record : loaded) {
                         record.relicType2 = StatType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicValue2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Relic.RelicValue2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicRecord record : loaded) {
                         record.relicValue2 = reader.readFloat();
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicIncValue2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Relic.RelicIncValue2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicRecord record : loaded) {
                         record.relicIncValue2 = reader.readFloat();
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicType3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Relic.RelicType3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (RelicRecord record : loaded) {
                         record.relicType3 = StatType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicValue3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Relic.RelicValue3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicRecord record : loaded) {
                         record.relicValue3 = reader.readFloat();
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "Relic.RelicIncValue3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Relic.RelicIncValue3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (RelicRecord record : loaded) {
                         record.relicIncValue3 = reader.readFloat();
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "Relic.Description", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Relic.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicRecord record : loaded) {
                         record.description = reader.readString();
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "Relic.IconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Relic.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (RelicRecord record : loaded) {
                         record.iconPath = reader.readString();
                     }
@@ -198,7 +198,7 @@ public final class RelicTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (RelicRecord record : loaded) {

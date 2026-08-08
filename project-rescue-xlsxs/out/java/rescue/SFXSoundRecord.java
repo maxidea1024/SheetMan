@@ -7,7 +7,7 @@
 
 package rescue;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 // Generated from project-rescue-xlsxs/SoundData.xlsx : SFXSoundTable : A1
 public final class SFXSoundRecord {

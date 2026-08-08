@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of Artifact. */
 public final class ArtifactTable {
@@ -51,7 +51,7 @@ public final class ArtifactTable {
         ArtifactRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `Artifact` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class ArtifactTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,40 +83,40 @@ public final class ArtifactTable {
             loaded.add(new ArtifactRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Artifact.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ArtifactRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Artifact.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ArtifactRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.ArtifactType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Artifact.ArtifactType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (ArtifactRecord record : loaded) {
                         record.artifactType = ArtifactJobType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.Grade", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Artifact.Grade", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (ArtifactRecord record : loaded) {
                         record.grade = GradeType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.EquipSkillID", LiteBinaryReader.KIND_VAR_ARRAY, 0, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Artifact.EquipSkillID", ScbReader.KIND_VAR_ARRAY, 0, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ArtifactRecord record : loaded) {
                         int elementCount = reader.readCounter32();
                         record.equipSkillID = new int[elementCount];
@@ -127,49 +127,49 @@ public final class ArtifactTable {
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.EquipStatType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Artifact.EquipStatType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (ArtifactRecord record : loaded) {
                         record.equipStatType = StatType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.EquipStatRate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Artifact.EquipStatRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (ArtifactRecord record : loaded) {
                         record.equipStatRate = reader.readFloat();
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.CollectionType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Artifact.CollectionType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (ArtifactRecord record : loaded) {
                         record.collectionType = StatType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.CollectionVlaue", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Artifact.CollectionVlaue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (ArtifactRecord record : loaded) {
                         record.collectionVlaue = reader.readFloat();
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.IconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Artifact.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ArtifactRecord record : loaded) {
                         record.iconPath = reader.readString();
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.MaterialPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Artifact.MaterialPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ArtifactRecord record : loaded) {
                         record.materialPath = reader.readString();
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "Artifact.Description", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Artifact.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ArtifactRecord record : loaded) {
                         record.description = reader.readString();
                     }
@@ -181,7 +181,7 @@ public final class ArtifactTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (ArtifactRecord record : loaded) {

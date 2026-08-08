@@ -7,7 +7,7 @@
 
 package rescue;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 // Generated from project-rescue-xlsxs/CollectionData.xlsx : CollectionGroupTable : A1
 public final class CollectionGroupRecord {

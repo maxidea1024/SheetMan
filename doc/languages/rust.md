@@ -14,7 +14,7 @@
   src/<table>_table.rs              테이블당 하나
   src/enum_<enum>.rs                enum당 하나
   src/<set>.rs                      상수 세트당 하나 (모듈 이름이 곧 경로)
-  src/sheetman/lite_binary_reader.rs  바이너리 리더 (함께 생성됩니다)
+  src/sheetman/scb_reader.rs  바이너리 리더 (함께 생성됩니다)
   src/sheetman/updater.rs           데이터 갱신 (WriteUpdater를 켰을 때만)
   src/sheetman/mod.rs               위 둘을 묶는 모듈 파일
 

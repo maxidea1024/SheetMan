@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of ArtifactLevel. */
 public final class ArtifactLevelTable {
@@ -51,7 +51,7 @@ public final class ArtifactLevelTable {
         ArtifactLevelRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `ArtifactLevel` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class ArtifactLevelTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,68 +83,68 @@ public final class ArtifactLevelTable {
             loaded.add(new ArtifactLevelRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "ArtifactLevel.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ArtifactLevel.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ArtifactLevelRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "ArtifactLevel.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ArtifactLevel.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ArtifactLevelRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "ArtifactLevel.NameKR", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "ArtifactLevel.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (ArtifactLevelRecord record : loaded) {
                         record.nameKR = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "ArtifactLevel.Level", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ArtifactLevel.Level", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ArtifactLevelRecord record : loaded) {
                         record.level = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "ArtifactLevel.CharacterEXP", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I64, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ArtifactLevel.CharacterEXP", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ArtifactLevelRecord record : loaded) {
                         record.characterEXP = reader.readI64As(column.element);
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "ArtifactLevel.AccumulatedEXP", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I64, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "ArtifactLevel.AccumulatedEXP", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (ArtifactLevelRecord record : loaded) {
                         record.accumulatedEXP = reader.readI64As(column.element);
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "ArtifactLevel.ATKGrowth", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "ArtifactLevel.ATKGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (ArtifactLevelRecord record : loaded) {
                         record.aTKGrowth = reader.readFloat();
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "ArtifactLevel.DEFGrowth", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "ArtifactLevel.DEFGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (ArtifactLevelRecord record : loaded) {
                         record.dEFGrowth = reader.readFloat();
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "ArtifactLevel.HPGrowth", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "ArtifactLevel.HPGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (ArtifactLevelRecord record : loaded) {
                         record.hPGrowth = reader.readFloat();
                     }
@@ -156,7 +156,7 @@ public final class ArtifactLevelTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (ArtifactLevelRecord record : loaded) {

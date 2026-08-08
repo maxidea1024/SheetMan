@@ -86,7 +86,7 @@
 /* For SHEETMAN_ERROR_MAX and the file helpers, which the reader beside this one
  * already has and which a second copy of would only be a second thing to keep
  * in step. */
-#include "sheetman_lite_binary_reader.h"
+#include "sheetman_scb_reader.h"
 
 #ifdef __cplusplus
 extern "C" {

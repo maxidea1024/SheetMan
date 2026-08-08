@@ -13,7 +13,7 @@
   <table>_table.py                테이블당 하나
   enum_<enum>.py                  enum당 하나
   const_<set>.py                  상수 세트당 하나
-  sheetman/lite_binary_reader.py  바이너리 리더 (함께 생성됩니다)
+  sheetman/scb_reader.py  바이너리 리더 (함께 생성됩니다)
   sheetman/updater.py             데이터 갱신 (WriteUpdater를 켰을 때만)
   sheetman/__init__.py            위 둘을 재수출
 

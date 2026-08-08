@@ -194,7 +194,7 @@ namespace SheetMan.Fixtures.Core
         public async Task ReadAsync(string filename)
         {
             var bytes = await Tables.ReadAllBytesAsync(filename);
-            var reader = new LiteBinaryReader(bytes);
+            var reader = new ScbReader(bytes);
             await ReadAsync(reader);
         }
 
@@ -207,9 +207,9 @@ namespace SheetMan.Fixtures.Core
         /// changed incompatibly - fails naming the field. Order, names and columns added or
         /// removed on either side are therefore all survivable.
         /// </remarks>
-        public Task ReadAsync(LiteBinaryReader reader)
+        public Task ReadAsync(ScbReader reader)
         {
-            var columns = LiteBinaryTable.ReadHeader(reader, out int count);
+            var columns = ScbTable.ReadHeader(reader, out int count);
             int tempEnumInt = 0;
 
             // Read into storage of its own and published at the end, which is what makes a
@@ -233,7 +233,7 @@ namespace SheetMan.Fixtures.Core
                 switch (column.Tag)
                 {
                     case 1:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.Index", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.Index", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -242,7 +242,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 2:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.StringField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementString);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.StringField", ScbTable.KindScalar, 1, ScbTable.ElementString);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -251,7 +251,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 3:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.BoolField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementBool);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.BoolField", ScbTable.KindScalar, 1, ScbTable.ElementBool);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -260,7 +260,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 4:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.IntField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.IntField", ScbTable.KindScalar, 1, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -269,7 +269,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 5:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.BigIntField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI64, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.BigIntField", ScbTable.KindScalar, 1, ScbTable.ElementI64, ScbTable.ElementI32, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -278,7 +278,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 6:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.FloatField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF32);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.FloatField", ScbTable.KindScalar, 1, ScbTable.ElementF32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -287,7 +287,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 7:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.DoubleField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementF64, LiteBinaryTable.ElementF32, LiteBinaryTable.ElementI32);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.DoubleField", ScbTable.KindScalar, 1, ScbTable.ElementF64, ScbTable.ElementF32, ScbTable.ElementI32);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -296,7 +296,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 8:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.DatetimeField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI64);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.DatetimeField", ScbTable.KindScalar, 1, ScbTable.ElementI64);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -305,7 +305,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 9:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.TimespanField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementI64);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.TimespanField", ScbTable.KindScalar, 1, ScbTable.ElementI64);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -314,7 +314,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 10:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.UuidField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementUuid);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.UuidField", ScbTable.KindScalar, 1, ScbTable.ElementUuid);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -323,7 +323,7 @@ namespace SheetMan.Fixtures.Core
                         break;
 
                     case 11:
-                        LiteBinaryTable.CheckColumn(column, "TestFieldTypes.ValueTypeField", LiteBinaryTable.KindScalar, 1, LiteBinaryTable.ElementVarint);
+                        ScbTable.CheckColumn(column, "TestFieldTypes.ValueTypeField", ScbTable.KindScalar, 1, ScbTable.ElementVarint);
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
@@ -339,7 +339,7 @@ namespace SheetMan.Fixtures.Core
                         break;
                 }
 
-                LiteBinaryTable.CheckBlockEnd(reader, column, blockEnd);
+                ScbTable.CheckBlockEnd(reader, column, blockEnd);
             }
 
             // Index mapping. Sized to the rows, so nothing rehashes on the way in, and a

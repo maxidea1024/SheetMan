@@ -11,7 +11,7 @@
       where it would otherwise surface, since nothing in this repository compiles the
       emitted file otherwise.
 
-      It used to serve the same purpose for the LiteBinary runtime that the exporter and
+      It used to serve the same purpose for the Scb runtime that the exporter and
       the generated code both borrowed from the Unity plugin. That sharing is gone - the
       exporter carries its own writer and the generated code carries its own reader - so
       only the emitted reader still needs guarding, and the project moved here from
@@ -32,8 +32,8 @@
       The same file the generator embeds and writes into its output, compiled from where
       it lives rather than copied, so the check cannot go stale.
     -->
-    <Compile Include="..\..\lib\cs\sheetman\LiteBinaryReader.cs"
-             Link="LiteBinaryReader.cs" />
+    <Compile Include="..\..\lib\cs\sheetman\ScbReader.cs"
+             Link="ScbReader.cs" />
   </ItemGroup>
 
 </Project>

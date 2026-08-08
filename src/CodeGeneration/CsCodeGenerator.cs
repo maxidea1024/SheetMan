@@ -67,7 +67,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     private void WriteBinaryReaderRuntime()
     {
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Cs.LiteBinaryReader.cs",
+            "SheetMan.Runtime.Cs.ScbReader.cs",
             Path.Combine(_csharpReceipe.Path, "sheetman", "SheetManBinaryReader.cs"));
 
         // Asked for rather than assumed. It reaches the network and it is of no use to a
@@ -315,39 +315,39 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     private static string ColumnCheck(SerialField sf, string tableName)
     {
         string kind = sf.IsVariableLengthArray
-            ? "LiteBinaryTable.KindVarArray"
-            : (sf.Fields.Count > 1 ? "LiteBinaryTable.KindFixedArray" : "LiteBinaryTable.KindScalar");
+            ? "ScbTable.KindVarArray"
+            : (sf.Fields.Count > 1 ? "ScbTable.KindFixedArray" : "ScbTable.KindScalar");
 
         int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
 
         string accepted;
 
         if (sf.IsRef)
-            accepted = "LiteBinaryTable.ElementI32";
+            accepted = "ScbTable.ElementI32";
         else
         {
             switch (sf.ElementType)
             {
                 case Models.ValueType.Int32:
-                    accepted = "LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint";
+                    accepted = "ScbTable.ElementI32, ScbTable.ElementVarint";
                     break;
                 case Models.ValueType.Int64:
-                    accepted = "LiteBinaryTable.ElementI64, LiteBinaryTable.ElementI32, LiteBinaryTable.ElementVarint";
+                    accepted = "ScbTable.ElementI64, ScbTable.ElementI32, ScbTable.ElementVarint";
                     break;
                 case Models.ValueType.Double:
-                    accepted = "LiteBinaryTable.ElementF64, LiteBinaryTable.ElementF32, LiteBinaryTable.ElementI32";
+                    accepted = "ScbTable.ElementF64, ScbTable.ElementF32, ScbTable.ElementI32";
                     break;
-                case Models.ValueType.Float: accepted = "LiteBinaryTable.ElementF32"; break;
-                case Models.ValueType.Bool: accepted = "LiteBinaryTable.ElementBool"; break;
-                case Models.ValueType.String: accepted = "LiteBinaryTable.ElementString"; break;
-                case Models.ValueType.Uuid: accepted = "LiteBinaryTable.ElementUuid"; break;
-                case Models.ValueType.Enum: accepted = "LiteBinaryTable.ElementVarint"; break;
+                case Models.ValueType.Float: accepted = "ScbTable.ElementF32"; break;
+                case Models.ValueType.Bool: accepted = "ScbTable.ElementBool"; break;
+                case Models.ValueType.String: accepted = "ScbTable.ElementString"; break;
+                case Models.ValueType.Uuid: accepted = "ScbTable.ElementUuid"; break;
+                case Models.ValueType.Enum: accepted = "ScbTable.ElementVarint"; break;
 
                 // Ticks are exact i64: reading an int as a datetime would be numerically
                 // lossless and semantically wrong, so no promotion.
                 case Models.ValueType.DateTime:
                 case Models.ValueType.TimeSpan:
-                    accepted = "LiteBinaryTable.ElementI64";
+                    accepted = "ScbTable.ElementI64";
                     break;
 
                 default:
@@ -355,7 +355,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             }
         }
 
-        return $"LiteBinaryTable.CheckColumn(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {accepted});";
+        return $"ScbTable.CheckColumn(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {accepted});";
     }
 
     /// <summary>

@@ -10,7 +10,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'sheetman/lite_binary_reader.dart';
+import 'sheetman/scb_reader.dart';
 
 part 'tables/collection_group_table.dart';
 part 'tables/collection_table.dart';

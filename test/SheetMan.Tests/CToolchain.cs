@@ -172,8 +172,8 @@ internal static class CToolchain
             // and strcasecmp, neither of which is ISO C.
             "#define _POSIX_C_SOURCE 200809L",
             "",
-            "#define SHEETMAN_LITE_BINARY_IMPLEMENTATION",
-            "#include \"sheetman/sheetman_lite_binary_reader.h\"",
+            "#define SHEETMAN_SCB_IMPLEMENTATION",
+            "#include \"sheetman/sheetman_scb_reader.h\"",
             "#define SHEETMAN_UPDATER_IMPLEMENTATION",
             "#include \"sheetman/sheetman_updater.h\"",
             "",

@@ -7,7 +7,7 @@
 
 package rescue;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 // Generated from project-rescue-xlsxs/ItemData.xlsx : CurrencyTable : A1
 public final class CurrencyRecord {

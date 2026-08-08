@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 /** Every row of Character. */
 public final class CharacterTable {
@@ -51,7 +51,7 @@ public final class CharacterTable {
         CharacterRecord record = byId.get(key);
 
         if (record == null) {
-            throw new LiteBinaryReader.RecordNotFoundException(
+            throw new ScbReader.RecordNotFoundException(
                 "there is no record in table `Character` that corresponds to field "
                 + "`Id` value " + key);
         }
@@ -71,8 +71,8 @@ public final class CharacterTable {
      * naming the field.
      */
     public void read(Path filename) {
-        LiteBinaryReader reader = new LiteBinaryReader(LiteBinaryReader.readAllBytes(filename));
-        LiteBinaryReader.Header header = LiteBinaryReader.readTableHeader(reader);
+        ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
+        ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
@@ -83,264 +83,264 @@ public final class CharacterTable {
             loaded.add(new CharacterRecord());
         }
 
-        for (LiteBinaryReader.Column column : header.columns) {
+        for (ScbReader.Column column : header.columns) {
             int blockEnd = reader.position() + column.byteLength;
 
             switch (column.tag) {
                 case 1: {
-                    LiteBinaryReader.checkColumn(column, "Character.Id", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.id = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 2: {
-                    LiteBinaryReader.checkColumn(column, "Character.TitleName", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Character.TitleName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CharacterRecord record : loaded) {
                         record.titleName = reader.readString();
                     }
                     break;
                 }
                 case 3: {
-                    LiteBinaryReader.checkColumn(column, "Character.Name", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Character.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CharacterRecord record : loaded) {
                         record.name = reader.readString();
                     }
                     break;
                 }
                 case 4: {
-                    LiteBinaryReader.checkColumn(column, "Character.CharacterType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.CharacterType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.characterType = CharacterType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 5: {
-                    LiteBinaryReader.checkColumn(column, "Character.Grade", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.Grade", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.grade = GradeType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 6: {
-                    LiteBinaryReader.checkColumn(column, "Character.AttributeType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.AttributeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.attributeType = AttributeType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 7: {
-                    LiteBinaryReader.checkColumn(column, "Character.JobType", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.JobType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.jobType = JobType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 8: {
-                    LiteBinaryReader.checkColumn(column, "Character.Nation", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.Nation", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.nation = NationType.of(reader.readEnum());
                     }
                     break;
                 }
                 case 9: {
-                    LiteBinaryReader.checkColumn(column, "Character.BaseATK", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I64, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.BaseATK", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.baseATK = reader.readI64As(column.element);
                     }
                     break;
                 }
                 case 10: {
-                    LiteBinaryReader.checkColumn(column, "Character.BaseDEF", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I64, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.BaseDEF", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.baseDEF = reader.readI64As(column.element);
                     }
                     break;
                 }
                 case 11: {
-                    LiteBinaryReader.checkColumn(column, "Character.BaseMHP", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I64, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.BaseMHP", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.baseMHP = reader.readI64As(column.element);
                     }
                     break;
                 }
                 case 12: {
-                    LiteBinaryReader.checkColumn(column, "Character.MoveSpeed", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Character.MoveSpeed", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (CharacterRecord record : loaded) {
                         record.moveSpeed = reader.readFloat();
                     }
                     break;
                 }
                 case 13: {
-                    LiteBinaryReader.checkColumn(column, "Character.CritRate", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Character.CritRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (CharacterRecord record : loaded) {
                         record.critRate = reader.readFloat();
                     }
                     break;
                 }
                 case 14: {
-                    LiteBinaryReader.checkColumn(column, "Character.CritDmg", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Character.CritDmg", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (CharacterRecord record : loaded) {
                         record.critDmg = reader.readFloat();
                     }
                     break;
                 }
                 case 15: {
-                    LiteBinaryReader.checkColumn(column, "Character.SearchRange", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Character.SearchRange", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (CharacterRecord record : loaded) {
                         record.searchRange = reader.readFloat();
                     }
                     break;
                 }
                 case 16: {
-                    LiteBinaryReader.checkColumn(column, "Character.ReFindTime", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Character.ReFindTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (CharacterRecord record : loaded) {
                         record.reFindTime = reader.readFloat();
                     }
                     break;
                 }
                 case 17: {
-                    LiteBinaryReader.checkColumn(column, "Character.MaxFollow", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Character.MaxFollow", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (CharacterRecord record : loaded) {
                         record.maxFollow = reader.readFloat();
                     }
                     break;
                 }
                 case 18: {
-                    LiteBinaryReader.checkColumn(column, "Character.SizePrefab", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_F32);
+                    ScbReader.checkColumn(column, "Character.SizePrefab", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
                     for (CharacterRecord record : loaded) {
                         record.sizePrefab = reader.readFloat();
                     }
                     break;
                 }
                 case 19: {
-                    LiteBinaryReader.checkColumn(column, "Character.IsUnlocked", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_BOOL);
+                    ScbReader.checkColumn(column, "Character.IsUnlocked", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
                     for (CharacterRecord record : loaded) {
                         record.isUnlocked = reader.readBool();
                     }
                     break;
                 }
                 case 20: {
-                    LiteBinaryReader.checkColumn(column, "Character.BasicAttack1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.BasicAttack1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.basicAttack1 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 21: {
-                    LiteBinaryReader.checkColumn(column, "Character.BasicAttack2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.BasicAttack2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.basicAttack2 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 22: {
-                    LiteBinaryReader.checkColumn(column, "Character.BasicAttack3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.BasicAttack3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.basicAttack3 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 23: {
-                    LiteBinaryReader.checkColumn(column, "Character.ActiveSkill1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.ActiveSkill1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.activeSkill1 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 24: {
-                    LiteBinaryReader.checkColumn(column, "Character.ActiveSkill2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.ActiveSkill2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.activeSkill2 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 25: {
-                    LiteBinaryReader.checkColumn(column, "Character.ActiveSkill3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.ActiveSkill3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.activeSkill3 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 26: {
-                    LiteBinaryReader.checkColumn(column, "Character.SpecialSkill1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.SpecialSkill1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.specialSkill1 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 27: {
-                    LiteBinaryReader.checkColumn(column, "Character.SpecialSkill2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.SpecialSkill2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.specialSkill2 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 28: {
-                    LiteBinaryReader.checkColumn(column, "Character.SpecialSkill3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.SpecialSkill3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.specialSkill3 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 29: {
-                    LiteBinaryReader.checkColumn(column, "Character.SpecialSkill4", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.SpecialSkill4", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.specialSkill4 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 30: {
-                    LiteBinaryReader.checkColumn(column, "Character.SpecialSkill5", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.SpecialSkill5", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.specialSkill5 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 31: {
-                    LiteBinaryReader.checkColumn(column, "Character.PassiveBuff1", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.PassiveBuff1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.passiveBuff1 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 32: {
-                    LiteBinaryReader.checkColumn(column, "Character.PassiveBuff2", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.PassiveBuff2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.passiveBuff2 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 33: {
-                    LiteBinaryReader.checkColumn(column, "Character.PassiveBuff3", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT);
+                    ScbReader.checkColumn(column, "Character.PassiveBuff3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
                     for (CharacterRecord record : loaded) {
                         record.passiveBuff3 = reader.readI32As(column.element);
                     }
                     break;
                 }
                 case 34: {
-                    LiteBinaryReader.checkColumn(column, "Character.PrefabPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Character.PrefabPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CharacterRecord record : loaded) {
                         record.prefabPath = reader.readString();
                     }
                     break;
                 }
                 case 35: {
-                    LiteBinaryReader.checkColumn(column, "Character.SdMaterialPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Character.SdMaterialPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CharacterRecord record : loaded) {
                         record.sdMaterialPath = reader.readString();
                     }
                     break;
                 }
                 case 36: {
-                    LiteBinaryReader.checkColumn(column, "Character.IconPath", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Character.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CharacterRecord record : loaded) {
                         record.iconPath = reader.readString();
                     }
                     break;
                 }
                 case 37: {
-                    LiteBinaryReader.checkColumn(column, "Character.Description", LiteBinaryReader.KIND_SCALAR, 1, LiteBinaryReader.ELEMENT_STRING);
+                    ScbReader.checkColumn(column, "Character.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
                     for (CharacterRecord record : loaded) {
                         record.description = reader.readString();
                     }
@@ -352,7 +352,7 @@ public final class CharacterTable {
                     break;
             }
 
-            LiteBinaryReader.checkBlockEnd(reader, column, blockEnd);
+            ScbReader.checkBlockEnd(reader, column, blockEnd);
         }
 
         for (CharacterRecord record : loaded) {

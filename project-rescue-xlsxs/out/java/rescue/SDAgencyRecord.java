@@ -7,7 +7,7 @@
 
 package rescue;
 
-import sheetman.LiteBinaryReader;
+import sheetman.ScbReader;
 
 // Generated from project-rescue-xlsxs/SD_Contens.xlsx : SDAgencyTable : A1
 public final class SDAgencyRecord {

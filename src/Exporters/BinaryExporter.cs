@@ -45,10 +45,10 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
 
     private void ExportTable(RecipeModel.ExportRecipeGroup.BinaryRecipe recipe, Table table)
     {
-        LiteBinaryWriter writer = new LiteBinaryWriter();
+        ScbWriter writer = new ScbWriter();
         var serials = table.SerialFields;
 
-        writer.Write(LiteBinaryFormat.Version);
+        writer.Write(ScbFormat.Version);
         writer.Write((byte)0);                      // Reserved (compression/encryption)
         writer.WriteCounter32(table.Data.Count);
 
@@ -65,8 +65,8 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
             var sf = serials[at];
 
             writer.WriteCounter32(sf.FirstField.Tag.Value);
-            writer.Write(LiteBinaryFormat.Wire(LiteBinaryFormat.ElementFor(sf), LiteBinaryFormat.KindFor(sf)));
-            writer.WriteCounter32(LiteBinaryFormat.CountFor(sf));
+            writer.Write(ScbFormat.Wire(ScbFormat.ElementFor(sf), ScbFormat.KindFor(sf)));
+            writer.WriteCounter32(ScbFormat.CountFor(sf));
 
             // Patched after the block is written; a varint cannot be.
             lengthSlots[at] = writer.ReserveUInt32Slot();
@@ -109,7 +109,7 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     /// <summary>
     /// Writes a delimited array cell: element count first, then the elements.
     /// </summary>
-    private void ExportArrayValue(LiteBinaryWriter writer, object value, Field field)
+    private void ExportArrayValue(ScbWriter writer, object value, Field field)
     {
         var elements = (System.Array)value;
         int length = elements?.Length ?? 0;
@@ -120,7 +120,7 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
             ExportValue(writer, elements.GetValue(i), field);
     }
 
-    private void ExportValue(LiteBinaryWriter writer, object value, Field field)
+    private void ExportValue(ScbWriter writer, object value, Field field)
     {
         // Element type, so the same switch serves a scalar field and one element
         // of an array field.

@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace X;
 
-require_once __DIR__ . '/sheetman/LiteBinaryReader.php';
+require_once __DIR__ . '/sheetman/ScbReader.php';
 require_once __DIR__ . '/tables/TemplateTable.php';
 
-use SheetMan\LiteBinaryReader;
+use SheetMan\ScbReader;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 

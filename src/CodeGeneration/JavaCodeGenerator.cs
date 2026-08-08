@@ -161,7 +161,7 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
         {
             // A constant set names an enum when one of its constants is typed with one -
             // same package, so no import - and the reader when one is a uuid, whose type is
-            // LiteBinaryReader.Uuid.
+            // ScbReader.Uuid.
             Write(pair.rendered.Name, "java-constants.sbn", new JavaPartView
             {
                 PackageName = _recipe.PackageName,
@@ -213,7 +213,7 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
             if (lines.Count > 0)
                 lines.Add("");
 
-            lines.Add("import sheetman.LiteBinaryReader;");
+            lines.Add("import sheetman.ScbReader;");
         }
 
         return lines;
@@ -221,7 +221,7 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
 
     /// <summary>
     /// Whether a constant set has a uuid in it, which is the only way its file reaches the
-    /// reader - the constant's own type is LiteBinaryReader.Uuid.
+    /// reader - the constant's own type is ScbReader.Uuid.
     /// </summary>
     private static bool NamesUuid(ConstantSet set)
         => set.Constants.Any(constant => constant.Type == ValueType.Uuid);
@@ -231,8 +231,8 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
         // Its own `sheetman` package, so the generated accessor's package is free to be
         // anything the consumer wants.
         WriteBinaryReaderRuntime(
-            "SheetMan.Runtime.Java.LiteBinaryReader.java",
-            System.IO.Path.Combine(_recipe.Path, "sheetman", "LiteBinaryReader.java"));
+            "SheetMan.Runtime.Java.ScbReader.java",
+            System.IO.Path.Combine(_recipe.Path, "sheetman", "ScbReader.java"));
 
         // Asked for rather than assumed. It reaches the network and it is of no use to a
         // program that ships its data alongside its code.
@@ -402,7 +402,7 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
             // The reference types. Everything else is a primitive whose zero is already
             // an empty value, and saying so again would only be noise.
             ValueType.String => " = \"\"",
-            ValueType.Uuid => " = LiteBinaryReader.Uuid.empty()",
+            ValueType.Uuid => " = ScbReader.Uuid.empty()",
             ValueType.Enum => $" = {sf.FirstField.Enum.Name.ToPascalCase()}.of(0)",
             _ => "",
         };
@@ -415,43 +415,43 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
     private static string ColumnCheck(SerialField sf, string tableName)
     {
         string kind = sf.IsVariableLengthArray
-            ? "LiteBinaryReader.KIND_VAR_ARRAY"
-            : (sf.Fields.Count > 1 ? "LiteBinaryReader.KIND_FIXED_ARRAY" : "LiteBinaryReader.KIND_SCALAR");
+            ? "ScbReader.KIND_VAR_ARRAY"
+            : (sf.Fields.Count > 1 ? "ScbReader.KIND_FIXED_ARRAY" : "ScbReader.KIND_SCALAR");
 
         int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
 
         string accepted;
 
         if (sf.IsRef)
-            accepted = "LiteBinaryReader.ELEMENT_I32";
+            accepted = "ScbReader.ELEMENT_I32";
         else
         {
             switch (sf.ElementType)
             {
                 case ValueType.Int32:
-                    accepted = "LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT"; break;
+                    accepted = "ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT"; break;
                 case ValueType.Int64:
-                    accepted = "LiteBinaryReader.ELEMENT_I64, LiteBinaryReader.ELEMENT_I32, LiteBinaryReader.ELEMENT_VARINT"; break;
+                    accepted = "ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT"; break;
                 case ValueType.Double:
-                    accepted = "LiteBinaryReader.ELEMENT_F64, LiteBinaryReader.ELEMENT_F32, LiteBinaryReader.ELEMENT_I32"; break;
-                case ValueType.Float: accepted = "LiteBinaryReader.ELEMENT_F32"; break;
-                case ValueType.Bool: accepted = "LiteBinaryReader.ELEMENT_BOOL"; break;
-                case ValueType.String: accepted = "LiteBinaryReader.ELEMENT_STRING"; break;
-                case ValueType.Uuid: accepted = "LiteBinaryReader.ELEMENT_UUID"; break;
-                case ValueType.Enum: accepted = "LiteBinaryReader.ELEMENT_VARINT"; break;
+                    accepted = "ScbReader.ELEMENT_F64, ScbReader.ELEMENT_F32, ScbReader.ELEMENT_I32"; break;
+                case ValueType.Float: accepted = "ScbReader.ELEMENT_F32"; break;
+                case ValueType.Bool: accepted = "ScbReader.ELEMENT_BOOL"; break;
+                case ValueType.String: accepted = "ScbReader.ELEMENT_STRING"; break;
+                case ValueType.Uuid: accepted = "ScbReader.ELEMENT_UUID"; break;
+                case ValueType.Enum: accepted = "ScbReader.ELEMENT_VARINT"; break;
 
                 // Ticks are exact i64: reading an int as a datetime would be lossless
                 // and semantically wrong, so no promotion.
                 case ValueType.DateTime:
                 case ValueType.TimeSpan:
-                    accepted = "LiteBinaryReader.ELEMENT_I64"; break;
+                    accepted = "ScbReader.ELEMENT_I64"; break;
 
                 default:
                     throw new SheetManException($"The java generator cannot check type `{sf.Type}`.");
             }
         }
 
-        return $"LiteBinaryReader.checkColumn(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {accepted});";
+        return $"ScbReader.checkColumn(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {accepted});";
     }
 
     private static string ReadKind(SerialField sf)
@@ -578,7 +578,7 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
                 return ((TimeSpan)constant.Value).Ticks.ToString(CultureInfo.InvariantCulture) + "L";
 
             case ValueType.Uuid:
-                return "new LiteBinaryReader.Uuid(new byte[] { " + string.Join(", ",
+                return "new ScbReader.Uuid(new byte[] { " + string.Join(", ",
                     ((Guid)constant.Value).ToByteArray()
                         .Select(b => "(byte) 0x" + b.ToString("x2", CultureInfo.InvariantCulture))) + " })";
 

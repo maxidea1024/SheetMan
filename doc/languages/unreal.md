@@ -12,7 +12,7 @@
 <Path>/<ModuleName>/
   <ModuleName>.Build.cs               모듈 정의 (WriteBuildFile이 true일 때)
   Public/<AccessorName>.h             USTRUCT 행, UENUM, 정적 접근자, 블루프린트 라이브러리
-  Public/SheetManLiteBinaryReader.h   바이너리 리더 (함께 생성됩니다)
+  Public/SheetManScbReader.h   바이너리 리더 (함께 생성됩니다)
   Private/<AccessorName>.cpp          구현
 ```
 

@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-#include "sheetman/lite_binary_reader.h"
+#include "sheetman/scb_reader.h"
 #include "enums/CoreAccessor_enum_grade.h"
 
 namespace sheetman_fixtures {

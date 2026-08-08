@@ -65,7 +65,7 @@ class SDAlchemyStepTable {
   /// not know is skipped by its block length, and one whose type changed incompatibly
   /// fails naming the field.
   void read(String filename) {
-    final reader = LiteBinaryReader(readAllBytes(filename));
+    final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
 
