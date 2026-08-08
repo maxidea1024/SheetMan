@@ -251,23 +251,26 @@ export class ArtifactLevelTable {
           break
         case 7:
           sheetman.checkColumn(column, 'ArtifactLevel.ATKGrowth', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ArtifactLevel.ATKGrowth')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._aTKGrowth = reader.readFloat()
+            record._aTKGrowth = cursor.nextF32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'ArtifactLevel.DEFGrowth', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ArtifactLevel.DEFGrowth')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dEFGrowth = reader.readFloat()
+            record._dEFGrowth = cursor.nextF32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'ArtifactLevel.HPGrowth', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ArtifactLevel.HPGrowth')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._hPGrowth = reader.readFloat()
+            record._hPGrowth = cursor.nextF32()
           }
           break
         default:

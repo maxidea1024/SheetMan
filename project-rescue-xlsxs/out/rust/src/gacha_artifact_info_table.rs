@@ -206,14 +206,16 @@ impl GachaArtifactInfoTable {
                 }
                 12 => {
                     sheetman::check_column(column, "GachaArtifactInfo.EnableReset", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaArtifactInfo.EnableReset")?;
                     for record in records.iter_mut() {
-                        record.enable_reset = reader.read_bool()?;
+                        record.enable_reset = cursor.next_bool()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "GachaArtifactInfo.IsSharedCounter", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaArtifactInfo.IsSharedCounter")?;
                     for record in records.iter_mut() {
-                        record.is_shared_counter = reader.read_bool()?;
+                        record.is_shared_counter = cursor.next_bool()?;
                     }
                 }
                 14 => {
@@ -232,14 +234,16 @@ impl GachaArtifactInfoTable {
                 }
                 16 => {
                     sheetman::check_column(column, "GachaArtifactInfo.IsSingle", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaArtifactInfo.IsSingle")?;
                     for record in records.iter_mut() {
-                        record.is_single = reader.read_bool()?;
+                        record.is_single = cursor.next_bool()?;
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "GachaArtifactInfo.IsTen", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaArtifactInfo.IsTen")?;
                     for record in records.iter_mut() {
-                        record.is_ten = reader.read_bool()?;
+                        record.is_ten = cursor.next_bool()?;
                     }
                 }
                 18 => {
@@ -279,8 +283,9 @@ impl GachaArtifactInfoTable {
                 }
                 23 => {
                     sheetman::check_column(column, "GachaArtifactInfo.EnableSkip", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaArtifactInfo.EnableSkip")?;
                     for record in records.iter_mut() {
-                        record.enable_skip = reader.read_bool()?;
+                        record.enable_skip = cursor.next_bool()?;
                     }
                 }
                 _ => {

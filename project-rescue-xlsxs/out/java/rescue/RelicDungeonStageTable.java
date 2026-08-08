@@ -176,8 +176,9 @@ public final class RelicDungeonStageTable {
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "RelicDungeonStage.SpawnNextTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonStage.SpawnNextTime");
                     for (RelicDungeonStageRecord record : loaded) {
-                        record.spawnNextTime = reader.readFloat();
+                        record.spawnNextTime = cursor.nextF32();
                     }
                     break;
                 }
@@ -207,22 +208,25 @@ public final class RelicDungeonStageTable {
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "RelicDungeonStage.AtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonStage.AtkUpPercent");
                     for (RelicDungeonStageRecord record : loaded) {
-                        record.atkUpPercent = reader.readFloat();
+                        record.atkUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "RelicDungeonStage.DefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonStage.DefUpPercent");
                     for (RelicDungeonStageRecord record : loaded) {
-                        record.defUpPercent = reader.readFloat();
+                        record.defUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 17: {
                     ScbReader.checkColumn(column, "RelicDungeonStage.MHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonStage.MHPUpPercent");
                     for (RelicDungeonStageRecord record : loaded) {
-                        record.mHPUpPercent = reader.readFloat();
+                        record.mHPUpPercent = cursor.nextF32();
                     }
                     break;
                 }

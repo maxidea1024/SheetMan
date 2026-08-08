@@ -157,9 +157,10 @@ class InfoGrowthTable {
         }
         case 6: {
           sheetman::check_column(column, "InfoGrowth.Reset", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.Reset");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.reset);
+            record.reset = cursor.next_bool();
           }
           break;
         }

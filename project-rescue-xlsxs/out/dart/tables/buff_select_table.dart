@@ -114,8 +114,9 @@ class BuffSelectTable {
           break;
         case 5:
           checkColumn(column, 'BuffSelect.BuffRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'BuffSelect.BuffRate');
           for (final record in loaded) {
-            record.buffRate = reader.readFloat();
+            record.buffRate = cursor.nextF32();
           }
           break;
         case 6:

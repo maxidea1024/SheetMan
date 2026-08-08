@@ -274,51 +274,58 @@ export class SDAgencyInfoTable {
           break
         case 5:
           sheetman.checkColumn(column, 'SDAgencyInfo.GradeSRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.GradeSRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gradeSRate = reader.readFloat()
+            record._gradeSRate = cursor.nextF32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'SDAgencyInfo.GradeARate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.GradeARate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gradeARate = reader.readFloat()
+            record._gradeARate = cursor.nextF32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'SDAgencyInfo.GradeBRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.GradeBRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gradeBRate = reader.readFloat()
+            record._gradeBRate = cursor.nextF32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'SDAgencyInfo.GradeCRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.GradeCRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gradeCRate = reader.readFloat()
+            record._gradeCRate = cursor.nextF32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'SDAgencyInfo.GradeDRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.GradeDRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gradeDRate = reader.readFloat()
+            record._gradeDRate = cursor.nextF32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'SDAgencyInfo.GradeERate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.GradeERate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gradeERate = reader.readFloat()
+            record._gradeERate = cursor.nextF32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'SDAgencyInfo.GradeFRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.GradeFRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gradeFRate = reader.readFloat()
+            record._gradeFRate = cursor.nextF32()
           }
           break
         case 12:

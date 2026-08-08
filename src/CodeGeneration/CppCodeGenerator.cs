@@ -494,15 +494,24 @@ public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGr
 
         switch (sf.ElementType)
         {
-            // Int64 and Double are here for their promotions: the file may carry an
-            // i32 column - encoded - where the member has since widened.
+            // Int64 and Double are here for their promotions as well as their own
+            // dictionaries: the file may carry an i32 column - encoded - where the
+            // member has since widened.
             case ValueType.Int32:
             case ValueType.Int64:
             case ValueType.Double:
+            case ValueType.Float:
+            case ValueType.Bool:
             case ValueType.Enum:
             case ValueType.String:
+
+            // Ticks are an i64 column, so they meet the i64 dictionary like any other.
+            case ValueType.DateTime:
+            case ValueType.TimeSpan:
                 return true;
 
+            // Uuid is the one scalar left raw: sixteen-byte entries rarely repeat
+            // enough to pay for the index beside them.
             default:
                 return false;
         }
@@ -542,6 +551,14 @@ public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGr
                 ValueType.Int32 => $"{target} = cursor.next_i32()",
                 ValueType.Int64 => $"{target} = cursor.next_i64()",
                 ValueType.Double => $"{target} = cursor.next_f64()",
+                ValueType.Float => $"{target} = cursor.next_f32()",
+                ValueType.Bool => $"{target} = cursor.next_bool()",
+
+                // Ticks, so the member is built from what the i64 column carried - the
+                // same construction the direct read does, from the same number.
+                ValueType.DateTime => $"{target} = sheetman::from_net_ticks(cursor.next_i64())",
+                ValueType.TimeSpan => $"{target} = sheetman::TimeSpan(cursor.next_i64())",
+
                 _ => $"{target} = cursor.next_string()",
             };
         }

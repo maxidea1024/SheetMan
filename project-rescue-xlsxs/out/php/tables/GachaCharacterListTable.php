@@ -151,8 +151,9 @@ final class GachaCharacterListTable
 
                 case 5:
                     ScbReader::checkColumn($column, 'GachaCharacterList.IsWishlist', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.IsWishlist');
                     foreach ($records as $record) {
-                        $record->isWishlist = $reader->readBool();
+                        $record->isWishlist = $cursor->nextBool();
                     }
                     break;
 

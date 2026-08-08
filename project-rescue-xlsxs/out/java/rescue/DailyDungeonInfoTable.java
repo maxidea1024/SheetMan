@@ -162,8 +162,9 @@ public final class DailyDungeonInfoTable {
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "DailyDungeonInfo.BuffValueRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "DailyDungeonInfo.BuffValueRate");
                     for (DailyDungeonInfoRecord record : loaded) {
-                        record.buffValueRate = reader.readFloat();
+                        record.buffValueRate = cursor.nextF32();
                     }
                     break;
                 }

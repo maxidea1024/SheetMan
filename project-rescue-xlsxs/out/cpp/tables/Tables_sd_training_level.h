@@ -147,33 +147,37 @@ class SDTrainingLevelTable {
         }
         case 6: {
           sheetman::check_column(column, "SDTrainingLevel.MHPGrowth", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.MHPGrowth");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.mhp_growth);
+            record.mhp_growth = cursor.next_f32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "SDTrainingLevel.MHPTotal", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.MHPTotal");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.mhp_total);
+            record.mhp_total = cursor.next_f32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "SDTrainingLevel.DEFGrowth", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.DEFGrowth");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.def_growth);
+            record.def_growth = cursor.next_f32();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "SDTrainingLevel.DEFTotal", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.DEFTotal");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.def_total);
+            record.def_total = cursor.next_f32();
           }
           break;
         }

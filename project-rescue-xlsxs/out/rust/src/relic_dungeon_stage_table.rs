@@ -198,8 +198,9 @@ impl RelicDungeonStageTable {
                 }
                 11 => {
                     sheetman::check_column(column, "RelicDungeonStage.SpawnNextTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "RelicDungeonStage.SpawnNextTime")?;
                     for record in records.iter_mut() {
-                        record.spawn_next_time = reader.read_f32()?;
+                        record.spawn_next_time = cursor.next_f32()?;
                     }
                 }
                 12 => {
@@ -225,20 +226,23 @@ impl RelicDungeonStageTable {
                 }
                 15 => {
                     sheetman::check_column(column, "RelicDungeonStage.AtkUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "RelicDungeonStage.AtkUpPercent")?;
                     for record in records.iter_mut() {
-                        record.atk_up_percent = reader.read_f32()?;
+                        record.atk_up_percent = cursor.next_f32()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "RelicDungeonStage.DefUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "RelicDungeonStage.DefUpPercent")?;
                     for record in records.iter_mut() {
-                        record.def_up_percent = reader.read_f32()?;
+                        record.def_up_percent = cursor.next_f32()?;
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "RelicDungeonStage.MHPUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "RelicDungeonStage.MHPUpPercent")?;
                     for record in records.iter_mut() {
-                        record.mhp_up_percent = reader.read_f32()?;
+                        record.mhp_up_percent = cursor.next_f32()?;
                     }
                 }
                 18 => {

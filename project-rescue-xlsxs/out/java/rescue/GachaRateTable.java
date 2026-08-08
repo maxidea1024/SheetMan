@@ -98,36 +98,41 @@ public final class GachaRateTable {
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "GachaRate.URRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaRate.URRate");
                     for (GachaRateRecord record : loaded) {
-                        record.uRRate = reader.readFloat();
+                        record.uRRate = cursor.nextF32();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "GachaRate.SSRRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaRate.SSRRate");
                     for (GachaRateRecord record : loaded) {
-                        record.sSRRate = reader.readFloat();
+                        record.sSRRate = cursor.nextF32();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "GachaRate.SRRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaRate.SRRate");
                     for (GachaRateRecord record : loaded) {
-                        record.sRRate = reader.readFloat();
+                        record.sRRate = cursor.nextF32();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "GachaRate.RRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaRate.RRate");
                     for (GachaRateRecord record : loaded) {
-                        record.rRate = reader.readFloat();
+                        record.rRate = cursor.nextF32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "GachaRate.NRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaRate.NRate");
                     for (GachaRateRecord record : loaded) {
-                        record.nRate = reader.readFloat();
+                        record.nRate = cursor.nextF32();
                     }
                     break;
                 }

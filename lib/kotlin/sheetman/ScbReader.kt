@@ -57,6 +57,8 @@ const val ENCODING_RLE = 3
 const val ENCODING_DELTA_RLE = 4
 const val ENCODING_DICT = 5
 const val ENCODING_DICT_RLE = 6
+const val ENCODING_DICT_FRONT = 7
+const val ENCODING_DICT_FRONT_RLE = 8
 
 /** One column as the file describes it. */
 class Column(
@@ -214,6 +216,17 @@ class ScbReader(private val data: ByteArray) {
 
     fun readDouble(): Double = Double.fromBits(readInt64())
 
+    /**
+     * The next [count] bytes copied into [destination] at [at].
+     *
+     * For the parts of a block that are bytes rather than a value: a fixed-width
+     * dictionary entry the cursor keeps as it stands, and the tail of a front-coded one.
+     */
+    fun readBytesInto(destination: ByteArray, at: Int, count: Int) {
+        val start = take(count)
+        data.copyInto(destination, at, start, start + count)
+    }
+
     /** A length-prefixed UTF-8 string. */
     fun readString(): String {
         val length = readCounter32()
@@ -307,18 +320,56 @@ class ColumnCursor(
     // it here names the field instead of leaving it to the block-end check.
     private var rowsRemaining = rowCount
 
-    /** The block's dictionary, decoded once and handed out per row. */
-    private val dictionary: Array<String> =
-        if (encoding == ENCODING_DICT || encoding == ENCODING_DICT_RLE) {
+    /**
+     * The block's dictionary, decoded once and handed out per row.
+     *
+     * One of these is filled when the block has a dictionary at all, chosen by the
+     * element: strings are decoded to instances that rows then share, and a fixed-width
+     * element keeps its raw bytes so the value is reconstructed exactly as the raw
+     * layout would have read it. `valueWidth` being non-zero is what says the block's
+     * dictionary is the second kind.
+     */
+    private val dictionary: Array<String>
+
+    private val valueDictionary: ByteArray
+    private val valueWidth: Int
+
+    init {
+        var strings = EMPTY_DICTIONARY
+        var values = EMPTY_VALUES
+        var width = 0
+
+        val plainDictionary = encoding == ENCODING_DICT || encoding == ENCODING_DICT_RLE
+
+        val frontDictionary =
+            encoding == ENCODING_DICT_FRONT || encoding == ENCODING_DICT_FRONT_RLE
+
+        if (plainDictionary || frontDictionary) {
             val count = reader.readCounter32()
             if (count < 0) {
                 throw ScbException("$fieldName: the dictionary entry count is negative")
             }
 
-            Array(count) { reader.readString() }
-        } else {
-            EMPTY_DICTIONARY
+            if (frontDictionary) {
+                strings = readFrontCodedDictionary(reader, count, fieldName)
+            } else if (element == ELEMENT_STRING) {
+                strings = Array(count) { reader.readString() }
+            } else {
+                // A fixed-width element: the entries are the value's own bytes, so they
+                // are taken as bytes and turned into values only when a row asks for one.
+                width = if (element == ELEMENT_F32) 4 else 8
+                values = ByteArray(count * width)
+
+                for (at in 0 until count) {
+                    reader.readBytesInto(values, at * width, width)
+                }
+            }
         }
+
+        dictionary = strings
+        valueDictionary = values
+        valueWidth = width
+    }
 
     /** The next Int - which also serves enums, and reference indexes. */
     fun nextI32(): Int {
@@ -367,15 +418,54 @@ class ColumnCursor(
         }
     }
 
-    /** A Long member: an i64 column is always raw, anything narrower decodes as Int. */
-    fun nextI64(): Long =
-        if (element == ELEMENT_I64) reader.readInt64() else nextI32().toLong()
+    /**
+     * A Long member: from an i64 column raw or through its dictionary, and from anything
+     * narrower by decoding an Int and widening it.
+     */
+    fun nextI64(): Long {
+        if (element != ELEMENT_I64) return nextI32().toLong()
 
-    /** A Double member: float columns are always raw, an i32 column decodes then widens. */
+        if (valueWidth != 0) return int64At(nextValueEntry())
+
+        rowsRemaining--
+
+        return reader.readInt64()
+    }
+
+    /** A Float member: raw, or the dictionary entry's exact bit pattern. */
+    fun nextF32(): Float {
+        if (valueWidth != 0) return Float.fromBits(int32At(nextValueEntry()))
+
+        rowsRemaining--
+
+        return reader.readFloat()
+    }
+
+    /**
+     * A Double member: from f64 or f32 - either of them raw or dictionary-encoded - and
+     * from an i32 column by decoding and widening.
+     */
     fun nextF64(): Double = when (element) {
-        ELEMENT_F64 -> reader.readDouble()
-        ELEMENT_F32 -> reader.readFloat().toDouble()
+        ELEMENT_F64 ->
+            if (valueWidth != 0) {
+                Double.fromBits(int64At(nextValueEntry()))
+            } else {
+                rowsRemaining--
+                reader.readDouble()
+            }
+
+        ELEMENT_F32 -> nextF32().toDouble()
+
         else -> nextI32().toDouble()
+    }
+
+    /** A Boolean member: one byte raw, or a run of them. */
+    fun nextBool(): Boolean {
+        if (encoding == ENCODING_RLE) return nextI32() != 0
+
+        rowsRemaining--
+
+        return reader.readBool()
     }
 
     /** The next string - the dictionary's instance where the block has one. */
@@ -385,15 +475,62 @@ class ColumnCursor(
         return when (encoding) {
             ENCODING_RAW -> reader.readString()
 
-            ENCODING_DICT -> dictionaryEntry(reader.readCounter32())
+            ENCODING_DICT, ENCODING_DICT_FRONT -> dictionaryEntry(reader.readCounter32())
 
-            else -> { // ENCODING_DICT_RLE
+            else -> { // ENCODING_DICT_RLE and ENCODING_DICT_FRONT_RLE
                 if (runRemaining == 0) readRun()
 
                 runRemaining--
                 dictionaryEntry(runValue)
             }
         }
+    }
+
+    /**
+     * Where the next row's dictionary entry starts, for a fixed-width element: an offset
+     * into the raw entries rather than a value, so the caller reads it as its own type.
+     */
+    private fun nextValueEntry(): Int {
+        rowsRemaining--
+
+        val index: Int
+
+        if (encoding == ENCODING_DICT) {
+            index = reader.readCounter32()
+        } else {
+            if (runRemaining == 0) readRun()
+
+            runRemaining--
+            index = runValue
+        }
+
+        val count = valueDictionary.size / valueWidth
+
+        if (index < 0 || index >= count) {
+            throw ScbException(
+                "$fieldName: dictionary index $index is out of range - the " +
+                    "dictionary holds $count entries")
+        }
+
+        return index * valueWidth
+    }
+
+    /** The four bytes of a dictionary entry, little endian, as the raw layout has them. */
+    private fun int32At(at: Int): Int =
+        (valueDictionary[at].toInt() and 0xFF) or
+            ((valueDictionary[at + 1].toInt() and 0xFF) shl 8) or
+            ((valueDictionary[at + 2].toInt() and 0xFF) shl 16) or
+            ((valueDictionary[at + 3].toInt() and 0xFF) shl 24)
+
+    /** The eight bytes of a dictionary entry, little endian. */
+    private fun int64At(at: Int): Long {
+        var value = 0L
+
+        for (i in 7 downTo 0) {
+            value = (value shl 8) or (valueDictionary[at + i].toLong() and 0xFF)
+        }
+
+        return value
     }
 
     private fun readRun() {
@@ -423,8 +560,55 @@ class ColumnCursor(
 
     private companion object {
         // One shared empty array for the encodings that carry no dictionary, so the
-        // property can stay non-nullable without an allocation per cursor.
+        // properties can stay non-nullable without an allocation per cursor.
         val EMPTY_DICTIONARY = emptyArray<String>()
+        val EMPTY_VALUES = ByteArray(0)
+
+        /**
+         * A sorted dictionary whose entries state only what they do not share with the
+         * entry before them.
+         *
+         * Decoded into whole strings here rather than kept folded, because a row wants a
+         * string and the folding was only ever about the bytes on disk. The scratch
+         * buffer grows to the longest entry and is reused, so the allocations are the
+         * strings themselves - one per distinct value, which is the point.
+         */
+        fun readFrontCodedDictionary(
+            reader: ScbReader,
+            count: Int,
+            fieldName: String,
+        ): Array<String> {
+            var scratch = ByteArray(64)
+            var previousLength = 0
+
+            return Array(count) { at ->
+                val shared = reader.readCounter32()
+                val rest = reader.readCounter32()
+
+                if (shared < 0 || rest < 0 || shared > previousLength) {
+                    throw ScbException(
+                        "$fieldName: dictionary entry $at shares $shared bytes with an " +
+                            "entry of $previousLength")
+                }
+
+                val length = shared + rest
+
+                if (length > scratch.size) {
+                    var capacity = scratch.size
+                    while (capacity < length) capacity *= 2
+
+                    // Copied rather than replaced: the shared bytes of this entry are
+                    // already in there, left by the entry before it.
+                    scratch = scratch.copyOf(capacity)
+                }
+
+                if (rest > 0) reader.readBytesInto(scratch, shared, rest)
+
+                previousLength = length
+
+                if (length == 0) "" else String(scratch, 0, length, StandardCharsets.UTF_8)
+            }
+        }
     }
 }
 
@@ -537,10 +721,18 @@ private fun encodingSupported(column: Column): Boolean {
     if (column.kind != KIND_SCALAR) return false
 
     return when (column.element) {
-        ELEMENT_VARINT -> column.encoding == ENCODING_RLE
+        ELEMENT_BOOL, ELEMENT_VARINT -> column.encoding == ENCODING_RLE
         ELEMENT_I32 -> column.encoding in ENCODING_VARINT..ENCODING_DELTA_RLE
-        ELEMENT_STRING ->
+
+        // The dictionary is parameterized by element, so these three reach it with
+        // entries that are simply their own raw bytes.
+        ELEMENT_I64, ELEMENT_F32, ELEMENT_F64 ->
             column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE
+
+        // And a string dictionary can additionally be front coded, which is meaningless
+        // for a fixed-width element and refused for one.
+        ELEMENT_STRING -> column.encoding in ENCODING_DICT..ENCODING_DICT_FRONT_RLE
+
         else -> false
     }
 }

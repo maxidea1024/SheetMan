@@ -131,11 +131,12 @@ static bool Rescue_RelicParse(Rescue_RelicTable_t* table, sm_reader* reader) {
     case 6:
       (void)sm_check_column(reader, column, "Relic.RelicValue1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Relic.RelicValue1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->relic_value1);
+        (void)sm_cursor_next_f32(&cursor, &record->relic_value1);
       }
 
       break;
@@ -143,11 +144,12 @@ static bool Rescue_RelicParse(Rescue_RelicTable_t* table, sm_reader* reader) {
     case 7:
       (void)sm_check_column(reader, column, "Relic.RelicIncValue1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Relic.RelicIncValue1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->relic_inc_value1);
+        (void)sm_cursor_next_f32(&cursor, &record->relic_inc_value1);
       }
 
       break;
@@ -170,11 +172,12 @@ static bool Rescue_RelicParse(Rescue_RelicTable_t* table, sm_reader* reader) {
     case 9:
       (void)sm_check_column(reader, column, "Relic.RelicValue2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Relic.RelicValue2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->relic_value2);
+        (void)sm_cursor_next_f32(&cursor, &record->relic_value2);
       }
 
       break;
@@ -182,11 +185,12 @@ static bool Rescue_RelicParse(Rescue_RelicTable_t* table, sm_reader* reader) {
     case 10:
       (void)sm_check_column(reader, column, "Relic.RelicIncValue2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Relic.RelicIncValue2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->relic_inc_value2);
+        (void)sm_cursor_next_f32(&cursor, &record->relic_inc_value2);
       }
 
       break;
@@ -209,11 +213,12 @@ static bool Rescue_RelicParse(Rescue_RelicTable_t* table, sm_reader* reader) {
     case 12:
       (void)sm_check_column(reader, column, "Relic.RelicValue3", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Relic.RelicValue3");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->relic_value3);
+        (void)sm_cursor_next_f32(&cursor, &record->relic_value3);
       }
 
       break;
@@ -221,11 +226,12 @@ static bool Rescue_RelicParse(Rescue_RelicTable_t* table, sm_reader* reader) {
     case 13:
       (void)sm_check_column(reader, column, "Relic.RelicIncValue3", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Relic.RelicIncValue3");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->relic_inc_value3);
+        (void)sm_cursor_next_f32(&cursor, &record->relic_inc_value3);
       }
 
       break;

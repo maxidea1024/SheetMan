@@ -135,63 +135,75 @@ module Rescue
           end
         when 8
           Sheetman.check_column(column, 'EquipItemLevel.WeaponStatRate1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.WeaponStatRate1')
           records.each do |record|
-            record.weapon_stat_rate1 = reader.read_float
+            record.weapon_stat_rate1 = cursor.next_f32
           end
         when 9
           Sheetman.check_column(column, 'EquipItemLevel.WeaponStatRate2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.WeaponStatRate2')
           records.each do |record|
-            record.weapon_stat_rate2 = reader.read_float
+            record.weapon_stat_rate2 = cursor.next_f32
           end
         when 10
           Sheetman.check_column(column, 'EquipItemLevel.ArmorStatRate1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.ArmorStatRate1')
           records.each do |record|
-            record.armor_stat_rate1 = reader.read_float
+            record.armor_stat_rate1 = cursor.next_f32
           end
         when 11
           Sheetman.check_column(column, 'EquipItemLevel.ArmorStatRate2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.ArmorStatRate2')
           records.each do |record|
-            record.armor_stat_rate2 = reader.read_float
+            record.armor_stat_rate2 = cursor.next_f32
           end
         when 12
           Sheetman.check_column(column, 'EquipItemLevel.GauntletStatRate1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.GauntletStatRate1')
           records.each do |record|
-            record.gauntlet_stat_rate1 = reader.read_float
+            record.gauntlet_stat_rate1 = cursor.next_f32
           end
         when 13
           Sheetman.check_column(column, 'EquipItemLevel.GauntletStatRate2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.GauntletStatRate2')
           records.each do |record|
-            record.gauntlet_stat_rate2 = reader.read_float
+            record.gauntlet_stat_rate2 = cursor.next_f32
           end
         when 14
           Sheetman.check_column(column, 'EquipItemLevel.BootsStatRate1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.BootsStatRate1')
           records.each do |record|
-            record.boots_stat_rate1 = reader.read_float
+            record.boots_stat_rate1 = cursor.next_f32
           end
         when 15
           Sheetman.check_column(column, 'EquipItemLevel.BootsStatRate2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.BootsStatRate2')
           records.each do |record|
-            record.boots_stat_rate2 = reader.read_float
+            record.boots_stat_rate2 = cursor.next_f32
           end
         when 16
           Sheetman.check_column(column, 'EquipItemLevel.HelmetStatRate1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.HelmetStatRate1')
           records.each do |record|
-            record.helmet_stat_rate1 = reader.read_float
+            record.helmet_stat_rate1 = cursor.next_f32
           end
         when 17
           Sheetman.check_column(column, 'EquipItemLevel.HelmetStatRate2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.HelmetStatRate2')
           records.each do |record|
-            record.helmet_stat_rate2 = reader.read_float
+            record.helmet_stat_rate2 = cursor.next_f32
           end
         when 18
           Sheetman.check_column(column, 'EquipItemLevel.AccStatRate1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.AccStatRate1')
           records.each do |record|
-            record.acc_stat_rate1 = reader.read_float
+            record.acc_stat_rate1 = cursor.next_f32
           end
         when 19
           Sheetman.check_column(column, 'EquipItemLevel.AccStatRate2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemLevel.AccStatRate2')
           records.each do |record|
-            record.acc_stat_rate2 = reader.read_float
+            record.acc_stat_rate2 = cursor.next_f32
           end
         else
           # A column added after this code was generated.

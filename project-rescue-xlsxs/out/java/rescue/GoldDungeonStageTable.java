@@ -176,8 +176,9 @@ public final class GoldDungeonStageTable {
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "GoldDungeonStage.SpawnNextTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GoldDungeonStage.SpawnNextTime");
                     for (GoldDungeonStageRecord record : loaded) {
-                        record.spawnNextTime = reader.readFloat();
+                        record.spawnNextTime = cursor.nextF32();
                     }
                     break;
                 }
@@ -207,22 +208,25 @@ public final class GoldDungeonStageTable {
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "GoldDungeonStage.AtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GoldDungeonStage.AtkUpPercent");
                     for (GoldDungeonStageRecord record : loaded) {
-                        record.atkUpPercent = reader.readFloat();
+                        record.atkUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "GoldDungeonStage.DefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GoldDungeonStage.DefUpPercent");
                     for (GoldDungeonStageRecord record : loaded) {
-                        record.defUpPercent = reader.readFloat();
+                        record.defUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 17: {
                     ScbReader.checkColumn(column, "GoldDungeonStage.MHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GoldDungeonStage.MHPUpPercent");
                     for (GoldDungeonStageRecord record : loaded) {
-                        record.mHPUpPercent = reader.readFloat();
+                        record.mHPUpPercent = cursor.nextF32();
                     }
                     break;
                 }

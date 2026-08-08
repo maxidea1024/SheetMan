@@ -167,15 +167,17 @@ final class RelicTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'Relic.RelicValue1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicValue1');
                     foreach ($records as $record) {
-                        $record->relicValue1 = $reader->readFloat();
+                        $record->relicValue1 = $cursor->nextF32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'Relic.RelicIncValue1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicIncValue1');
                     foreach ($records as $record) {
-                        $record->relicIncValue1 = $reader->readFloat();
+                        $record->relicIncValue1 = $cursor->nextF32();
                     }
                     break;
 
@@ -189,15 +191,17 @@ final class RelicTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'Relic.RelicValue2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicValue2');
                     foreach ($records as $record) {
-                        $record->relicValue2 = $reader->readFloat();
+                        $record->relicValue2 = $cursor->nextF32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'Relic.RelicIncValue2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicIncValue2');
                     foreach ($records as $record) {
-                        $record->relicIncValue2 = $reader->readFloat();
+                        $record->relicIncValue2 = $cursor->nextF32();
                     }
                     break;
 
@@ -211,15 +215,17 @@ final class RelicTable
 
                 case 12:
                     ScbReader::checkColumn($column, 'Relic.RelicValue3', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicValue3');
                     foreach ($records as $record) {
-                        $record->relicValue3 = $reader->readFloat();
+                        $record->relicValue3 = $cursor->nextF32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'Relic.RelicIncValue3', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicIncValue3');
                     foreach ($records as $record) {
-                        $record->relicIncValue3 = $reader->readFloat();
+                        $record->relicIncValue3 = $cursor->nextF32();
                     }
                     break;
 

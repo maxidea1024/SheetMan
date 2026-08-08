@@ -304,10 +304,11 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "ArtifactTranscendence.PowerMultiplier", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactTranscendence.PowerMultiplier");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._powerMultiplier);
+                            record._powerMultiplier = cursor.NextF32();
                         }
                         break;
 

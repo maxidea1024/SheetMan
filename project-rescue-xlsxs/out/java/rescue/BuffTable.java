@@ -170,8 +170,9 @@ public final class BuffTable {
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "Buff.BuffValueRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.BuffValueRate");
                     for (BuffRecord record : loaded) {
-                        record.buffValueRate = reader.readFloat();
+                        record.buffValueRate = cursor.nextF32();
                     }
                     break;
                 }
@@ -201,15 +202,17 @@ public final class BuffTable {
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "Buff.BuffCoolDownTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.BuffCoolDownTime");
                     for (BuffRecord record : loaded) {
-                        record.buffCoolDownTime = reader.readFloat();
+                        record.buffCoolDownTime = cursor.nextF32();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "Buff.IsVisible", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.IsVisible");
                     for (BuffRecord record : loaded) {
-                        record.isVisible = reader.readBool();
+                        record.isVisible = cursor.nextBool();
                     }
                     break;
                 }

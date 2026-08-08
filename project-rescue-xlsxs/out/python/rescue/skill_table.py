@@ -134,12 +134,14 @@ class SkillTable:
                     record.ani_path = cursor.next_string()
             elif column.tag == 9:
                 sheetman.check_column(column, "Skill.SkillUseRange", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.SkillUseRange")
                 for record in records:
-                    record.skill_use_range = reader.read_float()
+                    record.skill_use_range = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "Skill.CoolTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.CoolTime")
                 for record in records:
-                    record.cool_time = reader.read_float()
+                    record.cool_time = cursor.next_f32()
             elif column.tag == 11:
                 sheetman.check_column(column, "Skill.BuffID", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:

@@ -130,8 +130,9 @@ public final class CostCurveRangeTable {
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "CostCurveRange.AddMultiplier", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CostCurveRange.AddMultiplier");
                     for (CostCurveRangeRecord record : loaded) {
-                        record.addMultiplier = reader.readFloat();
+                        record.addMultiplier = cursor.nextF32();
                     }
                     break;
                 }

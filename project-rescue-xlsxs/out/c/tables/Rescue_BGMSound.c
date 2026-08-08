@@ -101,11 +101,12 @@ static bool Rescue_BGMSoundParse(Rescue_BGMSoundTable_t* table, sm_reader* reade
     case 4:
       (void)sm_check_column(reader, column, "BGMSound.Loop", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "BGMSound.Loop");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BGMSoundRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->loop);
+        (void)sm_cursor_next_bool(&cursor, &record->loop);
       }
 
       break;
@@ -113,11 +114,12 @@ static bool Rescue_BGMSoundParse(Rescue_BGMSoundTable_t* table, sm_reader* reade
     case 5:
       (void)sm_check_column(reader, column, "BGMSound.FadeTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "BGMSound.FadeTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BGMSoundRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->fade_time);
+        (void)sm_cursor_next_f32(&cursor, &record->fade_time);
       }
 
       break;

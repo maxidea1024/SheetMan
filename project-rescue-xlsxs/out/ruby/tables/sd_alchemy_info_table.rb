@@ -126,8 +126,9 @@ module Rescue
           end
         when 7
           Sheetman.check_column(column, 'SDAlchemyInfo.MaterialType2Rate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.MaterialType2Rate')
           records.each do |record|
-            record.material_type2_rate = reader.read_float
+            record.material_type2_rate = cursor.next_f32
           end
         when 8
           Sheetman.check_column(column, 'SDAlchemyInfo.StatType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])

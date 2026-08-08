@@ -352,10 +352,11 @@ bool FCollectionTable::Read(const FString& Filename)
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("Collection.RewardStatRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Collection.RewardStatRate"));
 
             for (FCollectionRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.RewardStatRate);
+                Cursor.NextF32(Record.RewardStatRate);
             }
 
             break;
@@ -784,10 +785,11 @@ bool FDailyDungeonInfoTable::Read(const FString& Filename)
 
         case 10:
             SheetMan::CheckColumn(Reader, Column, TEXT("DailyDungeonInfo.BuffValueRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("DailyDungeonInfo.BuffValueRate"));
 
             for (FDailyDungeonInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BuffValueRate);
+                Cursor.NextF32(Record.BuffValueRate);
             }
 
             break;
@@ -1111,10 +1113,11 @@ bool FGoldDungeonStageTable::Read(const FString& Filename)
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("GoldDungeonStage.SpawnNextTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GoldDungeonStage.SpawnNextTime"));
 
             for (FGoldDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SpawnNextTime);
+                Cursor.NextF32(Record.SpawnNextTime);
             }
 
             break;
@@ -1154,30 +1157,33 @@ bool FGoldDungeonStageTable::Read(const FString& Filename)
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("GoldDungeonStage.AtkUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GoldDungeonStage.AtkUpPercent"));
 
             for (FGoldDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AtkUpPercent);
+                Cursor.NextF32(Record.AtkUpPercent);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("GoldDungeonStage.DefUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GoldDungeonStage.DefUpPercent"));
 
             for (FGoldDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DefUpPercent);
+                Cursor.NextF32(Record.DefUpPercent);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("GoldDungeonStage.MHPUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GoldDungeonStage.MHPUpPercent"));
 
             for (FGoldDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MHPUpPercent);
+                Cursor.NextF32(Record.MHPUpPercent);
             }
 
             break;
@@ -1406,10 +1412,11 @@ bool FGoldDungeonRewardTable::Read(const FString& Filename)
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("GoldDungeonReward.IsFirstClear"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GoldDungeonReward.IsFirstClear"));
 
             for (FGoldDungeonRewardRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsFirstClear);
+                Cursor.NextBool(Record.bIsFirstClear);
             }
 
             break;
@@ -1678,10 +1685,11 @@ bool FExpDungeonStageTable::Read(const FString& Filename)
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("ExpDungeonStage.SpawnNextTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("ExpDungeonStage.SpawnNextTime"));
 
             for (FExpDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SpawnNextTime);
+                Cursor.NextF32(Record.SpawnNextTime);
             }
 
             break;
@@ -1721,30 +1729,33 @@ bool FExpDungeonStageTable::Read(const FString& Filename)
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("ExpDungeonStage.AtkUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("ExpDungeonStage.AtkUpPercent"));
 
             for (FExpDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AtkUpPercent);
+                Cursor.NextF32(Record.AtkUpPercent);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("ExpDungeonStage.DefUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("ExpDungeonStage.DefUpPercent"));
 
             for (FExpDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DefUpPercent);
+                Cursor.NextF32(Record.DefUpPercent);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("ExpDungeonStage.MHPUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("ExpDungeonStage.MHPUpPercent"));
 
             for (FExpDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MHPUpPercent);
+                Cursor.NextF32(Record.MHPUpPercent);
             }
 
             break;
@@ -1973,10 +1984,11 @@ bool FExpDungeonRewardTable::Read(const FString& Filename)
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("ExpDungeonReward.IsFirstClear"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("ExpDungeonReward.IsFirstClear"));
 
             for (FExpDungeonRewardRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsFirstClear);
+                Cursor.NextBool(Record.bIsFirstClear);
             }
 
             break;
@@ -2245,10 +2257,11 @@ bool FTraitDungeonStageTable::Read(const FString& Filename)
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("TraitDungeonStage.SpawnNextTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("TraitDungeonStage.SpawnNextTime"));
 
             for (FTraitDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SpawnNextTime);
+                Cursor.NextF32(Record.SpawnNextTime);
             }
 
             break;
@@ -2288,30 +2301,33 @@ bool FTraitDungeonStageTable::Read(const FString& Filename)
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("TraitDungeonStage.AtkUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("TraitDungeonStage.AtkUpPercent"));
 
             for (FTraitDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AtkUpPercent);
+                Cursor.NextF32(Record.AtkUpPercent);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("TraitDungeonStage.DefUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("TraitDungeonStage.DefUpPercent"));
 
             for (FTraitDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DefUpPercent);
+                Cursor.NextF32(Record.DefUpPercent);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("TraitDungeonStage.MHPUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("TraitDungeonStage.MHPUpPercent"));
 
             for (FTraitDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MHPUpPercent);
+                Cursor.NextF32(Record.MHPUpPercent);
             }
 
             break;
@@ -2540,10 +2556,11 @@ bool FTraitDungeonRewardTable::Read(const FString& Filename)
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("TraitDungeonReward.IsFirstClear"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("TraitDungeonReward.IsFirstClear"));
 
             for (FTraitDungeonRewardRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsFirstClear);
+                Cursor.NextBool(Record.bIsFirstClear);
             }
 
             break;
@@ -2812,10 +2829,11 @@ bool FRelicDungeonStageTable::Read(const FString& Filename)
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("RelicDungeonStage.SpawnNextTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("RelicDungeonStage.SpawnNextTime"));
 
             for (FRelicDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SpawnNextTime);
+                Cursor.NextF32(Record.SpawnNextTime);
             }
 
             break;
@@ -2855,30 +2873,33 @@ bool FRelicDungeonStageTable::Read(const FString& Filename)
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("RelicDungeonStage.AtkUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("RelicDungeonStage.AtkUpPercent"));
 
             for (FRelicDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AtkUpPercent);
+                Cursor.NextF32(Record.AtkUpPercent);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("RelicDungeonStage.DefUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("RelicDungeonStage.DefUpPercent"));
 
             for (FRelicDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DefUpPercent);
+                Cursor.NextF32(Record.DefUpPercent);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("RelicDungeonStage.MHPUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("RelicDungeonStage.MHPUpPercent"));
 
             for (FRelicDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MHPUpPercent);
+                Cursor.NextF32(Record.MHPUpPercent);
             }
 
             break;
@@ -3107,10 +3128,11 @@ bool FRelicDungeonRewardTable::Read(const FString& Filename)
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("RelicDungeonReward.IsFirstClear"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("RelicDungeonReward.IsFirstClear"));
 
             for (FRelicDungeonRewardRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsFirstClear);
+                Cursor.NextBool(Record.bIsFirstClear);
             }
 
             break;
@@ -3379,10 +3401,11 @@ bool FOopartsDungeonStageTable::Read(const FString& Filename)
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("OopartsDungeonStage.SpawnNextTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("OopartsDungeonStage.SpawnNextTime"));
 
             for (FOopartsDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SpawnNextTime);
+                Cursor.NextF32(Record.SpawnNextTime);
             }
 
             break;
@@ -3422,30 +3445,33 @@ bool FOopartsDungeonStageTable::Read(const FString& Filename)
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("OopartsDungeonStage.AtkUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("OopartsDungeonStage.AtkUpPercent"));
 
             for (FOopartsDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AtkUpPercent);
+                Cursor.NextF32(Record.AtkUpPercent);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("OopartsDungeonStage.DefUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("OopartsDungeonStage.DefUpPercent"));
 
             for (FOopartsDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DefUpPercent);
+                Cursor.NextF32(Record.DefUpPercent);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("OopartsDungeonStage.MHPUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("OopartsDungeonStage.MHPUpPercent"));
 
             for (FOopartsDungeonStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MHPUpPercent);
+                Cursor.NextF32(Record.MHPUpPercent);
             }
 
             break;
@@ -3674,10 +3700,11 @@ bool FOopartsDungeonRewardTable::Read(const FString& Filename)
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("OopartsDungeonReward.IsFirstClear"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("OopartsDungeonReward.IsFirstClear"));
 
             for (FOopartsDungeonRewardRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsFirstClear);
+                Cursor.NextBool(Record.bIsFirstClear);
             }
 
             break;
@@ -3939,20 +3966,22 @@ bool FGachaInfoTable::Read(const FString& Filename)
 
         case 12:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaInfo.EnableReset"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaInfo.EnableReset"));
 
             for (FGachaInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bEnableReset);
+                Cursor.NextBool(Record.bEnableReset);
             }
 
             break;
 
         case 13:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaInfo.IsSharedCounter"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaInfo.IsSharedCounter"));
 
             for (FGachaInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsSharedCounter);
+                Cursor.NextBool(Record.bIsSharedCounter);
             }
 
             break;
@@ -3981,20 +4010,22 @@ bool FGachaInfoTable::Read(const FString& Filename)
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaInfo.IsSingle"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaInfo.IsSingle"));
 
             for (FGachaInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsSingle);
+                Cursor.NextBool(Record.bIsSingle);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaInfo.IsTen"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaInfo.IsTen"));
 
             for (FGachaInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsTen);
+                Cursor.NextBool(Record.bIsTen);
             }
 
             break;
@@ -4056,10 +4087,11 @@ bool FGachaInfoTable::Read(const FString& Filename)
 
         case 23:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaInfo.EnableSkip"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaInfo.EnableSkip"));
 
             for (FGachaInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bEnableSkip);
+                Cursor.NextBool(Record.bEnableSkip);
             }
 
             break;
@@ -4222,10 +4254,11 @@ bool FGachaCharacterListTable::Read(const FString& Filename)
 
         case 5:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaCharacterList.IsWishlist"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaCharacterList.IsWishlist"));
 
             for (FGachaCharacterListRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsWishlist);
+                Cursor.NextBool(Record.bIsWishlist);
             }
 
             break;
@@ -4531,20 +4564,22 @@ bool FGachaArtifactInfoTable::Read(const FString& Filename)
 
         case 12:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaArtifactInfo.EnableReset"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaArtifactInfo.EnableReset"));
 
             for (FGachaArtifactInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bEnableReset);
+                Cursor.NextBool(Record.bEnableReset);
             }
 
             break;
 
         case 13:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaArtifactInfo.IsSharedCounter"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaArtifactInfo.IsSharedCounter"));
 
             for (FGachaArtifactInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsSharedCounter);
+                Cursor.NextBool(Record.bIsSharedCounter);
             }
 
             break;
@@ -4573,20 +4608,22 @@ bool FGachaArtifactInfoTable::Read(const FString& Filename)
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaArtifactInfo.IsSingle"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaArtifactInfo.IsSingle"));
 
             for (FGachaArtifactInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsSingle);
+                Cursor.NextBool(Record.bIsSingle);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaArtifactInfo.IsTen"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaArtifactInfo.IsTen"));
 
             for (FGachaArtifactInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsTen);
+                Cursor.NextBool(Record.bIsTen);
             }
 
             break;
@@ -4648,10 +4685,11 @@ bool FGachaArtifactInfoTable::Read(const FString& Filename)
 
         case 23:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaArtifactInfo.EnableSkip"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaArtifactInfo.EnableSkip"));
 
             for (FGachaArtifactInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bEnableSkip);
+                Cursor.NextBool(Record.bEnableSkip);
             }
 
             break;
@@ -4992,50 +5030,55 @@ bool FGachaRateTable::Read(const FString& Filename)
 
         case 2:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaRate.URRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaRate.URRate"));
 
             for (FGachaRateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.URRate);
+                Cursor.NextF32(Record.URRate);
             }
 
             break;
 
         case 3:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaRate.SSRRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaRate.SSRRate"));
 
             for (FGachaRateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SSRRate);
+                Cursor.NextF32(Record.SSRRate);
             }
 
             break;
 
         case 4:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaRate.SRRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaRate.SRRate"));
 
             for (FGachaRateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SRRate);
+                Cursor.NextF32(Record.SRRate);
             }
 
             break;
 
         case 5:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaRate.RRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaRate.RRate"));
 
             for (FGachaRateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.RRate);
+                Cursor.NextF32(Record.RRate);
             }
 
             break;
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("GachaRate.NRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("GachaRate.NRate"));
 
             for (FGachaRateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.NRate);
+                Cursor.NextF32(Record.NRate);
             }
 
             break;
@@ -5220,10 +5263,11 @@ bool FCurrencyTable::Read(const FString& Filename)
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("Currency.Stackable"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Currency.Stackable"));
 
             for (FCurrencyRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bStackable);
+                Cursor.NextBool(Record.bStackable);
             }
 
             break;
@@ -5483,10 +5527,11 @@ bool FMaterialTable::Read(const FString& Filename)
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("Material.Stackable"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Material.Stackable"));
 
             for (FMaterialRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bStackable);
+                Cursor.NextBool(Record.bStackable);
             }
 
             break;
@@ -5746,10 +5791,11 @@ bool FPackageTable::Read(const FString& Filename)
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("Package.Stackable"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Package.Stackable"));
 
             for (FPackageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bStackable);
+                Cursor.NextBool(Record.bStackable);
             }
 
             break;
@@ -6311,120 +6357,132 @@ bool FEquipItemLevelTable::Read(const FString& Filename)
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.WeaponStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.WeaponStatRate1"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.WeaponStatRate1);
+                Cursor.NextF32(Record.WeaponStatRate1);
             }
 
             break;
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.WeaponStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.WeaponStatRate2"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.WeaponStatRate2);
+                Cursor.NextF32(Record.WeaponStatRate2);
             }
 
             break;
 
         case 10:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.ArmorStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.ArmorStatRate1"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.ArmorStatRate1);
+                Cursor.NextF32(Record.ArmorStatRate1);
             }
 
             break;
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.ArmorStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.ArmorStatRate2"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.ArmorStatRate2);
+                Cursor.NextF32(Record.ArmorStatRate2);
             }
 
             break;
 
         case 12:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.GauntletStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.GauntletStatRate1"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GauntletStatRate1);
+                Cursor.NextF32(Record.GauntletStatRate1);
             }
 
             break;
 
         case 13:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.GauntletStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.GauntletStatRate2"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GauntletStatRate2);
+                Cursor.NextF32(Record.GauntletStatRate2);
             }
 
             break;
 
         case 14:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.BootsStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.BootsStatRate1"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BootsStatRate1);
+                Cursor.NextF32(Record.BootsStatRate1);
             }
 
             break;
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.BootsStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.BootsStatRate2"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BootsStatRate2);
+                Cursor.NextF32(Record.BootsStatRate2);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.HelmetStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.HelmetStatRate1"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HelmetStatRate1);
+                Cursor.NextF32(Record.HelmetStatRate1);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.HelmetStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.HelmetStatRate2"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HelmetStatRate2);
+                Cursor.NextF32(Record.HelmetStatRate2);
             }
 
             break;
 
         case 18:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.AccStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.AccStatRate1"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AccStatRate1);
+                Cursor.NextF32(Record.AccStatRate1);
             }
 
             break;
 
         case 19:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemLevel.AccStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemLevel.AccStatRate2"));
 
             for (FEquipItemLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AccStatRate2);
+                Cursor.NextF32(Record.AccStatRate2);
             }
 
             break;
@@ -6631,120 +6689,132 @@ bool FEquipItemClassTable::Read(const FString& Filename)
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.WeaponStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.WeaponStatRate1"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.WeaponStatRate1);
+                Cursor.NextF32(Record.WeaponStatRate1);
             }
 
             break;
 
         case 10:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.WeaponStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.WeaponStatRate2"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.WeaponStatRate2);
+                Cursor.NextF32(Record.WeaponStatRate2);
             }
 
             break;
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.ArmorStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.ArmorStatRate1"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.ArmorStatRate1);
+                Cursor.NextF32(Record.ArmorStatRate1);
             }
 
             break;
 
         case 12:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.ArmorStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.ArmorStatRate2"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.ArmorStatRate2);
+                Cursor.NextF32(Record.ArmorStatRate2);
             }
 
             break;
 
         case 13:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.GauntletStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.GauntletStatRate1"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GauntletStatRate1);
+                Cursor.NextF32(Record.GauntletStatRate1);
             }
 
             break;
 
         case 14:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.GauntletStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.GauntletStatRate2"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GauntletStatRate2);
+                Cursor.NextF32(Record.GauntletStatRate2);
             }
 
             break;
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.BootsStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.BootsStatRate1"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BootsStatRate1);
+                Cursor.NextF32(Record.BootsStatRate1);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.BootsStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.BootsStatRate2"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BootsStatRate2);
+                Cursor.NextF32(Record.BootsStatRate2);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.HelmetStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.HelmetStatRate1"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HelmetStatRate1);
+                Cursor.NextF32(Record.HelmetStatRate1);
             }
 
             break;
 
         case 18:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.HelmetStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.HelmetStatRate2"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HelmetStatRate2);
+                Cursor.NextF32(Record.HelmetStatRate2);
             }
 
             break;
 
         case 19:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.AccStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.AccStatRate1"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AccStatRate1);
+                Cursor.NextF32(Record.AccStatRate1);
             }
 
             break;
 
         case 20:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemClass.AccStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemClass.AccStatRate2"));
 
             for (FEquipItemClassRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AccStatRate2);
+                Cursor.NextF32(Record.AccStatRate2);
             }
 
             break;
@@ -7195,120 +7265,132 @@ bool FEquipItemGradeTable::Read(const FString& Filename)
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.WeaponStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.WeaponStatRate1"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.WeaponStatRate1);
+                Cursor.NextF32(Record.WeaponStatRate1);
             }
 
             break;
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.WeaponStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.WeaponStatRate2"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.WeaponStatRate2);
+                Cursor.NextF32(Record.WeaponStatRate2);
             }
 
             break;
 
         case 10:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.ArmorStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.ArmorStatRate1"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.ArmorStatRate1);
+                Cursor.NextF32(Record.ArmorStatRate1);
             }
 
             break;
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.ArmorStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.ArmorStatRate2"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.ArmorStatRate2);
+                Cursor.NextF32(Record.ArmorStatRate2);
             }
 
             break;
 
         case 12:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.GauntletStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.GauntletStatRate1"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GauntletStatRate1);
+                Cursor.NextF32(Record.GauntletStatRate1);
             }
 
             break;
 
         case 13:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.GauntletStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.GauntletStatRate2"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GauntletStatRate2);
+                Cursor.NextF32(Record.GauntletStatRate2);
             }
 
             break;
 
         case 14:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.BootsStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.BootsStatRate1"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BootsStatRate1);
+                Cursor.NextF32(Record.BootsStatRate1);
             }
 
             break;
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.BootsStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.BootsStatRate2"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BootsStatRate2);
+                Cursor.NextF32(Record.BootsStatRate2);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.HelmetStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.HelmetStatRate1"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HelmetStatRate1);
+                Cursor.NextF32(Record.HelmetStatRate1);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.HelmetStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.HelmetStatRate2"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HelmetStatRate2);
+                Cursor.NextF32(Record.HelmetStatRate2);
             }
 
             break;
 
         case 18:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.AccStatRate1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.AccStatRate1"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AccStatRate1);
+                Cursor.NextF32(Record.AccStatRate1);
             }
 
             break;
 
         case 19:
             SheetMan::CheckColumn(Reader, Column, TEXT("EquipItemGrade.AccStatRate2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("EquipItemGrade.AccStatRate2"));
 
             for (FEquipItemGradeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AccStatRate2);
+                Cursor.NextF32(Record.AccStatRate2);
             }
 
             break;
@@ -7548,80 +7630,88 @@ bool FCharacterTable::Read(const FString& Filename)
 
         case 12:
             SheetMan::CheckColumn(Reader, Column, TEXT("Character.MoveSpeed"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Character.MoveSpeed"));
 
             for (FCharacterRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MoveSpeed);
+                Cursor.NextF32(Record.MoveSpeed);
             }
 
             break;
 
         case 13:
             SheetMan::CheckColumn(Reader, Column, TEXT("Character.CritRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Character.CritRate"));
 
             for (FCharacterRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.CritRate);
+                Cursor.NextF32(Record.CritRate);
             }
 
             break;
 
         case 14:
             SheetMan::CheckColumn(Reader, Column, TEXT("Character.CritDmg"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Character.CritDmg"));
 
             for (FCharacterRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.CritDmg);
+                Cursor.NextF32(Record.CritDmg);
             }
 
             break;
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("Character.SearchRange"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Character.SearchRange"));
 
             for (FCharacterRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SearchRange);
+                Cursor.NextF32(Record.SearchRange);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("Character.ReFindTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Character.ReFindTime"));
 
             for (FCharacterRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.ReFindTime);
+                Cursor.NextF32(Record.ReFindTime);
             }
 
             break;
 
         case 17:
             SheetMan::CheckColumn(Reader, Column, TEXT("Character.MaxFollow"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Character.MaxFollow"));
 
             for (FCharacterRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MaxFollow);
+                Cursor.NextF32(Record.MaxFollow);
             }
 
             break;
 
         case 18:
             SheetMan::CheckColumn(Reader, Column, TEXT("Character.SizePrefab"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Character.SizePrefab"));
 
             for (FCharacterRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SizePrefab);
+                Cursor.NextF32(Record.SizePrefab);
             }
 
             break;
 
         case 19:
             SheetMan::CheckColumn(Reader, Column, TEXT("Character.IsUnlocked"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Character.IsUnlocked"));
 
             for (FCharacterRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsUnlocked);
+                Cursor.NextBool(Record.bIsUnlocked);
             }
 
             break;
@@ -8026,20 +8116,22 @@ bool FSkillTable::Read(const FString& Filename)
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("Skill.SkillUseRange"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Skill.SkillUseRange"));
 
             for (FSkillRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SkillUseRange);
+                Cursor.NextF32(Record.SkillUseRange);
             }
 
             break;
 
         case 10:
             SheetMan::CheckColumn(Reader, Column, TEXT("Skill.CoolTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Skill.CoolTime"));
 
             for (FSkillRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.CoolTime);
+                Cursor.NextF32(Record.CoolTime);
             }
 
             break;
@@ -8310,10 +8402,11 @@ bool FBuffTable::Read(const FString& Filename)
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("Buff.BuffValueRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Buff.BuffValueRate"));
 
             for (FBuffRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BuffValueRate);
+                Cursor.NextF32(Record.BuffValueRate);
             }
 
             break;
@@ -8353,20 +8446,22 @@ bool FBuffTable::Read(const FString& Filename)
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("Buff.BuffCoolDownTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Buff.BuffCoolDownTime"));
 
             for (FBuffRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BuffCoolDownTime);
+                Cursor.NextF32(Record.BuffCoolDownTime);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("Buff.IsVisible"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Buff.IsVisible"));
 
             for (FBuffRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsVisible);
+                Cursor.NextBool(Record.bIsVisible);
             }
 
             break;
@@ -8573,30 +8668,33 @@ bool FCharacterLevelTable::Read(const FString& Filename)
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("CharacterLevel.ATKGrowth"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("CharacterLevel.ATKGrowth"));
 
             for (FCharacterLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.ATKGrowth);
+                Cursor.NextF32(Record.ATKGrowth);
             }
 
             break;
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("CharacterLevel.DEFGrowth"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("CharacterLevel.DEFGrowth"));
 
             for (FCharacterLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DEFGrowth);
+                Cursor.NextF32(Record.DEFGrowth);
             }
 
             break;
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("CharacterLevel.HPGrowth"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("CharacterLevel.HPGrowth"));
 
             for (FCharacterLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HPGrowth);
+                Cursor.NextF32(Record.HPGrowth);
             }
 
             break;
@@ -8803,10 +8901,11 @@ bool FCharacterTranscendenceTable::Read(const FString& Filename)
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("CharacterTranscendence.PowerMultiplier"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("CharacterTranscendence.PowerMultiplier"));
 
             for (FCharacterTranscendenceRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.PowerMultiplier);
+                Cursor.NextF32(Record.PowerMultiplier);
             }
 
             break;
@@ -9011,10 +9110,11 @@ bool FArtifactTable::Read(const FString& Filename)
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("Artifact.EquipStatRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Artifact.EquipStatRate"));
 
             for (FArtifactRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.EquipStatRate);
+                Cursor.NextF32(Record.EquipStatRate);
             }
 
             break;
@@ -9032,10 +9132,11 @@ bool FArtifactTable::Read(const FString& Filename)
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("Artifact.CollectionVlaue"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Artifact.CollectionVlaue"));
 
             for (FArtifactRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.CollectionVlaue);
+                Cursor.NextF32(Record.CollectionVlaue);
             }
 
             break;
@@ -9253,30 +9354,33 @@ bool FArtifactLevelTable::Read(const FString& Filename)
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("ArtifactLevel.ATKGrowth"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("ArtifactLevel.ATKGrowth"));
 
             for (FArtifactLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.ATKGrowth);
+                Cursor.NextF32(Record.ATKGrowth);
             }
 
             break;
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("ArtifactLevel.DEFGrowth"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("ArtifactLevel.DEFGrowth"));
 
             for (FArtifactLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DEFGrowth);
+                Cursor.NextF32(Record.DEFGrowth);
             }
 
             break;
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("ArtifactLevel.HPGrowth"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("ArtifactLevel.HPGrowth"));
 
             for (FArtifactLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HPGrowth);
+                Cursor.NextF32(Record.HPGrowth);
             }
 
             break;
@@ -9483,10 +9587,11 @@ bool FArtifactTranscendenceTable::Read(const FString& Filename)
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("ArtifactTranscendence.PowerMultiplier"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("ArtifactTranscendence.PowerMultiplier"));
 
             for (FArtifactTranscendenceRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.PowerMultiplier);
+                Cursor.NextF32(Record.PowerMultiplier);
             }
 
             break;
@@ -9660,10 +9765,11 @@ bool FBuffSelectTable::Read(const FString& Filename)
 
         case 5:
             SheetMan::CheckColumn(Reader, Column, TEXT("BuffSelect.BuffRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("BuffSelect.BuffRate"));
 
             for (FBuffSelectRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BuffRate);
+                Cursor.NextF32(Record.BuffRate);
             }
 
             break;
@@ -10057,10 +10163,11 @@ bool FStageTable::Read(const FString& Filename)
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("Stage.SpawnNextTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Stage.SpawnNextTime"));
 
             for (FStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.SpawnNextTime);
+                Cursor.NextF32(Record.SpawnNextTime);
             }
 
             break;
@@ -10098,60 +10205,66 @@ bool FStageTable::Read(const FString& Filename)
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("Stage.AtkUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Stage.AtkUpPercent"));
 
             for (FStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AtkUpPercent);
+                Cursor.NextF32(Record.AtkUpPercent);
             }
 
             break;
 
         case 12:
             SheetMan::CheckColumn(Reader, Column, TEXT("Stage.DefUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Stage.DefUpPercent"));
 
             for (FStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DefUpPercent);
+                Cursor.NextF32(Record.DefUpPercent);
             }
 
             break;
 
         case 13:
             SheetMan::CheckColumn(Reader, Column, TEXT("Stage.MHPUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Stage.MHPUpPercent"));
 
             for (FStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MHPUpPercent);
+                Cursor.NextF32(Record.MHPUpPercent);
             }
 
             break;
 
         case 14:
             SheetMan::CheckColumn(Reader, Column, TEXT("Stage.BossAtkUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Stage.BossAtkUpPercent"));
 
             for (FStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BossAtkUpPercent);
+                Cursor.NextF32(Record.BossAtkUpPercent);
             }
 
             break;
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("Stage.BossDefUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Stage.BossDefUpPercent"));
 
             for (FStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BossDefUpPercent);
+                Cursor.NextF32(Record.BossDefUpPercent);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("Stage.BossMHPUpPercent"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Stage.BossMHPUpPercent"));
 
             for (FStageRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BossMHPUpPercent);
+                Cursor.NextF32(Record.BossMHPUpPercent);
             }
 
             break;
@@ -10788,20 +10901,22 @@ bool FAttributeTable::Read(const FString& Filename)
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("Attribute.DamageValueRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Attribute.DamageValueRate"));
 
             for (FAttributeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DamageValueRate);
+                Cursor.NextF32(Record.DamageValueRate);
             }
 
             break;
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("Attribute.IsVisible"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Attribute.IsVisible"));
 
             for (FAttributeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsVisible);
+                Cursor.NextBool(Record.bIsVisible);
             }
 
             break;
@@ -11008,10 +11123,11 @@ bool FSDContensInfoTable::Read(const FString& Filename)
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDContensInfo.EnableReset"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDContensInfo.EnableReset"));
 
             for (FSDContensInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bEnableReset);
+                Cursor.NextBool(Record.bEnableReset);
             }
 
             break;
@@ -11207,70 +11323,77 @@ bool FSDAgencyInfoTable::Read(const FString& Filename)
 
         case 5:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAgencyInfo.GradeSRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAgencyInfo.GradeSRate"));
 
             for (FSDAgencyInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GradeSRate);
+                Cursor.NextF32(Record.GradeSRate);
             }
 
             break;
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAgencyInfo.GradeARate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAgencyInfo.GradeARate"));
 
             for (FSDAgencyInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GradeARate);
+                Cursor.NextF32(Record.GradeARate);
             }
 
             break;
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAgencyInfo.GradeBRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAgencyInfo.GradeBRate"));
 
             for (FSDAgencyInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GradeBRate);
+                Cursor.NextF32(Record.GradeBRate);
             }
 
             break;
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAgencyInfo.GradeCRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAgencyInfo.GradeCRate"));
 
             for (FSDAgencyInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GradeCRate);
+                Cursor.NextF32(Record.GradeCRate);
             }
 
             break;
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAgencyInfo.GradeDRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAgencyInfo.GradeDRate"));
 
             for (FSDAgencyInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GradeDRate);
+                Cursor.NextF32(Record.GradeDRate);
             }
 
             break;
 
         case 10:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAgencyInfo.GradeERate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAgencyInfo.GradeERate"));
 
             for (FSDAgencyInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GradeERate);
+                Cursor.NextF32(Record.GradeERate);
             }
 
             break;
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAgencyInfo.GradeFRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAgencyInfo.GradeFRate"));
 
             for (FSDAgencyInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.GradeFRate);
+                Cursor.NextF32(Record.GradeFRate);
             }
 
             break;
@@ -12042,10 +12165,11 @@ bool FSDTrainingInfoTable::Read(const FString& Filename)
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDTrainingInfo.IsLvReset"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDTrainingInfo.IsLvReset"));
 
             for (FSDTrainingInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsLvReset);
+                Cursor.NextBool(Record.bIsLvReset);
             }
 
             break;
@@ -12252,40 +12376,44 @@ bool FSDTrainingLevelTable::Read(const FString& Filename)
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDTrainingLevel.MHPGrowth"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDTrainingLevel.MHPGrowth"));
 
             for (FSDTrainingLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MHPGrowth);
+                Cursor.NextF32(Record.MHPGrowth);
             }
 
             break;
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDTrainingLevel.MHPTotal"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDTrainingLevel.MHPTotal"));
 
             for (FSDTrainingLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MHPTotal);
+                Cursor.NextF32(Record.MHPTotal);
             }
 
             break;
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDTrainingLevel.DEFGrowth"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDTrainingLevel.DEFGrowth"));
 
             for (FSDTrainingLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DEFGrowth);
+                Cursor.NextF32(Record.DEFGrowth);
             }
 
             break;
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDTrainingLevel.DEFTotal"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDTrainingLevel.DEFTotal"));
 
             for (FSDTrainingLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.DEFTotal);
+                Cursor.NextF32(Record.DEFTotal);
             }
 
             break;
@@ -13013,10 +13141,11 @@ bool FSDDungeonRewardTable::Read(const FString& Filename)
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDDungeonReward.IsPerfect"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDDungeonReward.IsPerfect"));
 
             for (FSDDungeonRewardRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsPerfect);
+                Cursor.NextBool(Record.bIsPerfect);
             }
 
             break;
@@ -13045,10 +13174,11 @@ bool FSDDungeonRewardTable::Read(const FString& Filename)
 
         case 18:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDDungeonReward.IsMinReward"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDDungeonReward.IsMinReward"));
 
             for (FSDDungeonRewardRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bIsMinReward);
+                Cursor.NextBool(Record.bIsMinReward);
             }
 
             break;
@@ -13255,10 +13385,11 @@ bool FSDAlchemyInfoTable::Read(const FString& Filename)
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAlchemyInfo.MaterialType2Rate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAlchemyInfo.MaterialType2Rate"));
 
             for (FSDAlchemyInfoRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.MaterialType2Rate);
+                Cursor.NextF32(Record.MaterialType2Rate);
             }
 
             break;
@@ -13742,80 +13873,88 @@ bool FSDAlchemyLevelTable::Read(const FString& Filename)
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAlchemyLevel.CritDMGValue"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAlchemyLevel.CritDMGValue"));
 
             for (FSDAlchemyLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.CritDMGValue);
+                Cursor.NextF32(Record.CritDMGValue);
             }
 
             break;
 
         case 10:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAlchemyLevel.CritDMGTotal"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAlchemyLevel.CritDMGTotal"));
 
             for (FSDAlchemyLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.CritDMGTotal);
+                Cursor.NextF32(Record.CritDMGTotal);
             }
 
             break;
 
         case 11:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAlchemyLevel.CritRateValue"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAlchemyLevel.CritRateValue"));
 
             for (FSDAlchemyLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.CritRateValue);
+                Cursor.NextF32(Record.CritRateValue);
             }
 
             break;
 
         case 12:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAlchemyLevel.CritRateTotal"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAlchemyLevel.CritRateTotal"));
 
             for (FSDAlchemyLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.CritRateTotal);
+                Cursor.NextF32(Record.CritRateTotal);
             }
 
             break;
 
         case 13:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAlchemyLevel.BlockRateValue"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAlchemyLevel.BlockRateValue"));
 
             for (FSDAlchemyLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BlockRateValue);
+                Cursor.NextF32(Record.BlockRateValue);
             }
 
             break;
 
         case 14:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAlchemyLevel.BlockRateTotal"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAlchemyLevel.BlockRateTotal"));
 
             for (FSDAlchemyLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.BlockRateTotal);
+                Cursor.NextF32(Record.BlockRateTotal);
             }
 
             break;
 
         case 15:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAlchemyLevel.HITValue"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAlchemyLevel.HITValue"));
 
             for (FSDAlchemyLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HITValue);
+                Cursor.NextF32(Record.HITValue);
             }
 
             break;
 
         case 16:
             SheetMan::CheckColumn(Reader, Column, TEXT("SDAlchemyLevel.HITTotal"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("SDAlchemyLevel.HITTotal"));
 
             for (FSDAlchemyLevelRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.HITTotal);
+                Cursor.NextF32(Record.HITTotal);
             }
 
             break;
@@ -15314,20 +15453,22 @@ bool FBGMSoundTable::Read(const FString& Filename)
 
         case 4:
             SheetMan::CheckColumn(Reader, Column, TEXT("BGMSound.Loop"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("BGMSound.Loop"));
 
             for (FBGMSoundRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bLoop);
+                Cursor.NextBool(Record.bLoop);
             }
 
             break;
 
         case 5:
             SheetMan::CheckColumn(Reader, Column, TEXT("BGMSound.FadeTime"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("BGMSound.FadeTime"));
 
             for (FBGMSoundRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.FadeTime);
+                Cursor.NextF32(Record.FadeTime);
             }
 
             break;
@@ -15690,10 +15831,11 @@ bool FInfoGrowthTable::Read(const FString& Filename)
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("InfoGrowth.Reset"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("InfoGrowth.Reset"));
 
             for (FInfoGrowthRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bReset);
+                Cursor.NextBool(Record.bReset);
             }
 
             break;
@@ -16155,10 +16297,11 @@ bool FTraitTable::Read(const FString& Filename)
 
         case 5:
             SheetMan::CheckColumn(Reader, Column, TEXT("Trait.StatRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Trait.StatRate"));
 
             for (FTraitRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.StatRate);
+                Cursor.NextF32(Record.StatRate);
             }
 
             break;
@@ -16363,20 +16506,22 @@ bool FRelicTable::Read(const FString& Filename)
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("Relic.RelicValue1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Relic.RelicValue1"));
 
             for (FRelicRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.RelicValue1);
+                Cursor.NextF32(Record.RelicValue1);
             }
 
             break;
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("Relic.RelicIncValue1"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Relic.RelicIncValue1"));
 
             for (FRelicRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.RelicIncValue1);
+                Cursor.NextF32(Record.RelicIncValue1);
             }
 
             break;
@@ -16394,20 +16539,22 @@ bool FRelicTable::Read(const FString& Filename)
 
         case 9:
             SheetMan::CheckColumn(Reader, Column, TEXT("Relic.RelicValue2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Relic.RelicValue2"));
 
             for (FRelicRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.RelicValue2);
+                Cursor.NextF32(Record.RelicValue2);
             }
 
             break;
 
         case 10:
             SheetMan::CheckColumn(Reader, Column, TEXT("Relic.RelicIncValue2"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Relic.RelicIncValue2"));
 
             for (FRelicRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.RelicIncValue2);
+                Cursor.NextF32(Record.RelicIncValue2);
             }
 
             break;
@@ -16425,20 +16572,22 @@ bool FRelicTable::Read(const FString& Filename)
 
         case 12:
             SheetMan::CheckColumn(Reader, Column, TEXT("Relic.RelicValue3"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Relic.RelicValue3"));
 
             for (FRelicRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.RelicValue3);
+                Cursor.NextF32(Record.RelicValue3);
             }
 
             break;
 
         case 13:
             SheetMan::CheckColumn(Reader, Column, TEXT("Relic.RelicIncValue3"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Relic.RelicIncValue3"));
 
             for (FRelicRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.RelicIncValue3);
+                Cursor.NextF32(Record.RelicIncValue3);
             }
 
             break;
@@ -16645,10 +16794,11 @@ bool FStarNodeTable::Read(const FString& Filename)
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("StarNode.StarNodeRate"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("StarNode.StarNodeRate"));
 
             for (FStarNodeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.StarNodeRate);
+                Cursor.NextF32(Record.StarNodeRate);
             }
 
             break;
@@ -17031,10 +17181,11 @@ bool FCostCurveRangeTable::Read(const FString& Filename)
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("CostCurveRange.AddMultiplier"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementF32));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("CostCurveRange.AddMultiplier"));
 
             for (FCostCurveRangeRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.AddMultiplier);
+                Cursor.NextF32(Record.AddMultiplier);
             }
 
             break;

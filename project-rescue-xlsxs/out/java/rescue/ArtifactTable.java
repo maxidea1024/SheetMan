@@ -141,8 +141,9 @@ public final class ArtifactTable {
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "Artifact.EquipStatRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.EquipStatRate");
                     for (ArtifactRecord record : loaded) {
-                        record.equipStatRate = reader.readFloat();
+                        record.equipStatRate = cursor.nextF32();
                     }
                     break;
                 }
@@ -156,8 +157,9 @@ public final class ArtifactTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "Artifact.CollectionVlaue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.CollectionVlaue");
                     for (ArtifactRecord record : loaded) {
-                        record.collectionVlaue = reader.readFloat();
+                        record.collectionVlaue = cursor.nextF32();
                     }
                     break;
                 }

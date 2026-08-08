@@ -187,11 +187,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 10:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.BuffValueRate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.BuffValueRate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->buff_value_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->buff_value_rate);
       }
 
       break;

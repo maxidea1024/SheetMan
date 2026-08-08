@@ -145,8 +145,9 @@ module Rescue
           end
         when 10
           Sheetman.check_column(column, 'DailyDungeonInfo.BuffValueRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.BuffValueRate')
           records.each do |record|
-            record.buff_value_rate = reader.read_float
+            record.buff_value_rate = cursor.next_f32
           end
         when 11
           Sheetman.check_column(column, 'DailyDungeonInfo.EnterCurrencyValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

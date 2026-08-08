@@ -353,9 +353,10 @@ export class BuffTable {
           break
         case 11:
           sheetman.checkColumn(column, 'Buff.BuffValueRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.BuffValueRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffValueRate = reader.readFloat()
+            record._buffValueRate = cursor.nextF32()
           }
           break
         case 12:
@@ -384,16 +385,18 @@ export class BuffTable {
           break
         case 15:
           sheetman.checkColumn(column, 'Buff.BuffCoolDownTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.BuffCoolDownTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffCoolDownTime = reader.readFloat()
+            record._buffCoolDownTime = cursor.nextF32()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'Buff.IsVisible', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.IsVisible')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isVisible = reader.readBool()
+            record._isVisible = cursor.nextBool()
           }
           break
         case 17:

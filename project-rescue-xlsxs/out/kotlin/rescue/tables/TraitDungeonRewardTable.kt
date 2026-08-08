@@ -164,8 +164,9 @@ class TraitDungeonRewardTable {
                 }
                 8 -> {
                     checkColumn(column, "TraitDungeonReward.IsFirstClear", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.IsFirstClear")
                     for (record in loaded) {
-                        record.isFirstClear = reader.readBool()
+                        record.isFirstClear = cursor.nextBool()
                     }
                 }
                 9 -> {

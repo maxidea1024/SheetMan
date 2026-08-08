@@ -207,8 +207,9 @@ class OopartsDungeonStageTable {
                 }
                 11 -> {
                     checkColumn(column, "OopartsDungeonStage.SpawnNextTime", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnNextTime")
                     for (record in loaded) {
-                        record.spawnNextTime = reader.readFloat()
+                        record.spawnNextTime = cursor.nextF32()
                     }
                 }
                 12 -> {
@@ -234,20 +235,23 @@ class OopartsDungeonStageTable {
                 }
                 15 -> {
                     checkColumn(column, "OopartsDungeonStage.AtkUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonStage.AtkUpPercent")
                     for (record in loaded) {
-                        record.atkUpPercent = reader.readFloat()
+                        record.atkUpPercent = cursor.nextF32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "OopartsDungeonStage.DefUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonStage.DefUpPercent")
                     for (record in loaded) {
-                        record.defUpPercent = reader.readFloat()
+                        record.defUpPercent = cursor.nextF32()
                     }
                 }
                 17 -> {
                     checkColumn(column, "OopartsDungeonStage.MHPUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonStage.MHPUpPercent")
                     for (record in loaded) {
-                        record.mHPUpPercent = reader.readFloat()
+                        record.mHPUpPercent = cursor.nextF32()
                     }
                 }
                 18 -> {

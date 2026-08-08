@@ -105,8 +105,9 @@ class BuffSelectTable:
                     record.grade = GradeType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "BuffSelect.BuffRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BuffSelect.BuffRate")
                 for record in records:
-                    record.buff_rate = reader.read_float()
+                    record.buff_rate = cursor.next_f32()
             elif column.tag == 6:
                 sheetman.check_column(column, "BuffSelect.BuffTooltip", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "BuffSelect.BuffTooltip")

@@ -246,10 +246,11 @@ namespace Rescue.Tables
 
                     case 6:
                         ScbTable.CheckColumn(column, "CostCurveRange.AddMultiplier", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "CostCurveRange.AddMultiplier");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._addMultiplier);
+                            record._addMultiplier = cursor.NextF32();
                         }
                         break;
 

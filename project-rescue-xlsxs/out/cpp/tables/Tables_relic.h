@@ -158,17 +158,19 @@ class RelicTable {
         }
         case 6: {
           sheetman::check_column(column, "Relic.RelicValue1", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicValue1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.relic_value1);
+            record.relic_value1 = cursor.next_f32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "Relic.RelicIncValue1", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicIncValue1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.relic_inc_value1);
+            record.relic_inc_value1 = cursor.next_f32();
           }
           break;
         }
@@ -183,17 +185,19 @@ class RelicTable {
         }
         case 9: {
           sheetman::check_column(column, "Relic.RelicValue2", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicValue2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.relic_value2);
+            record.relic_value2 = cursor.next_f32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "Relic.RelicIncValue2", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicIncValue2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.relic_inc_value2);
+            record.relic_inc_value2 = cursor.next_f32();
           }
           break;
         }
@@ -208,17 +212,19 @@ class RelicTable {
         }
         case 12: {
           sheetman::check_column(column, "Relic.RelicValue3", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicValue3");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.relic_value3);
+            record.relic_value3 = cursor.next_f32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "Relic.RelicIncValue3", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicIncValue3");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.relic_inc_value3);
+            record.relic_inc_value3 = cursor.next_f32();
           }
           break;
         }

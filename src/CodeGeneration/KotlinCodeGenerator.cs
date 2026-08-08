@@ -381,15 +381,24 @@ public class KotlinCodeGenerator : CodeGenerator<KotlinRecipe>
 
         switch (sf.ElementType)
         {
-            // Int64 and Double are here for their promotions: the file may carry an
-            // i32 column - encoded - where the member has since widened.
+            // Int64 and Double are here for their promotions as well as their own
+            // dictionaries: the file may carry an i32 column - encoded - where the
+            // member has since widened.
             case ValueType.Int32:
             case ValueType.Int64:
             case ValueType.Double:
+            case ValueType.Float:
+            case ValueType.Bool:
             case ValueType.Enum:
             case ValueType.String:
+
+            // Ticks are an i64 column, so they meet the i64 dictionary like any other.
+            case ValueType.DateTime:
+            case ValueType.TimeSpan:
                 return true;
 
+            // Uuid is the one scalar left raw: sixteen-byte entries rarely repeat
+            // enough to pay for the index beside them.
             default:
                 return false;
         }
@@ -481,6 +490,15 @@ public class KotlinCodeGenerator : CodeGenerator<KotlinRecipe>
             case ValueType.Int32: return "cursor.nextI32()";
             case ValueType.Int64: return "cursor.nextI64()";
             case ValueType.Double: return "cursor.nextF64()";
+            case ValueType.Float: return "cursor.nextF32()";
+            case ValueType.Bool: return "cursor.nextBool()";
+
+            // Ticks, which is what the member holds, now read from the i64 column
+            // through the cursor rather than straight off the reader.
+            case ValueType.DateTime:
+            case ValueType.TimeSpan:
+                return "cursor.nextI64()";
+
             default: return "cursor.nextString()";
         }
     }

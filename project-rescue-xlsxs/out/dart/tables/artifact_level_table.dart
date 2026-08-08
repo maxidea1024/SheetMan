@@ -132,20 +132,23 @@ class ArtifactLevelTable {
           break;
         case 7:
           checkColumn(column, 'ArtifactLevel.ATKGrowth', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactLevel.ATKGrowth');
           for (final record in loaded) {
-            record.aTKGrowth = reader.readFloat();
+            record.aTKGrowth = cursor.nextF32();
           }
           break;
         case 8:
           checkColumn(column, 'ArtifactLevel.DEFGrowth', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactLevel.DEFGrowth');
           for (final record in loaded) {
-            record.dEFGrowth = reader.readFloat();
+            record.dEFGrowth = cursor.nextF32();
           }
           break;
         case 9:
           checkColumn(column, 'ArtifactLevel.HPGrowth', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactLevel.HPGrowth');
           for (final record in loaded) {
-            record.hPGrowth = reader.readFloat();
+            record.hPGrowth = cursor.nextF32();
           }
           break;
         default:

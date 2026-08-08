@@ -206,16 +206,18 @@ export class BGMSoundTable {
           break
         case 4:
           sheetman.checkColumn(column, 'BGMSound.Loop', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'BGMSound.Loop')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._loop = reader.readBool()
+            record._loop = cursor.nextBool()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'BGMSound.FadeTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'BGMSound.FadeTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._fadeTime = reader.readFloat()
+            record._fadeTime = cursor.nextF32()
           }
           break
         case 6:

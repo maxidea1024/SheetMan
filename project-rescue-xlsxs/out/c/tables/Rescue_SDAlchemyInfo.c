@@ -146,11 +146,12 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 7:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.MaterialType2Rate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.MaterialType2Rate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->material_type2_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->material_type2_rate);
       }
 
       break;

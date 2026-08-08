@@ -219,9 +219,10 @@ class OopartsDungeonStageTable {
         }
         case 11: {
           sheetman::check_column(column, "OopartsDungeonStage.SpawnNextTime", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "OopartsDungeonStage.SpawnNextTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.spawn_next_time);
+            record.spawn_next_time = cursor.next_f32();
           }
           break;
         }
@@ -254,25 +255,28 @@ class OopartsDungeonStageTable {
         }
         case 15: {
           sheetman::check_column(column, "OopartsDungeonStage.AtkUpPercent", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "OopartsDungeonStage.AtkUpPercent");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.atk_up_percent);
+            record.atk_up_percent = cursor.next_f32();
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "OopartsDungeonStage.DefUpPercent", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "OopartsDungeonStage.DefUpPercent");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.def_up_percent);
+            record.def_up_percent = cursor.next_f32();
           }
           break;
         }
         case 17: {
           sheetman::check_column(column, "OopartsDungeonStage.MHPUpPercent", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "OopartsDungeonStage.MHPUpPercent");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.mhp_up_percent);
+            record.mhp_up_percent = cursor.next_f32();
           }
           break;
         }

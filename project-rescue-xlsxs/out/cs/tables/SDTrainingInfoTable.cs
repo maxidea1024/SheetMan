@@ -318,10 +318,11 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "SDTrainingInfo.IsLvReset", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingInfo.IsLvReset");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isLvReset);
+                            record._isLvReset = cursor.NextBool();
                         }
                         break;
 

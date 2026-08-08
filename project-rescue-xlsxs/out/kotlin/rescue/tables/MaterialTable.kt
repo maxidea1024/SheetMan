@@ -156,8 +156,9 @@ class MaterialTable {
                 }
                 6 -> {
                     checkColumn(column, "Material.Stackable", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "Material.Stackable")
                     for (record in loaded) {
-                        record.stackable = reader.readBool()
+                        record.stackable = cursor.nextBool()
                     }
                 }
                 7 -> {

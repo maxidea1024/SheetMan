@@ -154,15 +154,17 @@ public final class SkillTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "Skill.SkillUseRange", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Skill.SkillUseRange");
                     for (SkillRecord record : loaded) {
-                        record.skillUseRange = reader.readFloat();
+                        record.skillUseRange = cursor.nextF32();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "Skill.CoolTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Skill.CoolTime");
                     for (SkillRecord record : loaded) {
-                        record.coolTime = reader.readFloat();
+                        record.coolTime = cursor.nextF32();
                     }
                     break;
                 }

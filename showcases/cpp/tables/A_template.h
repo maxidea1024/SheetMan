@@ -158,9 +158,10 @@ class TemplateTable {
         }
         case 4: {
           sheetman::check_column(column, "Template.Delete", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Template.Delete");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sm_delete);
+            record.sm_delete = cursor.next_bool();
           }
           break;
         }

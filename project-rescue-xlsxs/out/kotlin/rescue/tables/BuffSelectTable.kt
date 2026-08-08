@@ -137,8 +137,9 @@ class BuffSelectTable {
                 }
                 5 -> {
                     checkColumn(column, "BuffSelect.BuffRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "BuffSelect.BuffRate")
                     for (record in loaded) {
-                        record.buffRate = reader.readFloat()
+                        record.buffRate = cursor.nextF32()
                     }
                 }
                 6 -> {

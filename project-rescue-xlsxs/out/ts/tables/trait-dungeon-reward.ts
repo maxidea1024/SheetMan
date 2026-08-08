@@ -269,9 +269,10 @@ export class TraitDungeonRewardTable {
           break
         case 8:
           sheetman.checkColumn(column, 'TraitDungeonReward.IsFirstClear', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'TraitDungeonReward.IsFirstClear')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isFirstClear = reader.readBool()
+            record._isFirstClear = cursor.nextBool()
           }
           break
         case 9:

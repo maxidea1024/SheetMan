@@ -183,9 +183,10 @@ func (t *StageTable) Read(filename string) error {
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Stage.SpawnNextTime", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.SpawnNextTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpawnNextTime = reader.ReadFloat32()
+					r.SpawnNextTime = cursor.NextF32()
 				}
 			}
 		case 9:
@@ -209,44 +210,50 @@ func (t *StageTable) Read(filename string) error {
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "Stage.AtkUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.AtkUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AtkUpPercent = reader.ReadFloat32()
+					r.AtkUpPercent = cursor.NextF32()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "Stage.DefUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.DefUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DefUpPercent = reader.ReadFloat32()
+					r.DefUpPercent = cursor.NextF32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "Stage.MHPUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.MHPUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MHPUpPercent = reader.ReadFloat32()
+					r.MHPUpPercent = cursor.NextF32()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "Stage.BossAtkUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.BossAtkUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BossAtkUpPercent = reader.ReadFloat32()
+					r.BossAtkUpPercent = cursor.NextF32()
 				}
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "Stage.BossDefUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.BossDefUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BossDefUpPercent = reader.ReadFloat32()
+					r.BossDefUpPercent = cursor.NextF32()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "Stage.BossMHPUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.BossMHPUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BossMHPUpPercent = reader.ReadFloat32()
+					r.BossMHPUpPercent = cursor.NextF32()
 				}
 			}
 		case 17:

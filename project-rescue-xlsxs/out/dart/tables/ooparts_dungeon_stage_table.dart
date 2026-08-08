@@ -182,8 +182,9 @@ class OopartsDungeonStageTable {
           break;
         case 11:
           checkColumn(column, 'OopartsDungeonStage.SpawnNextTime', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonStage.SpawnNextTime');
           for (final record in loaded) {
-            record.spawnNextTime = reader.readFloat();
+            record.spawnNextTime = cursor.nextF32();
           }
           break;
         case 12:
@@ -209,20 +210,23 @@ class OopartsDungeonStageTable {
           break;
         case 15:
           checkColumn(column, 'OopartsDungeonStage.AtkUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonStage.AtkUpPercent');
           for (final record in loaded) {
-            record.atkUpPercent = reader.readFloat();
+            record.atkUpPercent = cursor.nextF32();
           }
           break;
         case 16:
           checkColumn(column, 'OopartsDungeonStage.DefUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonStage.DefUpPercent');
           for (final record in loaded) {
-            record.defUpPercent = reader.readFloat();
+            record.defUpPercent = cursor.nextF32();
           }
           break;
         case 17:
           checkColumn(column, 'OopartsDungeonStage.MHPUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonStage.MHPUpPercent');
           for (final record in loaded) {
-            record.mHPUpPercent = reader.readFloat();
+            record.mHPUpPercent = cursor.nextF32();
           }
           break;
         case 18:

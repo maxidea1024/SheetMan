@@ -128,44 +128,51 @@ class SDAgencyInfoTable {
           break;
         case 5:
           checkColumn(column, 'SDAgencyInfo.GradeSRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.GradeSRate');
           for (final record in loaded) {
-            record.gradeSRate = reader.readFloat();
+            record.gradeSRate = cursor.nextF32();
           }
           break;
         case 6:
           checkColumn(column, 'SDAgencyInfo.GradeARate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.GradeARate');
           for (final record in loaded) {
-            record.gradeARate = reader.readFloat();
+            record.gradeARate = cursor.nextF32();
           }
           break;
         case 7:
           checkColumn(column, 'SDAgencyInfo.GradeBRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.GradeBRate');
           for (final record in loaded) {
-            record.gradeBRate = reader.readFloat();
+            record.gradeBRate = cursor.nextF32();
           }
           break;
         case 8:
           checkColumn(column, 'SDAgencyInfo.GradeCRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.GradeCRate');
           for (final record in loaded) {
-            record.gradeCRate = reader.readFloat();
+            record.gradeCRate = cursor.nextF32();
           }
           break;
         case 9:
           checkColumn(column, 'SDAgencyInfo.GradeDRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.GradeDRate');
           for (final record in loaded) {
-            record.gradeDRate = reader.readFloat();
+            record.gradeDRate = cursor.nextF32();
           }
           break;
         case 10:
           checkColumn(column, 'SDAgencyInfo.GradeERate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.GradeERate');
           for (final record in loaded) {
-            record.gradeERate = reader.readFloat();
+            record.gradeERate = cursor.nextF32();
           }
           break;
         case 11:
           checkColumn(column, 'SDAgencyInfo.GradeFRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.GradeFRate');
           for (final record in loaded) {
-            record.gradeFRate = reader.readFloat();
+            record.gradeFRate = cursor.nextF32();
           }
           break;
         case 12:

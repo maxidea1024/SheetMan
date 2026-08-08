@@ -123,8 +123,9 @@ class TraitDungeonRewardTable:
                     record.reward_value2 = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "TraitDungeonReward.IsFirstClear", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonReward.IsFirstClear")
                 for record in records:
-                    record.is_first_clear = reader.read_bool()
+                    record.is_first_clear = cursor.next_bool()
             elif column.tag == 9:
                 sheetman.check_column(column, "TraitDungeonReward.FirstClearRewardType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonReward.FirstClearRewardType")

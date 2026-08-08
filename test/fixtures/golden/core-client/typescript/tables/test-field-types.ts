@@ -231,9 +231,10 @@ export class TestFieldTypesTable {
           break
         case 3:
           sheetman.checkColumn(column, 'TestFieldTypes.BoolField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'TestFieldTypes.BoolField')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._boolField = reader.readBool()
+            record._boolField = cursor.nextBool()
           }
           break
         case 5:
@@ -246,9 +247,10 @@ export class TestFieldTypesTable {
           break
         case 6:
           sheetman.checkColumn(column, 'TestFieldTypes.FloatField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'TestFieldTypes.FloatField')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._floatField = reader.readFloat()
+            record._floatField = cursor.nextF32()
           }
           break
         case 7:
@@ -261,16 +263,18 @@ export class TestFieldTypesTable {
           break
         case 8:
           sheetman.checkColumn(column, 'TestFieldTypes.DatetimeField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'TestFieldTypes.DatetimeField')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._datetimeField = reader.readDateTime()
+            record._datetimeField = sheetman.formatDateTimeTicks(cursor.nextI64())
           }
           break
         case 9:
           sheetman.checkColumn(column, 'TestFieldTypes.TimespanField', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'TestFieldTypes.TimespanField')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._timespanField = reader.readTimeSpan()
+            record._timespanField = sheetman.formatTimeSpanTicks(cursor.nextI64())
           }
           break
         case 10:

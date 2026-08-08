@@ -173,8 +173,9 @@ final class ExpDungeonRewardTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'ExpDungeonReward.IsFirstClear', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonReward.IsFirstClear');
                     foreach ($records as $record) {
-                        $record->isFirstClear = $reader->readBool();
+                        $record->isFirstClear = $cursor->nextBool();
                     }
                     break;
 

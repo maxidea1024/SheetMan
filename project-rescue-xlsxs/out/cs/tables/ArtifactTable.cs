@@ -302,10 +302,11 @@ namespace Rescue.Tables
 
                     case 7:
                         ScbTable.CheckColumn(column, "Artifact.EquipStatRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.EquipStatRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._equipStatRate);
+                            record._equipStatRate = cursor.NextF32();
                         }
                         break;
 
@@ -321,10 +322,11 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "Artifact.CollectionVlaue", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Artifact.CollectionVlaue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._collectionVlaue);
+                            record._collectionVlaue = cursor.NextF32();
                         }
                         break;
 

@@ -198,8 +198,9 @@ impl GoldDungeonStageTable {
                 }
                 11 => {
                     sheetman::check_column(column, "GoldDungeonStage.SpawnNextTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GoldDungeonStage.SpawnNextTime")?;
                     for record in records.iter_mut() {
-                        record.spawn_next_time = reader.read_f32()?;
+                        record.spawn_next_time = cursor.next_f32()?;
                     }
                 }
                 12 => {
@@ -225,20 +226,23 @@ impl GoldDungeonStageTable {
                 }
                 15 => {
                     sheetman::check_column(column, "GoldDungeonStage.AtkUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GoldDungeonStage.AtkUpPercent")?;
                     for record in records.iter_mut() {
-                        record.atk_up_percent = reader.read_f32()?;
+                        record.atk_up_percent = cursor.next_f32()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "GoldDungeonStage.DefUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GoldDungeonStage.DefUpPercent")?;
                     for record in records.iter_mut() {
-                        record.def_up_percent = reader.read_f32()?;
+                        record.def_up_percent = cursor.next_f32()?;
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "GoldDungeonStage.MHPUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GoldDungeonStage.MHPUpPercent")?;
                     for record in records.iter_mut() {
-                        record.mhp_up_percent = reader.read_f32()?;
+                        record.mhp_up_percent = cursor.next_f32()?;
                     }
                 }
                 18 => {

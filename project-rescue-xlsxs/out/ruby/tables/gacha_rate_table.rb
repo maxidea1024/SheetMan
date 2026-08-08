@@ -86,28 +86,33 @@ module Rescue
           end
         when 2
           Sheetman.check_column(column, 'GachaRate.URRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaRate.URRate')
           records.each do |record|
-            record.ur_rate = reader.read_float
+            record.ur_rate = cursor.next_f32
           end
         when 3
           Sheetman.check_column(column, 'GachaRate.SSRRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaRate.SSRRate')
           records.each do |record|
-            record.ssr_rate = reader.read_float
+            record.ssr_rate = cursor.next_f32
           end
         when 4
           Sheetman.check_column(column, 'GachaRate.SRRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaRate.SRRate')
           records.each do |record|
-            record.sr_rate = reader.read_float
+            record.sr_rate = cursor.next_f32
           end
         when 5
           Sheetman.check_column(column, 'GachaRate.RRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaRate.RRate')
           records.each do |record|
-            record.r_rate = reader.read_float
+            record.r_rate = cursor.next_f32
           end
         when 6
           Sheetman.check_column(column, 'GachaRate.NRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaRate.NRate')
           records.each do |record|
-            record.n_rate = reader.read_float
+            record.n_rate = cursor.next_f32
           end
         else
           # A column added after this code was generated.

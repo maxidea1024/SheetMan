@@ -153,15 +153,17 @@ final class AttributeTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'Attribute.DamageValueRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Attribute.DamageValueRate');
                     foreach ($records as $record) {
-                        $record->damageValueRate = $reader->readFloat();
+                        $record->damageValueRate = $cursor->nextF32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'Attribute.IsVisible', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Attribute.IsVisible');
                     foreach ($records as $record) {
-                        $record->isVisible = $reader->readBool();
+                        $record->isVisible = $cursor->nextBool();
                     }
                     break;
 

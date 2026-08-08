@@ -122,8 +122,9 @@ public final class TraitTable {
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "Trait.StatRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Trait.StatRate");
                     for (TraitRecord record : loaded) {
-                        record.statRate = reader.readFloat();
+                        record.statRate = cursor.nextF32();
                     }
                     break;
                 }

@@ -210,8 +210,9 @@ class SDDungeonRewardTable {
           break;
         case 15:
           checkColumn(column, 'SDDungeonReward.IsPerfect', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.IsPerfect');
           for (final record in loaded) {
-            record.isPerfect = reader.readBool();
+            record.isPerfect = cursor.nextBool();
           }
           break;
         case 16:
@@ -230,8 +231,9 @@ class SDDungeonRewardTable {
           break;
         case 18:
           checkColumn(column, 'SDDungeonReward.IsMinReward', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.IsMinReward');
           for (final record in loaded) {
-            record.isMinReward = reader.readBool();
+            record.isMinReward = cursor.nextBool();
           }
           break;
         case 19:

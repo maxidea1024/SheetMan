@@ -237,50 +237,58 @@ impl CharacterTable {
                 }
                 12 => {
                     sheetman::check_column(column, "Character.MoveSpeed", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.MoveSpeed")?;
                     for record in records.iter_mut() {
-                        record.move_speed = reader.read_f32()?;
+                        record.move_speed = cursor.next_f32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "Character.CritRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.CritRate")?;
                     for record in records.iter_mut() {
-                        record.crit_rate = reader.read_f32()?;
+                        record.crit_rate = cursor.next_f32()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "Character.CritDmg", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.CritDmg")?;
                     for record in records.iter_mut() {
-                        record.crit_dmg = reader.read_f32()?;
+                        record.crit_dmg = cursor.next_f32()?;
                     }
                 }
                 15 => {
                     sheetman::check_column(column, "Character.SearchRange", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.SearchRange")?;
                     for record in records.iter_mut() {
-                        record.search_range = reader.read_f32()?;
+                        record.search_range = cursor.next_f32()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "Character.ReFindTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.ReFindTime")?;
                     for record in records.iter_mut() {
-                        record.re_find_time = reader.read_f32()?;
+                        record.re_find_time = cursor.next_f32()?;
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "Character.MaxFollow", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.MaxFollow")?;
                     for record in records.iter_mut() {
-                        record.max_follow = reader.read_f32()?;
+                        record.max_follow = cursor.next_f32()?;
                     }
                 }
                 18 => {
                     sheetman::check_column(column, "Character.SizePrefab", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.SizePrefab")?;
                     for record in records.iter_mut() {
-                        record.size_prefab = reader.read_f32()?;
+                        record.size_prefab = cursor.next_f32()?;
                     }
                 }
                 19 => {
                     sheetman::check_column(column, "Character.IsUnlocked", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.IsUnlocked")?;
                     for record in records.iter_mut() {
-                        record.is_unlocked = reader.read_bool()?;
+                        record.is_unlocked = cursor.next_bool()?;
                     }
                 }
                 20 => {

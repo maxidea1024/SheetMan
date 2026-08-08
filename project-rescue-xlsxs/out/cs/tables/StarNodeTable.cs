@@ -284,10 +284,11 @@ namespace Rescue.Tables
 
                     case 7:
                         ScbTable.CheckColumn(column, "StarNode.StarNodeRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "StarNode.StarNodeRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._starNodeRate);
+                            record._starNodeRate = cursor.NextF32();
                         }
                         break;
 

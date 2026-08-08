@@ -1,7 +1,7 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "9fa2aafaceabfbcf7d9b8f12ddc39956",
-  "TotalSize": 961,
+  "MasterHash": "b7b4dfa22980052dee0a3cd89e57a0f9",
+  "TotalSize": 943,
   "Items": [
     {
       "Name": "TestFieldTypes.scb",
@@ -11,8 +11,8 @@
     },
     {
       "Name": "ItemCategory.scb",
-      "Size": 106,
-      "Hash": "be17c34da5ed47d1bd524ba614dcb2a4",
+      "Size": 88,
+      "Hash": "0345474e0e3368d9ab56ed81180b706d",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {

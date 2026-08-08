@@ -523,73 +523,81 @@ namespace Rescue.Tables
 
                     case 12:
                         ScbTable.CheckColumn(column, "Character.MoveSpeed", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Character.MoveSpeed");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._moveSpeed);
+                            record._moveSpeed = cursor.NextF32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "Character.CritRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Character.CritRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._critRate);
+                            record._critRate = cursor.NextF32();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "Character.CritDmg", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Character.CritDmg");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._critDmg);
+                            record._critDmg = cursor.NextF32();
                         }
                         break;
 
                     case 15:
                         ScbTable.CheckColumn(column, "Character.SearchRange", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Character.SearchRange");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._searchRange);
+                            record._searchRange = cursor.NextF32();
                         }
                         break;
 
                     case 16:
                         ScbTable.CheckColumn(column, "Character.ReFindTime", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Character.ReFindTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._reFindTime);
+                            record._reFindTime = cursor.NextF32();
                         }
                         break;
 
                     case 17:
                         ScbTable.CheckColumn(column, "Character.MaxFollow", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Character.MaxFollow");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._maxFollow);
+                            record._maxFollow = cursor.NextF32();
                         }
                         break;
 
                     case 18:
                         ScbTable.CheckColumn(column, "Character.SizePrefab", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Character.SizePrefab");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._sizePrefab);
+                            record._sizePrefab = cursor.NextF32();
                         }
                         break;
 
                     case 19:
                         ScbTable.CheckColumn(column, "Character.IsUnlocked", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "Character.IsUnlocked");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isUnlocked);
+                            record._isUnlocked = cursor.NextBool();
                         }
                         break;
 

@@ -132,9 +132,10 @@ func (t *BuffSelectTable) Read(filename string) error {
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "BuffSelect.BuffRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "BuffSelect.BuffRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffRate = reader.ReadFloat32()
+					r.BuffRate = cursor.NextF32()
 				}
 			}
 		case 6:

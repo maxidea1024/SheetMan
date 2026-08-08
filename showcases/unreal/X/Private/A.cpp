@@ -132,10 +132,11 @@ bool FTemplateTable::Read(const FString& Filename)
 
         case 4:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Delete"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementBool));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Template.Delete"));
 
             for (FTemplateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.bDelete);
+                Cursor.NextBool(Record.bDelete);
             }
 
             break;

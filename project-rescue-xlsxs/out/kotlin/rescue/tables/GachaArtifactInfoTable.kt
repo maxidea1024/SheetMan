@@ -218,14 +218,16 @@ class GachaArtifactInfoTable {
                 }
                 12 -> {
                     checkColumn(column, "GachaArtifactInfo.EnableReset", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactInfo.EnableReset")
                     for (record in loaded) {
-                        record.enableReset = reader.readBool()
+                        record.enableReset = cursor.nextBool()
                     }
                 }
                 13 -> {
                     checkColumn(column, "GachaArtifactInfo.IsSharedCounter", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactInfo.IsSharedCounter")
                     for (record in loaded) {
-                        record.isSharedCounter = reader.readBool()
+                        record.isSharedCounter = cursor.nextBool()
                     }
                 }
                 14 -> {
@@ -244,14 +246,16 @@ class GachaArtifactInfoTable {
                 }
                 16 -> {
                     checkColumn(column, "GachaArtifactInfo.IsSingle", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactInfo.IsSingle")
                     for (record in loaded) {
-                        record.isSingle = reader.readBool()
+                        record.isSingle = cursor.nextBool()
                     }
                 }
                 17 -> {
                     checkColumn(column, "GachaArtifactInfo.IsTen", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactInfo.IsTen")
                     for (record in loaded) {
-                        record.isTen = reader.readBool()
+                        record.isTen = cursor.nextBool()
                     }
                 }
                 18 -> {
@@ -291,8 +295,9 @@ class GachaArtifactInfoTable {
                 }
                 23 -> {
                     checkColumn(column, "GachaArtifactInfo.EnableSkip", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactInfo.EnableSkip")
                     for (record in loaded) {
-                        record.enableSkip = reader.readBool()
+                        record.enableSkip = cursor.nextBool()
                     }
                 }
                 else ->

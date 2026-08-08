@@ -150,8 +150,9 @@ public final class TemplateTable {
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "Template.Delete", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Template.Delete");
                     for (TemplateRecord record : loaded) {
-                        record.delete = reader.readBool();
+                        record.delete = cursor.nextBool();
                     }
                     break;
                 }

@@ -217,8 +217,9 @@ final class BuffTable
 
                 case 11:
                     ScbReader::checkColumn($column, 'Buff.BuffValueRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.BuffValueRate');
                     foreach ($records as $record) {
-                        $record->buffValueRate = $reader->readFloat();
+                        $record->buffValueRate = $cursor->nextF32();
                     }
                     break;
 
@@ -248,15 +249,17 @@ final class BuffTable
 
                 case 15:
                     ScbReader::checkColumn($column, 'Buff.BuffCoolDownTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.BuffCoolDownTime');
                     foreach ($records as $record) {
-                        $record->buffCoolDownTime = $reader->readFloat();
+                        $record->buffCoolDownTime = $cursor->nextF32();
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'Buff.IsVisible', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.IsVisible');
                     foreach ($records as $record) {
-                        $record->isVisible = $reader->readBool();
+                        $record->isVisible = $cursor->nextBool();
                     }
                     break;
 

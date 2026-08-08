@@ -164,8 +164,9 @@ class ExpDungeonRewardTable {
                 }
                 8 -> {
                     checkColumn(column, "ExpDungeonReward.IsFirstClear", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "ExpDungeonReward.IsFirstClear")
                     for (record in loaded) {
-                        record.isFirstClear = reader.readBool()
+                        record.isFirstClear = cursor.nextBool()
                     }
                 }
                 9 -> {

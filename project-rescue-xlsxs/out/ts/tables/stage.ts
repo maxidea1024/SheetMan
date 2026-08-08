@@ -331,9 +331,10 @@ export class StageTable {
           break
         case 8:
           sheetman.checkColumn(column, 'Stage.SpawnNextTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.SpawnNextTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._spawnNextTime = reader.readFloat()
+            record._spawnNextTime = cursor.nextF32()
           }
           break
         case 9:
@@ -356,44 +357,50 @@ export class StageTable {
           break
         case 11:
           sheetman.checkColumn(column, 'Stage.AtkUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.AtkUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._atkUpPercent = reader.readFloat()
+            record._atkUpPercent = cursor.nextF32()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'Stage.DefUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.DefUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._defUpPercent = reader.readFloat()
+            record._defUpPercent = cursor.nextF32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'Stage.MHPUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.MHPUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._mHPUpPercent = reader.readFloat()
+            record._mHPUpPercent = cursor.nextF32()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'Stage.BossAtkUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.BossAtkUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._bossAtkUpPercent = reader.readFloat()
+            record._bossAtkUpPercent = cursor.nextF32()
           }
           break
         case 15:
           sheetman.checkColumn(column, 'Stage.BossDefUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.BossDefUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._bossDefUpPercent = reader.readFloat()
+            record._bossDefUpPercent = cursor.nextF32()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'Stage.BossMHPUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.BossMHPUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._bossMHPUpPercent = reader.readFloat()
+            record._bossMHPUpPercent = cursor.nextF32()
           }
           break
         case 17:

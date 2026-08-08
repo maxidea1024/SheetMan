@@ -168,11 +168,12 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 9:
       (void)sm_check_column(reader, column, "CharacterTranscendence.PowerMultiplier", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.PowerMultiplier");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->power_multiplier);
+        (void)sm_cursor_next_f32(&cursor, &record->power_multiplier);
       }
 
       break;

@@ -116,11 +116,12 @@ static bool Rescue_TraitParse(Rescue_TraitTable_t* table, sm_reader* reader) {
     case 5:
       (void)sm_check_column(reader, column, "Trait.StatRate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Trait.StatRate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_TraitRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->stat_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->stat_rate);
       }
 
       break;

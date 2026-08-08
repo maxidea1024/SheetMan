@@ -127,8 +127,9 @@ module Rescue
           end
         when 8
           Sheetman.check_column(column, 'SDContensInfo.EnableReset', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.EnableReset')
           records.each do |record|
-            record.enable_reset = reader.read_bool
+            record.enable_reset = cursor.next_bool
           end
         when 9
           Sheetman.check_column(column, 'SDContensInfo.CycleType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])

@@ -165,8 +165,9 @@ final class MaterialTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'Material.Stackable', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.Stackable');
                     foreach ($records as $record) {
-                        $record->stackable = $reader->readBool();
+                        $record->stackable = $cursor->nextBool();
                     }
                     break;
 

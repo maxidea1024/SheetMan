@@ -260,19 +260,21 @@ namespace Rescue.Tables
 
                     case 6:
                         ScbTable.CheckColumn(column, "Attribute.DamageValueRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Attribute.DamageValueRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._damageValueRate);
+                            record._damageValueRate = cursor.NextF32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "Attribute.IsVisible", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "Attribute.IsVisible");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isVisible);
+                            record._isVisible = cursor.NextBool();
                         }
                         break;
 

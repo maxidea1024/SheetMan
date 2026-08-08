@@ -100,32 +100,37 @@ impl GachaRateTable {
                 }
                 2 => {
                     sheetman::check_column(column, "GachaRate.URRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaRate.URRate")?;
                     for record in records.iter_mut() {
-                        record.ur_rate = reader.read_f32()?;
+                        record.ur_rate = cursor.next_f32()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "GachaRate.SSRRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaRate.SSRRate")?;
                     for record in records.iter_mut() {
-                        record.ssr_rate = reader.read_f32()?;
+                        record.ssr_rate = cursor.next_f32()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "GachaRate.SRRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaRate.SRRate")?;
                     for record in records.iter_mut() {
-                        record.sr_rate = reader.read_f32()?;
+                        record.sr_rate = cursor.next_f32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "GachaRate.RRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaRate.RRate")?;
                     for record in records.iter_mut() {
-                        record.r_rate = reader.read_f32()?;
+                        record.r_rate = cursor.next_f32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "GachaRate.NRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaRate.NRate")?;
                     for record in records.iter_mut() {
-                        record.n_rate = reader.read_f32()?;
+                        record.n_rate = cursor.next_f32()?;
                     }
                 }
                 _ => {

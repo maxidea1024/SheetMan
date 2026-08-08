@@ -152,8 +152,9 @@ class CollectionTable {
           break;
         case 9:
           checkColumn(column, 'Collection.RewardStatRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.RewardStatRate');
           for (final record in loaded) {
-            record.rewardStatRate = reader.readFloat();
+            record.rewardStatRate = cursor.nextF32();
           }
           break;
         case 10:

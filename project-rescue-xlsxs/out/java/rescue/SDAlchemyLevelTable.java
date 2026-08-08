@@ -154,57 +154,65 @@ public final class SDAlchemyLevelTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.CritDMGValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGValue");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.critDMGValue = reader.readFloat();
+                        record.critDMGValue = cursor.nextF32();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.CritDMGTotal", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGTotal");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.critDMGTotal = reader.readFloat();
+                        record.critDMGTotal = cursor.nextF32();
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.CritRateValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateValue");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.critRateValue = reader.readFloat();
+                        record.critRateValue = cursor.nextF32();
                     }
                     break;
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.CritRateTotal", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateTotal");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.critRateTotal = reader.readFloat();
+                        record.critRateTotal = cursor.nextF32();
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.BlockRateValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateValue");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.blockRateValue = reader.readFloat();
+                        record.blockRateValue = cursor.nextF32();
                     }
                     break;
                 }
                 case 14: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.BlockRateTotal", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateTotal");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.blockRateTotal = reader.readFloat();
+                        record.blockRateTotal = cursor.nextF32();
                     }
                     break;
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.HITValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.HITValue");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.hITValue = reader.readFloat();
+                        record.hITValue = cursor.nextF32();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.HITTotal", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.HITTotal");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.hITTotal = reader.readFloat();
+                        record.hITTotal = cursor.nextF32();
                     }
                     break;
                 }

@@ -288,16 +288,18 @@ export class RelicTable {
           break
         case 6:
           sheetman.checkColumn(column, 'Relic.RelicValue1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Relic.RelicValue1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._relicValue1 = reader.readFloat()
+            record._relicValue1 = cursor.nextF32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'Relic.RelicIncValue1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Relic.RelicIncValue1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._relicIncValue1 = reader.readFloat()
+            record._relicIncValue1 = cursor.nextF32()
           }
           break
         case 8:
@@ -310,16 +312,18 @@ export class RelicTable {
           break
         case 9:
           sheetman.checkColumn(column, 'Relic.RelicValue2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Relic.RelicValue2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._relicValue2 = reader.readFloat()
+            record._relicValue2 = cursor.nextF32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'Relic.RelicIncValue2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Relic.RelicIncValue2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._relicIncValue2 = reader.readFloat()
+            record._relicIncValue2 = cursor.nextF32()
           }
           break
         case 11:
@@ -332,16 +336,18 @@ export class RelicTable {
           break
         case 12:
           sheetman.checkColumn(column, 'Relic.RelicValue3', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Relic.RelicValue3')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._relicValue3 = reader.readFloat()
+            record._relicValue3 = cursor.nextF32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'Relic.RelicIncValue3', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Relic.RelicIncValue3')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._relicIncValue3 = reader.readFloat()
+            record._relicIncValue3 = cursor.nextF32()
           }
           break
         case 14:

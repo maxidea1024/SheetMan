@@ -252,11 +252,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 15:
       (void)sm_check_column(reader, column, "SDDungeonReward.IsPerfect", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.IsPerfect");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->is_perfect);
+        (void)sm_cursor_next_bool(&cursor, &record->is_perfect);
       }
 
       break;
@@ -292,11 +293,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 18:
       (void)sm_check_column(reader, column, "SDDungeonReward.IsMinReward", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.IsMinReward");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->is_min_reward);
+        (void)sm_cursor_next_bool(&cursor, &record->is_min_reward);
       }
 
       break;

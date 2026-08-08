@@ -187,8 +187,9 @@ final class SDTrainingInfoTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.IsLvReset', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.IsLvReset');
                     foreach ($records as $record) {
-                        $record->isLvReset = $reader->readBool();
+                        $record->isLvReset = $cursor->nextBool();
                     }
                     break;
 

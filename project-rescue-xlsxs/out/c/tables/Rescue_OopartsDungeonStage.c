@@ -230,11 +230,12 @@ static bool Rescue_OopartsDungeonStageParse(Rescue_OopartsDungeonStageTable_t* t
     case 11:
       (void)sm_check_column(reader, column, "OopartsDungeonStage.SpawnNextTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "OopartsDungeonStage.SpawnNextTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_OopartsDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->spawn_next_time);
+        (void)sm_cursor_next_f32(&cursor, &record->spawn_next_time);
       }
 
       break;
@@ -281,11 +282,12 @@ static bool Rescue_OopartsDungeonStageParse(Rescue_OopartsDungeonStageTable_t* t
     case 15:
       (void)sm_check_column(reader, column, "OopartsDungeonStage.AtkUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "OopartsDungeonStage.AtkUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_OopartsDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->atk_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->atk_up_percent);
       }
 
       break;
@@ -293,11 +295,12 @@ static bool Rescue_OopartsDungeonStageParse(Rescue_OopartsDungeonStageTable_t* t
     case 16:
       (void)sm_check_column(reader, column, "OopartsDungeonStage.DefUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "OopartsDungeonStage.DefUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_OopartsDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->def_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->def_up_percent);
       }
 
       break;
@@ -305,11 +308,12 @@ static bool Rescue_OopartsDungeonStageParse(Rescue_OopartsDungeonStageTable_t* t
     case 17:
       (void)sm_check_column(reader, column, "OopartsDungeonStage.MHPUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "OopartsDungeonStage.MHPUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_OopartsDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->mhp_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->mhp_up_percent);
       }
 
       break;

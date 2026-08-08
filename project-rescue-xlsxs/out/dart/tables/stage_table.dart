@@ -159,8 +159,9 @@ class StageTable {
           break;
         case 8:
           checkColumn(column, 'Stage.SpawnNextTime', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.SpawnNextTime');
           for (final record in loaded) {
-            record.spawnNextTime = reader.readFloat();
+            record.spawnNextTime = cursor.nextF32();
           }
           break;
         case 9:
@@ -179,38 +180,44 @@ class StageTable {
           break;
         case 11:
           checkColumn(column, 'Stage.AtkUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.AtkUpPercent');
           for (final record in loaded) {
-            record.atkUpPercent = reader.readFloat();
+            record.atkUpPercent = cursor.nextF32();
           }
           break;
         case 12:
           checkColumn(column, 'Stage.DefUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.DefUpPercent');
           for (final record in loaded) {
-            record.defUpPercent = reader.readFloat();
+            record.defUpPercent = cursor.nextF32();
           }
           break;
         case 13:
           checkColumn(column, 'Stage.MHPUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.MHPUpPercent');
           for (final record in loaded) {
-            record.mHPUpPercent = reader.readFloat();
+            record.mHPUpPercent = cursor.nextF32();
           }
           break;
         case 14:
           checkColumn(column, 'Stage.BossAtkUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.BossAtkUpPercent');
           for (final record in loaded) {
-            record.bossAtkUpPercent = reader.readFloat();
+            record.bossAtkUpPercent = cursor.nextF32();
           }
           break;
         case 15:
           checkColumn(column, 'Stage.BossDefUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.BossDefUpPercent');
           for (final record in loaded) {
-            record.bossDefUpPercent = reader.readFloat();
+            record.bossDefUpPercent = cursor.nextF32();
           }
           break;
         case 16:
           checkColumn(column, 'Stage.BossMHPUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.BossMHPUpPercent');
           for (final record in loaded) {
-            record.bossMHPUpPercent = reader.readFloat();
+            record.bossMHPUpPercent = cursor.nextF32();
           }
           break;
         case 17:

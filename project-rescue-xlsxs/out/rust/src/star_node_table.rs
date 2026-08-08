@@ -144,8 +144,9 @@ impl StarNodeTable {
                 }
                 7 => {
                     sheetman::check_column(column, "StarNode.StarNodeRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StarNode.StarNodeRate")?;
                     for record in records.iter_mut() {
-                        record.star_node_rate = reader.read_f32()?;
+                        record.star_node_rate = cursor.next_f32()?;
                     }
                 }
                 8 => {

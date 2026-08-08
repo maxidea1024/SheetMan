@@ -248,58 +248,66 @@ func (t *CharacterTable) Read(filename string) error {
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "Character.MoveSpeed", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.MoveSpeed")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MoveSpeed = reader.ReadFloat32()
+					r.MoveSpeed = cursor.NextF32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "Character.CritRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.CritRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CritRate = reader.ReadFloat32()
+					r.CritRate = cursor.NextF32()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "Character.CritDmg", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.CritDmg")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CritDmg = reader.ReadFloat32()
+					r.CritDmg = cursor.NextF32()
 				}
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "Character.SearchRange", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.SearchRange")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SearchRange = reader.ReadFloat32()
+					r.SearchRange = cursor.NextF32()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "Character.ReFindTime", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.ReFindTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ReFindTime = reader.ReadFloat32()
+					r.ReFindTime = cursor.NextF32()
 				}
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "Character.MaxFollow", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.MaxFollow")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxFollow = reader.ReadFloat32()
+					r.MaxFollow = cursor.NextF32()
 				}
 			}
 		case 18:
 			if sheetman.CheckColumn(reader, column, "Character.SizePrefab", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.SizePrefab")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SizePrefab = reader.ReadFloat32()
+					r.SizePrefab = cursor.NextF32()
 				}
 			}
 		case 19:
 			if sheetman.CheckColumn(reader, column, "Character.IsUnlocked", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.IsUnlocked")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsUnlocked = reader.ReadBool()
+					r.IsUnlocked = cursor.NextBool()
 				}
 			}
 		case 20:

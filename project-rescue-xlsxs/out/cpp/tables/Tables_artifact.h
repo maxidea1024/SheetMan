@@ -166,9 +166,10 @@ class ArtifactTable {
         }
         case 7: {
           sheetman::check_column(column, "Artifact.EquipStatRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.EquipStatRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.equip_stat_rate);
+            record.equip_stat_rate = cursor.next_f32();
           }
           break;
         }
@@ -183,9 +184,10 @@ class ArtifactTable {
         }
         case 9: {
           sheetman::check_column(column, "Artifact.CollectionVlaue", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.CollectionVlaue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.collection_vlaue);
+            record.collection_vlaue = cursor.next_f32();
           }
           break;
         }

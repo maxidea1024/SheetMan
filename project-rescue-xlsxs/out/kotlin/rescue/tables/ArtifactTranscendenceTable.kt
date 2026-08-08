@@ -171,8 +171,9 @@ class ArtifactTranscendenceTable {
                 }
                 9 -> {
                     checkColumn(column, "ArtifactTranscendence.PowerMultiplier", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactTranscendence.PowerMultiplier")
                     for (record in loaded) {
-                        record.powerMultiplier = reader.readFloat()
+                        record.powerMultiplier = cursor.nextF32()
                     }
                 }
                 10 -> {

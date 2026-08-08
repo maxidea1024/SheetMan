@@ -131,8 +131,9 @@ class TemplateTable:
                     record.int = cursor.next_i32()
             elif column.tag == 4:
                 sheetman.check_column(column, "Template.Delete", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Template.Delete")
                 for record in records:
-                    record.delete = reader.read_bool()
+                    record.delete = cursor.next_bool()
             elif column.tag == 5:
                 sheetman.check_column(column, "Template.Operator", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Template.Operator")

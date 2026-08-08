@@ -113,32 +113,39 @@ class SDAgencyInfoTable:
                     record.dispatch_count = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "SDAgencyInfo.GradeSRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeSRate")
                 for record in records:
-                    record.grade_s_rate = reader.read_float()
+                    record.grade_s_rate = cursor.next_f32()
             elif column.tag == 6:
                 sheetman.check_column(column, "SDAgencyInfo.GradeARate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeARate")
                 for record in records:
-                    record.grade_a_rate = reader.read_float()
+                    record.grade_a_rate = cursor.next_f32()
             elif column.tag == 7:
                 sheetman.check_column(column, "SDAgencyInfo.GradeBRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeBRate")
                 for record in records:
-                    record.grade_b_rate = reader.read_float()
+                    record.grade_b_rate = cursor.next_f32()
             elif column.tag == 8:
                 sheetman.check_column(column, "SDAgencyInfo.GradeCRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeCRate")
                 for record in records:
-                    record.grade_c_rate = reader.read_float()
+                    record.grade_c_rate = cursor.next_f32()
             elif column.tag == 9:
                 sheetman.check_column(column, "SDAgencyInfo.GradeDRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeDRate")
                 for record in records:
-                    record.grade_d_rate = reader.read_float()
+                    record.grade_d_rate = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "SDAgencyInfo.GradeERate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeERate")
                 for record in records:
-                    record.grade_e_rate = reader.read_float()
+                    record.grade_e_rate = cursor.next_f32()
             elif column.tag == 11:
                 sheetman.check_column(column, "SDAgencyInfo.GradeFRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeFRate")
                 for record in records:
-                    record.grade_f_rate = reader.read_float()
+                    record.grade_f_rate = cursor.next_f32()
             elif column.tag == 12:
                 sheetman.check_column(column, "SDAgencyInfo.FreeRefresh", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.FreeRefresh")

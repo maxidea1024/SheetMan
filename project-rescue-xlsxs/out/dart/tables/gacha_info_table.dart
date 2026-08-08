@@ -195,14 +195,16 @@ class GachaInfoTable {
           break;
         case 12:
           checkColumn(column, 'GachaInfo.EnableReset', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.EnableReset');
           for (final record in loaded) {
-            record.enableReset = reader.readBool();
+            record.enableReset = cursor.nextBool();
           }
           break;
         case 13:
           checkColumn(column, 'GachaInfo.IsSharedCounter', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.IsSharedCounter');
           for (final record in loaded) {
-            record.isSharedCounter = reader.readBool();
+            record.isSharedCounter = cursor.nextBool();
           }
           break;
         case 14:
@@ -221,14 +223,16 @@ class GachaInfoTable {
           break;
         case 16:
           checkColumn(column, 'GachaInfo.IsSingle', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.IsSingle');
           for (final record in loaded) {
-            record.isSingle = reader.readBool();
+            record.isSingle = cursor.nextBool();
           }
           break;
         case 17:
           checkColumn(column, 'GachaInfo.IsTen', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.IsTen');
           for (final record in loaded) {
-            record.isTen = reader.readBool();
+            record.isTen = cursor.nextBool();
           }
           break;
         case 18:
@@ -268,8 +272,9 @@ class GachaInfoTable {
           break;
         case 23:
           checkColumn(column, 'GachaInfo.EnableSkip', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.EnableSkip');
           for (final record in loaded) {
-            record.enableSkip = reader.readBool();
+            record.enableSkip = cursor.nextBool();
           }
           break;
         default:

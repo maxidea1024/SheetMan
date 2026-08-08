@@ -178,15 +178,17 @@ public final class GachaInfoTable {
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "GachaInfo.EnableReset", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaInfo.EnableReset");
                     for (GachaInfoRecord record : loaded) {
-                        record.enableReset = reader.readBool();
+                        record.enableReset = cursor.nextBool();
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "GachaInfo.IsSharedCounter", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaInfo.IsSharedCounter");
                     for (GachaInfoRecord record : loaded) {
-                        record.isSharedCounter = reader.readBool();
+                        record.isSharedCounter = cursor.nextBool();
                     }
                     break;
                 }
@@ -208,15 +210,17 @@ public final class GachaInfoTable {
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "GachaInfo.IsSingle", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaInfo.IsSingle");
                     for (GachaInfoRecord record : loaded) {
-                        record.isSingle = reader.readBool();
+                        record.isSingle = cursor.nextBool();
                     }
                     break;
                 }
                 case 17: {
                     ScbReader.checkColumn(column, "GachaInfo.IsTen", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaInfo.IsTen");
                     for (GachaInfoRecord record : loaded) {
-                        record.isTen = reader.readBool();
+                        record.isTen = cursor.nextBool();
                     }
                     break;
                 }
@@ -262,8 +266,9 @@ public final class GachaInfoTable {
                 }
                 case 23: {
                     ScbReader.checkColumn(column, "GachaInfo.EnableSkip", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaInfo.EnableSkip");
                     for (GachaInfoRecord record : loaded) {
-                        record.enableSkip = reader.readBool();
+                        record.enableSkip = cursor.nextBool();
                     }
                     break;
                 }

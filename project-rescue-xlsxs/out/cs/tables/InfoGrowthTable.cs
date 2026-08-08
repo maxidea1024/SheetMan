@@ -302,10 +302,11 @@ namespace Rescue.Tables
 
                     case 6:
                         ScbTable.CheckColumn(column, "InfoGrowth.Reset", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "InfoGrowth.Reset");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._reset);
+                            record._reset = cursor.NextBool();
                         }
                         break;
 

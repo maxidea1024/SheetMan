@@ -124,8 +124,9 @@ impl TraitTable {
                 }
                 5 => {
                     sheetman::check_column(column, "Trait.StatRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Trait.StatRate")?;
                     for record in records.iter_mut() {
-                        record.stat_rate = reader.read_f32()?;
+                        record.stat_rate = cursor.next_f32()?;
                     }
                 }
                 6 => {

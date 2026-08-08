@@ -179,8 +179,9 @@ final class TemplateTable
 
                 case 4:
                     ScbReader::checkColumn($column, 'Template.Delete', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Template.Delete');
                     foreach ($records as $record) {
-                        $record->delete = $reader->readBool();
+                        $record->delete = $cursor->nextBool();
                     }
                     break;
 

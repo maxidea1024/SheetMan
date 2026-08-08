@@ -128,14 +128,16 @@ class BGMSoundTable {
                 }
                 4 -> {
                     checkColumn(column, "BGMSound.Loop", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "BGMSound.Loop")
                     for (record in loaded) {
-                        record.loop = reader.readBool()
+                        record.loop = cursor.nextBool()
                     }
                 }
                 5 -> {
                     checkColumn(column, "BGMSound.FadeTime", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "BGMSound.FadeTime")
                     for (record in loaded) {
-                        record.fadeTime = reader.readFloat()
+                        record.fadeTime = cursor.nextF32()
                     }
                 }
                 6 -> {

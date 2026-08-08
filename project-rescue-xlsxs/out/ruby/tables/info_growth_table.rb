@@ -118,8 +118,9 @@ module Rescue
           end
         when 6
           Sheetman.check_column(column, 'InfoGrowth.Reset', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.Reset')
           records.each do |record|
-            record.reset = reader.read_bool
+            record.reset = cursor.next_bool
           end
         when 7
           Sheetman.check_column(column, 'InfoGrowth.ResetCostType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])

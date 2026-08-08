@@ -175,8 +175,9 @@ final class ArtifactTable
 
                 case 7:
                     ScbReader::checkColumn($column, 'Artifact.EquipStatRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.EquipStatRate');
                     foreach ($records as $record) {
-                        $record->equipStatRate = $reader->readFloat();
+                        $record->equipStatRate = $cursor->nextF32();
                     }
                     break;
 
@@ -190,8 +191,9 @@ final class ArtifactTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'Artifact.CollectionVlaue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.CollectionVlaue');
                     foreach ($records as $record) {
-                        $record->collectionVlaue = $reader->readFloat();
+                        $record->collectionVlaue = $cursor->nextF32();
                     }
                     break;
 

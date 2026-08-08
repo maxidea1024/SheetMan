@@ -166,8 +166,9 @@ final class InfoGrowthTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'InfoGrowth.Reset', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'InfoGrowth.Reset');
                     foreach ($records as $record) {
-                        $record->reset = $reader->readBool();
+                        $record->reset = $cursor->nextBool();
                     }
                     break;
 

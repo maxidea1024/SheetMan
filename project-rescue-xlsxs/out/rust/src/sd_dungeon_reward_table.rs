@@ -220,8 +220,9 @@ impl SDDungeonRewardTable {
                 }
                 15 => {
                     sheetman::check_column(column, "SDDungeonReward.IsPerfect", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.IsPerfect")?;
                     for record in records.iter_mut() {
-                        record.is_perfect = reader.read_bool()?;
+                        record.is_perfect = cursor.next_bool()?;
                     }
                 }
                 16 => {
@@ -240,8 +241,9 @@ impl SDDungeonRewardTable {
                 }
                 18 => {
                     sheetman::check_column(column, "SDDungeonReward.IsMinReward", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.IsMinReward")?;
                     for record in records.iter_mut() {
-                        record.is_min_reward = reader.read_bool()?;
+                        record.is_min_reward = cursor.next_bool()?;
                     }
                 }
                 19 => {

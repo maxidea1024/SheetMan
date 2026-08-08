@@ -481,15 +481,24 @@ public class GoCodeGenerator : CodeGenerator<GoRecipe>
 
         switch (sf.ElementType)
         {
-            // Int64 and Double are here for their promotions: the file may carry an
-            // i32 column - encoded - where the member has since widened.
+            // Int64 and Double are here for their promotions as well as their own
+            // dictionaries: the file may carry an i32 column - encoded - where the
+            // member has since widened.
             case ValueType.Int32:
             case ValueType.Int64:
             case ValueType.Double:
+            case ValueType.Float:
+            case ValueType.Bool:
             case ValueType.Enum:
             case ValueType.String:
+
+            // Ticks are an i64 column, so they meet the i64 dictionary like any other.
+            case ValueType.DateTime:
+            case ValueType.TimeSpan:
                 return true;
 
+            // Uuid is the one scalar left raw: sixteen-byte entries rarely repeat
+            // enough to pay for the index beside them.
             default:
                 return false;
         }
@@ -561,7 +570,14 @@ public class GoCodeGenerator : CodeGenerator<GoRecipe>
             ValueType.Enum => $"{sf.FirstField.Enum.Name.ToPascalCase()}(cursor.NextI32())",
             ValueType.Int64 => "cursor.NextI64()",
             ValueType.Double => "cursor.NextF64()",
+            ValueType.Float => "cursor.NextF32()",
+            ValueType.Bool => "cursor.NextBool()",
             ValueType.String => "cursor.NextString()",
+
+            // Ticks, and the member holds exactly those - so the i64 the column
+            // carried is the value, with nothing to construct around it.
+            ValueType.DateTime => "cursor.NextI64()",
+            ValueType.TimeSpan => "cursor.NextI64()",
 
             // Int32, and the index a reference travels as.
             _ => "cursor.NextI32()",

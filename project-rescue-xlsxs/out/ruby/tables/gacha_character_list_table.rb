@@ -109,8 +109,9 @@ module Rescue
           end
         when 5
           Sheetman.check_column(column, 'GachaCharacterList.IsWishlist', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaCharacterList.IsWishlist')
           records.each do |record|
-            record.is_wishlist = reader.read_bool
+            record.is_wishlist = cursor.next_bool
           end
         when 6
           Sheetman.check_column(column, 'GachaCharacterList.WishlistWeight', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

@@ -181,9 +181,10 @@ class SDTrainingInfoTable {
         }
         case 9: {
           sheetman::check_column(column, "SDTrainingInfo.IsLvReset", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingInfo.IsLvReset");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_lv_reset);
+            record.is_lv_reset = cursor.next_bool();
           }
           break;
         }

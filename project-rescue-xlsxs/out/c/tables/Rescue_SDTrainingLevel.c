@@ -125,11 +125,12 @@ static bool Rescue_SDTrainingLevelParse(Rescue_SDTrainingLevelTable_t* table, sm
     case 6:
       (void)sm_check_column(reader, column, "SDTrainingLevel.MHPGrowth", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingLevel.MHPGrowth");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->mhp_growth);
+        (void)sm_cursor_next_f32(&cursor, &record->mhp_growth);
       }
 
       break;
@@ -137,11 +138,12 @@ static bool Rescue_SDTrainingLevelParse(Rescue_SDTrainingLevelTable_t* table, sm
     case 7:
       (void)sm_check_column(reader, column, "SDTrainingLevel.MHPTotal", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingLevel.MHPTotal");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->mhp_total);
+        (void)sm_cursor_next_f32(&cursor, &record->mhp_total);
       }
 
       break;
@@ -149,11 +151,12 @@ static bool Rescue_SDTrainingLevelParse(Rescue_SDTrainingLevelTable_t* table, sm
     case 8:
       (void)sm_check_column(reader, column, "SDTrainingLevel.DEFGrowth", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingLevel.DEFGrowth");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->def_growth);
+        (void)sm_cursor_next_f32(&cursor, &record->def_growth);
       }
 
       break;
@@ -161,11 +164,12 @@ static bool Rescue_SDTrainingLevelParse(Rescue_SDTrainingLevelTable_t* table, sm
     case 9:
       (void)sm_check_column(reader, column, "SDTrainingLevel.DEFTotal", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingLevel.DEFTotal");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->def_total);
+        (void)sm_cursor_next_f32(&cursor, &record->def_total);
       }
 
       break;

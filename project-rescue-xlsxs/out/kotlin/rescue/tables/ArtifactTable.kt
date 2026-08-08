@@ -162,8 +162,9 @@ class ArtifactTable {
                 }
                 7 -> {
                     checkColumn(column, "Artifact.EquipStatRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.EquipStatRate")
                     for (record in loaded) {
-                        record.equipStatRate = reader.readFloat()
+                        record.equipStatRate = cursor.nextF32()
                     }
                 }
                 8 -> {
@@ -175,8 +176,9 @@ class ArtifactTable {
                 }
                 9 -> {
                     checkColumn(column, "Artifact.CollectionVlaue", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.CollectionVlaue")
                     for (record in loaded) {
-                        record.collectionVlaue = reader.readFloat()
+                        record.collectionVlaue = cursor.nextF32()
                     }
                 }
                 10 -> {

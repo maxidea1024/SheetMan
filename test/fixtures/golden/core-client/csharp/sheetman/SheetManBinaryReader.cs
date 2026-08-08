@@ -296,7 +296,7 @@ namespace SheetMan.Binary
         /// forget to do either.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private ReadOnlySpan<byte> Take(int count)
+        internal ReadOnlySpan<byte> Take(int count)
         {
             if (Remaining < count)
             {
@@ -371,8 +371,18 @@ namespace SheetMan.Binary
         private readonly byte _element;
         private readonly byte _encoding;
 
-        /// <summary>The block's dictionary, decoded once and handed out per row.</summary>
+        /// <summary>
+        /// The block's dictionary, decoded once and handed out per row.
+        ///
+        /// One of these is non-null when the block has a dictionary at all, chosen by the
+        /// element: strings are decoded to instances that rows then share, and a
+        /// fixed-width element keeps its raw bytes so the value is reconstructed exactly
+        /// as the raw layout would have read it.
+        /// </summary>
         private readonly string[] _dictionary;
+
+        private readonly byte[] _valueDictionary;
+        private readonly int _valueWidth;
 
         // A run-length family's current run: what remains of it, and its value - which
         // is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
@@ -395,21 +405,95 @@ namespace SheetMan.Binary
             _encoding = column.Encoding;
             _rowsRemaining = rowCount;
 
-            if (_encoding == ScbTable.EncodingDict || _encoding == ScbTable.EncodingDictRle)
-            {
-                int count = reader.ReadCounter32();
-                if (count < 0)
-                    throw new ScbException($"{fieldName}: the dictionary entry count is negative");
+            _dictionary = null;
+            _valueDictionary = null;
+            _valueWidth = 0;
 
+            bool plainDictionary =
+                _encoding == ScbTable.EncodingDict || _encoding == ScbTable.EncodingDictRle;
+
+            bool frontDictionary =
+                _encoding == ScbTable.EncodingDictFront || _encoding == ScbTable.EncodingDictFrontRle;
+
+            if (!plainDictionary && !frontDictionary)
+                return;
+
+            int count = reader.ReadCounter32();
+            if (count < 0)
+                throw new ScbException($"{fieldName}: the dictionary entry count is negative");
+
+            if (frontDictionary)
+            {
+                _dictionary = ReadFrontCodedDictionary(reader, count, fieldName);
+                return;
+            }
+
+            if (_element == ScbTable.ElementString)
+            {
                 _dictionary = new string[count];
 
                 for (int at = 0; at < count; at++)
                     reader.Read(out _dictionary[at]);
+
+                return;
             }
-            else
+
+            // A fixed-width element: the entries are the value's own bytes, so they are
+            // taken as bytes and turned into values only when a row asks for one.
+            _valueWidth = _element == ScbTable.ElementF32 ? 4 : 8;
+            _valueDictionary = new byte[count * _valueWidth];
+
+            for (int at = 0; at < count; at++)
+                reader.Take(_valueWidth).CopyTo(new Span<byte>(_valueDictionary, at * _valueWidth, _valueWidth));
+        }
+
+        /// <summary>
+        /// A sorted dictionary whose entries state only what they do not share with the
+        /// entry before them.
+        /// </summary>
+        /// <remarks>
+        /// Decoded into whole strings here rather than kept folded, because a row wants a
+        /// string and the folding was only ever about the bytes on disk. The scratch
+        /// buffer grows to the longest entry and is reused, so the allocations are the
+        /// strings themselves - one per distinct value, which is the point.
+        /// </remarks>
+        private static string[] ReadFrontCodedDictionary(ScbReader reader, int count, string fieldName)
+        {
+            var entries = new string[count];
+            var scratch = new byte[64];
+            int previousLength = 0;
+
+            for (int at = 0; at < count; at++)
             {
-                _dictionary = null;
+                int shared = reader.ReadCounter32();
+                int rest = reader.ReadCounter32();
+
+                if (shared < 0 || rest < 0 || shared > previousLength)
+                {
+                    throw new ScbException(
+                        $"{fieldName}: dictionary entry {at} shares {shared} bytes with an entry " +
+                        $"of {previousLength}");
+                }
+
+                int length = shared + rest;
+
+                if (length > scratch.Length)
+                {
+                    int capacity = scratch.Length;
+                    while (capacity < length)
+                        capacity *= 2;
+
+                    Array.Resize(ref scratch, capacity);
+                }
+
+                if (rest > 0)
+                    reader.Take(rest).CopyTo(new Span<byte>(scratch, shared, rest));
+
+                entries[at] = length == 0 ? string.Empty : Encoding.UTF8.GetString(scratch, 0, length);
+                previousLength = length;
             }
+
+            return entries;
         }
 
         /// <summary>The next int32 - which also serves enums, and reference indexes.</summary>
@@ -476,38 +560,105 @@ namespace SheetMan.Binary
             }
         }
 
-        /// <summary>An int64 member: an i64 column is always raw, anything narrower decodes as int32.</summary>
+        /// <summary>
+        /// An int64 member: from an i64 column raw or through its dictionary, and from
+        /// anything narrower by decoding an int32 and widening it.
+        /// </summary>
         public long NextI64()
         {
-            if (_element == ScbTable.ElementI64)
-            {
-                _reader.Read(out long exact);
-                return exact;
-            }
+            if (_element != ScbTable.ElementI64)
+                return NextI32();
 
-            return NextI32();
+            if (_valueDictionary != null)
+                return BinaryPrimitives.ReadInt64LittleEndian(NextValueEntry());
+
+            _rowsRemaining--;
+            _reader.Read(out long exact);
+
+            return exact;
         }
 
-        /// <summary>A double member: float columns are always raw, an i32 column decodes then widens.</summary>
+        /// <summary>A float member: raw, or the dictionary entry's exact bit pattern.</summary>
+        public float NextF32()
+        {
+            if (_valueDictionary != null)
+                return BitConverter.Int32BitsToSingle(BinaryPrimitives.ReadInt32LittleEndian(NextValueEntry()));
+
+            _rowsRemaining--;
+            _reader.Read(out float value);
+
+            return value;
+        }
+
+        /// <summary>
+        /// A double member: from f64 or f32 - either of them raw or dictionary-encoded -
+        /// and from an i32 column by decoding and widening.
+        /// </summary>
         public double NextF64()
         {
             switch (_element)
             {
                 case ScbTable.ElementF64:
                 {
+                    if (_valueDictionary != null)
+                        return BitConverter.Int64BitsToDouble(BinaryPrimitives.ReadInt64LittleEndian(NextValueEntry()));
+
+                    _rowsRemaining--;
                     _reader.Read(out double exact);
+
                     return exact;
                 }
 
                 case ScbTable.ElementF32:
-                {
-                    _reader.Read(out float single);
-                    return single;
-                }
+                    return NextF32();
 
                 default:
                     return NextI32();
             }
+        }
+
+        /// <summary>A bool member: one byte raw, or a run of them.</summary>
+        public bool NextBool()
+        {
+            if (_encoding == ScbTable.EncodingRle)
+                return NextI32() != 0;
+
+            _rowsRemaining--;
+            _reader.Read(out bool value);
+
+            return value;
+        }
+
+        /// <summary>
+        /// The bytes of the next row's dictionary entry, for a fixed-width element.
+        /// </summary>
+        private ReadOnlySpan<byte> NextValueEntry()
+        {
+            _rowsRemaining--;
+
+            int index;
+
+            if (_encoding == ScbTable.EncodingDict)
+                index = _reader.ReadCounter32();
+            else
+            {
+                if (_runRemaining == 0)
+                    ReadRun();
+
+                _runRemaining--;
+                index = _runValue;
+            }
+
+            int count = _valueDictionary.Length / _valueWidth;
+
+            if ((uint)index >= (uint)count)
+            {
+                throw new ScbException(
+                    $"{_fieldName}: dictionary index {index} is out of range - the " +
+                    $"dictionary holds {count} entries");
+            }
+
+            return new ReadOnlySpan<byte>(_valueDictionary, index * _valueWidth, _valueWidth);
         }
 
         /// <summary>The next string - the dictionary's instance where the block has one.</summary>
@@ -524,9 +675,10 @@ namespace SheetMan.Binary
                 }
 
                 case ScbTable.EncodingDict:
+                case ScbTable.EncodingDictFront:
                     return DictionaryEntry(_reader.ReadCounter32());
 
-                default: // EncodingDictRle
+                default: // EncodingDictRle and EncodingDictFrontRle
                 {
                     if (_runRemaining == 0)
                         ReadRun();
@@ -604,6 +756,8 @@ namespace SheetMan.Binary
         public const byte EncodingDeltaRle = 4;
         public const byte EncodingDict = 5;
         public const byte EncodingDictRle = 6;
+        public const byte EncodingDictFront = 7;
+        public const byte EncodingDictFrontRle = 8;
 
         /// <summary>
         /// Reads and checks the file header, returning the row count and the column
@@ -772,14 +926,24 @@ namespace SheetMan.Binary
 
             switch (column.Element)
             {
+                case ElementBool:
                 case ElementVarint:
                     return column.Encoding == EncodingRle;
 
                 case ElementI32:
                     return column.Encoding >= EncodingVarint && column.Encoding <= EncodingDeltaRle;
 
-                case ElementString:
+                // The dictionary is parameterized by element, so these three reach it
+                // with entries that are simply their own raw bytes.
+                case ElementI64:
+                case ElementF32:
+                case ElementF64:
                     return column.Encoding == EncodingDict || column.Encoding == EncodingDictRle;
+
+                // And a string dictionary can additionally be front coded, which is
+                // meaningless for a fixed-width element and refused for one.
+                case ElementString:
+                    return column.Encoding >= EncodingDict && column.Encoding <= EncodingDictFrontRle;
 
                 default:
                     return false;

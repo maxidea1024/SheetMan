@@ -109,8 +109,9 @@ class GachaCharacterListTable:
                     record.base_weight = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "GachaCharacterList.IsWishlist", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.IsWishlist")
                 for record in records:
-                    record.is_wishlist = reader.read_bool()
+                    record.is_wishlist = cursor.next_bool()
             elif column.tag == 6:
                 sheetman.check_column(column, "GachaCharacterList.WishlistWeight", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.WishlistWeight")

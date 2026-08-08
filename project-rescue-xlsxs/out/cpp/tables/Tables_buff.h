@@ -213,9 +213,10 @@ class BuffTable {
         }
         case 11: {
           sheetman::check_column(column, "Buff.BuffValueRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.BuffValueRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.buff_value_rate);
+            record.buff_value_rate = cursor.next_f32();
           }
           break;
         }
@@ -248,17 +249,19 @@ class BuffTable {
         }
         case 15: {
           sheetman::check_column(column, "Buff.BuffCoolDownTime", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.BuffCoolDownTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.buff_cool_down_time);
+            record.buff_cool_down_time = cursor.next_f32();
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "Buff.IsVisible", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.IsVisible");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_visible);
+            record.is_visible = cursor.next_bool();
           }
           break;
         }

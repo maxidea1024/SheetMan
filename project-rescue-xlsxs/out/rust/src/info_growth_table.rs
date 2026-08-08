@@ -146,8 +146,9 @@ impl InfoGrowthTable {
                 }
                 6 => {
                     sheetman::check_column(column, "InfoGrowth.Reset", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.Reset")?;
                     for record in records.iter_mut() {
-                        record.reset = reader.read_bool()?;
+                        record.reset = cursor.next_bool()?;
                     }
                 }
                 7 => {

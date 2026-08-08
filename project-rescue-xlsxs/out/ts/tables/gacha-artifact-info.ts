@@ -393,16 +393,18 @@ export class GachaArtifactInfoTable {
           break
         case 12:
           sheetman.checkColumn(column, 'GachaArtifactInfo.EnableReset', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaArtifactInfo.EnableReset')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._enableReset = reader.readBool()
+            record._enableReset = cursor.nextBool()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'GachaArtifactInfo.IsSharedCounter', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaArtifactInfo.IsSharedCounter')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isSharedCounter = reader.readBool()
+            record._isSharedCounter = cursor.nextBool()
           }
           break
         case 14:
@@ -423,16 +425,18 @@ export class GachaArtifactInfoTable {
           break
         case 16:
           sheetman.checkColumn(column, 'GachaArtifactInfo.IsSingle', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaArtifactInfo.IsSingle')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isSingle = reader.readBool()
+            record._isSingle = cursor.nextBool()
           }
           break
         case 17:
           sheetman.checkColumn(column, 'GachaArtifactInfo.IsTen', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaArtifactInfo.IsTen')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isTen = reader.readBool()
+            record._isTen = cursor.nextBool()
           }
           break
         case 18:
@@ -477,9 +481,10 @@ export class GachaArtifactInfoTable {
           break
         case 23:
           sheetman.checkColumn(column, 'GachaArtifactInfo.EnableSkip', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaArtifactInfo.EnableSkip')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._enableSkip = reader.readBool()
+            record._enableSkip = cursor.nextBool()
           }
           break
         default:

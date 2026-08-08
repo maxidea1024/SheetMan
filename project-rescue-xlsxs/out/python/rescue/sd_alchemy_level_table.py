@@ -133,36 +133,44 @@ class SDAlchemyLevelTable:
                     record.use_item_cost = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "SDAlchemyLevel.CritDMGValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGValue")
                 for record in records:
-                    record.crit_dmg_value = reader.read_float()
+                    record.crit_dmg_value = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "SDAlchemyLevel.CritDMGTotal", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGTotal")
                 for record in records:
-                    record.crit_dmg_total = reader.read_float()
+                    record.crit_dmg_total = cursor.next_f32()
             elif column.tag == 11:
                 sheetman.check_column(column, "SDAlchemyLevel.CritRateValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateValue")
                 for record in records:
-                    record.crit_rate_value = reader.read_float()
+                    record.crit_rate_value = cursor.next_f32()
             elif column.tag == 12:
                 sheetman.check_column(column, "SDAlchemyLevel.CritRateTotal", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateTotal")
                 for record in records:
-                    record.crit_rate_total = reader.read_float()
+                    record.crit_rate_total = cursor.next_f32()
             elif column.tag == 13:
                 sheetman.check_column(column, "SDAlchemyLevel.BlockRateValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateValue")
                 for record in records:
-                    record.block_rate_value = reader.read_float()
+                    record.block_rate_value = cursor.next_f32()
             elif column.tag == 14:
                 sheetman.check_column(column, "SDAlchemyLevel.BlockRateTotal", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateTotal")
                 for record in records:
-                    record.block_rate_total = reader.read_float()
+                    record.block_rate_total = cursor.next_f32()
             elif column.tag == 15:
                 sheetman.check_column(column, "SDAlchemyLevel.HITValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.HITValue")
                 for record in records:
-                    record.hit_value = reader.read_float()
+                    record.hit_value = cursor.next_f32()
             elif column.tag == 16:
                 sheetman.check_column(column, "SDAlchemyLevel.HITTotal", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.HITTotal")
                 for record in records:
-                    record.hit_total = reader.read_float()
+                    record.hit_total = cursor.next_f32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

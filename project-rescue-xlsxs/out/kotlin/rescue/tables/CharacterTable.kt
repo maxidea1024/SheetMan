@@ -246,50 +246,58 @@ class CharacterTable {
                 }
                 12 -> {
                     checkColumn(column, "Character.MoveSpeed", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Character.MoveSpeed")
                     for (record in loaded) {
-                        record.moveSpeed = reader.readFloat()
+                        record.moveSpeed = cursor.nextF32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "Character.CritRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Character.CritRate")
                     for (record in loaded) {
-                        record.critRate = reader.readFloat()
+                        record.critRate = cursor.nextF32()
                     }
                 }
                 14 -> {
                     checkColumn(column, "Character.CritDmg", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Character.CritDmg")
                     for (record in loaded) {
-                        record.critDmg = reader.readFloat()
+                        record.critDmg = cursor.nextF32()
                     }
                 }
                 15 -> {
                     checkColumn(column, "Character.SearchRange", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Character.SearchRange")
                     for (record in loaded) {
-                        record.searchRange = reader.readFloat()
+                        record.searchRange = cursor.nextF32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "Character.ReFindTime", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Character.ReFindTime")
                     for (record in loaded) {
-                        record.reFindTime = reader.readFloat()
+                        record.reFindTime = cursor.nextF32()
                     }
                 }
                 17 -> {
                     checkColumn(column, "Character.MaxFollow", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Character.MaxFollow")
                     for (record in loaded) {
-                        record.maxFollow = reader.readFloat()
+                        record.maxFollow = cursor.nextF32()
                     }
                 }
                 18 -> {
                     checkColumn(column, "Character.SizePrefab", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Character.SizePrefab")
                     for (record in loaded) {
-                        record.sizePrefab = reader.readFloat()
+                        record.sizePrefab = cursor.nextF32()
                     }
                 }
                 19 -> {
                     checkColumn(column, "Character.IsUnlocked", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "Character.IsUnlocked")
                     for (record in loaded) {
-                        record.isUnlocked = reader.readBool()
+                        record.isUnlocked = cursor.nextBool()
                     }
                 }
                 20 -> {

@@ -105,8 +105,9 @@ class TraitTable:
                     record.stat_type = StatType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Trait.StatRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Trait.StatRate")
                 for record in records:
-                    record.stat_rate = reader.read_float()
+                    record.stat_rate = cursor.next_f32()
             elif column.tag == 6:
                 sheetman.check_column(column, "Trait.UnlockCondition", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:

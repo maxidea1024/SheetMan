@@ -132,8 +132,9 @@ module X
           end
         when 4
           Sheetman.check_column(column, 'Template.Delete', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Template.Delete')
           records.each do |record|
-            record.delete = reader.read_bool
+            record.delete = cursor.next_bool
           end
         when 5
           Sheetman.check_column(column, 'Template.Operator', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])

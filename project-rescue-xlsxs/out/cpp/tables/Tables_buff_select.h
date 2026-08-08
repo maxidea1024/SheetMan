@@ -133,9 +133,10 @@ class BuffSelectTable {
         }
         case 5: {
           sheetman::check_column(column, "BuffSelect.BuffRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "BuffSelect.BuffRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.buff_rate);
+            record.buff_rate = cursor.next_f32();
           }
           break;
         }

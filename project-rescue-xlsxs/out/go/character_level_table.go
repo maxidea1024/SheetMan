@@ -152,23 +152,26 @@ func (t *CharacterLevelTable) Read(filename string) error {
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "CharacterLevel.ATKGrowth", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterLevel.ATKGrowth")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ATKGrowth = reader.ReadFloat32()
+					r.ATKGrowth = cursor.NextF32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "CharacterLevel.DEFGrowth", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterLevel.DEFGrowth")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DEFGrowth = reader.ReadFloat32()
+					r.DEFGrowth = cursor.NextF32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "CharacterLevel.HPGrowth", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterLevel.HPGrowth")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.HPGrowth = reader.ReadFloat32()
+					r.HPGrowth = cursor.NextF32()
 				}
 			}
 		default:

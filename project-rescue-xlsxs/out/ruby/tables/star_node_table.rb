@@ -120,8 +120,9 @@ module Rescue
           end
         when 7
           Sheetman.check_column(column, 'StarNode.StarNodeRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StarNode.StarNodeRate')
           records.each do |record|
-            record.star_node_rate = reader.read_float
+            record.star_node_rate = cursor.next_f32
           end
         when 8
           Sheetman.check_column(column, 'StarNode.UnlockCondition', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

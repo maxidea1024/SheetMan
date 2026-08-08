@@ -155,11 +155,12 @@ static bool Rescue_TraitDungeonRewardParse(Rescue_TraitDungeonRewardTable_t* tab
     case 8:
       (void)sm_check_column(reader, column, "TraitDungeonReward.IsFirstClear", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "TraitDungeonReward.IsFirstClear");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_TraitDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->is_first_clear);
+        (void)sm_cursor_next_bool(&cursor, &record->is_first_clear);
       }
 
       break;

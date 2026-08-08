@@ -177,14 +177,16 @@ class SkillTable {
                 }
                 9 -> {
                     checkColumn(column, "Skill.SkillUseRange", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.SkillUseRange")
                     for (record in loaded) {
-                        record.skillUseRange = reader.readFloat()
+                        record.skillUseRange = cursor.nextF32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "Skill.CoolTime", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.CoolTime")
                     for (record in loaded) {
-                        record.coolTime = reader.readFloat()
+                        record.coolTime = cursor.nextF32()
                     }
                 }
                 11 -> {

@@ -166,9 +166,10 @@ func (t *SDAlchemyInfoTable) Read(filename string) error {
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.MaterialType2Rate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType2Rate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaterialType2Rate = reader.ReadFloat32()
+					r.MaterialType2Rate = cursor.NextF32()
 				}
 			}
 		case 8:

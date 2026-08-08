@@ -148,8 +148,9 @@ class ExpDungeonStageTable:
                     record.spawn_max_count = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "ExpDungeonStage.SpawnNextTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ExpDungeonStage.SpawnNextTime")
                 for record in records:
-                    record.spawn_next_time = reader.read_float()
+                    record.spawn_next_time = cursor.next_f32()
             elif column.tag == 12:
                 sheetman.check_column(column, "ExpDungeonStage.StageClearCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "ExpDungeonStage.StageClearCount")
@@ -167,16 +168,19 @@ class ExpDungeonStageTable:
                     record.reward_id = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "ExpDungeonStage.AtkUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ExpDungeonStage.AtkUpPercent")
                 for record in records:
-                    record.atk_up_percent = reader.read_float()
+                    record.atk_up_percent = cursor.next_f32()
             elif column.tag == 16:
                 sheetman.check_column(column, "ExpDungeonStage.DefUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ExpDungeonStage.DefUpPercent")
                 for record in records:
-                    record.def_up_percent = reader.read_float()
+                    record.def_up_percent = cursor.next_f32()
             elif column.tag == 17:
                 sheetman.check_column(column, "ExpDungeonStage.MHPUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ExpDungeonStage.MHPUpPercent")
                 for record in records:
-                    record.mhp_up_percent = reader.read_float()
+                    record.mhp_up_percent = cursor.next_f32()
             elif column.tag == 18:
                 sheetman.check_column(column, "ExpDungeonStage.DungeonImagePath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "ExpDungeonStage.DungeonImagePath")

@@ -198,8 +198,9 @@ impl OopartsDungeonStageTable {
                 }
                 11 => {
                     sheetman::check_column(column, "OopartsDungeonStage.SpawnNextTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.SpawnNextTime")?;
                     for record in records.iter_mut() {
-                        record.spawn_next_time = reader.read_f32()?;
+                        record.spawn_next_time = cursor.next_f32()?;
                     }
                 }
                 12 => {
@@ -225,20 +226,23 @@ impl OopartsDungeonStageTable {
                 }
                 15 => {
                     sheetman::check_column(column, "OopartsDungeonStage.AtkUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.AtkUpPercent")?;
                     for record in records.iter_mut() {
-                        record.atk_up_percent = reader.read_f32()?;
+                        record.atk_up_percent = cursor.next_f32()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "OopartsDungeonStage.DefUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.DefUpPercent")?;
                     for record in records.iter_mut() {
-                        record.def_up_percent = reader.read_f32()?;
+                        record.def_up_percent = cursor.next_f32()?;
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "OopartsDungeonStage.MHPUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.MHPUpPercent")?;
                     for record in records.iter_mut() {
-                        record.mhp_up_percent = reader.read_f32()?;
+                        record.mhp_up_percent = cursor.next_f32()?;
                     }
                 }
                 18 => {

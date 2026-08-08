@@ -224,9 +224,10 @@ export class TraitTable {
           break
         case 5:
           sheetman.checkColumn(column, 'Trait.StatRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Trait.StatRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._statRate = reader.readFloat()
+            record._statRate = cursor.nextF32()
           }
           break
         case 6:

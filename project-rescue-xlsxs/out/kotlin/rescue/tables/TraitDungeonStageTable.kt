@@ -207,8 +207,9 @@ class TraitDungeonStageTable {
                 }
                 11 -> {
                     checkColumn(column, "TraitDungeonStage.SpawnNextTime", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.SpawnNextTime")
                     for (record in loaded) {
-                        record.spawnNextTime = reader.readFloat()
+                        record.spawnNextTime = cursor.nextF32()
                     }
                 }
                 12 -> {
@@ -234,20 +235,23 @@ class TraitDungeonStageTable {
                 }
                 15 -> {
                     checkColumn(column, "TraitDungeonStage.AtkUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.AtkUpPercent")
                     for (record in loaded) {
-                        record.atkUpPercent = reader.readFloat()
+                        record.atkUpPercent = cursor.nextF32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "TraitDungeonStage.DefUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.DefUpPercent")
                     for (record in loaded) {
-                        record.defUpPercent = reader.readFloat()
+                        record.defUpPercent = cursor.nextF32()
                     }
                 }
                 17 -> {
                     checkColumn(column, "TraitDungeonStage.MHPUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.MHPUpPercent")
                     for (record in loaded) {
-                        record.mHPUpPercent = reader.readFloat()
+                        record.mHPUpPercent = cursor.nextF32()
                     }
                 }
                 18 -> {

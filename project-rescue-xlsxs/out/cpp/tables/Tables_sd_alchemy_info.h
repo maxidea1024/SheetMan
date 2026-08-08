@@ -171,9 +171,10 @@ class SDAlchemyInfoTable {
         }
         case 7: {
           sheetman::check_column(column, "SDAlchemyInfo.MaterialType2Rate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.MaterialType2Rate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.material_type2_rate);
+            record.material_type2_rate = cursor.next_f32();
           }
           break;
         }

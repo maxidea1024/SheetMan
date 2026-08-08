@@ -192,8 +192,9 @@ impl BuffTable {
                 }
                 11 => {
                     sheetman::check_column(column, "Buff.BuffValueRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Buff.BuffValueRate")?;
                     for record in records.iter_mut() {
-                        record.buff_value_rate = reader.read_f32()?;
+                        record.buff_value_rate = cursor.next_f32()?;
                     }
                 }
                 12 => {
@@ -219,14 +220,16 @@ impl BuffTable {
                 }
                 15 => {
                     sheetman::check_column(column, "Buff.BuffCoolDownTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Buff.BuffCoolDownTime")?;
                     for record in records.iter_mut() {
-                        record.buff_cool_down_time = reader.read_f32()?;
+                        record.buff_cool_down_time = cursor.next_f32()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "Buff.IsVisible", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Buff.IsVisible")?;
                     for record in records.iter_mut() {
-                        record.is_visible = reader.read_bool()?;
+                        record.is_visible = cursor.next_bool()?;
                     }
                 }
                 17 => {

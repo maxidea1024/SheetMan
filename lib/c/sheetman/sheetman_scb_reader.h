@@ -82,6 +82,8 @@ extern "C" {
 #define SM_ENCODING_DELTA_RLE 4
 #define SM_ENCODING_DICT 5
 #define SM_ENCODING_DICT_RLE 6
+#define SM_ENCODING_DICT_FRONT 7
+#define SM_ENCODING_DICT_FRONT_RLE 8
 
 /* One element type as a bit, so the set a member accepts is one integer argument.
  * A set rather than an array because the generated code has to spell it inline, and
@@ -238,9 +240,24 @@ typedef struct sm_cursor {
   uint8_t element;
   uint8_t encoding;
 
-  /* The block's dictionary, decoded into the arena once and handed out per row. */
+  /* The block's dictionary, decoded into the arena once and handed out per row.
+   *
+   * Which of the two the block filled is decided by its element: a string is
+   * decoded to one copy in the arena that every row holding it points at - and a
+   * front coded dictionary is decoded here too, because the folding was only ever
+   * about the bytes on disk. */
   const char** dictionary;
   int32_t dictionary_count;
+
+  /* A fixed-width element keeps its entries as the raw bytes they were written
+   * as, and a row turns one into a value only when it asks for it - so the value
+   * is reconstructed exactly as the raw layout would have read it.
+   *
+   * `value_width` is non-zero for exactly the blocks that have one, which is what
+   * the next functions test: a dictionary of no entries is still a dictionary. */
+  const uint8_t* value_dictionary;
+  int32_t value_width;
+  int32_t value_count;
 
   /* A run-length family's current run: what remains of it, and its value - which
    * is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE. */
@@ -265,11 +282,20 @@ bool sm_cursor_init(sm_cursor* cursor, sm_reader* reader, const sm_column* colum
 /* The next int32 - which also serves enums, and reference indexes. */
 bool sm_cursor_next_i32(sm_cursor* cursor, int32_t* out);
 
-/* An int64 member: an i64 column is always raw, anything narrower decodes as int32. */
+/* An int64 member: an i64 column raw or through its dictionary, and anything
+ * narrower by decoding an int32 and widening it. Ticks read through this one, so a
+ * datetime or a timespan column meets the i64 dictionary like any other. */
 bool sm_cursor_next_i64(sm_cursor* cursor, int64_t* out);
 
-/* A double member: float columns are always raw, an i32 column decodes then widens. */
+/* A float member: raw, or the dictionary entry's exact bit pattern. */
+bool sm_cursor_next_f32(sm_cursor* cursor, float* out);
+
+/* A double member: from f64 or f32 - either of them raw or dictionary-encoded -
+ * and from an i32 column by decoding and widening. */
 bool sm_cursor_next_f64(sm_cursor* cursor, double* out);
+
+/* A bool member: one byte raw, or a run of them. */
+bool sm_cursor_next_bool(sm_cursor* cursor, bool* out);
 
 /* The next string - the dictionary's copy where the block has one, so rows that
  * repeat a value share one pointer into the arena. */
@@ -520,34 +546,42 @@ static bool sm_read_fixed8(sm_reader* reader, uint8_t* out) {
   return true;
 }
 
-static bool sm_read_fixed32(sm_reader* reader, uint32_t* out) {
-  const uint8_t* at;
-
-  if (!sm_require(reader, 4))
-    return false;
-
-  at = reader->data + reader->position;
-
-  *out = (uint32_t)at[0]
+/* The two fixed widths, assembled from bytes rather than copied over the host's
+ * own layout: the file is little endian wherever it is read. Split from the reads
+ * below because a dictionary entry is those same bytes sitting in the arena. */
+static uint32_t sm_load_fixed32(const uint8_t* at) {
+  return (uint32_t)at[0]
     | (uint32_t)at[1] << 8
     | (uint32_t)at[2] << 16
     | (uint32_t)at[3] << 24;
+}
+
+static uint64_t sm_load_fixed64(const uint8_t* at) {
+  uint64_t value = 0;
+  int i;
+
+  for (i = 0; i < 8; ++i)
+    value |= (uint64_t)at[i] << (8 * i);
+
+  return value;
+}
+
+static bool sm_read_fixed32(sm_reader* reader, uint32_t* out) {
+  if (!sm_require(reader, 4))
+    return false;
+
+  *out = sm_load_fixed32(reader->data + reader->position);
 
   reader->position += 4;
   return true;
 }
 
 static bool sm_read_fixed64(sm_reader* reader, uint64_t* out) {
-  uint64_t value = 0;
-  int i;
-
   if (!sm_require(reader, 8))
     return false;
 
-  for (i = 0; i < 8; ++i)
-    value |= (uint64_t)reader->data[reader->position + i] << (8 * i);
+  *out = sm_load_fixed64(reader->data + reader->position);
 
-  *out = value;
   reader->position += 8;
   return true;
 }
@@ -893,6 +927,7 @@ static bool sm_encoding_supported(const sm_column* column) {
     return false;
 
   switch (column->element) {
+  case SM_ELEMENT_BOOL:
   case SM_ELEMENT_VARINT:
     return column->encoding == SM_ENCODING_RLE;
 
@@ -900,9 +935,19 @@ static bool sm_encoding_supported(const sm_column* column) {
     return column->encoding >= SM_ENCODING_VARINT
       && column->encoding <= SM_ENCODING_DELTA_RLE;
 
-  case SM_ELEMENT_STRING:
+  /* The dictionary is parameterized by element, so these three reach it with
+   * entries that are simply their own raw bytes. */
+  case SM_ELEMENT_I64:
+  case SM_ELEMENT_F32:
+  case SM_ELEMENT_F64:
     return column->encoding == SM_ENCODING_DICT
       || column->encoding == SM_ENCODING_DICT_RLE;
+
+  /* And a string dictionary can additionally be front coded, which is meaningless
+   * for a fixed-width element and refused for one. */
+  case SM_ELEMENT_STRING:
+    return column->encoding >= SM_ENCODING_DICT
+      && column->encoding <= SM_ENCODING_DICT_FRONT_RLE;
 
   default:
     return false;
@@ -961,14 +1006,159 @@ bool sm_check_block_end(sm_reader* reader, const sm_column* column, int32_t expe
   return true;
 }
 
+/* The array of pointers a string dictionary hands out of, allocated once. */
+static bool sm_cursor_alloc_dictionary(sm_cursor* cursor, int32_t count) {
+  sm_reader* reader = cursor->reader;
+
+  if (reader->arena == NULL)
+    return sm_fail(reader, "a string was read through a reader with no arena");
+
+  cursor->dictionary = (const char**)sm_arena_alloc(
+    reader->arena, (size_t)count * sizeof *cursor->dictionary);
+
+  if (cursor->dictionary == NULL)
+    return sm_fail(reader, "%s: out of memory allocating the dictionary", cursor->field_name);
+
+  return true;
+}
+
+/* A plain string dictionary: each entry is the value in its raw form, a length
+ * and then its bytes. */
+static bool sm_cursor_read_string_dictionary(sm_cursor* cursor, int32_t count) {
+  int32_t at;
+
+  if (!sm_cursor_alloc_dictionary(cursor, count))
+    return false;
+
+  for (at = 0; at < count; ++at) {
+    if (!sm_read_string(cursor->reader, &cursor->dictionary[at]))
+      return false;
+  }
+
+  cursor->dictionary_count = count;
+  return true;
+}
+
+/* A sorted dictionary whose entries state only what they do not share with the
+ * entry before them.
+ *
+ * Decoded into whole strings here rather than kept folded, because a row wants a
+ * string and the folding was only ever about the bytes on disk. Each entry is built
+ * straight into the arena out of the one before it - which is already sitting there,
+ * terminated - so there is no scratch buffer to grow and free. */
+static bool sm_cursor_read_front_dictionary(sm_cursor* cursor, int32_t count) {
+  sm_reader* reader = cursor->reader;
+  int32_t previous_length = 0;
+  int32_t at;
+
+  if (!sm_cursor_alloc_dictionary(cursor, count))
+    return false;
+
+  for (at = 0; at < count; ++at) {
+    int32_t shared = 0;
+    int32_t rest = 0;
+    int32_t length;
+    char* entry;
+
+    if (!sm_read_counter32(reader, &shared) || !sm_read_counter32(reader, &rest))
+      return false;
+
+    if (shared < 0 || rest < 0 || shared > previous_length) {
+      return sm_fail(reader,
+             "%s: dictionary entry %d shares %d bytes with an entry of %d",
+             cursor->field_name, at, shared, previous_length);
+    }
+
+    /* Before the addition, not only for the copy: it bounds `rest` by the bytes
+     * left, and an entry is never longer than the dictionary's own bytes plus
+     * what is left of the file - so the sum cannot leave int32_t. */
+    if (!sm_require(reader, rest))
+      return false;
+
+    if (memchr(reader->data + reader->position, 0, (size_t)rest) != NULL) {
+      return sm_fail(reader,
+             "a string holds a NUL byte, which cannot be carried in a C string");
+    }
+
+    length = shared + rest;
+
+    entry = (char*)sm_arena_alloc(reader->arena, (size_t)length + 1);
+    if (entry == NULL) {
+      return sm_fail(reader, "%s: out of memory decoding a dictionary entry of %d bytes",
+             cursor->field_name, length);
+    }
+
+    /* The shared bytes come from the entry before it, which is why a `shared`
+     * larger than that entry is refused rather than clamped. */
+    if (shared > 0)
+      memcpy(entry, cursor->dictionary[at - 1], (size_t)shared);
+
+    if (rest > 0)
+      memcpy(entry + shared, reader->data + reader->position, (size_t)rest);
+
+    entry[length] = '\0';
+    reader->position += rest;
+
+    cursor->dictionary[at] = entry;
+    previous_length = length;
+  }
+
+  cursor->dictionary_count = count;
+  return true;
+}
+
+/* A fixed-width element: the entries are the value's own bytes, so they are kept as
+ * bytes and turned into values only when a row asks for one. */
+static bool sm_cursor_read_value_dictionary(sm_cursor* cursor, int32_t count) {
+  sm_reader* reader = cursor->reader;
+  int32_t width = cursor->element == SM_ELEMENT_F32 ? 4 : 8;
+  int32_t bytes = 0;
+  uint8_t* copy;
+
+  cursor->value_width = width;
+  cursor->value_count = count;
+
+  if (count == 0)
+    return true;
+
+  /* The division rather than a multiplication, which would overflow for exactly
+   * the corrupt count this is here to catch. */
+  if (count > (reader->length - reader->position) / width) {
+    return sm_fail(reader,
+           "%s: a dictionary of %d entries is larger than the file can hold",
+           cursor->field_name, count);
+  }
+
+  bytes = count * width;
+
+  if (reader->arena == NULL)
+    return sm_fail(reader, "a dictionary was read through a reader with no arena");
+
+  copy = (uint8_t*)sm_arena_alloc(reader->arena, (size_t)bytes);
+  if (copy == NULL)
+    return sm_fail(reader, "%s: out of memory allocating the dictionary", cursor->field_name);
+
+  memcpy(copy, reader->data + reader->position, (size_t)bytes);
+  reader->position += bytes;
+
+  cursor->value_dictionary = copy;
+  return true;
+}
+
 bool sm_cursor_init(sm_cursor* cursor, sm_reader* reader, const sm_column* column,
           int32_t row_count, const char* field_name) {
+  bool plain_dictionary;
+  bool front_dictionary;
+
   cursor->reader = reader;
   cursor->field_name = field_name;
   cursor->element = column->element;
   cursor->encoding = column->encoding;
   cursor->dictionary = NULL;
   cursor->dictionary_count = 0;
+  cursor->value_dictionary = NULL;
+  cursor->value_width = 0;
+  cursor->value_count = 0;
   cursor->run_remaining = 0;
   cursor->run_value = 0;
   cursor->previous = 0;
@@ -978,12 +1168,17 @@ bool sm_cursor_init(sm_cursor* cursor, sm_reader* reader, const sm_column* colum
   if (sm_failed(reader))
     return false;
 
-  if (cursor->encoding != SM_ENCODING_DICT && cursor->encoding != SM_ENCODING_DICT_RLE)
+  plain_dictionary = cursor->encoding == SM_ENCODING_DICT
+    || cursor->encoding == SM_ENCODING_DICT_RLE;
+
+  front_dictionary = cursor->encoding == SM_ENCODING_DICT_FRONT
+    || cursor->encoding == SM_ENCODING_DICT_FRONT_RLE;
+
+  if (!plain_dictionary && !front_dictionary)
     return true;
 
   {
     int32_t count = 0;
-    int32_t at;
 
     if (!sm_read_counter32(reader, &count))
       return false;
@@ -991,34 +1186,27 @@ bool sm_cursor_init(sm_cursor* cursor, sm_reader* reader, const sm_column* colum
     if (count < 0)
       return sm_fail(reader, "%s: the dictionary entry count is negative", field_name);
 
-    /* Each entry costs at least its one-byte length prefix, so a count the bytes
-     * left cannot cover is one the exporter could not have written - checked here
-     * because the allocation comes before the reads that would catch it. */
+    /* Every entry costs at least one byte on the wire - a string's length prefix,
+     * a front coded entry's two counters, a fixed-width value's own bytes - so a
+     * count the bytes left cannot cover is one the exporter could not have
+     * written. Checked here because the allocation comes before the reads that
+     * would catch it. */
     if (count > reader->length - reader->position) {
       return sm_fail(reader,
              "%s: a dictionary of %d entries is larger than the file can hold",
              field_name, count);
     }
 
-    if (count == 0)
-      return true;
+    if (front_dictionary)
+      return count == 0 ? true : sm_cursor_read_front_dictionary(cursor, count);
 
-    if (reader->arena == NULL)
-      return sm_fail(reader, "a string was read through a reader with no arena");
+    /* A fixed-width element's dictionary is bytes, and it stays a dictionary at
+     * no entries at all - which is why the width, not the pointer, is what says
+     * the block has one. */
+    if (cursor->element != SM_ELEMENT_STRING)
+      return sm_cursor_read_value_dictionary(cursor, count);
 
-    cursor->dictionary = (const char**)sm_arena_alloc(
-      reader->arena, (size_t)count * sizeof *cursor->dictionary);
-
-    if (cursor->dictionary == NULL)
-      return sm_fail(reader, "%s: out of memory allocating the dictionary", field_name);
-
-    for (at = 0; at < count; ++at) {
-      if (!sm_read_string(reader, &cursor->dictionary[at]))
-        return false;
-    }
-
-    cursor->dictionary_count = count;
-    return true;
+    return count == 0 ? true : sm_cursor_read_string_dictionary(cursor, count);
   }
 }
 
@@ -1052,6 +1240,36 @@ static bool sm_cursor_dictionary_entry(const sm_cursor* cursor, int32_t index,
   }
 
   *out = cursor->dictionary[index];
+  return true;
+}
+
+/* The bytes of the next row's dictionary entry, for a fixed-width element.
+ *
+ * The one place a value-dictionary row is counted out, so every member reading
+ * through it - i64, f32, f64 - decrements exactly once whichever way it came. */
+static bool sm_cursor_next_value_entry(sm_cursor* cursor, const uint8_t** out) {
+  int32_t index = 0;
+
+  cursor->rows_remaining--;
+
+  if (cursor->encoding == SM_ENCODING_DICT) {
+    if (!sm_read_counter32(cursor->reader, &index))
+      return false;
+  } else {
+    if (cursor->run_remaining == 0 && !sm_cursor_read_run(cursor))
+      return false;
+
+    cursor->run_remaining--;
+    index = cursor->run_value;
+  }
+
+  if (index < 0 || index >= cursor->value_count) {
+    return sm_fail(cursor->reader,
+           "%s: dictionary index %d is out of range - the dictionary holds %d entries",
+           cursor->field_name, index, cursor->value_count);
+  }
+
+  *out = cursor->value_dictionary + (size_t)index * (size_t)cursor->value_width;
   return true;
 }
 
@@ -1122,37 +1340,108 @@ bool sm_cursor_next_i32(sm_cursor* cursor, int32_t* out) {
 }
 
 bool sm_cursor_next_i64(sm_cursor* cursor, int64_t* out) {
-  if (cursor->element == SM_ELEMENT_I64)
-    return sm_read_int64(cursor->reader, out);
-
-  {
+  if (cursor->element != SM_ELEMENT_I64) {
     int32_t narrower = 0;
     bool ok = sm_cursor_next_i32(cursor, &narrower);
 
     *out = narrower;
     return ok;
   }
+
+  if (sm_failed(cursor->reader))
+    return false;
+
+  if (cursor->value_width != 0) {
+    const uint8_t* entry = NULL;
+
+    if (!sm_cursor_next_value_entry(cursor, &entry))
+      return false;
+
+    *out = (int64_t)sm_load_fixed64(entry);
+    return true;
+  }
+
+  cursor->rows_remaining--;
+
+  return sm_read_int64(cursor->reader, out);
+}
+
+bool sm_cursor_next_f32(sm_cursor* cursor, float* out) {
+  if (sm_failed(cursor->reader))
+    return false;
+
+  if (cursor->value_width != 0) {
+    const uint8_t* entry = NULL;
+    uint32_t bits;
+
+    if (!sm_cursor_next_value_entry(cursor, &entry))
+      return false;
+
+    /* Through memcpy, as the raw read is: the entry's bytes are the value's bit
+     * pattern, and reading them as a float any other way is a type C does not
+     * let one object have. */
+    bits = sm_load_fixed32(entry);
+    memcpy(out, &bits, sizeof *out);
+    return true;
+  }
+
+  cursor->rows_remaining--;
+
+  return sm_read_float(cursor->reader, out);
 }
 
 bool sm_cursor_next_f64(sm_cursor* cursor, double* out) {
-  if (cursor->element == SM_ELEMENT_F64)
-    return sm_read_double(cursor->reader, out);
-
   if (cursor->element == SM_ELEMENT_F32) {
     float single = 0.0f;
-    bool ok = sm_read_float(cursor->reader, &single);
+    bool ok = sm_cursor_next_f32(cursor, &single);
 
     *out = single;
     return ok;
   }
 
-  {
+  if (cursor->element != SM_ELEMENT_F64) {
     int32_t integer = 0;
     bool ok = sm_cursor_next_i32(cursor, &integer);
 
     *out = integer;
     return ok;
   }
+
+  if (sm_failed(cursor->reader))
+    return false;
+
+  if (cursor->value_width != 0) {
+    const uint8_t* entry = NULL;
+    uint64_t bits;
+
+    if (!sm_cursor_next_value_entry(cursor, &entry))
+      return false;
+
+    bits = sm_load_fixed64(entry);
+    memcpy(out, &bits, sizeof *out);
+    return true;
+  }
+
+  cursor->rows_remaining--;
+
+  return sm_read_double(cursor->reader, out);
+}
+
+bool sm_cursor_next_bool(sm_cursor* cursor, bool* out) {
+  if (cursor->encoding == SM_ENCODING_RLE) {
+    int32_t value = 0;
+    bool ok = sm_cursor_next_i32(cursor, &value);
+
+    *out = value != 0;
+    return ok;
+  }
+
+  if (sm_failed(cursor->reader))
+    return false;
+
+  cursor->rows_remaining--;
+
+  return sm_read_bool(cursor->reader, out);
 }
 
 bool sm_cursor_next_string(sm_cursor* cursor, const char** out) {
@@ -1167,7 +1456,10 @@ bool sm_cursor_next_string(sm_cursor* cursor, const char** out) {
   case SM_ENCODING_RAW:
     return sm_read_string(reader, out);
 
-  case SM_ENCODING_DICT: {
+  /* A front coded dictionary was decoded to whole strings at construction, so from
+   * here it is the same dictionary as any other. */
+  case SM_ENCODING_DICT:
+  case SM_ENCODING_DICT_FRONT: {
     int32_t index = 0;
 
     if (!sm_read_counter32(reader, &index))
@@ -1176,7 +1468,7 @@ bool sm_cursor_next_string(sm_cursor* cursor, const char** out) {
     return sm_cursor_dictionary_entry(cursor, index, out);
   }
 
-  default: /* SM_ENCODING_DICT_RLE */
+  default: /* SM_ENCODING_DICT_RLE and SM_ENCODING_DICT_FRONT_RLE */
     if (cursor->run_remaining == 0 && !sm_cursor_read_run(cursor))
       return false;
 

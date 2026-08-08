@@ -132,8 +132,9 @@ class SDTrainingInfoTable:
                     record.max_level = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "SDTrainingInfo.IsLvReset", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.IsLvReset")
                 for record in records:
-                    record.is_lv_reset = reader.read_bool()
+                    record.is_lv_reset = cursor.next_bool()
             elif column.tag == 10:
                 sheetman.check_column(column, "SDTrainingInfo.LvResetCurrencyType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyType")

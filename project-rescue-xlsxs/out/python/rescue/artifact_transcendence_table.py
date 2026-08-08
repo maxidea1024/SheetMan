@@ -129,8 +129,9 @@ class ArtifactTranscendenceTable:
                     record.material_count = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "ArtifactTranscendence.PowerMultiplier", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.PowerMultiplier")
                 for record in records:
-                    record.power_multiplier = reader.read_float()
+                    record.power_multiplier = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "ArtifactTranscendence.NextStepID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.NextStepID")

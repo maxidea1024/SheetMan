@@ -137,8 +137,9 @@ class TraitTable {
                 }
                 5 -> {
                     checkColumn(column, "Trait.StatRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Trait.StatRate")
                     for (record in loaded) {
-                        record.statRate = reader.readFloat()
+                        record.statRate = cursor.nextF32()
                     }
                 }
                 6 -> {

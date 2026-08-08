@@ -146,14 +146,16 @@ class AttributeTable {
                 }
                 6 -> {
                     checkColumn(column, "Attribute.DamageValueRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Attribute.DamageValueRate")
                     for (record in loaded) {
-                        record.damageValueRate = reader.readFloat()
+                        record.damageValueRate = cursor.nextF32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "Attribute.IsVisible", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "Attribute.IsVisible")
                     for (record in loaded) {
-                        record.isVisible = reader.readBool()
+                        record.isVisible = cursor.nextBool()
                     }
                 }
                 8 -> {

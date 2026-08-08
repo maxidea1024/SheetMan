@@ -132,20 +132,23 @@ class CharacterLevelTable {
           break;
         case 7:
           checkColumn(column, 'CharacterLevel.ATKGrowth', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterLevel.ATKGrowth');
           for (final record in loaded) {
-            record.aTKGrowth = reader.readFloat();
+            record.aTKGrowth = cursor.nextF32();
           }
           break;
         case 8:
           checkColumn(column, 'CharacterLevel.DEFGrowth', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterLevel.DEFGrowth');
           for (final record in loaded) {
-            record.dEFGrowth = reader.readFloat();
+            record.dEFGrowth = cursor.nextF32();
           }
           break;
         case 9:
           checkColumn(column, 'CharacterLevel.HPGrowth', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterLevel.HPGrowth');
           for (final record in loaded) {
-            record.hPGrowth = reader.readFloat();
+            record.hPGrowth = cursor.nextF32();
           }
           break;
         default:

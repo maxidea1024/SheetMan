@@ -334,86 +334,98 @@ export class EquipItemGradeTable {
           break
         case 8:
           sheetman.checkColumn(column, 'EquipItemGrade.WeaponStatRate1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.WeaponStatRate1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._weaponStatRate1 = reader.readFloat()
+            record._weaponStatRate1 = cursor.nextF32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'EquipItemGrade.WeaponStatRate2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.WeaponStatRate2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._weaponStatRate2 = reader.readFloat()
+            record._weaponStatRate2 = cursor.nextF32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'EquipItemGrade.ArmorStatRate1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.ArmorStatRate1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._armorStatRate1 = reader.readFloat()
+            record._armorStatRate1 = cursor.nextF32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'EquipItemGrade.ArmorStatRate2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.ArmorStatRate2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._armorStatRate2 = reader.readFloat()
+            record._armorStatRate2 = cursor.nextF32()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'EquipItemGrade.GauntletStatRate1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.GauntletStatRate1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gauntletStatRate1 = reader.readFloat()
+            record._gauntletStatRate1 = cursor.nextF32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'EquipItemGrade.GauntletStatRate2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.GauntletStatRate2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gauntletStatRate2 = reader.readFloat()
+            record._gauntletStatRate2 = cursor.nextF32()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'EquipItemGrade.BootsStatRate1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.BootsStatRate1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._bootsStatRate1 = reader.readFloat()
+            record._bootsStatRate1 = cursor.nextF32()
           }
           break
         case 15:
           sheetman.checkColumn(column, 'EquipItemGrade.BootsStatRate2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.BootsStatRate2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._bootsStatRate2 = reader.readFloat()
+            record._bootsStatRate2 = cursor.nextF32()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'EquipItemGrade.HelmetStatRate1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.HelmetStatRate1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._helmetStatRate1 = reader.readFloat()
+            record._helmetStatRate1 = cursor.nextF32()
           }
           break
         case 17:
           sheetman.checkColumn(column, 'EquipItemGrade.HelmetStatRate2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.HelmetStatRate2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._helmetStatRate2 = reader.readFloat()
+            record._helmetStatRate2 = cursor.nextF32()
           }
           break
         case 18:
           sheetman.checkColumn(column, 'EquipItemGrade.AccStatRate1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.AccStatRate1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._accStatRate1 = reader.readFloat()
+            record._accStatRate1 = cursor.nextF32()
           }
           break
         case 19:
           sheetman.checkColumn(column, 'EquipItemGrade.AccStatRate2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemGrade.AccStatRate2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._accStatRate2 = reader.readFloat()
+            record._accStatRate2 = cursor.nextF32()
           }
           break
         default:

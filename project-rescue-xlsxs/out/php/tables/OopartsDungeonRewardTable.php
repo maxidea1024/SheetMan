@@ -173,8 +173,9 @@ final class OopartsDungeonRewardTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'OopartsDungeonReward.IsFirstClear', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonReward.IsFirstClear');
                     foreach ($records as $record) {
-                        $record->isFirstClear = $reader->readBool();
+                        $record->isFirstClear = $cursor->nextBool();
                     }
                     break;
 

@@ -138,9 +138,10 @@ func (t *CostCurveRangeTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "CostCurveRange.AddMultiplier", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurveRange.AddMultiplier")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AddMultiplier = reader.ReadFloat32()
+					r.AddMultiplier = cursor.NextF32()
 				}
 			}
 		default:

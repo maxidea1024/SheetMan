@@ -218,14 +218,16 @@ class GachaInfoTable {
                 }
                 12 -> {
                     checkColumn(column, "GachaInfo.EnableReset", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaInfo.EnableReset")
                     for (record in loaded) {
-                        record.enableReset = reader.readBool()
+                        record.enableReset = cursor.nextBool()
                     }
                 }
                 13 -> {
                     checkColumn(column, "GachaInfo.IsSharedCounter", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaInfo.IsSharedCounter")
                     for (record in loaded) {
-                        record.isSharedCounter = reader.readBool()
+                        record.isSharedCounter = cursor.nextBool()
                     }
                 }
                 14 -> {
@@ -244,14 +246,16 @@ class GachaInfoTable {
                 }
                 16 -> {
                     checkColumn(column, "GachaInfo.IsSingle", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaInfo.IsSingle")
                     for (record in loaded) {
-                        record.isSingle = reader.readBool()
+                        record.isSingle = cursor.nextBool()
                     }
                 }
                 17 -> {
                     checkColumn(column, "GachaInfo.IsTen", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaInfo.IsTen")
                     for (record in loaded) {
-                        record.isTen = reader.readBool()
+                        record.isTen = cursor.nextBool()
                     }
                 }
                 18 -> {
@@ -291,8 +295,9 @@ class GachaInfoTable {
                 }
                 23 -> {
                     checkColumn(column, "GachaInfo.EnableSkip", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaInfo.EnableSkip")
                     for (record in loaded) {
-                        record.enableSkip = reader.readBool()
+                        record.enableSkip = cursor.nextBool()
                     }
                 }
                 else ->

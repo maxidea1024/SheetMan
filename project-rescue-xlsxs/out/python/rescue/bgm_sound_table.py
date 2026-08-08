@@ -98,12 +98,14 @@ class BGMSoundTable:
                     record.path = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "BGMSound.Loop", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BGMSound.Loop")
                 for record in records:
-                    record.loop = reader.read_bool()
+                    record.loop = cursor.next_bool()
             elif column.tag == 5:
                 sheetman.check_column(column, "BGMSound.FadeTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BGMSound.FadeTime")
                 for record in records:
-                    record.fade_time = reader.read_float()
+                    record.fade_time = cursor.next_f32()
             elif column.tag == 6:
                 sheetman.check_column(column, "BGMSound.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "BGMSound.Description")

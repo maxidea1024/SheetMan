@@ -111,12 +111,14 @@ class AttributeTable:
                     record.target_attribute_type = AttributeType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Attribute.DamageValueRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Attribute.DamageValueRate")
                 for record in records:
-                    record.damage_value_rate = reader.read_float()
+                    record.damage_value_rate = cursor.next_f32()
             elif column.tag == 7:
                 sheetman.check_column(column, "Attribute.IsVisible", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Attribute.IsVisible")
                 for record in records:
-                    record.is_visible = reader.read_bool()
+                    record.is_visible = cursor.next_bool()
             elif column.tag == 8:
                 sheetman.check_column(column, "Attribute.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Attribute.IconPath")

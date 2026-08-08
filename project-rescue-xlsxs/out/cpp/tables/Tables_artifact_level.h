@@ -154,25 +154,28 @@ class ArtifactLevelTable {
         }
         case 7: {
           sheetman::check_column(column, "ArtifactLevel.ATKGrowth", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ArtifactLevel.ATKGrowth");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.atk_growth);
+            record.atk_growth = cursor.next_f32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "ArtifactLevel.DEFGrowth", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ArtifactLevel.DEFGrowth");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.def_growth);
+            record.def_growth = cursor.next_f32();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "ArtifactLevel.HPGrowth", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ArtifactLevel.HPGrowth");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.hp_growth);
+            record.hp_growth = cursor.next_f32();
           }
           break;
         }

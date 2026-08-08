@@ -126,9 +126,10 @@ class TestFieldTypesTable {
         }
         case 3: {
           sheetman::check_column(column, "TestFieldTypes.BoolField", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.BoolField");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.bool_field);
+            record.bool_field = cursor.next_bool();
           }
           break;
         }
@@ -152,9 +153,10 @@ class TestFieldTypesTable {
         }
         case 6: {
           sheetman::check_column(column, "TestFieldTypes.FloatField", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.FloatField");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.float_field);
+            record.float_field = cursor.next_f32();
           }
           break;
         }
@@ -169,17 +171,19 @@ class TestFieldTypesTable {
         }
         case 8: {
           sheetman::check_column(column, "TestFieldTypes.DatetimeField", sheetman::kKindScalar, 1, {sheetman::kElementI64});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.DatetimeField");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.datetime_field);
+            record.datetime_field = sheetman::from_net_ticks(cursor.next_i64());
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "TestFieldTypes.TimespanField", sheetman::kKindScalar, 1, {sheetman::kElementI64});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.TimespanField");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.timespan_field);
+            record.timespan_field = sheetman::TimeSpan(cursor.next_i64());
           }
           break;
         }

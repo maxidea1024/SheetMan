@@ -230,11 +230,12 @@ static bool Rescue_GoldDungeonStageParse(Rescue_GoldDungeonStageTable_t* table, 
     case 11:
       (void)sm_check_column(reader, column, "GoldDungeonStage.SpawnNextTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GoldDungeonStage.SpawnNextTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GoldDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->spawn_next_time);
+        (void)sm_cursor_next_f32(&cursor, &record->spawn_next_time);
       }
 
       break;
@@ -281,11 +282,12 @@ static bool Rescue_GoldDungeonStageParse(Rescue_GoldDungeonStageTable_t* table, 
     case 15:
       (void)sm_check_column(reader, column, "GoldDungeonStage.AtkUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GoldDungeonStage.AtkUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GoldDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->atk_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->atk_up_percent);
       }
 
       break;
@@ -293,11 +295,12 @@ static bool Rescue_GoldDungeonStageParse(Rescue_GoldDungeonStageTable_t* table, 
     case 16:
       (void)sm_check_column(reader, column, "GoldDungeonStage.DefUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GoldDungeonStage.DefUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GoldDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->def_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->def_up_percent);
       }
 
       break;
@@ -305,11 +308,12 @@ static bool Rescue_GoldDungeonStageParse(Rescue_GoldDungeonStageTable_t* table, 
     case 17:
       (void)sm_check_column(reader, column, "GoldDungeonStage.MHPUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GoldDungeonStage.MHPUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GoldDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->mhp_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->mhp_up_percent);
       }
 
       break;

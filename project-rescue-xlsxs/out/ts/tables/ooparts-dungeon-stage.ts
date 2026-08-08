@@ -367,9 +367,10 @@ export class OopartsDungeonStageTable {
           break
         case 11:
           sheetman.checkColumn(column, 'OopartsDungeonStage.SpawnNextTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.SpawnNextTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._spawnNextTime = reader.readFloat()
+            record._spawnNextTime = cursor.nextF32()
           }
           break
         case 12:
@@ -398,23 +399,26 @@ export class OopartsDungeonStageTable {
           break
         case 15:
           sheetman.checkColumn(column, 'OopartsDungeonStage.AtkUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.AtkUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._atkUpPercent = reader.readFloat()
+            record._atkUpPercent = cursor.nextF32()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'OopartsDungeonStage.DefUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.DefUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._defUpPercent = reader.readFloat()
+            record._defUpPercent = cursor.nextF32()
           }
           break
         case 17:
           sheetman.checkColumn(column, 'OopartsDungeonStage.MHPUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.MHPUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._mHPUpPercent = reader.readFloat()
+            record._mHPUpPercent = cursor.nextF32()
           }
           break
         case 18:

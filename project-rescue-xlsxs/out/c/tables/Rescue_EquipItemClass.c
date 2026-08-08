@@ -170,11 +170,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 9:
       (void)sm_check_column(reader, column, "EquipItemClass.WeaponStatRate1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.WeaponStatRate1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->weapon_stat_rate1);
+        (void)sm_cursor_next_f32(&cursor, &record->weapon_stat_rate1);
       }
 
       break;
@@ -182,11 +183,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 10:
       (void)sm_check_column(reader, column, "EquipItemClass.WeaponStatRate2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.WeaponStatRate2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->weapon_stat_rate2);
+        (void)sm_cursor_next_f32(&cursor, &record->weapon_stat_rate2);
       }
 
       break;
@@ -194,11 +196,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 11:
       (void)sm_check_column(reader, column, "EquipItemClass.ArmorStatRate1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.ArmorStatRate1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->armor_stat_rate1);
+        (void)sm_cursor_next_f32(&cursor, &record->armor_stat_rate1);
       }
 
       break;
@@ -206,11 +209,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 12:
       (void)sm_check_column(reader, column, "EquipItemClass.ArmorStatRate2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.ArmorStatRate2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->armor_stat_rate2);
+        (void)sm_cursor_next_f32(&cursor, &record->armor_stat_rate2);
       }
 
       break;
@@ -218,11 +222,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 13:
       (void)sm_check_column(reader, column, "EquipItemClass.GauntletStatRate1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.GauntletStatRate1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->gauntlet_stat_rate1);
+        (void)sm_cursor_next_f32(&cursor, &record->gauntlet_stat_rate1);
       }
 
       break;
@@ -230,11 +235,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 14:
       (void)sm_check_column(reader, column, "EquipItemClass.GauntletStatRate2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.GauntletStatRate2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->gauntlet_stat_rate2);
+        (void)sm_cursor_next_f32(&cursor, &record->gauntlet_stat_rate2);
       }
 
       break;
@@ -242,11 +248,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 15:
       (void)sm_check_column(reader, column, "EquipItemClass.BootsStatRate1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.BootsStatRate1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->boots_stat_rate1);
+        (void)sm_cursor_next_f32(&cursor, &record->boots_stat_rate1);
       }
 
       break;
@@ -254,11 +261,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 16:
       (void)sm_check_column(reader, column, "EquipItemClass.BootsStatRate2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.BootsStatRate2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->boots_stat_rate2);
+        (void)sm_cursor_next_f32(&cursor, &record->boots_stat_rate2);
       }
 
       break;
@@ -266,11 +274,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 17:
       (void)sm_check_column(reader, column, "EquipItemClass.HelmetStatRate1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.HelmetStatRate1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->helmet_stat_rate1);
+        (void)sm_cursor_next_f32(&cursor, &record->helmet_stat_rate1);
       }
 
       break;
@@ -278,11 +287,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 18:
       (void)sm_check_column(reader, column, "EquipItemClass.HelmetStatRate2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.HelmetStatRate2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->helmet_stat_rate2);
+        (void)sm_cursor_next_f32(&cursor, &record->helmet_stat_rate2);
       }
 
       break;
@@ -290,11 +300,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 19:
       (void)sm_check_column(reader, column, "EquipItemClass.AccStatRate1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.AccStatRate1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->acc_stat_rate1);
+        (void)sm_cursor_next_f32(&cursor, &record->acc_stat_rate1);
       }
 
       break;
@@ -302,11 +313,12 @@ static bool Rescue_EquipItemClassParse(Rescue_EquipItemClassTable_t* table, sm_r
     case 20:
       (void)sm_check_column(reader, column, "EquipItemClass.AccStatRate2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "EquipItemClass.AccStatRate2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipItemClassRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->acc_stat_rate2);
+        (void)sm_cursor_next_f32(&cursor, &record->acc_stat_rate2);
       }
 
       break;

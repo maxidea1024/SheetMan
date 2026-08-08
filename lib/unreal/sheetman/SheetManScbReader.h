@@ -81,6 +81,8 @@ namespace SheetMan
     static constexpr uint8 EncodingDeltaRle = 4;
     static constexpr uint8 EncodingDict = 5;
     static constexpr uint8 EncodingDictRle = 6;
+    static constexpr uint8 EncodingDictFront = 7;
+    static constexpr uint8 EncodingDictFrontRle = 8;
 
     /** One column as the file describes it. */
     struct FSheetManColumn
@@ -727,14 +729,24 @@ namespace SheetMan
 
         switch (Column.Element)
         {
+        case ElementBool:
         case ElementVarint:
             return Column.Encoding == EncodingRle;
 
         case ElementI32:
             return Column.Encoding >= EncodingVarint && Column.Encoding <= EncodingDeltaRle;
 
-        case ElementString:
+        // The dictionary is parameterized by element, so these three reach it with
+        // entries that are simply their own raw bytes.
+        case ElementI64:
+        case ElementF32:
+        case ElementF64:
             return Column.Encoding == EncodingDict || Column.Encoding == EncodingDictRle;
+
+        // And a string dictionary can additionally be front coded, which is
+        // meaningless for a fixed-width element and refused for one.
+        case ElementString:
+            return Column.Encoding >= EncodingDict && Column.Encoding <= EncodingDictFrontRle;
 
         default:
             return false;
@@ -864,8 +876,16 @@ namespace SheetMan
             Previous = 0;
             bStarted = false;
             Dictionary.Empty();
+            ValueDictionary.Empty();
+            ValueWidth = 0;
 
-            if (Encoding != EncodingDict && Encoding != EncodingDictRle)
+            const bool bPlainDictionary =
+                Encoding == EncodingDict || Encoding == EncodingDictRle;
+
+            const bool bFrontDictionary =
+                Encoding == EncodingDictFront || Encoding == EncodingDictFrontRle;
+
+            if (!bPlainDictionary && !bFrontDictionary)
             {
                 return;
             }
@@ -885,13 +905,41 @@ namespace SheetMan
                 return;
             }
 
-            // Bounded, because the count came out of the file. The array grows past
-            // this if the entries really are there.
-            Dictionary.Empty(ReserveBound(Count));
-
-            while (Dictionary.Num() < Count && !Reader->HasFailed())
+            if (bFrontDictionary)
             {
-                Reader->Read(Dictionary.AddDefaulted_GetRef());
+                ReadFrontCodedDictionary(Count);
+                return;
+            }
+
+            if (Element == ElementString)
+            {
+                // Bounded, because the count came out of the file. The array grows past
+                // this if the entries really are there.
+                Dictionary.Empty(ReserveBound(Count));
+
+                while (Dictionary.Num() < Count && !Reader->HasFailed())
+                {
+                    Reader->Read(Dictionary.AddDefaulted_GetRef());
+                }
+
+                return;
+            }
+
+            // A fixed-width element: an entry is the value's own bytes, so they are kept
+            // as bytes and turned into a value only when a row asks for one. That is what
+            // guarantees the value comes out bit for bit as the raw layout would have
+            // read it, rather than through a conversion that happens to round-trip.
+            ValueWidth = Element == ElementF32 ? 4 : 8;
+            ValueDictionary.Empty(ReserveBound(Count) * ValueWidth);
+
+            // Entry by entry rather than byte by byte, so a block that runs out mid-entry
+            // leaves whole entries behind rather than a trailing partial one.
+            for (int32 Entry = 0; Entry < Count && !Reader->HasFailed(); ++Entry)
+            {
+                for (int32 At = 0; At < ValueWidth; ++At)
+                {
+                    Reader->Read(ValueDictionary.AddDefaulted_GetRef());
+                }
             }
         }
 
@@ -976,11 +1024,27 @@ namespace SheetMan
             }
         }
 
-        /** An int64 member: an i64 column is always raw, anything narrower decodes as int32. */
+        /**
+         * An int64 member: from an i64 column raw or through its dictionary, and from
+         * anything narrower by decoding an int32 and widening it.
+         */
         bool NextI64(int64& Out)
         {
             if (Element == ElementI64)
             {
+                if (HasValueDictionary())
+                {
+                    const uint8* Bytes = nullptr;
+                    if (!NextValueEntry(Bytes))
+                    {
+                        return false;
+                    }
+
+                    Out = static_cast<int64>(Fixed64At(Bytes));
+                    return true;
+                }
+
+                --RowsRemaining;
                 return Reader->Read(Out);
             }
 
@@ -991,18 +1055,57 @@ namespace SheetMan
             return bOk;
         }
 
-        /** A double member: float columns are always raw, an i32 column decodes then widens. */
+        /** A float member: raw, or the dictionary entry's exact bit pattern. */
+        bool NextF32(float& Out)
+        {
+            if (HasValueDictionary())
+            {
+                const uint8* Bytes = nullptr;
+                if (!NextValueEntry(Bytes))
+                {
+                    return false;
+                }
+
+                const uint32 Bits = Fixed32At(Bytes);
+
+                FMemory::Memcpy(&Out, &Bits, sizeof(Out));
+                return true;
+            }
+
+            --RowsRemaining;
+            return Reader->Read(Out);
+        }
+
+        /**
+         * A double member: from f64 or f32 - either of them raw or dictionary-encoded -
+         * and from an i32 column by decoding and widening.
+         */
         bool NextF64(double& Out)
         {
             if (Element == ElementF64)
             {
+                if (HasValueDictionary())
+                {
+                    const uint8* Bytes = nullptr;
+                    if (!NextValueEntry(Bytes))
+                    {
+                        return false;
+                    }
+
+                    const uint64 Bits = Fixed64At(Bytes);
+
+                    FMemory::Memcpy(&Out, &Bits, sizeof(Out));
+                    return true;
+                }
+
+                --RowsRemaining;
                 return Reader->Read(Out);
             }
 
             if (Element == ElementF32)
             {
                 float Single = 0.0f;
-                const bool bOk = Reader->Read(Single);
+                const bool bOk = NextF32(Single);
 
                 Out = Single;
                 return bOk;
@@ -1012,6 +1115,61 @@ namespace SheetMan
             const bool bOk = NextI32(Integer);
 
             Out = Integer;
+            return bOk;
+        }
+
+        /** A bool member: one byte raw, or a run of them. */
+        bool NextBool(bool& Out)
+        {
+            if (Encoding == EncodingRle)
+            {
+                int32 Value = 0;
+                if (!NextI32(Value))
+                {
+                    return false;
+                }
+
+                Out = Value != 0;
+                return true;
+            }
+
+            --RowsRemaining;
+            return Reader->Read(Out);
+        }
+
+        /**
+         * A datetime member, built from the ticks its i64 column carries.
+         *
+         * The range check is the one Read(FDateTime&) makes, and for the same reason: a
+         * tick count outside what FDateTime holds would assert inside the engine on some
+         * versions, which is exactly the kind of failure this reader turns into a message.
+         */
+        bool NextDateTime(FDateTime& Out)
+        {
+            int64 Ticks = 0;
+            if (!NextI64(Ticks))
+            {
+                return false;
+            }
+
+            if (Ticks < 0 || Ticks > FDateTime::MaxValue().GetTicks())
+            {
+                return Reader->FailWith(FString::Printf(
+                    TEXT("%s: datetime tick count %lld is outside what FDateTime can hold"),
+                    FieldName, Ticks));
+            }
+
+            Out = FDateTime(Ticks);
+            return true;
+        }
+
+        /** A timespan member, from the same ticks. Signed, and every int64 is a valid one. */
+        bool NextTimespan(FTimespan& Out)
+        {
+            int64 Ticks = 0;
+            const bool bOk = NextI64(Ticks);
+
+            Out = FTimespan(Ticks);
             return bOk;
         }
 
@@ -1046,6 +1204,7 @@ namespace SheetMan
                 return Reader->Read(Out);
 
             case EncodingDict:
+            case EncodingDictFront:
             {
                 int32 Index = 0;
                 if (!Reader->ReadCounter32(Index))
@@ -1056,7 +1215,7 @@ namespace SheetMan
                 return DictionaryEntry(Index, Out);
             }
 
-            default: // EncodingDictRle; CheckColumn refused everything else.
+            default: // EncodingDictRle and EncodingDictFrontRle.
             {
                 if (RunRemaining == 0 && !ReadRun())
                 {
@@ -1070,6 +1229,144 @@ namespace SheetMan
         }
 
     private:
+        /**
+         * A sorted dictionary whose entries state only what they do not share with the
+         * entry before them.
+         *
+         * Decoded into whole strings here rather than kept folded, because a row wants a
+         * string and the folding was only ever about the bytes on disk. The scratch buffer
+         * only ever grows, to the longest entry, and is reused - so the allocations are the
+         * strings themselves, one per distinct value, which is the point.
+         */
+        void ReadFrontCodedDictionary(int32 Count)
+        {
+            // Bounded, because the count came out of the file. The array grows past this
+            // if the entries really are there.
+            Dictionary.Empty(ReserveBound(Count));
+
+            TArray<uint8> Scratch;
+            int32 PreviousLength = 0;
+
+            while (Dictionary.Num() < Count && !Reader->HasFailed())
+            {
+                int32 Shared = 0;
+                int32 Rest = 0;
+
+                if (!Reader->ReadCounter32(Shared) || !Reader->ReadCounter32(Rest))
+                {
+                    return;
+                }
+
+                if (Shared < 0 || Rest < 0 || Shared > PreviousLength)
+                {
+                    Reader->FailWith(FString::Printf(
+                        TEXT("%s: dictionary entry %d shares %d bytes with an entry of %d"),
+                        FieldName, Dictionary.Num(), Shared, PreviousLength));
+
+                    return;
+                }
+
+                const int32 Length = Shared + Rest;
+
+                // Only grows: the first Shared bytes are the previous entry's and are
+                // already where they need to be.
+                if (Scratch.Num() < Length)
+                {
+                    Scratch.SetNum(Length);
+                }
+
+                for (int32 At = 0; At < Rest; ++At)
+                {
+                    if (!Reader->Read(Scratch[Shared + At]))
+                    {
+                        return;
+                    }
+                }
+
+                // An empty entry is an ordinary one, and the default-constructed FString
+                // is already what it decodes to.
+                FString& Entry = Dictionary.AddDefaulted_GetRef();
+
+                if (Length > 0)
+                {
+                    const FUTF8ToTCHAR Converted(
+                        reinterpret_cast<const UTF8CHAR*>(Scratch.GetData()), Length);
+
+                    Entry = FString(Converted.Length(), Converted.Get());
+                }
+
+                PreviousLength = Length;
+            }
+        }
+
+        /** The bytes of the next row's dictionary entry, for a fixed-width element. */
+        bool NextValueEntry(const uint8*& OutBytes)
+        {
+            // Explicit, for the same reason as NextI32: a run already in progress reads
+            // no byte, so without this a failed reader could keep handing out its index.
+            if (Reader->HasFailed())
+            {
+                return false;
+            }
+
+            --RowsRemaining;
+
+            int32 Index = 0;
+
+            if (Encoding == EncodingDict)
+            {
+                if (!Reader->ReadCounter32(Index))
+                {
+                    return false;
+                }
+            }
+            else // EncodingDictRle; CheckColumn refused everything else.
+            {
+                if (RunRemaining == 0 && !ReadRun())
+                {
+                    return false;
+                }
+
+                --RunRemaining;
+                Index = RunValue;
+            }
+
+            const int32 Count = ValueDictionary.Num() / ValueWidth;
+
+            if (Index < 0 || Index >= Count)
+            {
+                return Reader->FailWith(FString::Printf(
+                    TEXT("%s: dictionary index %d is out of range - the dictionary ")
+                    TEXT("holds %d entries"),
+                    FieldName, Index, Count));
+            }
+
+            OutBytes = ValueDictionary.GetData() + Index * ValueWidth;
+            return true;
+        }
+
+        /** Whether this block's dictionary is one of fixed-width values rather than strings. */
+        bool HasValueDictionary() const { return ValueWidth != 0; }
+
+        static uint32 Fixed32At(const uint8* Bytes)
+        {
+            return static_cast<uint32>(Bytes[0])
+                 | static_cast<uint32>(Bytes[1]) << 8
+                 | static_cast<uint32>(Bytes[2]) << 16
+                 | static_cast<uint32>(Bytes[3]) << 24;
+        }
+
+        static uint64 Fixed64At(const uint8* Bytes)
+        {
+            uint64 Value = 0;
+            for (int32 Index = 0; Index < 8; ++Index)
+            {
+                Value |= static_cast<uint64>(Bytes[Index]) << (8 * Index);
+            }
+
+            return Value;
+        }
+
         bool ReadRun()
         {
             int32 Length = 0;
@@ -1117,8 +1414,20 @@ namespace SheetMan
         uint8 Element = 0;
         uint8 Encoding = 0;
 
-        /** The block's dictionary, decoded once by Open and handed out per row. */
+        /**
+         * The block's dictionary, decoded once by Open and handed out per row.
+         *
+         * One of these two is filled when the block has a dictionary at all, chosen by the
+         * element: strings are decoded to instances that rows then share, and a fixed-width
+         * element keeps its raw bytes so the value is reconstructed exactly as the raw
+         * layout would have read it.
+         */
         TArray<FString> Dictionary;
+
+        TArray<uint8> ValueDictionary;
+
+        /** Bytes per fixed-width dictionary entry: 4 for f32, 8 for i64 and f64, 0 for none. */
+        int32 ValueWidth = 0;
 
         // A run-length family's current run: what remains of it, and its value - which
         // is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.

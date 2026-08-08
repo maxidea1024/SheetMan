@@ -187,8 +187,9 @@ final class CollectionTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'Collection.RewardStatRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.RewardStatRate');
                     foreach ($records as $record) {
-                        $record->rewardStatRate = $reader->readFloat();
+                        $record->rewardStatRate = $cursor->nextF32();
                     }
                     break;
 

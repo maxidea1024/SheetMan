@@ -386,15 +386,24 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
 
         switch (sf.ElementType)
         {
-            // Int64 and Double are here for their promotions: the file may carry an
-            // i32 column - encoded - where the member has since widened.
+            // Int64 and Double are here for their promotions as well as their own
+            // dictionaries: the file may carry an i32 column - encoded - where the
+            // member has since widened.
             case Models.ValueType.Int32:
             case Models.ValueType.Int64:
             case Models.ValueType.Double:
+            case Models.ValueType.Float:
+            case Models.ValueType.Bool:
             case Models.ValueType.Enum:
             case Models.ValueType.String:
+
+            // Ticks are an i64 column, so they meet the i64 dictionary like any other.
+            case Models.ValueType.DateTime:
+            case Models.ValueType.TimeSpan:
                 return true;
 
+            // Uuid is the one scalar left raw: sixteen-byte entries rarely repeat
+            // enough to pay for the index beside them.
             default:
                 return false;
         }
@@ -446,6 +455,17 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                     return new[] { $"{target} = cursor.NextI64();" };
                 case Models.ValueType.Double:
                     return new[] { $"{target} = cursor.NextF64();" };
+                case Models.ValueType.Float:
+                    return new[] { $"{target} = cursor.NextF32();" };
+                case Models.ValueType.Bool:
+                    return new[] { $"{target} = cursor.NextBool();" };
+
+                // Ticks, so the member is built from what the i64 column carried.
+                case Models.ValueType.DateTime:
+                    return new[] { $"{target} = new System.DateTime(cursor.NextI64());" };
+                case Models.ValueType.TimeSpan:
+                    return new[] { $"{target} = new System.TimeSpan(cursor.NextI64());" };
+
                 default:
                     return new[] { $"{target} = cursor.NextString();" };
             }

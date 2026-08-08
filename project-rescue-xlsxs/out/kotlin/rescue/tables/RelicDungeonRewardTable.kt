@@ -164,8 +164,9 @@ class RelicDungeonRewardTable {
                 }
                 8 -> {
                     checkColumn(column, "RelicDungeonReward.IsFirstClear", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "RelicDungeonReward.IsFirstClear")
                     for (record in loaded) {
-                        record.isFirstClear = reader.readBool()
+                        record.isFirstClear = cursor.nextBool()
                     }
                 }
                 9 -> {

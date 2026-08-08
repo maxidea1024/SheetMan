@@ -170,9 +170,10 @@ func (t *ArtifactTranscendenceTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "ArtifactTranscendence.PowerMultiplier", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ArtifactTranscendence.PowerMultiplier")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PowerMultiplier = reader.ReadFloat32()
+					r.PowerMultiplier = cursor.NextF32()
 				}
 			}
 		case 10:

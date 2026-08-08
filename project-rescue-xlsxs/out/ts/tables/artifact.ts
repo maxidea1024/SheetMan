@@ -279,9 +279,10 @@ export class ArtifactTable {
           break
         case 7:
           sheetman.checkColumn(column, 'Artifact.EquipStatRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.EquipStatRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._equipStatRate = reader.readFloat()
+            record._equipStatRate = cursor.nextF32()
           }
           break
         case 8:
@@ -294,9 +295,10 @@ export class ArtifactTable {
           break
         case 9:
           sheetman.checkColumn(column, 'Artifact.CollectionVlaue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.CollectionVlaue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._collectionVlaue = reader.readFloat()
+            record._collectionVlaue = cursor.nextF32()
           }
           break
         case 10:

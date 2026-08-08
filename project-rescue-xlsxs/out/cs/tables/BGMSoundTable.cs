@@ -226,19 +226,21 @@ namespace Rescue.Tables
 
                     case 4:
                         ScbTable.CheckColumn(column, "BGMSound.Loop", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "BGMSound.Loop");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._loop);
+                            record._loop = cursor.NextBool();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "BGMSound.FadeTime", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "BGMSound.FadeTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._fadeTime);
+                            record._fadeTime = cursor.NextF32();
                         }
                         break;
 

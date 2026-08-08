@@ -325,19 +325,21 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "Skill.SkillUseRange", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.SkillUseRange");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._skillUseRange);
+                            record._skillUseRange = cursor.NextF32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "Skill.CoolTime", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Skill.CoolTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._coolTime);
+                            record._coolTime = cursor.NextF32();
                         }
                         break;
 

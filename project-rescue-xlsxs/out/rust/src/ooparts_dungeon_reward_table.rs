@@ -151,8 +151,9 @@ impl OopartsDungeonRewardTable {
                 }
                 8 => {
                     sheetman::check_column(column, "OopartsDungeonReward.IsFirstClear", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonReward.IsFirstClear")?;
                     for record in records.iter_mut() {
-                        record.is_first_clear = reader.read_bool()?;
+                        record.is_first_clear = cursor.next_bool()?;
                     }
                 }
                 9 => {

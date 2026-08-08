@@ -141,8 +141,9 @@ class TraitDungeonRewardTable {
           break;
         case 8:
           checkColumn(column, 'TraitDungeonReward.IsFirstClear', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'TraitDungeonReward.IsFirstClear');
           for (final record in loaded) {
-            record.isFirstClear = reader.readBool();
+            record.isFirstClear = cursor.nextBool();
           }
           break;
         case 9:

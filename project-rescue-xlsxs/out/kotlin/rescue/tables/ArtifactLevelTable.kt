@@ -155,20 +155,23 @@ class ArtifactLevelTable {
                 }
                 7 -> {
                     checkColumn(column, "ArtifactLevel.ATKGrowth", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactLevel.ATKGrowth")
                     for (record in loaded) {
-                        record.aTKGrowth = reader.readFloat()
+                        record.aTKGrowth = cursor.nextF32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "ArtifactLevel.DEFGrowth", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactLevel.DEFGrowth")
                     for (record in loaded) {
-                        record.dEFGrowth = reader.readFloat()
+                        record.dEFGrowth = cursor.nextF32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "ArtifactLevel.HPGrowth", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactLevel.HPGrowth")
                     for (record in loaded) {
-                        record.hPGrowth = reader.readFloat()
+                        record.hPGrowth = cursor.nextF32()
                     }
                 }
                 else ->

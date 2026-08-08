@@ -164,11 +164,12 @@ static bool Rescue_SDAlchemyLevelParse(Rescue_SDAlchemyLevelTable_t* table, sm_r
     case 9:
       (void)sm_check_column(reader, column, "SDAlchemyLevel.CritDMGValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyLevel.CritDMGValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->crit_dmg_value);
+        (void)sm_cursor_next_f32(&cursor, &record->crit_dmg_value);
       }
 
       break;
@@ -176,11 +177,12 @@ static bool Rescue_SDAlchemyLevelParse(Rescue_SDAlchemyLevelTable_t* table, sm_r
     case 10:
       (void)sm_check_column(reader, column, "SDAlchemyLevel.CritDMGTotal", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyLevel.CritDMGTotal");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->crit_dmg_total);
+        (void)sm_cursor_next_f32(&cursor, &record->crit_dmg_total);
       }
 
       break;
@@ -188,11 +190,12 @@ static bool Rescue_SDAlchemyLevelParse(Rescue_SDAlchemyLevelTable_t* table, sm_r
     case 11:
       (void)sm_check_column(reader, column, "SDAlchemyLevel.CritRateValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyLevel.CritRateValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->crit_rate_value);
+        (void)sm_cursor_next_f32(&cursor, &record->crit_rate_value);
       }
 
       break;
@@ -200,11 +203,12 @@ static bool Rescue_SDAlchemyLevelParse(Rescue_SDAlchemyLevelTable_t* table, sm_r
     case 12:
       (void)sm_check_column(reader, column, "SDAlchemyLevel.CritRateTotal", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyLevel.CritRateTotal");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->crit_rate_total);
+        (void)sm_cursor_next_f32(&cursor, &record->crit_rate_total);
       }
 
       break;
@@ -212,11 +216,12 @@ static bool Rescue_SDAlchemyLevelParse(Rescue_SDAlchemyLevelTable_t* table, sm_r
     case 13:
       (void)sm_check_column(reader, column, "SDAlchemyLevel.BlockRateValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyLevel.BlockRateValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->block_rate_value);
+        (void)sm_cursor_next_f32(&cursor, &record->block_rate_value);
       }
 
       break;
@@ -224,11 +229,12 @@ static bool Rescue_SDAlchemyLevelParse(Rescue_SDAlchemyLevelTable_t* table, sm_r
     case 14:
       (void)sm_check_column(reader, column, "SDAlchemyLevel.BlockRateTotal", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyLevel.BlockRateTotal");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->block_rate_total);
+        (void)sm_cursor_next_f32(&cursor, &record->block_rate_total);
       }
 
       break;
@@ -236,11 +242,12 @@ static bool Rescue_SDAlchemyLevelParse(Rescue_SDAlchemyLevelTable_t* table, sm_r
     case 15:
       (void)sm_check_column(reader, column, "SDAlchemyLevel.HITValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyLevel.HITValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->hit_value);
+        (void)sm_cursor_next_f32(&cursor, &record->hit_value);
       }
 
       break;
@@ -248,11 +255,12 @@ static bool Rescue_SDAlchemyLevelParse(Rescue_SDAlchemyLevelTable_t* table, sm_r
     case 16:
       (void)sm_check_column(reader, column, "SDAlchemyLevel.HITTotal", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyLevel.HITTotal");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->hit_total);
+        (void)sm_cursor_next_f32(&cursor, &record->hit_total);
       }
 
       break;

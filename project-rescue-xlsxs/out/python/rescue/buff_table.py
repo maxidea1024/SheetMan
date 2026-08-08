@@ -150,8 +150,9 @@ class BuffTable:
                     record.buff_value = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "Buff.BuffValueRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.BuffValueRate")
                 for record in records:
-                    record.buff_value_rate = reader.read_float()
+                    record.buff_value_rate = cursor.next_f32()
             elif column.tag == 12:
                 sheetman.check_column(column, "Buff.BuffTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Buff.BuffTime")
@@ -169,12 +170,14 @@ class BuffTable:
                     record.buff_max_stack = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "Buff.BuffCoolDownTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.BuffCoolDownTime")
                 for record in records:
-                    record.buff_cool_down_time = reader.read_float()
+                    record.buff_cool_down_time = cursor.next_f32()
             elif column.tag == 16:
                 sheetman.check_column(column, "Buff.IsVisible", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.IsVisible")
                 for record in records:
-                    record.is_visible = reader.read_bool()
+                    record.is_visible = cursor.next_bool()
             elif column.tag == 17:
                 sheetman.check_column(column, "Buff.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Buff.IconPath")

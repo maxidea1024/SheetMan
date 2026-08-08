@@ -135,11 +135,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 6:
       (void)sm_check_column(reader, column, "Package.Stackable", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.Stackable");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->stackable);
+        (void)sm_cursor_next_bool(&cursor, &record->stackable);
       }
 
       break;

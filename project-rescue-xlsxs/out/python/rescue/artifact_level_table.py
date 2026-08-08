@@ -116,16 +116,19 @@ class ArtifactLevelTable:
                     record.accumulated_exp = cursor.next_i64()
             elif column.tag == 7:
                 sheetman.check_column(column, "ArtifactLevel.ATKGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactLevel.ATKGrowth")
                 for record in records:
-                    record.atk_growth = reader.read_float()
+                    record.atk_growth = cursor.next_f32()
             elif column.tag == 8:
                 sheetman.check_column(column, "ArtifactLevel.DEFGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactLevel.DEFGrowth")
                 for record in records:
-                    record.def_growth = reader.read_float()
+                    record.def_growth = cursor.next_f32()
             elif column.tag == 9:
                 sheetman.check_column(column, "ArtifactLevel.HPGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactLevel.HPGrowth")
                 for record in records:
-                    record.hp_growth = reader.read_float()
+                    record.hp_growth = cursor.next_f32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

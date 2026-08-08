@@ -336,9 +336,10 @@ export class DailyDungeonInfoTable {
           break
         case 10:
           sheetman.checkColumn(column, 'DailyDungeonInfo.BuffValueRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.BuffValueRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffValueRate = reader.readFloat()
+            record._buffValueRate = cursor.nextF32()
           }
           break
         case 11:

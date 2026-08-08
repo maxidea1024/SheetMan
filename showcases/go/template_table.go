@@ -163,9 +163,10 @@ func (t *TemplateTable) Read(filename string) error {
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Template.Delete", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Template.Delete")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Delete = reader.ReadBool()
+					r.Delete = cursor.NextBool()
 				}
 			}
 		case 5:

@@ -146,8 +146,9 @@ public final class RelicDungeonRewardTable {
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.IsFirstClear", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.IsFirstClear");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.isFirstClear = reader.readBool();
+                        record.isFirstClear = cursor.nextBool();
                     }
                     break;
                 }

@@ -309,19 +309,21 @@ namespace Rescue.Tables
 
                     case 6:
                         ScbTable.CheckColumn(column, "Relic.RelicValue1", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Relic.RelicValue1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._relicValue1);
+                            record._relicValue1 = cursor.NextF32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "Relic.RelicIncValue1", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Relic.RelicIncValue1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._relicIncValue1);
+                            record._relicIncValue1 = cursor.NextF32();
                         }
                         break;
 
@@ -337,19 +339,21 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "Relic.RelicValue2", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Relic.RelicValue2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._relicValue2);
+                            record._relicValue2 = cursor.NextF32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "Relic.RelicIncValue2", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Relic.RelicIncValue2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._relicIncValue2);
+                            record._relicIncValue2 = cursor.NextF32();
                         }
                         break;
 
@@ -365,19 +369,21 @@ namespace Rescue.Tables
 
                     case 12:
                         ScbTable.CheckColumn(column, "Relic.RelicValue3", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Relic.RelicValue3");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._relicValue3);
+                            record._relicValue3 = cursor.NextF32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "Relic.RelicIncValue3", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Relic.RelicIncValue3");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._relicIncValue3);
+                            record._relicIncValue3 = cursor.NextF32();
                         }
                         break;
 

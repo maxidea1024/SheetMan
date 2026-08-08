@@ -223,50 +223,58 @@ class CharacterTable {
           break;
         case 12:
           checkColumn(column, 'Character.MoveSpeed', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Character.MoveSpeed');
           for (final record in loaded) {
-            record.moveSpeed = reader.readFloat();
+            record.moveSpeed = cursor.nextF32();
           }
           break;
         case 13:
           checkColumn(column, 'Character.CritRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Character.CritRate');
           for (final record in loaded) {
-            record.critRate = reader.readFloat();
+            record.critRate = cursor.nextF32();
           }
           break;
         case 14:
           checkColumn(column, 'Character.CritDmg', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Character.CritDmg');
           for (final record in loaded) {
-            record.critDmg = reader.readFloat();
+            record.critDmg = cursor.nextF32();
           }
           break;
         case 15:
           checkColumn(column, 'Character.SearchRange', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Character.SearchRange');
           for (final record in loaded) {
-            record.searchRange = reader.readFloat();
+            record.searchRange = cursor.nextF32();
           }
           break;
         case 16:
           checkColumn(column, 'Character.ReFindTime', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Character.ReFindTime');
           for (final record in loaded) {
-            record.reFindTime = reader.readFloat();
+            record.reFindTime = cursor.nextF32();
           }
           break;
         case 17:
           checkColumn(column, 'Character.MaxFollow', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Character.MaxFollow');
           for (final record in loaded) {
-            record.maxFollow = reader.readFloat();
+            record.maxFollow = cursor.nextF32();
           }
           break;
         case 18:
           checkColumn(column, 'Character.SizePrefab', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Character.SizePrefab');
           for (final record in loaded) {
-            record.sizePrefab = reader.readFloat();
+            record.sizePrefab = cursor.nextF32();
           }
           break;
         case 19:
           checkColumn(column, 'Character.IsUnlocked', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'Character.IsUnlocked');
           for (final record in loaded) {
-            record.isUnlocked = reader.readBool();
+            record.isUnlocked = cursor.nextBool();
           }
           break;
         case 20:

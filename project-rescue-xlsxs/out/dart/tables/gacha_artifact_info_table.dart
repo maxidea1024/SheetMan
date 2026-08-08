@@ -195,14 +195,16 @@ class GachaArtifactInfoTable {
           break;
         case 12:
           checkColumn(column, 'GachaArtifactInfo.EnableReset', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactInfo.EnableReset');
           for (final record in loaded) {
-            record.enableReset = reader.readBool();
+            record.enableReset = cursor.nextBool();
           }
           break;
         case 13:
           checkColumn(column, 'GachaArtifactInfo.IsSharedCounter', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactInfo.IsSharedCounter');
           for (final record in loaded) {
-            record.isSharedCounter = reader.readBool();
+            record.isSharedCounter = cursor.nextBool();
           }
           break;
         case 14:
@@ -221,14 +223,16 @@ class GachaArtifactInfoTable {
           break;
         case 16:
           checkColumn(column, 'GachaArtifactInfo.IsSingle', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactInfo.IsSingle');
           for (final record in loaded) {
-            record.isSingle = reader.readBool();
+            record.isSingle = cursor.nextBool();
           }
           break;
         case 17:
           checkColumn(column, 'GachaArtifactInfo.IsTen', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactInfo.IsTen');
           for (final record in loaded) {
-            record.isTen = reader.readBool();
+            record.isTen = cursor.nextBool();
           }
           break;
         case 18:
@@ -268,8 +272,9 @@ class GachaArtifactInfoTable {
           break;
         case 23:
           checkColumn(column, 'GachaArtifactInfo.EnableSkip', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactInfo.EnableSkip');
           for (final record in loaded) {
-            record.enableSkip = reader.readBool();
+            record.enableSkip = cursor.nextBool();
           }
           break;
         default:

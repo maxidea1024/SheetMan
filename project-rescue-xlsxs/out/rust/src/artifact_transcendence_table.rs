@@ -159,8 +159,9 @@ impl ArtifactTranscendenceTable {
                 }
                 9 => {
                     sheetman::check_column(column, "ArtifactTranscendence.PowerMultiplier", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ArtifactTranscendence.PowerMultiplier")?;
                     for record in records.iter_mut() {
-                        record.power_multiplier = reader.read_f32()?;
+                        record.power_multiplier = cursor.next_f32()?;
                     }
                 }
                 10 => {

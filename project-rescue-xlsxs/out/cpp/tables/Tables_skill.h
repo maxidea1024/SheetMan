@@ -184,17 +184,19 @@ class SkillTable {
         }
         case 9: {
           sheetman::check_column(column, "Skill.SkillUseRange", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Skill.SkillUseRange");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.skill_use_range);
+            record.skill_use_range = cursor.next_f32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "Skill.CoolTime", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Skill.CoolTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.cool_time);
+            record.cool_time = cursor.next_f32();
           }
           break;
         }

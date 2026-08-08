@@ -154,9 +154,10 @@ func (t *StarNodeTable) Read(filename string) error {
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "StarNode.StarNodeRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StarNode.StarNodeRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StarNodeRate = reader.ReadFloat32()
+					r.StarNodeRate = cursor.NextF32()
 				}
 			}
 		case 8:

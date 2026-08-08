@@ -171,8 +171,9 @@ impl StageTable {
                 }
                 8 => {
                     sheetman::check_column(column, "Stage.SpawnNextTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.SpawnNextTime")?;
                     for record in records.iter_mut() {
-                        record.spawn_next_time = reader.read_f32()?;
+                        record.spawn_next_time = cursor.next_f32()?;
                     }
                 }
                 9 => {
@@ -194,38 +195,44 @@ impl StageTable {
                 }
                 11 => {
                     sheetman::check_column(column, "Stage.AtkUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.AtkUpPercent")?;
                     for record in records.iter_mut() {
-                        record.atk_up_percent = reader.read_f32()?;
+                        record.atk_up_percent = cursor.next_f32()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "Stage.DefUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.DefUpPercent")?;
                     for record in records.iter_mut() {
-                        record.def_up_percent = reader.read_f32()?;
+                        record.def_up_percent = cursor.next_f32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "Stage.MHPUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.MHPUpPercent")?;
                     for record in records.iter_mut() {
-                        record.mhp_up_percent = reader.read_f32()?;
+                        record.mhp_up_percent = cursor.next_f32()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "Stage.BossAtkUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.BossAtkUpPercent")?;
                     for record in records.iter_mut() {
-                        record.boss_atk_up_percent = reader.read_f32()?;
+                        record.boss_atk_up_percent = cursor.next_f32()?;
                     }
                 }
                 15 => {
                     sheetman::check_column(column, "Stage.BossDefUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.BossDefUpPercent")?;
                     for record in records.iter_mut() {
-                        record.boss_def_up_percent = reader.read_f32()?;
+                        record.boss_def_up_percent = cursor.next_f32()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "Stage.BossMHPUpPercent", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.BossMHPUpPercent")?;
                     for record in records.iter_mut() {
-                        record.boss_mhp_up_percent = reader.read_f32()?;
+                        record.boss_mhp_up_percent = cursor.next_f32()?;
                     }
                 }
                 17 => {

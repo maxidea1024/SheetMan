@@ -132,15 +132,17 @@ final class BGMSoundTable
 
                 case 4:
                     ScbReader::checkColumn($column, 'BGMSound.Loop', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BGMSound.Loop');
                     foreach ($records as $record) {
-                        $record->loop = $reader->readBool();
+                        $record->loop = $cursor->nextBool();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'BGMSound.FadeTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BGMSound.FadeTime');
                     foreach ($records as $record) {
-                        $record->fadeTime = $reader->readFloat();
+                        $record->fadeTime = $cursor->nextF32();
                     }
                     break;
 

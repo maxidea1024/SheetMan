@@ -126,8 +126,9 @@ class SDAlchemyInfoTable:
                     record.common_material_type2 = CurrencyType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "SDAlchemyInfo.MaterialType2Rate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType2Rate")
                 for record in records:
-                    record.material_type2_rate = reader.read_float()
+                    record.material_type2_rate = cursor.next_f32()
             elif column.tag == 8:
                 sheetman.check_column(column, "SDAlchemyInfo.StatType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.StatType")

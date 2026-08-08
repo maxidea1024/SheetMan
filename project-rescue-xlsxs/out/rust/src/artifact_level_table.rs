@@ -141,20 +141,23 @@ impl ArtifactLevelTable {
                 }
                 7 => {
                     sheetman::check_column(column, "ArtifactLevel.ATKGrowth", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ArtifactLevel.ATKGrowth")?;
                     for record in records.iter_mut() {
-                        record.atk_growth = reader.read_f32()?;
+                        record.atk_growth = cursor.next_f32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "ArtifactLevel.DEFGrowth", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ArtifactLevel.DEFGrowth")?;
                     for record in records.iter_mut() {
-                        record.def_growth = reader.read_f32()?;
+                        record.def_growth = cursor.next_f32()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "ArtifactLevel.HPGrowth", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ArtifactLevel.HPGrowth")?;
                     for record in records.iter_mut() {
-                        record.hp_growth = reader.read_f32()?;
+                        record.hp_growth = cursor.next_f32()?;
                     }
                 }
                 _ => {

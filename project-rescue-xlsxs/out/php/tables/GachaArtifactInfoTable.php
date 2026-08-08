@@ -232,15 +232,17 @@ final class GachaArtifactInfoTable
 
                 case 12:
                     ScbReader::checkColumn($column, 'GachaArtifactInfo.EnableReset', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactInfo.EnableReset');
                     foreach ($records as $record) {
-                        $record->enableReset = $reader->readBool();
+                        $record->enableReset = $cursor->nextBool();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'GachaArtifactInfo.IsSharedCounter', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactInfo.IsSharedCounter');
                     foreach ($records as $record) {
-                        $record->isSharedCounter = $reader->readBool();
+                        $record->isSharedCounter = $cursor->nextBool();
                     }
                     break;
 
@@ -262,15 +264,17 @@ final class GachaArtifactInfoTable
 
                 case 16:
                     ScbReader::checkColumn($column, 'GachaArtifactInfo.IsSingle', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactInfo.IsSingle');
                     foreach ($records as $record) {
-                        $record->isSingle = $reader->readBool();
+                        $record->isSingle = $cursor->nextBool();
                     }
                     break;
 
                 case 17:
                     ScbReader::checkColumn($column, 'GachaArtifactInfo.IsTen', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactInfo.IsTen');
                     foreach ($records as $record) {
-                        $record->isTen = $reader->readBool();
+                        $record->isTen = $cursor->nextBool();
                     }
                     break;
 
@@ -316,8 +320,9 @@ final class GachaArtifactInfoTable
 
                 case 23:
                     ScbReader::checkColumn($column, 'GachaArtifactInfo.EnableSkip', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactInfo.EnableSkip');
                     foreach ($records as $record) {
-                        $record->enableSkip = $reader->readBool();
+                        $record->enableSkip = $cursor->nextBool();
                     }
                     break;
 

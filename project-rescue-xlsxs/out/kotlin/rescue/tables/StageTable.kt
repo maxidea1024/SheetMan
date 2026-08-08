@@ -183,8 +183,9 @@ class StageTable {
                 }
                 8 -> {
                     checkColumn(column, "Stage.SpawnNextTime", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.SpawnNextTime")
                     for (record in loaded) {
-                        record.spawnNextTime = reader.readFloat()
+                        record.spawnNextTime = cursor.nextF32()
                     }
                 }
                 9 -> {
@@ -204,38 +205,44 @@ class StageTable {
                 }
                 11 -> {
                     checkColumn(column, "Stage.AtkUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.AtkUpPercent")
                     for (record in loaded) {
-                        record.atkUpPercent = reader.readFloat()
+                        record.atkUpPercent = cursor.nextF32()
                     }
                 }
                 12 -> {
                     checkColumn(column, "Stage.DefUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.DefUpPercent")
                     for (record in loaded) {
-                        record.defUpPercent = reader.readFloat()
+                        record.defUpPercent = cursor.nextF32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "Stage.MHPUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.MHPUpPercent")
                     for (record in loaded) {
-                        record.mHPUpPercent = reader.readFloat()
+                        record.mHPUpPercent = cursor.nextF32()
                     }
                 }
                 14 -> {
                     checkColumn(column, "Stage.BossAtkUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.BossAtkUpPercent")
                     for (record in loaded) {
-                        record.bossAtkUpPercent = reader.readFloat()
+                        record.bossAtkUpPercent = cursor.nextF32()
                     }
                 }
                 15 -> {
                     checkColumn(column, "Stage.BossDefUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.BossDefUpPercent")
                     for (record in loaded) {
-                        record.bossDefUpPercent = reader.readFloat()
+                        record.bossDefUpPercent = cursor.nextF32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "Stage.BossMHPUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.BossMHPUpPercent")
                     for (record in loaded) {
-                        record.bossMHPUpPercent = reader.readFloat()
+                        record.bossMHPUpPercent = cursor.nextF32()
                     }
                 }
                 17 -> {

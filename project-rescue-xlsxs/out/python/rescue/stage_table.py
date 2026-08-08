@@ -131,8 +131,9 @@ class StageTable:
                     record.spawn_max_count = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "Stage.SpawnNextTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.SpawnNextTime")
                 for record in records:
-                    record.spawn_next_time = reader.read_float()
+                    record.spawn_next_time = cursor.next_f32()
             elif column.tag == 9:
                 sheetman.check_column(column, "Stage.StageClearCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Stage.StageClearCount")
@@ -145,28 +146,34 @@ class StageTable:
                     record.boss_id = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 11:
                 sheetman.check_column(column, "Stage.AtkUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.AtkUpPercent")
                 for record in records:
-                    record.atk_up_percent = reader.read_float()
+                    record.atk_up_percent = cursor.next_f32()
             elif column.tag == 12:
                 sheetman.check_column(column, "Stage.DefUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.DefUpPercent")
                 for record in records:
-                    record.def_up_percent = reader.read_float()
+                    record.def_up_percent = cursor.next_f32()
             elif column.tag == 13:
                 sheetman.check_column(column, "Stage.MHPUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.MHPUpPercent")
                 for record in records:
-                    record.mhp_up_percent = reader.read_float()
+                    record.mhp_up_percent = cursor.next_f32()
             elif column.tag == 14:
                 sheetman.check_column(column, "Stage.BossAtkUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.BossAtkUpPercent")
                 for record in records:
-                    record.boss_atk_up_percent = reader.read_float()
+                    record.boss_atk_up_percent = cursor.next_f32()
             elif column.tag == 15:
                 sheetman.check_column(column, "Stage.BossDefUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.BossDefUpPercent")
                 for record in records:
-                    record.boss_def_up_percent = reader.read_float()
+                    record.boss_def_up_percent = cursor.next_f32()
             elif column.tag == 16:
                 sheetman.check_column(column, "Stage.BossMHPUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.BossMHPUpPercent")
                 for record in records:
-                    record.boss_mhp_up_percent = reader.read_float()
+                    record.boss_mhp_up_percent = cursor.next_f32()
             elif column.tag == 17:
                 sheetman.check_column(column, "Stage.StageDropListID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Stage.StageDropListID")

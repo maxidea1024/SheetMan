@@ -164,9 +164,10 @@ class PackageTable {
         }
         case 6: {
           sheetman::check_column(column, "Package.Stackable", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.Stackable");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.stackable);
+            record.stackable = cursor.next_bool();
           }
           break;
         }

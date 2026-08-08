@@ -239,16 +239,18 @@ export class AttributeTable {
           break
         case 6:
           sheetman.checkColumn(column, 'Attribute.DamageValueRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Attribute.DamageValueRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._damageValueRate = reader.readFloat()
+            record._damageValueRate = cursor.nextF32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'Attribute.IsVisible', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Attribute.IsVisible')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isVisible = reader.readBool()
+            record._isVisible = cursor.nextBool()
           }
           break
         case 8:

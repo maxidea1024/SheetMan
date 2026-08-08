@@ -171,8 +171,9 @@ class CharacterTranscendenceTable {
                 }
                 9 -> {
                     checkColumn(column, "CharacterTranscendence.PowerMultiplier", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.PowerMultiplier")
                     for (record in loaded) {
-                        record.powerMultiplier = reader.readFloat()
+                        record.powerMultiplier = cursor.nextF32()
                     }
                 }
                 10 -> {

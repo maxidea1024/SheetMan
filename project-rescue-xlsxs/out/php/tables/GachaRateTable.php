@@ -116,36 +116,41 @@ final class GachaRateTable
 
                 case 2:
                     ScbReader::checkColumn($column, 'GachaRate.URRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaRate.URRate');
                     foreach ($records as $record) {
-                        $record->uRRate = $reader->readFloat();
+                        $record->uRRate = $cursor->nextF32();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'GachaRate.SSRRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaRate.SSRRate');
                     foreach ($records as $record) {
-                        $record->sSRRate = $reader->readFloat();
+                        $record->sSRRate = $cursor->nextF32();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'GachaRate.SRRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaRate.SRRate');
                     foreach ($records as $record) {
-                        $record->sRRate = $reader->readFloat();
+                        $record->sRRate = $cursor->nextF32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'GachaRate.RRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaRate.RRate');
                     foreach ($records as $record) {
-                        $record->rRate = $reader->readFloat();
+                        $record->rRate = $cursor->nextF32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'GachaRate.NRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaRate.NRate');
                     foreach ($records as $record) {
-                        $record->nRate = $reader->readFloat();
+                        $record->nRate = $cursor->nextF32();
                     }
                     break;
 

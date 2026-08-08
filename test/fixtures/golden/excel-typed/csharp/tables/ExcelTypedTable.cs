@@ -212,19 +212,21 @@ namespace SheetMan.Fixtures.X
 
                     case 3:
                         ScbTable.CheckColumn(column, "ExcelTyped.FloatFromNumeric", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExcelTyped.FloatFromNumeric");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._floatFromNumeric);
+                            record._floatFromNumeric = cursor.NextF32();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "ExcelTyped.WhenFromDateCell", ScbTable.KindScalar, 1, ScbTable.ElementI64);
+                        cursor = new ScbColumnCursor(reader, column, count, "ExcelTyped.WhenFromDateCell");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._whenFromDateCell);
+                            record._whenFromDateCell = new System.DateTime(cursor.NextI64());
                         }
                         break;
 

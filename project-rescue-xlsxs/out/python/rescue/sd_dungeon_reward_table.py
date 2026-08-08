@@ -168,8 +168,9 @@ class SDDungeonRewardTable:
                     record.reward4_value = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "SDDungeonReward.IsPerfect", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.IsPerfect")
                 for record in records:
-                    record.is_perfect = reader.read_bool()
+                    record.is_perfect = cursor.next_bool()
             elif column.tag == 16:
                 sheetman.check_column(column, "SDDungeonReward.RewardPerfect", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.RewardPerfect")
@@ -182,8 +183,9 @@ class SDDungeonRewardTable:
                     record.perfect_value = cursor.next_i32()
             elif column.tag == 18:
                 sheetman.check_column(column, "SDDungeonReward.IsMinReward", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.IsMinReward")
                 for record in records:
-                    record.is_min_reward = reader.read_bool()
+                    record.is_min_reward = cursor.next_bool()
             elif column.tag == 19:
                 sheetman.check_column(column, "SDDungeonReward.RewardMin", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.RewardMin")

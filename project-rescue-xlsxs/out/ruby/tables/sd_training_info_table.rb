@@ -134,8 +134,9 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'SDTrainingInfo.IsLvReset', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.IsLvReset')
           records.each do |record|
-            record.is_lv_reset = reader.read_bool
+            record.is_lv_reset = cursor.next_bool
           end
         when 10
           Sheetman.check_column(column, 'SDTrainingInfo.LvResetCurrencyType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])

@@ -112,11 +112,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 5:
       (void)sm_check_column(reader, column, "SDAgencyInfo.GradeSRate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.GradeSRate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->grade_s_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->grade_s_rate);
       }
 
       break;
@@ -124,11 +125,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 6:
       (void)sm_check_column(reader, column, "SDAgencyInfo.GradeARate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.GradeARate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->grade_a_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->grade_a_rate);
       }
 
       break;
@@ -136,11 +138,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 7:
       (void)sm_check_column(reader, column, "SDAgencyInfo.GradeBRate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.GradeBRate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->grade_b_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->grade_b_rate);
       }
 
       break;
@@ -148,11 +151,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 8:
       (void)sm_check_column(reader, column, "SDAgencyInfo.GradeCRate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.GradeCRate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->grade_c_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->grade_c_rate);
       }
 
       break;
@@ -160,11 +164,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 9:
       (void)sm_check_column(reader, column, "SDAgencyInfo.GradeDRate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.GradeDRate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->grade_d_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->grade_d_rate);
       }
 
       break;
@@ -172,11 +177,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 10:
       (void)sm_check_column(reader, column, "SDAgencyInfo.GradeERate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.GradeERate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->grade_e_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->grade_e_rate);
       }
 
       break;
@@ -184,11 +190,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 11:
       (void)sm_check_column(reader, column, "SDAgencyInfo.GradeFRate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.GradeFRate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->grade_f_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->grade_f_rate);
       }
 
       break;

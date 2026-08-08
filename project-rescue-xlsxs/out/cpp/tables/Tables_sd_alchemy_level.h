@@ -186,65 +186,73 @@ class SDAlchemyLevelTable {
         }
         case 9: {
           sheetman::check_column(column, "SDAlchemyLevel.CritDMGValue", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.CritDMGValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.crit_dmg_value);
+            record.crit_dmg_value = cursor.next_f32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "SDAlchemyLevel.CritDMGTotal", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.CritDMGTotal");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.crit_dmg_total);
+            record.crit_dmg_total = cursor.next_f32();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "SDAlchemyLevel.CritRateValue", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.CritRateValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.crit_rate_value);
+            record.crit_rate_value = cursor.next_f32();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "SDAlchemyLevel.CritRateTotal", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.CritRateTotal");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.crit_rate_total);
+            record.crit_rate_total = cursor.next_f32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "SDAlchemyLevel.BlockRateValue", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.BlockRateValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.block_rate_value);
+            record.block_rate_value = cursor.next_f32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "SDAlchemyLevel.BlockRateTotal", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.BlockRateTotal");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.block_rate_total);
+            record.block_rate_total = cursor.next_f32();
           }
           break;
         }
         case 15: {
           sheetman::check_column(column, "SDAlchemyLevel.HITValue", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.HITValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.hit_value);
+            record.hit_value = cursor.next_f32();
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "SDAlchemyLevel.HITTotal", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.HITTotal");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.hit_total);
+            record.hit_total = cursor.next_f32();
           }
           break;
         }

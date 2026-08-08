@@ -135,13 +135,15 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'Skill.SkillUseRange', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.SkillUseRange')
           records.each do |record|
-            record.skill_use_range = reader.read_float
+            record.skill_use_range = cursor.next_f32
           end
         when 10
           Sheetman.check_column(column, 'Skill.CoolTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.CoolTime')
           records.each do |record|
-            record.cool_time = reader.read_float
+            record.cool_time = cursor.next_f32
           end
         when 11
           Sheetman.check_column(column, 'Skill.BuffID', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

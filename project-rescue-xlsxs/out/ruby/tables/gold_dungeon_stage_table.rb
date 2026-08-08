@@ -154,8 +154,9 @@ module Rescue
           end
         when 11
           Sheetman.check_column(column, 'GoldDungeonStage.SpawnNextTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonStage.SpawnNextTime')
           records.each do |record|
-            record.spawn_next_time = reader.read_float
+            record.spawn_next_time = cursor.next_f32
           end
         when 12
           Sheetman.check_column(column, 'GoldDungeonStage.StageClearCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
@@ -177,18 +178,21 @@ module Rescue
           end
         when 15
           Sheetman.check_column(column, 'GoldDungeonStage.AtkUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonStage.AtkUpPercent')
           records.each do |record|
-            record.atk_up_percent = reader.read_float
+            record.atk_up_percent = cursor.next_f32
           end
         when 16
           Sheetman.check_column(column, 'GoldDungeonStage.DefUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonStage.DefUpPercent')
           records.each do |record|
-            record.def_up_percent = reader.read_float
+            record.def_up_percent = cursor.next_f32
           end
         when 17
           Sheetman.check_column(column, 'GoldDungeonStage.MHPUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonStage.MHPUpPercent')
           records.each do |record|
-            record.mhp_up_percent = reader.read_float
+            record.mhp_up_percent = cursor.next_f32
           end
         when 18
           Sheetman.check_column(column, 'GoldDungeonStage.DungeonImagePath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])

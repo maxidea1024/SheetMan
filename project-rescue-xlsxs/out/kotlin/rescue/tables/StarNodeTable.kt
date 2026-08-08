@@ -157,8 +157,9 @@ class StarNodeTable {
                 }
                 7 -> {
                     checkColumn(column, "StarNode.StarNodeRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "StarNode.StarNodeRate")
                     for (record in loaded) {
-                        record.starNodeRate = reader.readFloat()
+                        record.starNodeRate = cursor.nextF32()
                     }
                 }
                 8 -> {

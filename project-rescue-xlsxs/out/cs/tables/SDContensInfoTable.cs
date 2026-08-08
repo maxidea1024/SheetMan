@@ -301,10 +301,11 @@ namespace Rescue.Tables
 
                     case 8:
                         ScbTable.CheckColumn(column, "SDContensInfo.EnableReset", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDContensInfo.EnableReset");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._enableReset);
+                            record._enableReset = cursor.NextBool();
                         }
                         break;
 

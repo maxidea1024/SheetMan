@@ -190,37 +190,42 @@ export class GachaRateTable {
           break
         case 2:
           sheetman.checkColumn(column, 'GachaRate.URRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaRate.URRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._uRRate = reader.readFloat()
+            record._uRRate = cursor.nextF32()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'GachaRate.SSRRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaRate.SSRRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._sSRRate = reader.readFloat()
+            record._sSRRate = cursor.nextF32()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'GachaRate.SRRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaRate.SRRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._sRRate = reader.readFloat()
+            record._sRRate = cursor.nextF32()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'GachaRate.RRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaRate.RRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rRate = reader.readFloat()
+            record._rRate = cursor.nextF32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'GachaRate.NRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaRate.NRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._nRate = reader.readFloat()
+            record._nRate = cursor.nextF32()
           }
           break
         default:

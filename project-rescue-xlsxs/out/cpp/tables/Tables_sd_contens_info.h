@@ -170,9 +170,10 @@ class SDContensInfoTable {
         }
         case 8: {
           sheetman::check_column(column, "SDContensInfo.EnableReset", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.EnableReset");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.enable_reset);
+            record.enable_reset = cursor.next_bool();
           }
           break;
         }

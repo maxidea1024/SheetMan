@@ -122,16 +122,18 @@ func (t *BGMSoundTable) Read(filename string) error {
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "BGMSound.Loop", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "BGMSound.Loop")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Loop = reader.ReadBool()
+					r.Loop = cursor.NextBool()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "BGMSound.FadeTime", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "BGMSound.FadeTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.FadeTime = reader.ReadFloat32()
+					r.FadeTime = cursor.NextF32()
 				}
 			}
 		case 6:

@@ -212,9 +212,10 @@ func (t *OopartsDungeonStageTable) Read(filename string) error {
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.SpawnNextTime", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnNextTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpawnNextTime = reader.ReadFloat32()
+					r.SpawnNextTime = cursor.NextF32()
 				}
 			}
 		case 12:
@@ -243,23 +244,26 @@ func (t *OopartsDungeonStageTable) Read(filename string) error {
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.AtkUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.AtkUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AtkUpPercent = reader.ReadFloat32()
+					r.AtkUpPercent = cursor.NextF32()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.DefUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.DefUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DefUpPercent = reader.ReadFloat32()
+					r.DefUpPercent = cursor.NextF32()
 				}
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.MHPUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.MHPUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MHPUpPercent = reader.ReadFloat32()
+					r.MHPUpPercent = cursor.NextF32()
 				}
 			}
 		case 18:

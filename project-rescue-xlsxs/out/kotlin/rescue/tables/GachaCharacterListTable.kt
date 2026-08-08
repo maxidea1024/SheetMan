@@ -145,8 +145,9 @@ class GachaCharacterListTable {
                 }
                 5 -> {
                     checkColumn(column, "GachaCharacterList.IsWishlist", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.IsWishlist")
                     for (record in loaded) {
-                        record.isWishlist = reader.readBool()
+                        record.isWishlist = cursor.nextBool()
                     }
                 }
                 6 -> {

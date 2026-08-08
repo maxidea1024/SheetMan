@@ -181,9 +181,10 @@ class CollectionTable {
         }
         case 9: {
           sheetman::check_column(column, "Collection.RewardStatRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.RewardStatRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.reward_stat_rate);
+            record.reward_stat_rate = cursor.next_f32();
           }
           break;
         }

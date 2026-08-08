@@ -183,50 +183,58 @@ class SDAlchemyLevelTable {
                 }
                 9 -> {
                     checkColumn(column, "SDAlchemyLevel.CritDMGValue", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGValue")
                     for (record in loaded) {
-                        record.critDMGValue = reader.readFloat()
+                        record.critDMGValue = cursor.nextF32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "SDAlchemyLevel.CritDMGTotal", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGTotal")
                     for (record in loaded) {
-                        record.critDMGTotal = reader.readFloat()
+                        record.critDMGTotal = cursor.nextF32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "SDAlchemyLevel.CritRateValue", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateValue")
                     for (record in loaded) {
-                        record.critRateValue = reader.readFloat()
+                        record.critRateValue = cursor.nextF32()
                     }
                 }
                 12 -> {
                     checkColumn(column, "SDAlchemyLevel.CritRateTotal", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateTotal")
                     for (record in loaded) {
-                        record.critRateTotal = reader.readFloat()
+                        record.critRateTotal = cursor.nextF32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "SDAlchemyLevel.BlockRateValue", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateValue")
                     for (record in loaded) {
-                        record.blockRateValue = reader.readFloat()
+                        record.blockRateValue = cursor.nextF32()
                     }
                 }
                 14 -> {
                     checkColumn(column, "SDAlchemyLevel.BlockRateTotal", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateTotal")
                     for (record in loaded) {
-                        record.blockRateTotal = reader.readFloat()
+                        record.blockRateTotal = cursor.nextF32()
                     }
                 }
                 15 -> {
                     checkColumn(column, "SDAlchemyLevel.HITValue", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.HITValue")
                     for (record in loaded) {
-                        record.hITValue = reader.readFloat()
+                        record.hITValue = cursor.nextF32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "SDAlchemyLevel.HITTotal", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.HITTotal")
                     for (record in loaded) {
-                        record.hITTotal = reader.readFloat()
+                        record.hITTotal = cursor.nextF32()
                     }
                 }
                 else ->

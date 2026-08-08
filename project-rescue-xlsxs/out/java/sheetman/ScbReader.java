@@ -73,6 +73,8 @@ public final class ScbReader {
     public static final int ENCODING_DELTA_RLE = 4;
     public static final int ENCODING_DICT = 5;
     public static final int ENCODING_DICT_RLE = 6;
+    public static final int ENCODING_DICT_FRONT = 7;
+    public static final int ENCODING_DICT_FRONT_RLE = 8;
 
     /** One column as the file describes it. */
     public static final class Column {
@@ -106,8 +108,18 @@ public final class ScbReader {
         private final int element;
         private final int encoding;
 
-        /** The block's dictionary, decoded once and handed out per row. */
+        /**
+         * The block's dictionary, decoded once and handed out per row.
+         *
+         * <p>One of these is non-null when the block has a dictionary at all, chosen by
+         * the element: strings are decoded to instances that rows then share, and a
+         * fixed-width element keeps its raw bytes so the value is reconstructed exactly
+         * as the raw layout would have read it.
+         */
         private final String[] dictionary;
+
+        private final byte[] valueDictionary;
+        private final int valueWidth;
 
         // A run-length family's current run: what remains of it, and its value - which is
         // a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
@@ -129,21 +141,106 @@ public final class ScbReader {
             this.encoding = column.encoding;
             this.rowsRemaining = rowCount;
 
-            if (encoding == ENCODING_DICT || encoding == ENCODING_DICT_RLE) {
-                int count = reader.readCounter32();
+            boolean plainDictionary = encoding == ENCODING_DICT || encoding == ENCODING_DICT_RLE;
 
-                if (count < 0) {
-                    throw new ScbException(fieldName + ": the dictionary entry count is negative");
-                }
+            boolean frontDictionary =
+                encoding == ENCODING_DICT_FRONT || encoding == ENCODING_DICT_FRONT_RLE;
 
+            if (!plainDictionary && !frontDictionary) {
+                dictionary = null;
+                valueDictionary = null;
+                valueWidth = 0;
+                return;
+            }
+
+            int count = reader.readCounter32();
+
+            if (count < 0) {
+                throw new ScbException(fieldName + ": the dictionary entry count is negative");
+            }
+
+            if (frontDictionary) {
+                dictionary = readFrontCodedDictionary(reader, count, fieldName);
+                valueDictionary = null;
+                valueWidth = 0;
+                return;
+            }
+
+            if (element == ELEMENT_STRING) {
                 dictionary = new String[count];
 
                 for (int at = 0; at < count; at++) {
                     dictionary[at] = reader.readString();
                 }
-            } else {
-                dictionary = null;
+
+                valueDictionary = null;
+                valueWidth = 0;
+                return;
             }
+
+            // A fixed-width element: the entries are the value's own bytes, so they are
+            // taken as bytes and turned into values only when a row asks for one.
+            dictionary = null;
+            valueWidth = element == ELEMENT_F32 ? 4 : 8;
+            valueDictionary = new byte[count * valueWidth];
+
+            for (int at = 0; at < count; at++) {
+                int from = reader.take(valueWidth);
+                System.arraycopy(reader.data, from, valueDictionary, at * valueWidth, valueWidth);
+            }
+        }
+
+        /**
+         * A sorted dictionary whose entries state only what they do not share with the
+         * entry before them.
+         *
+         * <p>Decoded into whole strings here rather than kept folded, because a row wants
+         * a string and the folding was only ever about the bytes on disk. The scratch
+         * buffer grows to the longest entry and is reused, so the allocations are the
+         * strings themselves - one per distinct value, which is the point.
+         */
+        private static String[] readFrontCodedDictionary(
+            ScbReader reader, int count, String fieldName) {
+
+            String[] entries = new String[count];
+            byte[] scratch = new byte[64];
+            int previousLength = 0;
+
+            for (int at = 0; at < count; at++) {
+                int shared = reader.readCounter32();
+                int rest = reader.readCounter32();
+
+                if (shared < 0 || rest < 0 || shared > previousLength) {
+                    throw new ScbException(
+                        fieldName + ": dictionary entry " + at + " shares " + shared
+                            + " bytes with an entry of " + previousLength);
+                }
+
+                int length = shared + rest;
+
+                if (length > scratch.length) {
+                    int capacity = scratch.length;
+
+                    while (capacity < length) {
+                        capacity *= 2;
+                    }
+
+                    scratch = java.util.Arrays.copyOf(scratch, capacity);
+                }
+
+                if (rest > 0) {
+                    int from = reader.take(rest);
+                    System.arraycopy(reader.data, from, scratch, shared, rest);
+                }
+
+                entries[at] = length == 0
+                    ? ""
+                    : new String(scratch, 0, length, StandardCharsets.UTF_8);
+
+                previousLength = length;
+            }
+
+            return entries;
         }
 
         /** The next int - which also serves enums, and reference indexes. */
@@ -191,18 +288,114 @@ public final class ScbReader {
             }
         }
 
-        /** A long member: an i64 column is always raw, anything narrower decodes as an int. */
+        /**
+         * A long member: from an i64 column raw or through its dictionary, and from
+         * anything narrower by decoding an int and widening it.
+         */
         public long nextI64() {
-            return element == ELEMENT_I64 ? reader.readInt64() : nextI32();
+            if (element != ELEMENT_I64) {
+                return nextI32();
+            }
+
+            if (valueDictionary != null) {
+                return valueInt64(nextValueEntry());
+            }
+
+            rowsRemaining--;
+
+            return reader.readInt64();
         }
 
-        /** A double member: float columns are always raw, an i32 column decodes then widens. */
+        /** A float member: raw, or the dictionary entry's exact bit pattern. */
+        public float nextF32() {
+            if (valueDictionary != null) {
+                return Float.intBitsToFloat(valueInt32(nextValueEntry()));
+            }
+
+            rowsRemaining--;
+
+            return reader.readFloat();
+        }
+
+        /**
+         * A double member: from f64 or f32 - either of them raw or dictionary-encoded -
+         * and from an i32 column by decoding and widening.
+         */
         public double nextF64() {
             if (element == ELEMENT_F64) {
+                if (valueDictionary != null) {
+                    return Double.longBitsToDouble(valueInt64(nextValueEntry()));
+                }
+
+                rowsRemaining--;
+
                 return reader.readDouble();
             }
 
-            return element == ELEMENT_F32 ? reader.readFloat() : nextI32();
+            return element == ELEMENT_F32 ? nextF32() : nextI32();
+        }
+
+        /** A bool member: one byte raw, or a run of them. */
+        public boolean nextBool() {
+            if (encoding == ENCODING_RLE) {
+                return nextI32() != 0;
+            }
+
+            rowsRemaining--;
+
+            return reader.readBool();
+        }
+
+        /**
+         * Where the next row's dictionary entry starts, for a fixed-width element.
+         *
+         * <p>An offset rather than the bytes themselves, because handing back a slice
+         * would mean copying one per row - which is exactly what keeping the entries as
+         * bytes was meant to avoid.
+         */
+        private int nextValueEntry() {
+            rowsRemaining--;
+
+            int index;
+
+            if (encoding == ENCODING_DICT) {
+                index = reader.readCounter32();
+            } else {
+                if (runRemaining == 0) {
+                    readRun();
+                }
+                runRemaining--;
+                index = runValue;
+            }
+
+            int count = valueDictionary.length / valueWidth;
+
+            if (index < 0 || index >= count) {
+                throw new ScbException(
+                    fieldName + ": dictionary index " + index + " is out of range - the "
+                        + "dictionary holds " + count + " entries");
+            }
+
+            return index * valueWidth;
+        }
+
+        /** A dictionary entry's four bytes, read exactly as readInt32 reads a raw one. */
+        private int valueInt32(int at) {
+            return (valueDictionary[at] & 0xFF)
+                | ((valueDictionary[at + 1] & 0xFF) << 8)
+                | ((valueDictionary[at + 2] & 0xFF) << 16)
+                | ((valueDictionary[at + 3] & 0xFF) << 24);
+        }
+
+        /** A dictionary entry's eight bytes, read exactly as readInt64 reads a raw one. */
+        private long valueInt64(int at) {
+            long value = 0;
+
+            for (int i = 7; i >= 0; i--) {
+                value = (value << 8) | (valueDictionary[at + i] & 0xFFL);
+            }
+
+            return value;
         }
 
         /** The next string - the dictionary's instance where the block has one. */
@@ -214,9 +407,10 @@ public final class ScbReader {
                     return reader.readString();
 
                 case ENCODING_DICT:
+                case ENCODING_DICT_FRONT:
                     return dictionaryEntry(reader.readCounter32());
 
-                default: // ENCODING_DICT_RLE
+                default: // ENCODING_DICT_RLE and ENCODING_DICT_FRONT_RLE
                     if (runRemaining == 0) {
                         readRun();
                     }
@@ -649,14 +843,25 @@ public final class ScbReader {
         }
 
         switch (column.element) {
+            case ELEMENT_BOOL:
             case ELEMENT_VARINT:
                 return column.encoding == ENCODING_RLE;
 
             case ELEMENT_I32:
                 return column.encoding >= ENCODING_VARINT && column.encoding <= ENCODING_DELTA_RLE;
 
-            case ELEMENT_STRING:
+            // The dictionary is parameterized by element, so these three reach it with
+            // entries that are simply their own raw bytes.
+            case ELEMENT_I64:
+            case ELEMENT_F32:
+            case ELEMENT_F64:
                 return column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE;
+
+            // And a string dictionary can additionally be front coded, which is
+            // meaningless for a fixed-width element and refused for one.
+            case ELEMENT_STRING:
+                return column.encoding >= ENCODING_DICT
+                    && column.encoding <= ENCODING_DICT_FRONT_RLE;
 
             default:
                 return false;

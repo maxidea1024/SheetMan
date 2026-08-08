@@ -138,8 +138,9 @@ public final class StarNodeTable {
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "StarNode.StarNodeRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "StarNode.StarNodeRate");
                     for (StarNodeRecord record : loaded) {
-                        record.starNodeRate = reader.readFloat();
+                        record.starNodeRate = cursor.nextF32();
                     }
                     break;
                 }

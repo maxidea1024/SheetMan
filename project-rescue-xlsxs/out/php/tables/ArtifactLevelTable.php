@@ -162,22 +162,25 @@ final class ArtifactLevelTable
 
                 case 7:
                     ScbReader::checkColumn($column, 'ArtifactLevel.ATKGrowth', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactLevel.ATKGrowth');
                     foreach ($records as $record) {
-                        $record->aTKGrowth = $reader->readFloat();
+                        $record->aTKGrowth = $cursor->nextF32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'ArtifactLevel.DEFGrowth', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactLevel.DEFGrowth');
                     foreach ($records as $record) {
-                        $record->dEFGrowth = $reader->readFloat();
+                        $record->dEFGrowth = $cursor->nextF32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'ArtifactLevel.HPGrowth', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactLevel.HPGrowth');
                     foreach ($records as $record) {
-                        $record->hPGrowth = $reader->readFloat();
+                        $record->hPGrowth = $cursor->nextF32();
                     }
                     break;
 

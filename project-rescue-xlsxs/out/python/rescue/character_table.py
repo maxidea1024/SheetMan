@@ -174,36 +174,44 @@ class CharacterTable:
                     record.base_mhp = cursor.next_i64()
             elif column.tag == 12:
                 sheetman.check_column(column, "Character.MoveSpeed", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.MoveSpeed")
                 for record in records:
-                    record.move_speed = reader.read_float()
+                    record.move_speed = cursor.next_f32()
             elif column.tag == 13:
                 sheetman.check_column(column, "Character.CritRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.CritRate")
                 for record in records:
-                    record.crit_rate = reader.read_float()
+                    record.crit_rate = cursor.next_f32()
             elif column.tag == 14:
                 sheetman.check_column(column, "Character.CritDmg", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.CritDmg")
                 for record in records:
-                    record.crit_dmg = reader.read_float()
+                    record.crit_dmg = cursor.next_f32()
             elif column.tag == 15:
                 sheetman.check_column(column, "Character.SearchRange", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.SearchRange")
                 for record in records:
-                    record.search_range = reader.read_float()
+                    record.search_range = cursor.next_f32()
             elif column.tag == 16:
                 sheetman.check_column(column, "Character.ReFindTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.ReFindTime")
                 for record in records:
-                    record.re_find_time = reader.read_float()
+                    record.re_find_time = cursor.next_f32()
             elif column.tag == 17:
                 sheetman.check_column(column, "Character.MaxFollow", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.MaxFollow")
                 for record in records:
-                    record.max_follow = reader.read_float()
+                    record.max_follow = cursor.next_f32()
             elif column.tag == 18:
                 sheetman.check_column(column, "Character.SizePrefab", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.SizePrefab")
                 for record in records:
-                    record.size_prefab = reader.read_float()
+                    record.size_prefab = cursor.next_f32()
             elif column.tag == 19:
                 sheetman.check_column(column, "Character.IsUnlocked", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.IsUnlocked")
                 for record in records:
-                    record.is_unlocked = reader.read_bool()
+                    record.is_unlocked = cursor.next_bool()
             elif column.tag == 20:
                 sheetman.check_column(column, "Character.BasicAttack1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Character.BasicAttack1")

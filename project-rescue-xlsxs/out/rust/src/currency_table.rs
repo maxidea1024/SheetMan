@@ -154,8 +154,9 @@ impl CurrencyTable {
                 }
                 7 => {
                     sheetman::check_column(column, "Currency.Stackable", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.Stackable")?;
                     for record in records.iter_mut() {
-                        record.stackable = reader.read_bool()?;
+                        record.stackable = cursor.next_bool()?;
                     }
                 }
                 8 => {

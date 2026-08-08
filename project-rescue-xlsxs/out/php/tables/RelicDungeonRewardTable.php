@@ -173,8 +173,9 @@ final class RelicDungeonRewardTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'RelicDungeonReward.IsFirstClear', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'RelicDungeonReward.IsFirstClear');
                     foreach ($records as $record) {
-                        $record->isFirstClear = $reader->readBool();
+                        $record->isFirstClear = $cursor->nextBool();
                     }
                     break;
 

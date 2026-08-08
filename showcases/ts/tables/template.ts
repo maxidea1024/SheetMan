@@ -255,9 +255,10 @@ export class TemplateTable {
           break
         case 4:
           sheetman.checkColumn(column, 'Template.Delete', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Template.Delete')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._delete = reader.readBool()
+            record._delete = cursor.nextBool()
           }
           break
         case 5:

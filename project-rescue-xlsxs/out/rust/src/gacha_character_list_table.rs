@@ -132,8 +132,9 @@ impl GachaCharacterListTable {
                 }
                 5 => {
                     sheetman::check_column(column, "GachaCharacterList.IsWishlist", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.IsWishlist")?;
                     for record in records.iter_mut() {
-                        record.is_wishlist = reader.read_bool()?;
+                        record.is_wishlist = cursor.next_bool()?;
                     }
                 }
                 6 => {

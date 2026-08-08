@@ -207,8 +207,9 @@ class RelicDungeonStageTable {
                 }
                 11 -> {
                     checkColumn(column, "RelicDungeonStage.SpawnNextTime", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "RelicDungeonStage.SpawnNextTime")
                     for (record in loaded) {
-                        record.spawnNextTime = reader.readFloat()
+                        record.spawnNextTime = cursor.nextF32()
                     }
                 }
                 12 -> {
@@ -234,20 +235,23 @@ class RelicDungeonStageTable {
                 }
                 15 -> {
                     checkColumn(column, "RelicDungeonStage.AtkUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "RelicDungeonStage.AtkUpPercent")
                     for (record in loaded) {
-                        record.atkUpPercent = reader.readFloat()
+                        record.atkUpPercent = cursor.nextF32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "RelicDungeonStage.DefUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "RelicDungeonStage.DefUpPercent")
                     for (record in loaded) {
-                        record.defUpPercent = reader.readFloat()
+                        record.defUpPercent = cursor.nextF32()
                     }
                 }
                 17 -> {
                     checkColumn(column, "RelicDungeonStage.MHPUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "RelicDungeonStage.MHPUpPercent")
                     for (record in loaded) {
-                        record.mHPUpPercent = reader.readFloat()
+                        record.mHPUpPercent = cursor.nextF32()
                     }
                 }
                 18 -> {

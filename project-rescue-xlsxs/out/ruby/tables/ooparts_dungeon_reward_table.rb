@@ -126,8 +126,9 @@ module Rescue
           end
         when 8
           Sheetman.check_column(column, 'OopartsDungeonReward.IsFirstClear', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'OopartsDungeonReward.IsFirstClear')
           records.each do |record|
-            record.is_first_clear = reader.read_bool
+            record.is_first_clear = cursor.next_bool
           end
         when 9
           Sheetman.check_column(column, 'OopartsDungeonReward.FirstClearRewardType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])

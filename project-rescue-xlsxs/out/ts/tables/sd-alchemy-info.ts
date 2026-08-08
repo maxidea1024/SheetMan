@@ -305,9 +305,10 @@ export class SDAlchemyInfoTable {
           break
         case 7:
           sheetman.checkColumn(column, 'SDAlchemyInfo.MaterialType2Rate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.MaterialType2Rate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._materialType2Rate = reader.readFloat()
+            record._materialType2Rate = cursor.nextF32()
           }
           break
         case 8:

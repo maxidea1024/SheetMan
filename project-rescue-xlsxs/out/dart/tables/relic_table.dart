@@ -137,14 +137,16 @@ class RelicTable {
           break;
         case 6:
           checkColumn(column, 'Relic.RelicValue1', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicValue1');
           for (final record in loaded) {
-            record.relicValue1 = reader.readFloat();
+            record.relicValue1 = cursor.nextF32();
           }
           break;
         case 7:
           checkColumn(column, 'Relic.RelicIncValue1', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicIncValue1');
           for (final record in loaded) {
-            record.relicIncValue1 = reader.readFloat();
+            record.relicIncValue1 = cursor.nextF32();
           }
           break;
         case 8:
@@ -156,14 +158,16 @@ class RelicTable {
           break;
         case 9:
           checkColumn(column, 'Relic.RelicValue2', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicValue2');
           for (final record in loaded) {
-            record.relicValue2 = reader.readFloat();
+            record.relicValue2 = cursor.nextF32();
           }
           break;
         case 10:
           checkColumn(column, 'Relic.RelicIncValue2', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicIncValue2');
           for (final record in loaded) {
-            record.relicIncValue2 = reader.readFloat();
+            record.relicIncValue2 = cursor.nextF32();
           }
           break;
         case 11:
@@ -175,14 +179,16 @@ class RelicTable {
           break;
         case 12:
           checkColumn(column, 'Relic.RelicValue3', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicValue3');
           for (final record in loaded) {
-            record.relicValue3 = reader.readFloat();
+            record.relicValue3 = cursor.nextF32();
           }
           break;
         case 13:
           checkColumn(column, 'Relic.RelicIncValue3', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicIncValue3');
           for (final record in loaded) {
-            record.relicIncValue3 = reader.readFloat();
+            record.relicIncValue3 = cursor.nextF32();
           }
           break;
         case 14:

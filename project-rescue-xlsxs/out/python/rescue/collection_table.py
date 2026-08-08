@@ -132,8 +132,9 @@ class CollectionTable:
                     record.reward_stat_type1 = StatType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "Collection.RewardStatRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.RewardStatRate")
                 for record in records:
-                    record.reward_stat_rate = reader.read_float()
+                    record.reward_stat_rate = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "Collection.RewardStatType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Collection.RewardStatType2")

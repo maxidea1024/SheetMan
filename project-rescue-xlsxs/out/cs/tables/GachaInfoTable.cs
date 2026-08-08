@@ -425,19 +425,21 @@ namespace Rescue.Tables
 
                     case 12:
                         ScbTable.CheckColumn(column, "GachaInfo.EnableReset", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.EnableReset");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._enableReset);
+                            record._enableReset = cursor.NextBool();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "GachaInfo.IsSharedCounter", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.IsSharedCounter");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isSharedCounter);
+                            record._isSharedCounter = cursor.NextBool();
                         }
                         break;
 
@@ -463,19 +465,21 @@ namespace Rescue.Tables
 
                     case 16:
                         ScbTable.CheckColumn(column, "GachaInfo.IsSingle", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.IsSingle");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isSingle);
+                            record._isSingle = cursor.NextBool();
                         }
                         break;
 
                     case 17:
                         ScbTable.CheckColumn(column, "GachaInfo.IsTen", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.IsTen");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isTen);
+                            record._isTen = cursor.NextBool();
                         }
                         break;
 
@@ -531,10 +535,11 @@ namespace Rescue.Tables
 
                     case 23:
                         ScbTable.CheckColumn(column, "GachaInfo.EnableSkip", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaInfo.EnableSkip");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._enableSkip);
+                            record._enableSkip = cursor.NextBool();
                         }
                         break;
 

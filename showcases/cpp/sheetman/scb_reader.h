@@ -152,6 +152,26 @@ constexpr std::uint8_t kKindScalar = 0;
 constexpr std::uint8_t kKindFixedArray = 1;
 constexpr std::uint8_t kKindVarArray = 2;
 
+/// The little-endian scalars, read out of bytes the caller already holds.
+///
+/// Free functions rather than reader members because a dictionary entry is read
+/// long after the cursor moved past it: the bytes are kept and turned into a value
+/// only when a row asks. ScbReader's own reads are these plus a bounds check and an
+/// advance, so a value taken from a dictionary and one taken from a raw block go
+/// through the same arithmetic.
+inline std::uint32_t load_fixed32(const std::uint8_t* at) {
+  return static_cast<std::uint32_t>(at[0]) | (static_cast<std::uint32_t>(at[1]) << 8) |
+         (static_cast<std::uint32_t>(at[2]) << 16) | (static_cast<std::uint32_t>(at[3]) << 24);
+}
+
+inline std::uint64_t load_fixed64(const std::uint8_t* at) {
+  std::uint64_t value = 0;
+  for (int i = 0; i < 8; ++i)
+    value |= static_cast<std::uint64_t>(at[static_cast<std::size_t>(i)]) << (8 * i);
+
+  return value;
+}
+
 class ScbReader {
  public:
   ScbReader(const std::uint8_t* data, std::size_t length)
@@ -171,10 +191,7 @@ class ScbReader {
   std::uint32_t read_fixed32() {
     require(4);
 
-    const std::uint32_t value = static_cast<std::uint32_t>(data_[position_ + 0]) |
-                                (static_cast<std::uint32_t>(data_[position_ + 1]) << 8) |
-                                (static_cast<std::uint32_t>(data_[position_ + 2]) << 16) |
-                                (static_cast<std::uint32_t>(data_[position_ + 3]) << 24);
+    const std::uint32_t value = load_fixed32(data_ + position_);
     position_ += 4;
     return value;
   }
@@ -182,12 +199,18 @@ class ScbReader {
   std::uint64_t read_fixed64() {
     require(8);
 
-    std::uint64_t value = 0;
-    for (int i = 0; i < 8; ++i)
-      value |= static_cast<std::uint64_t>(data_[position_ + static_cast<std::size_t>(i)]) << (8 * i);
-
+    const std::uint64_t value = load_fixed64(data_ + position_);
     position_ += 8;
     return value;
+  }
+
+  /// Copies bytes out without interpreting them: a fixed-width dictionary entry, or
+  /// the tail of a front-coded one. The caller decides later what they mean.
+  void read_bytes(std::uint8_t* destination, std::size_t count) {
+    require(count);
+
+    if (count > 0) std::memcpy(destination, data_ + position_, count);
+    position_ += count;
   }
 
   std::uint32_t read_varint32() {
@@ -351,6 +374,8 @@ constexpr std::uint8_t kEncodingRle = 3;
 constexpr std::uint8_t kEncodingDeltaRle = 4;
 constexpr std::uint8_t kEncodingDict = 5;
 constexpr std::uint8_t kEncodingDictRle = 6;
+constexpr std::uint8_t kEncodingDictFront = 7;
+constexpr std::uint8_t kEncodingDictFrontRle = 8;
 
 // One column as the file describes it.
 struct Column {
@@ -454,14 +479,24 @@ inline bool encoding_supported(const Column& column) {
   if (column.kind != kKindScalar) return false;
 
   switch (column.element) {
+    case kElementBool:
     case kElementVarint:
       return column.encoding == kEncodingRle;
 
     case kElementI32:
       return column.encoding >= kEncodingVarint && column.encoding <= kEncodingDeltaRle;
 
-    case kElementString:
+    // The dictionary is parameterized by element, so these three reach it with
+    // entries that are simply their own raw bytes.
+    case kElementI64:
+    case kElementF32:
+    case kElementF64:
       return column.encoding == kEncodingDict || column.encoding == kEncodingDictRle;
+
+    // And a string dictionary can additionally be front coded, which is meaningless
+    // for a fixed-width element and refused for one.
+    case kElementString:
+      return column.encoding >= kEncodingDict && column.encoding <= kEncodingDictFrontRle;
 
     default:
       return false;
@@ -517,17 +552,41 @@ class ScbColumnCursor {
         element_(column.element),
         encoding_(column.encoding),
         rows_remaining_(row_count) {
-    if (encoding_ == kEncodingDict || encoding_ == kEncodingDictRle) {
-      const std::int32_t count = reader.read_counter32();
-      if (count < 0) {
-        throw ScbError(std::string(field_name) + ": the dictionary entry count is negative");
-      }
+    const bool plain_dictionary = encoding_ == kEncodingDict || encoding_ == kEncodingDictRle;
 
+    const bool front_dictionary =
+        encoding_ == kEncodingDictFront || encoding_ == kEncodingDictFrontRle;
+
+    if (!plain_dictionary && !front_dictionary) return;
+
+    const std::int32_t count = reader.read_counter32();
+    if (count < 0) {
+      throw ScbError(std::string(field_name) + ": the dictionary entry count is negative");
+    }
+
+    if (front_dictionary) {
+      read_front_coded_dictionary(reader, count, field_name);
+      return;
+    }
+
+    if (element_ == kElementString) {
       dictionary_.resize(static_cast<std::size_t>(count));
 
       for (std::int32_t at = 0; at < count; ++at)
         reader.read(dictionary_[static_cast<std::size_t>(at)]);
+
+      return;
     }
+
+    // A fixed-width element: the entries are the value's own bytes, so they are taken
+    // as bytes and turned into values only when a row asks for one - which is what
+    // makes a dictionary value identical to the one a raw block would have handed back.
+    value_width_ = element_ == kElementF32 ? 4 : 8;
+    value_dictionary_.resize(static_cast<std::size_t>(count) * value_width_);
+
+    // Read in one go: the entries are adjacent and fixed width, so the block is the
+    // concatenation of them.
+    reader.read_bytes(value_dictionary_.data(), value_dictionary_.size());
   }
 
   /// The next int32 - which also serves enums, and reference indexes.
@@ -585,32 +644,71 @@ class ScbColumnCursor {
     }
   }
 
-  /// An int64 member: an i64 column is always raw, anything narrower decodes as int32.
+  /// An int64 member: from an i64 column raw or through its dictionary, and from
+  /// anything narrower by decoding an int32 and widening it.
   std::int64_t next_i64() {
-    if (element_ == kElementI64) {
-      std::int64_t exact = 0;
-      reader_.read(exact);
-      return exact;
-    }
+    if (element_ != kElementI64) return next_i32();
 
-    return next_i32();
+    if (has_value_dictionary())
+      return static_cast<std::int64_t>(load_fixed64(next_value_entry()));
+
+    --rows_remaining_;
+
+    std::int64_t exact = 0;
+    reader_.read(exact);
+    return exact;
   }
 
-  /// A double member: float columns are always raw, an i32 column decodes then widens.
+  /// A float member: raw, or the dictionary entry's exact bit pattern.
+  float next_f32() {
+    if (has_value_dictionary()) {
+      const std::uint32_t bits = load_fixed32(next_value_entry());
+
+      float value = 0.0f;
+      std::memcpy(&value, &bits, sizeof(value));
+      return value;
+    }
+
+    --rows_remaining_;
+
+    float value = 0.0f;
+    reader_.read(value);
+    return value;
+  }
+
+  /// A double member: from f64 or f32 - either of them raw or dictionary-encoded -
+  /// and from an i32 column by decoding and widening.
   double next_f64() {
     if (element_ == kElementF64) {
+      if (has_value_dictionary()) {
+        const std::uint64_t bits = load_fixed64(next_value_entry());
+
+        double exact = 0.0;
+        std::memcpy(&exact, &bits, sizeof(exact));
+        return exact;
+      }
+
+      --rows_remaining_;
+
       double exact = 0.0;
       reader_.read(exact);
       return exact;
     }
 
-    if (element_ == kElementF32) {
-      float single = 0.0f;
-      reader_.read(single);
-      return single;
-    }
+    if (element_ == kElementF32) return next_f32();
 
     return next_i32();
+  }
+
+  /// A bool member: one byte raw, or a run of them.
+  bool next_bool() {
+    if (encoding_ == kEncodingRle) return next_i32() != 0;
+
+    --rows_remaining_;
+
+    bool value = false;
+    reader_.read(value);
+    return value;
   }
 
   /// The next string - a copy of the dictionary's entry where the block has one.
@@ -625,9 +723,10 @@ class ScbColumnCursor {
       }
 
       case kEncodingDict:
+      case kEncodingDictFront:
         return dictionary_entry(reader_.read_counter32());
 
-      default: {  // kEncodingDictRle
+      default: {  // kEncodingDictRle and kEncodingDictFrontRle
         if (run_remaining_ == 0) read_run();
 
         --run_remaining_;
@@ -637,6 +736,87 @@ class ScbColumnCursor {
   }
 
  private:
+  /// Whether the block carried a dictionary of fixed-width entries.
+  ///
+  /// The width, not the byte count: a dictionary of no entries is still a dictionary,
+  /// and a row asking one for a value has to be told its index is out of range rather
+  /// than fall through to a raw read that would misinterpret the index stream.
+  bool has_value_dictionary() const { return value_width_ != 0; }
+
+  /// A sorted dictionary whose entries state only what they do not share with the
+  /// entry before them.
+  ///
+  /// Decoded into whole strings here rather than kept folded, because a row wants a
+  /// string and the folding was only ever about the bytes on disk. The scratch buffer
+  /// grows to the longest entry and is reused, so what is allocated is the strings
+  /// themselves - one per distinct value, which is the point.
+  void read_front_coded_dictionary(ScbReader& reader, std::int32_t count,
+                                   const char* field_name) {
+    dictionary_.resize(static_cast<std::size_t>(count));
+
+    std::vector<std::uint8_t> scratch(64);
+    std::int32_t previous_length = 0;
+
+    for (std::int32_t at = 0; at < count; ++at) {
+      const std::int32_t shared = reader.read_counter32();
+      const std::int32_t rest = reader.read_counter32();
+
+      if (shared < 0 || rest < 0 || shared > previous_length) {
+        throw ScbError(std::string(field_name) + ": dictionary entry " + std::to_string(at) +
+                       " shares " + std::to_string(shared) + " bytes with an entry of " +
+                       std::to_string(previous_length));
+      }
+
+      const std::int32_t length = shared + rest;
+
+      // Signed, so a length that overflowed int32 does not become an enormous
+      // capacity; the read below refuses it by running out of bytes instead.
+      if (length > static_cast<std::int32_t>(scratch.size())) {
+        std::size_t capacity = scratch.size();
+        while (capacity < static_cast<std::size_t>(length)) capacity *= 2;
+
+        // Resize keeps what is already there, which is the prefix this entry shares.
+        scratch.resize(capacity);
+      }
+
+      if (rest > 0) {
+        reader.read_bytes(scratch.data() + static_cast<std::size_t>(shared),
+                          static_cast<std::size_t>(rest));
+      }
+
+      dictionary_[static_cast<std::size_t>(at)].assign(
+          reinterpret_cast<const char*>(scratch.data()), static_cast<std::size_t>(length));
+
+      previous_length = length;
+    }
+  }
+
+  /// The bytes of the next row's dictionary entry, for a fixed-width element.
+  const std::uint8_t* next_value_entry() {
+    --rows_remaining_;
+
+    std::int32_t index = 0;
+
+    if (encoding_ == kEncodingDict) {
+      index = reader_.read_counter32();
+    } else {  // kEncodingDictRle; encoding_supported refused the front-coded ones here.
+      if (run_remaining_ == 0) read_run();
+
+      --run_remaining_;
+      index = run_value_;
+    }
+
+    const std::size_t count = value_dictionary_.size() / value_width_;
+
+    if (index < 0 || static_cast<std::size_t>(index) >= count) {
+      throw ScbError(std::string(field_name_) + ": dictionary index " + std::to_string(index) +
+                     " is out of range - the dictionary holds " + std::to_string(count) +
+                     " entries");
+    }
+
+    return value_dictionary_.data() + static_cast<std::size_t>(index) * value_width_;
+  }
+
   /// int32 addition modulo 2^32, matching the writer's wrapping subtraction.
   static std::int32_t wrapping_add(std::int32_t a, std::int32_t b) {
     return static_cast<std::int32_t>(static_cast<std::uint32_t>(a) +
@@ -674,7 +854,15 @@ class ScbColumnCursor {
   std::uint8_t encoding_;
 
   /// The block's dictionary, decoded once and handed out per row.
+  ///
+  /// One of the two is filled when the block has a dictionary at all, chosen by the
+  /// element: strings are decoded to values that rows then copy, and a fixed-width
+  /// element keeps its raw bytes so the value is reconstructed exactly as the raw
+  /// layout would have read it.
   std::vector<std::string> dictionary_;
+
+  std::vector<std::uint8_t> value_dictionary_;
+  std::size_t value_width_ = 0;
 
   // A run-length family's current run: what remains of it, and its value - which is
   // a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.

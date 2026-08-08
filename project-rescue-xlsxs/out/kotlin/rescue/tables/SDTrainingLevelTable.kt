@@ -150,26 +150,30 @@ class SDTrainingLevelTable {
                 }
                 6 -> {
                     checkColumn(column, "SDTrainingLevel.MHPGrowth", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.MHPGrowth")
                     for (record in loaded) {
-                        record.mHPGrowth = reader.readFloat()
+                        record.mHPGrowth = cursor.nextF32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDTrainingLevel.MHPTotal", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.MHPTotal")
                     for (record in loaded) {
-                        record.mHPTotal = reader.readFloat()
+                        record.mHPTotal = cursor.nextF32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "SDTrainingLevel.DEFGrowth", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.DEFGrowth")
                     for (record in loaded) {
-                        record.dEFGrowth = reader.readFloat()
+                        record.dEFGrowth = cursor.nextF32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "SDTrainingLevel.DEFTotal", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.DEFTotal")
                     for (record in loaded) {
-                        record.dEFTotal = reader.readFloat()
+                        record.dEFTotal = cursor.nextF32()
                     }
                 }
                 10 -> {

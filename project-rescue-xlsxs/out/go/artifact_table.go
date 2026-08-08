@@ -161,9 +161,10 @@ func (t *ArtifactTable) Read(filename string) error {
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Artifact.EquipStatRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.EquipStatRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EquipStatRate = reader.ReadFloat32()
+					r.EquipStatRate = cursor.NextF32()
 				}
 			}
 		case 8:
@@ -176,9 +177,10 @@ func (t *ArtifactTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "Artifact.CollectionVlaue", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.CollectionVlaue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CollectionVlaue = reader.ReadFloat32()
+					r.CollectionVlaue = cursor.NextF32()
 				}
 			}
 		case 10:

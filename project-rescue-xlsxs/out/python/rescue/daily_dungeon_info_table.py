@@ -142,8 +142,9 @@ class DailyDungeonInfoTable:
                     record.dungeon_buff_id = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "DailyDungeonInfo.BuffValueRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.BuffValueRate")
                 for record in records:
-                    record.buff_value_rate = reader.read_float()
+                    record.buff_value_rate = cursor.next_f32()
             elif column.tag == 11:
                 sheetman.check_column(column, "DailyDungeonInfo.EnterCurrencyValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyValue")

@@ -175,8 +175,9 @@ class SDTrainingInfoTable {
                 }
                 9 -> {
                     checkColumn(column, "SDTrainingInfo.IsLvReset", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.IsLvReset")
                     for (record in loaded) {
-                        record.isLvReset = reader.readBool()
+                        record.isLvReset = cursor.nextBool()
                     }
                 }
                 10 -> {

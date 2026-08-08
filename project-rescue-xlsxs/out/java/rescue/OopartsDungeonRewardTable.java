@@ -146,8 +146,9 @@ public final class OopartsDungeonRewardTable {
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "OopartsDungeonReward.IsFirstClear", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonReward.IsFirstClear");
                     for (OopartsDungeonRewardRecord record : loaded) {
-                        record.isFirstClear = reader.readBool();
+                        record.isFirstClear = cursor.nextBool();
                     }
                     break;
                 }

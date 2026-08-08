@@ -271,10 +271,11 @@ namespace Rescue.Tables
 
                     case 5:
                         ScbTable.CheckColumn(column, "GachaCharacterList.IsWishlist", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaCharacterList.IsWishlist");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isWishlist);
+                            record._isWishlist = cursor.NextBool();
                         }
                         break;
 

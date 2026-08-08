@@ -166,8 +166,9 @@ class SDContensInfoTable {
                 }
                 8 -> {
                     checkColumn(column, "SDContensInfo.EnableReset", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.EnableReset")
                     for (record in loaded) {
-                        record.enableReset = reader.readBool()
+                        record.enableReset = cursor.nextBool()
                     }
                 }
                 9 -> {

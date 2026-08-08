@@ -122,8 +122,9 @@ class GachaCharacterListTable {
           break;
         case 5:
           checkColumn(column, 'GachaCharacterList.IsWishlist', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaCharacterList.IsWishlist');
           for (final record in loaded) {
-            record.isWishlist = reader.readBool();
+            record.isWishlist = cursor.nextBool();
           }
           break;
         case 6:

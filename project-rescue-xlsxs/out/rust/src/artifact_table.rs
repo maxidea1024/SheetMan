@@ -153,8 +153,9 @@ impl ArtifactTable {
                 }
                 7 => {
                     sheetman::check_column(column, "Artifact.EquipStatRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.EquipStatRate")?;
                     for record in records.iter_mut() {
-                        record.equip_stat_rate = reader.read_f32()?;
+                        record.equip_stat_rate = cursor.next_f32()?;
                     }
                 }
                 8 => {
@@ -166,8 +167,9 @@ impl ArtifactTable {
                 }
                 9 => {
                     sheetman::check_column(column, "Artifact.CollectionVlaue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.CollectionVlaue")?;
                     for record in records.iter_mut() {
-                        record.collection_vlaue = reader.read_f32()?;
+                        record.collection_vlaue = cursor.next_f32()?;
                     }
                 }
                 10 => {

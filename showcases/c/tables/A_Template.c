@@ -111,11 +111,12 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader) {
     case 4:
       (void)sm_check_column(reader, column, "Template.Delete", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Template.Delete");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         A_TemplateRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->delete_);
+        (void)sm_cursor_next_bool(&cursor, &record->delete_);
       }
 
       break;

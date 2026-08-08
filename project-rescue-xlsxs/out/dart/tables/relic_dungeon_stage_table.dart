@@ -182,8 +182,9 @@ class RelicDungeonStageTable {
           break;
         case 11:
           checkColumn(column, 'RelicDungeonStage.SpawnNextTime', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'RelicDungeonStage.SpawnNextTime');
           for (final record in loaded) {
-            record.spawnNextTime = reader.readFloat();
+            record.spawnNextTime = cursor.nextF32();
           }
           break;
         case 12:
@@ -209,20 +210,23 @@ class RelicDungeonStageTable {
           break;
         case 15:
           checkColumn(column, 'RelicDungeonStage.AtkUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'RelicDungeonStage.AtkUpPercent');
           for (final record in loaded) {
-            record.atkUpPercent = reader.readFloat();
+            record.atkUpPercent = cursor.nextF32();
           }
           break;
         case 16:
           checkColumn(column, 'RelicDungeonStage.DefUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'RelicDungeonStage.DefUpPercent');
           for (final record in loaded) {
-            record.defUpPercent = reader.readFloat();
+            record.defUpPercent = cursor.nextF32();
           }
           break;
         case 17:
           checkColumn(column, 'RelicDungeonStage.MHPUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'RelicDungeonStage.MHPUpPercent');
           for (final record in loaded) {
-            record.mHPUpPercent = reader.readFloat();
+            record.mHPUpPercent = cursor.nextF32();
           }
           break;
         case 18:

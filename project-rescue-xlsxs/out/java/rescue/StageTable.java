@@ -149,8 +149,9 @@ public final class StageTable {
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "Stage.SpawnNextTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.SpawnNextTime");
                     for (StageRecord record : loaded) {
-                        record.spawnNextTime = reader.readFloat();
+                        record.spawnNextTime = cursor.nextF32();
                     }
                     break;
                 }
@@ -175,43 +176,49 @@ public final class StageTable {
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "Stage.AtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.AtkUpPercent");
                     for (StageRecord record : loaded) {
-                        record.atkUpPercent = reader.readFloat();
+                        record.atkUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "Stage.DefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.DefUpPercent");
                     for (StageRecord record : loaded) {
-                        record.defUpPercent = reader.readFloat();
+                        record.defUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "Stage.MHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.MHPUpPercent");
                     for (StageRecord record : loaded) {
-                        record.mHPUpPercent = reader.readFloat();
+                        record.mHPUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 14: {
                     ScbReader.checkColumn(column, "Stage.BossAtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.BossAtkUpPercent");
                     for (StageRecord record : loaded) {
-                        record.bossAtkUpPercent = reader.readFloat();
+                        record.bossAtkUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "Stage.BossDefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.BossDefUpPercent");
                     for (StageRecord record : loaded) {
-                        record.bossDefUpPercent = reader.readFloat();
+                        record.bossDefUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "Stage.BossMHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.BossMHPUpPercent");
                     for (StageRecord record : loaded) {
-                        record.bossMHPUpPercent = reader.readFloat();
+                        record.bossMHPUpPercent = cursor.nextF32();
                     }
                     break;
                 }

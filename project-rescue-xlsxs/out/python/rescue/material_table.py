@@ -117,8 +117,9 @@ class MaterialTable:
                     record.type_ = CurrencyType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Material.Stackable", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.Stackable")
                 for record in records:
-                    record.stackable = reader.read_bool()
+                    record.stackable = cursor.next_bool()
             elif column.tag == 7:
                 sheetman.check_column(column, "Material.MaxStack", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Material.MaxStack")

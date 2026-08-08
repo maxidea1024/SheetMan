@@ -116,16 +116,19 @@ class CharacterLevelTable:
                     record.accumulated_exp = cursor.next_i64()
             elif column.tag == 7:
                 sheetman.check_column(column, "CharacterLevel.ATKGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CharacterLevel.ATKGrowth")
                 for record in records:
-                    record.atk_growth = reader.read_float()
+                    record.atk_growth = cursor.next_f32()
             elif column.tag == 8:
                 sheetman.check_column(column, "CharacterLevel.DEFGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CharacterLevel.DEFGrowth")
                 for record in records:
-                    record.def_growth = reader.read_float()
+                    record.def_growth = cursor.next_f32()
             elif column.tag == 9:
                 sheetman.check_column(column, "CharacterLevel.HPGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CharacterLevel.HPGrowth")
                 for record in records:
-                    record.hp_growth = reader.read_float()
+                    record.hp_growth = cursor.next_f32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

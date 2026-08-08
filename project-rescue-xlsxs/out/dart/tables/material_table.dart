@@ -133,8 +133,9 @@ class MaterialTable {
           break;
         case 6:
           checkColumn(column, 'Material.Stackable', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.Stackable');
           for (final record in loaded) {
-            record.stackable = reader.readBool();
+            record.stackable = cursor.nextBool();
           }
           break;
         case 7:

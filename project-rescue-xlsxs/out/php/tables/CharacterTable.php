@@ -263,57 +263,65 @@ final class CharacterTable
 
                 case 12:
                     ScbReader::checkColumn($column, 'Character.MoveSpeed', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Character.MoveSpeed');
                     foreach ($records as $record) {
-                        $record->moveSpeed = $reader->readFloat();
+                        $record->moveSpeed = $cursor->nextF32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'Character.CritRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Character.CritRate');
                     foreach ($records as $record) {
-                        $record->critRate = $reader->readFloat();
+                        $record->critRate = $cursor->nextF32();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'Character.CritDmg', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Character.CritDmg');
                     foreach ($records as $record) {
-                        $record->critDmg = $reader->readFloat();
+                        $record->critDmg = $cursor->nextF32();
                     }
                     break;
 
                 case 15:
                     ScbReader::checkColumn($column, 'Character.SearchRange', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Character.SearchRange');
                     foreach ($records as $record) {
-                        $record->searchRange = $reader->readFloat();
+                        $record->searchRange = $cursor->nextF32();
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'Character.ReFindTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Character.ReFindTime');
                     foreach ($records as $record) {
-                        $record->reFindTime = $reader->readFloat();
+                        $record->reFindTime = $cursor->nextF32();
                     }
                     break;
 
                 case 17:
                     ScbReader::checkColumn($column, 'Character.MaxFollow', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Character.MaxFollow');
                     foreach ($records as $record) {
-                        $record->maxFollow = $reader->readFloat();
+                        $record->maxFollow = $cursor->nextF32();
                     }
                     break;
 
                 case 18:
                     ScbReader::checkColumn($column, 'Character.SizePrefab', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Character.SizePrefab');
                     foreach ($records as $record) {
-                        $record->sizePrefab = $reader->readFloat();
+                        $record->sizePrefab = $cursor->nextF32();
                     }
                     break;
 
                 case 19:
                     ScbReader::checkColumn($column, 'Character.IsUnlocked', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Character.IsUnlocked');
                     foreach ($records as $record) {
-                        $record->isUnlocked = $reader->readBool();
+                        $record->isUnlocked = $cursor->nextBool();
                     }
                     break;
 

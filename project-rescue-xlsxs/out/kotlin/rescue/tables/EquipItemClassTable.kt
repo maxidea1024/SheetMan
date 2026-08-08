@@ -191,74 +191,86 @@ class EquipItemClassTable {
                 }
                 9 -> {
                     checkColumn(column, "EquipItemClass.WeaponStatRate1", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.WeaponStatRate1")
                     for (record in loaded) {
-                        record.weaponStatRate1 = reader.readFloat()
+                        record.weaponStatRate1 = cursor.nextF32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "EquipItemClass.WeaponStatRate2", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.WeaponStatRate2")
                     for (record in loaded) {
-                        record.weaponStatRate2 = reader.readFloat()
+                        record.weaponStatRate2 = cursor.nextF32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "EquipItemClass.ArmorStatRate1", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.ArmorStatRate1")
                     for (record in loaded) {
-                        record.armorStatRate1 = reader.readFloat()
+                        record.armorStatRate1 = cursor.nextF32()
                     }
                 }
                 12 -> {
                     checkColumn(column, "EquipItemClass.ArmorStatRate2", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.ArmorStatRate2")
                     for (record in loaded) {
-                        record.armorStatRate2 = reader.readFloat()
+                        record.armorStatRate2 = cursor.nextF32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "EquipItemClass.GauntletStatRate1", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.GauntletStatRate1")
                     for (record in loaded) {
-                        record.gauntletStatRate1 = reader.readFloat()
+                        record.gauntletStatRate1 = cursor.nextF32()
                     }
                 }
                 14 -> {
                     checkColumn(column, "EquipItemClass.GauntletStatRate2", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.GauntletStatRate2")
                     for (record in loaded) {
-                        record.gauntletStatRate2 = reader.readFloat()
+                        record.gauntletStatRate2 = cursor.nextF32()
                     }
                 }
                 15 -> {
                     checkColumn(column, "EquipItemClass.BootsStatRate1", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.BootsStatRate1")
                     for (record in loaded) {
-                        record.bootsStatRate1 = reader.readFloat()
+                        record.bootsStatRate1 = cursor.nextF32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "EquipItemClass.BootsStatRate2", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.BootsStatRate2")
                     for (record in loaded) {
-                        record.bootsStatRate2 = reader.readFloat()
+                        record.bootsStatRate2 = cursor.nextF32()
                     }
                 }
                 17 -> {
                     checkColumn(column, "EquipItemClass.HelmetStatRate1", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.HelmetStatRate1")
                     for (record in loaded) {
-                        record.helmetStatRate1 = reader.readFloat()
+                        record.helmetStatRate1 = cursor.nextF32()
                     }
                 }
                 18 -> {
                     checkColumn(column, "EquipItemClass.HelmetStatRate2", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.HelmetStatRate2")
                     for (record in loaded) {
-                        record.helmetStatRate2 = reader.readFloat()
+                        record.helmetStatRate2 = cursor.nextF32()
                     }
                 }
                 19 -> {
                     checkColumn(column, "EquipItemClass.AccStatRate1", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.AccStatRate1")
                     for (record in loaded) {
-                        record.accStatRate1 = reader.readFloat()
+                        record.accStatRate1 = cursor.nextF32()
                     }
                 }
                 20 -> {
                     checkColumn(column, "EquipItemClass.AccStatRate2", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemClass.AccStatRate2")
                     for (record in loaded) {
-                        record.accStatRate2 = reader.readFloat()
+                        record.accStatRate2 = cursor.nextF32()
                     }
                 }
                 else ->

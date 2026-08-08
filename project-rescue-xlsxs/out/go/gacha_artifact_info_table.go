@@ -220,16 +220,18 @@ func (t *GachaArtifactInfoTable) Read(filename string) error {
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactInfo.EnableReset", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactInfo.EnableReset")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EnableReset = reader.ReadBool()
+					r.EnableReset = cursor.NextBool()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactInfo.IsSharedCounter", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactInfo.IsSharedCounter")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsSharedCounter = reader.ReadBool()
+					r.IsSharedCounter = cursor.NextBool()
 				}
 			}
 		case 14:
@@ -250,16 +252,18 @@ func (t *GachaArtifactInfoTable) Read(filename string) error {
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactInfo.IsSingle", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactInfo.IsSingle")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsSingle = reader.ReadBool()
+					r.IsSingle = cursor.NextBool()
 				}
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactInfo.IsTen", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactInfo.IsTen")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsTen = reader.ReadBool()
+					r.IsTen = cursor.NextBool()
 				}
 			}
 		case 18:
@@ -304,9 +308,10 @@ func (t *GachaArtifactInfoTable) Read(filename string) error {
 			}
 		case 23:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactInfo.EnableSkip", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactInfo.EnableSkip")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EnableSkip = reader.ReadBool()
+					r.EnableSkip = cursor.NextBool()
 				}
 			}
 		default:

@@ -238,9 +238,10 @@ func (t *SDDungeonRewardTable) Read(filename string) error {
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.IsPerfect", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.IsPerfect")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsPerfect = reader.ReadBool()
+					r.IsPerfect = cursor.NextBool()
 				}
 			}
 		case 16:
@@ -261,9 +262,10 @@ func (t *SDDungeonRewardTable) Read(filename string) error {
 			}
 		case 18:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.IsMinReward", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.IsMinReward")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsMinReward = reader.ReadBool()
+					r.IsMinReward = cursor.NextBool()
 				}
 			}
 		case 19:

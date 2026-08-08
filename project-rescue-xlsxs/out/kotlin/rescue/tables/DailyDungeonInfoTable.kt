@@ -192,8 +192,9 @@ class DailyDungeonInfoTable {
                 }
                 10 -> {
                     checkColumn(column, "DailyDungeonInfo.BuffValueRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.BuffValueRate")
                     for (record in loaded) {
-                        record.buffValueRate = reader.readFloat()
+                        record.buffValueRate = cursor.nextF32()
                     }
                 }
                 11 -> {

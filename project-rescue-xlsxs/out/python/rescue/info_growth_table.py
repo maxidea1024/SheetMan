@@ -118,8 +118,9 @@ class InfoGrowthTable:
                     record.growth_type = GrowthType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "InfoGrowth.Reset", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "InfoGrowth.Reset")
                 for record in records:
-                    record.reset = reader.read_bool()
+                    record.reset = cursor.next_bool()
             elif column.tag == 7:
                 sheetman.check_column(column, "InfoGrowth.ResetCostType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "InfoGrowth.ResetCostType")

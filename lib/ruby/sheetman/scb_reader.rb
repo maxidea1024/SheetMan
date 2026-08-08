@@ -53,6 +53,8 @@ module Sheetman
   ENCODING_DELTA_RLE = 4
   ENCODING_DICT = 5
   ENCODING_DICT_RLE = 6
+  ENCODING_DICT_FRONT = 7
+  ENCODING_DICT_FRONT_RLE = 8
 
   # One column as the file describes it.
   Column = Struct.new(:tag, :element, :kind, :encoding, :count, :byte_length)
@@ -191,6 +193,15 @@ module Sheetman
       take(8).unpack1('E')
     end
 
+    # Bytes, uninterpreted.
+    #
+    # What a column cursor reads a dictionary with: a fixed-width entry it keeps as the
+    # value's own bytes, and the bytes a front-coded entry states for itself. Bounds
+    # checked like every other read, because it goes through the same one place.
+    def read_bytes(count)
+      take(count)
+    end
+
     # A length-prefixed UTF-8 string.
     def read_string
       length = read_counter32
@@ -299,13 +310,32 @@ module Sheetman
       @rows_remaining = row_count
 
       # The block's dictionary, decoded once and handed out per row.
-      @dictionary =
-        if @encoding == ENCODING_DICT || @encoding == ENCODING_DICT_RLE
-          count = reader.read_counter32
-          raise ScbError, "#{field_name}: the dictionary entry count is negative" if count.negative?
+      #
+      # One of the two is set when the block has a dictionary at all, chosen by the
+      # element: strings are decoded to instances that rows then share, and a
+      # fixed-width element keeps its raw bytes so the value is reconstructed exactly
+      # as the raw layout would have read it.
+      @dictionary = nil
+      @value_dictionary = nil
 
-          Array.new(count) { reader.read_string }
-        end
+      plain_dictionary = @encoding == ENCODING_DICT || @encoding == ENCODING_DICT_RLE
+      front_dictionary = @encoding == ENCODING_DICT_FRONT || @encoding == ENCODING_DICT_FRONT_RLE
+
+      return unless plain_dictionary || front_dictionary
+
+      count = reader.read_counter32
+      raise ScbError, "#{field_name}: the dictionary entry count is negative" if count.negative?
+
+      if front_dictionary
+        @dictionary = read_front_coded_dictionary(reader, count, field_name)
+      elsif @element == ELEMENT_STRING
+        @dictionary = Array.new(count) { reader.read_string }
+      else
+        # A fixed-width element: the entries are the value's own bytes, so they are
+        # taken as bytes and turned into values only when a row asks for one.
+        width = @element == ELEMENT_F32 ? 4 : 8
+        @value_dictionary = Array.new(count) { reader.read_bytes(width) }
+      end
     end
 
     # The next int32 - which also serves enums, and reference indexes.
@@ -347,18 +377,49 @@ module Sheetman
       end
     end
 
-    # A 64-bit member: an i64 column is always raw, anything narrower decodes as int32.
+    # A 64-bit member: from an i64 column raw or through its dictionary, and from
+    # anything narrower by decoding an int32 and widening it.
     def next_i64
-      @element == ELEMENT_I64 ? @reader.read_int64 : next_i32
+      return next_i32 unless @element == ELEMENT_I64
+      return next_value_entry.unpack1('q<') if @value_dictionary
+
+      @rows_remaining -= 1
+      @reader.read_int64
     end
 
-    # A float member: float columns are always raw, an i32 column decodes then widens.
+    # A single-precision member: raw, or the dictionary entry's exact bit pattern.
+    #
+    # Either way the 32 stored bits widen to a Float, which is a double - the value is
+    # the one stored, held in a wider type.
+    def next_f32
+      return next_value_entry.unpack1('e') if @value_dictionary
+
+      @rows_remaining -= 1
+      @reader.read_float
+    end
+
+    # A float member: from f64 or f32 - either of them raw or dictionary-encoded - and
+    # from an i32 column by decoding and widening.
     def next_f64
       case @element
-      when ELEMENT_F64 then @reader.read_double
-      when ELEMENT_F32 then @reader.read_float
-      else next_i32
+      when ELEMENT_F64
+        return next_value_entry.unpack1('E') if @value_dictionary
+
+        @rows_remaining -= 1
+        @reader.read_double
+      when ELEMENT_F32
+        next_f32
+      else
+        next_i32
       end
+    end
+
+    # A bool member: one byte raw, or a run of them.
+    def next_bool
+      return next_i32 != 0 if @encoding == ENCODING_RLE
+
+      @rows_remaining -= 1
+      @reader.read_bool
     end
 
     # The next string - the dictionary's instance where the block has one.
@@ -368,9 +429,9 @@ module Sheetman
       case @encoding
       when ENCODING_RAW
         @reader.read_string
-      when ENCODING_DICT
+      when ENCODING_DICT, ENCODING_DICT_FRONT
         dictionary_entry(@reader.read_counter32)
-      else # ENCODING_DICT_RLE
+      else # ENCODING_DICT_RLE and ENCODING_DICT_FRONT_RLE
         read_run if @run_remaining.zero?
 
         @run_remaining -= 1
@@ -379,6 +440,57 @@ module Sheetman
     end
 
     private
+
+    # A sorted dictionary whose entries state only what they do not share with the
+    # entry before them.
+    #
+    # Decoded into whole strings here rather than kept folded, because a row wants a
+    # string and the folding was only ever about the bytes on disk. The allocations
+    # are the strings themselves - one per distinct value, which is the point.
+    def read_front_coded_dictionary(reader, count, field_name)
+      previous = ''.b
+
+      Array.new(count) do |at|
+        shared = reader.read_counter32
+        rest = reader.read_counter32
+
+        if shared.negative? || rest.negative? || shared > previous.bytesize
+          raise ScbError,
+                "#{field_name}: dictionary entry #{at} shares #{shared} bytes with an " \
+                "entry of #{previous.bytesize}"
+        end
+
+        # The bytes shared with the entry before, then the ones this entry states.
+        entry = previous.byteslice(0, shared)
+        entry << reader.read_bytes(rest) if rest.positive?
+        previous = entry
+
+        entry.dup.force_encoding(Encoding::UTF_8)
+      end
+    end
+
+    # The bytes of the next row's dictionary entry, for a fixed-width element.
+    def next_value_entry
+      @rows_remaining -= 1
+
+      index =
+        if @encoding == ENCODING_DICT
+          @reader.read_counter32
+        else
+          read_run if @run_remaining.zero?
+
+          @run_remaining -= 1
+          @run_value
+        end
+
+      if index.negative? || index >= @value_dictionary.length
+        raise ScbError,
+              "#{@field_name}: dictionary index #{index} is out of range - the " \
+              "dictionary holds #{@value_dictionary.length} entries"
+      end
+
+      @value_dictionary[index]
+    end
 
     def read_run
       length = @reader.read_counter32
@@ -512,12 +624,18 @@ module Sheetman
     return false unless column.kind == KIND_SCALAR
 
     case column.element
-    when ELEMENT_VARINT
+    when ELEMENT_BOOL, ELEMENT_VARINT
       column.encoding == ENCODING_RLE
     when ELEMENT_I32
       column.encoding >= ENCODING_VARINT && column.encoding <= ENCODING_DELTA_RLE
-    when ELEMENT_STRING
+    # The dictionary is parameterized by element, so these three reach it with
+    # entries that are simply their own raw bytes.
+    when ELEMENT_I64, ELEMENT_F32, ELEMENT_F64
       column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE
+    # And a string dictionary can additionally be front coded, which is meaningless
+    # for a fixed-width element and refused for one.
+    when ELEMENT_STRING
+      column.encoding >= ENCODING_DICT && column.encoding <= ENCODING_DICT_FRONT_RLE
     else
       false
     end

@@ -114,23 +114,27 @@ module Rescue
           end
         when 6
           Sheetman.check_column(column, 'SDTrainingLevel.MHPGrowth', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.MHPGrowth')
           records.each do |record|
-            record.mhp_growth = reader.read_float
+            record.mhp_growth = cursor.next_f32
           end
         when 7
           Sheetman.check_column(column, 'SDTrainingLevel.MHPTotal', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.MHPTotal')
           records.each do |record|
-            record.mhp_total = reader.read_float
+            record.mhp_total = cursor.next_f32
           end
         when 8
           Sheetman.check_column(column, 'SDTrainingLevel.DEFGrowth', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.DEFGrowth')
           records.each do |record|
-            record.def_growth = reader.read_float
+            record.def_growth = cursor.next_f32
           end
         when 9
           Sheetman.check_column(column, 'SDTrainingLevel.DEFTotal', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.DEFTotal')
           records.each do |record|
-            record.def_total = reader.read_float
+            record.def_total = cursor.next_f32
           end
         when 10
           Sheetman.check_column(column, 'SDTrainingLevel.CommonUnlockStageID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

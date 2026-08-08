@@ -110,8 +110,9 @@ module Rescue
           end
         when 6
           Sheetman.check_column(column, 'CostCurveRange.AddMultiplier', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurveRange.AddMultiplier')
           records.each do |record|
-            record.add_multiplier = reader.read_float
+            record.add_multiplier = cursor.next_f32
           end
         else
           # A column added after this code was generated.

@@ -149,8 +149,9 @@ final class CostCurveRangeTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'CostCurveRange.AddMultiplier', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurveRange.AddMultiplier');
                     foreach ($records as $record) {
-                        $record->addMultiplier = $reader->readFloat();
+                        $record->addMultiplier = $cursor->nextF32();
                     }
                     break;
 

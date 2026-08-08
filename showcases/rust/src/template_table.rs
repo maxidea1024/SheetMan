@@ -149,8 +149,9 @@ impl TemplateTable {
                 }
                 4 => {
                     sheetman::check_column(column, "Template.Delete", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Template.Delete")?;
                     for record in records.iter_mut() {
-                        record.delete = reader.read_bool()?;
+                        record.delete = cursor.next_bool()?;
                     }
                 }
                 5 => {

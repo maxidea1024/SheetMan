@@ -293,9 +293,10 @@ export class SDTrainingInfoTable {
           break
         case 9:
           sheetman.checkColumn(column, 'SDTrainingInfo.IsLvReset', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingInfo.IsLvReset')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isLvReset = reader.readBool()
+            record._isLvReset = cursor.nextBool()
           }
           break
         case 10:

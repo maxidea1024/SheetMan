@@ -130,29 +130,33 @@ public final class SDTrainingLevelTable {
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.MHPGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.MHPGrowth");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.mHPGrowth = reader.readFloat();
+                        record.mHPGrowth = cursor.nextF32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.MHPTotal", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.MHPTotal");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.mHPTotal = reader.readFloat();
+                        record.mHPTotal = cursor.nextF32();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.DEFGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.DEFGrowth");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.dEFGrowth = reader.readFloat();
+                        record.dEFGrowth = cursor.nextF32();
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.DEFTotal", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.DEFTotal");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.dEFTotal = reader.readFloat();
+                        record.dEFTotal = cursor.nextF32();
                     }
                     break;
                 }

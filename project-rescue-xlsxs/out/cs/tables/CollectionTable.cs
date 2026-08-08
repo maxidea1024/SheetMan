@@ -318,10 +318,11 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "Collection.RewardStatRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Collection.RewardStatRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._rewardStatRate);
+                            record._rewardStatRate = cursor.NextF32();
                         }
                         break;
 

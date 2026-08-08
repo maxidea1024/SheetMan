@@ -93,17 +93,41 @@ public static class ScbFormat
     /// <summary>First value, then counter32 deltas (32-bit wrapping). i32 scalars.</summary>
     public const byte EncodingDelta = 2;
 
-    /// <summary>(counter32 run length, counter32 value) pairs. i32 and varint scalars.</summary>
+    /// <summary>(counter32 run length, counter32 value) pairs. i32, varint and bool scalars.</summary>
     public const byte EncodingRle = 3;
 
     /// <summary>First value, then the delta stream run-length encoded. i32 scalars.</summary>
     public const byte EncodingDeltaRle = 4;
 
-    /// <summary>A dictionary of the distinct strings, then a counter32 index per row.</summary>
+    /// <summary>
+    /// A dictionary of the distinct values, then a counter32 index per row.
+    /// </summary>
+    /// <remarks>
+    /// Parameterized by element: an entry is the value in its raw form, so a string
+    /// dictionary holds length-prefixed UTF-8 and an f32 dictionary holds four bytes.
+    /// That is why the dictionary reaches past strings without costing another encoding
+    /// number - and it needs to, because a column of floats in design data is a handful
+    /// of values repeated, whatever a single float looks like.
+    /// </remarks>
     public const byte EncodingDict = 5;
 
     /// <summary>The dictionary, then the index stream run-length encoded.</summary>
     public const byte EncodingDictRle = 6;
+
+    /// <summary>
+    /// A sorted string dictionary whose entries state only what they do not share with
+    /// the entry before, then a counter32 index per row.
+    /// </summary>
+    /// <remarks>
+    /// Because design-data strings are rarely duplicates of each other and very often
+    /// neighbours: `02_CRI_DAMAGE_FLOAT` beside `02_CRI_INT`, one skill tier beside the
+    /// next. A dictionary still has to hold every one of them, but not every byte of
+    /// every one - and on real data that is where most of the remaining bytes were.
+    /// </remarks>
+    public const byte EncodingDictFront = 7;
+
+    /// <summary>The front-coded dictionary, then the index stream run-length encoded.</summary>
+    public const byte EncodingDictFrontRle = 8;
 
     /// <summary>The wire byte: element in the low four bits, kind in the next two.</summary>
     public static byte Wire(byte element, byte kind) => (byte)(element | (kind << 4));

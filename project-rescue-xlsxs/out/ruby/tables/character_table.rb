@@ -177,43 +177,51 @@ module Rescue
           end
         when 12
           Sheetman.check_column(column, 'Character.MoveSpeed', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.MoveSpeed')
           records.each do |record|
-            record.move_speed = reader.read_float
+            record.move_speed = cursor.next_f32
           end
         when 13
           Sheetman.check_column(column, 'Character.CritRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.CritRate')
           records.each do |record|
-            record.crit_rate = reader.read_float
+            record.crit_rate = cursor.next_f32
           end
         when 14
           Sheetman.check_column(column, 'Character.CritDmg', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.CritDmg')
           records.each do |record|
-            record.crit_dmg = reader.read_float
+            record.crit_dmg = cursor.next_f32
           end
         when 15
           Sheetman.check_column(column, 'Character.SearchRange', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.SearchRange')
           records.each do |record|
-            record.search_range = reader.read_float
+            record.search_range = cursor.next_f32
           end
         when 16
           Sheetman.check_column(column, 'Character.ReFindTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.ReFindTime')
           records.each do |record|
-            record.re_find_time = reader.read_float
+            record.re_find_time = cursor.next_f32
           end
         when 17
           Sheetman.check_column(column, 'Character.MaxFollow', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.MaxFollow')
           records.each do |record|
-            record.max_follow = reader.read_float
+            record.max_follow = cursor.next_f32
           end
         when 18
           Sheetman.check_column(column, 'Character.SizePrefab', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.SizePrefab')
           records.each do |record|
-            record.size_prefab = reader.read_float
+            record.size_prefab = cursor.next_f32
           end
         when 19
           Sheetman.check_column(column, 'Character.IsUnlocked', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.IsUnlocked')
           records.each do |record|
-            record.is_unlocked = reader.read_bool
+            record.is_unlocked = cursor.next_bool
           end
         when 20
           Sheetman.check_column(column, 'Character.BasicAttack1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

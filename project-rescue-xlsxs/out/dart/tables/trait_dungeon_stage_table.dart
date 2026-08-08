@@ -182,8 +182,9 @@ class TraitDungeonStageTable {
           break;
         case 11:
           checkColumn(column, 'TraitDungeonStage.SpawnNextTime', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'TraitDungeonStage.SpawnNextTime');
           for (final record in loaded) {
-            record.spawnNextTime = reader.readFloat();
+            record.spawnNextTime = cursor.nextF32();
           }
           break;
         case 12:
@@ -209,20 +210,23 @@ class TraitDungeonStageTable {
           break;
         case 15:
           checkColumn(column, 'TraitDungeonStage.AtkUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'TraitDungeonStage.AtkUpPercent');
           for (final record in loaded) {
-            record.atkUpPercent = reader.readFloat();
+            record.atkUpPercent = cursor.nextF32();
           }
           break;
         case 16:
           checkColumn(column, 'TraitDungeonStage.DefUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'TraitDungeonStage.DefUpPercent');
           for (final record in loaded) {
-            record.defUpPercent = reader.readFloat();
+            record.defUpPercent = cursor.nextF32();
           }
           break;
         case 17:
           checkColumn(column, 'TraitDungeonStage.MHPUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'TraitDungeonStage.MHPUpPercent');
           for (final record in loaded) {
-            record.mHPUpPercent = reader.readFloat();
+            record.mHPUpPercent = cursor.nextF32();
           }
           break;
         case 18:

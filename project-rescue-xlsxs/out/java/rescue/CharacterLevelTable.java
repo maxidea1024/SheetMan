@@ -138,22 +138,25 @@ public final class CharacterLevelTable {
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "CharacterLevel.ATKGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterLevel.ATKGrowth");
                     for (CharacterLevelRecord record : loaded) {
-                        record.aTKGrowth = reader.readFloat();
+                        record.aTKGrowth = cursor.nextF32();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "CharacterLevel.DEFGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterLevel.DEFGrowth");
                     for (CharacterLevelRecord record : loaded) {
-                        record.dEFGrowth = reader.readFloat();
+                        record.dEFGrowth = cursor.nextF32();
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "CharacterLevel.HPGrowth", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterLevel.HPGrowth");
                     for (CharacterLevelRecord record : loaded) {
-                        record.hPGrowth = reader.readFloat();
+                        record.hPGrowth = cursor.nextF32();
                     }
                     break;
                 }

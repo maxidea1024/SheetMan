@@ -154,85 +154,97 @@ public final class EquipItemClassTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "EquipItemClass.WeaponStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.WeaponStatRate1");
                     for (EquipItemClassRecord record : loaded) {
-                        record.weaponStatRate1 = reader.readFloat();
+                        record.weaponStatRate1 = cursor.nextF32();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "EquipItemClass.WeaponStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.WeaponStatRate2");
                     for (EquipItemClassRecord record : loaded) {
-                        record.weaponStatRate2 = reader.readFloat();
+                        record.weaponStatRate2 = cursor.nextF32();
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "EquipItemClass.ArmorStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.ArmorStatRate1");
                     for (EquipItemClassRecord record : loaded) {
-                        record.armorStatRate1 = reader.readFloat();
+                        record.armorStatRate1 = cursor.nextF32();
                     }
                     break;
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "EquipItemClass.ArmorStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.ArmorStatRate2");
                     for (EquipItemClassRecord record : loaded) {
-                        record.armorStatRate2 = reader.readFloat();
+                        record.armorStatRate2 = cursor.nextF32();
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "EquipItemClass.GauntletStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.GauntletStatRate1");
                     for (EquipItemClassRecord record : loaded) {
-                        record.gauntletStatRate1 = reader.readFloat();
+                        record.gauntletStatRate1 = cursor.nextF32();
                     }
                     break;
                 }
                 case 14: {
                     ScbReader.checkColumn(column, "EquipItemClass.GauntletStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.GauntletStatRate2");
                     for (EquipItemClassRecord record : loaded) {
-                        record.gauntletStatRate2 = reader.readFloat();
+                        record.gauntletStatRate2 = cursor.nextF32();
                     }
                     break;
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "EquipItemClass.BootsStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.BootsStatRate1");
                     for (EquipItemClassRecord record : loaded) {
-                        record.bootsStatRate1 = reader.readFloat();
+                        record.bootsStatRate1 = cursor.nextF32();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "EquipItemClass.BootsStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.BootsStatRate2");
                     for (EquipItemClassRecord record : loaded) {
-                        record.bootsStatRate2 = reader.readFloat();
+                        record.bootsStatRate2 = cursor.nextF32();
                     }
                     break;
                 }
                 case 17: {
                     ScbReader.checkColumn(column, "EquipItemClass.HelmetStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.HelmetStatRate1");
                     for (EquipItemClassRecord record : loaded) {
-                        record.helmetStatRate1 = reader.readFloat();
+                        record.helmetStatRate1 = cursor.nextF32();
                     }
                     break;
                 }
                 case 18: {
                     ScbReader.checkColumn(column, "EquipItemClass.HelmetStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.HelmetStatRate2");
                     for (EquipItemClassRecord record : loaded) {
-                        record.helmetStatRate2 = reader.readFloat();
+                        record.helmetStatRate2 = cursor.nextF32();
                     }
                     break;
                 }
                 case 19: {
                     ScbReader.checkColumn(column, "EquipItemClass.AccStatRate1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.AccStatRate1");
                     for (EquipItemClassRecord record : loaded) {
-                        record.accStatRate1 = reader.readFloat();
+                        record.accStatRate1 = cursor.nextF32();
                     }
                     break;
                 }
                 case 20: {
                     ScbReader.checkColumn(column, "EquipItemClass.AccStatRate2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemClass.AccStatRate2");
                     for (EquipItemClassRecord record : loaded) {
-                        record.accStatRate2 = reader.readFloat();
+                        record.accStatRate2 = cursor.nextF32();
                     }
                     break;
                 }

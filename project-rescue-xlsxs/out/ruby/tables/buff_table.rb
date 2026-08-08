@@ -152,8 +152,9 @@ module Rescue
           end
         when 11
           Sheetman.check_column(column, 'Buff.BuffValueRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.BuffValueRate')
           records.each do |record|
-            record.buff_value_rate = reader.read_float
+            record.buff_value_rate = cursor.next_f32
           end
         when 12
           Sheetman.check_column(column, 'Buff.BuffTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
@@ -175,13 +176,15 @@ module Rescue
           end
         when 15
           Sheetman.check_column(column, 'Buff.BuffCoolDownTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.BuffCoolDownTime')
           records.each do |record|
-            record.buff_cool_down_time = reader.read_float
+            record.buff_cool_down_time = cursor.next_f32
           end
         when 16
           Sheetman.check_column(column, 'Buff.IsVisible', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.IsVisible')
           records.each do |record|
-            record.is_visible = reader.read_bool
+            record.is_visible = cursor.next_bool
           end
         when 17
           Sheetman.check_column(column, 'Buff.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])

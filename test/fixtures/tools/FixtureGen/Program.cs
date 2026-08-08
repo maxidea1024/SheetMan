@@ -861,22 +861,29 @@ internal static class Program
         // encoding-selection test in BinaryFormatTests, so a drift in the writer's
         // choices is a failure with a column name rather than a quiet coverage hole.
         //
-        //   index    steps by one            -> delta-RLE (one run of +1 deltas)
-        //   intVal   large values, small     -> delta (varying deltas, so the RLE of
-        //            varying steps              them buys nothing) - and rows 5 and 6
+        //   index     steps by one           -> delta-RLE (one run of +1 deltas)
+        //   intVal    large values, small    -> delta (varying deltas, so the RLE of
+        //             varying steps             them buys nothing) - and rows 5 and 6
         //                                       above already sit at the int32
         //                                       extremes, so the delta between them
         //                                       exercises the wrapping rule
-        //   text     ten rows per word       -> dict-RLE (few entries, long runs)
-        //   label    two long runs           -> RLE
-        //   owner,   small values in an      -> varint (no runs to speak of, deltas
-        //   tier     irregular pattern          no cheaper than the values)
+        //   bigVal    three values, in runs  -> dict-RLE over i64 entries
+        //   floatVal  four values, no runs   -> dict over f32 entries
+        //   doubleVal two long runs          -> dict-RLE over f64 entries
+        //   text      names sharing a prefix -> dict-front-RLE
+        //   flag      two long runs          -> RLE over bool
+        //   label     two long runs          -> RLE
+        //   owner,    small values in an     -> varint (no runs to speak of, deltas
+        //   tier      irregular pattern         no cheaper than the values)
+        //   when/span, uid, the four arrays  -> raw, which is the floor and worth
+        //                                       having something sit on
         //
         // The pattern arrays are what keep the irregular columns irregular: no run
         // long enough for RLE, no delta stream cheaper than the values themselves.
-        string[] words = { "alpha", "beta", "gamma" };
         int[] pattern = { 1, 3, 2, 3, 1, 2 };
         int[] steps = { 5, 2, 9, 3, 7, 1, 8, 4, 6, 2 };
+        string[] bigs = { "70368744177664", "-70368744177664", "8796093022208" };
+        string[] floats = { "0.5", "0.25", "-0.5", "1.5" };
         int walk = 1073741824;
 
         for (int at = 0; at < 30; at++)
@@ -886,10 +893,15 @@ internal static class Program
             spec.Row(
                 (7 + at).ToString(),
                 walk.ToString(),
-                (at * 3).ToString(),
-                "0.5", "0.25",
-                words[at / 10],
-                at % 2 == 0 ? "Y" : "N",
+                bigs[at / 10],
+                floats[at % floats.Length],
+                at < 15 ? "0.125" : "-0.125",
+
+                // Distinct values that share almost all of their bytes, three rows
+                // apart, which is what the front-coded dictionary is for: the entries
+                // cannot be deduplicated and are nearly free to store anyway.
+                "Stat_Attack_Level" + (at / 3).ToString("00"),
+                at < 15 ? "Y" : "N",
                 "2022-03-01 09:00:00", "0.00:05:00",
                 "6f9619ff-8b86-d011-b42d-00c04fc964ff",
                 at < 15 ? "One" : "Large",
@@ -921,12 +933,12 @@ internal static class Program
             .Row("2", "second", "20")
             .Row("3", "third", "30");
 
-        // The rows that give the plain dictionary encoding somewhere to win: two
-        // words alternating leave no runs for dict-RLE to compress, so the index
-        // stream stays one plain counter per row. rank keeps stepping by ten, which
-        // hands delta-RLE a second, smaller table to win in.
+        // Names that share a prefix and never repeat, which is what the front-coded
+        // dictionary wins on with a plain index stream beside it: no two rows are
+        // equal, so there is nothing for a run to cover. rank keeps stepping by ten,
+        // which hands delta-RLE a second, smaller table to win in.
         for (int at = 4; at <= 15; at++)
-            owners.Row(at.ToString(), at % 2 == 0 ? "red" : "blue", (at * 10).ToString());
+            owners.Row(at.ToString(), "Owner_Region_" + at.ToString("00"), (at * 10).ToString());
 
         // Below Vectors, which the encoding rows made forty-odd rows tall. Entities may
         // not overlap, and these two share a column band.

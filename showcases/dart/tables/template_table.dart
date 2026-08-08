@@ -138,8 +138,9 @@ class TemplateTable {
           break;
         case 4:
           checkColumn(column, 'Template.Delete', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'Template.Delete');
           for (final record in loaded) {
-            record.delete = reader.readBool();
+            record.delete = cursor.nextBool();
           }
           break;
         case 5:

@@ -250,30 +250,34 @@ export class SDTrainingLevelTable {
           break
         case 6:
           sheetman.checkColumn(column, 'SDTrainingLevel.MHPGrowth', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.MHPGrowth')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._mHPGrowth = reader.readFloat()
+            record._mHPGrowth = cursor.nextF32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'SDTrainingLevel.MHPTotal', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.MHPTotal')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._mHPTotal = reader.readFloat()
+            record._mHPTotal = cursor.nextF32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'SDTrainingLevel.DEFGrowth', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.DEFGrowth')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dEFGrowth = reader.readFloat()
+            record._dEFGrowth = cursor.nextF32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'SDTrainingLevel.DEFTotal', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.DEFTotal')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dEFTotal = reader.readFloat()
+            record._dEFTotal = cursor.nextF32()
           }
           break
         case 10:

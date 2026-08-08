@@ -143,8 +143,9 @@ final class BuffSelectTable
 
                 case 5:
                     ScbReader::checkColumn($column, 'BuffSelect.BuffRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BuffSelect.BuffRate');
                     foreach ($records as $record) {
-                        $record->buffRate = $reader->readFloat();
+                        $record->buffRate = $cursor->nextF32();
                     }
                     break;
 

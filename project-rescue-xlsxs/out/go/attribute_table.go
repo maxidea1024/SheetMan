@@ -142,16 +142,18 @@ func (t *AttributeTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Attribute.DamageValueRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Attribute.DamageValueRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DamageValueRate = reader.ReadFloat32()
+					r.DamageValueRate = cursor.NextF32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Attribute.IsVisible", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Attribute.IsVisible")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsVisible = reader.ReadBool()
+					r.IsVisible = cursor.NextBool()
 				}
 			}
 		case 8:

@@ -158,8 +158,9 @@ class TemplateTable {
                 }
                 4 -> {
                     checkColumn(column, "Template.Delete", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "Template.Delete")
                     for (record in loaded) {
-                        record.delete = reader.readBool()
+                        record.delete = cursor.nextBool()
                     }
                 }
                 5 -> {

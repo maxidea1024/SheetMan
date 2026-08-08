@@ -64,6 +64,8 @@ pub const ENCODING_RLE: u8 = 3;
 pub const ENCODING_DELTA_RLE: u8 = 4;
 pub const ENCODING_DICT: u8 = 5;
 pub const ENCODING_DICT_RLE: u8 = 6;
+pub const ENCODING_DICT_FRONT: u8 = 7;
+pub const ENCODING_DICT_FRONT_RLE: u8 = 8;
 
 /// One column as the file describes it.
 #[derive(Clone, Copy, Debug)]
@@ -110,6 +112,13 @@ pub enum Error {
     RunLengthImplausible { field: &'static str, length: i32, rows_left: i32 },
     /// A dictionary index points outside the dictionary the block decoded.
     DictionaryIndexOutOfRange { field: &'static str, index: i32, entries: usize },
+    /// A front-coded entry claims to share more bytes than the entry before it has.
+    DictionaryPrefixImplausible {
+        field: &'static str,
+        index: i32,
+        shared: i32,
+        previous: usize,
+    },
     /// A column block's declared length and the bytes the read consumed disagree.
     BlockLengthMismatch { tag: i32 },
     /// A column declares more bytes than the file has left to give it.
@@ -154,6 +163,11 @@ impl fmt::Display for Error {
                 f,
                 "{}: dictionary index {} is out of range - the dictionary holds {} entries",
                 field, index, entries
+            ),
+            Error::DictionaryPrefixImplausible { field, index, shared, previous } => write!(
+                f,
+                "{}: dictionary entry {} shares {} bytes with an entry of {}",
+                field, index, shared, previous
             ),
             Error::ColumnLengthImplausible { tag, byte_length } => write!(
                 f,
@@ -438,8 +452,21 @@ pub struct ScbColumnCursor<'r, 'a> {
     element: u8,
     encoding: u8,
 
-    /// The block's dictionary, decoded once and handed out per row.
+    /// The block's string dictionary, decoded once and handed out per row.
+    ///
+    /// Whole strings whichever way they arrived: a front-coded block states only the
+    /// bytes an entry does not share with the one before it, and that folding was only
+    /// ever about the bytes on disk - a row wants a string.
     dictionary: Vec<String>,
+
+    /// The block's dictionary for a fixed-width element, kept as the entries' own raw
+    /// bytes so a value is reconstructed exactly as the raw layout would have read it.
+    ///
+    /// `value_width` is zero when the block has no such dictionary, which is what tells
+    /// the value reads apart from the raw ones - an empty dictionary is not the same
+    /// thing as no dictionary.
+    value_dictionary: Vec<u8>,
+    value_width: usize,
 
     // A run-length family's current run: what remains of it, and its value - which is
     // a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
@@ -455,21 +482,87 @@ pub struct ScbColumnCursor<'r, 'a> {
     rows_remaining: i32,
 }
 
+/// A sorted dictionary whose entries state only what they do not share with the entry
+/// before them.
+///
+/// Decoded into whole strings here rather than kept folded, because a row wants a string.
+/// The scratch buffer is the previous entry: truncating it to `shared` and appending the
+/// rest is the whole of the decode, and it grows to the longest entry and no further, so
+/// the allocations are the strings themselves - one per distinct value, which is the point.
+fn read_front_coded_dictionary(
+    reader: &mut Reader<'_>, count: i32, field: &'static str,
+) -> Result<Vec<String>> {
+    let mut entries = Vec::new();
+    entries.reserve_exact(count as usize);
+
+    let mut scratch: Vec<u8> = Vec::new();
+
+    for at in 0..count {
+        let shared = reader.read_counter32()?;
+        let rest = reader.read_counter32()?;
+
+        // scratch still holds the previous entry, so its length is what `shared` may
+        // reach - naming the entry rather than leaving a short read to the block end.
+        if shared < 0 || rest < 0 || shared as usize > scratch.len() {
+            return Err(Error::DictionaryPrefixImplausible {
+                field,
+                index: at,
+                shared,
+                previous: scratch.len(),
+            });
+        }
+
+        scratch.truncate(shared as usize);
+
+        if rest > 0 {
+            let bytes = reader.take(rest as usize)?;
+            scratch.extend_from_slice(bytes);
+        }
+
+        let text = std::str::from_utf8(&scratch).map_err(|_| Error::InvalidUtf8)?;
+        entries.push(text.to_owned());
+    }
+
+    Ok(entries)
+}
+
 impl<'r, 'a> ScbColumnCursor<'r, 'a> {
     pub fn new(
         reader: &'r mut Reader<'a>, column: &Column, row_count: i32, field: &'static str,
     ) -> Result<Self> {
         let mut dictionary = Vec::new();
+        let mut value_dictionary = Vec::new();
+        let mut value_width = 0;
 
-        if column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE {
+        let plain_dictionary =
+            column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE;
+
+        let front_dictionary = column.encoding == ENCODING_DICT_FRONT
+            || column.encoding == ENCODING_DICT_FRONT_RLE;
+
+        if plain_dictionary || front_dictionary {
             let count = reader.read_counter32()?;
             if count < 0 {
                 return Err(Error::NegativeLength);
             }
 
-            dictionary.reserve_exact(count as usize);
-            for _ in 0..count {
-                dictionary.push(reader.read_string()?);
+            if front_dictionary {
+                dictionary = read_front_coded_dictionary(reader, count, field)?;
+            } else if column.element == ELEMENT_STRING {
+                dictionary.reserve_exact(count as usize);
+                for _ in 0..count {
+                    dictionary.push(reader.read_string()?);
+                }
+            } else {
+                // A fixed-width element: the entries are the value's own bytes, so they
+                // are taken as bytes and turned into values only when a row asks.
+                value_width = if column.element == ELEMENT_F32 { 4 } else { 8 };
+                value_dictionary.reserve_exact(count as usize * value_width);
+
+                for _ in 0..count {
+                    let bytes = reader.take(value_width)?;
+                    value_dictionary.extend_from_slice(bytes);
+                }
             }
         }
 
@@ -479,6 +572,8 @@ impl<'r, 'a> ScbColumnCursor<'r, 'a> {
             element: column.element,
             encoding: column.encoding,
             dictionary,
+            value_dictionary,
+            value_width,
             run_remaining: 0,
             run_value: 0,
             previous: 0,
@@ -543,22 +638,97 @@ impl<'r, 'a> ScbColumnCursor<'r, 'a> {
         }
     }
 
-    /// An i64 member: an i64 column is always raw, anything narrower decodes as i32.
+    /// An i64 member: from an i64 column raw or through its dictionary, and from anything
+    /// narrower by decoding an i32 and widening it.
     pub fn next_i64(&mut self) -> Result<i64> {
-        if self.element == ELEMENT_I64 {
-            self.reader.read_i64()
-        } else {
-            Ok(self.next_i32()? as i64)
+        if self.element != ELEMENT_I64 {
+            return Ok(self.next_i32()? as i64);
+        }
+
+        if self.value_width != 0 {
+            let bytes = self.next_value_entry()?;
+
+            return Ok(i64::from_le_bytes([
+                bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7],
+            ]));
+        }
+
+        self.rows_remaining -= 1;
+        self.reader.read_i64()
+    }
+
+    /// An f32 member: raw, or the dictionary entry's exact bit pattern.
+    pub fn next_f32(&mut self) -> Result<f32> {
+        if self.value_width != 0 {
+            let bytes = self.next_value_entry()?;
+
+            return Ok(f32::from_le_bytes([bytes[0], bytes[1], bytes[2], bytes[3]]));
+        }
+
+        self.rows_remaining -= 1;
+        self.reader.read_f32()
+    }
+
+    /// An f64 member: from f64 or f32 - either of them raw or dictionary-encoded - and
+    /// from an i32 column by decoding and widening.
+    pub fn next_f64(&mut self) -> Result<f64> {
+        match self.element {
+            ELEMENT_F64 => {
+                if self.value_width != 0 {
+                    let bytes = self.next_value_entry()?;
+
+                    return Ok(f64::from_le_bytes([
+                        bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6],
+                        bytes[7],
+                    ]));
+                }
+
+                self.rows_remaining -= 1;
+                self.reader.read_f64()
+            }
+
+            ELEMENT_F32 => Ok(self.next_f32()? as f64),
+            _ => Ok(self.next_i32()? as f64),
         }
     }
 
-    /// An f64 member: float columns are always raw, an i32 column decodes then widens.
-    pub fn next_f64(&mut self) -> Result<f64> {
-        match self.element {
-            ELEMENT_F64 => self.reader.read_f64(),
-            ELEMENT_F32 => Ok(self.reader.read_f32()? as f64),
-            _ => Ok(self.next_i32()? as f64),
+    /// A bool member: one byte raw, or a run of them.
+    pub fn next_bool(&mut self) -> Result<bool> {
+        if self.encoding == ENCODING_RLE {
+            return Ok(self.next_i32()? != 0);
         }
+
+        self.rows_remaining -= 1;
+        self.reader.read_bool()
+    }
+
+    /// The bytes of the next row's dictionary entry, for a fixed-width element.
+    ///
+    /// Borrowed from the cursor rather than copied out, which the caller can hold only
+    /// until it has built its value - which is all it wants them for.
+    fn next_value_entry(&mut self) -> Result<&[u8]> {
+        self.rows_remaining -= 1;
+
+        let index = if self.encoding == ENCODING_DICT {
+            self.reader.read_counter32()?
+        } else {
+            if self.run_remaining == 0 {
+                self.read_run()?;
+            }
+
+            self.run_remaining -= 1;
+            self.run_value
+        };
+
+        let entries = self.value_dictionary.len() / self.value_width;
+
+        if index < 0 || index as usize >= entries {
+            return Err(Error::DictionaryIndexOutOfRange { field: self.field, index, entries });
+        }
+
+        let at = index as usize * self.value_width;
+
+        Ok(&self.value_dictionary[at..at + self.value_width])
     }
 
     /// The next string - a clone of the dictionary's entry where the block has one.
@@ -568,12 +738,14 @@ impl<'r, 'a> ScbColumnCursor<'r, 'a> {
         match self.encoding {
             ENCODING_RAW => self.reader.read_string(),
 
-            ENCODING_DICT => {
+            ENCODING_DICT | ENCODING_DICT_FRONT => {
                 let index = self.reader.read_counter32()?;
                 self.dictionary_entry(index)
             }
 
-            // ENCODING_DICT_RLE; check_column refused everything else.
+            // ENCODING_DICT_RLE and ENCODING_DICT_FRONT_RLE; check_column refused
+            // everything else. A front-coded dictionary is whole strings by now, so the
+            // index stream is the only thing left to tell them apart - and it does not.
             _ => {
                 if self.run_remaining == 0 {
                     self.read_run()?;
@@ -743,9 +915,21 @@ fn encoding_supported(column: &Column) -> bool {
     }
 
     match column.element {
-        ELEMENT_VARINT => column.encoding == ENCODING_RLE,
+        ELEMENT_BOOL | ELEMENT_VARINT => column.encoding == ENCODING_RLE,
         ELEMENT_I32 => column.encoding >= ENCODING_VARINT && column.encoding <= ENCODING_DELTA_RLE,
-        ELEMENT_STRING => column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE,
+
+        // The dictionary is parameterized by element, so these three reach it with
+        // entries that are simply their own raw bytes.
+        ELEMENT_I64 | ELEMENT_F32 | ELEMENT_F64 => {
+            column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE
+        }
+
+        // And a string dictionary can additionally be front coded, which is meaningless
+        // for a fixed-width element and refused for one.
+        ELEMENT_STRING => {
+            column.encoding >= ENCODING_DICT && column.encoding <= ENCODING_DICT_FRONT_RLE
+        }
+
         _ => false,
     }
 }

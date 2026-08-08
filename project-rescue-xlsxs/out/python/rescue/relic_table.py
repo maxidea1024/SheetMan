@@ -118,12 +118,14 @@ class RelicTable:
                     record.relic_type1 = StatType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Relic.RelicValue1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicValue1")
                 for record in records:
-                    record.relic_value1 = reader.read_float()
+                    record.relic_value1 = cursor.next_f32()
             elif column.tag == 7:
                 sheetman.check_column(column, "Relic.RelicIncValue1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicIncValue1")
                 for record in records:
-                    record.relic_inc_value1 = reader.read_float()
+                    record.relic_inc_value1 = cursor.next_f32()
             elif column.tag == 8:
                 sheetman.check_column(column, "Relic.RelicType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicType2")
@@ -131,12 +133,14 @@ class RelicTable:
                     record.relic_type2 = StatType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "Relic.RelicValue2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicValue2")
                 for record in records:
-                    record.relic_value2 = reader.read_float()
+                    record.relic_value2 = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "Relic.RelicIncValue2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicIncValue2")
                 for record in records:
-                    record.relic_inc_value2 = reader.read_float()
+                    record.relic_inc_value2 = cursor.next_f32()
             elif column.tag == 11:
                 sheetman.check_column(column, "Relic.RelicType3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicType3")
@@ -144,12 +148,14 @@ class RelicTable:
                     record.relic_type3 = StatType(cursor.next_i32())
             elif column.tag == 12:
                 sheetman.check_column(column, "Relic.RelicValue3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicValue3")
                 for record in records:
-                    record.relic_value3 = reader.read_float()
+                    record.relic_value3 = cursor.next_f32()
             elif column.tag == 13:
                 sheetman.check_column(column, "Relic.RelicIncValue3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicIncValue3")
                 for record in records:
-                    record.relic_inc_value3 = reader.read_float()
+                    record.relic_inc_value3 = cursor.next_f32()
             elif column.tag == 14:
                 sheetman.check_column(column, "Relic.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Relic.Description")

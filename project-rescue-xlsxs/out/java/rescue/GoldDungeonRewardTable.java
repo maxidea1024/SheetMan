@@ -146,8 +146,9 @@ public final class GoldDungeonRewardTable {
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "GoldDungeonReward.IsFirstClear", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GoldDungeonReward.IsFirstClear");
                     for (GoldDungeonRewardRecord record : loaded) {
-                        record.isFirstClear = reader.readBool();
+                        record.isFirstClear = cursor.nextBool();
                     }
                     break;
                 }

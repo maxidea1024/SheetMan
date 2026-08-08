@@ -169,8 +169,9 @@ class SDAlchemyInfoTable {
                 }
                 7 -> {
                     checkColumn(column, "SDAlchemyInfo.MaterialType2Rate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType2Rate")
                     for (record in loaded) {
-                        record.materialType2Rate = reader.readFloat()
+                        record.materialType2Rate = cursor.nextF32()
                     }
                 }
                 8 -> {

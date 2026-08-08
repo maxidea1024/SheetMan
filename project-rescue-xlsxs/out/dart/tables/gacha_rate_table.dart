@@ -91,32 +91,37 @@ class GachaRateTable {
           break;
         case 2:
           checkColumn(column, 'GachaRate.URRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaRate.URRate');
           for (final record in loaded) {
-            record.uRRate = reader.readFloat();
+            record.uRRate = cursor.nextF32();
           }
           break;
         case 3:
           checkColumn(column, 'GachaRate.SSRRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaRate.SSRRate');
           for (final record in loaded) {
-            record.sSRRate = reader.readFloat();
+            record.sSRRate = cursor.nextF32();
           }
           break;
         case 4:
           checkColumn(column, 'GachaRate.SRRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaRate.SRRate');
           for (final record in loaded) {
-            record.sRRate = reader.readFloat();
+            record.sRRate = cursor.nextF32();
           }
           break;
         case 5:
           checkColumn(column, 'GachaRate.RRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaRate.RRate');
           for (final record in loaded) {
-            record.rRate = reader.readFloat();
+            record.rRate = cursor.nextF32();
           }
           break;
         case 6:
           checkColumn(column, 'GachaRate.NRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaRate.NRate');
           for (final record in loaded) {
-            record.nRate = reader.readFloat();
+            record.nRate = cursor.nextF32();
           }
           break;
         default:

@@ -547,15 +547,24 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
 
         switch (sf.ElementType)
         {
-            // Int64 and Double are here for their promotions: the file may carry an
-            // i32 column - encoded - where the member has since widened.
+            // Int64 and Double are here for their promotions as well as their own
+            // dictionaries: the file may carry an i32 column - encoded - where the
+            // member has since widened.
             case ValueType.Int32:
             case ValueType.Int64:
             case ValueType.Double:
+            case ValueType.Float:
+            case ValueType.Bool:
             case ValueType.Enum:
             case ValueType.String:
+
+            // Ticks are an i64 column, so they meet the i64 dictionary like any other.
+            case ValueType.DateTime:
+            case ValueType.TimeSpan:
                 return true;
 
+            // Uuid is the one scalar left raw: sixteen-byte entries rarely repeat
+            // enough to pay for the index beside them.
             default:
                 return false;
         }
@@ -590,6 +599,14 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                 ValueType.Int32 => "cursor.nextI32()",
                 ValueType.Int64 => "cursor.nextI64()",
                 ValueType.Double => "cursor.nextF64()",
+                ValueType.Float => "cursor.nextF32()",
+                ValueType.Bool => "cursor.nextBool()",
+
+                // Ticks, so the member is built from what the i64 column carried -
+                // the same text the direct read produces, from the same number.
+                ValueType.DateTime => "sheetman.formatDateTimeTicks(cursor.nextI64())",
+                ValueType.TimeSpan => "sheetman.formatTimeSpanTicks(cursor.nextI64())",
+
                 _ => "cursor.nextString()",
             };
         }

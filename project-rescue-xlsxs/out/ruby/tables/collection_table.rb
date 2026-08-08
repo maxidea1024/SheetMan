@@ -134,8 +134,9 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'Collection.RewardStatRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.RewardStatRate')
           records.each do |record|
-            record.reward_stat_rate = reader.read_float
+            record.reward_stat_rate = cursor.next_f32
           end
         when 10
           Sheetman.check_column(column, 'Collection.RewardStatType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])

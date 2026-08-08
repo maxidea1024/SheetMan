@@ -278,9 +278,10 @@ export class ArtifactTranscendenceTable {
           break
         case 9:
           sheetman.checkColumn(column, 'ArtifactTranscendence.PowerMultiplier', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ArtifactTranscendence.PowerMultiplier')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._powerMultiplier = reader.readFloat()
+            record._powerMultiplier = cursor.nextF32()
           }
           break
         case 10:

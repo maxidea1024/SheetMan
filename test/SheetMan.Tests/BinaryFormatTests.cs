@@ -120,31 +120,48 @@ public class BinaryFormatTests
         string binaryDir = Path.Combine(RepoLayout.OutputDir("conformance"), "binary");
 
         // (tag, encoding) per column, in descriptor order. Encodings by number:
-        // 0 raw, 1 varint, 2 delta, 3 rle, 4 delta-rle, 5 dict, 6 dict-rle.
-        AssertEncodings(Path.Combine(binaryDir, "Vectors.scb"), new byte[]
+        // 0 raw, 1 varint, 2 delta, 3 rle, 4 delta-rle, 5 dict, 6 dict-rle,
+        // 7 dict-front, 8 dict-front-rle.
+        var vectors = new byte[]
         {
-            4,      // index:     ascending by one    -> delta-rle
-            2,      // intVal:    varying small steps -> delta
-            0,      // bigVal:    i64 stays raw by spec
-            0,      // floatVal
-            0,      // doubleVal
-            6,      // text:      few words, long runs -> dict-rle
-            0,      // flag
-            0,      // when
-            0,      // span
-            0,      // uid
-            3,      // label:     two long runs       -> rle
+            4,      // index:     ascending by one     -> delta-rle
+            2,      // intVal:    varying small steps  -> delta
+            6,      // bigVal:    three values in runs -> dict-rle over i64 entries
+            5,      // floatVal:  four values, no runs -> dict over f32 entries
+            6,      // doubleVal: two long runs        -> dict-rle over f64 entries
+            8,      // text:      shared prefixes, runs -> dict-front-rle
+            3,      // flag:      two long runs        -> rle over bool
+            6,      // when:      ticks repeat         -> dict-rle over i64 entries
+            6,      // span
+            0,      // uid:       sixteen-byte entries stay raw by spec
+            3,      // label:     two long runs        -> rle
             0, 0, 0, 0,  // ints, strs, labels, uids: arrays stay raw by spec
-            1,      // owner:     small, irregular    -> varint
+            1,      // owner:     small, irregular     -> varint
             1,      // tier
-        });
+        };
 
-        AssertEncodings(Path.Combine(binaryDir, "Owners.scb"), new byte[]
+        var owners = new byte[]
         {
-            4,      // index:     ascending by one    -> delta-rle
-            5,      // name:      two words alternating, no runs -> dict
-            4,      // rank:      ascending by ten    -> delta-rle
-        });
+            4,      // index:     ascending by one     -> delta-rle
+            7,      // name:      shared prefixes, no runs -> dict-front
+            4,      // rank:      ascending by ten     -> delta-rle
+        };
+
+        AssertEncodings(Path.Combine(binaryDir, "Vectors.scb"), vectors);
+        AssertEncodings(Path.Combine(binaryDir, "Owners.scb"), owners);
+
+        // And that between them they leave nothing untried. The point of shaping the
+        // corpus this way is that the thirteen harnesses exercise every decode path,
+        // which only holds while every encoding is actually reached.
+        var reached = new HashSet<byte>(vectors);
+        reached.UnionWith(owners);
+
+        for (byte encoding = 0; encoding <= 8; encoding++)
+        {
+            Assert.True(reached.Contains(encoding),
+                $"No conformance column uses encoding {encoding}, so no reader is ever " +
+                "run against it.");
+        }
     }
 
     private static void AssertEncodings(string path, byte[] expected)
@@ -223,7 +240,7 @@ public class BinaryFormatTests
                 if (kind > 2)
                     failures.Add($"{relative}: column {at} declares kind {kind}");
 
-                if (encoding > 6)
+                if (encoding > 8)
                     failures.Add($"{relative}: column {at} declares encoding {encoding}");
 
                 if (encoding == 0 && rowCount > byteLength)

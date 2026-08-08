@@ -205,8 +205,9 @@ final class DailyDungeonInfoTable
 
                 case 10:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.BuffValueRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.BuffValueRate');
                     foreach ($records as $record) {
-                        $record->buffValueRate = $reader->readFloat();
+                        $record->buffValueRate = $cursor->nextF32();
                     }
                     break;
 

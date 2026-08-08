@@ -114,32 +114,37 @@ class GachaRateTable {
                 }
                 2 -> {
                     checkColumn(column, "GachaRate.URRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "GachaRate.URRate")
                     for (record in loaded) {
-                        record.uRRate = reader.readFloat()
+                        record.uRRate = cursor.nextF32()
                     }
                 }
                 3 -> {
                     checkColumn(column, "GachaRate.SSRRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "GachaRate.SSRRate")
                     for (record in loaded) {
-                        record.sSRRate = reader.readFloat()
+                        record.sSRRate = cursor.nextF32()
                     }
                 }
                 4 -> {
                     checkColumn(column, "GachaRate.SRRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "GachaRate.SRRate")
                     for (record in loaded) {
-                        record.sRRate = reader.readFloat()
+                        record.sRRate = cursor.nextF32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "GachaRate.RRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "GachaRate.RRate")
                     for (record in loaded) {
-                        record.rRate = reader.readFloat()
+                        record.rRate = cursor.nextF32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "GachaRate.NRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "GachaRate.NRate")
                     for (record in loaded) {
-                        record.nRate = reader.readFloat()
+                        record.nRate = cursor.nextF32()
                     }
                 }
                 else ->

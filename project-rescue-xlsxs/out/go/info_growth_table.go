@@ -154,9 +154,10 @@ func (t *InfoGrowthTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.Reset", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.Reset")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Reset = reader.ReadBool()
+					r.Reset = cursor.NextBool()
 				}
 			}
 		case 7:

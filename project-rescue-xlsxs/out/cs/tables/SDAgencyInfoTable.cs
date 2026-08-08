@@ -292,64 +292,71 @@ namespace Rescue.Tables
 
                     case 5:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.GradeSRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.GradeSRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._gradeSRate);
+                            record._gradeSRate = cursor.NextF32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.GradeARate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.GradeARate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._gradeARate);
+                            record._gradeARate = cursor.NextF32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.GradeBRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.GradeBRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._gradeBRate);
+                            record._gradeBRate = cursor.NextF32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.GradeCRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.GradeCRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._gradeCRate);
+                            record._gradeCRate = cursor.NextF32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.GradeDRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.GradeDRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._gradeDRate);
+                            record._gradeDRate = cursor.NextF32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.GradeERate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.GradeERate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._gradeERate);
+                            record._gradeERate = cursor.NextF32();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "SDAgencyInfo.GradeFRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAgencyInfo.GradeFRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._gradeFRate);
+                            record._gradeFRate = cursor.NextF32();
                         }
                         break;
 

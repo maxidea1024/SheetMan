@@ -346,73 +346,81 @@ namespace Rescue.Tables
 
                     case 9:
                         ScbTable.CheckColumn(column, "SDAlchemyLevel.CritDMGValue", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._critDMGValue);
+                            record._critDMGValue = cursor.NextF32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "SDAlchemyLevel.CritDMGTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGTotal");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._critDMGTotal);
+                            record._critDMGTotal = cursor.NextF32();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "SDAlchemyLevel.CritRateValue", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._critRateValue);
+                            record._critRateValue = cursor.NextF32();
                         }
                         break;
 
                     case 12:
                         ScbTable.CheckColumn(column, "SDAlchemyLevel.CritRateTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateTotal");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._critRateTotal);
+                            record._critRateTotal = cursor.NextF32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "SDAlchemyLevel.BlockRateValue", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._blockRateValue);
+                            record._blockRateValue = cursor.NextF32();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "SDAlchemyLevel.BlockRateTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateTotal");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._blockRateTotal);
+                            record._blockRateTotal = cursor.NextF32();
                         }
                         break;
 
                     case 15:
                         ScbTable.CheckColumn(column, "SDAlchemyLevel.HITValue", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyLevel.HITValue");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._hITValue);
+                            record._hITValue = cursor.NextF32();
                         }
                         break;
 
                     case 16:
                         ScbTable.CheckColumn(column, "SDAlchemyLevel.HITTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyLevel.HITTotal");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._hITTotal);
+                            record._hITTotal = cursor.NextF32();
                         }
                         break;
 

@@ -176,8 +176,9 @@ public final class OopartsDungeonStageTable {
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.SpawnNextTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnNextTime");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.spawnNextTime = reader.readFloat();
+                        record.spawnNextTime = cursor.nextF32();
                     }
                     break;
                 }
@@ -207,22 +208,25 @@ public final class OopartsDungeonStageTable {
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.AtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.AtkUpPercent");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.atkUpPercent = reader.readFloat();
+                        record.atkUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.DefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.DefUpPercent");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.defUpPercent = reader.readFloat();
+                        record.defUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 17: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.MHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.MHPUpPercent");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.mHPUpPercent = reader.readFloat();
+                        record.mHPUpPercent = cursor.nextF32();
                     }
                     break;
                 }

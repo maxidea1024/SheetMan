@@ -143,8 +143,9 @@ class SDContensInfoTable {
           break;
         case 8:
           checkColumn(column, 'SDContensInfo.EnableReset', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.EnableReset');
           for (final record in loaded) {
-            record.enableReset = reader.readBool();
+            record.enableReset = cursor.nextBool();
           }
           break;
         case 9:

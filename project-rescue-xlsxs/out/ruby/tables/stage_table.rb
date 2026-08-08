@@ -135,8 +135,9 @@ module Rescue
           end
         when 8
           Sheetman.check_column(column, 'Stage.SpawnNextTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.SpawnNextTime')
           records.each do |record|
-            record.spawn_next_time = reader.read_float
+            record.spawn_next_time = cursor.next_f32
           end
         when 9
           Sheetman.check_column(column, 'Stage.StageClearCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
@@ -152,33 +153,39 @@ module Rescue
           end
         when 11
           Sheetman.check_column(column, 'Stage.AtkUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.AtkUpPercent')
           records.each do |record|
-            record.atk_up_percent = reader.read_float
+            record.atk_up_percent = cursor.next_f32
           end
         when 12
           Sheetman.check_column(column, 'Stage.DefUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.DefUpPercent')
           records.each do |record|
-            record.def_up_percent = reader.read_float
+            record.def_up_percent = cursor.next_f32
           end
         when 13
           Sheetman.check_column(column, 'Stage.MHPUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.MHPUpPercent')
           records.each do |record|
-            record.mhp_up_percent = reader.read_float
+            record.mhp_up_percent = cursor.next_f32
           end
         when 14
           Sheetman.check_column(column, 'Stage.BossAtkUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.BossAtkUpPercent')
           records.each do |record|
-            record.boss_atk_up_percent = reader.read_float
+            record.boss_atk_up_percent = cursor.next_f32
           end
         when 15
           Sheetman.check_column(column, 'Stage.BossDefUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.BossDefUpPercent')
           records.each do |record|
-            record.boss_def_up_percent = reader.read_float
+            record.boss_def_up_percent = cursor.next_f32
           end
         when 16
           Sheetman.check_column(column, 'Stage.BossMHPUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.BossMHPUpPercent')
           records.each do |record|
-            record.boss_mhp_up_percent = reader.read_float
+            record.boss_mhp_up_percent = cursor.next_f32
           end
         when 17
           Sheetman.check_column(column, 'Stage.StageDropListID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

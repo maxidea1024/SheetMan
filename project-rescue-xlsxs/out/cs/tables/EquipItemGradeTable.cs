@@ -357,109 +357,121 @@ namespace Rescue.Tables
 
                     case 8:
                         ScbTable.CheckColumn(column, "EquipItemGrade.WeaponStatRate1", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.WeaponStatRate1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._weaponStatRate1);
+                            record._weaponStatRate1 = cursor.NextF32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "EquipItemGrade.WeaponStatRate2", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.WeaponStatRate2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._weaponStatRate2);
+                            record._weaponStatRate2 = cursor.NextF32();
                         }
                         break;
 
                     case 10:
                         ScbTable.CheckColumn(column, "EquipItemGrade.ArmorStatRate1", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.ArmorStatRate1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._armorStatRate1);
+                            record._armorStatRate1 = cursor.NextF32();
                         }
                         break;
 
                     case 11:
                         ScbTable.CheckColumn(column, "EquipItemGrade.ArmorStatRate2", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.ArmorStatRate2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._armorStatRate2);
+                            record._armorStatRate2 = cursor.NextF32();
                         }
                         break;
 
                     case 12:
                         ScbTable.CheckColumn(column, "EquipItemGrade.GauntletStatRate1", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.GauntletStatRate1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._gauntletStatRate1);
+                            record._gauntletStatRate1 = cursor.NextF32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "EquipItemGrade.GauntletStatRate2", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.GauntletStatRate2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._gauntletStatRate2);
+                            record._gauntletStatRate2 = cursor.NextF32();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "EquipItemGrade.BootsStatRate1", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.BootsStatRate1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._bootsStatRate1);
+                            record._bootsStatRate1 = cursor.NextF32();
                         }
                         break;
 
                     case 15:
                         ScbTable.CheckColumn(column, "EquipItemGrade.BootsStatRate2", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.BootsStatRate2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._bootsStatRate2);
+                            record._bootsStatRate2 = cursor.NextF32();
                         }
                         break;
 
                     case 16:
                         ScbTable.CheckColumn(column, "EquipItemGrade.HelmetStatRate1", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.HelmetStatRate1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._helmetStatRate1);
+                            record._helmetStatRate1 = cursor.NextF32();
                         }
                         break;
 
                     case 17:
                         ScbTable.CheckColumn(column, "EquipItemGrade.HelmetStatRate2", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.HelmetStatRate2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._helmetStatRate2);
+                            record._helmetStatRate2 = cursor.NextF32();
                         }
                         break;
 
                     case 18:
                         ScbTable.CheckColumn(column, "EquipItemGrade.AccStatRate1", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.AccStatRate1");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._accStatRate1);
+                            record._accStatRate1 = cursor.NextF32();
                         }
                         break;
 
                     case 19:
                         ScbTable.CheckColumn(column, "EquipItemGrade.AccStatRate2", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "EquipItemGrade.AccStatRate2");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._accStatRate2);
+                            record._accStatRate2 = cursor.NextF32();
                         }
                         break;
 

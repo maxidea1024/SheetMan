@@ -162,22 +162,25 @@ final class CharacterLevelTable
 
                 case 7:
                     ScbReader::checkColumn($column, 'CharacterLevel.ATKGrowth', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CharacterLevel.ATKGrowth');
                     foreach ($records as $record) {
-                        $record->aTKGrowth = $reader->readFloat();
+                        $record->aTKGrowth = $cursor->nextF32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'CharacterLevel.DEFGrowth', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CharacterLevel.DEFGrowth');
                     foreach ($records as $record) {
-                        $record->dEFGrowth = $reader->readFloat();
+                        $record->dEFGrowth = $cursor->nextF32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'CharacterLevel.HPGrowth', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CharacterLevel.HPGrowth');
                     foreach ($records as $record) {
-                        $record->hPGrowth = $reader->readFloat();
+                        $record->hPGrowth = $cursor->nextF32();
                     }
                     break;
 

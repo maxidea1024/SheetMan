@@ -129,8 +129,9 @@ impl CostCurveRangeTable {
                 }
                 6 => {
                     sheetman::check_column(column, "CostCurveRange.AddMultiplier", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurveRange.AddMultiplier")?;
                     for record in records.iter_mut() {
-                        record.add_multiplier = reader.read_f32()?;
+                        record.add_multiplier = cursor.next_f32()?;
                     }
                 }
                 _ => {

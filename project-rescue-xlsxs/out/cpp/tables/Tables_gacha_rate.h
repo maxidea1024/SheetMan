@@ -103,41 +103,46 @@ class GachaRateTable {
         }
         case 2: {
           sheetman::check_column(column, "GachaRate.URRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaRate.URRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.ur_rate);
+            record.ur_rate = cursor.next_f32();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "GachaRate.SSRRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaRate.SSRRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.ssr_rate);
+            record.ssr_rate = cursor.next_f32();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "GachaRate.SRRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaRate.SRRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sr_rate);
+            record.sr_rate = cursor.next_f32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "GachaRate.RRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaRate.RRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.r_rate);
+            record.r_rate = cursor.next_f32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "GachaRate.NRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaRate.NRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.n_rate);
+            record.n_rate = cursor.next_f32();
           }
           break;
         }

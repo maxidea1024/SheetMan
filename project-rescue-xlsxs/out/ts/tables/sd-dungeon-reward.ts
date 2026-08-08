@@ -395,9 +395,10 @@ export class SDDungeonRewardTable {
           break
         case 15:
           sheetman.checkColumn(column, 'SDDungeonReward.IsPerfect', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.IsPerfect')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isPerfect = reader.readBool()
+            record._isPerfect = cursor.nextBool()
           }
           break
         case 16:
@@ -418,9 +419,10 @@ export class SDDungeonRewardTable {
           break
         case 18:
           sheetman.checkColumn(column, 'SDDungeonReward.IsMinReward', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.IsMinReward')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isMinReward = reader.readBool()
+            record._isMinReward = cursor.nextBool()
           }
           break
         case 19:

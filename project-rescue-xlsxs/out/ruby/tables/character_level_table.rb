@@ -119,18 +119,21 @@ module Rescue
           end
         when 7
           Sheetman.check_column(column, 'CharacterLevel.ATKGrowth', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CharacterLevel.ATKGrowth')
           records.each do |record|
-            record.atk_growth = reader.read_float
+            record.atk_growth = cursor.next_f32
           end
         when 8
           Sheetman.check_column(column, 'CharacterLevel.DEFGrowth', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CharacterLevel.DEFGrowth')
           records.each do |record|
-            record.def_growth = reader.read_float
+            record.def_growth = cursor.next_f32
           end
         when 9
           Sheetman.check_column(column, 'CharacterLevel.HPGrowth', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CharacterLevel.HPGrowth')
           records.each do |record|
-            record.hp_growth = reader.read_float
+            record.hp_growth = cursor.next_f32
           end
         else
           # A column added after this code was generated.

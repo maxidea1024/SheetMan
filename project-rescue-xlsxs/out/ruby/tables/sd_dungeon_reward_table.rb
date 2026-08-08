@@ -178,8 +178,9 @@ module Rescue
           end
         when 15
           Sheetman.check_column(column, 'SDDungeonReward.IsPerfect', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.IsPerfect')
           records.each do |record|
-            record.is_perfect = reader.read_bool
+            record.is_perfect = cursor.next_bool
           end
         when 16
           Sheetman.check_column(column, 'SDDungeonReward.RewardPerfect', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
@@ -195,8 +196,9 @@ module Rescue
           end
         when 18
           Sheetman.check_column(column, 'SDDungeonReward.IsMinReward', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.IsMinReward')
           records.each do |record|
-            record.is_min_reward = reader.read_bool
+            record.is_min_reward = cursor.next_bool
           end
         when 19
           Sheetman.check_column(column, 'SDDungeonReward.RewardMin', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])

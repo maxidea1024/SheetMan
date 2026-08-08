@@ -140,9 +140,10 @@ class CostCurveRangeTable {
         }
         case 6: {
           sheetman::check_column(column, "CostCurveRange.AddMultiplier", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurveRange.AddMultiplier");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.add_multiplier);
+            record.add_multiplier = cursor.next_f32();
           }
           break;
         }

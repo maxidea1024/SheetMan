@@ -154,8 +154,9 @@ public final class CharacterTranscendenceTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "CharacterTranscendence.PowerMultiplier", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterTranscendence.PowerMultiplier");
                     for (CharacterTranscendenceRecord record : loaded) {
-                        record.powerMultiplier = reader.readFloat();
+                        record.powerMultiplier = cursor.nextF32();
                     }
                     break;
                 }

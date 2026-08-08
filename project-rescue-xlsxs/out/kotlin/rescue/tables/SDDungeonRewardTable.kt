@@ -233,8 +233,9 @@ class SDDungeonRewardTable {
                 }
                 15 -> {
                     checkColumn(column, "SDDungeonReward.IsPerfect", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.IsPerfect")
                     for (record in loaded) {
-                        record.isPerfect = reader.readBool()
+                        record.isPerfect = cursor.nextBool()
                     }
                 }
                 16 -> {
@@ -253,8 +254,9 @@ class SDDungeonRewardTable {
                 }
                 18 -> {
                     checkColumn(column, "SDDungeonReward.IsMinReward", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.IsMinReward")
                     for (record in loaded) {
-                        record.isMinReward = reader.readBool()
+                        record.isMinReward = cursor.nextBool()
                     }
                 }
                 19 -> {

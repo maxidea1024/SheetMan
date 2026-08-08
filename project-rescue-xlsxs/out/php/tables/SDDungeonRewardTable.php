@@ -249,8 +249,9 @@ final class SDDungeonRewardTable
 
                 case 15:
                     ScbReader::checkColumn($column, 'SDDungeonReward.IsPerfect', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.IsPerfect');
                     foreach ($records as $record) {
-                        $record->isPerfect = $reader->readBool();
+                        $record->isPerfect = $cursor->nextBool();
                     }
                     break;
 
@@ -272,8 +273,9 @@ final class SDDungeonRewardTable
 
                 case 18:
                     ScbReader::checkColumn($column, 'SDDungeonReward.IsMinReward', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.IsMinReward');
                     foreach ($records as $record) {
-                        $record->isMinReward = $reader->readBool();
+                        $record->isMinReward = $cursor->nextBool();
                     }
                     break;
 

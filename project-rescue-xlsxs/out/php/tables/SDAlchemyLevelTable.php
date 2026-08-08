@@ -192,57 +192,65 @@ final class SDAlchemyLevelTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.CritDMGValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.CritDMGValue');
                     foreach ($records as $record) {
-                        $record->critDMGValue = $reader->readFloat();
+                        $record->critDMGValue = $cursor->nextF32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.CritDMGTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.CritDMGTotal');
                     foreach ($records as $record) {
-                        $record->critDMGTotal = $reader->readFloat();
+                        $record->critDMGTotal = $cursor->nextF32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.CritRateValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.CritRateValue');
                     foreach ($records as $record) {
-                        $record->critRateValue = $reader->readFloat();
+                        $record->critRateValue = $cursor->nextF32();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.CritRateTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.CritRateTotal');
                     foreach ($records as $record) {
-                        $record->critRateTotal = $reader->readFloat();
+                        $record->critRateTotal = $cursor->nextF32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.BlockRateValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.BlockRateValue');
                     foreach ($records as $record) {
-                        $record->blockRateValue = $reader->readFloat();
+                        $record->blockRateValue = $cursor->nextF32();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.BlockRateTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.BlockRateTotal');
                     foreach ($records as $record) {
-                        $record->blockRateTotal = $reader->readFloat();
+                        $record->blockRateTotal = $cursor->nextF32();
                     }
                     break;
 
                 case 15:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.HITValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.HITValue');
                     foreach ($records as $record) {
-                        $record->hITValue = $reader->readFloat();
+                        $record->hITValue = $cursor->nextF32();
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.HITTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.HITTotal');
                     foreach ($records as $record) {
-                        $record->hITTotal = $reader->readFloat();
+                        $record->hITTotal = $cursor->nextF32();
                     }
                     break;
 

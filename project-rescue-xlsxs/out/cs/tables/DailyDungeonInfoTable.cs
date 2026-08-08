@@ -363,10 +363,11 @@ namespace Rescue.Tables
 
                     case 10:
                         ScbTable.CheckColumn(column, "DailyDungeonInfo.BuffValueRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "DailyDungeonInfo.BuffValueRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._buffValueRate);
+                            record._buffValueRate = cursor.NextF32();
                         }
                         break;
 

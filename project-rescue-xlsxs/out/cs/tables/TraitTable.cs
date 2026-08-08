@@ -243,10 +243,11 @@ namespace Rescue.Tables
 
                     case 5:
                         ScbTable.CheckColumn(column, "Trait.StatRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Trait.StatRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._statRate);
+                            record._statRate = cursor.NextF32();
                         }
                         break;
 

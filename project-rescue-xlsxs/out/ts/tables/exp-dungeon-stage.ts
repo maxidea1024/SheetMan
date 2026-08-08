@@ -367,9 +367,10 @@ export class ExpDungeonStageTable {
           break
         case 11:
           sheetman.checkColumn(column, 'ExpDungeonStage.SpawnNextTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ExpDungeonStage.SpawnNextTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._spawnNextTime = reader.readFloat()
+            record._spawnNextTime = cursor.nextF32()
           }
           break
         case 12:
@@ -398,23 +399,26 @@ export class ExpDungeonStageTable {
           break
         case 15:
           sheetman.checkColumn(column, 'ExpDungeonStage.AtkUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ExpDungeonStage.AtkUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._atkUpPercent = reader.readFloat()
+            record._atkUpPercent = cursor.nextF32()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'ExpDungeonStage.DefUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ExpDungeonStage.DefUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._defUpPercent = reader.readFloat()
+            record._defUpPercent = cursor.nextF32()
           }
           break
         case 17:
           sheetman.checkColumn(column, 'ExpDungeonStage.MHPUpPercent', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ExpDungeonStage.MHPUpPercent')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._mHPUpPercent = reader.readFloat()
+            record._mHPUpPercent = cursor.nextF32()
           }
           break
         case 18:

@@ -146,8 +146,9 @@ class SDAlchemyInfoTable {
           break;
         case 7:
           checkColumn(column, 'SDAlchemyInfo.MaterialType2Rate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyInfo.MaterialType2Rate');
           for (final record in loaded) {
-            record.materialType2Rate = reader.readFloat();
+            record.materialType2Rate = cursor.nextF32();
           }
           break;
         case 8:

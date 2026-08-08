@@ -105,8 +105,9 @@ module Rescue
           end
         when 5
           Sheetman.check_column(column, 'BuffSelect.BuffRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BuffSelect.BuffRate')
           records.each do |record|
-            record.buff_rate = reader.read_float
+            record.buff_rate = cursor.next_f32
           end
         when 6
           Sheetman.check_column(column, 'BuffSelect.BuffTooltip', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])

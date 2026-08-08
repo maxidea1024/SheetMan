@@ -434,10 +434,11 @@ namespace Rescue.Tables
 
                     case 15:
                         ScbTable.CheckColumn(column, "SDDungeonReward.IsPerfect", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonReward.IsPerfect");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isPerfect);
+                            record._isPerfect = cursor.NextBool();
                         }
                         break;
 
@@ -463,10 +464,11 @@ namespace Rescue.Tables
 
                     case 18:
                         ScbTable.CheckColumn(column, "SDDungeonReward.IsMinReward", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDDungeonReward.IsMinReward");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isMinReward);
+                            record._isMinReward = cursor.NextBool();
                         }
                         break;
 

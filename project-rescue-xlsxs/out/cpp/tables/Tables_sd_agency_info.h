@@ -148,57 +148,64 @@ class SDAgencyInfoTable {
         }
         case 5: {
           sheetman::check_column(column, "SDAgencyInfo.GradeSRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.GradeSRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.grade_s_rate);
+            record.grade_s_rate = cursor.next_f32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "SDAgencyInfo.GradeARate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.GradeARate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.grade_a_rate);
+            record.grade_a_rate = cursor.next_f32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "SDAgencyInfo.GradeBRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.GradeBRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.grade_b_rate);
+            record.grade_b_rate = cursor.next_f32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "SDAgencyInfo.GradeCRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.GradeCRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.grade_c_rate);
+            record.grade_c_rate = cursor.next_f32();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "SDAgencyInfo.GradeDRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.GradeDRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.grade_d_rate);
+            record.grade_d_rate = cursor.next_f32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "SDAgencyInfo.GradeERate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.GradeERate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.grade_e_rate);
+            record.grade_e_rate = cursor.next_f32();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "SDAgencyInfo.GradeFRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.GradeFRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.grade_f_rate);
+            record.grade_f_rate = cursor.next_f32();
           }
           break;
         }

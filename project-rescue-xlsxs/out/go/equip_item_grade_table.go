@@ -180,86 +180,98 @@ func (t *EquipItemGradeTable) Read(filename string) error {
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.WeaponStatRate1", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.WeaponStatRate1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.WeaponStatRate1 = reader.ReadFloat32()
+					r.WeaponStatRate1 = cursor.NextF32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.WeaponStatRate2", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.WeaponStatRate2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.WeaponStatRate2 = reader.ReadFloat32()
+					r.WeaponStatRate2 = cursor.NextF32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.ArmorStatRate1", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.ArmorStatRate1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ArmorStatRate1 = reader.ReadFloat32()
+					r.ArmorStatRate1 = cursor.NextF32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.ArmorStatRate2", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.ArmorStatRate2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ArmorStatRate2 = reader.ReadFloat32()
+					r.ArmorStatRate2 = cursor.NextF32()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.GauntletStatRate1", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.GauntletStatRate1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GauntletStatRate1 = reader.ReadFloat32()
+					r.GauntletStatRate1 = cursor.NextF32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.GauntletStatRate2", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.GauntletStatRate2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GauntletStatRate2 = reader.ReadFloat32()
+					r.GauntletStatRate2 = cursor.NextF32()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.BootsStatRate1", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.BootsStatRate1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BootsStatRate1 = reader.ReadFloat32()
+					r.BootsStatRate1 = cursor.NextF32()
 				}
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.BootsStatRate2", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.BootsStatRate2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BootsStatRate2 = reader.ReadFloat32()
+					r.BootsStatRate2 = cursor.NextF32()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.HelmetStatRate1", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.HelmetStatRate1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.HelmetStatRate1 = reader.ReadFloat32()
+					r.HelmetStatRate1 = cursor.NextF32()
 				}
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.HelmetStatRate2", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.HelmetStatRate2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.HelmetStatRate2 = reader.ReadFloat32()
+					r.HelmetStatRate2 = cursor.NextF32()
 				}
 			}
 		case 18:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.AccStatRate1", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.AccStatRate1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AccStatRate1 = reader.ReadFloat32()
+					r.AccStatRate1 = cursor.NextF32()
 				}
 			}
 		case 19:
 			if sheetman.CheckColumn(reader, column, "EquipItemGrade.AccStatRate2", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemGrade.AccStatRate2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AccStatRate2 = reader.ReadFloat32()
+					r.AccStatRate2 = cursor.NextF32()
 				}
 			}
 		default:

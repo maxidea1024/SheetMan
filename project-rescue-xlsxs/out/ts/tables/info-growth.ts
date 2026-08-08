@@ -282,9 +282,10 @@ export class InfoGrowthTable {
           break
         case 6:
           sheetman.checkColumn(column, 'InfoGrowth.Reset', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.Reset')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reset = reader.readBool()
+            record._reset = cursor.nextBool()
           }
           break
         case 7:

@@ -138,8 +138,9 @@ public final class CurrencyTable {
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "Currency.Stackable", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Currency.Stackable");
                     for (CurrencyRecord record : loaded) {
-                        record.stackable = reader.readBool();
+                        record.stackable = cursor.nextBool();
                     }
                     break;
                 }

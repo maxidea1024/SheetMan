@@ -177,8 +177,9 @@ final class SDContensInfoTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'SDContensInfo.EnableReset', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.EnableReset');
                     foreach ($records as $record) {
-                        $record->enableReset = $reader->readBool();
+                        $record->enableReset = $cursor->nextBool();
                     }
                     break;
 

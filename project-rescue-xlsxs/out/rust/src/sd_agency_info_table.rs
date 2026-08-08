@@ -139,44 +139,51 @@ impl SDAgencyInfoTable {
                 }
                 5 => {
                     sheetman::check_column(column, "SDAgencyInfo.GradeSRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.GradeSRate")?;
                     for record in records.iter_mut() {
-                        record.grade_s_rate = reader.read_f32()?;
+                        record.grade_s_rate = cursor.next_f32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDAgencyInfo.GradeARate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.GradeARate")?;
                     for record in records.iter_mut() {
-                        record.grade_a_rate = reader.read_f32()?;
+                        record.grade_a_rate = cursor.next_f32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "SDAgencyInfo.GradeBRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.GradeBRate")?;
                     for record in records.iter_mut() {
-                        record.grade_b_rate = reader.read_f32()?;
+                        record.grade_b_rate = cursor.next_f32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "SDAgencyInfo.GradeCRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.GradeCRate")?;
                     for record in records.iter_mut() {
-                        record.grade_c_rate = reader.read_f32()?;
+                        record.grade_c_rate = cursor.next_f32()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "SDAgencyInfo.GradeDRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.GradeDRate")?;
                     for record in records.iter_mut() {
-                        record.grade_d_rate = reader.read_f32()?;
+                        record.grade_d_rate = cursor.next_f32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "SDAgencyInfo.GradeERate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.GradeERate")?;
                     for record in records.iter_mut() {
-                        record.grade_e_rate = reader.read_f32()?;
+                        record.grade_e_rate = cursor.next_f32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "SDAgencyInfo.GradeFRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.GradeFRate")?;
                     for record in records.iter_mut() {
-                        record.grade_f_rate = reader.read_f32()?;
+                        record.grade_f_rate = cursor.next_f32()?;
                     }
                 }
                 12 => {

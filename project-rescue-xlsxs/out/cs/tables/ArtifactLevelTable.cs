@@ -277,28 +277,31 @@ namespace Rescue.Tables
 
                     case 7:
                         ScbTable.CheckColumn(column, "ArtifactLevel.ATKGrowth", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactLevel.ATKGrowth");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._aTKGrowth);
+                            record._aTKGrowth = cursor.NextF32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "ArtifactLevel.DEFGrowth", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactLevel.DEFGrowth");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._dEFGrowth);
+                            record._dEFGrowth = cursor.NextF32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "ArtifactLevel.HPGrowth", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "ArtifactLevel.HPGrowth");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._hPGrowth);
+                            record._hPGrowth = cursor.NextF32();
                         }
                         break;
 

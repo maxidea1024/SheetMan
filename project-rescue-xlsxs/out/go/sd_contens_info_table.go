@@ -164,9 +164,10 @@ func (t *SDContensInfoTable) Read(filename string) error {
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.EnableReset", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.EnableReset")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EnableReset = reader.ReadBool()
+					r.EnableReset = cursor.NextBool()
 				}
 			}
 		case 9:

@@ -195,8 +195,9 @@ final class StageTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'Stage.SpawnNextTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.SpawnNextTime');
                     foreach ($records as $record) {
-                        $record->spawnNextTime = $reader->readFloat();
+                        $record->spawnNextTime = $cursor->nextF32();
                     }
                     break;
 
@@ -221,43 +222,49 @@ final class StageTable
 
                 case 11:
                     ScbReader::checkColumn($column, 'Stage.AtkUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.AtkUpPercent');
                     foreach ($records as $record) {
-                        $record->atkUpPercent = $reader->readFloat();
+                        $record->atkUpPercent = $cursor->nextF32();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'Stage.DefUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.DefUpPercent');
                     foreach ($records as $record) {
-                        $record->defUpPercent = $reader->readFloat();
+                        $record->defUpPercent = $cursor->nextF32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'Stage.MHPUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.MHPUpPercent');
                     foreach ($records as $record) {
-                        $record->mHPUpPercent = $reader->readFloat();
+                        $record->mHPUpPercent = $cursor->nextF32();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'Stage.BossAtkUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.BossAtkUpPercent');
                     foreach ($records as $record) {
-                        $record->bossAtkUpPercent = $reader->readFloat();
+                        $record->bossAtkUpPercent = $cursor->nextF32();
                     }
                     break;
 
                 case 15:
                     ScbReader::checkColumn($column, 'Stage.BossDefUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.BossDefUpPercent');
                     foreach ($records as $record) {
-                        $record->bossDefUpPercent = $reader->readFloat();
+                        $record->bossDefUpPercent = $cursor->nextF32();
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'Stage.BossMHPUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.BossMHPUpPercent');
                     foreach ($records as $record) {
-                        $record->bossMHPUpPercent = $reader->readFloat();
+                        $record->bossMHPUpPercent = $cursor->nextF32();
                     }
                     break;
 

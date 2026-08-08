@@ -138,8 +138,9 @@ public final class SDAlchemyInfoTable {
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.MaterialType2Rate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType2Rate");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.materialType2Rate = reader.readFloat();
+                        record.materialType2Rate = cursor.nextF32();
                     }
                     break;
                 }

@@ -166,8 +166,9 @@ final class StarNodeTable
 
                 case 7:
                     ScbReader::checkColumn($column, 'StarNode.StarNodeRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StarNode.StarNodeRate');
                     foreach ($records as $record) {
-                        $record->starNodeRate = $reader->readFloat();
+                        $record->starNodeRate = $cursor->nextF32();
                     }
                     break;
 

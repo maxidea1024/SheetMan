@@ -142,8 +142,9 @@ class CostCurveRangeTable {
                 }
                 6 -> {
                     checkColumn(column, "CostCurveRange.AddMultiplier", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurveRange.AddMultiplier")
                     for (record in loaded) {
-                        record.addMultiplier = reader.readFloat()
+                        record.addMultiplier = cursor.nextF32()
                     }
                 }
                 else ->

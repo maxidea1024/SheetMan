@@ -261,9 +261,10 @@ export class StarNodeTable {
           break
         case 7:
           sheetman.checkColumn(column, 'StarNode.StarNodeRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StarNode.StarNodeRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._starNodeRate = reader.readFloat()
+            record._starNodeRate = cursor.nextF32()
           }
           break
         case 8:

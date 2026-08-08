@@ -185,97 +185,109 @@ class EquipItemLevelTable {
         }
         case 8: {
           sheetman::check_column(column, "EquipItemLevel.WeaponStatRate1", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.WeaponStatRate1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.weapon_stat_rate1);
+            record.weapon_stat_rate1 = cursor.next_f32();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "EquipItemLevel.WeaponStatRate2", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.WeaponStatRate2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.weapon_stat_rate2);
+            record.weapon_stat_rate2 = cursor.next_f32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "EquipItemLevel.ArmorStatRate1", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.ArmorStatRate1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.armor_stat_rate1);
+            record.armor_stat_rate1 = cursor.next_f32();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "EquipItemLevel.ArmorStatRate2", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.ArmorStatRate2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.armor_stat_rate2);
+            record.armor_stat_rate2 = cursor.next_f32();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "EquipItemLevel.GauntletStatRate1", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.GauntletStatRate1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.gauntlet_stat_rate1);
+            record.gauntlet_stat_rate1 = cursor.next_f32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "EquipItemLevel.GauntletStatRate2", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.GauntletStatRate2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.gauntlet_stat_rate2);
+            record.gauntlet_stat_rate2 = cursor.next_f32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "EquipItemLevel.BootsStatRate1", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.BootsStatRate1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.boots_stat_rate1);
+            record.boots_stat_rate1 = cursor.next_f32();
           }
           break;
         }
         case 15: {
           sheetman::check_column(column, "EquipItemLevel.BootsStatRate2", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.BootsStatRate2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.boots_stat_rate2);
+            record.boots_stat_rate2 = cursor.next_f32();
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "EquipItemLevel.HelmetStatRate1", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.HelmetStatRate1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.helmet_stat_rate1);
+            record.helmet_stat_rate1 = cursor.next_f32();
           }
           break;
         }
         case 17: {
           sheetman::check_column(column, "EquipItemLevel.HelmetStatRate2", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.HelmetStatRate2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.helmet_stat_rate2);
+            record.helmet_stat_rate2 = cursor.next_f32();
           }
           break;
         }
         case 18: {
           sheetman::check_column(column, "EquipItemLevel.AccStatRate1", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.AccStatRate1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.acc_stat_rate1);
+            record.acc_stat_rate1 = cursor.next_f32();
           }
           break;
         }
         case 19: {
           sheetman::check_column(column, "EquipItemLevel.AccStatRate2", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemLevel.AccStatRate2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.acc_stat_rate2);
+            record.acc_stat_rate2 = cursor.next_f32();
           }
           break;
         }

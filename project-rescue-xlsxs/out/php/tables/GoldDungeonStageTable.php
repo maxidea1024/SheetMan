@@ -225,8 +225,9 @@ final class GoldDungeonStageTable
 
                 case 11:
                     ScbReader::checkColumn($column, 'GoldDungeonStage.SpawnNextTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GoldDungeonStage.SpawnNextTime');
                     foreach ($records as $record) {
-                        $record->spawnNextTime = $reader->readFloat();
+                        $record->spawnNextTime = $cursor->nextF32();
                     }
                     break;
 
@@ -256,22 +257,25 @@ final class GoldDungeonStageTable
 
                 case 15:
                     ScbReader::checkColumn($column, 'GoldDungeonStage.AtkUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GoldDungeonStage.AtkUpPercent');
                     foreach ($records as $record) {
-                        $record->atkUpPercent = $reader->readFloat();
+                        $record->atkUpPercent = $cursor->nextF32();
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'GoldDungeonStage.DefUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GoldDungeonStage.DefUpPercent');
                     foreach ($records as $record) {
-                        $record->defUpPercent = $reader->readFloat();
+                        $record->defUpPercent = $cursor->nextF32();
                     }
                     break;
 
                 case 17:
                     ScbReader::checkColumn($column, 'GoldDungeonStage.MHPUpPercent', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GoldDungeonStage.MHPUpPercent');
                     foreach ($records as $record) {
-                        $record->mHPUpPercent = $reader->readFloat();
+                        $record->mHPUpPercent = $cursor->nextF32();
                     }
                     break;
 

@@ -580,15 +580,24 @@ public class CCodeGenerator : CodeGenerator<CRecipe>
 
         switch (sf.ElementType)
         {
-            // Int64 and Double are here for their promotions: the file may carry an
-            // i32 column - encoded - where the member has since widened.
+            // Int64 and Double are here for their promotions as well as their own
+            // dictionaries: the file may carry an i32 column - encoded - where the
+            // member has since widened.
             case ValueType.Int32:
             case ValueType.Int64:
             case ValueType.Double:
+            case ValueType.Float:
+            case ValueType.Bool:
             case ValueType.Enum:
             case ValueType.String:
+
+            // Ticks are an i64 column, so they meet the i64 dictionary like any other.
+            case ValueType.DateTime:
+            case ValueType.TimeSpan:
                 return true;
 
+            // Uuid is the one scalar left raw: sixteen-byte entries rarely repeat
+            // enough to pay for the index beside them.
             default:
                 return false;
         }
@@ -623,6 +632,17 @@ public class CCodeGenerator : CodeGenerator<CRecipe>
                 return $"sm_cursor_next_i64(&cursor, {address})";
             case ValueType.Double:
                 return $"sm_cursor_next_f64(&cursor, {address})";
+            case ValueType.Float:
+                return $"sm_cursor_next_f32(&cursor, {address})";
+            case ValueType.Bool:
+                return $"sm_cursor_next_bool(&cursor, {address})";
+
+            // Ticks, and the member is the ticks - C has no time type that holds
+            // either range - so the i64 the column carries is the whole of it.
+            case ValueType.DateTime:
+            case ValueType.TimeSpan:
+                return $"sm_cursor_next_i64(&cursor, {address})";
+
             default: // String; UsesCursor admits nothing else.
                 return $"sm_cursor_next_string(&cursor, {address})";
         }

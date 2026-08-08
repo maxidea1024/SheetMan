@@ -169,50 +169,58 @@ impl SDAlchemyLevelTable {
                 }
                 9 => {
                     sheetman::check_column(column, "SDAlchemyLevel.CritDMGValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyLevel.CritDMGValue")?;
                     for record in records.iter_mut() {
-                        record.crit_dmg_value = reader.read_f32()?;
+                        record.crit_dmg_value = cursor.next_f32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "SDAlchemyLevel.CritDMGTotal", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyLevel.CritDMGTotal")?;
                     for record in records.iter_mut() {
-                        record.crit_dmg_total = reader.read_f32()?;
+                        record.crit_dmg_total = cursor.next_f32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "SDAlchemyLevel.CritRateValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyLevel.CritRateValue")?;
                     for record in records.iter_mut() {
-                        record.crit_rate_value = reader.read_f32()?;
+                        record.crit_rate_value = cursor.next_f32()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "SDAlchemyLevel.CritRateTotal", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyLevel.CritRateTotal")?;
                     for record in records.iter_mut() {
-                        record.crit_rate_total = reader.read_f32()?;
+                        record.crit_rate_total = cursor.next_f32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "SDAlchemyLevel.BlockRateValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyLevel.BlockRateValue")?;
                     for record in records.iter_mut() {
-                        record.block_rate_value = reader.read_f32()?;
+                        record.block_rate_value = cursor.next_f32()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "SDAlchemyLevel.BlockRateTotal", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyLevel.BlockRateTotal")?;
                     for record in records.iter_mut() {
-                        record.block_rate_total = reader.read_f32()?;
+                        record.block_rate_total = cursor.next_f32()?;
                     }
                 }
                 15 => {
                     sheetman::check_column(column, "SDAlchemyLevel.HITValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyLevel.HITValue")?;
                     for record in records.iter_mut() {
-                        record.hit_value = reader.read_f32()?;
+                        record.hit_value = cursor.next_f32()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "SDAlchemyLevel.HITTotal", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyLevel.HITTotal")?;
                     for record in records.iter_mut() {
-                        record.hit_total = reader.read_f32()?;
+                        record.hit_total = cursor.next_f32()?;
                     }
                 }
                 _ => {

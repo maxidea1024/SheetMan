@@ -304,9 +304,10 @@ export class PackageTable {
           break
         case 6:
           sheetman.checkColumn(column, 'Package.Stackable', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.Stackable')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._stackable = reader.readBool()
+            record._stackable = cursor.nextBool()
           }
           break
         case 7:

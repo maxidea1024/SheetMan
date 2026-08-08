@@ -132,8 +132,9 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'ArtifactTranscendence.PowerMultiplier', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.PowerMultiplier')
           records.each do |record|
-            record.power_multiplier = reader.read_float
+            record.power_multiplier = cursor.next_f32
           end
         when 10
           Sheetman.check_column(column, 'ArtifactTranscendence.NextStepID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

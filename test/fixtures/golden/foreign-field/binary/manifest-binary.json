@@ -1,12 +1,12 @@
 {
   "LastUpdatedDate": "<TIMESTAMP>",
-  "MasterHash": "413567abc9ef567c0e9819b1cc4caed2",
-  "TotalSize": 142,
+  "MasterHash": "408d37dcebdf020bd6d5a92d067a3e9f",
+  "TotalSize": 135,
   "Items": [
     {
       "Name": "ItemCategory.scb",
-      "Size": 81,
-      "Hash": "0f2a175a59ce42b26384fea48bd12933",
+      "Size": 74,
+      "Hash": "34076a3571c50ed7d983d43679b213a9",
       "LastUpdatedDate": "<TIMESTAMP>"
     },
     {

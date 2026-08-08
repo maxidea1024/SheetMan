@@ -130,8 +130,9 @@ public final class InfoGrowthTable {
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "InfoGrowth.Reset", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.Reset");
                     for (InfoGrowthRecord record : loaded) {
-                        record.reset = reader.readBool();
+                        record.reset = cursor.nextBool();
                     }
                     break;
                 }

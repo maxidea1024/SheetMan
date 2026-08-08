@@ -148,8 +148,9 @@ class ArtifactTranscendenceTable {
           break;
         case 9:
           checkColumn(column, 'ArtifactTranscendence.PowerMultiplier', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactTranscendence.PowerMultiplier');
           for (final record in loaded) {
-            record.powerMultiplier = reader.readFloat();
+            record.powerMultiplier = cursor.nextF32();
           }
           break;
         case 10:

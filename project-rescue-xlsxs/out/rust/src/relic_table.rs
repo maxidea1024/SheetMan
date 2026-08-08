@@ -147,14 +147,16 @@ impl RelicTable {
                 }
                 6 => {
                     sheetman::check_column(column, "Relic.RelicValue1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Relic.RelicValue1")?;
                     for record in records.iter_mut() {
-                        record.relic_value1 = reader.read_f32()?;
+                        record.relic_value1 = cursor.next_f32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "Relic.RelicIncValue1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Relic.RelicIncValue1")?;
                     for record in records.iter_mut() {
-                        record.relic_inc_value1 = reader.read_f32()?;
+                        record.relic_inc_value1 = cursor.next_f32()?;
                     }
                 }
                 8 => {
@@ -166,14 +168,16 @@ impl RelicTable {
                 }
                 9 => {
                     sheetman::check_column(column, "Relic.RelicValue2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Relic.RelicValue2")?;
                     for record in records.iter_mut() {
-                        record.relic_value2 = reader.read_f32()?;
+                        record.relic_value2 = cursor.next_f32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "Relic.RelicIncValue2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Relic.RelicIncValue2")?;
                     for record in records.iter_mut() {
-                        record.relic_inc_value2 = reader.read_f32()?;
+                        record.relic_inc_value2 = cursor.next_f32()?;
                     }
                 }
                 11 => {
@@ -185,14 +189,16 @@ impl RelicTable {
                 }
                 12 => {
                     sheetman::check_column(column, "Relic.RelicValue3", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Relic.RelicValue3")?;
                     for record in records.iter_mut() {
-                        record.relic_value3 = reader.read_f32()?;
+                        record.relic_value3 = cursor.next_f32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "Relic.RelicIncValue3", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Relic.RelicIncValue3")?;
                     for record in records.iter_mut() {
-                        record.relic_inc_value3 = reader.read_f32()?;
+                        record.relic_inc_value3 = cursor.next_f32()?;
                     }
                 }
                 14 => {

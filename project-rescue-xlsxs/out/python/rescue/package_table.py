@@ -122,8 +122,9 @@ class PackageTable:
                     record.package_type = ConsumablesType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Package.Stackable", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.Stackable")
                 for record in records:
-                    record.stackable = reader.read_bool()
+                    record.stackable = cursor.next_bool()
             elif column.tag == 7:
                 sheetman.check_column(column, "Package.MaxStack", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Package.MaxStack")

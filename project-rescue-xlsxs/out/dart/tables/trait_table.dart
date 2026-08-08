@@ -114,8 +114,9 @@ class TraitTable {
           break;
         case 5:
           checkColumn(column, 'Trait.StatRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Trait.StatRate');
           for (final record in loaded) {
-            record.statRate = reader.readFloat();
+            record.statRate = cursor.nextF32();
           }
           break;
         case 6:

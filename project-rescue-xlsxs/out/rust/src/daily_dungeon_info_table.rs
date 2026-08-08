@@ -181,8 +181,9 @@ impl DailyDungeonInfoTable {
                 }
                 10 => {
                     sheetman::check_column(column, "DailyDungeonInfo.BuffValueRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.BuffValueRate")?;
                     for record in records.iter_mut() {
-                        record.buff_value_rate = reader.read_f32()?;
+                        record.buff_value_rate = cursor.next_f32()?;
                     }
                 }
                 11 => {

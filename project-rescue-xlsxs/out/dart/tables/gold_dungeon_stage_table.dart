@@ -182,8 +182,9 @@ class GoldDungeonStageTable {
           break;
         case 11:
           checkColumn(column, 'GoldDungeonStage.SpawnNextTime', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.SpawnNextTime');
           for (final record in loaded) {
-            record.spawnNextTime = reader.readFloat();
+            record.spawnNextTime = cursor.nextF32();
           }
           break;
         case 12:
@@ -209,20 +210,23 @@ class GoldDungeonStageTable {
           break;
         case 15:
           checkColumn(column, 'GoldDungeonStage.AtkUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.AtkUpPercent');
           for (final record in loaded) {
-            record.atkUpPercent = reader.readFloat();
+            record.atkUpPercent = cursor.nextF32();
           }
           break;
         case 16:
           checkColumn(column, 'GoldDungeonStage.DefUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.DefUpPercent');
           for (final record in loaded) {
-            record.defUpPercent = reader.readFloat();
+            record.defUpPercent = cursor.nextF32();
           }
           break;
         case 17:
           checkColumn(column, 'GoldDungeonStage.MHPUpPercent', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.MHPUpPercent');
           for (final record in loaded) {
-            record.mHPUpPercent = reader.readFloat();
+            record.mHPUpPercent = cursor.nextF32();
           }
           break;
         case 18:

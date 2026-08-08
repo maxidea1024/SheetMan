@@ -88,24 +88,29 @@ class GachaRateTable:
                     record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "GachaRate.URRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaRate.URRate")
                 for record in records:
-                    record.ur_rate = reader.read_float()
+                    record.ur_rate = cursor.next_f32()
             elif column.tag == 3:
                 sheetman.check_column(column, "GachaRate.SSRRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaRate.SSRRate")
                 for record in records:
-                    record.ssr_rate = reader.read_float()
+                    record.ssr_rate = cursor.next_f32()
             elif column.tag == 4:
                 sheetman.check_column(column, "GachaRate.SRRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaRate.SRRate")
                 for record in records:
-                    record.sr_rate = reader.read_float()
+                    record.sr_rate = cursor.next_f32()
             elif column.tag == 5:
                 sheetman.check_column(column, "GachaRate.RRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaRate.RRate")
                 for record in records:
-                    record.r_rate = reader.read_float()
+                    record.r_rate = cursor.next_f32()
             elif column.tag == 6:
                 sheetman.check_column(column, "GachaRate.NRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaRate.NRate")
                 for record in records:
-                    record.n_rate = reader.read_float()
+                    record.n_rate = cursor.next_f32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

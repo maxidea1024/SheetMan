@@ -141,9 +141,10 @@ class GachaCharacterListTable {
         }
         case 5: {
           sheetman::check_column(column, "GachaCharacterList.IsWishlist", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaCharacterList.IsWishlist");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_wishlist);
+            record.is_wishlist = cursor.next_bool();
           }
           break;
         }

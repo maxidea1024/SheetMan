@@ -146,51 +146,58 @@ func (t *SDAgencyInfoTable) Read(filename string) error {
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.GradeSRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.GradeSRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeSRate = reader.ReadFloat32()
+					r.GradeSRate = cursor.NextF32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.GradeARate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.GradeARate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeARate = reader.ReadFloat32()
+					r.GradeARate = cursor.NextF32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.GradeBRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.GradeBRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeBRate = reader.ReadFloat32()
+					r.GradeBRate = cursor.NextF32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.GradeCRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.GradeCRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeCRate = reader.ReadFloat32()
+					r.GradeCRate = cursor.NextF32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.GradeDRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.GradeDRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeDRate = reader.ReadFloat32()
+					r.GradeDRate = cursor.NextF32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.GradeERate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.GradeERate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeERate = reader.ReadFloat32()
+					r.GradeERate = cursor.NextF32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.GradeFRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.GradeFRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeFRate = reader.ReadFloat32()
+					r.GradeFRate = cursor.NextF32()
 				}
 			}
 		case 12:

@@ -146,30 +146,34 @@ func (t *SDTrainingLevelTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDTrainingLevel.MHPGrowth", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingLevel.MHPGrowth")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MHPGrowth = reader.ReadFloat32()
+					r.MHPGrowth = cursor.NextF32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDTrainingLevel.MHPTotal", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingLevel.MHPTotal")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MHPTotal = reader.ReadFloat32()
+					r.MHPTotal = cursor.NextF32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "SDTrainingLevel.DEFGrowth", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingLevel.DEFGrowth")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DEFGrowth = reader.ReadFloat32()
+					r.DEFGrowth = cursor.NextF32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SDTrainingLevel.DEFTotal", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingLevel.DEFTotal")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DEFTotal = reader.ReadFloat32()
+					r.DEFTotal = cursor.NextF32()
 				}
 			}
 		case 10:

@@ -133,52 +133,64 @@ class EquipItemLevelTable:
                     record.material_value1 = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "EquipItemLevel.WeaponStatRate1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.WeaponStatRate1")
                 for record in records:
-                    record.weapon_stat_rate1 = reader.read_float()
+                    record.weapon_stat_rate1 = cursor.next_f32()
             elif column.tag == 9:
                 sheetman.check_column(column, "EquipItemLevel.WeaponStatRate2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.WeaponStatRate2")
                 for record in records:
-                    record.weapon_stat_rate2 = reader.read_float()
+                    record.weapon_stat_rate2 = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "EquipItemLevel.ArmorStatRate1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.ArmorStatRate1")
                 for record in records:
-                    record.armor_stat_rate1 = reader.read_float()
+                    record.armor_stat_rate1 = cursor.next_f32()
             elif column.tag == 11:
                 sheetman.check_column(column, "EquipItemLevel.ArmorStatRate2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.ArmorStatRate2")
                 for record in records:
-                    record.armor_stat_rate2 = reader.read_float()
+                    record.armor_stat_rate2 = cursor.next_f32()
             elif column.tag == 12:
                 sheetman.check_column(column, "EquipItemLevel.GauntletStatRate1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.GauntletStatRate1")
                 for record in records:
-                    record.gauntlet_stat_rate1 = reader.read_float()
+                    record.gauntlet_stat_rate1 = cursor.next_f32()
             elif column.tag == 13:
                 sheetman.check_column(column, "EquipItemLevel.GauntletStatRate2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.GauntletStatRate2")
                 for record in records:
-                    record.gauntlet_stat_rate2 = reader.read_float()
+                    record.gauntlet_stat_rate2 = cursor.next_f32()
             elif column.tag == 14:
                 sheetman.check_column(column, "EquipItemLevel.BootsStatRate1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.BootsStatRate1")
                 for record in records:
-                    record.boots_stat_rate1 = reader.read_float()
+                    record.boots_stat_rate1 = cursor.next_f32()
             elif column.tag == 15:
                 sheetman.check_column(column, "EquipItemLevel.BootsStatRate2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.BootsStatRate2")
                 for record in records:
-                    record.boots_stat_rate2 = reader.read_float()
+                    record.boots_stat_rate2 = cursor.next_f32()
             elif column.tag == 16:
                 sheetman.check_column(column, "EquipItemLevel.HelmetStatRate1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.HelmetStatRate1")
                 for record in records:
-                    record.helmet_stat_rate1 = reader.read_float()
+                    record.helmet_stat_rate1 = cursor.next_f32()
             elif column.tag == 17:
                 sheetman.check_column(column, "EquipItemLevel.HelmetStatRate2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.HelmetStatRate2")
                 for record in records:
-                    record.helmet_stat_rate2 = reader.read_float()
+                    record.helmet_stat_rate2 = cursor.next_f32()
             elif column.tag == 18:
                 sheetman.check_column(column, "EquipItemLevel.AccStatRate1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.AccStatRate1")
                 for record in records:
-                    record.acc_stat_rate1 = reader.read_float()
+                    record.acc_stat_rate1 = cursor.next_f32()
             elif column.tag == 19:
                 sheetman.check_column(column, "EquipItemLevel.AccStatRate2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.AccStatRate2")
                 for record in records:
-                    record.acc_stat_rate2 = reader.read_float()
+                    record.acc_stat_rate2 = cursor.next_f32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

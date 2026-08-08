@@ -98,13 +98,15 @@ module Rescue
           end
         when 4
           Sheetman.check_column(column, 'BGMSound.Loop', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BGMSound.Loop')
           records.each do |record|
-            record.loop = reader.read_bool
+            record.loop = cursor.next_bool
           end
         when 5
           Sheetman.check_column(column, 'BGMSound.FadeTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BGMSound.FadeTime')
           records.each do |record|
-            record.fade_time = reader.read_float
+            record.fade_time = cursor.next_f32
           end
         when 6
           Sheetman.check_column(column, 'BGMSound.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])

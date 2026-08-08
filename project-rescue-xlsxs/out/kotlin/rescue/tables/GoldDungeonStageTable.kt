@@ -207,8 +207,9 @@ class GoldDungeonStageTable {
                 }
                 11 -> {
                     checkColumn(column, "GoldDungeonStage.SpawnNextTime", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "GoldDungeonStage.SpawnNextTime")
                     for (record in loaded) {
-                        record.spawnNextTime = reader.readFloat()
+                        record.spawnNextTime = cursor.nextF32()
                     }
                 }
                 12 -> {
@@ -234,20 +235,23 @@ class GoldDungeonStageTable {
                 }
                 15 -> {
                     checkColumn(column, "GoldDungeonStage.AtkUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "GoldDungeonStage.AtkUpPercent")
                     for (record in loaded) {
-                        record.atkUpPercent = reader.readFloat()
+                        record.atkUpPercent = cursor.nextF32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "GoldDungeonStage.DefUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "GoldDungeonStage.DefUpPercent")
                     for (record in loaded) {
-                        record.defUpPercent = reader.readFloat()
+                        record.defUpPercent = cursor.nextF32()
                     }
                 }
                 17 -> {
                     checkColumn(column, "GoldDungeonStage.MHPUpPercent", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "GoldDungeonStage.MHPUpPercent")
                     for (record in loaded) {
-                        record.mHPUpPercent = reader.readFloat()
+                        record.mHPUpPercent = cursor.nextF32()
                     }
                 }
                 18 -> {

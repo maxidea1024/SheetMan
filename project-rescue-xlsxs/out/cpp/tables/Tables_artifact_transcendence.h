@@ -176,9 +176,10 @@ class ArtifactTranscendenceTable {
         }
         case 9: {
           sheetman::check_column(column, "ArtifactTranscendence.PowerMultiplier", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ArtifactTranscendence.PowerMultiplier");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.power_multiplier);
+            record.power_multiplier = cursor.next_f32();
           }
           break;
         }

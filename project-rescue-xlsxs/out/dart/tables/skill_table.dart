@@ -154,14 +154,16 @@ class SkillTable {
           break;
         case 9:
           checkColumn(column, 'Skill.SkillUseRange', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.SkillUseRange');
           for (final record in loaded) {
-            record.skillUseRange = reader.readFloat();
+            record.skillUseRange = cursor.nextF32();
           }
           break;
         case 10:
           checkColumn(column, 'Skill.CoolTime', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.CoolTime');
           for (final record in loaded) {
-            record.coolTime = reader.readFloat();
+            record.coolTime = cursor.nextF32();
           }
           break;
         case 11:

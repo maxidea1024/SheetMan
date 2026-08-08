@@ -279,10 +279,11 @@ namespace X
 
                     case 4:
                         ScbTable.CheckColumn(column, "Template.Delete", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "Template.Delete");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._delete);
+                            record._delete = cursor.NextBool();
                         }
                         break;
 

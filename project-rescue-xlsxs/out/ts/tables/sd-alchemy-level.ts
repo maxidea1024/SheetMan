@@ -316,58 +316,66 @@ export class SDAlchemyLevelTable {
           break
         case 9:
           sheetman.checkColumn(column, 'SDAlchemyLevel.CritDMGValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.CritDMGValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._critDMGValue = reader.readFloat()
+            record._critDMGValue = cursor.nextF32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'SDAlchemyLevel.CritDMGTotal', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.CritDMGTotal')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._critDMGTotal = reader.readFloat()
+            record._critDMGTotal = cursor.nextF32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'SDAlchemyLevel.CritRateValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.CritRateValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._critRateValue = reader.readFloat()
+            record._critRateValue = cursor.nextF32()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'SDAlchemyLevel.CritRateTotal', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.CritRateTotal')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._critRateTotal = reader.readFloat()
+            record._critRateTotal = cursor.nextF32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'SDAlchemyLevel.BlockRateValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.BlockRateValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._blockRateValue = reader.readFloat()
+            record._blockRateValue = cursor.nextF32()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'SDAlchemyLevel.BlockRateTotal', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.BlockRateTotal')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._blockRateTotal = reader.readFloat()
+            record._blockRateTotal = cursor.nextF32()
           }
           break
         case 15:
           sheetman.checkColumn(column, 'SDAlchemyLevel.HITValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.HITValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._hITValue = reader.readFloat()
+            record._hITValue = cursor.nextF32()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'SDAlchemyLevel.HITTotal', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.HITTotal')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._hITTotal = reader.readFloat()
+            record._hITTotal = cursor.nextF32()
           }
           break
         default:

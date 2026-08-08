@@ -175,8 +175,9 @@ class CollectionTable {
                 }
                 9 -> {
                     checkColumn(column, "Collection.RewardStatRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.RewardStatRate")
                     for (record in loaded) {
-                        record.rewardStatRate = reader.readFloat()
+                        record.rewardStatRate = cursor.nextF32()
                     }
                 }
                 10 -> {

@@ -121,17 +121,19 @@ class BGMSoundTable {
         }
         case 4: {
           sheetman::check_column(column, "BGMSound.Loop", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "BGMSound.Loop");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.loop);
+            record.loop = cursor.next_bool();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "BGMSound.FadeTime", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "BGMSound.FadeTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.fade_time);
+            record.fade_time = cursor.next_f32();
           }
           break;
         }

@@ -112,38 +112,45 @@ module Rescue
           end
         when 5
           Sheetman.check_column(column, 'SDAgencyInfo.GradeSRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.GradeSRate')
           records.each do |record|
-            record.grade_s_rate = reader.read_float
+            record.grade_s_rate = cursor.next_f32
           end
         when 6
           Sheetman.check_column(column, 'SDAgencyInfo.GradeARate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.GradeARate')
           records.each do |record|
-            record.grade_a_rate = reader.read_float
+            record.grade_a_rate = cursor.next_f32
           end
         when 7
           Sheetman.check_column(column, 'SDAgencyInfo.GradeBRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.GradeBRate')
           records.each do |record|
-            record.grade_b_rate = reader.read_float
+            record.grade_b_rate = cursor.next_f32
           end
         when 8
           Sheetman.check_column(column, 'SDAgencyInfo.GradeCRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.GradeCRate')
           records.each do |record|
-            record.grade_c_rate = reader.read_float
+            record.grade_c_rate = cursor.next_f32
           end
         when 9
           Sheetman.check_column(column, 'SDAgencyInfo.GradeDRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.GradeDRate')
           records.each do |record|
-            record.grade_d_rate = reader.read_float
+            record.grade_d_rate = cursor.next_f32
           end
         when 10
           Sheetman.check_column(column, 'SDAgencyInfo.GradeERate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.GradeERate')
           records.each do |record|
-            record.grade_e_rate = reader.read_float
+            record.grade_e_rate = cursor.next_f32
           end
         when 11
           Sheetman.check_column(column, 'SDAgencyInfo.GradeFRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.GradeFRate')
           records.each do |record|
-            record.grade_f_rate = reader.read_float
+            record.grade_f_rate = cursor.next_f32
           end
         when 12
           Sheetman.check_column(column, 'SDAgencyInfo.FreeRefresh', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

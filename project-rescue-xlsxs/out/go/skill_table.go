@@ -176,16 +176,18 @@ func (t *SkillTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "Skill.SkillUseRange", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.SkillUseRange")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SkillUseRange = reader.ReadFloat32()
+					r.SkillUseRange = cursor.NextF32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "Skill.CoolTime", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.CoolTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CoolTime = reader.ReadFloat32()
+					r.CoolTime = cursor.NextF32()
 				}
 			}
 		case 11:

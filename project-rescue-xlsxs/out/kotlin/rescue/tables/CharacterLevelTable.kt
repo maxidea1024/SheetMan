@@ -155,20 +155,23 @@ class CharacterLevelTable {
                 }
                 7 -> {
                     checkColumn(column, "CharacterLevel.ATKGrowth", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterLevel.ATKGrowth")
                     for (record in loaded) {
-                        record.aTKGrowth = reader.readFloat()
+                        record.aTKGrowth = cursor.nextF32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "CharacterLevel.DEFGrowth", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterLevel.DEFGrowth")
                     for (record in loaded) {
-                        record.dEFGrowth = reader.readFloat()
+                        record.dEFGrowth = cursor.nextF32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "CharacterLevel.HPGrowth", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterLevel.HPGrowth")
                     for (record in loaded) {
-                        record.hPGrowth = reader.readFloat()
+                        record.hPGrowth = cursor.nextF32()
                     }
                 }
                 else ->

@@ -130,15 +130,17 @@ public final class AttributeTable {
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "Attribute.DamageValueRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Attribute.DamageValueRate");
                     for (AttributeRecord record : loaded) {
-                        record.damageValueRate = reader.readFloat();
+                        record.damageValueRate = cursor.nextF32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "Attribute.IsVisible", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Attribute.IsVisible");
                     for (AttributeRecord record : loaded) {
-                        record.isVisible = reader.readBool();
+                        record.isVisible = cursor.nextBool();
                     }
                     break;
                 }

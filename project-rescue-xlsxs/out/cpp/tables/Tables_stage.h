@@ -186,9 +186,10 @@ class StageTable {
         }
         case 8: {
           sheetman::check_column(column, "Stage.SpawnNextTime", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.SpawnNextTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.spawn_next_time);
+            record.spawn_next_time = cursor.next_f32();
           }
           break;
         }
@@ -215,49 +216,55 @@ class StageTable {
         }
         case 11: {
           sheetman::check_column(column, "Stage.AtkUpPercent", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.AtkUpPercent");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.atk_up_percent);
+            record.atk_up_percent = cursor.next_f32();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "Stage.DefUpPercent", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.DefUpPercent");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.def_up_percent);
+            record.def_up_percent = cursor.next_f32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "Stage.MHPUpPercent", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.MHPUpPercent");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.mhp_up_percent);
+            record.mhp_up_percent = cursor.next_f32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "Stage.BossAtkUpPercent", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.BossAtkUpPercent");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.boss_atk_up_percent);
+            record.boss_atk_up_percent = cursor.next_f32();
           }
           break;
         }
         case 15: {
           sheetman::check_column(column, "Stage.BossDefUpPercent", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.BossDefUpPercent");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.boss_def_up_percent);
+            record.boss_def_up_percent = cursor.next_f32();
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "Stage.BossMHPUpPercent", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.BossMHPUpPercent");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.boss_mhp_up_percent);
+            record.boss_mhp_up_percent = cursor.next_f32();
           }
           break;
         }

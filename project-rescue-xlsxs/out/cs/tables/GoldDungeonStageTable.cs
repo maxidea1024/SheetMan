@@ -402,10 +402,11 @@ namespace Rescue.Tables
 
                     case 11:
                         ScbTable.CheckColumn(column, "GoldDungeonStage.SpawnNextTime", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonStage.SpawnNextTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._spawnNextTime);
+                            record._spawnNextTime = cursor.NextF32();
                         }
                         break;
 
@@ -441,28 +442,31 @@ namespace Rescue.Tables
 
                     case 15:
                         ScbTable.CheckColumn(column, "GoldDungeonStage.AtkUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonStage.AtkUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._atkUpPercent);
+                            record._atkUpPercent = cursor.NextF32();
                         }
                         break;
 
                     case 16:
                         ScbTable.CheckColumn(column, "GoldDungeonStage.DefUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonStage.DefUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._defUpPercent);
+                            record._defUpPercent = cursor.NextF32();
                         }
                         break;
 
                     case 17:
                         ScbTable.CheckColumn(column, "GoldDungeonStage.MHPUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "GoldDungeonStage.MHPUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._mHPUpPercent);
+                            record._mHPUpPercent = cursor.NextF32();
                         }
                         break;
 

@@ -166,9 +166,10 @@ class ExpDungeonRewardTable {
         }
         case 8: {
           sheetman::check_column(column, "ExpDungeonReward.IsFirstClear", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ExpDungeonReward.IsFirstClear");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_first_clear);
+            record.is_first_clear = cursor.next_bool();
           }
           break;
         }

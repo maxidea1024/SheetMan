@@ -182,8 +182,9 @@ final class CharacterTranscendenceTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'CharacterTranscendence.PowerMultiplier', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CharacterTranscendence.PowerMultiplier');
                     foreach ($records as $record) {
-                        $record->powerMultiplier = $reader->readFloat();
+                        $record->powerMultiplier = $cursor->nextF32();
                     }
                     break;
 

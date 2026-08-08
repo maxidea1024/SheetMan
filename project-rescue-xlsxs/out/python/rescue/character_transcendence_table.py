@@ -129,8 +129,9 @@ class CharacterTranscendenceTable:
                     record.material_count = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "CharacterTranscendence.PowerMultiplier", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CharacterTranscendence.PowerMultiplier")
                 for record in records:
-                    record.power_multiplier = reader.read_float()
+                    record.power_multiplier = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "CharacterTranscendence.NextStepID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "CharacterTranscendence.NextStepID")

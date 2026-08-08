@@ -161,11 +161,12 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 8:
       (void)sm_check_column(reader, column, "SDContensInfo.EnableReset", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.EnableReset");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->enable_reset);
+        (void)sm_cursor_next_bool(&cursor, &record->enable_reset);
       }
 
       break;

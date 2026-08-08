@@ -122,8 +122,9 @@ module Rescue
           end
         when 7
           Sheetman.check_column(column, 'Artifact.EquipStatRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.EquipStatRate')
           records.each do |record|
-            record.equip_stat_rate = reader.read_float
+            record.equip_stat_rate = cursor.next_f32
           end
         when 8
           Sheetman.check_column(column, 'Artifact.CollectionType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
@@ -133,8 +134,9 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'Artifact.CollectionVlaue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.CollectionVlaue')
           records.each do |record|
-            record.collection_vlaue = reader.read_float
+            record.collection_vlaue = cursor.next_f32
           end
         when 10
           Sheetman.check_column(column, 'Artifact.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])

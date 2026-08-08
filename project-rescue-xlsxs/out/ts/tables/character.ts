@@ -494,58 +494,66 @@ export class CharacterTable {
           break
         case 12:
           sheetman.checkColumn(column, 'Character.MoveSpeed', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Character.MoveSpeed')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._moveSpeed = reader.readFloat()
+            record._moveSpeed = cursor.nextF32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'Character.CritRate', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Character.CritRate')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._critRate = reader.readFloat()
+            record._critRate = cursor.nextF32()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'Character.CritDmg', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Character.CritDmg')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._critDmg = reader.readFloat()
+            record._critDmg = cursor.nextF32()
           }
           break
         case 15:
           sheetman.checkColumn(column, 'Character.SearchRange', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Character.SearchRange')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._searchRange = reader.readFloat()
+            record._searchRange = cursor.nextF32()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'Character.ReFindTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Character.ReFindTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reFindTime = reader.readFloat()
+            record._reFindTime = cursor.nextF32()
           }
           break
         case 17:
           sheetman.checkColumn(column, 'Character.MaxFollow', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Character.MaxFollow')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxFollow = reader.readFloat()
+            record._maxFollow = cursor.nextF32()
           }
           break
         case 18:
           sheetman.checkColumn(column, 'Character.SizePrefab', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Character.SizePrefab')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._sizePrefab = reader.readFloat()
+            record._sizePrefab = cursor.nextF32()
           }
           break
         case 19:
           sheetman.checkColumn(column, 'Character.IsUnlocked', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Character.IsUnlocked')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isUnlocked = reader.readBool()
+            record._isUnlocked = cursor.nextBool()
           }
           break
         case 20:

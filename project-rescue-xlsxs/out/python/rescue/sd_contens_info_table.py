@@ -126,8 +126,9 @@ class SDContensInfoTable:
                     record.currency_type = CurrencyType(cursor.next_i32())
             elif column.tag == 8:
                 sheetman.check_column(column, "SDContensInfo.EnableReset", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.EnableReset")
                 for record in records:
-                    record.enable_reset = reader.read_bool()
+                    record.enable_reset = cursor.next_bool()
             elif column.tag == 9:
                 sheetman.check_column(column, "SDContensInfo.CycleType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.CycleType")

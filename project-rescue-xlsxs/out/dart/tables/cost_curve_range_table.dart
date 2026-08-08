@@ -119,8 +119,9 @@ class CostCurveRangeTable {
           break;
         case 6:
           checkColumn(column, 'CostCurveRange.AddMultiplier', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurveRange.AddMultiplier');
           for (final record in loaded) {
-            record.addMultiplier = reader.readFloat();
+            record.addMultiplier = cursor.nextF32();
           }
           break;
         default:

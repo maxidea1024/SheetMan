@@ -136,26 +136,30 @@ impl SDTrainingLevelTable {
                 }
                 6 => {
                     sheetman::check_column(column, "SDTrainingLevel.MHPGrowth", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingLevel.MHPGrowth")?;
                     for record in records.iter_mut() {
-                        record.mhp_growth = reader.read_f32()?;
+                        record.mhp_growth = cursor.next_f32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "SDTrainingLevel.MHPTotal", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingLevel.MHPTotal")?;
                     for record in records.iter_mut() {
-                        record.mhp_total = reader.read_f32()?;
+                        record.mhp_total = cursor.next_f32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "SDTrainingLevel.DEFGrowth", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingLevel.DEFGrowth")?;
                     for record in records.iter_mut() {
-                        record.def_growth = reader.read_f32()?;
+                        record.def_growth = cursor.next_f32()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "SDTrainingLevel.DEFTotal", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingLevel.DEFTotal")?;
                     for record in records.iter_mut() {
-                        record.def_total = reader.read_f32()?;
+                        record.def_total = cursor.next_f32()?;
                     }
                 }
                 10 => {

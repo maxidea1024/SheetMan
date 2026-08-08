@@ -156,16 +156,18 @@ func (t *RelicTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicValue1", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicValue1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicValue1 = reader.ReadFloat32()
+					r.RelicValue1 = cursor.NextF32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicIncValue1", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicIncValue1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicIncValue1 = reader.ReadFloat32()
+					r.RelicIncValue1 = cursor.NextF32()
 				}
 			}
 		case 8:
@@ -178,16 +180,18 @@ func (t *RelicTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicValue2", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicValue2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicValue2 = reader.ReadFloat32()
+					r.RelicValue2 = cursor.NextF32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicIncValue2", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicIncValue2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicIncValue2 = reader.ReadFloat32()
+					r.RelicIncValue2 = cursor.NextF32()
 				}
 			}
 		case 11:
@@ -200,16 +204,18 @@ func (t *RelicTable) Read(filename string) error {
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicValue3", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicValue3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicValue3 = reader.ReadFloat32()
+					r.RelicValue3 = cursor.NextF32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicIncValue3", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicIncValue3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicIncValue3 = reader.ReadFloat32()
+					r.RelicIncValue3 = cursor.NextF32()
 				}
 			}
 		case 14:

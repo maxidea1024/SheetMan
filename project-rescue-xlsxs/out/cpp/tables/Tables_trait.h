@@ -133,9 +133,10 @@ class TraitTable {
         }
         case 5: {
           sheetman::check_column(column, "Trait.StatRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Trait.StatRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.stat_rate);
+            record.stat_rate = cursor.next_f32();
           }
           break;
         }

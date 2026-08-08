@@ -176,8 +176,9 @@ public final class ExpDungeonStageTable {
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "ExpDungeonStage.SpawnNextTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ExpDungeonStage.SpawnNextTime");
                     for (ExpDungeonStageRecord record : loaded) {
-                        record.spawnNextTime = reader.readFloat();
+                        record.spawnNextTime = cursor.nextF32();
                     }
                     break;
                 }
@@ -207,22 +208,25 @@ public final class ExpDungeonStageTable {
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "ExpDungeonStage.AtkUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ExpDungeonStage.AtkUpPercent");
                     for (ExpDungeonStageRecord record : loaded) {
-                        record.atkUpPercent = reader.readFloat();
+                        record.atkUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "ExpDungeonStage.DefUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ExpDungeonStage.DefUpPercent");
                     for (ExpDungeonStageRecord record : loaded) {
-                        record.defUpPercent = reader.readFloat();
+                        record.defUpPercent = cursor.nextF32();
                     }
                     break;
                 }
                 case 17: {
                     ScbReader.checkColumn(column, "ExpDungeonStage.MHPUpPercent", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ExpDungeonStage.MHPUpPercent");
                     for (ExpDungeonStageRecord record : loaded) {
-                        record.mHPUpPercent = reader.readFloat();
+                        record.mHPUpPercent = cursor.nextF32();
                     }
                     break;
                 }

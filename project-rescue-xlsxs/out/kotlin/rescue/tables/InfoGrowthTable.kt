@@ -158,8 +158,9 @@ class InfoGrowthTable {
                 }
                 6 -> {
                     checkColumn(column, "InfoGrowth.Reset", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.Reset")
                     for (record in loaded) {
-                        record.reset = reader.readBool()
+                        record.reset = cursor.nextBool()
                     }
                 }
                 7 -> {

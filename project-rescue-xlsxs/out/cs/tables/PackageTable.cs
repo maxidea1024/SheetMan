@@ -323,10 +323,11 @@ namespace Rescue.Tables
 
                     case 6:
                         ScbTable.CheckColumn(column, "Package.Stackable", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "Package.Stackable");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._stackable);
+                            record._stackable = cursor.NextBool();
                         }
                         break;
 

@@ -164,8 +164,9 @@ impl CollectionTable {
                 }
                 9 => {
                     sheetman::check_column(column, "Collection.RewardStatRate", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.RewardStatRate")?;
                     for record in records.iter_mut() {
-                        record.reward_stat_rate = reader.read_f32()?;
+                        record.reward_stat_rate = cursor.next_f32()?;
                     }
                 }
                 10 => {

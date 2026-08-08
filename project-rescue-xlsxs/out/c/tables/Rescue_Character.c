@@ -221,11 +221,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 12:
       (void)sm_check_column(reader, column, "Character.MoveSpeed", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.MoveSpeed");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->move_speed);
+        (void)sm_cursor_next_f32(&cursor, &record->move_speed);
       }
 
       break;
@@ -233,11 +234,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 13:
       (void)sm_check_column(reader, column, "Character.CritRate", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.CritRate");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->crit_rate);
+        (void)sm_cursor_next_f32(&cursor, &record->crit_rate);
       }
 
       break;
@@ -245,11 +247,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 14:
       (void)sm_check_column(reader, column, "Character.CritDmg", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.CritDmg");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->crit_dmg);
+        (void)sm_cursor_next_f32(&cursor, &record->crit_dmg);
       }
 
       break;
@@ -257,11 +260,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 15:
       (void)sm_check_column(reader, column, "Character.SearchRange", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.SearchRange");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->search_range);
+        (void)sm_cursor_next_f32(&cursor, &record->search_range);
       }
 
       break;
@@ -269,11 +273,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 16:
       (void)sm_check_column(reader, column, "Character.ReFindTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.ReFindTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->re_find_time);
+        (void)sm_cursor_next_f32(&cursor, &record->re_find_time);
       }
 
       break;
@@ -281,11 +286,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 17:
       (void)sm_check_column(reader, column, "Character.MaxFollow", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.MaxFollow");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->max_follow);
+        (void)sm_cursor_next_f32(&cursor, &record->max_follow);
       }
 
       break;
@@ -293,11 +299,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 18:
       (void)sm_check_column(reader, column, "Character.SizePrefab", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.SizePrefab");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->size_prefab);
+        (void)sm_cursor_next_f32(&cursor, &record->size_prefab);
       }
 
       break;
@@ -305,11 +312,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 19:
       (void)sm_check_column(reader, column, "Character.IsUnlocked", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.IsUnlocked");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->is_unlocked);
+        (void)sm_cursor_next_bool(&cursor, &record->is_unlocked);
       }
 
       break;

@@ -274,37 +274,41 @@ namespace Rescue.Tables
 
                     case 6:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.MHPGrowth", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.MHPGrowth");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._mHPGrowth);
+                            record._mHPGrowth = cursor.NextF32();
                         }
                         break;
 
                     case 7:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.MHPTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.MHPTotal");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._mHPTotal);
+                            record._mHPTotal = cursor.NextF32();
                         }
                         break;
 
                     case 8:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.DEFGrowth", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.DEFGrowth");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._dEFGrowth);
+                            record._dEFGrowth = cursor.NextF32();
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "SDTrainingLevel.DEFTotal", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDTrainingLevel.DEFTotal");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._dEFTotal);
+                            record._dEFTotal = cursor.NextF32();
                         }
                         break;
 

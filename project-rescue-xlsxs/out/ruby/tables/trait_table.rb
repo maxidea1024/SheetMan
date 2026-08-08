@@ -105,8 +105,9 @@ module Rescue
           end
         when 5
           Sheetman.check_column(column, 'Trait.StatRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Trait.StatRate')
           records.each do |record|
-            record.stat_rate = reader.read_float
+            record.stat_rate = cursor.next_f32
           end
         when 6
           Sheetman.check_column(column, 'Trait.UnlockCondition', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

@@ -154,8 +154,9 @@ public final class SDTrainingInfoTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.IsLvReset", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_BOOL);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.IsLvReset");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.isLvReset = reader.readBool();
+                        record.isLvReset = cursor.nextBool();
                     }
                     break;
                 }

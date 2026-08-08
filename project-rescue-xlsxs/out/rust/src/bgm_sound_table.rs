@@ -114,14 +114,16 @@ impl BGMSoundTable {
                 }
                 4 => {
                     sheetman::check_column(column, "BGMSound.Loop", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "BGMSound.Loop")?;
                     for record in records.iter_mut() {
-                        record.loop_ = reader.read_bool()?;
+                        record.loop_ = cursor.next_bool()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "BGMSound.FadeTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "BGMSound.FadeTime")?;
                     for record in records.iter_mut() {
-                        record.fade_time = reader.read_f32()?;
+                        record.fade_time = cursor.next_f32()?;
                     }
                 }
                 6 => {

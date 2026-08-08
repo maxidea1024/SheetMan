@@ -192,85 +192,97 @@ final class EquipItemLevelTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'EquipItemLevel.WeaponStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.WeaponStatRate1');
                     foreach ($records as $record) {
-                        $record->weaponStatRate1 = $reader->readFloat();
+                        $record->weaponStatRate1 = $cursor->nextF32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'EquipItemLevel.WeaponStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.WeaponStatRate2');
                     foreach ($records as $record) {
-                        $record->weaponStatRate2 = $reader->readFloat();
+                        $record->weaponStatRate2 = $cursor->nextF32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'EquipItemLevel.ArmorStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.ArmorStatRate1');
                     foreach ($records as $record) {
-                        $record->armorStatRate1 = $reader->readFloat();
+                        $record->armorStatRate1 = $cursor->nextF32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'EquipItemLevel.ArmorStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.ArmorStatRate2');
                     foreach ($records as $record) {
-                        $record->armorStatRate2 = $reader->readFloat();
+                        $record->armorStatRate2 = $cursor->nextF32();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'EquipItemLevel.GauntletStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.GauntletStatRate1');
                     foreach ($records as $record) {
-                        $record->gauntletStatRate1 = $reader->readFloat();
+                        $record->gauntletStatRate1 = $cursor->nextF32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'EquipItemLevel.GauntletStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.GauntletStatRate2');
                     foreach ($records as $record) {
-                        $record->gauntletStatRate2 = $reader->readFloat();
+                        $record->gauntletStatRate2 = $cursor->nextF32();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'EquipItemLevel.BootsStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.BootsStatRate1');
                     foreach ($records as $record) {
-                        $record->bootsStatRate1 = $reader->readFloat();
+                        $record->bootsStatRate1 = $cursor->nextF32();
                     }
                     break;
 
                 case 15:
                     ScbReader::checkColumn($column, 'EquipItemLevel.BootsStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.BootsStatRate2');
                     foreach ($records as $record) {
-                        $record->bootsStatRate2 = $reader->readFloat();
+                        $record->bootsStatRate2 = $cursor->nextF32();
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'EquipItemLevel.HelmetStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.HelmetStatRate1');
                     foreach ($records as $record) {
-                        $record->helmetStatRate1 = $reader->readFloat();
+                        $record->helmetStatRate1 = $cursor->nextF32();
                     }
                     break;
 
                 case 17:
                     ScbReader::checkColumn($column, 'EquipItemLevel.HelmetStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.HelmetStatRate2');
                     foreach ($records as $record) {
-                        $record->helmetStatRate2 = $reader->readFloat();
+                        $record->helmetStatRate2 = $cursor->nextF32();
                     }
                     break;
 
                 case 18:
                     ScbReader::checkColumn($column, 'EquipItemLevel.AccStatRate1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.AccStatRate1');
                     foreach ($records as $record) {
-                        $record->accStatRate1 = $reader->readFloat();
+                        $record->accStatRate1 = $cursor->nextF32();
                     }
                     break;
 
                 case 19:
                     ScbReader::checkColumn($column, 'EquipItemLevel.AccStatRate2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemLevel.AccStatRate2');
                     foreach ($records as $record) {
-                        $record->accStatRate2 = $reader->readFloat();
+                        $record->accStatRate2 = $cursor->nextF32();
                     }
                     break;
 

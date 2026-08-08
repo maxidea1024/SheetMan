@@ -163,13 +163,15 @@ module Rescue
           end
         when 12
           Sheetman.check_column(column, 'GachaArtifactInfo.EnableReset', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.EnableReset')
           records.each do |record|
-            record.enable_reset = reader.read_bool
+            record.enable_reset = cursor.next_bool
           end
         when 13
           Sheetman.check_column(column, 'GachaArtifactInfo.IsSharedCounter', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.IsSharedCounter')
           records.each do |record|
-            record.is_shared_counter = reader.read_bool
+            record.is_shared_counter = cursor.next_bool
           end
         when 14
           Sheetman.check_column(column, 'GachaArtifactInfo.WishListConditionID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
@@ -185,13 +187,15 @@ module Rescue
           end
         when 16
           Sheetman.check_column(column, 'GachaArtifactInfo.IsSingle', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.IsSingle')
           records.each do |record|
-            record.is_single = reader.read_bool
+            record.is_single = cursor.next_bool
           end
         when 17
           Sheetman.check_column(column, 'GachaArtifactInfo.IsTen', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.IsTen')
           records.each do |record|
-            record.is_ten = reader.read_bool
+            record.is_ten = cursor.next_bool
           end
         when 18
           Sheetman.check_column(column, 'GachaArtifactInfo.CurrencyType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
@@ -225,8 +229,9 @@ module Rescue
           end
         when 23
           Sheetman.check_column(column, 'GachaArtifactInfo.EnableSkip', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.EnableSkip')
           records.each do |record|
-            record.enable_skip = reader.read_bool
+            record.enable_skip = cursor.next_bool
           end
         else
           # A column added after this code was generated.

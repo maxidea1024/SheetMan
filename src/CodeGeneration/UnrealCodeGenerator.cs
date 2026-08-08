@@ -511,15 +511,24 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
 
         switch (sf.ElementType)
         {
-            // Int64 and Double are here for their promotions: the file may carry an
-            // i32 column - encoded - where the member has since widened.
+            // Int64 and Double are here for their promotions as well as their own
+            // dictionaries: the file may carry an i32 column - encoded - where the
+            // member has since widened.
             case ValueType.Int32:
             case ValueType.Int64:
             case ValueType.Double:
+            case ValueType.Float:
+            case ValueType.Bool:
             case ValueType.Enum:
             case ValueType.String:
+
+            // Ticks are an i64 column, so they meet the i64 dictionary like any other.
+            case ValueType.DateTime:
+            case ValueType.TimeSpan:
                 return true;
 
+            // Uuid is the one scalar left raw: sixteen-byte entries rarely repeat
+            // enough to pay for the index beside them.
             default:
                 return false;
         }
@@ -557,8 +566,20 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
                 return $"Cursor.NextI64(Record.{name});";
             case ValueType.Double:
                 return $"Cursor.NextF64(Record.{name});";
+            case ValueType.Float:
+                return $"Cursor.NextF32(Record.{name});";
+            case ValueType.Bool:
+                return $"Cursor.NextBool(Record.{name});";
             case ValueType.Enum:
                 return $"Cursor.NextEnum(Record.{name});";
+
+            // Ticks, so the member is built from what the i64 column carried - the same
+            // construction, and the same range check, the reader's own overload makes.
+            case ValueType.DateTime:
+                return $"Cursor.NextDateTime(Record.{name});";
+            case ValueType.TimeSpan:
+                return $"Cursor.NextTimespan(Record.{name});";
+
             default:
                 return $"Cursor.NextString(Record.{name});";
         }

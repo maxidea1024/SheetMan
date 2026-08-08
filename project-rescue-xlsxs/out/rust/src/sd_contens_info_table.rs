@@ -155,8 +155,9 @@ impl SDContensInfoTable {
                 }
                 8 => {
                     sheetman::check_column(column, "SDContensInfo.EnableReset", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.EnableReset")?;
                     for record in records.iter_mut() {
-                        record.enable_reset = reader.read_bool()?;
+                        record.enable_reset = cursor.next_bool()?;
                     }
                 }
                 9 => {

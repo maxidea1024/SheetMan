@@ -177,8 +177,9 @@ final class PackageTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'Package.Stackable', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_BOOL]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.Stackable');
                     foreach ($records as $record) {
-                        $record->stackable = $reader->readBool();
+                        $record->stackable = $cursor->nextBool();
                     }
                     break;
 

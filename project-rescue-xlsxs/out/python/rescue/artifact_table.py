@@ -122,8 +122,9 @@ class ArtifactTable:
                     record.equip_stat_type = StatType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "Artifact.EquipStatRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.EquipStatRate")
                 for record in records:
-                    record.equip_stat_rate = reader.read_float()
+                    record.equip_stat_rate = cursor.next_f32()
             elif column.tag == 8:
                 sheetman.check_column(column, "Artifact.CollectionType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.CollectionType")
@@ -131,8 +132,9 @@ class ArtifactTable:
                     record.collection_type = StatType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "Artifact.CollectionVlaue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.CollectionVlaue")
                 for record in records:
-                    record.collection_vlaue = reader.read_float()
+                    record.collection_vlaue = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "Artifact.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
                 cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.IconPath")

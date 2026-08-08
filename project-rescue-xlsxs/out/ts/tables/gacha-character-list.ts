@@ -252,9 +252,10 @@ export class GachaCharacterListTable {
           break
         case 5:
           sheetman.checkColumn(column, 'GachaCharacterList.IsWishlist', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.IsWishlist')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._isWishlist = reader.readBool()
+            record._isWishlist = cursor.nextBool()
           }
           break
         case 6:

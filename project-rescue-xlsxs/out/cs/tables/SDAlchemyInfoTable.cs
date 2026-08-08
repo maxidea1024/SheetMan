@@ -326,10 +326,11 @@ namespace Rescue.Tables
 
                     case 7:
                         ScbTable.CheckColumn(column, "SDAlchemyInfo.MaterialType2Rate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType2Rate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._materialType2Rate);
+                            record._materialType2Rate = cursor.NextF32();
                         }
                         break;
 

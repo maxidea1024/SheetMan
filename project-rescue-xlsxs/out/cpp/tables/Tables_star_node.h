@@ -157,9 +157,10 @@ class StarNodeTable {
         }
         case 7: {
           sheetman::check_column(column, "StarNode.StarNodeRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "StarNode.StarNodeRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.star_node_rate);
+            record.star_node_rate = cursor.next_f32();
           }
           break;
         }

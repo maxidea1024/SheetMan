@@ -109,8 +109,9 @@ class CostCurveRangeTable:
                     record.end_step = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "CostCurveRange.AddMultiplier", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurveRange.AddMultiplier")
                 for record in records:
-                    record.add_multiplier = reader.read_float()
+                    record.add_multiplier = cursor.next_f32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

@@ -278,9 +278,10 @@ export class SDContensInfoTable {
           break
         case 8:
           sheetman.checkColumn(column, 'SDContensInfo.EnableReset', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_BOOL])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDContensInfo.EnableReset')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._enableReset = reader.readBool()
+            record._enableReset = cursor.nextBool()
           }
           break
         case 9:

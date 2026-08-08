@@ -402,10 +402,11 @@ namespace Rescue.Tables
 
                     case 11:
                         ScbTable.CheckColumn(column, "OopartsDungeonStage.SpawnNextTime", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnNextTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._spawnNextTime);
+                            record._spawnNextTime = cursor.NextF32();
                         }
                         break;
 
@@ -441,28 +442,31 @@ namespace Rescue.Tables
 
                     case 15:
                         ScbTable.CheckColumn(column, "OopartsDungeonStage.AtkUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "OopartsDungeonStage.AtkUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._atkUpPercent);
+                            record._atkUpPercent = cursor.NextF32();
                         }
                         break;
 
                     case 16:
                         ScbTable.CheckColumn(column, "OopartsDungeonStage.DefUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "OopartsDungeonStage.DefUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._defUpPercent);
+                            record._defUpPercent = cursor.NextF32();
                         }
                         break;
 
                     case 17:
                         ScbTable.CheckColumn(column, "OopartsDungeonStage.MHPUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "OopartsDungeonStage.MHPUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._mHPUpPercent);
+                            record._mHPUpPercent = cursor.NextF32();
                         }
                         break;
 

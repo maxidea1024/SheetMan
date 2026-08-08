@@ -260,65 +260,73 @@ class CharacterTable {
         }
         case 12: {
           sheetman::check_column(column, "Character.MoveSpeed", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Character.MoveSpeed");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.move_speed);
+            record.move_speed = cursor.next_f32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "Character.CritRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Character.CritRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.crit_rate);
+            record.crit_rate = cursor.next_f32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "Character.CritDmg", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Character.CritDmg");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.crit_dmg);
+            record.crit_dmg = cursor.next_f32();
           }
           break;
         }
         case 15: {
           sheetman::check_column(column, "Character.SearchRange", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Character.SearchRange");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.search_range);
+            record.search_range = cursor.next_f32();
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "Character.ReFindTime", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Character.ReFindTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.re_find_time);
+            record.re_find_time = cursor.next_f32();
           }
           break;
         }
         case 17: {
           sheetman::check_column(column, "Character.MaxFollow", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Character.MaxFollow");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.max_follow);
+            record.max_follow = cursor.next_f32();
           }
           break;
         }
         case 18: {
           sheetman::check_column(column, "Character.SizePrefab", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Character.SizePrefab");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.size_prefab);
+            record.size_prefab = cursor.next_f32();
           }
           break;
         }
         case 19: {
           sheetman::check_column(column, "Character.IsUnlocked", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Character.IsUnlocked");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_unlocked);
+            record.is_unlocked = cursor.next_bool();
           }
           break;
         }

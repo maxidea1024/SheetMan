@@ -182,58 +182,66 @@ func (t *SDAlchemyLevelTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.CritDMGValue", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CritDMGValue = reader.ReadFloat32()
+					r.CritDMGValue = cursor.NextF32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.CritDMGTotal", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.CritDMGTotal")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CritDMGTotal = reader.ReadFloat32()
+					r.CritDMGTotal = cursor.NextF32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.CritRateValue", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CritRateValue = reader.ReadFloat32()
+					r.CritRateValue = cursor.NextF32()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.CritRateTotal", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.CritRateTotal")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CritRateTotal = reader.ReadFloat32()
+					r.CritRateTotal = cursor.NextF32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.BlockRateValue", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BlockRateValue = reader.ReadFloat32()
+					r.BlockRateValue = cursor.NextF32()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.BlockRateTotal", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.BlockRateTotal")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BlockRateTotal = reader.ReadFloat32()
+					r.BlockRateTotal = cursor.NextF32()
 				}
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.HITValue", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.HITValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.HITValue = reader.ReadFloat32()
+					r.HITValue = cursor.NextF32()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.HITTotal", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.HITTotal")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.HITTotal = reader.ReadFloat32()
+					r.HITTotal = cursor.NextF32()
 				}
 			}
 		default:

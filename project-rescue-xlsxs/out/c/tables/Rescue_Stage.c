@@ -168,11 +168,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 8:
       (void)sm_check_column(reader, column, "Stage.SpawnNextTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.SpawnNextTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->spawn_next_time);
+        (void)sm_cursor_next_f32(&cursor, &record->spawn_next_time);
       }
 
       break;
@@ -221,11 +222,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 11:
       (void)sm_check_column(reader, column, "Stage.AtkUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.AtkUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->atk_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->atk_up_percent);
       }
 
       break;
@@ -233,11 +235,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 12:
       (void)sm_check_column(reader, column, "Stage.DefUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.DefUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->def_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->def_up_percent);
       }
 
       break;
@@ -245,11 +248,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 13:
       (void)sm_check_column(reader, column, "Stage.MHPUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.MHPUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->mhp_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->mhp_up_percent);
       }
 
       break;
@@ -257,11 +261,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 14:
       (void)sm_check_column(reader, column, "Stage.BossAtkUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.BossAtkUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->boss_atk_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->boss_atk_up_percent);
       }
 
       break;
@@ -269,11 +274,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 15:
       (void)sm_check_column(reader, column, "Stage.BossDefUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.BossDefUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->boss_def_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->boss_def_up_percent);
       }
 
       break;
@@ -281,11 +287,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 16:
       (void)sm_check_column(reader, column, "Stage.BossMHPUpPercent", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.BossMHPUpPercent");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->boss_mhp_up_percent);
+        (void)sm_cursor_next_f32(&cursor, &record->boss_mhp_up_percent);
       }
 
       break;

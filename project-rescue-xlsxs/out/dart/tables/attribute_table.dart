@@ -123,14 +123,16 @@ class AttributeTable {
           break;
         case 6:
           checkColumn(column, 'Attribute.DamageValueRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Attribute.DamageValueRate');
           for (final record in loaded) {
-            record.damageValueRate = reader.readFloat();
+            record.damageValueRate = cursor.nextF32();
           }
           break;
         case 7:
           checkColumn(column, 'Attribute.IsVisible', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'Attribute.IsVisible');
           for (final record in loaded) {
-            record.isVisible = reader.readBool();
+            record.isVisible = cursor.nextBool();
           }
           break;
         case 8:

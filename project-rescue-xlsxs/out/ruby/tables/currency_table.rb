@@ -124,8 +124,9 @@ module Rescue
           end
         when 7
           Sheetman.check_column(column, 'Currency.Stackable', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.Stackable')
           records.each do |record|
-            record.stackable = reader.read_bool
+            record.stackable = cursor.next_bool
           end
         when 8
           Sheetman.check_column(column, 'Currency.MaxStack', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

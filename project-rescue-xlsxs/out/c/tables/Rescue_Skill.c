@@ -178,11 +178,12 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 9:
       (void)sm_check_column(reader, column, "Skill.SkillUseRange", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.SkillUseRange");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->skill_use_range);
+        (void)sm_cursor_next_f32(&cursor, &record->skill_use_range);
       }
 
       break;
@@ -190,11 +191,12 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 10:
       (void)sm_check_column(reader, column, "Skill.CoolTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.CoolTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->cool_time);
+        (void)sm_cursor_next_f32(&cursor, &record->cool_time);
       }
 
       break;

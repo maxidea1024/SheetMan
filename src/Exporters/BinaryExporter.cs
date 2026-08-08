@@ -127,7 +127,7 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     /// measured byte count is the one selector that is never wrong. The candidates
     /// and their layouts are spec/scb-v102-column-encoding.md.
     /// </summary>
-    private ColumnBlock EncodeColumn(Table table, SerialField sf)
+    private static ColumnBlock EncodeColumn(Table table, SerialField sf)
     {
         var raw = new ScbWriter();
 
@@ -145,9 +145,9 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
 
         var best = new ColumnBlock(ScbFormat.EncodingRaw, raw);
 
-        // Only a scalar column repeats itself in a way the encodings model; arrays
-        // stay raw, as do the elements whose blocks are all but noise (i64, floats,
-        // bool, uuid - together under two percent of a real dataset's bytes).
+        // Only a scalar column repeats itself in a way the encodings model. An array's
+        // rows differ in length as well as value, and encoding that would put a second
+        // dimension into every candidate for the 1.8 percent of bytes it holds.
         if (ScbFormat.KindFor(sf) != ScbFormat.KindScalar)
             return best;
 
@@ -172,12 +172,50 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
                 break;
             }
 
+            case ScbFormat.ElementBool:
+            {
+                var values = new int[table.Data.Count];
+                int index = sf.FirstField.Index;
+
+                for (int at = 0; at < values.Length; at++)
+                    values[at] = (bool)table.Data[at][index].Value ? 1 : 0;
+
+                best = Smaller(best, ScbFormat.EncodingRle, EncodeRle(values));
+                break;
+            }
+
             case ScbFormat.ElementString:
             {
                 string[] values = CollectStringColumn(table, sf);
 
                 best = Smaller(best, ScbFormat.EncodingDict, EncodeDict(values));
                 best = Smaller(best, ScbFormat.EncodingDictRle, EncodeDictRle(values));
+                best = Smaller(best, ScbFormat.EncodingDictFront, EncodeDictFront(values, false));
+                best = Smaller(best, ScbFormat.EncodingDictFrontRle, EncodeDictFront(values, true));
+                break;
+            }
+
+            // The dictionary is parameterized by element, so a column of floats or ticks
+            // reaches it with nothing added to the format: the entries are simply four or
+            // eight bytes instead of a length and some UTF-8. Worth reaching, because a
+            // float column in design data is a handful of values repeated - the measured
+            // set had 18,718 floats among 1,065 distinct ones.
+            case ScbFormat.ElementF32:
+            {
+                var values = CollectRawColumn(table, sf, 4);
+
+                best = Smaller(best, ScbFormat.EncodingDict, EncodeValueDict(values, false));
+                best = Smaller(best, ScbFormat.EncodingDictRle, EncodeValueDict(values, true));
+                break;
+            }
+
+            case ScbFormat.ElementI64:
+            case ScbFormat.ElementF64:
+            {
+                var values = CollectRawColumn(table, sf, 8);
+
+                best = Smaller(best, ScbFormat.EncodingDict, EncodeValueDict(values, false));
+                best = Smaller(best, ScbFormat.EncodingDictRle, EncodeValueDict(values, true));
                 break;
             }
         }
@@ -205,6 +243,31 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
 
         for (int at = 0; at < values.Length; at++)
             values[at] = (int)table.Data[at][index].Value;
+
+        return values;
+    }
+
+    /// <summary>
+    /// A fixed-width scalar column's values as the raw bytes they were written as.
+    ///
+    /// Sliced back out of the raw block rather than re-encoded from the model, so a
+    /// dictionary entry is by construction the same bytes the raw layout would have
+    /// written - a float's exact bit pattern, ticks, either of them - and no second
+    /// encoding path exists to disagree with the first.
+    /// </summary>
+    private static byte[][] CollectRawColumn(Table table, SerialField sf, int width)
+    {
+        var scratch = new ScbWriter();
+        var field = sf.FirstField;
+
+        foreach (var row in table.Data)
+            ExportValue(scratch, row[field.Index].Value, field);
+
+        var span = scratch.WrittenSpan;
+        var values = new byte[table.Data.Count][];
+
+        for (int at = 0; at < values.Length; at++)
+            values[at] = span.Slice(at * width, width).ToArray();
 
         return values;
     }
@@ -345,6 +408,153 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     }
 
     /// <summary>
+    /// A dictionary of fixed-width values, indexes plain or run-length encoded.
+    ///
+    /// The same shape as the string dictionary; only an entry's bytes differ, which is
+    /// the whole of what "parameterized by element" means here.
+    /// </summary>
+    private static ScbWriter EncodeValueDict(byte[][] values, bool runLength)
+    {
+        var payload = new ScbWriter();
+
+        var seen = new Dictionary<string, int>();
+        var entries = new List<byte[]>();
+        var indexes = new int[values.Length];
+
+        for (int at = 0; at < values.Length; at++)
+        {
+            // Keyed by the bytes themselves, so two values are the same entry exactly
+            // when they were written the same - which for a float is what equality has
+            // to mean here, NaN and negative zero included.
+            string key = Convert.ToBase64String(values[at]);
+
+            if (!seen.TryGetValue(key, out int index))
+            {
+                index = entries.Count;
+                seen.Add(key, index);
+                entries.Add(values[at]);
+            }
+
+            indexes[at] = index;
+        }
+
+        payload.WriteCounter32(entries.Count);
+
+        foreach (var entry in entries)
+            payload.Write(entry);
+
+        WriteIndexes(payload, indexes, runLength);
+
+        return payload;
+    }
+
+    /// <summary>
+    /// A sorted string dictionary, each entry stating only what it does not share with
+    /// the entry before it.
+    /// </summary>
+    /// <remarks>
+    /// Sorted by UTF-8 bytes rather than by anything a locale has an opinion about, so
+    /// every language's writer would produce the same order from the same values.
+    /// </remarks>
+    private static ScbWriter EncodeDictFront(string[] values, bool runLength)
+    {
+        var payload = new ScbWriter();
+
+        var encoded = new Dictionary<string, byte[]>();
+
+        foreach (string value in values)
+        {
+            if (!encoded.ContainsKey(value))
+                encoded.Add(value, Encoding.UTF8.GetBytes(value));
+        }
+
+        var entries = new List<byte[]>(encoded.Values);
+        entries.Sort(CompareBytes);
+
+        var order = new Dictionary<string, int>(encoded.Count);
+        var position = new Dictionary<string, int>(entries.Count);
+
+        for (int at = 0; at < entries.Count; at++)
+            position[Convert.ToBase64String(entries[at])] = at;
+
+        foreach (var pair in encoded)
+            order[pair.Key] = position[Convert.ToBase64String(pair.Value)];
+
+        var indexes = new int[values.Length];
+        for (int at = 0; at < values.Length; at++)
+            indexes[at] = order[values[at]];
+
+        payload.WriteCounter32(entries.Count);
+
+        var previous = Array.Empty<byte>();
+
+        foreach (var entry in entries)
+        {
+            int shared = 0;
+            int limit = Math.Min(previous.Length, entry.Length);
+
+            while (shared < limit && previous[shared] == entry[shared])
+                shared++;
+
+            payload.WriteCounter32(shared);
+            payload.WriteCounter32(entry.Length - shared);
+            payload.Write(entry.AsSpan(shared));
+
+            previous = entry;
+        }
+
+        WriteIndexes(payload, indexes, runLength);
+
+        return payload;
+    }
+
+    /// <summary>
+    /// Orders two entries by their bytes.
+    /// </summary>
+    /// <remarks>
+    /// By the bytes and not by the string, because C#'s ordinal comparison orders UTF-16
+    /// code units: a surrogate pair sorts below U+E000 there and above it in UTF-8. The
+    /// spec says the order is the bytes', so that is what this compares - and every other
+    /// language's writer reaches the same order without being told about UTF-16 at all.
+    /// </remarks>
+    private static int CompareBytes(byte[] left, byte[] right)
+    {
+        int limit = Math.Min(left.Length, right.Length);
+
+        for (int at = 0; at < limit; at++)
+        {
+            if (left[at] != right[at])
+                return left[at] < right[at] ? -1 : 1;
+        }
+
+        return left.Length.CompareTo(right.Length);
+    }
+
+    /// <summary>An index stream, plainly or as runs, shared by every dictionary encoding.</summary>
+    private static void WriteIndexes(ScbWriter payload, int[] indexes, bool runLength)
+    {
+        if (!runLength)
+        {
+            foreach (int index in indexes)
+                payload.WriteCounter32(index);
+
+            return;
+        }
+
+        for (int at = 0; at < indexes.Length;)
+        {
+            int run = 1;
+            while (at + run < indexes.Length && indexes[at + run] == indexes[at])
+                run++;
+
+            payload.WriteCounter32(run);
+            payload.WriteCounter32(indexes[at]);
+
+            at += run;
+        }
+    }
+
+    /// <summary>
     /// Writes the dictionary block - entry count, then the entries - and hands back
     /// each row's index into it.
     /// </summary>
@@ -377,7 +587,7 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     /// <summary>
     /// Writes a delimited array cell: element count first, then the elements.
     /// </summary>
-    private void ExportArrayValue(ScbWriter writer, object value, Field field)
+    private static void ExportArrayValue(ScbWriter writer, object value, Field field)
     {
         var elements = (System.Array)value;
         int length = elements?.Length ?? 0;
@@ -388,7 +598,7 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
             ExportValue(writer, elements.GetValue(i), field);
     }
 
-    private void ExportValue(ScbWriter writer, object value, Field field)
+    private static void ExportValue(ScbWriter writer, object value, Field field)
     {
         // Element type, so the same switch serves a scalar field and one element
         // of an array field.

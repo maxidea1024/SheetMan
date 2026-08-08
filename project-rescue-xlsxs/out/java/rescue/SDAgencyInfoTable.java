@@ -122,50 +122,57 @@ public final class SDAgencyInfoTable {
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.GradeSRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeSRate");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.gradeSRate = reader.readFloat();
+                        record.gradeSRate = cursor.nextF32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.GradeARate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeARate");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.gradeARate = reader.readFloat();
+                        record.gradeARate = cursor.nextF32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.GradeBRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeBRate");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.gradeBRate = reader.readFloat();
+                        record.gradeBRate = cursor.nextF32();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.GradeCRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeCRate");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.gradeCRate = reader.readFloat();
+                        record.gradeCRate = cursor.nextF32();
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.GradeDRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeDRate");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.gradeDRate = reader.readFloat();
+                        record.gradeDRate = cursor.nextF32();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.GradeERate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeERate");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.gradeERate = reader.readFloat();
+                        record.gradeERate = cursor.nextF32();
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.GradeFRate", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_F32);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.GradeFRate");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.gradeFRate = reader.readFloat();
+                        record.gradeFRate = cursor.nextF32();
                     }
                     break;
                 }

@@ -152,9 +152,10 @@ func (t *MaterialTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Material.Stackable", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.Stackable")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Stackable = reader.ReadBool()
+					r.Stackable = cursor.NextBool()
 				}
 			}
 		case 7:

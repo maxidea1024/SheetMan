@@ -101,11 +101,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 5:
       (void)sm_check_column(reader, column, "GachaCharacterList.IsWishlist", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.IsWishlist");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->is_wishlist);
+        (void)sm_cursor_next_bool(&cursor, &record->is_wishlist);
       }
 
       break;

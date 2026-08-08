@@ -225,9 +225,10 @@ export class CostCurveRangeTable {
           break
         case 6:
           sheetman.checkColumn(column, 'CostCurveRange.AddMultiplier', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CostCurveRange.AddMultiplier')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._addMultiplier = reader.readFloat()
+            record._addMultiplier = cursor.nextF32()
           }
           break
         default:

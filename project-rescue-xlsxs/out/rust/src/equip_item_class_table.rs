@@ -180,74 +180,86 @@ impl EquipItemClassTable {
                 }
                 9 => {
                     sheetman::check_column(column, "EquipItemClass.WeaponStatRate1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.WeaponStatRate1")?;
                     for record in records.iter_mut() {
-                        record.weapon_stat_rate1 = reader.read_f32()?;
+                        record.weapon_stat_rate1 = cursor.next_f32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "EquipItemClass.WeaponStatRate2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.WeaponStatRate2")?;
                     for record in records.iter_mut() {
-                        record.weapon_stat_rate2 = reader.read_f32()?;
+                        record.weapon_stat_rate2 = cursor.next_f32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "EquipItemClass.ArmorStatRate1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.ArmorStatRate1")?;
                     for record in records.iter_mut() {
-                        record.armor_stat_rate1 = reader.read_f32()?;
+                        record.armor_stat_rate1 = cursor.next_f32()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "EquipItemClass.ArmorStatRate2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.ArmorStatRate2")?;
                     for record in records.iter_mut() {
-                        record.armor_stat_rate2 = reader.read_f32()?;
+                        record.armor_stat_rate2 = cursor.next_f32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "EquipItemClass.GauntletStatRate1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.GauntletStatRate1")?;
                     for record in records.iter_mut() {
-                        record.gauntlet_stat_rate1 = reader.read_f32()?;
+                        record.gauntlet_stat_rate1 = cursor.next_f32()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "EquipItemClass.GauntletStatRate2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.GauntletStatRate2")?;
                     for record in records.iter_mut() {
-                        record.gauntlet_stat_rate2 = reader.read_f32()?;
+                        record.gauntlet_stat_rate2 = cursor.next_f32()?;
                     }
                 }
                 15 => {
                     sheetman::check_column(column, "EquipItemClass.BootsStatRate1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.BootsStatRate1")?;
                     for record in records.iter_mut() {
-                        record.boots_stat_rate1 = reader.read_f32()?;
+                        record.boots_stat_rate1 = cursor.next_f32()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "EquipItemClass.BootsStatRate2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.BootsStatRate2")?;
                     for record in records.iter_mut() {
-                        record.boots_stat_rate2 = reader.read_f32()?;
+                        record.boots_stat_rate2 = cursor.next_f32()?;
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "EquipItemClass.HelmetStatRate1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.HelmetStatRate1")?;
                     for record in records.iter_mut() {
-                        record.helmet_stat_rate1 = reader.read_f32()?;
+                        record.helmet_stat_rate1 = cursor.next_f32()?;
                     }
                 }
                 18 => {
                     sheetman::check_column(column, "EquipItemClass.HelmetStatRate2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.HelmetStatRate2")?;
                     for record in records.iter_mut() {
-                        record.helmet_stat_rate2 = reader.read_f32()?;
+                        record.helmet_stat_rate2 = cursor.next_f32()?;
                     }
                 }
                 19 => {
                     sheetman::check_column(column, "EquipItemClass.AccStatRate1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.AccStatRate1")?;
                     for record in records.iter_mut() {
-                        record.acc_stat_rate1 = reader.read_f32()?;
+                        record.acc_stat_rate1 = cursor.next_f32()?;
                     }
                 }
                 20 => {
                     sheetman::check_column(column, "EquipItemClass.AccStatRate2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemClass.AccStatRate2")?;
                     for record in records.iter_mut() {
-                        record.acc_stat_rate2 = reader.read_f32()?;
+                        record.acc_stat_rate2 = cursor.next_f32()?;
                     }
                 }
                 _ => {

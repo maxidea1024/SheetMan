@@ -136,6 +136,8 @@ final class ScbReader
     public const ENCODING_DELTA_RLE = 4;
     public const ENCODING_DICT = 5;
     public const ENCODING_DICT_RLE = 6;
+    public const ENCODING_DICT_FRONT = 7;
+    public const ENCODING_DICT_FRONT_RLE = 8;
 
     private int $position = 0;
     private readonly int $length;
@@ -274,6 +276,15 @@ final class ScbReader
         $parsed = \unpack('e', $bytes);
 
         return $parsed[1];
+    }
+
+    /**
+     * Bytes with no length in front of them: a fixed-width dictionary entry, or the
+     * rest of a front coded one, both of which state their length elsewhere.
+     */
+    public function readBytes(int $count): string
+    {
+        return $this->take($count);
     }
 
     /** UTF-8 bytes. A PHP string is a byte string, so nothing is decoded here. */
@@ -472,13 +483,21 @@ final class ScbReader
         }
 
         return match ($column['element']) {
-            self::ELEMENT_VARINT => $column['encoding'] === self::ENCODING_RLE,
+            self::ELEMENT_BOOL, self::ELEMENT_VARINT => $column['encoding'] === self::ENCODING_RLE,
 
             self::ELEMENT_I32 => $column['encoding'] >= self::ENCODING_VARINT
                 && $column['encoding'] <= self::ENCODING_DELTA_RLE,
 
-            self::ELEMENT_STRING => $column['encoding'] === self::ENCODING_DICT
-                || $column['encoding'] === self::ENCODING_DICT_RLE,
+            // The dictionary is parameterized by element, so these three reach it with
+            // entries that are simply their own raw bytes.
+            self::ELEMENT_I64, self::ELEMENT_F32, self::ELEMENT_F64
+                => $column['encoding'] === self::ENCODING_DICT
+                    || $column['encoding'] === self::ENCODING_DICT_RLE,
+
+            // And a string dictionary can additionally be front coded, which is
+            // meaningless for a fixed-width element and refused for one.
+            self::ELEMENT_STRING => $column['encoding'] >= self::ENCODING_DICT
+                && $column['encoding'] <= self::ENCODING_DICT_FRONT_RLE,
 
             default => false,
         };
@@ -566,11 +585,28 @@ final class ScbColumnCursor
     private readonly int $encoding;
 
     /**
-     * The block's dictionary, decoded once and handed out per row.
+     * The block's string dictionary, decoded once and handed out per row.
+     *
+     * Filled for a string element, plain or front coded; empty otherwise.
      *
      * @var list<string>
      */
     private readonly array $dictionary;
+
+    /**
+     * The block's dictionary for a fixed-width element, kept as the entries' own raw
+     * bytes and turned into values only when a row asks - which is what guarantees the
+     * value is reconstructed exactly as the raw layout would have read it.
+     *
+     * @var list<string>
+     */
+    private readonly array $valueDictionary;
+
+    /**
+     * How wide those entries are: 4 for f32, 8 for i64 and f64, and zero when the block
+     * has no fixed-width dictionary at all - which is what the reads below ask.
+     */
+    private readonly int $valueWidth;
 
     // A run-length family's current run: what remains of it, and its value - which is
     // a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
@@ -595,24 +631,79 @@ final class ScbColumnCursor
         $this->encoding = $column['encoding'];
         $this->rowsRemaining = $rowCount;
 
-        if ($this->encoding === ScbReader::ENCODING_DICT
-            || $this->encoding === ScbReader::ENCODING_DICT_RLE) {
+        $plainDictionary = $this->encoding === ScbReader::ENCODING_DICT
+            || $this->encoding === ScbReader::ENCODING_DICT_RLE;
+
+        $frontDictionary = $this->encoding === ScbReader::ENCODING_DICT_FRONT
+            || $this->encoding === ScbReader::ENCODING_DICT_FRONT_RLE;
+
+        $dictionary = [];
+        $valueDictionary = [];
+        $valueWidth = 0;
+
+        if ($plainDictionary || $frontDictionary) {
             $count = $reader->readCounter32();
 
             if ($count < 0) {
                 throw new ScbException("{$fieldName}: the dictionary entry count is negative.");
             }
 
-            $dictionary = [];
+            if ($frontDictionary) {
+                $dictionary = self::readFrontCodedDictionary($reader, $count, $fieldName);
+            } elseif ($this->element === ScbReader::ELEMENT_STRING) {
+                for ($at = 0; $at < $count; $at++) {
+                    $dictionary[] = $reader->readString();
+                }
+            } else {
+                // A fixed-width element: the entries are the value's own bytes, so they
+                // are taken as bytes and turned into values only when a row asks.
+                $valueWidth = $this->element === ScbReader::ELEMENT_F32 ? 4 : 8;
 
-            for ($at = 0; $at < $count; $at++) {
-                $dictionary[] = $reader->readString();
+                for ($at = 0; $at < $count; $at++) {
+                    $valueDictionary[] = $reader->readBytes($valueWidth);
+                }
+            }
+        }
+
+        $this->dictionary = $dictionary;
+        $this->valueDictionary = $valueDictionary;
+        $this->valueWidth = $valueWidth;
+    }
+
+    /**
+     * A sorted dictionary whose entries state only what they do not share with the entry
+     * before them.
+     *
+     * Decoded into whole strings here rather than kept folded, because a row wants a
+     * string and the folding was only ever about the bytes on disk.
+     *
+     * @return list<string>
+     */
+    private static function readFrontCodedDictionary(
+        ScbReader $reader,
+        int $count,
+        string $fieldName
+    ): array {
+        $entries = [];
+        $previous = '';
+
+        for ($at = 0; $at < $count; $at++) {
+            $shared = $reader->readCounter32();
+            $rest = $reader->readCounter32();
+
+            if ($shared < 0 || $rest < 0 || $shared > \strlen($previous)) {
+                $previousLength = \strlen($previous);
+
+                throw new ScbException(
+                    "{$fieldName}: dictionary entry {$at} shares {$shared} bytes with an "
+                    . "entry of {$previousLength}.");
             }
 
-            $this->dictionary = $dictionary;
-        } else {
-            $this->dictionary = [];
+            $previous = \substr($previous, 0, $shared) . $reader->readBytes($rest);
+            $entries[] = $previous;
         }
+
+        return $entries;
     }
 
     /** The next int32 - which also serves enums, and reference indexes. */
@@ -670,24 +761,103 @@ final class ScbColumnCursor
         }
     }
 
-    /** An int64 member: an i64 column is always raw, anything narrower decodes as int32. */
+    /**
+     * An int64 member: from an i64 column raw or through its dictionary, and from
+     * anything narrower by decoding an int32 and widening it.
+     */
     public function nextI64(): int
     {
-        return $this->element === ScbReader::ELEMENT_I64
-            ? $this->reader->readInt64()
-            : $this->nextI32();
+        if ($this->element !== ScbReader::ELEMENT_I64) {
+            return $this->nextI32();
+        }
+
+        if ($this->valueWidth !== 0) {
+            return self::int64FromBytes($this->nextValueEntry());
+        }
+
+        $this->rowsRemaining--;
+
+        return $this->reader->readInt64();
     }
 
-    /** A float member: float columns are always raw, an i32 column decodes then widens. */
+    /** A float member: raw, or the dictionary entry's exact bit pattern. */
+    public function nextF32(): float
+    {
+        if ($this->valueWidth !== 0) {
+            /** @var array{1: float} $parsed */
+            $parsed = \unpack('g', $this->nextValueEntry());
+
+            return $parsed[1];
+        }
+
+        $this->rowsRemaining--;
+
+        return $this->reader->readFloat();
+    }
+
+    /**
+     * A double member: from f64 or f32 - either of them raw or dictionary-encoded - and
+     * from an i32 column by decoding and widening.
+     */
     public function nextF64(): float
     {
         if ($this->element === ScbReader::ELEMENT_F64) {
+            if ($this->valueWidth !== 0) {
+                /** @var array{1: float} $parsed */
+                $parsed = \unpack('e', $this->nextValueEntry());
+
+                return $parsed[1];
+            }
+
+            $this->rowsRemaining--;
+
             return $this->reader->readDouble();
         }
 
-        return $this->element === ScbReader::ELEMENT_F32
-            ? $this->reader->readFloat()
-            : (float)$this->nextI32();
+        if ($this->element === ScbReader::ELEMENT_F32) {
+            return $this->nextF32();
+        }
+
+        return (float)$this->nextI32();
+    }
+
+    /** A bool member: one byte raw, or a run of them. */
+    public function nextBool(): bool
+    {
+        if ($this->encoding === ScbReader::ENCODING_RLE) {
+            return $this->nextI32() !== 0;
+        }
+
+        $this->rowsRemaining--;
+
+        return $this->reader->readBool();
+    }
+
+    /** The bytes of the next row's dictionary entry, for a fixed-width element. */
+    private function nextValueEntry(): string
+    {
+        $this->rowsRemaining--;
+
+        if ($this->encoding === ScbReader::ENCODING_DICT) {
+            $index = $this->reader->readCounter32();
+        } else {
+            if ($this->runRemaining === 0) {
+                $this->readRun();
+            }
+
+            $this->runRemaining--;
+            $index = $this->runValue;
+        }
+
+        if ($index < 0 || $index >= \count($this->valueDictionary)) {
+            $held = \count($this->valueDictionary);
+
+            throw new ScbException(
+                "{$this->fieldName}: dictionary index {$index} is out of range - the "
+                . "dictionary holds {$held} entries.");
+        }
+
+        return $this->valueDictionary[$index];
     }
 
     /** The next string - the dictionary's instance where the block has one. */
@@ -700,9 +870,10 @@ final class ScbColumnCursor
                 return $this->reader->readString();
 
             case ScbReader::ENCODING_DICT:
+            case ScbReader::ENCODING_DICT_FRONT:
                 return $this->dictionaryEntry($this->reader->readCounter32());
 
-            default: // ENCODING_DICT_RLE
+            default: // ENCODING_DICT_RLE and ENCODING_DICT_FRONT_RLE
                 if ($this->runRemaining === 0) {
                     $this->readRun();
                 }
@@ -742,6 +913,28 @@ final class ScbColumnCursor
         }
 
         return $this->dictionary[$index];
+    }
+
+    /**
+     * A dictionary entry's eight bytes as a 64 bit value.
+     *
+     * Assembled from two 32 bit halves for the reason ScbReader::readInt64 gives: 'P'
+     * is unsigned and turns into a float past 2^63, and 'q' is machine byte order
+     * where the format is little endian wherever it is read.
+     */
+    private static function int64FromBytes(string $bytes): int
+    {
+        /** @var array{1: int, 2: int} $parsed */
+        $parsed = \unpack('V2', $bytes);
+
+        $low = $parsed[1];
+        $high = $parsed[2];
+
+        if ($high >= 0x80000000) {
+            $high -= 0x100000000;
+        }
+
+        return ($high << 32) | $low;
     }
 
     /**

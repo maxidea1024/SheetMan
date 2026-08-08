@@ -201,8 +201,9 @@ class BuffTable {
                 }
                 11 -> {
                     checkColumn(column, "Buff.BuffValueRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.BuffValueRate")
                     for (record in loaded) {
-                        record.buffValueRate = reader.readFloat()
+                        record.buffValueRate = cursor.nextF32()
                     }
                 }
                 12 -> {
@@ -228,14 +229,16 @@ class BuffTable {
                 }
                 15 -> {
                     checkColumn(column, "Buff.BuffCoolDownTime", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.BuffCoolDownTime")
                     for (record in loaded) {
-                        record.buffCoolDownTime = reader.readFloat()
+                        record.buffCoolDownTime = cursor.nextF32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "Buff.IsVisible", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.IsVisible")
                     for (record in loaded) {
-                        record.isVisible = reader.readBool()
+                        record.isVisible = cursor.nextBool()
                     }
                 }
                 17 -> {

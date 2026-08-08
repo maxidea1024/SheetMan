@@ -66,13 +66,15 @@ const (
 	// How a block's values are laid out. Raw is the layout 101 had; the others
 	// compress a column that repeats itself. spec/scb-v102-column-encoding.md is
 	// the contract.
-	EncodingRaw      uint8 = 0
-	EncodingVarint   uint8 = 1
-	EncodingDelta    uint8 = 2
-	EncodingRle      uint8 = 3
-	EncodingDeltaRle uint8 = 4
-	EncodingDict     uint8 = 5
-	EncodingDictRle  uint8 = 6
+	EncodingRaw          uint8 = 0
+	EncodingVarint       uint8 = 1
+	EncodingDelta        uint8 = 2
+	EncodingRle          uint8 = 3
+	EncodingDeltaRle     uint8 = 4
+	EncodingDict         uint8 = 5
+	EncodingDictRle      uint8 = 6
+	EncodingDictFront    uint8 = 7
+	EncodingDictFrontRle uint8 = 8
 )
 
 // Column is one column as the file describes it.
@@ -516,14 +518,21 @@ func encodingSupported(col Column) bool {
 	}
 
 	switch col.Element {
-	case ElementVarint:
+	case ElementBool, ElementVarint:
 		return col.Encoding == EncodingRle
 
 	case ElementI32:
 		return col.Encoding >= EncodingVarint && col.Encoding <= EncodingDeltaRle
 
-	case ElementString:
+	// The dictionary is parameterized by element, so these three reach it with
+	// entries that are simply their own raw bytes.
+	case ElementI64, ElementF32, ElementF64:
 		return col.Encoding == EncodingDict || col.Encoding == EncodingDictRle
+
+	// And a string dictionary can additionally be front coded, which is meaningless
+	// for a fixed-width element and refused for one.
+	case ElementString:
+		return col.Encoding >= EncodingDict && col.Encoding <= EncodingDictFrontRle
 
 	default:
 		return false
@@ -548,8 +557,17 @@ type ColumnCursor struct {
 	element   uint8
 	encoding  uint8
 
-	// The block's dictionary, decoded once and handed out per row.
+	// The block's dictionary, decoded once and handed out per row. Which of the two
+	// is filled in depends on the element: a string block decodes to instances that
+	// rows then share, and a fixed-width one keeps the entries' own bytes so a value
+	// is reconstructed exactly as the raw layout would have read it.
 	dictionary []string
+
+	// valueDictionary holds the fixed-width entries end to end, valueWidth bytes
+	// apiece. valueWidth is zero when the block has no dictionary of that kind, and
+	// is what the reads test rather than the slice, which is non-nil even empty.
+	valueDictionary []byte
+	valueWidth      int
 
 	// A run-length family's current run: what remains of it, and its value - which
 	// is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
@@ -576,23 +594,102 @@ func NewColumnCursor(r *Reader, column Column, rowCount int32, fieldName string)
 		rowsRemaining: rowCount,
 	}
 
-	if column.Encoding == EncodingDict || column.Encoding == EncodingDictRle {
-		count := r.ReadCounter32()
-		if count < 0 && r.err == nil {
-			r.err = fmt.Errorf(
-				"sheetman: %s: the dictionary entry count is negative", fieldName)
+	plainDictionary := column.Encoding == EncodingDict || column.Encoding == EncodingDictRle
+	frontDictionary := column.Encoding == EncodingDictFront ||
+		column.Encoding == EncodingDictFrontRle
+
+	if !plainDictionary && !frontDictionary {
+		return c
+	}
+
+	count := r.ReadCounter32()
+	if count < 0 && r.err == nil {
+		r.err = fmt.Errorf(
+			"sheetman: %s: the dictionary entry count is negative", fieldName)
+	}
+
+	if r.err != nil {
+		return c
+	}
+
+	if frontDictionary {
+		c.readFrontCodedDictionary(count)
+		return c
+	}
+
+	if c.element == ElementString {
+		c.dictionary = make([]string, count)
+
+		for at := range c.dictionary {
+			c.dictionary[at] = r.ReadString()
 		}
 
-		if r.err == nil {
-			c.dictionary = make([]string, count)
+		return c
+	}
 
-			for at := range c.dictionary {
-				c.dictionary[at] = r.ReadString()
-			}
+	// A fixed-width element: the entries are the value's own bytes, so they are taken
+	// as bytes and turned into values only when a row asks for one.
+	c.valueWidth = 8
+	if c.element == ElementF32 {
+		c.valueWidth = 4
+	}
+
+	c.valueDictionary = make([]byte, int(count)*c.valueWidth)
+
+	for at := 0; at < int(count); at++ {
+		entry := r.take(c.valueWidth)
+		if entry == nil {
+			return c
 		}
+
+		copy(c.valueDictionary[at*c.valueWidth:], entry)
 	}
 
 	return c
+}
+
+// readFrontCodedDictionary decodes a sorted dictionary whose entries state only what
+// they do not share with the entry before them.
+//
+// Decoded into whole strings here rather than kept folded, because a row wants a string
+// and the folding was only ever about the bytes on disk. The scratch buffer grows to the
+// longest entry and is reused, so the allocations are the strings themselves - one per
+// distinct value, which is the point.
+func (c *ColumnCursor) readFrontCodedDictionary(count int32) {
+	r := c.reader
+
+	entries := make([]string, count)
+	scratch := make([]byte, 0, 64)
+	previousLength := 0
+
+	for at := range entries {
+		shared := int(r.ReadCounter32())
+		rest := int(r.ReadCounter32())
+		if r.err != nil {
+			return
+		}
+
+		if shared < 0 || rest < 0 || shared > previousLength {
+			r.err = fmt.Errorf(
+				"sheetman: %s: dictionary entry %d shares %d bytes with an entry of %d",
+				c.fieldName, at, shared, previousLength)
+			return
+		}
+
+		tail := r.take(rest)
+		if r.err != nil {
+			return
+		}
+
+		// The shared prefix is already at the head of the scratch buffer, being what
+		// the previous entry left there.
+		scratch = append(scratch[:shared], tail...)
+
+		entries[at] = string(scratch)
+		previousLength = len(scratch)
+	}
+
+	c.dictionary = entries
 }
 
 // NextI32 returns the next int32 - which also serves enums, and reference indexes.
@@ -650,29 +747,129 @@ func (c *ColumnCursor) NextI32() int32 {
 	}
 }
 
-// NextI64 reads an int64 member: an i64 column is always raw, anything narrower
-// decodes as int32.
+// NextI64 reads an int64 member: from an i64 column raw or through its dictionary,
+// and from anything narrower by decoding an int32 and widening it.
 func (c *ColumnCursor) NextI64() int64 {
-	if c.element == ElementI64 {
-		return c.reader.ReadInt64()
+	if c.element != ElementI64 {
+		return int64(c.NextI32())
 	}
 
-	return int64(c.NextI32())
+	if c.reader.err != nil {
+		return 0
+	}
+
+	if c.valueWidth != 0 {
+		entry := c.nextValueEntry()
+		if entry == nil {
+			return 0
+		}
+
+		return int64(binary.LittleEndian.Uint64(entry))
+	}
+
+	c.rowsRemaining--
+	return c.reader.ReadInt64()
 }
 
-// NextF64 reads a float64 member: float columns are always raw, an i32 column
-// decodes then widens.
+// NextF32 reads a float32 member: raw, or the dictionary entry's exact bit pattern.
+func (c *ColumnCursor) NextF32() float32 {
+	if c.reader.err != nil {
+		return 0
+	}
+
+	if c.valueWidth != 0 {
+		entry := c.nextValueEntry()
+		if entry == nil {
+			return 0
+		}
+
+		return math.Float32frombits(binary.LittleEndian.Uint32(entry))
+	}
+
+	c.rowsRemaining--
+	return c.reader.ReadFloat32()
+}
+
+// NextF64 reads a float64 member: from f64 or f32 - either of them raw or
+// dictionary-encoded - and from an i32 column by decoding and widening.
 func (c *ColumnCursor) NextF64() float64 {
 	switch c.element {
 	case ElementF64:
+		if c.reader.err != nil {
+			return 0
+		}
+
+		if c.valueWidth != 0 {
+			entry := c.nextValueEntry()
+			if entry == nil {
+				return 0
+			}
+
+			return math.Float64frombits(binary.LittleEndian.Uint64(entry))
+		}
+
+		c.rowsRemaining--
 		return c.reader.ReadFloat64()
 
 	case ElementF32:
-		return float64(c.reader.ReadFloat32())
+		return float64(c.NextF32())
 
 	default:
 		return float64(c.NextI32())
 	}
+}
+
+// NextBool reads a bool member: one byte raw, or a run of them.
+func (c *ColumnCursor) NextBool() bool {
+	if c.encoding == EncodingRle {
+		return c.NextI32() != 0
+	}
+
+	if c.reader.err != nil {
+		return false
+	}
+
+	c.rowsRemaining--
+	return c.reader.ReadBool()
+}
+
+// nextValueEntry returns the bytes of the next row's dictionary entry, for a
+// fixed-width element, or nil once the reader has failed.
+func (c *ColumnCursor) nextValueEntry() []byte {
+	if c.reader.err != nil {
+		return nil
+	}
+
+	c.rowsRemaining--
+
+	var index int32
+
+	if c.encoding == EncodingDict {
+		index = c.reader.ReadCounter32()
+		if c.reader.err != nil {
+			return nil
+		}
+	} else {
+		if c.runRemaining == 0 && !c.readRun() {
+			return nil
+		}
+
+		c.runRemaining--
+		index = c.runValue
+	}
+
+	count := int32(len(c.valueDictionary) / c.valueWidth)
+
+	if index < 0 || index >= count {
+		c.reader.err = fmt.Errorf(
+			"sheetman: %s: dictionary index %d is out of range - the dictionary holds %d entries",
+			c.fieldName, index, count)
+		return nil
+	}
+
+	at := int(index) * c.valueWidth
+
+	return c.valueDictionary[at : at+c.valueWidth]
 }
 
 // NextString returns the next string - the dictionary's instance where the block
@@ -688,10 +885,10 @@ func (c *ColumnCursor) NextString() string {
 	case EncodingRaw:
 		return c.reader.ReadString()
 
-	case EncodingDict:
+	case EncodingDict, EncodingDictFront:
 		return c.dictionaryEntry(c.reader.ReadCounter32())
 
-	default: // EncodingDictRle
+	default: // EncodingDictRle and EncodingDictFrontRle
 		if c.runRemaining == 0 && !c.readRun() {
 			return ""
 		}

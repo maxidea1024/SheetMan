@@ -160,50 +160,58 @@ class SDAlchemyLevelTable {
           break;
         case 9:
           checkColumn(column, 'SDAlchemyLevel.CritDMGValue', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyLevel.CritDMGValue');
           for (final record in loaded) {
-            record.critDMGValue = reader.readFloat();
+            record.critDMGValue = cursor.nextF32();
           }
           break;
         case 10:
           checkColumn(column, 'SDAlchemyLevel.CritDMGTotal', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyLevel.CritDMGTotal');
           for (final record in loaded) {
-            record.critDMGTotal = reader.readFloat();
+            record.critDMGTotal = cursor.nextF32();
           }
           break;
         case 11:
           checkColumn(column, 'SDAlchemyLevel.CritRateValue', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyLevel.CritRateValue');
           for (final record in loaded) {
-            record.critRateValue = reader.readFloat();
+            record.critRateValue = cursor.nextF32();
           }
           break;
         case 12:
           checkColumn(column, 'SDAlchemyLevel.CritRateTotal', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyLevel.CritRateTotal');
           for (final record in loaded) {
-            record.critRateTotal = reader.readFloat();
+            record.critRateTotal = cursor.nextF32();
           }
           break;
         case 13:
           checkColumn(column, 'SDAlchemyLevel.BlockRateValue', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyLevel.BlockRateValue');
           for (final record in loaded) {
-            record.blockRateValue = reader.readFloat();
+            record.blockRateValue = cursor.nextF32();
           }
           break;
         case 14:
           checkColumn(column, 'SDAlchemyLevel.BlockRateTotal', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyLevel.BlockRateTotal');
           for (final record in loaded) {
-            record.blockRateTotal = reader.readFloat();
+            record.blockRateTotal = cursor.nextF32();
           }
           break;
         case 15:
           checkColumn(column, 'SDAlchemyLevel.HITValue', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyLevel.HITValue');
           for (final record in loaded) {
-            record.hITValue = reader.readFloat();
+            record.hITValue = cursor.nextF32();
           }
           break;
         case 16:
           checkColumn(column, 'SDAlchemyLevel.HITTotal', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyLevel.HITTotal');
           for (final record in loaded) {
-            record.hITTotal = reader.readFloat();
+            record.hITTotal = cursor.nextF32();
           }
           break;
         default:

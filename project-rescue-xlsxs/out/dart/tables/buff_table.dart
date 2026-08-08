@@ -178,8 +178,9 @@ class BuffTable {
           break;
         case 11:
           checkColumn(column, 'Buff.BuffValueRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.BuffValueRate');
           for (final record in loaded) {
-            record.buffValueRate = reader.readFloat();
+            record.buffValueRate = cursor.nextF32();
           }
           break;
         case 12:
@@ -205,14 +206,16 @@ class BuffTable {
           break;
         case 15:
           checkColumn(column, 'Buff.BuffCoolDownTime', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.BuffCoolDownTime');
           for (final record in loaded) {
-            record.buffCoolDownTime = reader.readFloat();
+            record.buffCoolDownTime = cursor.nextF32();
           }
           break;
         case 16:
           checkColumn(column, 'Buff.IsVisible', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.IsVisible');
           for (final record in loaded) {
-            record.isVisible = reader.readBool();
+            record.isVisible = cursor.nextBool();
           }
           break;
         case 17:

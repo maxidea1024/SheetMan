@@ -294,10 +294,11 @@ namespace Rescue.Tables
 
                     case 8:
                         ScbTable.CheckColumn(column, "RelicDungeonReward.IsFirstClear", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "RelicDungeonReward.IsFirstClear");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isFirstClear);
+                            record._isFirstClear = cursor.NextBool();
                         }
                         break;
 

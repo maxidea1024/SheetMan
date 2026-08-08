@@ -361,10 +361,11 @@ namespace Rescue.Tables
 
                     case 8:
                         ScbTable.CheckColumn(column, "Stage.SpawnNextTime", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.SpawnNextTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._spawnNextTime);
+                            record._spawnNextTime = cursor.NextF32();
                         }
                         break;
 
@@ -394,55 +395,61 @@ namespace Rescue.Tables
 
                     case 11:
                         ScbTable.CheckColumn(column, "Stage.AtkUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.AtkUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._atkUpPercent);
+                            record._atkUpPercent = cursor.NextF32();
                         }
                         break;
 
                     case 12:
                         ScbTable.CheckColumn(column, "Stage.DefUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.DefUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._defUpPercent);
+                            record._defUpPercent = cursor.NextF32();
                         }
                         break;
 
                     case 13:
                         ScbTable.CheckColumn(column, "Stage.MHPUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.MHPUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._mHPUpPercent);
+                            record._mHPUpPercent = cursor.NextF32();
                         }
                         break;
 
                     case 14:
                         ScbTable.CheckColumn(column, "Stage.BossAtkUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.BossAtkUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._bossAtkUpPercent);
+                            record._bossAtkUpPercent = cursor.NextF32();
                         }
                         break;
 
                     case 15:
                         ScbTable.CheckColumn(column, "Stage.BossDefUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.BossDefUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._bossDefUpPercent);
+                            record._bossDefUpPercent = cursor.NextF32();
                         }
                         break;
 
                     case 16:
                         ScbTable.CheckColumn(column, "Stage.BossMHPUpPercent", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Stage.BossMHPUpPercent");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._bossMHPUpPercent);
+                            record._bossMHPUpPercent = cursor.NextF32();
                         }
                         break;
 

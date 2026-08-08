@@ -301,16 +301,18 @@ export class SkillTable {
           break
         case 9:
           sheetman.checkColumn(column, 'Skill.SkillUseRange', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.SkillUseRange')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._skillUseRange = reader.readFloat()
+            record._skillUseRange = cursor.nextF32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'Skill.CoolTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.CoolTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._coolTime = reader.readFloat()
+            record._coolTime = cursor.nextF32()
           }
           break
         case 11:

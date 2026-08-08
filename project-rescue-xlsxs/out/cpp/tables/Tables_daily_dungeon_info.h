@@ -200,9 +200,10 @@ class DailyDungeonInfoTable {
         }
         case 10: {
           sheetman::check_column(column, "DailyDungeonInfo.BuffValueRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.BuffValueRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.buff_value_rate);
+            record.buff_value_rate = cursor.next_f32();
           }
           break;
         }

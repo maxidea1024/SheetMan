@@ -132,9 +132,10 @@ func (t *TraitTable) Read(filename string) error {
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Trait.StatRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Trait.StatRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StatRate = reader.ReadFloat32()
+					r.StatRate = cursor.NextF32()
 				}
 			}
 		case 6:

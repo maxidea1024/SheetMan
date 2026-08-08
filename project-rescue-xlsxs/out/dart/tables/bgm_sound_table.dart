@@ -105,14 +105,16 @@ class BGMSoundTable {
           break;
         case 4:
           checkColumn(column, 'BGMSound.Loop', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'BGMSound.Loop');
           for (final record in loaded) {
-            record.loop = reader.readBool();
+            record.loop = cursor.nextBool();
           }
           break;
         case 5:
           checkColumn(column, 'BGMSound.FadeTime', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'BGMSound.FadeTime');
           for (final record in loaded) {
-            record.fadeTime = reader.readFloat();
+            record.fadeTime = cursor.nextF32();
           }
           break;
         case 6:

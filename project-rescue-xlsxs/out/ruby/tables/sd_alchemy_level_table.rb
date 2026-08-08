@@ -138,43 +138,51 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'SDAlchemyLevel.CritDMGValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.CritDMGValue')
           records.each do |record|
-            record.crit_dmg_value = reader.read_float
+            record.crit_dmg_value = cursor.next_f32
           end
         when 10
           Sheetman.check_column(column, 'SDAlchemyLevel.CritDMGTotal', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.CritDMGTotal')
           records.each do |record|
-            record.crit_dmg_total = reader.read_float
+            record.crit_dmg_total = cursor.next_f32
           end
         when 11
           Sheetman.check_column(column, 'SDAlchemyLevel.CritRateValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.CritRateValue')
           records.each do |record|
-            record.crit_rate_value = reader.read_float
+            record.crit_rate_value = cursor.next_f32
           end
         when 12
           Sheetman.check_column(column, 'SDAlchemyLevel.CritRateTotal', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.CritRateTotal')
           records.each do |record|
-            record.crit_rate_total = reader.read_float
+            record.crit_rate_total = cursor.next_f32
           end
         when 13
           Sheetman.check_column(column, 'SDAlchemyLevel.BlockRateValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.BlockRateValue')
           records.each do |record|
-            record.block_rate_value = reader.read_float
+            record.block_rate_value = cursor.next_f32
           end
         when 14
           Sheetman.check_column(column, 'SDAlchemyLevel.BlockRateTotal', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.BlockRateTotal')
           records.each do |record|
-            record.block_rate_total = reader.read_float
+            record.block_rate_total = cursor.next_f32
           end
         when 15
           Sheetman.check_column(column, 'SDAlchemyLevel.HITValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.HITValue')
           records.each do |record|
-            record.hit_value = reader.read_float
+            record.hit_value = cursor.next_f32
           end
         when 16
           Sheetman.check_column(column, 'SDAlchemyLevel.HITTotal', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.HITTotal')
           records.each do |record|
-            record.hit_total = reader.read_float
+            record.hit_total = cursor.next_f32
           end
         else
           # A column added after this code was generated.

@@ -151,44 +151,51 @@ class SDAgencyInfoTable {
                 }
                 5 -> {
                     checkColumn(column, "SDAgencyInfo.GradeSRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.GradeSRate")
                     for (record in loaded) {
-                        record.gradeSRate = reader.readFloat()
+                        record.gradeSRate = cursor.nextF32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDAgencyInfo.GradeARate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.GradeARate")
                     for (record in loaded) {
-                        record.gradeARate = reader.readFloat()
+                        record.gradeARate = cursor.nextF32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDAgencyInfo.GradeBRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.GradeBRate")
                     for (record in loaded) {
-                        record.gradeBRate = reader.readFloat()
+                        record.gradeBRate = cursor.nextF32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "SDAgencyInfo.GradeCRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.GradeCRate")
                     for (record in loaded) {
-                        record.gradeCRate = reader.readFloat()
+                        record.gradeCRate = cursor.nextF32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "SDAgencyInfo.GradeDRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.GradeDRate")
                     for (record in loaded) {
-                        record.gradeDRate = reader.readFloat()
+                        record.gradeDRate = cursor.nextF32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "SDAgencyInfo.GradeERate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.GradeERate")
                     for (record in loaded) {
-                        record.gradeERate = reader.readFloat()
+                        record.gradeERate = cursor.nextF32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "SDAgencyInfo.GradeFRate", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.GradeFRate")
                     for (record in loaded) {
-                        record.gradeFRate = reader.readFloat()
+                        record.gradeFRate = cursor.nextF32()
                     }
                 }
                 12 -> {

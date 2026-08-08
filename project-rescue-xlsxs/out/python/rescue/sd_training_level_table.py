@@ -112,20 +112,24 @@ class SDTrainingLevelTable:
                     record.currency_result = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "SDTrainingLevel.MHPGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.MHPGrowth")
                 for record in records:
-                    record.mhp_growth = reader.read_float()
+                    record.mhp_growth = cursor.next_f32()
             elif column.tag == 7:
                 sheetman.check_column(column, "SDTrainingLevel.MHPTotal", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.MHPTotal")
                 for record in records:
-                    record.mhp_total = reader.read_float()
+                    record.mhp_total = cursor.next_f32()
             elif column.tag == 8:
                 sheetman.check_column(column, "SDTrainingLevel.DEFGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.DEFGrowth")
                 for record in records:
-                    record.def_growth = reader.read_float()
+                    record.def_growth = cursor.next_f32()
             elif column.tag == 9:
                 sheetman.check_column(column, "SDTrainingLevel.DEFTotal", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.DEFTotal")
                 for record in records:
-                    record.def_total = reader.read_float()
+                    record.def_total = cursor.next_f32()
             elif column.tag == 10:
                 sheetman.check_column(column, "SDTrainingLevel.CommonUnlockStageID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.CommonUnlockStageID")

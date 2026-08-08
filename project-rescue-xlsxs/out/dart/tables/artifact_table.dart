@@ -138,8 +138,9 @@ class ArtifactTable {
           break;
         case 7:
           checkColumn(column, 'Artifact.EquipStatRate', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.EquipStatRate');
           for (final record in loaded) {
-            record.equipStatRate = reader.readFloat();
+            record.equipStatRate = cursor.nextF32();
           }
           break;
         case 8:
@@ -151,8 +152,9 @@ class ArtifactTable {
           break;
         case 9:
           checkColumn(column, 'Artifact.CollectionVlaue', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.CollectionVlaue');
           for (final record in loaded) {
-            record.collectionVlaue = reader.readFloat();
+            record.collectionVlaue = cursor.nextF32();
           }
           break;
         case 10:

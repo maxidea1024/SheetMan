@@ -112,13 +112,15 @@ module Rescue
           end
         when 6
           Sheetman.check_column(column, 'Attribute.DamageValueRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Attribute.DamageValueRate')
           records.each do |record|
-            record.damage_value_rate = reader.read_float
+            record.damage_value_rate = cursor.next_f32
           end
         when 7
           Sheetman.check_column(column, 'Attribute.IsVisible', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Attribute.IsVisible')
           records.each do |record|
-            record.is_visible = reader.read_bool
+            record.is_visible = cursor.next_bool
           end
         when 8
           Sheetman.check_column(column, 'Attribute.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])

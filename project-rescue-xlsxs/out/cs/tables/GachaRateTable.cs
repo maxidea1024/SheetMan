@@ -206,46 +206,51 @@ namespace Rescue.Tables
 
                     case 2:
                         ScbTable.CheckColumn(column, "GachaRate.URRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaRate.URRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._uRRate);
+                            record._uRRate = cursor.NextF32();
                         }
                         break;
 
                     case 3:
                         ScbTable.CheckColumn(column, "GachaRate.SSRRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaRate.SSRRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._sSRRate);
+                            record._sSRRate = cursor.NextF32();
                         }
                         break;
 
                     case 4:
                         ScbTable.CheckColumn(column, "GachaRate.SRRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaRate.SRRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._sRRate);
+                            record._sRRate = cursor.NextF32();
                         }
                         break;
 
                     case 5:
                         ScbTable.CheckColumn(column, "GachaRate.RRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaRate.RRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._rRate);
+                            record._rRate = cursor.NextF32();
                         }
                         break;
 
                     case 6:
                         ScbTable.CheckColumn(column, "GachaRate.NRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "GachaRate.NRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._nRate);
+                            record._nRate = cursor.NextF32();
                         }
                         break;
 

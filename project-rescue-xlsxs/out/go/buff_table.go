@@ -202,9 +202,10 @@ func (t *BuffTable) Read(filename string) error {
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "Buff.BuffValueRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.BuffValueRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffValueRate = reader.ReadFloat32()
+					r.BuffValueRate = cursor.NextF32()
 				}
 			}
 		case 12:
@@ -233,16 +234,18 @@ func (t *BuffTable) Read(filename string) error {
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "Buff.BuffCoolDownTime", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.BuffCoolDownTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffCoolDownTime = reader.ReadFloat32()
+					r.BuffCoolDownTime = cursor.NextF32()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "Buff.IsVisible", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.IsVisible")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsVisible = reader.ReadBool()
+					r.IsVisible = cursor.NextBool()
 				}
 			}
 		case 17:

@@ -144,17 +144,19 @@ class AttributeTable {
         }
         case 6: {
           sheetman::check_column(column, "Attribute.DamageValueRate", sheetman::kKindScalar, 1, {sheetman::kElementF32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Attribute.DamageValueRate");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.damage_value_rate);
+            record.damage_value_rate = cursor.next_f32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "Attribute.IsVisible", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Attribute.IsVisible");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_visible);
+            record.is_visible = cursor.next_bool();
           }
           break;
         }

@@ -138,11 +138,12 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
     case 7:
       (void)sm_check_column(reader, column, "ArtifactLevel.ATKGrowth", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ArtifactLevel.ATKGrowth");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ArtifactLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->atk_growth);
+        (void)sm_cursor_next_f32(&cursor, &record->atk_growth);
       }
 
       break;
@@ -150,11 +151,12 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
     case 8:
       (void)sm_check_column(reader, column, "ArtifactLevel.DEFGrowth", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ArtifactLevel.DEFGrowth");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ArtifactLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->def_growth);
+        (void)sm_cursor_next_f32(&cursor, &record->def_growth);
       }
 
       break;
@@ -162,11 +164,12 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
     case 9:
       (void)sm_check_column(reader, column, "ArtifactLevel.HPGrowth", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_F32));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ArtifactLevel.HPGrowth");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ArtifactLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_float(reader, &record->hp_growth);
+        (void)sm_cursor_next_f32(&cursor, &record->hp_growth);
       }
 
       break;

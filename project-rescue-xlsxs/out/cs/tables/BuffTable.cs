@@ -380,10 +380,11 @@ namespace Rescue.Tables
 
                     case 11:
                         ScbTable.CheckColumn(column, "Buff.BuffValueRate", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.BuffValueRate");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._buffValueRate);
+                            record._buffValueRate = cursor.NextF32();
                         }
                         break;
 
@@ -419,19 +420,21 @@ namespace Rescue.Tables
 
                     case 15:
                         ScbTable.CheckColumn(column, "Buff.BuffCoolDownTime", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.BuffCoolDownTime");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._buffCoolDownTime);
+                            record._buffCoolDownTime = cursor.NextF32();
                         }
                         break;
 
                     case 16:
                         ScbTable.CheckColumn(column, "Buff.IsVisible", ScbTable.KindScalar, 1, ScbTable.ElementBool);
+                        cursor = new ScbColumnCursor(reader, column, count, "Buff.IsVisible");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._isVisible);
+                            record._isVisible = cursor.NextBool();
                         }
                         break;
 

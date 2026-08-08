@@ -69,6 +69,8 @@ export const ENCODING_RLE = 3
 export const ENCODING_DELTA_RLE = 4
 export const ENCODING_DICT = 5
 export const ENCODING_DICT_RLE = 6
+export const ENCODING_DICT_FRONT = 7
+export const ENCODING_DICT_FRONT_RLE = 8
 
 /** One column as the file describes it. */
 export interface ScbColumn {
@@ -230,16 +232,29 @@ export class ScbReader {
     return value
   }
 
+  /**
+   * Advances past bytes and hands them back uninterpreted.
+   *
+   * A view onto the same buffer rather than a copy, so a dictionary of fixed-width
+   * entries costs nothing to keep: the bytes are already in memory and nothing
+   * mutates them.
+   */
+  readBytes(count: number): Uint8Array {
+    if (count < 0) throw new ScbError(`cannot read ${count} bytes`)
+
+    this.require(count)
+
+    const bytes = this.data.subarray(this.offset, this.offset + count)
+    this.offset += count
+
+    return bytes
+  }
+
   readString(): string {
     const length = this.readCounter32()
     if (length < 0) throw new ScbError('string length is negative')
 
-    this.require(length)
-
-    const bytes = this.data.subarray(this.offset, this.offset + length)
-    this.offset += length
-
-    return decodeUtf8(bytes)
+    return decodeUtf8(this.readBytes(length))
   }
 
   /**
@@ -261,12 +276,7 @@ export class ScbReader {
 
   /** A uuid in its canonical text form. */
   readUuid(): string {
-    this.require(16)
-
-    const bytes = this.data.subarray(this.offset, this.offset + 16)
-    this.offset += 16
-
-    return formatUuid(bytes)
+    return formatUuid(this.readBytes(16))
   }
 
   /** An enum value, which travels zig-zag encoded rather than fixed width. */
@@ -281,6 +291,51 @@ export class ScbReader {
         `while ${count} more were expected`)
     }
   }
+}
+
+/**
+ * A sorted dictionary whose entries state only what they do not share with the
+ * entry before them.
+ *
+ * Decoded into whole strings here rather than kept folded, because a row wants a
+ * string and the folding was only ever about the bytes on disk. The scratch buffer
+ * grows to the longest entry and is reused, so the allocations are the strings
+ * themselves - one per distinct value, which is the point.
+ */
+function readFrontCodedDictionary(
+  reader: ScbReader, count: number, fieldName: string): string[] {
+  const entries: string[] = []
+  let scratch = new Uint8Array(64)
+  let previousLength = 0
+
+  for (let at = 0; at < count; at++) {
+    const shared = reader.readCounter32()
+    const rest = reader.readCounter32()
+
+    if (shared < 0 || rest < 0 || shared > previousLength) {
+      throw new ScbError(
+        `${fieldName}: dictionary entry ${at} shares ${shared} bytes with an entry ` +
+        `of ${previousLength}`)
+    }
+
+    const length = shared + rest
+
+    if (length > scratch.length) {
+      let capacity = scratch.length
+      while (capacity < length) capacity *= 2
+
+      const grown = new Uint8Array(capacity)
+      grown.set(scratch)
+      scratch = grown
+    }
+
+    if (rest > 0) scratch.set(reader.readBytes(rest), shared)
+
+    entries.push(length === 0 ? '' : decodeUtf8(scratch.subarray(0, length)))
+    previousLength = length
+  }
+
+  return entries
 }
 
 /**
@@ -301,8 +356,18 @@ export class ScbColumnCursor {
   private readonly element: number
   private readonly encoding: number
 
-  /** The block's dictionary, decoded once and handed out per row. */
+  /**
+   * The block's dictionary, decoded once and handed out per row.
+   *
+   * One of the two is filled when the block has a dictionary at all, chosen by the
+   * element: strings are decoded to instances that rows then share, and a
+   * fixed-width element keeps its raw bytes so the value is reconstructed exactly
+   * as the raw layout would have read it.
+   */
   private readonly dictionary: string[] = []
+
+  private readonly valueDictionary: DataView | null = null
+  private readonly valueWidth: number = 0
 
   // A run-length family's current run: what remains of it, and its value - which
   // is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
@@ -324,13 +389,36 @@ export class ScbColumnCursor {
     this.encoding = column.encoding
     this.rowsRemaining = rowCount
 
-    if (this.encoding === ENCODING_DICT || this.encoding === ENCODING_DICT_RLE) {
-      const count = reader.readCounter32()
-      if (count < 0) throw new ScbError(`${fieldName}: the dictionary entry count is negative`)
+    const plainDictionary =
+      this.encoding === ENCODING_DICT || this.encoding === ENCODING_DICT_RLE
 
+    const frontDictionary =
+      this.encoding === ENCODING_DICT_FRONT || this.encoding === ENCODING_DICT_FRONT_RLE
+
+    if (!plainDictionary && !frontDictionary) return
+
+    const count = reader.readCounter32()
+    if (count < 0) throw new ScbError(`${fieldName}: the dictionary entry count is negative`)
+
+    if (frontDictionary) {
+      this.dictionary = readFrontCodedDictionary(reader, count, fieldName)
+      return
+    }
+
+    if (this.element === ELEMENT_STRING) {
       for (let at = 0; at < count; at++)
         this.dictionary.push(reader.readString())
+
+      return
     }
+
+    // A fixed-width element: the entries are the value's own bytes, laid out one
+    // after another, so they are taken as bytes and turned into values only when a
+    // row asks for one.
+    this.valueWidth = this.element === ELEMENT_F32 ? 4 : 8
+
+    const bytes = reader.readBytes(count * this.valueWidth)
+    this.valueDictionary = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength)
   }
 
   /** The next int32 - which also serves enums, and reference indexes. */
@@ -381,19 +469,85 @@ export class ScbColumnCursor {
     }
   }
 
-  /** An int64 member: an i64 column is always raw, anything narrower decodes as int32. */
+  /**
+   * An int64 member: from an i64 column raw or through its dictionary, and from
+   * anything narrower by decoding an int32 and widening it.
+   *
+   * A dictionary entry is the eight bytes the raw layout would have carried, so it
+   * is read back as a little-endian BigInt exactly as readInt64 does.
+   */
   nextI64(): bigint {
-    if (this.element === ELEMENT_I64) return this.reader.readInt64()
+    if (this.element !== ELEMENT_I64) return BigInt(this.nextI32())
 
-    return BigInt(this.nextI32())
+    if (this.valueDictionary !== null)
+      return this.valueDictionary.getBigInt64(this.nextValueEntry(), true)
+
+    this.rowsRemaining--
+    return this.reader.readInt64()
   }
 
-  /** A double member: float columns are always raw, an i32 column decodes then widens. */
+  /** A float member: raw, or the dictionary entry's exact bit pattern. */
+  nextF32(): number {
+    if (this.valueDictionary !== null)
+      return this.valueDictionary.getFloat32(this.nextValueEntry(), true)
+
+    this.rowsRemaining--
+    return this.reader.readFloat()
+  }
+
+  /**
+   * A double member: from f64 or f32 - either of them raw or dictionary-encoded -
+   * and from an i32 column by decoding and widening.
+   */
   nextF64(): number {
-    if (this.element === ELEMENT_F64) return this.reader.readDouble()
-    if (this.element === ELEMENT_F32) return this.reader.readFloat()
+    if (this.element === ELEMENT_F64) {
+      if (this.valueDictionary !== null)
+        return this.valueDictionary.getFloat64(this.nextValueEntry(), true)
+
+      this.rowsRemaining--
+      return this.reader.readDouble()
+    }
+
+    if (this.element === ELEMENT_F32) return this.nextF32()
 
     return this.nextI32()
+  }
+
+  /** A bool member: one byte raw, or a run of them. */
+  nextBool(): boolean {
+    if (this.encoding === ENCODING_RLE) return this.nextI32() !== 0
+
+    this.rowsRemaining--
+    return this.reader.readBool()
+  }
+
+  /**
+   * Where the next row's dictionary entry starts, for a fixed-width element: a byte
+   * offset into the entries kept as they were written.
+   */
+  private nextValueEntry(): number {
+    this.rowsRemaining--
+
+    let index: number
+
+    if (this.encoding === ENCODING_DICT) {
+      index = this.reader.readCounter32()
+    } else {
+      if (this.runRemaining === 0) this.readRun()
+
+      this.runRemaining--
+      index = this.runValue
+    }
+
+    const count = this.valueDictionary!.byteLength / this.valueWidth
+
+    if (index < 0 || index >= count) {
+      throw new ScbError(
+        `${this.fieldName}: dictionary index ${index} is out of range - the ` +
+        `dictionary holds ${count} entries`)
+    }
+
+    return index * this.valueWidth
   }
 
   /** The next string - the dictionary's instance where the block has one. */
@@ -405,9 +559,10 @@ export class ScbColumnCursor {
         return this.reader.readString()
 
       case ENCODING_DICT:
+      case ENCODING_DICT_FRONT:
         return this.dictionaryEntry(this.reader.readCounter32())
 
-      default: { // ENCODING_DICT_RLE
+      default: { // ENCODING_DICT_RLE and ENCODING_DICT_FRONT_RLE
         if (this.runRemaining === 0) this.readRun()
 
         this.runRemaining--
@@ -547,14 +702,24 @@ function encodingSupported(column: ScbColumn): boolean {
   if (column.kind !== KIND_SCALAR) return false
 
   switch (column.element) {
+    case ELEMENT_BOOL:
     case ELEMENT_VARINT:
       return column.encoding === ENCODING_RLE
 
     case ELEMENT_I32:
       return column.encoding >= ENCODING_VARINT && column.encoding <= ENCODING_DELTA_RLE
 
-    case ELEMENT_STRING:
+    // The dictionary is parameterized by element, so these three reach it with
+    // entries that are simply their own raw bytes.
+    case ELEMENT_I64:
+    case ELEMENT_F32:
+    case ELEMENT_F64:
       return column.encoding === ENCODING_DICT || column.encoding === ENCODING_DICT_RLE
+
+    // And a string dictionary can additionally be front coded, which is meaningless
+    // for a fixed-width element and refused for one.
+    case ELEMENT_STRING:
+      return column.encoding >= ENCODING_DICT && column.encoding <= ENCODING_DICT_FRONT_RLE
 
     default:
       return false
@@ -639,8 +804,11 @@ function pad(value: number, width: number): string {
  * The stored value has no time zone - the sheet said nothing about one - so it is
  * rendered as a local-looking timestamp with no offset, matching what the JSON
  * export writes for a DateTime of unspecified kind.
+ *
+ * Exported because a date column is an i64 one, so it can arrive encoded and its
+ * ticks then come from the cursor rather than from a direct read.
  */
-function formatDateTimeTicks(ticks: bigint): string {
+export function formatDateTimeTicks(ticks: bigint): string {
   const sinceEpoch = ticks - UNIX_EPOCH_TICKS
 
   // Split before converting, so the sub-second part keeps full tick resolution
@@ -671,8 +839,10 @@ function formatDateTimeTicks(ticks: bigint): string {
 /**
  * Formats .NET ticks as the duration text the JSON export produces:
  * `[-][d.]hh:mm:ss[.fffffff]`.
+ *
+ * Exported for the same reason as the date one above.
  */
-function formatTimeSpanTicks(ticks: bigint): string {
+export function formatTimeSpanTicks(ticks: bigint): string {
   const negative = ticks < 0n
   let remaining = negative ? -ticks : ticks
 

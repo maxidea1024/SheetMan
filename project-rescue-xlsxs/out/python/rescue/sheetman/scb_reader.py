@@ -63,6 +63,8 @@ ENCODING_RLE = 3
 ENCODING_DELTA_RLE = 4
 ENCODING_DICT = 5
 ENCODING_DICT_RLE = 6
+ENCODING_DICT_FRONT = 7
+ENCODING_DICT_FRONT_RLE = 8
 
 
 class Column:
@@ -203,6 +205,14 @@ class Reader:
 
         return self._take(length).decode("utf-8")
 
+    def read_bytes(self, count):
+        """The next `count` bytes, uninterpreted.
+
+        What a fixed-width dictionary entry is kept as, so that turning one into a
+        value reconstructs exactly what the raw layout would have read.
+        """
+        return self._take(count)
+
     def skip(self, byte_count):
         """Advances past bytes without interpreting them: an unknown column's block.
 
@@ -295,6 +305,33 @@ def _wrap_int32(value):
     return value - 0x100000000 if value >= 0x80000000 else value
 
 
+def _read_front_coded_dictionary(reader, count, field_name):
+    """A sorted dictionary whose entries state only what they do not share with the
+    entry before them.
+
+    Decoded into whole strings here rather than kept folded, because a row wants a
+    string and the folding was only ever about the bytes on disk. The prefix is carried
+    as bytes, not as a str: the entries are sorted by their UTF-8 bytes and a shared
+    count is a count of bytes, which can land inside a character.
+    """
+    entries = []
+    previous = b""
+
+    for at in range(count):
+        shared = reader.read_counter32()
+        rest = reader.read_counter32()
+
+        if shared < 0 or rest < 0 or shared > len(previous):
+            raise ScbError(
+                "%s: dictionary entry %d shares %d bytes with an entry of %d"
+                % (field_name, at, shared, len(previous)))
+
+        previous = previous[:shared] + reader.read_bytes(rest)
+        entries.append(previous.decode("utf-8"))
+
+    return entries
+
+
 class ColumnCursor:
     """Reads one scalar column's values in row order, whatever the block's encoding.
 
@@ -309,8 +346,8 @@ class ColumnCursor:
     """
 
     __slots__ = ("_reader", "_field_name", "_element", "_encoding", "_dictionary",
-                 "_run_remaining", "_run_value", "_previous", "_started",
-                 "_rows_remaining")
+                 "_value_dictionary", "_run_remaining", "_run_value", "_previous",
+                 "_started", "_rows_remaining")
 
     def __init__(self, reader, column, row_count, field_name):
         self._reader = reader
@@ -331,17 +368,36 @@ class ColumnCursor:
         # catching it here names the field instead of leaving it to the block-end check.
         self._rows_remaining = row_count
 
-        if column.encoding in (ENCODING_DICT, ENCODING_DICT_RLE):
-            count = reader.read_counter32()
+        # The block's dictionary, decoded once and handed out per row. One of the two is
+        # filled when the block has a dictionary at all, chosen by the element: strings
+        # become instances that rows then share, and a fixed-width element keeps its raw
+        # bytes so that a value is reconstructed exactly as the raw layout would have
+        # read it.
+        self._dictionary = None
+        self._value_dictionary = None
 
-            if count < 0:
-                raise ScbError(
-                    "%s: the dictionary entry count is negative" % field_name)
+        plain_dictionary = column.encoding in (ENCODING_DICT, ENCODING_DICT_RLE)
+        front_dictionary = column.encoding in (
+            ENCODING_DICT_FRONT, ENCODING_DICT_FRONT_RLE)
 
-            # Decoded once and handed out per row.
+        if not plain_dictionary and not front_dictionary:
+            return
+
+        count = reader.read_counter32()
+
+        if count < 0:
+            raise ScbError(
+                "%s: the dictionary entry count is negative" % field_name)
+
+        if front_dictionary:
+            self._dictionary = _read_front_coded_dictionary(reader, count, field_name)
+        elif column.element == ELEMENT_STRING:
             self._dictionary = [reader.read_string() for _ in range(count)]
         else:
-            self._dictionary = None
+            # A fixed-width element: an entry is the value's own bytes, taken as bytes
+            # and turned into a value only when a row asks for one.
+            width = 4 if column.element == ELEMENT_F32 else 8
+            self._value_dictionary = [reader.read_bytes(width) for _ in range(count)]
 
     def next_i32(self):
         """The next int32 - which also serves enums, and reference indexes."""
@@ -389,21 +445,68 @@ class ColumnCursor:
         return self._previous
 
     def next_i64(self):
-        """An int64 member: an i64 column is always raw, anything narrower decodes as int32."""
-        if self._element == ELEMENT_I64:
-            return self._reader.read_int64()
+        """An int64 member: from an i64 column raw or through its dictionary, and from
+        anything narrower by decoding an int32 and widening it.
+        """
+        if self._element != ELEMENT_I64:
+            return self.next_i32()
 
-        return self.next_i32()
+        if self._value_dictionary is not None:
+            return struct.unpack_from("<q", self._next_value_entry())[0]
+
+        self._rows_remaining -= 1
+        return self._reader.read_int64()
+
+    def next_f32(self):
+        """A float member: raw, or the dictionary entry's exact bit pattern.
+
+        Widened to Python's float, which is a double - see Reader.read_float.
+        """
+        if self._value_dictionary is not None:
+            return struct.unpack_from("<f", self._next_value_entry())[0]
+
+        self._rows_remaining -= 1
+        return self._reader.read_float()
 
     def next_f64(self):
-        """A double member: float columns are always raw, an i32 column decodes then widens."""
+        """A double member: from f64 or f32 - either of them raw or dictionary
+        encoded - and from an i32 column by decoding and widening.
+        """
         if self._element == ELEMENT_F64:
+            if self._value_dictionary is not None:
+                return struct.unpack_from("<d", self._next_value_entry())[0]
+
+            self._rows_remaining -= 1
             return self._reader.read_double()
 
         if self._element == ELEMENT_F32:
-            return self._reader.read_float()
+            return self.next_f32()
 
         return self.next_i32()
+
+    def next_bool(self):
+        """A bool member: one byte raw, or a run of them."""
+        if self._encoding == ENCODING_RLE:
+            return self.next_i32() != 0
+
+        self._rows_remaining -= 1
+        return self._reader.read_bool()
+
+    def _next_value_entry(self):
+        """The bytes of the next row's dictionary entry, for a fixed-width element."""
+        self._rows_remaining -= 1
+
+        if self._encoding == ENCODING_DICT:
+            index = self._reader.read_counter32()
+        else:
+            # ENCODING_DICT_RLE; a fixed-width element reaches no other encoding here.
+            if self._run_remaining == 0:
+                self._read_run()
+
+            self._run_remaining -= 1
+            index = self._run_value
+
+        return self._dictionary_entry(self._value_dictionary, index)
 
     def next_string(self):
         """The next string - the dictionary's instance where the block has one."""
@@ -412,15 +515,16 @@ class ColumnCursor:
         if self._encoding == ENCODING_RAW:
             return self._reader.read_string()
 
-        if self._encoding == ENCODING_DICT:
-            return self._dictionary_entry(self._reader.read_counter32())
+        if self._encoding in (ENCODING_DICT, ENCODING_DICT_FRONT):
+            return self._dictionary_entry(self._dictionary, self._reader.read_counter32())
 
-        # ENCODING_DICT_RLE
+        # ENCODING_DICT_RLE and ENCODING_DICT_FRONT_RLE, whose dictionaries differ only
+        # in how they were written down.
         if self._run_remaining == 0:
             self._read_run()
 
         self._run_remaining -= 1
-        return self._dictionary_entry(self._run_value)
+        return self._dictionary_entry(self._dictionary, self._run_value)
 
     def _read_run(self):
         length = self._reader.read_counter32()
@@ -435,13 +539,13 @@ class ColumnCursor:
         self._run_remaining = length
         self._run_value = self._reader.read_optimal_int32()
 
-    def _dictionary_entry(self, index):
-        if index < 0 or index >= len(self._dictionary):
+    def _dictionary_entry(self, entries, index):
+        if index < 0 or index >= len(entries):
             raise ScbError(
                 "%s: dictionary index %d is out of range - the dictionary holds %d entries"
-                % (self._field_name, index, len(self._dictionary)))
+                % (self._field_name, index, len(entries)))
 
-        return self._dictionary[index]
+        return entries[index]
 
 
 def read_table_header(reader):
@@ -538,8 +642,8 @@ def check_column(column, field_name, kind, count, accepted):
 def _encoding_supported(column):
     """The (element, encoding) pairs the spec defines.
 
-    Arrays are always raw; integers take the integer encodings, strings the
-    dictionary ones.
+    Arrays are always raw; integers take the integer encodings, and the dictionary
+    ones go to every element wide enough to repeat itself - uuid excepted.
     """
     if column.encoding == ENCODING_RAW:
         return True
@@ -547,14 +651,21 @@ def _encoding_supported(column):
     if column.kind != KIND_SCALAR:
         return False
 
-    if column.element == ELEMENT_VARINT:
+    if column.element in (ELEMENT_BOOL, ELEMENT_VARINT):
         return column.encoding == ENCODING_RLE
 
     if column.element == ELEMENT_I32:
         return ENCODING_VARINT <= column.encoding <= ENCODING_DELTA_RLE
 
-    if column.element == ELEMENT_STRING:
+    # The dictionary is parameterized by element, so these three reach it with entries
+    # that are simply their own raw bytes.
+    if column.element in (ELEMENT_I64, ELEMENT_F32, ELEMENT_F64):
         return column.encoding in (ENCODING_DICT, ENCODING_DICT_RLE)
+
+    # And a string dictionary can additionally be front coded, which is meaningless for
+    # a fixed-width element and refused for one.
+    if column.element == ELEMENT_STRING:
+        return ENCODING_DICT <= column.encoding <= ENCODING_DICT_FRONT_RLE
 
     return False
 

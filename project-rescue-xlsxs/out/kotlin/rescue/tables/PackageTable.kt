@@ -164,8 +164,9 @@ class PackageTable {
                 }
                 6 -> {
                     checkColumn(column, "Package.Stackable", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "Package.Stackable")
                     for (record in loaded) {
-                        record.stackable = reader.readBool()
+                        record.stackable = cursor.nextBool()
                     }
                 }
                 7 -> {

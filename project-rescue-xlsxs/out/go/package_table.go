@@ -160,9 +160,10 @@ func (t *PackageTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Package.Stackable", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.Stackable")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Stackable = reader.ReadBool()
+					r.Stackable = cursor.NextBool()
 				}
 			}
 		case 7:

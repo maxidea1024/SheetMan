@@ -174,9 +174,10 @@ func (t *CollectionTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "Collection.RewardStatRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.RewardStatRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardStatRate = reader.ReadFloat32()
+					r.RewardStatRate = cursor.NextF32()
 				}
 			}
 		case 10:

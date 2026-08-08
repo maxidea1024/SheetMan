@@ -119,13 +119,15 @@ module Rescue
           end
         when 6
           Sheetman.check_column(column, 'Relic.RelicValue1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicValue1')
           records.each do |record|
-            record.relic_value1 = reader.read_float
+            record.relic_value1 = cursor.next_f32
           end
         when 7
           Sheetman.check_column(column, 'Relic.RelicIncValue1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicIncValue1')
           records.each do |record|
-            record.relic_inc_value1 = reader.read_float
+            record.relic_inc_value1 = cursor.next_f32
           end
         when 8
           Sheetman.check_column(column, 'Relic.RelicType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
@@ -135,13 +137,15 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'Relic.RelicValue2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicValue2')
           records.each do |record|
-            record.relic_value2 = reader.read_float
+            record.relic_value2 = cursor.next_f32
           end
         when 10
           Sheetman.check_column(column, 'Relic.RelicIncValue2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicIncValue2')
           records.each do |record|
-            record.relic_inc_value2 = reader.read_float
+            record.relic_inc_value2 = cursor.next_f32
           end
         when 11
           Sheetman.check_column(column, 'Relic.RelicType3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
@@ -151,13 +155,15 @@ module Rescue
           end
         when 12
           Sheetman.check_column(column, 'Relic.RelicValue3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicValue3')
           records.each do |record|
-            record.relic_value3 = reader.read_float
+            record.relic_value3 = cursor.next_f32
           end
         when 13
           Sheetman.check_column(column, 'Relic.RelicIncValue3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicIncValue3')
           records.each do |record|
-            record.relic_inc_value3 = reader.read_float
+            record.relic_inc_value3 = cursor.next_f32
           end
         when 14
           Sheetman.check_column(column, 'Relic.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])

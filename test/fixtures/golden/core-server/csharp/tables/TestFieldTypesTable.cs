@@ -267,10 +267,11 @@ namespace SheetMan.Fixtures.Core.Server
 
                     case 6:
                         ScbTable.CheckColumn(column, "TestFieldTypes.FloatField", ScbTable.KindScalar, 1, ScbTable.ElementF32);
+                        cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.FloatField");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._floatField);
+                            record._floatField = cursor.NextF32();
                         }
                         break;
 
@@ -286,19 +287,21 @@ namespace SheetMan.Fixtures.Core.Server
 
                     case 8:
                         ScbTable.CheckColumn(column, "TestFieldTypes.DatetimeField", ScbTable.KindScalar, 1, ScbTable.ElementI64);
+                        cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.DatetimeField");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._datetimeField);
+                            record._datetimeField = new System.DateTime(cursor.NextI64());
                         }
                         break;
 
                     case 9:
                         ScbTable.CheckColumn(column, "TestFieldTypes.TimespanField", ScbTable.KindScalar, 1, ScbTable.ElementI64);
+                        cursor = new ScbColumnCursor(reader, column, count, "TestFieldTypes.TimespanField");
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            reader.Read(out record._timespanField);
+                            record._timespanField = new System.TimeSpan(cursor.NextI64());
                         }
                         break;
 

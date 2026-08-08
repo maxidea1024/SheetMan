@@ -158,50 +158,57 @@ final class SDAgencyInfoTable
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.GradeSRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.GradeSRate');
                     foreach ($records as $record) {
-                        $record->gradeSRate = $reader->readFloat();
+                        $record->gradeSRate = $cursor->nextF32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.GradeARate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.GradeARate');
                     foreach ($records as $record) {
-                        $record->gradeARate = $reader->readFloat();
+                        $record->gradeARate = $cursor->nextF32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.GradeBRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.GradeBRate');
                     foreach ($records as $record) {
-                        $record->gradeBRate = $reader->readFloat();
+                        $record->gradeBRate = $cursor->nextF32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.GradeCRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.GradeCRate');
                     foreach ($records as $record) {
-                        $record->gradeCRate = $reader->readFloat();
+                        $record->gradeCRate = $cursor->nextF32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.GradeDRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.GradeDRate');
                     foreach ($records as $record) {
-                        $record->gradeDRate = $reader->readFloat();
+                        $record->gradeDRate = $cursor->nextF32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.GradeERate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.GradeERate');
                     foreach ($records as $record) {
-                        $record->gradeERate = $reader->readFloat();
+                        $record->gradeERate = $cursor->nextF32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.GradeFRate', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.GradeFRate');
                     foreach ($records as $record) {
-                        $record->gradeFRate = $reader->readFloat();
+                        $record->gradeFRate = $cursor->nextF32();
                     }
                     break;
 

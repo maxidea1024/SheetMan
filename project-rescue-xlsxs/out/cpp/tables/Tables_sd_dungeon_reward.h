@@ -249,9 +249,10 @@ class SDDungeonRewardTable {
         }
         case 15: {
           sheetman::check_column(column, "SDDungeonReward.IsPerfect", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonReward.IsPerfect");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_perfect);
+            record.is_perfect = cursor.next_bool();
           }
           break;
         }
@@ -275,9 +276,10 @@ class SDDungeonRewardTable {
         }
         case 18: {
           sheetman::check_column(column, "SDDungeonReward.IsMinReward", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonReward.IsMinReward");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_min_reward);
+            record.is_min_reward = cursor.next_bool();
           }
           break;
         }

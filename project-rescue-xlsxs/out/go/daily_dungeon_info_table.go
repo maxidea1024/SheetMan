@@ -192,9 +192,10 @@ func (t *DailyDungeonInfoTable) Read(filename string) error {
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.BuffValueRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.BuffValueRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffValueRate = reader.ReadFloat32()
+					r.BuffValueRate = cursor.NextF32()
 				}
 			}
 		case 11:

@@ -141,8 +141,9 @@ class ExpDungeonRewardTable {
           break;
         case 8:
           checkColumn(column, 'ExpDungeonReward.IsFirstClear', kindScalar, 1, [elementBool]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.IsFirstClear');
           for (final record in loaded) {
-            record.isFirstClear = reader.readBool();
+            record.isFirstClear = cursor.nextBool();
           }
           break;
         case 9:

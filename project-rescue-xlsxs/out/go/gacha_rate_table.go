@@ -106,37 +106,42 @@ func (t *GachaRateTable) Read(filename string) error {
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "GachaRate.URRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaRate.URRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.URRate = reader.ReadFloat32()
+					r.URRate = cursor.NextF32()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "GachaRate.SSRRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaRate.SSRRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SSRRate = reader.ReadFloat32()
+					r.SSRRate = cursor.NextF32()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "GachaRate.SRRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaRate.SRRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SRRate = reader.ReadFloat32()
+					r.SRRate = cursor.NextF32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "GachaRate.RRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaRate.RRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RRate = reader.ReadFloat32()
+					r.RRate = cursor.NextF32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "GachaRate.NRate", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaRate.NRate")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NRate = reader.ReadFloat32()
+					r.NRate = cursor.NextF32()
 				}
 			}
 		default:

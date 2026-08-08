@@ -191,15 +191,17 @@ final class SkillTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'Skill.SkillUseRange', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.SkillUseRange');
                     foreach ($records as $record) {
-                        $record->skillUseRange = $reader->readFloat();
+                        $record->skillUseRange = $cursor->nextF32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'Skill.CoolTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_F32]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.CoolTime');
                     foreach ($records as $record) {
-                        $record->coolTime = $reader->readFloat();
+                        $record->coolTime = $cursor->nextF32();
                     }
                     break;
 

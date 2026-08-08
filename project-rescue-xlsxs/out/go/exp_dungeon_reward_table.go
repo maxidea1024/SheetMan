@@ -162,9 +162,10 @@ func (t *ExpDungeonRewardTable) Read(filename string) error {
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonReward.IsFirstClear", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonReward.IsFirstClear")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsFirstClear = reader.ReadBool()
+					r.IsFirstClear = cursor.NextBool()
 				}
 			}
 		case 9:

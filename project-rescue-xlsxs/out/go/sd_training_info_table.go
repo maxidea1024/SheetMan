@@ -174,9 +174,10 @@ func (t *SDTrainingInfoTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.IsLvReset", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.IsLvReset")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsLvReset = reader.ReadBool()
+					r.IsLvReset = cursor.NextBool()
 				}
 			}
 		case 10:

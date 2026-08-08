@@ -165,8 +165,9 @@ class CurrencyTable {
                 }
                 7 -> {
                     checkColumn(column, "Currency.Stackable", KIND_SCALAR, 1, ELEMENT_BOOL)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.Stackable")
                     for (record in loaded) {
-                        record.stackable = reader.readBool()
+                        record.stackable = cursor.nextBool()
                     }
                 }
                 8 -> {

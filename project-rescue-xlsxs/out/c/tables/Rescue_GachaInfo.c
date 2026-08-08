@@ -205,11 +205,12 @@ static bool Rescue_GachaInfoParse(Rescue_GachaInfoTable_t* table, sm_reader* rea
     case 12:
       (void)sm_check_column(reader, column, "GachaInfo.EnableReset", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaInfo.EnableReset");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->enable_reset);
+        (void)sm_cursor_next_bool(&cursor, &record->enable_reset);
       }
 
       break;
@@ -217,11 +218,12 @@ static bool Rescue_GachaInfoParse(Rescue_GachaInfoTable_t* table, sm_reader* rea
     case 13:
       (void)sm_check_column(reader, column, "GachaInfo.IsSharedCounter", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaInfo.IsSharedCounter");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->is_shared_counter);
+        (void)sm_cursor_next_bool(&cursor, &record->is_shared_counter);
       }
 
       break;
@@ -255,11 +257,12 @@ static bool Rescue_GachaInfoParse(Rescue_GachaInfoTable_t* table, sm_reader* rea
     case 16:
       (void)sm_check_column(reader, column, "GachaInfo.IsSingle", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaInfo.IsSingle");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->is_single);
+        (void)sm_cursor_next_bool(&cursor, &record->is_single);
       }
 
       break;
@@ -267,11 +270,12 @@ static bool Rescue_GachaInfoParse(Rescue_GachaInfoTable_t* table, sm_reader* rea
     case 17:
       (void)sm_check_column(reader, column, "GachaInfo.IsTen", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaInfo.IsTen");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->is_ten);
+        (void)sm_cursor_next_bool(&cursor, &record->is_ten);
       }
 
       break;
@@ -348,11 +352,12 @@ static bool Rescue_GachaInfoParse(Rescue_GachaInfoTable_t* table, sm_reader* rea
     case 23:
       (void)sm_check_column(reader, column, "GachaInfo.EnableSkip", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_BOOL));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaInfo.EnableSkip");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_bool(reader, &record->enable_skip);
+        (void)sm_cursor_next_bool(&cursor, &record->enable_skip);
       }
 
       break;

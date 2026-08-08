@@ -164,8 +164,9 @@ impl SDTrainingInfoTable {
                 }
                 9 => {
                     sheetman::check_column(column, "SDTrainingInfo.IsLvReset", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_BOOL])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.IsLvReset")?;
                     for record in records.iter_mut() {
-                        record.is_lv_reset = reader.read_bool()?;
+                        record.is_lv_reset = cursor.next_bool()?;
                     }
                 }
                 10 => {

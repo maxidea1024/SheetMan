@@ -229,17 +229,19 @@ class GachaArtifactInfoTable {
         }
         case 12: {
           sheetman::check_column(column, "GachaArtifactInfo.EnableReset", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactInfo.EnableReset");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.enable_reset);
+            record.enable_reset = cursor.next_bool();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "GachaArtifactInfo.IsSharedCounter", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactInfo.IsSharedCounter");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_shared_counter);
+            record.is_shared_counter = cursor.next_bool();
           }
           break;
         }
@@ -263,17 +265,19 @@ class GachaArtifactInfoTable {
         }
         case 16: {
           sheetman::check_column(column, "GachaArtifactInfo.IsSingle", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactInfo.IsSingle");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_single);
+            record.is_single = cursor.next_bool();
           }
           break;
         }
         case 17: {
           sheetman::check_column(column, "GachaArtifactInfo.IsTen", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactInfo.IsTen");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.is_ten);
+            record.is_ten = cursor.next_bool();
           }
           break;
         }
@@ -324,9 +328,10 @@ class GachaArtifactInfoTable {
         }
         case 23: {
           sheetman::check_column(column, "GachaArtifactInfo.EnableSkip", sheetman::kKindScalar, 1, {sheetman::kElementBool});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactInfo.EnableSkip");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.enable_skip);
+            record.enable_skip = cursor.next_bool();
           }
           break;
         }

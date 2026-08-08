@@ -118,8 +118,9 @@ class StarNodeTable:
                     record.star_node_value = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "StarNode.StarNodeRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StarNode.StarNodeRate")
                 for record in records:
-                    record.star_node_rate = reader.read_float()
+                    record.star_node_rate = cursor.next_f32()
             elif column.tag == 8:
                 sheetman.check_column(column, "StarNode.UnlockCondition", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:

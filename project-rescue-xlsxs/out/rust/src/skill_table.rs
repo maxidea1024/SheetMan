@@ -167,14 +167,16 @@ impl SkillTable {
                 }
                 9 => {
                     sheetman::check_column(column, "Skill.SkillUseRange", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Skill.SkillUseRange")?;
                     for record in records.iter_mut() {
-                        record.skill_use_range = reader.read_f32()?;
+                        record.skill_use_range = cursor.next_f32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "Skill.CoolTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_F32])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Skill.CoolTime")?;
                     for record in records.iter_mut() {
-                        record.cool_time = reader.read_f32()?;
+                        record.cool_time = cursor.next_f32()?;
                     }
                 }
                 11 => {

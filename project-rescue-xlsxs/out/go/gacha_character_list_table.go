@@ -140,9 +140,10 @@ func (t *GachaCharacterListTable) Read(filename string) error {
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.IsWishlist", sheetman.KindScalar, 1, sheetman.ElementBool) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.IsWishlist")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IsWishlist = reader.ReadBool()
+					r.IsWishlist = cursor.NextBool()
 				}
 			}
 		case 6:

@@ -212,9 +212,10 @@ func (t *GoldDungeonStageTable) Read(filename string) error {
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "GoldDungeonStage.SpawnNextTime", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GoldDungeonStage.SpawnNextTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpawnNextTime = reader.ReadFloat32()
+					r.SpawnNextTime = cursor.NextF32()
 				}
 			}
 		case 12:
@@ -243,23 +244,26 @@ func (t *GoldDungeonStageTable) Read(filename string) error {
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "GoldDungeonStage.AtkUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GoldDungeonStage.AtkUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AtkUpPercent = reader.ReadFloat32()
+					r.AtkUpPercent = cursor.NextF32()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "GoldDungeonStage.DefUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GoldDungeonStage.DefUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DefUpPercent = reader.ReadFloat32()
+					r.DefUpPercent = cursor.NextF32()
 				}
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "GoldDungeonStage.MHPUpPercent", sheetman.KindScalar, 1, sheetman.ElementF32) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GoldDungeonStage.MHPUpPercent")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MHPUpPercent = reader.ReadFloat32()
+					r.MHPUpPercent = cursor.NextF32()
 				}
 			}
 		case 18:

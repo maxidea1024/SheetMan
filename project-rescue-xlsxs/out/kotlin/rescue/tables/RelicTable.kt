@@ -160,14 +160,16 @@ class RelicTable {
                 }
                 6 -> {
                     checkColumn(column, "Relic.RelicValue1", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicValue1")
                     for (record in loaded) {
-                        record.relicValue1 = reader.readFloat()
+                        record.relicValue1 = cursor.nextF32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "Relic.RelicIncValue1", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicIncValue1")
                     for (record in loaded) {
-                        record.relicIncValue1 = reader.readFloat()
+                        record.relicIncValue1 = cursor.nextF32()
                     }
                 }
                 8 -> {
@@ -179,14 +181,16 @@ class RelicTable {
                 }
                 9 -> {
                     checkColumn(column, "Relic.RelicValue2", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicValue2")
                     for (record in loaded) {
-                        record.relicValue2 = reader.readFloat()
+                        record.relicValue2 = cursor.nextF32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "Relic.RelicIncValue2", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicIncValue2")
                     for (record in loaded) {
-                        record.relicIncValue2 = reader.readFloat()
+                        record.relicIncValue2 = cursor.nextF32()
                     }
                 }
                 11 -> {
@@ -198,14 +202,16 @@ class RelicTable {
                 }
                 12 -> {
                     checkColumn(column, "Relic.RelicValue3", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicValue3")
                     for (record in loaded) {
-                        record.relicValue3 = reader.readFloat()
+                        record.relicValue3 = cursor.nextF32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "Relic.RelicIncValue3", KIND_SCALAR, 1, ELEMENT_F32)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicIncValue3")
                     for (record in loaded) {
-                        record.relicIncValue3 = reader.readFloat()
+                        record.relicIncValue3 = cursor.nextF32()
                     }
                 }
                 14 -> {

@@ -193,16 +193,18 @@ export class ExcelTypedTable {
           break
         case 3:
           sheetman.checkColumn(column, 'ExcelTyped.FloatFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_F32])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ExcelTyped.FloatFromNumeric')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._floatFromNumeric = reader.readFloat()
+            record._floatFromNumeric = cursor.nextF32()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'ExcelTyped.WhenFromDateCell', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ExcelTyped.WhenFromDateCell')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._whenFromDateCell = reader.readDateTime()
+            record._whenFromDateCell = sheetman.formatDateTimeTicks(cursor.nextI64())
           }
           break
         case 5:

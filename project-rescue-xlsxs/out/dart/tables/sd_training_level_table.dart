@@ -127,26 +127,30 @@ class SDTrainingLevelTable {
           break;
         case 6:
           checkColumn(column, 'SDTrainingLevel.MHPGrowth', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.MHPGrowth');
           for (final record in loaded) {
-            record.mHPGrowth = reader.readFloat();
+            record.mHPGrowth = cursor.nextF32();
           }
           break;
         case 7:
           checkColumn(column, 'SDTrainingLevel.MHPTotal', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.MHPTotal');
           for (final record in loaded) {
-            record.mHPTotal = reader.readFloat();
+            record.mHPTotal = cursor.nextF32();
           }
           break;
         case 8:
           checkColumn(column, 'SDTrainingLevel.DEFGrowth', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.DEFGrowth');
           for (final record in loaded) {
-            record.dEFGrowth = reader.readFloat();
+            record.dEFGrowth = cursor.nextF32();
           }
           break;
         case 9:
           checkColumn(column, 'SDTrainingLevel.DEFTotal', kindScalar, 1, [elementF32]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.DEFTotal');
           for (final record in loaded) {
-            record.dEFTotal = reader.readFloat();
+            record.dEFTotal = cursor.nextF32();
           }
           break;
         case 10:
