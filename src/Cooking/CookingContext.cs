@@ -411,7 +411,7 @@ public sealed class CookingContext
         // A serial field is one logical column; the tag goes on its first member.
         foreach (var sf in serials)
         {
-            foreach (var extra in sf.Fields.Skip(1))
+            foreach (var extra in sf.NonTagCarryingFields)
             {
                 if (extra.Tag is not null)
                 {
@@ -423,7 +423,15 @@ public sealed class CookingContext
             }
         }
 
-        var tagged = serials.Where(sf => sf.FirstField.Tag is not null).ToList();
+        // The unit being tagged is a wire column, not a group. They are the same thing for
+        // every table written before records existed, and differ for a record group: it
+        // stores one column per member, so it takes one tag per member. Flattened here so
+        // the two modes below cannot disagree about what a tag identifies.
+        var columns = serials
+            .SelectMany(sf => sf.WireColumns.Select(field => (Group: sf, Field: field)))
+            .ToList();
+
+        var tagged = columns.Where(c => c.Field.Tag is not null).ToList();
 
         if (tagged.Count == 0)
         {
@@ -440,15 +448,17 @@ public sealed class CookingContext
             // of a schema change the baseline check can let through.
             table.HasExplicitTags = false;
 
-            for (int position = 0; position < serials.Count; position++)
-                serials[position].FirstField.Tag = position + 1;
+            for (int position = 0; position < columns.Count; position++)
+                columns[position].Field.Tag = position + 1;
 
             return;
         }
 
-        if (tagged.Count != serials.Count)
+        if (tagged.Count != columns.Count)
         {
-            var untagged = serials.Where(sf => sf.FirstField.Tag is null).Select(sf => sf.Name);
+            var untagged = columns
+                .Where(c => c.Field.Tag is null)
+                .Select(c => c.Group.WireColumnName(c.Field));
 
             throw new SheetManException(table.Location,
                 $"Table `{table.Name}` tags some fields and not others: " +
@@ -461,19 +471,20 @@ public sealed class CookingContext
         foreach (int reserved in table.ReservedTags)
             seen[reserved] = "a `#`-excluded column";
 
-        foreach (var sf in serials)
+        foreach (var (group, field) in columns)
         {
-            int tag = sf.FirstField.Tag.Value;
+            int tag = field.Tag.Value;
+            string name = group.WireColumnName(field);
 
             if (seen.TryGetValue(tag, out string holder))
             {
-                throw new SheetManException(sf.FirstField.NameLocation,
-                    $"Field `{table.Name}.{sf.Name}` declares wire tag {tag}, which {holder} " +
+                throw new SheetManException(field.NameLocation,
+                    $"Field `{table.Name}.{name}` declares wire tag {tag}, which {holder} " +
                     "already holds. A tag identifies a column for the life of the data, so it " +
                     "can never be shared or reused.");
             }
 
-            seen[tag] = $"field `{sf.Name}`";
+            seen[tag] = $"field `{name}`";
         }
 
         table.HasExplicitTags = true;

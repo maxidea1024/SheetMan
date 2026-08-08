@@ -112,6 +112,48 @@ public class SerialField
         => IsRecord ? Members.SelectMany(m => m.Fields) : Fields;
 
     /// <summary>
+    /// The columns this group occupies in a binary file, each represented by the
+    /// <see cref="Field"/> that carries its wire tag.
+    /// </summary>
+    /// <remarks>
+    /// One for a scalar group - `Text1`/`Text2` is a single fixed-array column - and
+    /// **one per member** for a record group, because the file stores a struct of arrays
+    /// where the API presents an array of structs. That is what keeps the column
+    /// encodings working per member and makes adding a member an additive change rather
+    /// than a reinterpretation of an existing column.
+    /// </remarks>
+    public IEnumerable<Field> WireColumns
+    {
+        get
+        {
+            if (IsRecord)
+                return Members.Select(m => m.FirstField);
+
+            return (FirstField is null) ? Enumerable.Empty<Field>() : new[] { FirstField };
+        }
+    }
+
+    /// <summary>
+    /// Columns that must not carry a tag of their own, because another column of the same
+    /// wire column already does.
+    /// </summary>
+    public IEnumerable<Field> NonTagCarryingFields
+        => IsRecord ? Members.SelectMany(m => m.Fields.Skip(1)) : Fields.Skip(1);
+
+    /// <summary>
+    /// How this group's wire column is named in a diagnostic: the group for a scalar one,
+    /// and `Group.Member` for a record's.
+    /// </summary>
+    public string WireColumnName(Field tagCarrier)
+    {
+        if (!IsRecord)
+            return Name;
+
+        var member = Members.FirstOrDefault(m => ReferenceEquals(m.FirstField, tagCarrier));
+        return (member is null) ? Name : $"{Name}{Helpers.NestedName.MemberSeparator}{member.Name}";
+    }
+
+    /// <summary>
     /// Name this group is exposed under. The field's own name for a group of one, or
     /// the shared stem with `_array` appended when several columns folded together.
     /// </summary>

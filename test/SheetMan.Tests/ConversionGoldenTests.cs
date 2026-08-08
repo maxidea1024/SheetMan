@@ -32,6 +32,11 @@ public class ConversionGoldenTests
     // for the other side must be absent from every artifact.
     [InlineData("core-client")]
     [InlineData("core-server")]
+    // The `Group.Member` notation: a record, an array of records whose members are of
+    // different types, and a scalar serial field beside them that must still fold the way
+    // it always has. JSON only for now - the code targets refuse a record by name until
+    // each one learns the shape, which NestedTargetSupportTests covers.
+    [InlineData("nested")]
     public void Fixture_matches_golden(string scenario)
     {
         var result = SheetManRunner.Convert(scenario);

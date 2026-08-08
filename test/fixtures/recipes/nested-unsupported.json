@@ -1,0 +1,27 @@
+{
+  // The same workbook as `nested`, with a code target added.
+  //
+  // Expected to fail, and that is the point: a target that has not learned what a record
+  // is must say so by name rather than reach for the single column a record group does
+  // not have. Delete this recipe when every target supports them.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/nested",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ],
+    "GoogleSheets": []
+  },
+
+  "CodeGenerations": {
+    "CSharp": [
+      {
+        "Path": "test/fixtures/output/nested-unsupported/csharp",
+        "Namespace": "SheetMan.Fixtures.Nested",
+        "AccessorName": "NestedAccessor"
+      }
+    ]
+  }
+}

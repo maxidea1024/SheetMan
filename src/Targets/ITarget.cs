@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using SheetMan.History;
 using SheetMan.Models;
 using SheetMan.Recipe;
@@ -133,7 +134,58 @@ public abstract class Target<TEntry> : ITarget
     /// </summary>
     protected abstract void Run(TargetContext context, TEntry entry);
 
+    /// <summary>
+    /// Whether this target knows what to do with a record group - a field folded from
+    /// several columns by the `Group.Member` notation.
+    /// </summary>
+    /// <remarks>
+    /// False by default, and each target opts in as it learns the shape. The default has
+    /// to be the refusing one: a target that does not know about records would otherwise
+    /// reach <see cref="SerialField.FirstField"/>, get the null a record group answers
+    /// with, and fail somewhere that says nothing about the cause - or worse, emit a
+    /// plausible file built from one arbitrary member.
+    ///
+    /// The point of the flag is that thirteen targets need not be converted at once. One
+    /// that has not been produces a message naming itself, which is a far better answer
+    /// than output that differs from the other twelve for reasons nobody can see.
+    /// </remarks>
+    protected virtual bool SupportsNestedFields => false;
+
     Type ITarget.EntryType => typeof(TEntry);
 
-    void ITarget.Run(TargetContext context) => Run(context, (TEntry)context.Entry);
+    void ITarget.Run(TargetContext context)
+    {
+        RefuseNestedFieldsIfUnsupported(context);
+
+        Run(context, (TEntry)context.Entry);
+    }
+
+    /// <summary>
+    /// Stops before a target that does not understand records is handed one.
+    /// </summary>
+    private void RefuseNestedFieldsIfUnsupported(TargetContext context)
+    {
+        if (SupportsNestedFields)
+            return;
+
+        foreach (var table in context.Model.Tables)
+        {
+            foreach (var group in table.SerialFields)
+            {
+                if (!group.IsRecord)
+                    continue;
+
+                // Named from the attribute rather than passed in, so a target cannot
+                // report an id a recipe could not have written.
+                string id = GetType().GetCustomAttribute<SheetManTargetAttribute>()?.Id ?? GetType().Name;
+
+                throw new SheetManException(group.AnyField?.NameLocation,
+                    $"Target `{id}` does not support nested fields yet.\n"
+                    + $"  Table `{table.Name}` field `{group.Name}` is a record group of "
+                    + $"{group.Members.Count} member(s).\n"
+                    + $"  Remove the target from the recipe, or write the columns flat "
+                    + $"without `{Helpers.NestedName.MemberSeparator}`.");
+            }
+        }
+    }
 }

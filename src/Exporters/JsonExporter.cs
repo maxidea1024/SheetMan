@@ -17,6 +17,16 @@ public class JsonExporter : Target<RecipeModel.ExportRecipeGroup.JsonRecipe>
 {
     private Manifest _manifest;
 
+    /// <summary>
+    /// JSON carries a record directly, so there is nothing to refuse.
+    /// </summary>
+    /// <remarks>
+    /// The named row format nests: a record becomes an object and an array of records an
+    /// array of them. The compact format is positional over the table's columns and a
+    /// record's members are ordinary columns, so it stays flat - which is what compact
+    /// means, and what a reader indexing by column position needs.
+    /// </remarks>
+    protected override bool SupportsNestedFields => true;
 
     protected override void Run(TargetContext context, RecipeModel.ExportRecipeGroup.JsonRecipe recipe)
     {
@@ -71,6 +81,20 @@ public class JsonExporter : Target<RecipeModel.ExportRecipeGroup.JsonRecipe>
         }
     }
 
+    /// <summary>
+    /// One element of a record group as a JSON object: position <paramref name="element"/>
+    /// of every member, keyed by the member's name.
+    /// </summary>
+    private static Dictionary<string, object> RecordElement(SerialField group, List<Cell> row, int element)
+    {
+        var result = new Dictionary<string, object>();
+
+        foreach (var member in group.Members)
+            result.Add(member.Name.ToCamelCase(), ForJson(row[member.Fields[element].Index].Value));
+
+        return result;
+    }
+
     private void ExportTable(RecipeModel.ExportRecipeGroup.JsonRecipe recipe, Table table)
     {
         var filename = Path.Combine(recipe.Path, table.Name + ".json");
@@ -120,7 +144,25 @@ public class JsonExporter : Target<RecipeModel.ExportRecipeGroup.JsonRecipe>
                     // therefore took the first column of each group and then
                     // drifted: every value after the first array landed under the
                     // wrong name, and the remaining columns were dropped entirely.
-                    if (sf.IsVariableLengthArray)
+                    if (sf.IsRecord)
+                    {
+                        // A record's members each hold one column per element, so the
+                        // object for element k is built by reading position k of every
+                        // member. The folding has already required them to line up.
+                        if (sf.IsArray)
+                        {
+                            var elements = new object[sf.RecordElementCount];
+                            for (int e = 0; e < elements.Length; e++)
+                                elements[e] = RecordElement(sf, row, e);
+
+                            dataRow.Add(name, elements);
+                        }
+                        else
+                        {
+                            dataRow.Add(name, RecordElement(sf, row, 0));
+                        }
+                    }
+                    else if (sf.IsVariableLengthArray)
                     {
                         // The cell already parsed into an array; gathering it
                         // across the group's fields would nest it one deep.

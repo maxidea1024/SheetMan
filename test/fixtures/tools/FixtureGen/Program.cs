@@ -43,6 +43,9 @@ internal static class Program
         WriteArrayForeign(Prepare(outputDir, "array-foreign", "array-foreign.xlsx"));
         WriteStrictValues(Prepare(outputDir, "strict-values", "strict-values.xlsx"));
         WriteDoubleStar(Prepare(outputDir, "double-star", "double-star.xlsx"));
+        WriteNested(Prepare(outputDir, "nested", "nested.xlsx"));
+        WriteNestedHole(Prepare(outputDir, "nested-hole", "nested-hole.xlsx"));
+        WriteNestedDeep(Prepare(outputDir, "nested-deep", "nested-deep.xlsx"));
         WriteFormulaError(Prepare(outputDir, "formula-error", "formula-error.xlsx"));
         WriteEnumByValue(Prepare(outputDir, "enum-by-value", "enum-by-value.xlsx"));
         WriteReservedWords(Prepare(outputDir, "reserved-words", "reserved-words.xlsx"));
@@ -606,6 +609,110 @@ internal static class Program
             .Row("1", "Y", "fine")
             // A typo for TRUE. Used to read as false.
             .Row("2", "Ture", "typo");
+
+        b.Table(1, 1, spec);
+
+        Save(workbook, path);
+    }
+
+    /// <summary>
+    /// The three nesting shapes the `Group.Member` notation produces, and a plain column
+    /// beside each one so the folding has to tell them apart.
+    /// </summary>
+    /// <remarks>
+    /// Shapes, in the order they appear: a record with no number (one record), a numbered
+    /// record (an array of them), and a scalar serial field - which is what a numbered
+    /// column without a member has always meant and must keep meaning.
+    ///
+    /// The members deliberately disagree about type. That is the whole reason a record
+    /// exists rather than an array: `Slot1.Id` is an int and `Slot1.Label` is a string,
+    /// so folding them into one array would have to pick one and be wrong about the other.
+    ///
+    /// spec/nested-fields.md has the notation.
+    /// </remarks>
+    private static void WriteNested(string path)
+    {
+        var workbook = new XSSFWorkbook();
+        var b = new SheetBuilder(workbook.CreateSheet("Nested"));
+
+        var spec = new TableSpec
+        {
+            Name = "Loadout",
+            Comment = "Columns folded into records by the Group.Member notation.",
+        };
+        spec
+            .Field(FieldSpec.Of("index", "int", "primary index"))
+            .Field(FieldSpec.Of("Name", "string", "plain column, between two groups"))
+
+            // One record, because the group carries no number.
+            .Field(FieldSpec.Of("Pos.X", "float", "record with no number"))
+            .Field(FieldSpec.Of("Pos.Y", "float", "second member of the same record"))
+
+            // An array of records. Members of different types, and the columns of the two
+            // elements deliberately not adjacent - a group's columns need not be, exactly
+            // as a serial field's need not be.
+            .Field(FieldSpec.Of("Slot1.Id", "int", "element 1, first member"))
+            .Field(FieldSpec.Of("Slot1.Label", "string", "element 1, second member"))
+            .Field(FieldSpec.Of("Note", "string", "plain column inside the group's span"))
+            .Field(FieldSpec.Of("Slot2.Id", "int", "element 2, first member"))
+            .Field(FieldSpec.Of("Slot2.Label", "string", "element 2, second member"))
+
+            // A scalar serial field, which the notation must not have changed.
+            .Field(FieldSpec.Of("Tag1", "string", "scalar serial field"))
+            .Field(FieldSpec.Of("Tag2", "string", "second element of it"));
+
+        spec
+            .Row("1", "first",  "1.5", "-2.5", "10", "sword",  "n1", "11", "shield", "a", "b")
+            .Row("2", "second", "0",   "0",    "20", "bow",    "n2", "21", "arrow",  "c", "d")
+            // Empty strings and zeroes, so a run of equal values exists in every column -
+            // which is what the column encodings and the run decode read.
+            .Row("3", "third",  "0",   "0",    "20", "",       "",   "21", "",       "",  "");
+
+        b.Table(1, 1, spec);
+
+        Save(workbook, path);
+    }
+
+    /// <summary>
+    /// A record group whose second element never declares one of the members, so the
+    /// record built for it would carry a value nothing writes.
+    /// </summary>
+    private static void WriteNestedHole(string path)
+    {
+        var workbook = new XSSFWorkbook();
+        var b = new SheetBuilder(workbook.CreateSheet("Bad"));
+
+        var spec = new TableSpec { Name = "Holed", Comment = "Element 2 is missing its Label." };
+        spec
+            .Field(FieldSpec.Of("index", "int", "primary index"))
+            .Field(FieldSpec.Of("Slot1.Id", "int", "element 1"))
+            .Field(FieldSpec.Of("Slot1.Label", "string", "element 1"))
+            .Field(FieldSpec.Of("Slot2.Id", "int", "element 2, and nothing else"));
+        spec.Row("1", "10", "sword", "11");
+
+        b.Table(1, 1, spec);
+
+        Save(workbook, path);
+    }
+
+    /// <summary>
+    /// A field name using the member separator twice, which would be a record inside a
+    /// record - a depth this does not support.
+    /// </summary>
+    private static void WriteNestedDeep(string path)
+    {
+        var workbook = new XSSFWorkbook();
+        var b = new SheetBuilder(workbook.CreateSheet("Bad"));
+
+        var spec = new TableSpec { Name = "Deep", Comment = "A member that is itself a group." };
+        spec
+            .Field(FieldSpec.Of("index", "int", "primary index"))
+            .Field(FieldSpec.Of("Slot1.Inner.Id", "int", "two separators"))
+            // A third column only so the entity meets the minimum 3x5 rect the layout
+            // scanner requires. Without it the conversion fails on the size rule and never
+            // reaches the field name this fixture is about.
+            .Field(FieldSpec.Of("Label", "string", "filler"));
+        spec.Row("1", "10", "a");
 
         b.Table(1, 1, spec);
 

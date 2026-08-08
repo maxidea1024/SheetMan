@@ -1,0 +1,23 @@
+{
+  // A member that is itself a group - `Slot1.Inner.Id`. Depth beyond one is refused
+  // rather than half-supported, so this fails while the field names are being read.
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "test/fixtures/xlsx/nested-deep",
+        "FileExtensionPatterns": ".xlsx"
+      }
+    ],
+    "GoogleSheets": []
+  },
+
+  "Exports": {
+    "Json": [
+      {
+        "Path": "test/fixtures/output/nested-deep/json",
+        "Indented": true
+      }
+    ]
+  }
+}
