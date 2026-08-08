@@ -74,6 +74,7 @@ public final class TraitDungeonRewardTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<TraitDungeonRewardRecord> loaded = new ArrayList<>(count);
@@ -89,50 +90,57 @@ public final class TraitDungeonRewardTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "TraitDungeonReward.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "TraitDungeonReward.Id");
                     for (TraitDungeonRewardRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "TraitDungeonReward.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "TraitDungeonReward.Name");
                     for (TraitDungeonRewardRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "TraitDungeonReward.RewardName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "TraitDungeonReward.RewardName");
                     for (TraitDungeonRewardRecord record : loaded) {
-                        record.rewardName = reader.readString();
+                        record.rewardName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "TraitDungeonReward.RewardType1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "TraitDungeonReward.RewardType1");
                     for (TraitDungeonRewardRecord record : loaded) {
-                        record.rewardType1 = CurrencyType.of(reader.readEnum());
+                        record.rewardType1 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "TraitDungeonReward.RewardValue1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "TraitDungeonReward.RewardValue1");
                     for (TraitDungeonRewardRecord record : loaded) {
-                        record.rewardValue1 = reader.readI32As(column.element);
+                        record.rewardValue1 = cursor.nextI32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "TraitDungeonReward.RewardType2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "TraitDungeonReward.RewardType2");
                     for (TraitDungeonRewardRecord record : loaded) {
-                        record.rewardType2 = CurrencyType.of(reader.readEnum());
+                        record.rewardType2 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "TraitDungeonReward.RewardValue2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "TraitDungeonReward.RewardValue2");
                     for (TraitDungeonRewardRecord record : loaded) {
-                        record.rewardValue2 = reader.readI32As(column.element);
+                        record.rewardValue2 = cursor.nextI32();
                     }
                     break;
                 }
@@ -145,15 +153,17 @@ public final class TraitDungeonRewardTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "TraitDungeonReward.FirstClearRewardType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "TraitDungeonReward.FirstClearRewardType");
                     for (TraitDungeonRewardRecord record : loaded) {
-                        record.firstClearRewardType = CurrencyType.of(reader.readEnum());
+                        record.firstClearRewardType = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "TraitDungeonReward.FirstClearRewardValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "TraitDungeonReward.FirstClearRewardValue");
                     for (TraitDungeonRewardRecord record : loaded) {
-                        record.firstClearRewardValue = reader.readI32As(column.element);
+                        record.firstClearRewardValue = cursor.nextI32();
                     }
                     break;
                 }

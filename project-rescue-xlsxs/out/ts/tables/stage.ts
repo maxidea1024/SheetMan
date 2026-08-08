@@ -259,6 +259,7 @@ export class StageTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -272,30 +273,34 @@ export class StageTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Stage.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Stage.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Stage.StageName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.StageName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._stageName = reader.readString()
+            record._stageName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Stage.AssetDataPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.AssetDataPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._assetDataPath = reader.readString()
+            record._assetDataPath = cursor.nextString()
           }
           break
         case 5:
@@ -310,16 +315,18 @@ export class StageTable {
           break
         case 6:
           sheetman.checkColumn(column, 'Stage.SpawnPointCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.SpawnPointCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._spawnPointCount = reader.readI32As(column.element)
+            record._spawnPointCount = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'Stage.SpawnMaxCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.SpawnMaxCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._spawnMaxCount = reader.readI32As(column.element)
+            record._spawnMaxCount = cursor.nextI32()
           }
           break
         case 8:
@@ -331,9 +338,10 @@ export class StageTable {
           break
         case 9:
           sheetman.checkColumn(column, 'Stage.StageClearCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.StageClearCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._stageClearCount = reader.readI32As(column.element)
+            record._stageClearCount = cursor.nextI32()
           }
           break
         case 10:
@@ -390,23 +398,26 @@ export class StageTable {
           break
         case 17:
           sheetman.checkColumn(column, 'Stage.StageDropListID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.StageDropListID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._stageDropListID = reader.readI32As(column.element)
+            record._stageDropListID = cursor.nextI32()
           }
           break
         case 18:
           sheetman.checkColumn(column, 'Stage.StageBGMID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.StageBGMID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._stageBGMID = reader.readI32As(column.element)
+            record._stageBGMID = cursor.nextI32()
           }
           break
         case 19:
           sheetman.checkColumn(column, 'Stage.BossStageBGMID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Stage.BossStageBGMID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._bossStageBGMID = reader.readI32As(column.element)
+            record._bossStageBGMID = cursor.nextI32()
           }
           break
         default:

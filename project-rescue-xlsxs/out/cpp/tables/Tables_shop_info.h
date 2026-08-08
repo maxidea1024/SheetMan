@@ -101,73 +101,82 @@ class ShopInfoTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "ShopInfo.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ShopInfo.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "ShopInfo.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ShopInfo.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "ShopInfo.InfoName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ShopInfo.InfoName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.info_name);
+            record.info_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "ShopInfo.ShopType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ShopInfo.ShopType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.shop_type);
+            record.shop_type = static_cast<ShopType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "ShopInfo.ConditionID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ShopInfo.ConditionID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition_id);
+            record.condition_id = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "ShopInfo.SheetName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ShopInfo.SheetName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sheet_name);
+            record.sheet_name = cursor.next_string();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "ShopInfo.Priority", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ShopInfo.Priority");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.priority);
+            record.priority = cursor.next_i32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "ShopInfo.UIPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ShopInfo.UIPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.ui_path);
+            record.ui_path = cursor.next_string();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "ShopInfo.ListPrefabPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ShopInfo.ListPrefabPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.list_prefab_path);
+            record.list_prefab_path = cursor.next_string();
           }
           break;
         }

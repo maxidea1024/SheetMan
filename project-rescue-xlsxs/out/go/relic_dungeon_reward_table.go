@@ -106,51 +106,58 @@ func (t *RelicDungeonRewardTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "RelicDungeonReward.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "RelicDungeonReward.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "RelicDungeonReward.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "RelicDungeonReward.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "RelicDungeonReward.RewardName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "RelicDungeonReward.RewardName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardName = reader.ReadString()
+					r.RewardName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "RelicDungeonReward.RewardType1", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "RelicDungeonReward.RewardType1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardType1 = CurrencyType(reader.ReadEnum())
+					r.RewardType1 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "RelicDungeonReward.RewardValue1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "RelicDungeonReward.RewardValue1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardValue1 = reader.ReadI32As(column.Element)
+					r.RewardValue1 = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "RelicDungeonReward.RewardType2", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "RelicDungeonReward.RewardType2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardType2 = CurrencyType(reader.ReadEnum())
+					r.RewardType2 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "RelicDungeonReward.RewardValue2", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "RelicDungeonReward.RewardValue2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardValue2 = reader.ReadI32As(column.Element)
+					r.RewardValue2 = cursor.NextI32()
 				}
 			}
 		case 8:
@@ -162,16 +169,18 @@ func (t *RelicDungeonRewardTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "RelicDungeonReward.FirstClearRewardType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "RelicDungeonReward.FirstClearRewardType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.FirstClearRewardType = CurrencyType(reader.ReadEnum())
+					r.FirstClearRewardType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "RelicDungeonReward.FirstClearRewardValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "RelicDungeonReward.FirstClearRewardValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.FirstClearRewardValue = reader.ReadI32As(column.Element)
+					r.FirstClearRewardValue = cursor.NextI32()
 				}
 			}
 		default:

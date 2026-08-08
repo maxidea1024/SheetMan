@@ -116,37 +116,42 @@ func (t *RelicTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Relic.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Relic.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicName = reader.ReadString()
+					r.RelicName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Relic.InfuluenceStep", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.InfuluenceStep")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.InfuluenceStep = reader.ReadI32As(column.Element)
+					r.InfuluenceStep = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicType1", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicType1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicType1 = StatType(reader.ReadEnum())
+					r.RelicType1 = StatType(cursor.NextI32())
 				}
 			}
 		case 6:
@@ -165,9 +170,10 @@ func (t *RelicTable) Read(filename string) error {
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicType2", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicType2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicType2 = StatType(reader.ReadEnum())
+					r.RelicType2 = StatType(cursor.NextI32())
 				}
 			}
 		case 9:
@@ -186,9 +192,10 @@ func (t *RelicTable) Read(filename string) error {
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "Relic.RelicType3", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.RelicType3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RelicType3 = StatType(reader.ReadEnum())
+					r.RelicType3 = StatType(cursor.NextI32())
 				}
 			}
 		case 12:
@@ -207,16 +214,18 @@ func (t *RelicTable) Read(filename string) error {
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "Relic.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "Relic.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Relic.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

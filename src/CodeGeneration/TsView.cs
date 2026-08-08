@@ -159,6 +159,12 @@ internal sealed class TsTableView
 
             /// <summary>The fields a lookup map is built for.</summary>
     public required IReadOnlyList<TsFieldView> IndexedFields { get; set; }
+
+    /// <summary>
+    /// Whether the read declares the column cursor: true when any scalar column can
+    /// arrive encoded, which is what the cursor exists to decode.
+    /// </summary>
+    public required bool NeedsCursor { get; set; }
 }
 
 /// <summary>
@@ -228,4 +234,10 @@ internal sealed class TsFieldView
 
     /// <summary>The rendered checkColumn call for this member.</summary>
     public required string ColumnCheck { get; set; }
+
+    /// <summary>
+    /// The rendered cursor construction placed ahead of the row loop, or empty for a
+    /// column that never arrives encoded and keeps reading the reader directly.
+    /// </summary>
+    public required string CursorOpen { get; set; }
 }

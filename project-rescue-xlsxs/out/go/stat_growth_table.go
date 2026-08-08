@@ -104,65 +104,74 @@ func (t *StatGrowthTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "StatGrowth.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StatGrowth.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "StatGrowth.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StatGrowth.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "StatGrowth.StageName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StatGrowth.StageName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StageName = reader.ReadString()
+					r.StageName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "StatGrowth.StatType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StatGrowth.StatType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StatType = StatType(reader.ReadEnum())
+					r.StatType = StatType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "StatGrowth.InfuluenceStep", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StatGrowth.InfuluenceStep")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.InfuluenceStep = reader.ReadI32As(column.Element)
+					r.InfuluenceStep = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "StatGrowth.Growth", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StatGrowth.Growth")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Growth = reader.ReadI32As(column.Element)
+					r.Growth = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "StatGrowth.GrowthValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StatGrowth.GrowthValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GrowthValue = reader.ReadI32As(column.Element)
+					r.GrowthValue = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "StatGrowth.GrowthReselt", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StatGrowth.GrowthReselt")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GrowthReselt = reader.ReadI32As(column.Element)
+					r.GrowthReselt = cursor.NextI32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "StatGrowth.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StatGrowth.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

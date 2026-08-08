@@ -84,38 +84,45 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'GoldDungeonReward.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonReward.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'GoldDungeonReward.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonReward.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'GoldDungeonReward.RewardName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonReward.RewardName')
           records.each do |record|
-            record.reward_name = reader.read_string
+            record.reward_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'GoldDungeonReward.RewardType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonReward.RewardType1')
           records.each do |record|
-            record.reward_type1 = reader.read_enum
+            record.reward_type1 = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'GoldDungeonReward.RewardValue1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonReward.RewardValue1')
           records.each do |record|
-            record.reward_value1 = reader.read_i32_as(column.element)
+            record.reward_value1 = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'GoldDungeonReward.RewardType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonReward.RewardType2')
           records.each do |record|
-            record.reward_type2 = reader.read_enum
+            record.reward_type2 = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'GoldDungeonReward.RewardValue2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonReward.RewardValue2')
           records.each do |record|
-            record.reward_value2 = reader.read_i32_as(column.element)
+            record.reward_value2 = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'GoldDungeonReward.IsFirstClear', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -124,13 +131,15 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'GoldDungeonReward.FirstClearRewardType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonReward.FirstClearRewardType')
           records.each do |record|
-            record.first_clear_reward_type = reader.read_enum
+            record.first_clear_reward_type = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'GoldDungeonReward.FirstClearRewardValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GoldDungeonReward.FirstClearRewardValue')
           records.each do |record|
-            record.first_clear_reward_value = reader.read_i32_as(column.element)
+            record.first_clear_reward_value = cursor.next_i32
           end
         else
           # A column added after this code was generated.

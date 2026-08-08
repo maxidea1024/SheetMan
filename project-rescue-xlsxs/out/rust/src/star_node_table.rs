@@ -102,38 +102,44 @@ impl StarNodeTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "StarNode.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StarNode.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "StarNode.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StarNode.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "StarNode.InfuluenceStep", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StarNode.InfuluenceStep")?;
                     for record in records.iter_mut() {
-                        record.infuluence_step = reader.read_i32_as(column.element)?;
+                        record.infuluence_step = cursor.next_i32()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "StarNode.StarNodeName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StarNode.StarNodeName")?;
                     for record in records.iter_mut() {
-                        record.star_node_name = reader.read_string()?;
+                        record.star_node_name = cursor.next_string()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "StarNode.StatType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StarNode.StatType")?;
                     for record in records.iter_mut() {
-                        record.stat_type = StatType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.stat_type = StatType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "StarNode.StarNodeValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StarNode.StarNodeValue")?;
                     for record in records.iter_mut() {
-                        record.star_node_value = reader.read_i32_as(column.element)?;
+                        record.star_node_value = cursor.next_i32()?;
                     }
                 }
                 7 => {
@@ -154,14 +160,16 @@ impl StarNodeTable {
                 }
                 9 => {
                     sheetman::check_column(column, "StarNode.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StarNode.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "StarNode.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StarNode.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

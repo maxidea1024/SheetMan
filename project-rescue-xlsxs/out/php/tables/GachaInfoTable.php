@@ -16,6 +16,7 @@ require_once __DIR__ . '/../enums/GachaType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -143,78 +144,89 @@ final class GachaInfoTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'GachaInfo.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'GachaInfo.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'GachaInfo.GachaType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.GachaType');
                     foreach ($records as $record) {
-                        $record->gachaType = GachaType::tryFrom($reader->readEnum()) ?? GachaType::None;
+                        $record->gachaType = GachaType::tryFrom($cursor->nextI32()) ?? GachaType::None;
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'GachaInfo.Priority', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.Priority');
                     foreach ($records as $record) {
-                        $record->priority = $reader->readI32As($column['element']);
+                        $record->priority = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'GachaInfo.ConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.ConditionID');
                     foreach ($records as $record) {
-                        $record->conditionID = $reader->readI32As($column['element']);
+                        $record->conditionID = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'GachaInfo.RateId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.RateId');
                     foreach ($records as $record) {
-                        $record->rateId = $reader->readI32As($column['element']);
+                        $record->rateId = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'GachaInfo.TriggerCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.TriggerCount');
                     foreach ($records as $record) {
-                        $record->triggerCount = $reader->readI32As($column['element']);
+                        $record->triggerCount = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'GachaInfo.TriggerRateId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.TriggerRateId');
                     foreach ($records as $record) {
-                        $record->triggerRateId = $reader->readI32As($column['element']);
+                        $record->triggerRateId = $cursor->nextI32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'GachaInfo.EndCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.EndCount');
                     foreach ($records as $record) {
-                        $record->endCount = $reader->readI32As($column['element']);
+                        $record->endCount = $cursor->nextI32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'GachaInfo.EndRateId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.EndRateId');
                     foreach ($records as $record) {
-                        $record->endRateId = $reader->readI32As($column['element']);
+                        $record->endRateId = $cursor->nextI32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'GachaInfo.EndCharacterId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.EndCharacterId');
                     foreach ($records as $record) {
-                        $record->endCharacterId = $reader->readI32As($column['element']);
+                        $record->endCharacterId = $cursor->nextI32();
                     }
                     break;
 
@@ -234,15 +246,17 @@ final class GachaInfoTable
 
                 case 14:
                     ScbReader::checkColumn($column, 'GachaInfo.WishListConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.WishListConditionID');
                     foreach ($records as $record) {
-                        $record->wishListConditionID = $reader->readI32As($column['element']);
+                        $record->wishListConditionID = $cursor->nextI32();
                     }
                     break;
 
                 case 15:
                     ScbReader::checkColumn($column, 'GachaInfo.WishListMaxValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.WishListMaxValue');
                     foreach ($records as $record) {
-                        $record->wishListMaxValue = $reader->readI32As($column['element']);
+                        $record->wishListMaxValue = $cursor->nextI32();
                     }
                     break;
 
@@ -262,36 +276,41 @@ final class GachaInfoTable
 
                 case 18:
                     ScbReader::checkColumn($column, 'GachaInfo.CurrencyType1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.CurrencyType1');
                     foreach ($records as $record) {
-                        $record->currencyType1 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->currencyType1 = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 19:
                     ScbReader::checkColumn($column, 'GachaInfo.SingleCost1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.SingleCost1');
                     foreach ($records as $record) {
-                        $record->singleCost1 = $reader->readI32As($column['element']);
+                        $record->singleCost1 = $cursor->nextI32();
                     }
                     break;
 
                 case 20:
                     ScbReader::checkColumn($column, 'GachaInfo.CurrencyType2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.CurrencyType2');
                     foreach ($records as $record) {
-                        $record->currencyType2 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->currencyType2 = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 21:
                     ScbReader::checkColumn($column, 'GachaInfo.SingleCost2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.SingleCost2');
                     foreach ($records as $record) {
-                        $record->singleCost2 = $reader->readI32As($column['element']);
+                        $record->singleCost2 = $cursor->nextI32();
                     }
                     break;
 
                 case 22:
                     ScbReader::checkColumn($column, 'GachaInfo.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaInfo.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -120,80 +121,93 @@ class EquipTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Equip.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Equip.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Equip.EquipName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.EquipName")
                     for (record in loaded) {
-                        record.equipName = reader.readString()
+                        record.equipName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Equip.Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.Type")
                     for (record in loaded) {
-                        record.type = JobType.of(reader.readEnum())
+                        record.type = JobType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "Equip.EquipType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.EquipType")
                     for (record in loaded) {
-                        record.equipType = EquipmentType.of(reader.readEnum())
+                        record.equipType = EquipmentType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "Equip.Grade", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.Grade")
                     for (record in loaded) {
-                        record.grade = GradeType.of(reader.readEnum())
+                        record.grade = GradeType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
                     checkColumn(column, "Equip.MaxClass", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.MaxClass")
                     for (record in loaded) {
-                        record.maxClass = reader.readI32As(column.element)
+                        record.maxClass = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "Equip.MaxLevel", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.MaxLevel")
                     for (record in loaded) {
-                        record.maxLevel = reader.readI32As(column.element)
+                        record.maxLevel = cursor.nextI32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "Equip.StatType1", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.StatType1")
                     for (record in loaded) {
-                        record.statType1 = StatType.of(reader.readEnum())
+                        record.statType1 = StatType.of(cursor.nextI32())
                     }
                 }
                 10 -> {
                     checkColumn(column, "Equip.StatType2", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.StatType2")
                     for (record in loaded) {
-                        record.statType2 = StatType.of(reader.readEnum())
+                        record.statType2 = StatType.of(cursor.nextI32())
                     }
                 }
                 11 -> {
                     checkColumn(column, "Equip.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 12 -> {
                     checkColumn(column, "Equip.PrefabPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.PrefabPath")
                     for (record in loaded) {
-                        record.prefabPath = reader.readString()
+                        record.prefabPath = cursor.nextString()
                     }
                 }
                 13 -> {
                     checkColumn(column, "Equip.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Equip.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

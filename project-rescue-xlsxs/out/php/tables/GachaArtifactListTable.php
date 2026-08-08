@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/GradeType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -114,64 +115,73 @@ final class GachaArtifactListTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'GachaArtifactList.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactList.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'GachaArtifactList.ArtifactID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactList.ArtifactID');
                     foreach ($records as $record) {
-                        $record->artifactID = $reader->readI32As($column['element']);
+                        $record->artifactID = $cursor->nextI32();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'GachaArtifactList.GradeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactList.GradeType');
                     foreach ($records as $record) {
-                        $record->gradeType = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
+                        $record->gradeType = GradeType::tryFrom($cursor->nextI32()) ?? GradeType::None;
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'GachaArtifactList.BaseWeight', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactList.BaseWeight');
                     foreach ($records as $record) {
-                        $record->baseWeight = $reader->readI32As($column['element']);
+                        $record->baseWeight = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'GachaArtifactList.ClassUpCurrencyID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactList.ClassUpCurrencyID');
                     foreach ($records as $record) {
-                        $record->classUpCurrencyID = $reader->readI32As($column['element']);
+                        $record->classUpCurrencyID = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'GachaArtifactList.ClassUpCurrencyValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactList.ClassUpCurrencyValue');
                     foreach ($records as $record) {
-                        $record->classUpCurrencyValue = $reader->readI32As($column['element']);
+                        $record->classUpCurrencyValue = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'GachaArtifactList.ExConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactList.ExConditionID');
                     foreach ($records as $record) {
-                        $record->exConditionID = $reader->readI32As($column['element']);
+                        $record->exConditionID = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'GachaArtifactList.ExCurrencyID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactList.ExCurrencyID');
                     foreach ($records as $record) {
-                        $record->exCurrencyID = $reader->readI32As($column['element']);
+                        $record->exCurrencyID = $cursor->nextI32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'GachaArtifactList.ExCurrencyValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaArtifactList.ExCurrencyValue');
                     foreach ($records as $record) {
-                        $record->exCurrencyValue = $reader->readI32As($column['element']);
+                        $record->exCurrencyValue = $cursor->nextI32();
                     }
                     break;
 

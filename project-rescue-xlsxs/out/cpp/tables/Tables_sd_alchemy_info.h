@@ -117,49 +117,55 @@ class SDAlchemyInfoTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "SDAlchemyInfo.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "SDAlchemyInfo.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "SDAlchemyInfo.NameKR", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.NameKR");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name_kr);
+            record.name_kr = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "SDAlchemyInfo.MaterialType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.MaterialType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.material_type);
+            record.material_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "SDAlchemyInfo.CommonMaterialType1", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.CommonMaterialType1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.common_material_type1);
+            record.common_material_type1 = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "SDAlchemyInfo.CommonMaterialType2", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.CommonMaterialType2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.common_material_type2);
+            record.common_material_type2 = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
@@ -173,73 +179,82 @@ class SDAlchemyInfoTable {
         }
         case 8: {
           sheetman::check_column(column, "SDAlchemyInfo.StatType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.StatType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.stat_type);
+            record.stat_type = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "SDAlchemyInfo.TargetType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.TargetType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.target_type);
+            record.target_type = static_cast<TargetType>(cursor.next_i32());
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "SDAlchemyInfo.MaxLevelId", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.MaxLevelId");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.max_level_id);
+            record.max_level_id = cursor.next_i32();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "SDAlchemyInfo.AccelerateTime", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.AccelerateTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.accelerate_time);
+            record.accelerate_time = cursor.next_i32();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "SDAlchemyInfo.AccelerateItemType1", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.AccelerateItemType1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.accelerate_item_type1);
+            record.accelerate_item_type1 = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "SDAlchemyInfo.AccelerateItemCost1", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.AccelerateItemCost1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.accelerate_item_cost1);
+            record.accelerate_item_cost1 = cursor.next_i32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "SDAlchemyInfo.AccelerateItemType2", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.AccelerateItemType2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.accelerate_item_type2);
+            record.accelerate_item_type2 = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 15: {
           sheetman::check_column(column, "SDAlchemyInfo.AccelerateItemCost2", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.AccelerateItemCost2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.accelerate_item_cost2);
+            record.accelerate_item_cost2 = cursor.next_i32();
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "SDAlchemyInfo.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyInfo.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }

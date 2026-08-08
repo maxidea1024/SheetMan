@@ -111,26 +111,30 @@ impl SDAgencyInfoTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDAgencyInfo.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDAgencyInfo.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDAgencyInfo.AgencyGrade", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.AgencyGrade")?;
                     for record in records.iter_mut() {
-                        record.agency_grade = AgencyGrade::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.agency_grade = AgencyGrade::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDAgencyInfo.DispatchCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.DispatchCount")?;
                     for record in records.iter_mut() {
-                        record.dispatch_count = reader.read_i32_as(column.element)?;
+                        record.dispatch_count = cursor.next_i32()?;
                     }
                 }
                 5 => {
@@ -177,20 +181,23 @@ impl SDAgencyInfoTable {
                 }
                 12 => {
                     sheetman::check_column(column, "SDAgencyInfo.FreeRefresh", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.FreeRefresh")?;
                     for record in records.iter_mut() {
-                        record.free_refresh = reader.read_i32_as(column.element)?;
+                        record.free_refresh = cursor.next_i32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "SDAgencyInfo.RefreshCurrencyType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.RefreshCurrencyType")?;
                     for record in records.iter_mut() {
-                        record.refresh_currency_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.refresh_currency_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "SDAgencyInfo.RefreshCurrencyValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgencyInfo.RefreshCurrencyValue")?;
                     for record in records.iter_mut() {
-                        record.refresh_currency_value = reader.read_i32_as(column.element)?;
+                        record.refresh_currency_value = cursor.next_i32()?;
                     }
                 }
                 _ => {

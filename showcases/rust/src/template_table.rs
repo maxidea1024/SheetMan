@@ -128,20 +128,23 @@ impl TemplateTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Template.Index", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Template.Index")?;
                     for record in records.iter_mut() {
-                        record.index = reader.read_i32_as(column.element)?;
+                        record.index = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Template.Class", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Template.Class")?;
                     for record in records.iter_mut() {
-                        record.class = reader.read_string()?;
+                        record.class = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Template.Int", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Template.Int")?;
                     for record in records.iter_mut() {
-                        record.int = reader.read_i32_as(column.element)?;
+                        record.int = cursor.next_i32()?;
                     }
                 }
                 4 => {
@@ -152,26 +155,30 @@ impl TemplateTable {
                 }
                 5 => {
                     sheetman::check_column(column, "Template.Operator", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Template.Operator")?;
                     for record in records.iter_mut() {
-                        record.operator = reader.read_string()?;
+                        record.operator = cursor.next_string()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "Template.Namespace", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Template.Namespace")?;
                     for record in records.iter_mut() {
-                        record.namespace = reader.read_string()?;
+                        record.namespace = cursor.next_string()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "Template.Constructor", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Template.Constructor")?;
                     for record in records.iter_mut() {
-                        record.constructor = reader.read_string()?;
+                        record.constructor = cursor.next_string()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "Template.Function", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Template.Function")?;
                     for record in records.iter_mut() {
-                        record.function = reader.read_string()?;
+                        record.function = cursor.next_string()?;
                     }
                 }
                 _ => {

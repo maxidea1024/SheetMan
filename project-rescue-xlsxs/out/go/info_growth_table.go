@@ -114,37 +114,42 @@ func (t *InfoGrowthTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.InfoName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.InfoName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.InfoName = reader.ReadString()
+					r.InfoName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.SheetName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.SheetName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SheetName = reader.ReadString()
+					r.SheetName = cursor.NextString()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.GrowthType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.GrowthType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GrowthType = GrowthType(reader.ReadEnum())
+					r.GrowthType = GrowthType(cursor.NextI32())
 				}
 			}
 		case 6:
@@ -156,58 +161,66 @@ func (t *InfoGrowthTable) Read(filename string) error {
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.ResetCostType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.ResetCostType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ResetCostType = CurrencyType(reader.ReadEnum())
+					r.ResetCostType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.ResetCostValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.ResetCostValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ResetCostValue = reader.ReadI32As(column.Element)
+					r.ResetCostValue = cursor.NextI32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.MaxStep", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.MaxStep")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxStep = reader.ReadI32As(column.Element)
+					r.MaxStep = cursor.NextI32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.MaxLevel", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.MaxLevel")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxLevel = reader.ReadI32As(column.Element)
+					r.MaxLevel = cursor.NextI32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.UnlockConditionType", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.UnlockConditionType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.UnlockConditionType = reader.ReadString()
+					r.UnlockConditionType = cursor.NextString()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.UnlockConditionValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.UnlockConditionValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.UnlockConditionValue = reader.ReadI32As(column.Element)
+					r.UnlockConditionValue = cursor.NextI32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "InfoGrowth.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "InfoGrowth.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

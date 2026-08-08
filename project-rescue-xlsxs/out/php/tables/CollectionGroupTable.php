@@ -14,6 +14,7 @@ namespace Rescue;
 require_once __DIR__ . '/../sheetman/ScbReader.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -106,22 +107,25 @@ final class CollectionGroupTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'CollectionGroup.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CollectionGroup.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'CollectionGroup.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CollectionGroup.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'CollectionGroup.Index', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CollectionGroup.Index');
                     foreach ($records as $record) {
-                        $record->index = $reader->readI32As($column['element']);
+                        $record->index = $cursor->nextI32();
                     }
                     break;
 
@@ -138,8 +142,9 @@ final class CollectionGroupTable
 
                 case 5:
                     ScbReader::checkColumn($column, 'CollectionGroup.PrefabPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CollectionGroup.PrefabPath');
                     foreach ($records as $record) {
-                        $record->prefabPath = $reader->readString();
+                        $record->prefabPath = $cursor->nextString();
                     }
                     break;
 

@@ -96,23 +96,26 @@ func (t *CollectionGroupTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "CollectionGroup.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CollectionGroup.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "CollectionGroup.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CollectionGroup.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "CollectionGroup.Index", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CollectionGroup.Index")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Index = reader.ReadI32As(column.Element)
+					r.Index = cursor.NextI32()
 				}
 			}
 		case 4:
@@ -128,9 +131,10 @@ func (t *CollectionGroupTable) Read(filename string) error {
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "CollectionGroup.PrefabPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CollectionGroup.PrefabPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PrefabPath = reader.ReadString()
+					r.PrefabPath = cursor.NextString()
 				}
 			}
 		default:

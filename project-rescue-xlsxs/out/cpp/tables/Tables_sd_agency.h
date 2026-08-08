@@ -130,169 +130,190 @@ class SDAgencyTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "SDAgency.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "SDAgency.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "SDAgency.InfoName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.InfoName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.info_name);
+            record.info_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "SDAgency.AgencyType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.AgencyType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.agency_type);
+            record.agency_type = static_cast<AgencyType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "SDAgency.AgencyGrade", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.AgencyGrade");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.agency_grade);
+            record.agency_grade = static_cast<AgencyGrade>(cursor.next_i32());
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "SDAgency.Time", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.Time");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.time);
+            record.time = cursor.next_i32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "SDAgency.AgencyWeight", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.AgencyWeight");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.agency_weight);
+            record.agency_weight = cursor.next_i32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "SDAgency.Condition1", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.Condition1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.condition1);
+            record.condition1 = static_cast<JobType>(cursor.next_i32());
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "SDAgency.Condition1value", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.Condition1value");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition1value);
+            record.condition1value = cursor.next_i32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "SDAgency.Condition2", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.Condition2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.condition2);
+            record.condition2 = static_cast<GradeType>(cursor.next_i32());
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "SDAgency.Condition2value", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.Condition2value");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition2value);
+            record.condition2value = cursor.next_i32();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "SDAgency.Condition3", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.Condition3");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.condition3);
+            record.condition3 = static_cast<ConditionType>(cursor.next_i32());
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "SDAgency.ClassMinValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.ClassMinValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.class_min_value);
+            record.class_min_value = cursor.next_i32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "SDAgency.Condition3value", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.Condition3value");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition3value);
+            record.condition3value = cursor.next_i32();
           }
           break;
         }
         case 15: {
           sheetman::check_column(column, "SDAgency.RewardType1", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.RewardType1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.reward_type1);
+            record.reward_type1 = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "SDAgency.RewardValue1", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.RewardValue1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.reward_value1);
+            record.reward_value1 = cursor.next_i32();
           }
           break;
         }
         case 17: {
           sheetman::check_column(column, "SDAgency.RewardType2", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.RewardType2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.reward_type2);
+            record.reward_type2 = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 18: {
           sheetman::check_column(column, "SDAgency.RewardValue2", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.RewardValue2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.reward_value2);
+            record.reward_value2 = cursor.next_i32();
           }
           break;
         }
         case 19: {
           sheetman::check_column(column, "SDAgency.RewardType3", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.RewardType3");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.reward_type3);
+            record.reward_type3 = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 20: {
           sheetman::check_column(column, "SDAgency.RewardValue3", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.RewardValue3");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.reward_value3);
+            record.reward_value3 = cursor.next_i32();
           }
           break;
         }
         case 21: {
           sheetman::check_column(column, "SDAgency.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgency.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }

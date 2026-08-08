@@ -228,6 +228,7 @@ export class SDAgencyInfoTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -241,30 +242,34 @@ export class SDAgencyInfoTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'SDAgencyInfo.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'SDAgencyInfo.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'SDAgencyInfo.AgencyGrade', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.AgencyGrade')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._agencyGrade = reader.readEnum() as AgencyGrade
+            record._agencyGrade = cursor.nextI32() as AgencyGrade
           }
           break
         case 4:
           sheetman.checkColumn(column, 'SDAgencyInfo.DispatchCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.DispatchCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dispatchCount = reader.readI32As(column.element)
+            record._dispatchCount = cursor.nextI32()
           }
           break
         case 5:
@@ -318,23 +323,26 @@ export class SDAgencyInfoTable {
           break
         case 12:
           sheetman.checkColumn(column, 'SDAgencyInfo.FreeRefresh', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.FreeRefresh')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._freeRefresh = reader.readI32As(column.element)
+            record._freeRefresh = cursor.nextI32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'SDAgencyInfo.RefreshCurrencyType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.RefreshCurrencyType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._refreshCurrencyType = reader.readEnum() as CurrencyType
+            record._refreshCurrencyType = cursor.nextI32() as CurrencyType
           }
           break
         case 14:
           sheetman.checkColumn(column, 'SDAgencyInfo.RefreshCurrencyValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgencyInfo.RefreshCurrencyValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._refreshCurrencyValue = reader.readI32As(column.element)
+            record._refreshCurrencyValue = cursor.nextI32()
           }
           break
         default:

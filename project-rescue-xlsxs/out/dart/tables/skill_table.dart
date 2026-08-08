@@ -82,6 +82,7 @@ class SkillTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SkillRecord>[];
@@ -97,50 +98,58 @@ class SkillTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Skill.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Skill.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Skill.SkillName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.SkillName');
           for (final record in loaded) {
-            record.skillName = reader.readString();
+            record.skillName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Skill.SkillType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.SkillType');
           for (final record in loaded) {
-            record.skillType = SkillType.of(reader.readEnum());
+            record.skillType = SkillType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'Skill.SkillSubType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.SkillSubType');
           for (final record in loaded) {
-            record.skillSubType = SkillSubType.of(reader.readEnum());
+            record.skillSubType = SkillSubType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'Skill.AttributeType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.AttributeType');
           for (final record in loaded) {
-            record.attributeType = AttributeType.of(reader.readEnum());
+            record.attributeType = AttributeType.of(cursor.nextI32());
           }
           break;
         case 7:
           checkColumn(column, 'Skill.TargetType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.TargetType');
           for (final record in loaded) {
-            record.targetType = TargetType.of(reader.readEnum());
+            record.targetType = TargetType.of(cursor.nextI32());
           }
           break;
         case 8:
           checkColumn(column, 'Skill.AniPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.AniPath');
           for (final record in loaded) {
-            record.aniPath = reader.readString();
+            record.aniPath = cursor.nextString();
           }
           break;
         case 9:
@@ -164,14 +173,16 @@ class SkillTable {
           break;
         case 12:
           checkColumn(column, 'Skill.SkillIcon', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.SkillIcon');
           for (final record in loaded) {
-            record.skillIcon = reader.readString();
+            record.skillIcon = cursor.nextString();
           }
           break;
         case 13:
           checkColumn(column, 'Skill.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Skill.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         default:

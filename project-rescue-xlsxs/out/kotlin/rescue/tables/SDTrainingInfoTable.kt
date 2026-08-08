@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -118,50 +119,58 @@ class SDTrainingInfoTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDTrainingInfo.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDTrainingInfo.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDTrainingInfo.TrainingName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.TrainingName")
                     for (record in loaded) {
-                        record.trainingName = reader.readString()
+                        record.trainingName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDTrainingInfo.AttributeType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.AttributeType")
                     for (record in loaded) {
-                        record.attributeType = AttributeType.of(reader.readEnum())
+                        record.attributeType = AttributeType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDTrainingInfo.StatType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.StatType")
                     for (record in loaded) {
-                        record.statType = StatType.of(reader.readEnum())
+                        record.statType = StatType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDTrainingInfo.UnlockCondition", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.UnlockCondition")
                     for (record in loaded) {
-                        record.unlockCondition = reader.readI32As(column.element)
+                        record.unlockCondition = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDTrainingInfo.LevelUpCondition", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.LevelUpCondition")
                     for (record in loaded) {
-                        record.levelUpCondition = reader.readI32As(column.element)
+                        record.levelUpCondition = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "SDTrainingInfo.MaxLevel", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.MaxLevel")
                     for (record in loaded) {
-                        record.maxLevel = reader.readI32As(column.element)
+                        record.maxLevel = cursor.nextI32()
                     }
                 }
                 9 -> {
@@ -172,20 +181,23 @@ class SDTrainingInfoTable {
                 }
                 10 -> {
                     checkColumn(column, "SDTrainingInfo.LvResetCurrencyType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyType")
                     for (record in loaded) {
-                        record.lvResetCurrencyType = CurrencyType.of(reader.readEnum())
+                        record.lvResetCurrencyType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 11 -> {
                     checkColumn(column, "SDTrainingInfo.LvResetCurrencyValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyValue")
                     for (record in loaded) {
-                        record.lvResetCurrencyValue = reader.readI32As(column.element)
+                        record.lvResetCurrencyValue = cursor.nextI32()
                     }
                 }
                 12 -> {
                     checkColumn(column, "SDTrainingInfo.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingInfo.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

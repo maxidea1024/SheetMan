@@ -112,38 +112,44 @@ impl CurrencyTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Currency.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Currency.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Currency.ItemName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.ItemName")?;
                     for record in records.iter_mut() {
-                        record.item_name = reader.read_string()?;
+                        record.item_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Currency.ItemType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.ItemType")?;
                     for record in records.iter_mut() {
-                        record.item_type = ItemType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.item_type = ItemType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "Currency.Type", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.Type")?;
                     for record in records.iter_mut() {
-                        record.type_ = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.type_ = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "Currency.CycleType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.CycleType")?;
                     for record in records.iter_mut() {
-                        record.cycle_type = CycleType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.cycle_type = CycleType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 7 => {
@@ -154,38 +160,44 @@ impl CurrencyTable {
                 }
                 8 => {
                     sheetman::check_column(column, "Currency.MaxStack", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I64, sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.MaxStack")?;
                     for record in records.iter_mut() {
-                        record.max_stack = reader.read_i64_as(column.element)?;
+                        record.max_stack = cursor.next_i64()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "Currency.Cooltime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.Cooltime")?;
                     for record in records.iter_mut() {
-                        record.cooltime = reader.read_i32_as(column.element)?;
+                        record.cooltime = cursor.next_i32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "Currency.Duration", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.Duration")?;
                     for record in records.iter_mut() {
-                        record.duration = reader.read_i32_as(column.element)?;
+                        record.duration = cursor.next_i32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "Currency.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "Currency.DropPrefabPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.DropPrefabPath")?;
                     for record in records.iter_mut() {
-                        record.drop_prefab_path = reader.read_string()?;
+                        record.drop_prefab_path = cursor.next_string()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "Currency.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Currency.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 14 => {

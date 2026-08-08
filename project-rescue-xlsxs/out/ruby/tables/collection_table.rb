@@ -86,43 +86,51 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Collection.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Collection.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Collection.CharacterID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.CharacterID')
           records.each do |record|
-            record.character_id = reader.read_i32_as(column.element)
+            record.character_id = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'Collection.TabType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.TabType')
           records.each do |record|
-            record.tab_type = reader.read_enum
+            record.tab_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Collection.ConditionID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.ConditionID')
           records.each do |record|
-            record.condition_id = reader.read_i32_as(column.element)
+            record.condition_id = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'Collection.RewardType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.RewardType')
           records.each do |record|
-            record.reward_type = reader.read_enum
+            record.reward_type = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'Collection.RewardValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.RewardValue')
           records.each do |record|
-            record.reward_value = reader.read_i32_as(column.element)
+            record.reward_value = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'Collection.RewardStatType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.RewardStatType1')
           records.each do |record|
-            record.reward_stat_type1 = reader.read_enum
+            record.reward_stat_type1 = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'Collection.RewardStatRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -131,18 +139,21 @@ module Rescue
           end
         when 10
           Sheetman.check_column(column, 'Collection.RewardStatType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.RewardStatType2')
           records.each do |record|
-            record.reward_stat_type2 = reader.read_enum
+            record.reward_stat_type2 = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'Collection.RewardStatValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.RewardStatValue')
           records.each do |record|
-            record.reward_stat_value = reader.read_i32_as(column.element)
+            record.reward_stat_value = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'Collection.ShortCutID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Collection.ShortCutID')
           records.each do |record|
-            record.short_cut_id = reader.read_i32_as(column.element)
+            record.short_cut_id = cursor.next_i32
           end
         else
           # A column added after this code was generated.

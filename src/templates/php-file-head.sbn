@@ -26,6 +26,7 @@ namespace {{ namespace }};
 {{~ end ~}}
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 

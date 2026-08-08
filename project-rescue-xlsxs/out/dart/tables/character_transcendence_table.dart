@@ -76,6 +76,7 @@ class CharacterTranscendenceTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <CharacterTranscendenceRecord>[];
@@ -91,50 +92,58 @@ class CharacterTranscendenceTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'CharacterTranscendence.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterTranscendence.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'CharacterTranscendence.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterTranscendence.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'CharacterTranscendence.NameKR', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterTranscendence.NameKR');
           for (final record in loaded) {
-            record.nameKR = reader.readString();
+            record.nameKR = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'CharacterTranscendence.GradeType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterTranscendence.GradeType');
           for (final record in loaded) {
-            record.gradeType = GradeType.of(reader.readEnum());
+            record.gradeType = GradeType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'CharacterTranscendence.TranscendStep', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterTranscendence.TranscendStep');
           for (final record in loaded) {
-            record.transcendStep = reader.readI32As(column.element);
+            record.transcendStep = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'CharacterTranscendence.MaxLevel', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterTranscendence.MaxLevel');
           for (final record in loaded) {
-            record.maxLevel = reader.readI32As(column.element);
+            record.maxLevel = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'CharacterTranscendence.MaterialType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterTranscendence.MaterialType');
           for (final record in loaded) {
-            record.materialType = CurrencyType.of(reader.readEnum());
+            record.materialType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 8:
           checkColumn(column, 'CharacterTranscendence.MaterialCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterTranscendence.MaterialCount');
           for (final record in loaded) {
-            record.materialCount = reader.readI32As(column.element);
+            record.materialCount = cursor.nextI32();
           }
           break;
         case 9:
@@ -145,8 +154,9 @@ class CharacterTranscendenceTable {
           break;
         case 10:
           checkColumn(column, 'CharacterTranscendence.NextStepID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CharacterTranscendence.NextStepID');
           for (final record in loaded) {
-            record.nextStepID = reader.readI32As(column.element);
+            record.nextStepID = cursor.nextI32();
           }
           break;
         default:

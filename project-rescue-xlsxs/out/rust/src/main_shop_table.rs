@@ -112,38 +112,44 @@ impl MainShopTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "MainShop.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "MainShop.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "MainShop.ProductName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.ProductName")?;
                     for record in records.iter_mut() {
-                        record.product_name = reader.read_string()?;
+                        record.product_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "MainShop.ShopType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.ShopType")?;
                     for record in records.iter_mut() {
-                        record.shop_type = ShopType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.shop_type = ShopType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "MainShop.ShopSlotID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.ShopSlotID")?;
                     for record in records.iter_mut() {
-                        record.shop_slot_id = reader.read_i32_as(column.element)?;
+                        record.shop_slot_id = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "MainShop.Priority", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.Priority")?;
                     for record in records.iter_mut() {
-                        record.priority = reader.read_i32_as(column.element)?;
+                        record.priority = cursor.next_i32()?;
                     }
                 }
                 7 => {
@@ -168,38 +174,44 @@ impl MainShopTable {
                 }
                 9 => {
                     sheetman::check_column(column, "MainShop.CycleType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.CycleType")?;
                     for record in records.iter_mut() {
-                        record.cycle_type = CycleType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.cycle_type = CycleType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "MainShop.LimitValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.LimitValue")?;
                     for record in records.iter_mut() {
-                        record.limit_value = reader.read_i32_as(column.element)?;
+                        record.limit_value = cursor.next_i32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "MainShop.CurrencyType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.CurrencyType")?;
                     for record in records.iter_mut() {
-                        record.currency_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.currency_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "MainShop.PriceValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.PriceValue")?;
                     for record in records.iter_mut() {
-                        record.price_value = reader.read_i32_as(column.element)?;
+                        record.price_value = cursor.next_i32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "MainShop.ConditionID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.ConditionID")?;
                     for record in records.iter_mut() {
-                        record.condition_id = reader.read_i32_as(column.element)?;
+                        record.condition_id = cursor.next_i32()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "MainShop.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "MainShop.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

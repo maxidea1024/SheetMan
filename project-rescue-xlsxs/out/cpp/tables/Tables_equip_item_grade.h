@@ -123,57 +123,64 @@ class EquipItemGradeTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "EquipItemGrade.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemGrade.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "EquipItemGrade.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemGrade.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "EquipItemGrade.NameKR", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemGrade.NameKR");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name_kr);
+            record.name_kr = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "EquipItemGrade.Type", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemGrade.Type");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.type);
+            record.type = static_cast<JobType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "EquipItemGrade.Grade", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemGrade.Grade");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.grade);
+            record.grade = static_cast<GradeType>(cursor.next_i32());
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "EquipItemGrade.MaterialType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemGrade.MaterialType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.material_type);
+            record.material_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "EquipItemGrade.MaterialValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "EquipItemGrade.MaterialValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.material_value);
+            record.material_value = cursor.next_i32();
           }
           break;
         }

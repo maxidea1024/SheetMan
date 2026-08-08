@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/CycleType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -132,64 +133,73 @@ final class DailyDungeonInfoTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.DungeonName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.DungeonName');
                     foreach ($records as $record) {
-                        $record->dungeonName = $reader->readString();
+                        $record->dungeonName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.DungeonType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.DungeonType');
                     foreach ($records as $record) {
-                        $record->dungeonType = DungeonType::tryFrom($reader->readEnum()) ?? DungeonType::None;
+                        $record->dungeonType = DungeonType::tryFrom($cursor->nextI32()) ?? DungeonType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.Priority', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.Priority');
                     foreach ($records as $record) {
-                        $record->priority = $reader->readI32As($column['element']);
+                        $record->priority = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.CycleType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.CycleType');
                     foreach ($records as $record) {
-                        $record->cycleType = CycleType::tryFrom($reader->readEnum()) ?? CycleType::None;
+                        $record->cycleType = CycleType::tryFrom($cursor->nextI32()) ?? CycleType::None;
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.EnterCondition', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.EnterCondition');
                     foreach ($records as $record) {
-                        $record->enterCondition = $reader->readI32As($column['element']);
+                        $record->enterCondition = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.EnterCurrencyType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.EnterCurrencyType');
                     foreach ($records as $record) {
-                        $record->enterCurrencyType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->enterCurrencyType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.DungeonBuffID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.DungeonBuffID');
                     foreach ($records as $record) {
-                        $record->dungeonBuffID = $reader->readI32As($column['element']);
+                        $record->dungeonBuffID = $cursor->nextI32();
                     }
                     break;
 
@@ -202,50 +212,57 @@ final class DailyDungeonInfoTable
 
                 case 11:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.EnterCurrencyValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.EnterCurrencyValue');
                     foreach ($records as $record) {
-                        $record->enterCurrencyValue = $reader->readI32As($column['element']);
+                        $record->enterCurrencyValue = $cursor->nextI32();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.FreeEnterCurrencyType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.FreeEnterCurrencyType');
                     foreach ($records as $record) {
-                        $record->freeEnterCurrencyType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->freeEnterCurrencyType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.ADEnterCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.ADEnterCount');
                     foreach ($records as $record) {
-                        $record->aDEnterCount = $reader->readI32As($column['element']);
+                        $record->aDEnterCount = $cursor->nextI32();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.EnterCurrencyCountMax', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.EnterCurrencyCountMax');
                     foreach ($records as $record) {
-                        $record->enterCurrencyCountMax = $reader->readI32As($column['element']);
+                        $record->enterCurrencyCountMax = $cursor->nextI32();
                     }
                     break;
 
                 case 15:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.DungeonImagePath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.DungeonImagePath');
                     foreach ($records as $record) {
-                        $record->dungeonImagePath = $reader->readString();
+                        $record->dungeonImagePath = $cursor->nextString();
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.DungeonBGMID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.DungeonBGMID');
                     foreach ($records as $record) {
-                        $record->dungeonBGMID = $reader->readI32As($column['element']);
+                        $record->dungeonBGMID = $cursor->nextI32();
                     }
                     break;
 
                 case 17:
                     ScbReader::checkColumn($column, 'DailyDungeonInfo.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'DailyDungeonInfo.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

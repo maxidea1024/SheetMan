@@ -104,26 +104,30 @@ impl GachaCharacterListTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "GachaCharacterList.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "GachaCharacterList.CharacterID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.CharacterID")?;
                     for record in records.iter_mut() {
-                        record.character_id = reader.read_i32_as(column.element)?;
+                        record.character_id = cursor.next_i32()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "GachaCharacterList.GradeType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.GradeType")?;
                     for record in records.iter_mut() {
-                        record.grade_type = GradeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.grade_type = GradeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "GachaCharacterList.BaseWeight", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.BaseWeight")?;
                     for record in records.iter_mut() {
-                        record.base_weight = reader.read_i32_as(column.element)?;
+                        record.base_weight = cursor.next_i32()?;
                     }
                 }
                 5 => {
@@ -134,38 +138,44 @@ impl GachaCharacterListTable {
                 }
                 6 => {
                     sheetman::check_column(column, "GachaCharacterList.WishlistWeight", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.WishlistWeight")?;
                     for record in records.iter_mut() {
-                        record.wishlist_weight = reader.read_i32_as(column.element)?;
+                        record.wishlist_weight = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "GachaCharacterList.ClassUpCurrencyID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.ClassUpCurrencyID")?;
                     for record in records.iter_mut() {
-                        record.class_up_currency_id = reader.read_i32_as(column.element)?;
+                        record.class_up_currency_id = cursor.next_i32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "GachaCharacterList.ClassUpCurrencyValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.ClassUpCurrencyValue")?;
                     for record in records.iter_mut() {
-                        record.class_up_currency_value = reader.read_i32_as(column.element)?;
+                        record.class_up_currency_value = cursor.next_i32()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "GachaCharacterList.ExConditionID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.ExConditionID")?;
                     for record in records.iter_mut() {
-                        record.ex_condition_id = reader.read_i32_as(column.element)?;
+                        record.ex_condition_id = cursor.next_i32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "GachaCharacterList.ExCurrencyID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.ExCurrencyID")?;
                     for record in records.iter_mut() {
-                        record.ex_currency_id = reader.read_i32_as(column.element)?;
+                        record.ex_currency_id = cursor.next_i32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "GachaCharacterList.ExCurrencyValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaCharacterList.ExCurrencyValue")?;
                     for record in records.iter_mut() {
-                        record.ex_currency_value = reader.read_i32_as(column.element)?;
+                        record.ex_currency_value = cursor.next_i32()?;
                     }
                 }
                 _ => {

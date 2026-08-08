@@ -83,33 +83,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'ArtifactLevel.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactLevel.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'ArtifactLevel.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactLevel.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'ArtifactLevel.NameKR', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactLevel.NameKR')
           records.each do |record|
-            record.name_kr = reader.read_string
+            record.name_kr = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'ArtifactLevel.Level', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactLevel.Level')
           records.each do |record|
-            record.level = reader.read_i32_as(column.element)
+            record.level = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'ArtifactLevel.CharacterEXP', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactLevel.CharacterEXP')
           records.each do |record|
-            record.character_exp = reader.read_i64_as(column.element)
+            record.character_exp = cursor.next_i64
           end
         when 6
           Sheetman.check_column(column, 'ArtifactLevel.AccumulatedEXP', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactLevel.AccumulatedEXP')
           records.each do |record|
-            record.accumulated_exp = reader.read_i64_as(column.element)
+            record.accumulated_exp = cursor.next_i64
           end
         when 7
           Sheetman.check_column(column, 'ArtifactLevel.ATKGrowth', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])

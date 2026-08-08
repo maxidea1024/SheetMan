@@ -74,6 +74,7 @@ public final class InfoGrowthTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<InfoGrowthRecord> loaded = new ArrayList<>(count);
@@ -89,36 +90,41 @@ public final class InfoGrowthTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "InfoGrowth.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.Id");
                     for (InfoGrowthRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "InfoGrowth.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.Name");
                     for (InfoGrowthRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "InfoGrowth.InfoName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.InfoName");
                     for (InfoGrowthRecord record : loaded) {
-                        record.infoName = reader.readString();
+                        record.infoName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "InfoGrowth.SheetName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.SheetName");
                     for (InfoGrowthRecord record : loaded) {
-                        record.sheetName = reader.readString();
+                        record.sheetName = cursor.nextString();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "InfoGrowth.GrowthType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.GrowthType");
                     for (InfoGrowthRecord record : loaded) {
-                        record.growthType = GrowthType.of(reader.readEnum());
+                        record.growthType = GrowthType.of(cursor.nextI32());
                     }
                     break;
                 }
@@ -131,57 +137,65 @@ public final class InfoGrowthTable {
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "InfoGrowth.ResetCostType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.ResetCostType");
                     for (InfoGrowthRecord record : loaded) {
-                        record.resetCostType = CurrencyType.of(reader.readEnum());
+                        record.resetCostType = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "InfoGrowth.ResetCostValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.ResetCostValue");
                     for (InfoGrowthRecord record : loaded) {
-                        record.resetCostValue = reader.readI32As(column.element);
+                        record.resetCostValue = cursor.nextI32();
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "InfoGrowth.MaxStep", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.MaxStep");
                     for (InfoGrowthRecord record : loaded) {
-                        record.maxStep = reader.readI32As(column.element);
+                        record.maxStep = cursor.nextI32();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "InfoGrowth.MaxLevel", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.MaxLevel");
                     for (InfoGrowthRecord record : loaded) {
-                        record.maxLevel = reader.readI32As(column.element);
+                        record.maxLevel = cursor.nextI32();
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "InfoGrowth.UnlockConditionType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.UnlockConditionType");
                     for (InfoGrowthRecord record : loaded) {
-                        record.unlockConditionType = reader.readString();
+                        record.unlockConditionType = cursor.nextString();
                     }
                     break;
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "InfoGrowth.UnlockConditionValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.UnlockConditionValue");
                     for (InfoGrowthRecord record : loaded) {
-                        record.unlockConditionValue = reader.readI32As(column.element);
+                        record.unlockConditionValue = cursor.nextI32();
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "InfoGrowth.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.Description");
                     for (InfoGrowthRecord record : loaded) {
-                        record.description = reader.readString();
+                        record.description = cursor.nextString();
                     }
                     break;
                 }
                 case 14: {
                     ScbReader.checkColumn(column, "InfoGrowth.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "InfoGrowth.IconPath");
                     for (InfoGrowthRecord record : loaded) {
-                        record.iconPath = reader.readString();
+                        record.iconPath = cursor.nextString();
                     }
                     break;
                 }

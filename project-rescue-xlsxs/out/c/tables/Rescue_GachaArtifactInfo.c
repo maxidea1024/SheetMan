@@ -14,6 +14,7 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -59,11 +60,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 1:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -71,11 +73,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 2:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -83,12 +86,13 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 3:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.GachaType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.GachaType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->gacha_type = (Rescue_GachaType_t)scratch;
       }
 
@@ -97,11 +101,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 4:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.Priority", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.Priority");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->priority);
+        (void)sm_cursor_next_i32(&cursor, &record->priority);
       }
 
       break;
@@ -109,11 +114,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 5:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.ConditionID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.ConditionID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->condition_id);
+        (void)sm_cursor_next_i32(&cursor, &record->condition_id);
       }
 
       break;
@@ -121,11 +127,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 6:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.RateId", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.RateId");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->rate_id);
+        (void)sm_cursor_next_i32(&cursor, &record->rate_id);
       }
 
       break;
@@ -133,11 +140,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 7:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.TriggerCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.TriggerCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->trigger_count);
+        (void)sm_cursor_next_i32(&cursor, &record->trigger_count);
       }
 
       break;
@@ -145,11 +153,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 8:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.TriggerRateId", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.TriggerRateId");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->trigger_rate_id);
+        (void)sm_cursor_next_i32(&cursor, &record->trigger_rate_id);
       }
 
       break;
@@ -157,11 +166,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 9:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.EndCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.EndCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->end_count);
+        (void)sm_cursor_next_i32(&cursor, &record->end_count);
       }
 
       break;
@@ -169,11 +179,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 10:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.EndRateId", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.EndRateId");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->end_rate_id);
+        (void)sm_cursor_next_i32(&cursor, &record->end_rate_id);
       }
 
       break;
@@ -181,11 +192,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 11:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.EndCharacterId", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.EndCharacterId");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->end_character_id);
+        (void)sm_cursor_next_i32(&cursor, &record->end_character_id);
       }
 
       break;
@@ -217,11 +229,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 14:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.WishListConditionID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.WishListConditionID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->wish_list_condition_id);
+        (void)sm_cursor_next_i32(&cursor, &record->wish_list_condition_id);
       }
 
       break;
@@ -229,11 +242,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 15:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.WishListMaxValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.WishListMaxValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->wish_list_max_value);
+        (void)sm_cursor_next_i32(&cursor, &record->wish_list_max_value);
       }
 
       break;
@@ -265,12 +279,13 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 18:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.CurrencyType1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.CurrencyType1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->currency_type1 = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -279,11 +294,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 19:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.SingleCost1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.SingleCost1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->single_cost1);
+        (void)sm_cursor_next_i32(&cursor, &record->single_cost1);
       }
 
       break;
@@ -291,12 +307,13 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 20:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.CurrencyType2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.CurrencyType2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->currency_type2 = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -305,11 +322,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 21:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.SingleCost2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.SingleCost2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->single_cost2);
+        (void)sm_cursor_next_i32(&cursor, &record->single_cost2);
       }
 
       break;
@@ -317,11 +335,12 @@ static bool Rescue_GachaArtifactInfoParse(Rescue_GachaArtifactInfoTable_t* table
     case 22:
       (void)sm_check_column(reader, column, "GachaArtifactInfo.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactInfo.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;

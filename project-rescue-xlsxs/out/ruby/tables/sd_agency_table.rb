@@ -95,108 +95,129 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDAgency.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDAgency.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDAgency.InfoName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.InfoName')
           records.each do |record|
-            record.info_name = reader.read_string
+            record.info_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDAgency.AgencyType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.AgencyType')
           records.each do |record|
-            record.agency_type = reader.read_enum
+            record.agency_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDAgency.AgencyGrade', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.AgencyGrade')
           records.each do |record|
-            record.agency_grade = reader.read_enum
+            record.agency_grade = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDAgency.Time', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.Time')
           records.each do |record|
-            record.time = reader.read_i32_as(column.element)
+            record.time = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'SDAgency.AgencyWeight', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.AgencyWeight')
           records.each do |record|
-            record.agency_weight = reader.read_i32_as(column.element)
+            record.agency_weight = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'SDAgency.Condition1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.Condition1')
           records.each do |record|
-            record.condition1 = reader.read_enum
+            record.condition1 = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'SDAgency.Condition1value', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.Condition1value')
           records.each do |record|
-            record.condition1value = reader.read_i32_as(column.element)
+            record.condition1value = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'SDAgency.Condition2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.Condition2')
           records.each do |record|
-            record.condition2 = reader.read_enum
+            record.condition2 = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'SDAgency.Condition2value', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.Condition2value')
           records.each do |record|
-            record.condition2value = reader.read_i32_as(column.element)
+            record.condition2value = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'SDAgency.Condition3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.Condition3')
           records.each do |record|
-            record.condition3 = reader.read_enum
+            record.condition3 = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'SDAgency.ClassMinValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.ClassMinValue')
           records.each do |record|
-            record.class_min_value = reader.read_i32_as(column.element)
+            record.class_min_value = cursor.next_i32
           end
         when 14
           Sheetman.check_column(column, 'SDAgency.Condition3value', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.Condition3value')
           records.each do |record|
-            record.condition3value = reader.read_i32_as(column.element)
+            record.condition3value = cursor.next_i32
           end
         when 15
           Sheetman.check_column(column, 'SDAgency.RewardType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.RewardType1')
           records.each do |record|
-            record.reward_type1 = reader.read_enum
+            record.reward_type1 = cursor.next_i32
           end
         when 16
           Sheetman.check_column(column, 'SDAgency.RewardValue1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.RewardValue1')
           records.each do |record|
-            record.reward_value1 = reader.read_i32_as(column.element)
+            record.reward_value1 = cursor.next_i32
           end
         when 17
           Sheetman.check_column(column, 'SDAgency.RewardType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.RewardType2')
           records.each do |record|
-            record.reward_type2 = reader.read_enum
+            record.reward_type2 = cursor.next_i32
           end
         when 18
           Sheetman.check_column(column, 'SDAgency.RewardValue2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.RewardValue2')
           records.each do |record|
-            record.reward_value2 = reader.read_i32_as(column.element)
+            record.reward_value2 = cursor.next_i32
           end
         when 19
           Sheetman.check_column(column, 'SDAgency.RewardType3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.RewardType3')
           records.each do |record|
-            record.reward_type3 = reader.read_enum
+            record.reward_type3 = cursor.next_i32
           end
         when 20
           Sheetman.check_column(column, 'SDAgency.RewardValue3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.RewardValue3')
           records.each do |record|
-            record.reward_value3 = reader.read_i32_as(column.element)
+            record.reward_value3 = cursor.next_i32
           end
         when 21
           Sheetman.check_column(column, 'SDAgency.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgency.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

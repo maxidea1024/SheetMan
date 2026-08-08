@@ -112,58 +112,66 @@ func (t *SkillTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Skill.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Skill.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Skill.SkillName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.SkillName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SkillName = reader.ReadString()
+					r.SkillName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Skill.SkillType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.SkillType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SkillType = SkillType(reader.ReadEnum())
+					r.SkillType = SkillType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Skill.SkillSubType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.SkillSubType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SkillSubType = SkillSubType(reader.ReadEnum())
+					r.SkillSubType = SkillSubType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Skill.AttributeType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.AttributeType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AttributeType = AttributeType(reader.ReadEnum())
+					r.AttributeType = AttributeType(cursor.NextI32())
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Skill.TargetType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.TargetType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TargetType = TargetType(reader.ReadEnum())
+					r.TargetType = TargetType(cursor.NextI32())
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Skill.AniPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.AniPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AniPath = reader.ReadString()
+					r.AniPath = cursor.NextString()
 				}
 			}
 		case 9:
@@ -193,16 +201,18 @@ func (t *SkillTable) Read(filename string) error {
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "Skill.SkillIcon", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.SkillIcon")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SkillIcon = reader.ReadString()
+					r.SkillIcon = cursor.NextString()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "Skill.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Skill.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

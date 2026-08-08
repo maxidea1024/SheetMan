@@ -94,28 +94,34 @@ class MainShopTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "MainShop.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "MainShop.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "MainShop.ProductName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.ProductName")
                 for record in records:
-                    record.product_name = reader.read_string()
+                    record.product_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "MainShop.ShopType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.ShopType")
                 for record in records:
-                    record.shop_type = ShopType(reader.read_enum())
+                    record.shop_type = ShopType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "MainShop.ShopSlotID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.ShopSlotID")
                 for record in records:
-                    record.shop_slot_id = reader.read_i32_as(column.element)
+                    record.shop_slot_id = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "MainShop.Priority", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.Priority")
                 for record in records:
-                    record.priority = reader.read_i32_as(column.element)
+                    record.priority = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "MainShop.ItemID", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:
@@ -128,28 +134,34 @@ class MainShopTable:
                     record.item_value = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 9:
                 sheetman.check_column(column, "MainShop.CycleType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.CycleType")
                 for record in records:
-                    record.cycle_type = CycleType(reader.read_enum())
+                    record.cycle_type = CycleType(cursor.next_i32())
             elif column.tag == 10:
                 sheetman.check_column(column, "MainShop.LimitValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.LimitValue")
                 for record in records:
-                    record.limit_value = reader.read_i32_as(column.element)
+                    record.limit_value = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "MainShop.CurrencyType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.CurrencyType")
                 for record in records:
-                    record.currency_type = CurrencyType(reader.read_enum())
+                    record.currency_type = CurrencyType(cursor.next_i32())
             elif column.tag == 12:
                 sheetman.check_column(column, "MainShop.PriceValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.PriceValue")
                 for record in records:
-                    record.price_value = reader.read_i32_as(column.element)
+                    record.price_value = cursor.next_i32()
             elif column.tag == 13:
                 sheetman.check_column(column, "MainShop.ConditionID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.ConditionID")
                 for record in records:
-                    record.condition_id = reader.read_i32_as(column.element)
+                    record.condition_id = cursor.next_i32()
             elif column.tag == 14:
                 sheetman.check_column(column, "MainShop.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "MainShop.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

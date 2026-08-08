@@ -105,6 +105,13 @@ internal sealed class PhpTableView
     public required IReadOnlyList<PhpIndexView> Indexes { get; set; }
 
     public required IReadOnlyList<PhpFieldView> Fields { get; set; }
+
+    /// <summary>
+    /// Whether any column reads through a cursor. PHP declares nothing ahead of an
+    /// assignment, so the template needs no line from this - it exists so every
+    /// language's view answers the same questions.
+    /// </summary>
+    public required bool NeedsCursor { get; set; }
 }
 
 /// <summary>
@@ -159,6 +166,12 @@ internal sealed class PhpFieldView
 
     /// <summary>The rendered checkColumn call for this member.</summary>
     public required string ColumnCheck { get; set; }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or empty for
+    /// a column that reads the reader directly.
+    /// </summary>
+    public required string CursorOpen { get; set; }
 
     public required int ElementCount { get; set; }
 

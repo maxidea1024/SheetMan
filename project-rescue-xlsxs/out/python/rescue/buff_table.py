@@ -100,60 +100,73 @@ class BuffTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Buff.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Buff.BuffName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.BuffName")
                 for record in records:
-                    record.buff_name = reader.read_string()
+                    record.buff_name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Buff.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Buff.SkillType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.SkillType")
                 for record in records:
-                    record.skill_type = SkillType(reader.read_enum())
+                    record.skill_type = SkillType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Buff.StatType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.StatType")
                 for record in records:
-                    record.stat_type = StatType(reader.read_enum())
+                    record.stat_type = StatType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Buff.Priority", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.Priority")
                 for record in records:
-                    record.priority = reader.read_i32_as(column.element)
+                    record.priority = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "Buff.AttributeType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.AttributeType")
                 for record in records:
-                    record.attribute_type = AttributeType(reader.read_enum())
+                    record.attribute_type = AttributeType(cursor.next_i32())
             elif column.tag == 8:
                 sheetman.check_column(column, "Buff.TargetType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.TargetType")
                 for record in records:
-                    record.target_type = TargetType(reader.read_enum())
+                    record.target_type = TargetType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "Buff.BuffConditionType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.BuffConditionType")
                 for record in records:
-                    record.buff_condition_type = BuffConditionType(reader.read_enum())
+                    record.buff_condition_type = BuffConditionType(cursor.next_i32())
             elif column.tag == 10:
                 sheetman.check_column(column, "Buff.BuffValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.BuffValue")
                 for record in records:
-                    record.buff_value = reader.read_i32_as(column.element)
+                    record.buff_value = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "Buff.BuffValueRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.buff_value_rate = reader.read_float()
             elif column.tag == 12:
                 sheetman.check_column(column, "Buff.BuffTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.BuffTime")
                 for record in records:
-                    record.buff_time = reader.read_i32_as(column.element)
+                    record.buff_time = cursor.next_i32()
             elif column.tag == 13:
                 sheetman.check_column(column, "Buff.BuffTickTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.BuffTickTime")
                 for record in records:
-                    record.buff_tick_time = reader.read_i32_as(column.element)
+                    record.buff_tick_time = cursor.next_i32()
             elif column.tag == 14:
                 sheetman.check_column(column, "Buff.BuffMaxStack", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.BuffMaxStack")
                 for record in records:
-                    record.buff_max_stack = reader.read_i32_as(column.element)
+                    record.buff_max_stack = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "Buff.BuffCoolDownTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -164,12 +177,14 @@ class BuffTable:
                     record.is_visible = reader.read_bool()
             elif column.tag == 17:
                 sheetman.check_column(column, "Buff.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             elif column.tag == 18:
                 sheetman.check_column(column, "Buff.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Buff.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

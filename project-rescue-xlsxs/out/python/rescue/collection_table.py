@@ -92,52 +92,63 @@ class CollectionTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Collection.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Collection.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Collection.CharacterID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.CharacterID")
                 for record in records:
-                    record.character_id = reader.read_i32_as(column.element)
+                    record.character_id = cursor.next_i32()
             elif column.tag == 4:
                 sheetman.check_column(column, "Collection.TabType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.TabType")
                 for record in records:
-                    record.tab_type = CollectionTabType(reader.read_enum())
+                    record.tab_type = CollectionTabType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Collection.ConditionID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.ConditionID")
                 for record in records:
-                    record.condition_id = reader.read_i32_as(column.element)
+                    record.condition_id = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "Collection.RewardType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.RewardType")
                 for record in records:
-                    record.reward_type = CurrencyType(reader.read_enum())
+                    record.reward_type = CurrencyType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "Collection.RewardValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.RewardValue")
                 for record in records:
-                    record.reward_value = reader.read_i32_as(column.element)
+                    record.reward_value = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "Collection.RewardStatType1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.RewardStatType1")
                 for record in records:
-                    record.reward_stat_type1 = StatType(reader.read_enum())
+                    record.reward_stat_type1 = StatType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "Collection.RewardStatRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.reward_stat_rate = reader.read_float()
             elif column.tag == 10:
                 sheetman.check_column(column, "Collection.RewardStatType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.RewardStatType2")
                 for record in records:
-                    record.reward_stat_type2 = StatType(reader.read_enum())
+                    record.reward_stat_type2 = StatType(cursor.next_i32())
             elif column.tag == 11:
                 sheetman.check_column(column, "Collection.RewardStatValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.RewardStatValue")
                 for record in records:
-                    record.reward_stat_value = reader.read_i32_as(column.element)
+                    record.reward_stat_value = cursor.next_i32()
             elif column.tag == 12:
                 sheetman.check_column(column, "Collection.ShortCutID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Collection.ShortCutID")
                 for record in records:
-                    record.short_cut_id = reader.read_i32_as(column.element)
+                    record.short_cut_id = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

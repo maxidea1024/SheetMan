@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/DungeonType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -138,43 +139,49 @@ final class OopartsDungeonStageTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.StageName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.StageName');
                     foreach ($records as $record) {
-                        $record->stageName = $reader->readString();
+                        $record->stageName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.DungeonType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.DungeonType');
                     foreach ($records as $record) {
-                        $record->dungeonType = DungeonType::tryFrom($reader->readEnum()) ?? DungeonType::None;
+                        $record->dungeonType = DungeonType::tryFrom($cursor->nextI32()) ?? DungeonType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.DungeonFloor', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.DungeonFloor');
                     foreach ($records as $record) {
-                        $record->dungeonFloor = $reader->readI32As($column['element']);
+                        $record->dungeonFloor = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.TimeLimit', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.TimeLimit');
                     foreach ($records as $record) {
-                        $record->timeLimit = $reader->readI32As($column['element']);
+                        $record->timeLimit = $cursor->nextI32();
                     }
                     break;
 
@@ -202,15 +209,17 @@ final class OopartsDungeonStageTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.SpawnPointCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.SpawnPointCount');
                     foreach ($records as $record) {
-                        $record->spawnPointCount = $reader->readI32As($column['element']);
+                        $record->spawnPointCount = $cursor->nextI32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.SpawnMaxCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.SpawnMaxCount');
                     foreach ($records as $record) {
-                        $record->spawnMaxCount = $reader->readI32As($column['element']);
+                        $record->spawnMaxCount = $cursor->nextI32();
                     }
                     break;
 
@@ -223,22 +232,25 @@ final class OopartsDungeonStageTable
 
                 case 12:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.StageClearCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.StageClearCount');
                     foreach ($records as $record) {
-                        $record->stageClearCount = $reader->readI32As($column['element']);
+                        $record->stageClearCount = $cursor->nextI32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.RecommendPower', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.RecommendPower');
                     foreach ($records as $record) {
-                        $record->recommendPower = $reader->readString();
+                        $record->recommendPower = $cursor->nextString();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.RewardID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.RewardID');
                     foreach ($records as $record) {
-                        $record->rewardID = $reader->readI32As($column['element']);
+                        $record->rewardID = $cursor->nextI32();
                     }
                     break;
 
@@ -265,22 +277,25 @@ final class OopartsDungeonStageTable
 
                 case 18:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.DungeonImagePath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.DungeonImagePath');
                     foreach ($records as $record) {
-                        $record->dungeonImagePath = $reader->readString();
+                        $record->dungeonImagePath = $cursor->nextString();
                     }
                     break;
 
                 case 19:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.MonsterImagePath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.MonsterImagePath');
                     foreach ($records as $record) {
-                        $record->monsterImagePath = $reader->readString();
+                        $record->monsterImagePath = $cursor->nextString();
                     }
                     break;
 
                 case 20:
                     ScbReader::checkColumn($column, 'OopartsDungeonStage.AssetDataPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'OopartsDungeonStage.AssetDataPath');
                     foreach ($records as $record) {
-                        $record->assetDataPath = $reader->readString();
+                        $record->assetDataPath = $cursor->nextString();
                     }
                     break;
 

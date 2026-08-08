@@ -97,44 +97,53 @@ class PackageTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Package.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Package.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Package.ClassName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.ClassName")
                 for record in records:
-                    record.class_name = reader.read_string()
+                    record.class_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Package.ItemType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.ItemType")
                 for record in records:
-                    record.item_type = ItemType(reader.read_enum())
+                    record.item_type = ItemType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Package.PackageType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.PackageType")
                 for record in records:
-                    record.package_type = ConsumablesType(reader.read_enum())
+                    record.package_type = ConsumablesType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Package.Stackable", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
                     record.stackable = reader.read_bool()
             elif column.tag == 7:
                 sheetman.check_column(column, "Package.MaxStack", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.MaxStack")
                 for record in records:
-                    record.max_stack = reader.read_i64_as(column.element)
+                    record.max_stack = cursor.next_i64()
             elif column.tag == 8:
                 sheetman.check_column(column, "Package.PackageCondition", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.PackageCondition")
                 for record in records:
-                    record.package_condition = ConditionType(reader.read_enum())
+                    record.package_condition = ConditionType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "Package.Cooltime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.Cooltime")
                 for record in records:
-                    record.cooltime = reader.read_i32_as(column.element)
+                    record.cooltime = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "Package.Duration", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.Duration")
                 for record in records:
-                    record.duration = reader.read_i32_as(column.element)
+                    record.duration = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "Package.CurrencyID", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:
@@ -157,16 +166,19 @@ class PackageTable:
                     record.currency_item_rate = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 15:
                 sheetman.check_column(column, "Package.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             elif column.tag == 16:
                 sheetman.check_column(column, "Package.DropPrefabPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.DropPrefabPath")
                 for record in records:
-                    record.drop_prefab_path = reader.read_string()
+                    record.drop_prefab_path = cursor.next_string()
             elif column.tag == 17:
                 sheetman.check_column(column, "Package.ItemDescription", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Package.ItemDescription")
                 for record in records:
-                    record.item_description = reader.read_string()
+                    record.item_description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

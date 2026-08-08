@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -168,68 +169,79 @@ class CharacterTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Character.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Character.TitleName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Character.TitleName")
                     for (record in loaded) {
-                        record.titleName = reader.readString()
+                        record.titleName = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Character.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Character.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Character.CharacterType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.CharacterType")
                     for (record in loaded) {
-                        record.characterType = CharacterType.of(reader.readEnum())
+                        record.characterType = CharacterType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "Character.Grade", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.Grade")
                     for (record in loaded) {
-                        record.grade = GradeType.of(reader.readEnum())
+                        record.grade = GradeType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "Character.AttributeType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.AttributeType")
                     for (record in loaded) {
-                        record.attributeType = AttributeType.of(reader.readEnum())
+                        record.attributeType = AttributeType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
                     checkColumn(column, "Character.JobType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.JobType")
                     for (record in loaded) {
-                        record.jobType = JobType.of(reader.readEnum())
+                        record.jobType = JobType.of(cursor.nextI32())
                     }
                 }
                 8 -> {
                     checkColumn(column, "Character.Nation", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.Nation")
                     for (record in loaded) {
-                        record.nation = NationType.of(reader.readEnum())
+                        record.nation = NationType.of(cursor.nextI32())
                     }
                 }
                 9 -> {
                     checkColumn(column, "Character.BaseATK", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.BaseATK")
                     for (record in loaded) {
-                        record.baseATK = reader.readI64As(column.element)
+                        record.baseATK = cursor.nextI64()
                     }
                 }
                 10 -> {
                     checkColumn(column, "Character.BaseDEF", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.BaseDEF")
                     for (record in loaded) {
-                        record.baseDEF = reader.readI64As(column.element)
+                        record.baseDEF = cursor.nextI64()
                     }
                 }
                 11 -> {
                     checkColumn(column, "Character.BaseMHP", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.BaseMHP")
                     for (record in loaded) {
-                        record.baseMHP = reader.readI64As(column.element)
+                        record.baseMHP = cursor.nextI64()
                     }
                 }
                 12 -> {
@@ -282,110 +294,128 @@ class CharacterTable {
                 }
                 20 -> {
                     checkColumn(column, "Character.BasicAttack1", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.BasicAttack1")
                     for (record in loaded) {
-                        record.basicAttack1 = reader.readI32As(column.element)
+                        record.basicAttack1 = cursor.nextI32()
                     }
                 }
                 21 -> {
                     checkColumn(column, "Character.BasicAttack2", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.BasicAttack2")
                     for (record in loaded) {
-                        record.basicAttack2 = reader.readI32As(column.element)
+                        record.basicAttack2 = cursor.nextI32()
                     }
                 }
                 22 -> {
                     checkColumn(column, "Character.BasicAttack3", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.BasicAttack3")
                     for (record in loaded) {
-                        record.basicAttack3 = reader.readI32As(column.element)
+                        record.basicAttack3 = cursor.nextI32()
                     }
                 }
                 23 -> {
                     checkColumn(column, "Character.ActiveSkill1", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.ActiveSkill1")
                     for (record in loaded) {
-                        record.activeSkill1 = reader.readI32As(column.element)
+                        record.activeSkill1 = cursor.nextI32()
                     }
                 }
                 24 -> {
                     checkColumn(column, "Character.ActiveSkill2", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.ActiveSkill2")
                     for (record in loaded) {
-                        record.activeSkill2 = reader.readI32As(column.element)
+                        record.activeSkill2 = cursor.nextI32()
                     }
                 }
                 25 -> {
                     checkColumn(column, "Character.ActiveSkill3", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.ActiveSkill3")
                     for (record in loaded) {
-                        record.activeSkill3 = reader.readI32As(column.element)
+                        record.activeSkill3 = cursor.nextI32()
                     }
                 }
                 26 -> {
                     checkColumn(column, "Character.SpecialSkill1", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.SpecialSkill1")
                     for (record in loaded) {
-                        record.specialSkill1 = reader.readI32As(column.element)
+                        record.specialSkill1 = cursor.nextI32()
                     }
                 }
                 27 -> {
                     checkColumn(column, "Character.SpecialSkill2", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.SpecialSkill2")
                     for (record in loaded) {
-                        record.specialSkill2 = reader.readI32As(column.element)
+                        record.specialSkill2 = cursor.nextI32()
                     }
                 }
                 28 -> {
                     checkColumn(column, "Character.SpecialSkill3", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.SpecialSkill3")
                     for (record in loaded) {
-                        record.specialSkill3 = reader.readI32As(column.element)
+                        record.specialSkill3 = cursor.nextI32()
                     }
                 }
                 29 -> {
                     checkColumn(column, "Character.SpecialSkill4", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.SpecialSkill4")
                     for (record in loaded) {
-                        record.specialSkill4 = reader.readI32As(column.element)
+                        record.specialSkill4 = cursor.nextI32()
                     }
                 }
                 30 -> {
                     checkColumn(column, "Character.SpecialSkill5", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.SpecialSkill5")
                     for (record in loaded) {
-                        record.specialSkill5 = reader.readI32As(column.element)
+                        record.specialSkill5 = cursor.nextI32()
                     }
                 }
                 31 -> {
                     checkColumn(column, "Character.PassiveBuff1", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.PassiveBuff1")
                     for (record in loaded) {
-                        record.passiveBuff1 = reader.readI32As(column.element)
+                        record.passiveBuff1 = cursor.nextI32()
                     }
                 }
                 32 -> {
                     checkColumn(column, "Character.PassiveBuff2", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.PassiveBuff2")
                     for (record in loaded) {
-                        record.passiveBuff2 = reader.readI32As(column.element)
+                        record.passiveBuff2 = cursor.nextI32()
                     }
                 }
                 33 -> {
                     checkColumn(column, "Character.PassiveBuff3", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Character.PassiveBuff3")
                     for (record in loaded) {
-                        record.passiveBuff3 = reader.readI32As(column.element)
+                        record.passiveBuff3 = cursor.nextI32()
                     }
                 }
                 34 -> {
                     checkColumn(column, "Character.PrefabPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Character.PrefabPath")
                     for (record in loaded) {
-                        record.prefabPath = reader.readString()
+                        record.prefabPath = cursor.nextString()
                     }
                 }
                 35 -> {
                     checkColumn(column, "Character.SdMaterialPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Character.SdMaterialPath")
                     for (record in loaded) {
-                        record.sdMaterialPath = reader.readString()
+                        record.sdMaterialPath = cursor.nextString()
                     }
                 }
                 36 -> {
                     checkColumn(column, "Character.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Character.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 37 -> {
                     checkColumn(column, "Character.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Character.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

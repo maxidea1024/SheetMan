@@ -92,6 +92,7 @@ class BuffTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <BuffRecord>[];
@@ -107,62 +108,72 @@ class BuffTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Buff.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Buff.BuffName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.BuffName');
           for (final record in loaded) {
-            record.buffName = reader.readString();
+            record.buffName = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Buff.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Buff.SkillType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.SkillType');
           for (final record in loaded) {
-            record.skillType = SkillType.of(reader.readEnum());
+            record.skillType = SkillType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'Buff.StatType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.StatType');
           for (final record in loaded) {
-            record.statType = StatType.of(reader.readEnum());
+            record.statType = StatType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'Buff.Priority', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.Priority');
           for (final record in loaded) {
-            record.priority = reader.readI32As(column.element);
+            record.priority = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'Buff.AttributeType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.AttributeType');
           for (final record in loaded) {
-            record.attributeType = AttributeType.of(reader.readEnum());
+            record.attributeType = AttributeType.of(cursor.nextI32());
           }
           break;
         case 8:
           checkColumn(column, 'Buff.TargetType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.TargetType');
           for (final record in loaded) {
-            record.targetType = TargetType.of(reader.readEnum());
+            record.targetType = TargetType.of(cursor.nextI32());
           }
           break;
         case 9:
           checkColumn(column, 'Buff.BuffConditionType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.BuffConditionType');
           for (final record in loaded) {
-            record.buffConditionType = BuffConditionType.of(reader.readEnum());
+            record.buffConditionType = BuffConditionType.of(cursor.nextI32());
           }
           break;
         case 10:
           checkColumn(column, 'Buff.BuffValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.BuffValue');
           for (final record in loaded) {
-            record.buffValue = reader.readI32As(column.element);
+            record.buffValue = cursor.nextI32();
           }
           break;
         case 11:
@@ -173,20 +184,23 @@ class BuffTable {
           break;
         case 12:
           checkColumn(column, 'Buff.BuffTime', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.BuffTime');
           for (final record in loaded) {
-            record.buffTime = reader.readI32As(column.element);
+            record.buffTime = cursor.nextI32();
           }
           break;
         case 13:
           checkColumn(column, 'Buff.BuffTickTime', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.BuffTickTime');
           for (final record in loaded) {
-            record.buffTickTime = reader.readI32As(column.element);
+            record.buffTickTime = cursor.nextI32();
           }
           break;
         case 14:
           checkColumn(column, 'Buff.BuffMaxStack', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.BuffMaxStack');
           for (final record in loaded) {
-            record.buffMaxStack = reader.readI32As(column.element);
+            record.buffMaxStack = cursor.nextI32();
           }
           break;
         case 15:
@@ -203,14 +217,16 @@ class BuffTable {
           break;
         case 17:
           checkColumn(column, 'Buff.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         case 18:
           checkColumn(column, 'Buff.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Buff.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         default:

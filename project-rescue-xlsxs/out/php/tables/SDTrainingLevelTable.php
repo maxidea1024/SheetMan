@@ -14,6 +14,7 @@ namespace Rescue;
 require_once __DIR__ . '/../sheetman/ScbReader.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -115,36 +116,41 @@ final class SDTrainingLevelTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDTrainingLevel.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingLevel.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDTrainingLevel.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingLevel.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDTrainingLevel.LevelName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingLevel.LevelName');
                     foreach ($records as $record) {
-                        $record->levelName = $reader->readString();
+                        $record->levelName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDTrainingLevel.CurrencyValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingLevel.CurrencyValue');
                     foreach ($records as $record) {
-                        $record->currencyValue = $reader->readI32As($column['element']);
+                        $record->currencyValue = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDTrainingLevel.CurrencyResult', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingLevel.CurrencyResult');
                     foreach ($records as $record) {
-                        $record->currencyResult = $reader->readI32As($column['element']);
+                        $record->currencyResult = $cursor->nextI32();
                     }
                     break;
 
@@ -178,8 +184,9 @@ final class SDTrainingLevelTable
 
                 case 10:
                     ScbReader::checkColumn($column, 'SDTrainingLevel.CommonUnlockStageID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingLevel.CommonUnlockStageID');
                     foreach ($records as $record) {
-                        $record->commonUnlockStageID = $reader->readI32As($column['element']);
+                        $record->commonUnlockStageID = $cursor->nextI32();
                     }
                     break;
 

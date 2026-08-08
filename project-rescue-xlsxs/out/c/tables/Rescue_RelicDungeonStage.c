@@ -14,6 +14,7 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -67,11 +68,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 1:
       (void)sm_check_column(reader, column, "RelicDungeonStage.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -79,11 +81,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 2:
       (void)sm_check_column(reader, column, "RelicDungeonStage.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -91,11 +94,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 3:
       (void)sm_check_column(reader, column, "RelicDungeonStage.StageName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.StageName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->stage_name);
+        (void)sm_cursor_next_string(&cursor, &record->stage_name);
       }
 
       break;
@@ -103,12 +107,13 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 4:
       (void)sm_check_column(reader, column, "RelicDungeonStage.DungeonType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.DungeonType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->dungeon_type = (Rescue_DungeonType_t)scratch;
       }
 
@@ -117,11 +122,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 5:
       (void)sm_check_column(reader, column, "RelicDungeonStage.DungeonFloor", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.DungeonFloor");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->dungeon_floor);
+        (void)sm_cursor_next_i32(&cursor, &record->dungeon_floor);
       }
 
       break;
@@ -129,11 +135,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 6:
       (void)sm_check_column(reader, column, "RelicDungeonStage.TimeLimit", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.TimeLimit");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->time_limit);
+        (void)sm_cursor_next_i32(&cursor, &record->time_limit);
       }
 
       break;
@@ -197,11 +204,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 9:
       (void)sm_check_column(reader, column, "RelicDungeonStage.SpawnPointCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.SpawnPointCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->spawn_point_count);
+        (void)sm_cursor_next_i32(&cursor, &record->spawn_point_count);
       }
 
       break;
@@ -209,11 +217,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 10:
       (void)sm_check_column(reader, column, "RelicDungeonStage.SpawnMaxCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.SpawnMaxCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->spawn_max_count);
+        (void)sm_cursor_next_i32(&cursor, &record->spawn_max_count);
       }
 
       break;
@@ -233,11 +242,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 12:
       (void)sm_check_column(reader, column, "RelicDungeonStage.StageClearCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.StageClearCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->stage_clear_count);
+        (void)sm_cursor_next_i32(&cursor, &record->stage_clear_count);
       }
 
       break;
@@ -245,11 +255,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 13:
       (void)sm_check_column(reader, column, "RelicDungeonStage.RecommendPower", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.RecommendPower");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->recommend_power);
+        (void)sm_cursor_next_string(&cursor, &record->recommend_power);
       }
 
       break;
@@ -257,11 +268,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 14:
       (void)sm_check_column(reader, column, "RelicDungeonStage.RewardID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.RewardID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->reward_id);
+        (void)sm_cursor_next_i32(&cursor, &record->reward_id);
       }
 
       break;
@@ -305,11 +317,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 18:
       (void)sm_check_column(reader, column, "RelicDungeonStage.DungeonImagePath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.DungeonImagePath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->dungeon_image_path);
+        (void)sm_cursor_next_string(&cursor, &record->dungeon_image_path);
       }
 
       break;
@@ -317,11 +330,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 19:
       (void)sm_check_column(reader, column, "RelicDungeonStage.MonsterImagePath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.MonsterImagePath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->monster_image_path);
+        (void)sm_cursor_next_string(&cursor, &record->monster_image_path);
       }
 
       break;
@@ -329,11 +343,12 @@ static bool Rescue_RelicDungeonStageParse(Rescue_RelicDungeonStageTable_t* table
     case 20:
       (void)sm_check_column(reader, column, "RelicDungeonStage.AssetDataPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "RelicDungeonStage.AssetDataPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_RelicDungeonStageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->asset_data_path);
+        (void)sm_cursor_next_string(&cursor, &record->asset_data_path);
       }
 
       break;

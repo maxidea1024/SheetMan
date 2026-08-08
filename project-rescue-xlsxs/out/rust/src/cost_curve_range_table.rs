@@ -94,32 +94,37 @@ impl CostCurveRangeTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "CostCurveRange.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurveRange.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "CostCurveRange.GrowthType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurveRange.GrowthType")?;
                     for record in records.iter_mut() {
-                        record.growth_type = GrowthType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.growth_type = GrowthType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "CostCurveRange.RangeIndex", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurveRange.RangeIndex")?;
                     for record in records.iter_mut() {
-                        record.range_index = reader.read_i32_as(column.element)?;
+                        record.range_index = cursor.next_i32()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "CostCurveRange.StartStep", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurveRange.StartStep")?;
                     for record in records.iter_mut() {
-                        record.start_step = reader.read_i32_as(column.element)?;
+                        record.start_step = cursor.next_i32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "CostCurveRange.EndStep", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurveRange.EndStep")?;
                     for record in records.iter_mut() {
-                        record.end_step = reader.read_i32_as(column.element)?;
+                        record.end_step = cursor.next_i32()?;
                     }
                 }
                 6 => {

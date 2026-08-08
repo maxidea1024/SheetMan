@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/GradeType.php';
 require_once __DIR__ . '/../enums/StatType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -123,29 +124,33 @@ final class ArtifactTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Artifact.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Artifact.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Artifact.ArtifactType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.ArtifactType');
                     foreach ($records as $record) {
-                        $record->artifactType = ArtifactJobType::tryFrom($reader->readEnum()) ?? ArtifactJobType::None;
+                        $record->artifactType = ArtifactJobType::tryFrom($cursor->nextI32()) ?? ArtifactJobType::None;
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Artifact.Grade', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.Grade');
                     foreach ($records as $record) {
-                        $record->grade = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
+                        $record->grade = GradeType::tryFrom($cursor->nextI32()) ?? GradeType::None;
                     }
                     break;
 
@@ -162,8 +167,9 @@ final class ArtifactTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'Artifact.EquipStatType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.EquipStatType');
                     foreach ($records as $record) {
-                        $record->equipStatType = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->equipStatType = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
@@ -176,8 +182,9 @@ final class ArtifactTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'Artifact.CollectionType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.CollectionType');
                     foreach ($records as $record) {
-                        $record->collectionType = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->collectionType = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
@@ -190,22 +197,25 @@ final class ArtifactTable
 
                 case 10:
                     ScbReader::checkColumn($column, 'Artifact.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'Artifact.MaterialPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.MaterialPath');
                     foreach ($records as $record) {
-                        $record->materialPath = $reader->readString();
+                        $record->materialPath = $cursor->nextString();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'Artifact.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Artifact.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

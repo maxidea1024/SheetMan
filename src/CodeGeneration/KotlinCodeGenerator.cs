@@ -265,9 +265,10 @@ public class KotlinCodeGenerator : CodeGenerator<KotlinRecipe>
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementCount = sf.Fields.Count,
             Declarations = Declarations(sf, name),
-            ReadScalar = ReadExpression(sf),
+            ReadScalar = ScalarReadExpression(sf),
             ReadElement = ReadExpression(sf),
         };
     }
@@ -365,6 +366,45 @@ public class KotlinCodeGenerator : CodeGenerator<KotlinRecipe>
         return $"checkColumn(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {accepted})";
     }
 
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly. A `val`: each `when` branch is its own
+    /// scope, so the declaration lives and dies with the column that made it.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"val cursor = ColumnCursor(reader, column, count, \"{tableName}.{sf.Name}\")"
+            : "";
+
     private static string ReadKind(SerialField sf)
     {
         if (sf.IsVariableLengthArray)
@@ -414,6 +454,36 @@ public class KotlinCodeGenerator : CodeGenerator<KotlinRecipe>
     };
 
     // ----------------------------------------------------------- rendering
+
+    /// <summary>
+    /// The expression a scalar member reads: through the cursor where the column can
+    /// arrive encoded - which also carries the lossless promotions - and the direct
+    /// read everywhere else. Arrays stay on <see cref="ReadExpression"/>: they are
+    /// always raw.
+    /// </summary>
+    private string ScalarReadExpression(SerialField sf)
+    {
+        if (!UsesCursor(sf))
+            return ReadExpression(sf);
+
+        // Only the stored index is on the wire for a reference; the template assigns
+        // it to the Index member, and the accessor resolves it once every table loads.
+        if (sf.IsRef)
+            return "cursor.nextI32()";
+
+        switch (sf.ElementType)
+        {
+            // Enum values are still ints on the wire; the conversion stays, the int
+            // now comes from the cursor.
+            case ValueType.Enum:
+                return $"{sf.FirstField.Enum.Name.ToPascalCase()}.of(cursor.nextI32())";
+
+            case ValueType.Int32: return "cursor.nextI32()";
+            case ValueType.Int64: return "cursor.nextI64()";
+            case ValueType.Double: return "cursor.nextF64()";
+            default: return "cursor.nextString()";
+        }
+    }
 
     private string ReadExpression(SerialField sf)
     {

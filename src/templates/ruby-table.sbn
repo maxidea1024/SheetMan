@@ -80,6 +80,9 @@
 {{~ for field in table.fields ~}}
         when {{ field.tag }}
           {{ field.column_check }}
+{{~ if field.cursor_open != '' ~}}
+          {{ field.cursor_open }}
+{{~ end ~}}
           records.each do |record|
 {{~ if field.kind == 'var_array' ~}}
             element_count = reader.read_counter32
@@ -90,7 +93,7 @@
 {{~ else if field.kind == 'serial' ~}}
             record.{{ field.name }} = Array.new({{ field.element_count }}) { {{ field.read_element }} }
 {{~ else if field.kind == 'scalar_ref' ~}}
-            record.{{ field.name }}_index = reader.read_int32
+            record.{{ field.name }}_index = {{ field.read_scalar }}
 {{~ else ~}}
             record.{{ field.name }} = {{ field.read_scalar }}
 {{~ end ~}}

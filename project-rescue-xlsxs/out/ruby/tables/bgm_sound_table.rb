@@ -80,18 +80,21 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'BGMSound.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BGMSound.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'BGMSound.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BGMSound.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'BGMSound.Path', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BGMSound.Path')
           records.each do |record|
-            record.path = reader.read_string
+            record.path = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'BGMSound.Loop', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -105,8 +108,9 @@ module Rescue
           end
         when 6
           Sheetman.check_column(column, 'BGMSound.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BGMSound.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

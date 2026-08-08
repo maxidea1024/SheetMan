@@ -98,37 +98,42 @@ func (t *CostCurveRangeTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "CostCurveRange.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurveRange.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "CostCurveRange.GrowthType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurveRange.GrowthType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GrowthType = GrowthType(reader.ReadEnum())
+					r.GrowthType = GrowthType(cursor.NextI32())
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "CostCurveRange.RangeIndex", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurveRange.RangeIndex")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RangeIndex = reader.ReadI32As(column.Element)
+					r.RangeIndex = cursor.NextI32()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "CostCurveRange.StartStep", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurveRange.StartStep")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StartStep = reader.ReadI32As(column.Element)
+					r.StartStep = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "CostCurveRange.EndStep", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurveRange.EndStep")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EndStep = reader.ReadI32As(column.Element)
+					r.EndStep = cursor.NextI32()
 				}
 			}
 		case 6:

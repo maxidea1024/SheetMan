@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -112,56 +113,65 @@ class GachaArtifactListTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "GachaArtifactList.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactList.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "GachaArtifactList.ArtifactID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactList.ArtifactID")
                     for (record in loaded) {
-                        record.artifactID = reader.readI32As(column.element)
+                        record.artifactID = cursor.nextI32()
                     }
                 }
                 3 -> {
                     checkColumn(column, "GachaArtifactList.GradeType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactList.GradeType")
                     for (record in loaded) {
-                        record.gradeType = GradeType.of(reader.readEnum())
+                        record.gradeType = GradeType.of(cursor.nextI32())
                     }
                 }
                 4 -> {
                     checkColumn(column, "GachaArtifactList.BaseWeight", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactList.BaseWeight")
                     for (record in loaded) {
-                        record.baseWeight = reader.readI32As(column.element)
+                        record.baseWeight = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "GachaArtifactList.ClassUpCurrencyID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactList.ClassUpCurrencyID")
                     for (record in loaded) {
-                        record.classUpCurrencyID = reader.readI32As(column.element)
+                        record.classUpCurrencyID = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "GachaArtifactList.ClassUpCurrencyValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactList.ClassUpCurrencyValue")
                     for (record in loaded) {
-                        record.classUpCurrencyValue = reader.readI32As(column.element)
+                        record.classUpCurrencyValue = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "GachaArtifactList.ExConditionID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactList.ExConditionID")
                     for (record in loaded) {
-                        record.exConditionID = reader.readI32As(column.element)
+                        record.exConditionID = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "GachaArtifactList.ExCurrencyID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactList.ExCurrencyID")
                     for (record in loaded) {
-                        record.exCurrencyID = reader.readI32As(column.element)
+                        record.exCurrencyID = cursor.nextI32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "GachaArtifactList.ExCurrencyValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaArtifactList.ExCurrencyValue")
                     for (record in loaded) {
-                        record.exCurrencyValue = reader.readI32As(column.element)
+                        record.exCurrencyValue = cursor.nextI32()
                     }
                 }
                 else ->

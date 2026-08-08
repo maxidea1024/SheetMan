@@ -96,20 +96,24 @@ class StageTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Stage.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Stage.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Stage.StageName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.StageName")
                 for record in records:
-                    record.stage_name = reader.read_string()
+                    record.stage_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Stage.AssetDataPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.AssetDataPath")
                 for record in records:
-                    record.asset_data_path = reader.read_string()
+                    record.asset_data_path = cursor.next_string()
             elif column.tag == 5:
                 sheetman.check_column(column, "Stage.SpawnIds", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:
@@ -117,20 +121,23 @@ class StageTable:
                     record.spawn_ids = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 6:
                 sheetman.check_column(column, "Stage.SpawnPointCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.SpawnPointCount")
                 for record in records:
-                    record.spawn_point_count = reader.read_i32_as(column.element)
+                    record.spawn_point_count = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "Stage.SpawnMaxCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.SpawnMaxCount")
                 for record in records:
-                    record.spawn_max_count = reader.read_i32_as(column.element)
+                    record.spawn_max_count = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "Stage.SpawnNextTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.spawn_next_time = reader.read_float()
             elif column.tag == 9:
                 sheetman.check_column(column, "Stage.StageClearCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.StageClearCount")
                 for record in records:
-                    record.stage_clear_count = reader.read_i32_as(column.element)
+                    record.stage_clear_count = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "Stage.BossID", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:
@@ -162,16 +169,19 @@ class StageTable:
                     record.boss_mhp_up_percent = reader.read_float()
             elif column.tag == 17:
                 sheetman.check_column(column, "Stage.StageDropListID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.StageDropListID")
                 for record in records:
-                    record.stage_drop_list_id = reader.read_i32_as(column.element)
+                    record.stage_drop_list_id = cursor.next_i32()
             elif column.tag == 18:
                 sheetman.check_column(column, "Stage.StageBGMID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.StageBGMID")
                 for record in records:
-                    record.stage_bgmid = reader.read_i32_as(column.element)
+                    record.stage_bgmid = cursor.next_i32()
             elif column.tag == 19:
                 sheetman.check_column(column, "Stage.BossStageBGMID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Stage.BossStageBGMID")
                 for record in records:
-                    record.boss_stage_bgmid = reader.read_i32_as(column.element)
+                    record.boss_stage_bgmid = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

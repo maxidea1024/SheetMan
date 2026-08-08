@@ -129,128 +129,149 @@ impl SDAgencyTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDAgency.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDAgency.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDAgency.InfoName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.InfoName")?;
                     for record in records.iter_mut() {
-                        record.info_name = reader.read_string()?;
+                        record.info_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDAgency.AgencyType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.AgencyType")?;
                     for record in records.iter_mut() {
-                        record.agency_type = AgencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.agency_type = AgencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SDAgency.AgencyGrade", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.AgencyGrade")?;
                     for record in records.iter_mut() {
-                        record.agency_grade = AgencyGrade::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.agency_grade = AgencyGrade::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDAgency.Time", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.Time")?;
                     for record in records.iter_mut() {
-                        record.time = reader.read_i32_as(column.element)?;
+                        record.time = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "SDAgency.AgencyWeight", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.AgencyWeight")?;
                     for record in records.iter_mut() {
-                        record.agency_weight = reader.read_i32_as(column.element)?;
+                        record.agency_weight = cursor.next_i32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "SDAgency.Condition1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.Condition1")?;
                     for record in records.iter_mut() {
-                        record.condition1 = JobType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.condition1 = JobType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "SDAgency.Condition1value", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.Condition1value")?;
                     for record in records.iter_mut() {
-                        record.condition1value = reader.read_i32_as(column.element)?;
+                        record.condition1value = cursor.next_i32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "SDAgency.Condition2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.Condition2")?;
                     for record in records.iter_mut() {
-                        record.condition2 = GradeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.condition2 = GradeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "SDAgency.Condition2value", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.Condition2value")?;
                     for record in records.iter_mut() {
-                        record.condition2value = reader.read_i32_as(column.element)?;
+                        record.condition2value = cursor.next_i32()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "SDAgency.Condition3", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.Condition3")?;
                     for record in records.iter_mut() {
-                        record.condition3 = ConditionType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.condition3 = ConditionType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "SDAgency.ClassMinValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.ClassMinValue")?;
                     for record in records.iter_mut() {
-                        record.class_min_value = reader.read_i32_as(column.element)?;
+                        record.class_min_value = cursor.next_i32()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "SDAgency.Condition3value", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.Condition3value")?;
                     for record in records.iter_mut() {
-                        record.condition3value = reader.read_i32_as(column.element)?;
+                        record.condition3value = cursor.next_i32()?;
                     }
                 }
                 15 => {
                     sheetman::check_column(column, "SDAgency.RewardType1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.RewardType1")?;
                     for record in records.iter_mut() {
-                        record.reward_type1 = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_type1 = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "SDAgency.RewardValue1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.RewardValue1")?;
                     for record in records.iter_mut() {
-                        record.reward_value1 = reader.read_i32_as(column.element)?;
+                        record.reward_value1 = cursor.next_i32()?;
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "SDAgency.RewardType2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.RewardType2")?;
                     for record in records.iter_mut() {
-                        record.reward_type2 = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_type2 = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 18 => {
                     sheetman::check_column(column, "SDAgency.RewardValue2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.RewardValue2")?;
                     for record in records.iter_mut() {
-                        record.reward_value2 = reader.read_i32_as(column.element)?;
+                        record.reward_value2 = cursor.next_i32()?;
                     }
                 }
                 19 => {
                     sheetman::check_column(column, "SDAgency.RewardType3", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.RewardType3")?;
                     for record in records.iter_mut() {
-                        record.reward_type3 = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_type3 = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 20 => {
                     sheetman::check_column(column, "SDAgency.RewardValue3", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.RewardValue3")?;
                     for record in records.iter_mut() {
-                        record.reward_value3 = reader.read_i32_as(column.element)?;
+                        record.reward_value3 = cursor.next_i32()?;
                     }
                 }
                 21 => {
                     sheetman::check_column(column, "SDAgency.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAgency.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

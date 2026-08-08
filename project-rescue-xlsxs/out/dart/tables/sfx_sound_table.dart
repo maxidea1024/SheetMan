@@ -68,6 +68,7 @@ class SFXSoundTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SFXSoundRecord>[];
@@ -83,38 +84,44 @@ class SFXSoundTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SFXSound.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SFXSound.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SFXSound.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SFXSound.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SFXSound.Category', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SFXSound.Category');
           for (final record in loaded) {
-            record.category = SFXCategoryType.of(reader.readEnum());
+            record.category = SFXCategoryType.of(cursor.nextI32());
           }
           break;
         case 4:
           checkColumn(column, 'SFXSound.Path', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SFXSound.Path');
           for (final record in loaded) {
-            record.path = reader.readString();
+            record.path = cursor.nextString();
           }
           break;
         case 5:
           checkColumn(column, 'SFXSound.PreloadGroup', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SFXSound.PreloadGroup');
           for (final record in loaded) {
-            record.preloadGroup = reader.readString();
+            record.preloadGroup = cursor.nextString();
           }
           break;
         case 6:
           checkColumn(column, 'SFXSound.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SFXSound.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         default:

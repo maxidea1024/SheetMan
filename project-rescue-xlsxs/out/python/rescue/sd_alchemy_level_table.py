@@ -93,36 +93,44 @@ class SDAlchemyLevelTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDAlchemyLevel.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDAlchemyLevel.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDAlchemyLevel.NameKR", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.NameKR")
                 for record in records:
-                    record.name_kr = reader.read_string()
+                    record.name_kr = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDAlchemyLevel.LevelUpCost", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.LevelUpCost")
                 for record in records:
-                    record.level_up_cost = reader.read_i32_as(column.element)
+                    record.level_up_cost = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "SDAlchemyLevel.LevelUpTotal", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.LevelUpTotal")
                 for record in records:
-                    record.level_up_total = reader.read_i32_as(column.element)
+                    record.level_up_total = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "SDAlchemyLevel.Time", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.Time")
                 for record in records:
-                    record.time = reader.read_i64_as(column.element)
+                    record.time = cursor.next_i64()
             elif column.tag == 7:
                 sheetman.check_column(column, "SDAlchemyLevel.UseDiaCost", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.UseDiaCost")
                 for record in records:
-                    record.use_dia_cost = reader.read_i32_as(column.element)
+                    record.use_dia_cost = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "SDAlchemyLevel.UseItemCost", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyLevel.UseItemCost")
                 for record in records:
-                    record.use_item_cost = reader.read_i32_as(column.element)
+                    record.use_item_cost = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "SDAlchemyLevel.CritDMGValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:

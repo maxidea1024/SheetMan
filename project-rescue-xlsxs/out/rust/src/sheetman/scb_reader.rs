@@ -106,6 +106,10 @@ pub enum Error {
     /// Refusal is by name and both wires, never by reading anyway: a value that might
     /// not survive the conversion is a value this format does not read.
     ColumnMismatch { field: &'static str, detail: &'static str },
+    /// A run claims a length the column has no rows left for - or no length at all.
+    RunLengthImplausible { field: &'static str, length: i32, rows_left: i32 },
+    /// A dictionary index points outside the dictionary the block decoded.
+    DictionaryIndexOutOfRange { field: &'static str, index: i32, entries: usize },
     /// A column block's declared length and the bytes the read consumed disagree.
     BlockLengthMismatch { tag: i32 },
     /// A column declares more bytes than the file has left to give it.
@@ -141,6 +145,16 @@ impl fmt::Display for Error {
             Error::UnsupportedFeatures => write!(f, "table declares unsupported features"),
             Error::InvalidUtf8 => write!(f, "string bytes are not valid UTF-8"),
             Error::ColumnMismatch { field, detail } => write!(f, "{}: {}", field, detail),
+            Error::RunLengthImplausible { field, length, rows_left } => write!(
+                f,
+                "{}: a run of {} values cannot cover the {} rows left in the column",
+                field, length, rows_left
+            ),
+            Error::DictionaryIndexOutOfRange { field, index, entries } => write!(
+                f,
+                "{}: dictionary index {} is out of range - the dictionary holds {} entries",
+                field, index, entries
+            ),
             Error::ColumnLengthImplausible { tag, byte_length } => write!(
                 f,
                 "column tag {} declares {} bytes, which the file cannot hold",
@@ -404,6 +418,205 @@ impl fmt::Display for Uuid {
     }
 }
 
+/// Reads one scalar column's values in row order, whatever the block's encoding.
+///
+/// The generated row loop stays a row loop; this is the one place that knows how a
+/// delta accumulates, how long a run has left, or that a dictionary index is a
+/// reference into strings decoded once. That last one matters beyond file size: a
+/// hundred-thousand-row column with three distinct strings decodes three, and each row
+/// clones from those rather than from the file.
+///
+/// check_column has already refused any (element, encoding) pair the spec does not
+/// define, so the matches here do not re-litigate that.
+///
+/// Holds the reader mutably for the length of one column's row loop, which is exactly
+/// how the generated code uses it: nothing else touches the reader until the cursor
+/// goes out of scope at the end of the match arm.
+pub struct ScbColumnCursor<'r, 'a> {
+    reader: &'r mut Reader<'a>,
+    field: &'static str,
+    element: u8,
+    encoding: u8,
+
+    /// The block's dictionary, decoded once and handed out per row.
+    dictionary: Vec<String>,
+
+    // A run-length family's current run: what remains of it, and its value - which is
+    // a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+    run_remaining: i32,
+    run_value: i32,
+
+    // The delta family's accumulator, once started.
+    previous: i32,
+    started: bool,
+
+    // Rows not yet handed out. A run that claims more than this is corrupt, and
+    // catching it here names the field instead of leaving it to the block-end check.
+    rows_remaining: i32,
+}
+
+impl<'r, 'a> ScbColumnCursor<'r, 'a> {
+    pub fn new(
+        reader: &'r mut Reader<'a>, column: &Column, row_count: i32, field: &'static str,
+    ) -> Result<Self> {
+        let mut dictionary = Vec::new();
+
+        if column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE {
+            let count = reader.read_counter32()?;
+            if count < 0 {
+                return Err(Error::NegativeLength);
+            }
+
+            dictionary.reserve_exact(count as usize);
+            for _ in 0..count {
+                dictionary.push(reader.read_string()?);
+            }
+        }
+
+        Ok(ScbColumnCursor {
+            reader,
+            field,
+            element: column.element,
+            encoding: column.encoding,
+            dictionary,
+            run_remaining: 0,
+            run_value: 0,
+            previous: 0,
+            started: false,
+            rows_remaining: row_count,
+        })
+    }
+
+    /// The next i32 - which also serves enums, and reference indexes.
+    pub fn next_i32(&mut self) -> Result<i32> {
+        self.rows_remaining -= 1;
+
+        match self.encoding {
+            ENCODING_RAW => {
+                if self.element == ELEMENT_I32 {
+                    self.reader.read_i32()
+                } else {
+                    self.reader.read_optimal_i32()
+                }
+            }
+
+            ENCODING_VARINT => self.reader.read_optimal_i32(),
+
+            ENCODING_DELTA => {
+                // The addition wraps on purpose, mirroring the writer's wrapping
+                // subtraction; together they are exact for every i32 pair.
+                if self.started {
+                    self.previous = self.previous.wrapping_add(self.reader.read_optimal_i32()?);
+                } else {
+                    self.previous = self.reader.read_optimal_i32()?;
+                    self.started = true;
+                }
+
+                Ok(self.previous)
+            }
+
+            ENCODING_RLE => {
+                if self.run_remaining == 0 {
+                    self.read_run()?;
+                }
+
+                self.run_remaining -= 1;
+                Ok(self.run_value)
+            }
+
+            // ENCODING_DELTA_RLE; check_column refused everything else.
+            _ => {
+                if !self.started {
+                    self.previous = self.reader.read_optimal_i32()?;
+                    self.started = true;
+                    return Ok(self.previous);
+                }
+
+                if self.run_remaining == 0 {
+                    self.read_run()?;
+                }
+
+                self.run_remaining -= 1;
+                self.previous = self.previous.wrapping_add(self.run_value);
+                Ok(self.previous)
+            }
+        }
+    }
+
+    /// An i64 member: an i64 column is always raw, anything narrower decodes as i32.
+    pub fn next_i64(&mut self) -> Result<i64> {
+        if self.element == ELEMENT_I64 {
+            self.reader.read_i64()
+        } else {
+            Ok(self.next_i32()? as i64)
+        }
+    }
+
+    /// An f64 member: float columns are always raw, an i32 column decodes then widens.
+    pub fn next_f64(&mut self) -> Result<f64> {
+        match self.element {
+            ELEMENT_F64 => self.reader.read_f64(),
+            ELEMENT_F32 => Ok(self.reader.read_f32()? as f64),
+            _ => Ok(self.next_i32()? as f64),
+        }
+    }
+
+    /// The next string - a clone of the dictionary's entry where the block has one.
+    pub fn next_string(&mut self) -> Result<String> {
+        self.rows_remaining -= 1;
+
+        match self.encoding {
+            ENCODING_RAW => self.reader.read_string(),
+
+            ENCODING_DICT => {
+                let index = self.reader.read_counter32()?;
+                self.dictionary_entry(index)
+            }
+
+            // ENCODING_DICT_RLE; check_column refused everything else.
+            _ => {
+                if self.run_remaining == 0 {
+                    self.read_run()?;
+                }
+
+                self.run_remaining -= 1;
+                self.dictionary_entry(self.run_value)
+            }
+        }
+    }
+
+    fn read_run(&mut self) -> Result<()> {
+        let length = self.reader.read_counter32()?;
+
+        // + 1 because the row this run was read for is already counted out of
+        // rows_remaining by its next_* call.
+        if length < 1 || length > self.rows_remaining + 1 {
+            return Err(Error::RunLengthImplausible {
+                field: self.field,
+                length,
+                rows_left: self.rows_remaining + 1,
+            });
+        }
+
+        self.run_remaining = length;
+        self.run_value = self.reader.read_optimal_i32()?;
+
+        Ok(())
+    }
+
+    fn dictionary_entry(&self, index: i32) -> Result<String> {
+        if index < 0 || index as usize >= self.dictionary.len() {
+            return Err(Error::DictionaryIndexOutOfRange {
+                field: self.field,
+                index,
+                entries: self.dictionary.len(),
+            });
+        }
+
+        Ok(self.dictionary[index as usize].clone())
+    }
+}
+
 /// Reads and checks a table file's header, returning the row count that follows it.
 ///
 /// The reserved byte is written as zero and is where compression or encryption flags
@@ -496,13 +709,14 @@ pub fn check_column(
         });
     }
 
-    // An encoding this build cannot decode is refused by name, exactly like an element
-    // it cannot read. An unknown column's encoding never gets here - a skip is a skip
-    // whatever the block's layout.
-    if column.encoding != ENCODING_RAW {
+    // An encoding this build cannot decode - or one the spec does not define for this
+    // element - is refused by name, exactly like an element it cannot read. An unknown
+    // column's encoding never gets here - a skip is a skip whatever the block's layout.
+    if !encoding_supported(column) {
         return Err(Error::ColumnMismatch {
             field,
-            detail: "the column uses an encoding this reader does not support;                      regenerate the code or rebuild the data",
+            detail: "the column uses an encoding this reader cannot decode for its \
+                     element type; regenerate the code or rebuild the data",
         });
     }
 
@@ -515,6 +729,25 @@ pub fn check_column(
     }
 
     Ok(())
+}
+
+/// The (element, encoding) pairs the spec defines. Arrays are always raw; integers
+/// take the integer encodings, strings the dictionary ones.
+fn encoding_supported(column: &Column) -> bool {
+    if column.encoding == ENCODING_RAW {
+        return true;
+    }
+
+    if column.kind != KIND_SCALAR {
+        return false;
+    }
+
+    match column.element {
+        ELEMENT_VARINT => column.encoding == ENCODING_RLE,
+        ELEMENT_I32 => column.encoding >= ENCODING_VARINT && column.encoding <= ENCODING_DELTA_RLE,
+        ELEMENT_STRING => column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE,
+        _ => false,
+    }
 }
 
 /// That a block was consumed exactly: a mismatch is a format disagreement, and stopping

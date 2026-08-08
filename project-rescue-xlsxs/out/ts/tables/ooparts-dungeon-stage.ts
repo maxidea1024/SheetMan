@@ -269,6 +269,7 @@ export class OopartsDungeonStageTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -282,44 +283,50 @@ export class OopartsDungeonStageTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'OopartsDungeonStage.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'OopartsDungeonStage.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'OopartsDungeonStage.StageName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.StageName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._stageName = reader.readString()
+            record._stageName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'OopartsDungeonStage.DungeonType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.DungeonType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dungeonType = reader.readEnum() as DungeonType
+            record._dungeonType = cursor.nextI32() as DungeonType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'OopartsDungeonStage.DungeonFloor', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.DungeonFloor')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dungeonFloor = reader.readI32As(column.element)
+            record._dungeonFloor = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'OopartsDungeonStage.TimeLimit', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.TimeLimit')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._timeLimit = reader.readI32As(column.element)
+            record._timeLimit = cursor.nextI32()
           }
           break
         case 7:
@@ -344,16 +351,18 @@ export class OopartsDungeonStageTable {
           break
         case 9:
           sheetman.checkColumn(column, 'OopartsDungeonStage.SpawnPointCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.SpawnPointCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._spawnPointCount = reader.readI32As(column.element)
+            record._spawnPointCount = cursor.nextI32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'OopartsDungeonStage.SpawnMaxCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.SpawnMaxCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._spawnMaxCount = reader.readI32As(column.element)
+            record._spawnMaxCount = cursor.nextI32()
           }
           break
         case 11:
@@ -365,23 +374,26 @@ export class OopartsDungeonStageTable {
           break
         case 12:
           sheetman.checkColumn(column, 'OopartsDungeonStage.StageClearCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.StageClearCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._stageClearCount = reader.readI32As(column.element)
+            record._stageClearCount = cursor.nextI32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'OopartsDungeonStage.RecommendPower', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.RecommendPower')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._recommendPower = reader.readString()
+            record._recommendPower = cursor.nextString()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'OopartsDungeonStage.RewardID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.RewardID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardID = reader.readI32As(column.element)
+            record._rewardID = cursor.nextI32()
           }
           break
         case 15:
@@ -407,23 +419,26 @@ export class OopartsDungeonStageTable {
           break
         case 18:
           sheetman.checkColumn(column, 'OopartsDungeonStage.DungeonImagePath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.DungeonImagePath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dungeonImagePath = reader.readString()
+            record._dungeonImagePath = cursor.nextString()
           }
           break
         case 19:
           sheetman.checkColumn(column, 'OopartsDungeonStage.MonsterImagePath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.MonsterImagePath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._monsterImagePath = reader.readString()
+            record._monsterImagePath = cursor.nextString()
           }
           break
         case 20:
           sheetman.checkColumn(column, 'OopartsDungeonStage.AssetDataPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'OopartsDungeonStage.AssetDataPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._assetDataPath = reader.readString()
+            record._assetDataPath = cursor.nextString()
           }
           break
         default:

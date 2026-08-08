@@ -132,79 +132,90 @@ func (t *GachaInfoTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.GachaType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.GachaType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GachaType = GachaType(reader.ReadEnum())
+					r.GachaType = GachaType(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.Priority", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.Priority")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Priority = reader.ReadI32As(column.Element)
+					r.Priority = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.ConditionID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.ConditionID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionID = reader.ReadI32As(column.Element)
+					r.ConditionID = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.RateId", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.RateId")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RateId = reader.ReadI32As(column.Element)
+					r.RateId = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.TriggerCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.TriggerCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TriggerCount = reader.ReadI32As(column.Element)
+					r.TriggerCount = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.TriggerRateId", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.TriggerRateId")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TriggerRateId = reader.ReadI32As(column.Element)
+					r.TriggerRateId = cursor.NextI32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.EndCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.EndCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EndCount = reader.ReadI32As(column.Element)
+					r.EndCount = cursor.NextI32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.EndRateId", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.EndRateId")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EndRateId = reader.ReadI32As(column.Element)
+					r.EndRateId = cursor.NextI32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.EndCharacterId", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.EndCharacterId")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EndCharacterId = reader.ReadI32As(column.Element)
+					r.EndCharacterId = cursor.NextI32()
 				}
 			}
 		case 12:
@@ -223,16 +234,18 @@ func (t *GachaInfoTable) Read(filename string) error {
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.WishListConditionID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.WishListConditionID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.WishListConditionID = reader.ReadI32As(column.Element)
+					r.WishListConditionID = cursor.NextI32()
 				}
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.WishListMaxValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.WishListMaxValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.WishListMaxValue = reader.ReadI32As(column.Element)
+					r.WishListMaxValue = cursor.NextI32()
 				}
 			}
 		case 16:
@@ -251,37 +264,42 @@ func (t *GachaInfoTable) Read(filename string) error {
 			}
 		case 18:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.CurrencyType1", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.CurrencyType1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CurrencyType1 = CurrencyType(reader.ReadEnum())
+					r.CurrencyType1 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 19:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.SingleCost1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.SingleCost1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SingleCost1 = reader.ReadI32As(column.Element)
+					r.SingleCost1 = cursor.NextI32()
 				}
 			}
 		case 20:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.CurrencyType2", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.CurrencyType2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CurrencyType2 = CurrencyType(reader.ReadEnum())
+					r.CurrencyType2 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 21:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.SingleCost2", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.SingleCost2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SingleCost2 = reader.ReadI32As(column.Element)
+					r.SingleCost2 = cursor.NextI32()
 				}
 			}
 		case 22:
 			if sheetman.CheckColumn(reader, column, "GachaInfo.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaInfo.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		case 23:

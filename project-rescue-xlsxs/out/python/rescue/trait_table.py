@@ -85,20 +85,24 @@ class TraitTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Trait.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Trait.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Trait.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Trait.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Trait.TraitName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Trait.TraitName")
                 for record in records:
-                    record.trait_name = reader.read_string()
+                    record.trait_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Trait.StatType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Trait.StatType")
                 for record in records:
-                    record.stat_type = StatType(reader.read_enum())
+                    record.stat_type = StatType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Trait.StatRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -110,8 +114,9 @@ class TraitTable:
                     record.unlock_condition = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 7:
                 sheetman.check_column(column, "Trait.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Trait.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

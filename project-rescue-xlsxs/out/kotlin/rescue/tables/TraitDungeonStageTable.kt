@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -134,38 +135,44 @@ class TraitDungeonStageTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "TraitDungeonStage.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "TraitDungeonStage.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "TraitDungeonStage.StageName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.StageName")
                     for (record in loaded) {
-                        record.stageName = reader.readString()
+                        record.stageName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "TraitDungeonStage.DungeonType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.DungeonType")
                     for (record in loaded) {
-                        record.dungeonType = DungeonType.of(reader.readEnum())
+                        record.dungeonType = DungeonType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "TraitDungeonStage.DungeonFloor", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.DungeonFloor")
                     for (record in loaded) {
-                        record.dungeonFloor = reader.readI32As(column.element)
+                        record.dungeonFloor = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "TraitDungeonStage.TimeLimit", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.TimeLimit")
                     for (record in loaded) {
-                        record.timeLimit = reader.readI32As(column.element)
+                        record.timeLimit = cursor.nextI32()
                     }
                 }
                 7 -> {
@@ -186,14 +193,16 @@ class TraitDungeonStageTable {
                 }
                 9 -> {
                     checkColumn(column, "TraitDungeonStage.SpawnPointCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.SpawnPointCount")
                     for (record in loaded) {
-                        record.spawnPointCount = reader.readI32As(column.element)
+                        record.spawnPointCount = cursor.nextI32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "TraitDungeonStage.SpawnMaxCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.SpawnMaxCount")
                     for (record in loaded) {
-                        record.spawnMaxCount = reader.readI32As(column.element)
+                        record.spawnMaxCount = cursor.nextI32()
                     }
                 }
                 11 -> {
@@ -204,20 +213,23 @@ class TraitDungeonStageTable {
                 }
                 12 -> {
                     checkColumn(column, "TraitDungeonStage.StageClearCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.StageClearCount")
                     for (record in loaded) {
-                        record.stageClearCount = reader.readI32As(column.element)
+                        record.stageClearCount = cursor.nextI32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "TraitDungeonStage.RecommendPower", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.RecommendPower")
                     for (record in loaded) {
-                        record.recommendPower = reader.readString()
+                        record.recommendPower = cursor.nextString()
                     }
                 }
                 14 -> {
                     checkColumn(column, "TraitDungeonStage.RewardID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.RewardID")
                     for (record in loaded) {
-                        record.rewardID = reader.readI32As(column.element)
+                        record.rewardID = cursor.nextI32()
                     }
                 }
                 15 -> {
@@ -240,20 +252,23 @@ class TraitDungeonStageTable {
                 }
                 18 -> {
                     checkColumn(column, "TraitDungeonStage.DungeonImagePath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.DungeonImagePath")
                     for (record in loaded) {
-                        record.dungeonImagePath = reader.readString()
+                        record.dungeonImagePath = cursor.nextString()
                     }
                 }
                 19 -> {
                     checkColumn(column, "TraitDungeonStage.MonsterImagePath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.MonsterImagePath")
                     for (record in loaded) {
-                        record.monsterImagePath = reader.readString()
+                        record.monsterImagePath = cursor.nextString()
                     }
                 }
                 20 -> {
                     checkColumn(column, "TraitDungeonStage.AssetDataPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonStage.AssetDataPath")
                     for (record in loaded) {
-                        record.assetDataPath = reader.readString()
+                        record.assetDataPath = cursor.nextString()
                     }
                 }
                 else ->

@@ -74,6 +74,7 @@ public final class SDAlchemyInfoTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<SDAlchemyInfoRecord> loaded = new ArrayList<>(count);
@@ -89,43 +90,49 @@ public final class SDAlchemyInfoTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.Id");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.Name");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.NameKR");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.nameKR = reader.readString();
+                        record.nameKR = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.MaterialType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.materialType = CurrencyType.of(reader.readEnum());
+                        record.materialType = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.CommonMaterialType1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType1");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.commonMaterialType1 = CurrencyType.of(reader.readEnum());
+                        record.commonMaterialType1 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.CommonMaterialType2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType2");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.commonMaterialType2 = CurrencyType.of(reader.readEnum());
+                        record.commonMaterialType2 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
@@ -138,64 +145,73 @@ public final class SDAlchemyInfoTable {
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.StatType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.StatType");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.statType = StatType.of(reader.readEnum());
+                        record.statType = StatType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.TargetType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.TargetType");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.targetType = TargetType.of(reader.readEnum());
+                        record.targetType = TargetType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.MaxLevelId", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.MaxLevelId");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.maxLevelId = reader.readI32As(column.element);
+                        record.maxLevelId = cursor.nextI32();
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateTime");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.accelerateTime = reader.readI32As(column.element);
+                        record.accelerateTime = cursor.nextI32();
                     }
                     break;
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemType1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType1");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.accelerateItemType1 = CurrencyType.of(reader.readEnum());
+                        record.accelerateItemType1 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemCost1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost1");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.accelerateItemCost1 = reader.readI32As(column.element);
+                        record.accelerateItemCost1 = cursor.nextI32();
                     }
                     break;
                 }
                 case 14: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemType2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType2");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.accelerateItemType2 = CurrencyType.of(reader.readEnum());
+                        record.accelerateItemType2 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.AccelerateItemCost2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost2");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.accelerateItemCost2 = reader.readI32As(column.element);
+                        record.accelerateItemCost2 = cursor.nextI32();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "SDAlchemyInfo.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyInfo.IconPath");
                     for (SDAlchemyInfoRecord record : loaded) {
-                        record.iconPath = reader.readString();
+                        record.iconPath = cursor.nextString();
                     }
                     break;
                 }

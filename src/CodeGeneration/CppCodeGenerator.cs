@@ -381,10 +381,11 @@ public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGr
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             Name = name,
             ElementCount = sf.Fields.Count,
             RefDefault = RefDefault(sf),
-            ReadScalar = ReadElementExpression(sf, "record." + name),
+            ReadScalar = ScalarReadExpression(sf, name),
             ReadElement = ReadElementExpression(sf, "record." + name + "[j]"),
             ReadVarElement = ReadElementExpression(sf, "record." + name + "[static_cast<std::size_t>(j)]"),
         };
@@ -477,6 +478,79 @@ public class CppCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGr
     };
 
     // ----------------------------------------------------------- rendering
+
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly. A declaration rather than an assignment:
+    /// unlike C#'s shared switch scope, every generated case body is a block of its own.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"sheetman::ScbColumnCursor cursor(reader, column, header.row_count, \"{tableName}.{sf.Name}\");"
+            : "";
+
+    /// <summary>
+    /// The read for a scalar field's row: through the cursor where the column can
+    /// arrive encoded - which also carries the lossless promotions - and the direct
+    /// reader call where it is raw by spec.
+    /// </summary>
+    private string ScalarReadExpression(SerialField sf, string name)
+    {
+        string target = "record." + name;
+
+        if (UsesCursor(sf))
+        {
+            if (sf.ElementType == ValueType.Enum)
+                return $"{target} = static_cast<{ToCppTypeName(sf.FirstField)}>(cursor.next_i32())";
+
+            // Only the stored index is on the wire; the value is filled in once
+            // every table is loaded.
+            if (sf.IsRef)
+                return $"{target}_index = cursor.next_i32()";
+
+            return sf.ElementType switch
+            {
+                ValueType.Int32 => $"{target} = cursor.next_i32()",
+                ValueType.Int64 => $"{target} = cursor.next_i64()",
+                ValueType.Double => $"{target} = cursor.next_f64()",
+                _ => $"{target} = cursor.next_string()",
+            };
+        }
+
+        if (sf.IsRef)
+            return $"reader.read({target}_index)";
+
+        return ReadElementExpression(sf, target);
+    }
 
     /// <summary>
     /// The call reading one value of a field's element type into

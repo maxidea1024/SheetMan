@@ -70,6 +70,7 @@ class SDPubInfoTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SDPubInfoRecord>[];
@@ -85,44 +86,51 @@ class SDPubInfoTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SDPubInfo.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDPubInfo.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SDPubInfo.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDPubInfo.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SDPubInfo.PubName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDPubInfo.PubName');
           for (final record in loaded) {
-            record.pubName = reader.readString();
+            record.pubName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'SDPubInfo.UnlockCondition', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDPubInfo.UnlockCondition');
           for (final record in loaded) {
-            record.unlockCondition = reader.readI32As(column.element);
+            record.unlockCondition = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'SDPubInfo.LimitValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDPubInfo.LimitValue');
           for (final record in loaded) {
-            record.limitValue = reader.readI32As(column.element);
+            record.limitValue = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'SDPubInfo.BuffID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDPubInfo.BuffID');
           for (final record in loaded) {
-            record.buffID = reader.readI32As(column.element);
+            record.buffID = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'SDPubInfo.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDPubInfo.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         default:

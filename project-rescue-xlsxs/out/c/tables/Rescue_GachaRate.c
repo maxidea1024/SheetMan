@@ -14,6 +14,7 @@ static bool Rescue_GachaRateParse(Rescue_GachaRateTable_t* table, sm_reader* rea
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -46,11 +47,12 @@ static bool Rescue_GachaRateParse(Rescue_GachaRateTable_t* table, sm_reader* rea
     case 1:
       (void)sm_check_column(reader, column, "GachaRate.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaRate.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaRateRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;

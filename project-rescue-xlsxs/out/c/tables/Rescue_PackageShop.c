@@ -14,6 +14,7 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -61,11 +62,12 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 1:
       (void)sm_check_column(reader, column, "PackageShop.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -73,11 +75,12 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 2:
       (void)sm_check_column(reader, column, "PackageShop.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -85,11 +88,12 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 3:
       (void)sm_check_column(reader, column, "PackageShop.ProductName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.ProductName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->product_name);
+        (void)sm_cursor_next_string(&cursor, &record->product_name);
       }
 
       break;
@@ -97,12 +101,13 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 4:
       (void)sm_check_column(reader, column, "PackageShop.ShopType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.ShopType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->shop_type = (Rescue_ShopType_t)scratch;
       }
 
@@ -111,11 +116,12 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 5:
       (void)sm_check_column(reader, column, "PackageShop.ShopSlotID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.ShopSlotID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->shop_slot_id);
+        (void)sm_cursor_next_i32(&cursor, &record->shop_slot_id);
       }
 
       break;
@@ -123,11 +129,12 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 6:
       (void)sm_check_column(reader, column, "PackageShop.Priority", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.Priority");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->priority);
+        (void)sm_cursor_next_i32(&cursor, &record->priority);
       }
 
       break;
@@ -191,12 +198,13 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 9:
       (void)sm_check_column(reader, column, "PackageShop.CycleType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.CycleType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->cycle_type = (Rescue_CycleType_t)scratch;
       }
 
@@ -205,11 +213,12 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 10:
       (void)sm_check_column(reader, column, "PackageShop.LimitValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.LimitValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->limit_value);
+        (void)sm_cursor_next_i32(&cursor, &record->limit_value);
       }
 
       break;
@@ -217,12 +226,13 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 11:
       (void)sm_check_column(reader, column, "PackageShop.CurrencyType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.CurrencyType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->currency_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -231,11 +241,12 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 12:
       (void)sm_check_column(reader, column, "PackageShop.PriceValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.PriceValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->price_value);
+        (void)sm_cursor_next_i32(&cursor, &record->price_value);
       }
 
       break;
@@ -243,11 +254,12 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 13:
       (void)sm_check_column(reader, column, "PackageShop.ConditionID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.ConditionID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->condition_id);
+        (void)sm_cursor_next_i32(&cursor, &record->condition_id);
       }
 
       break;
@@ -255,11 +267,12 @@ static bool Rescue_PackageShopParse(Rescue_PackageShopTable_t* table, sm_reader*
     case 14:
       (void)sm_check_column(reader, column, "PackageShop.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "PackageShop.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageShopRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;

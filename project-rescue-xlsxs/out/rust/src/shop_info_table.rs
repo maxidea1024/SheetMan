@@ -100,56 +100,65 @@ impl ShopInfoTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "ShopInfo.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ShopInfo.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "ShopInfo.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ShopInfo.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "ShopInfo.InfoName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ShopInfo.InfoName")?;
                     for record in records.iter_mut() {
-                        record.info_name = reader.read_string()?;
+                        record.info_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "ShopInfo.ShopType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ShopInfo.ShopType")?;
                     for record in records.iter_mut() {
-                        record.shop_type = ShopType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.shop_type = ShopType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "ShopInfo.ConditionID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ShopInfo.ConditionID")?;
                     for record in records.iter_mut() {
-                        record.condition_id = reader.read_i32_as(column.element)?;
+                        record.condition_id = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "ShopInfo.SheetName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ShopInfo.SheetName")?;
                     for record in records.iter_mut() {
-                        record.sheet_name = reader.read_string()?;
+                        record.sheet_name = cursor.next_string()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "ShopInfo.Priority", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ShopInfo.Priority")?;
                     for record in records.iter_mut() {
-                        record.priority = reader.read_i32_as(column.element)?;
+                        record.priority = cursor.next_i32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "ShopInfo.UIPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ShopInfo.UIPath")?;
                     for record in records.iter_mut() {
-                        record.ui_path = reader.read_string()?;
+                        record.ui_path = cursor.next_string()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "ShopInfo.ListPrefabPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ShopInfo.ListPrefabPath")?;
                     for record in records.iter_mut() {
-                        record.list_prefab_path = reader.read_string()?;
+                        record.list_prefab_path = cursor.next_string()?;
                     }
                 }
                 _ => {

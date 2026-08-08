@@ -14,6 +14,7 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -46,11 +47,12 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
     case 1:
       (void)sm_check_column(reader, column, "GachaArtifactList.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactList.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -58,11 +60,12 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
     case 2:
       (void)sm_check_column(reader, column, "GachaArtifactList.ArtifactID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactList.ArtifactID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->artifact_id);
+        (void)sm_cursor_next_i32(&cursor, &record->artifact_id);
       }
 
       break;
@@ -70,12 +73,13 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
     case 3:
       (void)sm_check_column(reader, column, "GachaArtifactList.GradeType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactList.GradeType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactListRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->grade_type = (Rescue_GradeType_t)scratch;
       }
 
@@ -84,11 +88,12 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
     case 4:
       (void)sm_check_column(reader, column, "GachaArtifactList.BaseWeight", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactList.BaseWeight");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->base_weight);
+        (void)sm_cursor_next_i32(&cursor, &record->base_weight);
       }
 
       break;
@@ -96,11 +101,12 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
     case 5:
       (void)sm_check_column(reader, column, "GachaArtifactList.ClassUpCurrencyID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactList.ClassUpCurrencyID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->class_up_currency_id);
+        (void)sm_cursor_next_i32(&cursor, &record->class_up_currency_id);
       }
 
       break;
@@ -108,11 +114,12 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
     case 6:
       (void)sm_check_column(reader, column, "GachaArtifactList.ClassUpCurrencyValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactList.ClassUpCurrencyValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->class_up_currency_value);
+        (void)sm_cursor_next_i32(&cursor, &record->class_up_currency_value);
       }
 
       break;
@@ -120,11 +127,12 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
     case 7:
       (void)sm_check_column(reader, column, "GachaArtifactList.ExConditionID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactList.ExConditionID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->ex_condition_id);
+        (void)sm_cursor_next_i32(&cursor, &record->ex_condition_id);
       }
 
       break;
@@ -132,11 +140,12 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
     case 8:
       (void)sm_check_column(reader, column, "GachaArtifactList.ExCurrencyID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactList.ExCurrencyID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->ex_currency_id);
+        (void)sm_cursor_next_i32(&cursor, &record->ex_currency_id);
       }
 
       break;
@@ -144,11 +153,12 @@ static bool Rescue_GachaArtifactListParse(Rescue_GachaArtifactListTable_t* table
     case 9:
       (void)sm_check_column(reader, column, "GachaArtifactList.ExCurrencyValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaArtifactList.ExCurrencyValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaArtifactListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->ex_currency_value);
+        (void)sm_cursor_next_i32(&cursor, &record->ex_currency_value);
       }
 
       break;

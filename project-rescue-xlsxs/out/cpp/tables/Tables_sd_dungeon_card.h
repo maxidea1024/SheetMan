@@ -97,57 +97,64 @@ class SDDungeonCardTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "SDDungeonCard.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonCard.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "SDDungeonCard.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonCard.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "SDDungeonCard.SDDunName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonCard.SDDunName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sd_dun_name);
+            record.sd_dun_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "SDDungeonCard.SDCardType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonCard.SDCardType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.sd_card_type);
+            record.sd_card_type = static_cast<SDCardType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "SDDungeonCard.CardCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonCard.CardCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.card_count);
+            record.card_count = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "SDDungeonCard.StatIconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonCard.StatIconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.stat_icon_path);
+            record.stat_icon_path = cursor.next_string();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "SDDungeonCard.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonCard.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }

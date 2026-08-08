@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -136,128 +137,149 @@ class SDAgencyTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDAgency.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDAgency.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDAgency.InfoName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.InfoName")
                     for (record in loaded) {
-                        record.infoName = reader.readString()
+                        record.infoName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDAgency.AgencyType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.AgencyType")
                     for (record in loaded) {
-                        record.agencyType = AgencyType.of(reader.readEnum())
+                        record.agencyType = AgencyType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDAgency.AgencyGrade", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.AgencyGrade")
                     for (record in loaded) {
-                        record.agencyGrade = AgencyGrade.of(reader.readEnum())
+                        record.agencyGrade = AgencyGrade.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDAgency.Time", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.Time")
                     for (record in loaded) {
-                        record.time = reader.readI32As(column.element)
+                        record.time = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDAgency.AgencyWeight", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.AgencyWeight")
                     for (record in loaded) {
-                        record.agencyWeight = reader.readI32As(column.element)
+                        record.agencyWeight = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "SDAgency.Condition1", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.Condition1")
                     for (record in loaded) {
-                        record.condition1 = JobType.of(reader.readEnum())
+                        record.condition1 = JobType.of(cursor.nextI32())
                     }
                 }
                 9 -> {
                     checkColumn(column, "SDAgency.Condition1value", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.Condition1value")
                     for (record in loaded) {
-                        record.condition1value = reader.readI32As(column.element)
+                        record.condition1value = cursor.nextI32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "SDAgency.Condition2", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.Condition2")
                     for (record in loaded) {
-                        record.condition2 = GradeType.of(reader.readEnum())
+                        record.condition2 = GradeType.of(cursor.nextI32())
                     }
                 }
                 11 -> {
                     checkColumn(column, "SDAgency.Condition2value", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.Condition2value")
                     for (record in loaded) {
-                        record.condition2value = reader.readI32As(column.element)
+                        record.condition2value = cursor.nextI32()
                     }
                 }
                 12 -> {
                     checkColumn(column, "SDAgency.Condition3", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.Condition3")
                     for (record in loaded) {
-                        record.condition3 = ConditionType.of(reader.readEnum())
+                        record.condition3 = ConditionType.of(cursor.nextI32())
                     }
                 }
                 13 -> {
                     checkColumn(column, "SDAgency.ClassMinValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.ClassMinValue")
                     for (record in loaded) {
-                        record.classMinValue = reader.readI32As(column.element)
+                        record.classMinValue = cursor.nextI32()
                     }
                 }
                 14 -> {
                     checkColumn(column, "SDAgency.Condition3value", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.Condition3value")
                     for (record in loaded) {
-                        record.condition3value = reader.readI32As(column.element)
+                        record.condition3value = cursor.nextI32()
                     }
                 }
                 15 -> {
                     checkColumn(column, "SDAgency.RewardType1", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.RewardType1")
                     for (record in loaded) {
-                        record.rewardType1 = CurrencyType.of(reader.readEnum())
+                        record.rewardType1 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 16 -> {
                     checkColumn(column, "SDAgency.RewardValue1", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.RewardValue1")
                     for (record in loaded) {
-                        record.rewardValue1 = reader.readI32As(column.element)
+                        record.rewardValue1 = cursor.nextI32()
                     }
                 }
                 17 -> {
                     checkColumn(column, "SDAgency.RewardType2", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.RewardType2")
                     for (record in loaded) {
-                        record.rewardType2 = CurrencyType.of(reader.readEnum())
+                        record.rewardType2 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 18 -> {
                     checkColumn(column, "SDAgency.RewardValue2", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.RewardValue2")
                     for (record in loaded) {
-                        record.rewardValue2 = reader.readI32As(column.element)
+                        record.rewardValue2 = cursor.nextI32()
                     }
                 }
                 19 -> {
                     checkColumn(column, "SDAgency.RewardType3", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.RewardType3")
                     for (record in loaded) {
-                        record.rewardType3 = CurrencyType.of(reader.readEnum())
+                        record.rewardType3 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 20 -> {
                     checkColumn(column, "SDAgency.RewardValue3", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.RewardValue3")
                     for (record in loaded) {
-                        record.rewardValue3 = reader.readI32As(column.element)
+                        record.rewardValue3 = cursor.nextI32()
                     }
                 }
                 21 -> {
                     checkColumn(column, "SDAgency.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgency.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

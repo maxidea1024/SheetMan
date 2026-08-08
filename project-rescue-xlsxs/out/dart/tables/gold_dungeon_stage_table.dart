@@ -96,6 +96,7 @@ class GoldDungeonStageTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <GoldDungeonStageRecord>[];
@@ -111,38 +112,44 @@ class GoldDungeonStageTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'GoldDungeonStage.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'GoldDungeonStage.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'GoldDungeonStage.StageName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.StageName');
           for (final record in loaded) {
-            record.stageName = reader.readString();
+            record.stageName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'GoldDungeonStage.DungeonType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.DungeonType');
           for (final record in loaded) {
-            record.dungeonType = DungeonType.of(reader.readEnum());
+            record.dungeonType = DungeonType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'GoldDungeonStage.DungeonFloor', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.DungeonFloor');
           for (final record in loaded) {
-            record.dungeonFloor = reader.readI32As(column.element);
+            record.dungeonFloor = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'GoldDungeonStage.TimeLimit', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.TimeLimit');
           for (final record in loaded) {
-            record.timeLimit = reader.readI32As(column.element);
+            record.timeLimit = cursor.nextI32();
           }
           break;
         case 7:
@@ -161,14 +168,16 @@ class GoldDungeonStageTable {
           break;
         case 9:
           checkColumn(column, 'GoldDungeonStage.SpawnPointCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.SpawnPointCount');
           for (final record in loaded) {
-            record.spawnPointCount = reader.readI32As(column.element);
+            record.spawnPointCount = cursor.nextI32();
           }
           break;
         case 10:
           checkColumn(column, 'GoldDungeonStage.SpawnMaxCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.SpawnMaxCount');
           for (final record in loaded) {
-            record.spawnMaxCount = reader.readI32As(column.element);
+            record.spawnMaxCount = cursor.nextI32();
           }
           break;
         case 11:
@@ -179,20 +188,23 @@ class GoldDungeonStageTable {
           break;
         case 12:
           checkColumn(column, 'GoldDungeonStage.StageClearCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.StageClearCount');
           for (final record in loaded) {
-            record.stageClearCount = reader.readI32As(column.element);
+            record.stageClearCount = cursor.nextI32();
           }
           break;
         case 13:
           checkColumn(column, 'GoldDungeonStage.RecommendPower', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.RecommendPower');
           for (final record in loaded) {
-            record.recommendPower = reader.readString();
+            record.recommendPower = cursor.nextString();
           }
           break;
         case 14:
           checkColumn(column, 'GoldDungeonStage.RewardID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.RewardID');
           for (final record in loaded) {
-            record.rewardID = reader.readI32As(column.element);
+            record.rewardID = cursor.nextI32();
           }
           break;
         case 15:
@@ -215,20 +227,23 @@ class GoldDungeonStageTable {
           break;
         case 18:
           checkColumn(column, 'GoldDungeonStage.DungeonImagePath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.DungeonImagePath');
           for (final record in loaded) {
-            record.dungeonImagePath = reader.readString();
+            record.dungeonImagePath = cursor.nextString();
           }
           break;
         case 19:
           checkColumn(column, 'GoldDungeonStage.MonsterImagePath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.MonsterImagePath');
           for (final record in loaded) {
-            record.monsterImagePath = reader.readString();
+            record.monsterImagePath = cursor.nextString();
           }
           break;
         case 20:
           checkColumn(column, 'GoldDungeonStage.AssetDataPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'GoldDungeonStage.AssetDataPath');
           for (final record in loaded) {
-            record.assetDataPath = reader.readString();
+            record.assetDataPath = cursor.nextString();
           }
           break;
         default:

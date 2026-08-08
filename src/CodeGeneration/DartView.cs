@@ -106,6 +106,9 @@ internal sealed class DartTableView
     public required IReadOnlyList<DartIndexView> Indexes { get; set; }
 
     public required IReadOnlyList<DartFieldView> Fields { get; set; }
+
+    /// <summary>Whether any field reads through a column cursor.</summary>
+    public required bool NeedsCursor { get; set; }
 }
 
 /// <summary>
@@ -155,6 +158,12 @@ internal sealed class DartFieldView
 
     /// <summary>The rendered checkColumn call for this member.</summary>
     public required string ColumnCheck { get; set; }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or empty for a
+    /// column that reads the reader directly.
+    /// </summary>
+    public required string CursorOpen { get; set; }
 
     public required int ElementCount { get; set; }
 

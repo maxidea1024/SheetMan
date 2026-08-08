@@ -14,6 +14,7 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -63,11 +64,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 1:
       (void)sm_check_column(reader, column, "Buff.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -75,11 +77,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 2:
       (void)sm_check_column(reader, column, "Buff.BuffName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.BuffName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->buff_name);
+        (void)sm_cursor_next_string(&cursor, &record->buff_name);
       }
 
       break;
@@ -87,11 +90,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 3:
       (void)sm_check_column(reader, column, "Buff.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -99,12 +103,13 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 4:
       (void)sm_check_column(reader, column, "Buff.SkillType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.SkillType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->skill_type = (Rescue_SkillType_t)scratch;
       }
 
@@ -113,12 +118,13 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 5:
       (void)sm_check_column(reader, column, "Buff.StatType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.StatType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->stat_type = (Rescue_StatType_t)scratch;
       }
 
@@ -127,11 +133,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 6:
       (void)sm_check_column(reader, column, "Buff.Priority", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.Priority");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->priority);
+        (void)sm_cursor_next_i32(&cursor, &record->priority);
       }
 
       break;
@@ -139,12 +146,13 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 7:
       (void)sm_check_column(reader, column, "Buff.AttributeType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.AttributeType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->attribute_type = (Rescue_AttributeType_t)scratch;
       }
 
@@ -153,12 +161,13 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 8:
       (void)sm_check_column(reader, column, "Buff.TargetType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.TargetType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->target_type = (Rescue_TargetType_t)scratch;
       }
 
@@ -167,12 +176,13 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 9:
       (void)sm_check_column(reader, column, "Buff.BuffConditionType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.BuffConditionType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->buff_condition_type = (Rescue_BuffConditionType_t)scratch;
       }
 
@@ -181,11 +191,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 10:
       (void)sm_check_column(reader, column, "Buff.BuffValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.BuffValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->buff_value);
+        (void)sm_cursor_next_i32(&cursor, &record->buff_value);
       }
 
       break;
@@ -205,11 +216,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 12:
       (void)sm_check_column(reader, column, "Buff.BuffTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.BuffTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->buff_time);
+        (void)sm_cursor_next_i32(&cursor, &record->buff_time);
       }
 
       break;
@@ -217,11 +229,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 13:
       (void)sm_check_column(reader, column, "Buff.BuffTickTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.BuffTickTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->buff_tick_time);
+        (void)sm_cursor_next_i32(&cursor, &record->buff_tick_time);
       }
 
       break;
@@ -229,11 +242,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 14:
       (void)sm_check_column(reader, column, "Buff.BuffMaxStack", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.BuffMaxStack");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->buff_max_stack);
+        (void)sm_cursor_next_i32(&cursor, &record->buff_max_stack);
       }
 
       break;
@@ -265,11 +279,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 17:
       (void)sm_check_column(reader, column, "Buff.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;
@@ -277,11 +292,12 @@ static bool Rescue_BuffParse(Rescue_BuffTable_t* table, sm_reader* reader) {
     case 18:
       (void)sm_check_column(reader, column, "Buff.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Buff.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

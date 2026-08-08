@@ -93,17 +93,19 @@ class LocalizationTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Localization.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Localization.Index");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.index);
+            record.index = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Localization.Key", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Localization.Key");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.key);
+            record.key = cursor.next_string();
           }
           break;
         }

@@ -76,6 +76,7 @@ class StarNodeTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <StarNodeRecord>[];
@@ -91,38 +92,44 @@ class StarNodeTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'StarNode.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StarNode.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'StarNode.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'StarNode.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'StarNode.InfuluenceStep', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StarNode.InfuluenceStep');
           for (final record in loaded) {
-            record.infuluenceStep = reader.readI32As(column.element);
+            record.infuluenceStep = cursor.nextI32();
           }
           break;
         case 4:
           checkColumn(column, 'StarNode.StarNodeName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'StarNode.StarNodeName');
           for (final record in loaded) {
-            record.starNodeName = reader.readString();
+            record.starNodeName = cursor.nextString();
           }
           break;
         case 5:
           checkColumn(column, 'StarNode.StatType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StarNode.StatType');
           for (final record in loaded) {
-            record.statType = StatType.of(reader.readEnum());
+            record.statType = StatType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'StarNode.StarNodeValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StarNode.StarNodeValue');
           for (final record in loaded) {
-            record.starNodeValue = reader.readI32As(column.element);
+            record.starNodeValue = cursor.nextI32();
           }
           break;
         case 7:
@@ -140,14 +147,16 @@ class StarNodeTable {
           break;
         case 9:
           checkColumn(column, 'StarNode.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'StarNode.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         case 10:
           checkColumn(column, 'StarNode.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'StarNode.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

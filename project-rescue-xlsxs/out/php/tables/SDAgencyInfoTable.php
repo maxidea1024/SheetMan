@@ -16,6 +16,7 @@ require_once __DIR__ . '/../enums/AgencyGrade.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -125,29 +126,33 @@ final class SDAgencyInfoTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.AgencyGrade', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.AgencyGrade');
                     foreach ($records as $record) {
-                        $record->agencyGrade = AgencyGrade::tryFrom($reader->readEnum()) ?? AgencyGrade::None;
+                        $record->agencyGrade = AgencyGrade::tryFrom($cursor->nextI32()) ?? AgencyGrade::None;
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.DispatchCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.DispatchCount');
                     foreach ($records as $record) {
-                        $record->dispatchCount = $reader->readI32As($column['element']);
+                        $record->dispatchCount = $cursor->nextI32();
                     }
                     break;
 
@@ -202,22 +207,25 @@ final class SDAgencyInfoTable
 
                 case 12:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.FreeRefresh', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.FreeRefresh');
                     foreach ($records as $record) {
-                        $record->freeRefresh = $reader->readI32As($column['element']);
+                        $record->freeRefresh = $cursor->nextI32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.RefreshCurrencyType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.RefreshCurrencyType');
                     foreach ($records as $record) {
-                        $record->refreshCurrencyType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->refreshCurrencyType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'SDAgencyInfo.RefreshCurrencyValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgencyInfo.RefreshCurrencyValue');
                     foreach ($records as $record) {
-                        $record->refreshCurrencyValue = $reader->readI32As($column['element']);
+                        $record->refreshCurrencyValue = $cursor->nextI32();
                     }
                     break;
 

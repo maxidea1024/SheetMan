@@ -103,49 +103,55 @@ class StarNodeTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "StarNode.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "StarNode.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "StarNode.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "StarNode.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "StarNode.InfuluenceStep", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "StarNode.InfuluenceStep");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.infuluence_step);
+            record.infuluence_step = cursor.next_i32();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "StarNode.StarNodeName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "StarNode.StarNodeName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.star_node_name);
+            record.star_node_name = cursor.next_string();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "StarNode.StatType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "StarNode.StatType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.stat_type);
+            record.stat_type = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "StarNode.StarNodeValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "StarNode.StarNodeValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.star_node_value);
+            record.star_node_value = cursor.next_i32();
           }
           break;
         }
@@ -171,17 +177,19 @@ class StarNodeTable {
         }
         case 9: {
           sheetman::check_column(column, "StarNode.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "StarNode.Description");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.description);
+            record.description = cursor.next_string();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "StarNode.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "StarNode.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }

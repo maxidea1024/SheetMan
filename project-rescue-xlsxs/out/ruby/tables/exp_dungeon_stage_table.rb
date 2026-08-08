@@ -94,33 +94,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'ExpDungeonStage.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'ExpDungeonStage.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'ExpDungeonStage.StageName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.StageName')
           records.each do |record|
-            record.stage_name = reader.read_string
+            record.stage_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'ExpDungeonStage.DungeonType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.DungeonType')
           records.each do |record|
-            record.dungeon_type = reader.read_enum
+            record.dungeon_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'ExpDungeonStage.DungeonFloor', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.DungeonFloor')
           records.each do |record|
-            record.dungeon_floor = reader.read_i32_as(column.element)
+            record.dungeon_floor = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'ExpDungeonStage.TimeLimit', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.TimeLimit')
           records.each do |record|
-            record.time_limit = reader.read_i32_as(column.element)
+            record.time_limit = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'ExpDungeonStage.SpawnIds', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
@@ -136,13 +142,15 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'ExpDungeonStage.SpawnPointCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.SpawnPointCount')
           records.each do |record|
-            record.spawn_point_count = reader.read_i32_as(column.element)
+            record.spawn_point_count = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'ExpDungeonStage.SpawnMaxCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.SpawnMaxCount')
           records.each do |record|
-            record.spawn_max_count = reader.read_i32_as(column.element)
+            record.spawn_max_count = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'ExpDungeonStage.SpawnNextTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -151,18 +159,21 @@ module Rescue
           end
         when 12
           Sheetman.check_column(column, 'ExpDungeonStage.StageClearCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.StageClearCount')
           records.each do |record|
-            record.stage_clear_count = reader.read_i32_as(column.element)
+            record.stage_clear_count = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'ExpDungeonStage.RecommendPower', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.RecommendPower')
           records.each do |record|
-            record.recommend_power = reader.read_string
+            record.recommend_power = cursor.next_string
           end
         when 14
           Sheetman.check_column(column, 'ExpDungeonStage.RewardID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.RewardID')
           records.each do |record|
-            record.reward_id = reader.read_i32_as(column.element)
+            record.reward_id = cursor.next_i32
           end
         when 15
           Sheetman.check_column(column, 'ExpDungeonStage.AtkUpPercent', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -181,18 +192,21 @@ module Rescue
           end
         when 18
           Sheetman.check_column(column, 'ExpDungeonStage.DungeonImagePath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.DungeonImagePath')
           records.each do |record|
-            record.dungeon_image_path = reader.read_string
+            record.dungeon_image_path = cursor.next_string
           end
         when 19
           Sheetman.check_column(column, 'ExpDungeonStage.MonsterImagePath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.MonsterImagePath')
           records.each do |record|
-            record.monster_image_path = reader.read_string
+            record.monster_image_path = cursor.next_string
           end
         when 20
           Sheetman.check_column(column, 'ExpDungeonStage.AssetDataPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ExpDungeonStage.AssetDataPath')
           records.each do |record|
-            record.asset_data_path = reader.read_string
+            record.asset_data_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

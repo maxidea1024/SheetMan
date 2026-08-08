@@ -74,6 +74,7 @@ public final class ArtifactTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<ArtifactRecord> loaded = new ArrayList<>(count);
@@ -89,29 +90,33 @@ public final class ArtifactTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "Artifact.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.Id");
                     for (ArtifactRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "Artifact.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.Name");
                     for (ArtifactRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "Artifact.ArtifactType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.ArtifactType");
                     for (ArtifactRecord record : loaded) {
-                        record.artifactType = ArtifactJobType.of(reader.readEnum());
+                        record.artifactType = ArtifactJobType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "Artifact.Grade", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.Grade");
                     for (ArtifactRecord record : loaded) {
-                        record.grade = GradeType.of(reader.readEnum());
+                        record.grade = GradeType.of(cursor.nextI32());
                     }
                     break;
                 }
@@ -128,8 +133,9 @@ public final class ArtifactTable {
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "Artifact.EquipStatType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.EquipStatType");
                     for (ArtifactRecord record : loaded) {
-                        record.equipStatType = StatType.of(reader.readEnum());
+                        record.equipStatType = StatType.of(cursor.nextI32());
                     }
                     break;
                 }
@@ -142,8 +148,9 @@ public final class ArtifactTable {
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "Artifact.CollectionType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.CollectionType");
                     for (ArtifactRecord record : loaded) {
-                        record.collectionType = StatType.of(reader.readEnum());
+                        record.collectionType = StatType.of(cursor.nextI32());
                     }
                     break;
                 }
@@ -156,22 +163,25 @@ public final class ArtifactTable {
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "Artifact.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.IconPath");
                     for (ArtifactRecord record : loaded) {
-                        record.iconPath = reader.readString();
+                        record.iconPath = cursor.nextString();
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "Artifact.MaterialPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.MaterialPath");
                     for (ArtifactRecord record : loaded) {
-                        record.materialPath = reader.readString();
+                        record.materialPath = cursor.nextString();
                     }
                     break;
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "Artifact.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Artifact.Description");
                     for (ArtifactRecord record : loaded) {
-                        record.description = reader.readString();
+                        record.description = cursor.nextString();
                     }
                     break;
                 }

@@ -70,6 +70,7 @@ class BuffSelectTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <BuffSelectRecord>[];
@@ -85,26 +86,30 @@ class BuffSelectTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'BuffSelect.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'BuffSelect.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'BuffSelect.BuffName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'BuffSelect.BuffName');
           for (final record in loaded) {
-            record.buffName = reader.readString();
+            record.buffName = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'BuffSelect.BuffID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'BuffSelect.BuffID');
           for (final record in loaded) {
-            record.buffID = reader.readI32As(column.element);
+            record.buffID = cursor.nextI32();
           }
           break;
         case 4:
           checkColumn(column, 'BuffSelect.Grade', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'BuffSelect.Grade');
           for (final record in loaded) {
-            record.grade = GradeType.of(reader.readEnum());
+            record.grade = GradeType.of(cursor.nextI32());
           }
           break;
         case 5:
@@ -115,14 +120,16 @@ class BuffSelectTable {
           break;
         case 6:
           checkColumn(column, 'BuffSelect.BuffTooltip', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'BuffSelect.BuffTooltip');
           for (final record in loaded) {
-            record.buffTooltip = reader.readString();
+            record.buffTooltip = cursor.nextString();
           }
           break;
         case 7:
           checkColumn(column, 'BuffSelect.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'BuffSelect.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

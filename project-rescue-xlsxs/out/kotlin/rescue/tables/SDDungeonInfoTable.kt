@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -120,80 +121,93 @@ class SDDungeonInfoTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDDungeonInfo.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDDungeonInfo.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDDungeonInfo.NameKR", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.NameKR")
                     for (record in loaded) {
-                        record.nameKR = reader.readString()
+                        record.nameKR = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDDungeonInfo.TotalCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.TotalCount")
                     for (record in loaded) {
-                        record.totalCount = reader.readI32As(column.element)
+                        record.totalCount = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDDungeonInfo.TrapCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.TrapCount")
                     for (record in loaded) {
-                        record.trapCount = reader.readI32As(column.element)
+                        record.trapCount = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDDungeonInfo.ActionCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.ActionCount")
                     for (record in loaded) {
-                        record.actionCount = reader.readI32As(column.element)
+                        record.actionCount = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDDungeonInfo.MatchCost", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.MatchCost")
                     for (record in loaded) {
-                        record.matchCost = reader.readI32As(column.element)
+                        record.matchCost = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "SDDungeonInfo.MismatchCost", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.MismatchCost")
                     for (record in loaded) {
-                        record.mismatchCost = reader.readI32As(column.element)
+                        record.mismatchCost = cursor.nextI32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "SDDungeonInfo.TrapCost", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.TrapCost")
                     for (record in loaded) {
-                        record.trapCost = reader.readI32As(column.element)
+                        record.trapCost = cursor.nextI32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "SDDungeonInfo.ViewTime", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.ViewTime")
                     for (record in loaded) {
-                        record.viewTime = reader.readI32As(column.element)
+                        record.viewTime = cursor.nextI32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "SDDungeonInfo.Time", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.Time")
                     for (record in loaded) {
-                        record.time = reader.readI32As(column.element)
+                        record.time = cursor.nextI32()
                     }
                 }
                 12 -> {
                     checkColumn(column, "SDDungeonInfo.ADCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.ADCount")
                     for (record in loaded) {
-                        record.aDCount = reader.readI32As(column.element)
+                        record.aDCount = cursor.nextI32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "SDDungeonInfo.DailyFreeCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonInfo.DailyFreeCount")
                     for (record in loaded) {
-                        record.dailyFreeCount = reader.readI32As(column.element)
+                        record.dailyFreeCount = cursor.nextI32()
                     }
                 }
                 else ->

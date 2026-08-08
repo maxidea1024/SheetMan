@@ -84,6 +84,7 @@ class SDAgencyInfoTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SDAgencyInfoRecord>[];
@@ -99,26 +100,30 @@ class SDAgencyInfoTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SDAgencyInfo.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SDAgencyInfo.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SDAgencyInfo.AgencyGrade', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.AgencyGrade');
           for (final record in loaded) {
-            record.agencyGrade = AgencyGrade.of(reader.readEnum());
+            record.agencyGrade = AgencyGrade.of(cursor.nextI32());
           }
           break;
         case 4:
           checkColumn(column, 'SDAgencyInfo.DispatchCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.DispatchCount');
           for (final record in loaded) {
-            record.dispatchCount = reader.readI32As(column.element);
+            record.dispatchCount = cursor.nextI32();
           }
           break;
         case 5:
@@ -165,20 +170,23 @@ class SDAgencyInfoTable {
           break;
         case 12:
           checkColumn(column, 'SDAgencyInfo.FreeRefresh', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.FreeRefresh');
           for (final record in loaded) {
-            record.freeRefresh = reader.readI32As(column.element);
+            record.freeRefresh = cursor.nextI32();
           }
           break;
         case 13:
           checkColumn(column, 'SDAgencyInfo.RefreshCurrencyType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.RefreshCurrencyType');
           for (final record in loaded) {
-            record.refreshCurrencyType = CurrencyType.of(reader.readEnum());
+            record.refreshCurrencyType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 14:
           checkColumn(column, 'SDAgencyInfo.RefreshCurrencyValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgencyInfo.RefreshCurrencyValue');
           for (final record in loaded) {
-            record.refreshCurrencyValue = reader.readI32As(column.element);
+            record.refreshCurrencyValue = cursor.nextI32();
           }
           break;
         default:

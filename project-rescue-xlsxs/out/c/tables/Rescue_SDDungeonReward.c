@@ -14,6 +14,7 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -59,11 +60,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 1:
       (void)sm_check_column(reader, column, "SDDungeonReward.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -71,11 +73,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 2:
       (void)sm_check_column(reader, column, "SDDungeonReward.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -83,11 +86,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 3:
       (void)sm_check_column(reader, column, "SDDungeonReward.RewardName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.RewardName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->reward_name);
+        (void)sm_cursor_next_string(&cursor, &record->reward_name);
       }
 
       break;
@@ -95,11 +99,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 4:
       (void)sm_check_column(reader, column, "SDDungeonReward.ConditionId", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.ConditionId");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->condition_id);
+        (void)sm_cursor_next_i32(&cursor, &record->condition_id);
       }
 
       break;
@@ -107,12 +112,13 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 5:
       (void)sm_check_column(reader, column, "SDDungeonReward.RewardCommon", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.RewardCommon");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward_common = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -121,11 +127,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 6:
       (void)sm_check_column(reader, column, "SDDungeonReward.CommonValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.CommonValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->common_value);
+        (void)sm_cursor_next_i32(&cursor, &record->common_value);
       }
 
       break;
@@ -133,12 +140,13 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 7:
       (void)sm_check_column(reader, column, "SDDungeonReward.Reward1Type", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Reward1Type");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward1_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -147,11 +155,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 8:
       (void)sm_check_column(reader, column, "SDDungeonReward.Reward1Value", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Reward1Value");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->reward1_value);
+        (void)sm_cursor_next_i32(&cursor, &record->reward1_value);
       }
 
       break;
@@ -159,12 +168,13 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 9:
       (void)sm_check_column(reader, column, "SDDungeonReward.Reward2Type", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Reward2Type");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward2_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -173,11 +183,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 10:
       (void)sm_check_column(reader, column, "SDDungeonReward.Reward2Value", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Reward2Value");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->reward2_value);
+        (void)sm_cursor_next_i32(&cursor, &record->reward2_value);
       }
 
       break;
@@ -185,12 +196,13 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 11:
       (void)sm_check_column(reader, column, "SDDungeonReward.Reward3Type", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Reward3Type");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward3_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -199,11 +211,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 12:
       (void)sm_check_column(reader, column, "SDDungeonReward.Reward3Value", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Reward3Value");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->reward3_value);
+        (void)sm_cursor_next_i32(&cursor, &record->reward3_value);
       }
 
       break;
@@ -211,12 +224,13 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 13:
       (void)sm_check_column(reader, column, "SDDungeonReward.Reward4Type", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Reward4Type");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward4_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -225,11 +239,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 14:
       (void)sm_check_column(reader, column, "SDDungeonReward.Reward4Value", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.Reward4Value");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->reward4_value);
+        (void)sm_cursor_next_i32(&cursor, &record->reward4_value);
       }
 
       break;
@@ -249,12 +264,13 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 16:
       (void)sm_check_column(reader, column, "SDDungeonReward.RewardPerfect", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.RewardPerfect");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward_perfect = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -263,11 +279,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 17:
       (void)sm_check_column(reader, column, "SDDungeonReward.PerfectValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.PerfectValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->perfect_value);
+        (void)sm_cursor_next_i32(&cursor, &record->perfect_value);
       }
 
       break;
@@ -287,12 +304,13 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 19:
       (void)sm_check_column(reader, column, "SDDungeonReward.RewardMin", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.RewardMin");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward_min = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -301,11 +319,12 @@ static bool Rescue_SDDungeonRewardParse(Rescue_SDDungeonRewardTable_t* table, sm
     case 20:
       (void)sm_check_column(reader, column, "SDDungeonReward.MinRewardValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonReward.MinRewardValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->min_reward_value);
+        (void)sm_cursor_next_i32(&cursor, &record->min_reward_value);
       }
 
       break;

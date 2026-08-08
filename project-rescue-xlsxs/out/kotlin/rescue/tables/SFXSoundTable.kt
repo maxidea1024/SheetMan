@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -106,38 +107,44 @@ class SFXSoundTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SFXSound.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SFXSound.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SFXSound.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SFXSound.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SFXSound.Category", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SFXSound.Category")
                     for (record in loaded) {
-                        record.category = SFXCategoryType.of(reader.readEnum())
+                        record.category = SFXCategoryType.of(cursor.nextI32())
                     }
                 }
                 4 -> {
                     checkColumn(column, "SFXSound.Path", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SFXSound.Path")
                     for (record in loaded) {
-                        record.path = reader.readString()
+                        record.path = cursor.nextString()
                     }
                 }
                 5 -> {
                     checkColumn(column, "SFXSound.PreloadGroup", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SFXSound.PreloadGroup")
                     for (record in loaded) {
-                        record.preloadGroup = reader.readString()
+                        record.preloadGroup = cursor.nextString()
                     }
                 }
                 6 -> {
                     checkColumn(column, "SFXSound.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SFXSound.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

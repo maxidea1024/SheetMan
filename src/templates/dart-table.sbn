@@ -64,6 +64,9 @@ class {{ table.table_name }} {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+{{~ if table.needs_cursor ~}}
+    late ScbColumnCursor cursor;
+{{~ end ~}}
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <{{ table.record_name }}>[];
@@ -82,6 +85,9 @@ class {{ table.table_name }} {
 {{~ for field in table.fields ~}}
         case {{ field.tag }}:
           {{ field.column_check }}
+{{~ if field.cursor_open != '' ~}}
+          {{ field.cursor_open }}
+{{~ end ~}}
           for (final record in loaded) {
 {{~ if field.kind == 'var_array' ~}}
             final elementCount = reader.readCounter32();
@@ -91,7 +97,7 @@ class {{ table.table_name }} {
 {{~ else if field.kind == 'serial' ~}}
             record.{{ field.name }} = List.generate({{ field.element_count }}, (_) => {{ field.read_element }});
 {{~ else if field.kind == 'scalar_ref' ~}}
-            record.{{ field.name }}Index = reader.readInt32();
+            record.{{ field.name }}Index = {{ field.read_scalar }};
 {{~ else ~}}
             record.{{ field.name }} = {{ field.read_scalar }};
 {{~ end ~}}

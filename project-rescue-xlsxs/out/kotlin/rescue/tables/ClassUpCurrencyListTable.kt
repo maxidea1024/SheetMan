@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -110,44 +111,51 @@ class ClassUpCurrencyListTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "ClassUpCurrencyList.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ClassUpCurrencyList.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "ClassUpCurrencyList.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "ClassUpCurrencyList.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "ClassUpCurrencyList.Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ClassUpCurrencyList.Type")
                     for (record in loaded) {
-                        record.type = CurrencyType.of(reader.readEnum())
+                        record.type = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 4 -> {
                     checkColumn(column, "ClassUpCurrencyList.TargetId", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ClassUpCurrencyList.TargetId")
                     for (record in loaded) {
-                        record.targetId = reader.readI32As(column.element)
+                        record.targetId = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "ClassUpCurrencyList.MaxCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ClassUpCurrencyList.MaxCount")
                     for (record in loaded) {
-                        record.maxCount = reader.readI32As(column.element)
+                        record.maxCount = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "ClassUpCurrencyList.MaxStack", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ClassUpCurrencyList.MaxStack")
                     for (record in loaded) {
-                        record.maxStack = reader.readI64As(column.element)
+                        record.maxStack = cursor.nextI64()
                     }
                 }
                 7 -> {
                     checkColumn(column, "ClassUpCurrencyList.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "ClassUpCurrencyList.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 8 -> {

@@ -85,32 +85,39 @@ class SDDungeonCardTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDDungeonCard.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonCard.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDDungeonCard.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonCard.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDDungeonCard.SDDunName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonCard.SDDunName")
                 for record in records:
-                    record.sd_dun_name = reader.read_string()
+                    record.sd_dun_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDDungeonCard.SDCardType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonCard.SDCardType")
                 for record in records:
-                    record.sd_card_type = SDCardType(reader.read_enum())
+                    record.sd_card_type = SDCardType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "SDDungeonCard.CardCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonCard.CardCount")
                 for record in records:
-                    record.card_count = reader.read_i32_as(column.element)
+                    record.card_count = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "SDDungeonCard.StatIconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonCard.StatIconPath")
                 for record in records:
-                    record.stat_icon_path = reader.read_string()
+                    record.stat_icon_path = cursor.next_string()
             elif column.tag == 7:
                 sheetman.check_column(column, "SDDungeonCard.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonCard.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

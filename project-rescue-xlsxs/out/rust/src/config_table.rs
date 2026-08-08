@@ -123,38 +123,44 @@ impl ConfigTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Config.Index", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Config.Index")?;
                     for record in records.iter_mut() {
-                        record.index = reader.read_i32_as(column.element)?;
+                        record.index = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Config.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Config.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_string()?;
+                        record.id = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Config.Category", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Config.Category")?;
                     for record in records.iter_mut() {
-                        record.category = reader.read_string()?;
+                        record.category = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Config.DataType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Config.DataType")?;
                     for record in records.iter_mut() {
-                        record.data_type = reader.read_string()?;
+                        record.data_type = cursor.next_string()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "Config.DefaultValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Config.DefaultValue")?;
                     for record in records.iter_mut() {
-                        record.default_value = reader.read_string()?;
+                        record.default_value = cursor.next_string()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "Config.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Config.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 _ => {

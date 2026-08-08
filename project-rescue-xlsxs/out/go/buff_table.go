@@ -122,72 +122,82 @@ func (t *BuffTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Buff.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Buff.BuffName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.BuffName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffName = reader.ReadString()
+					r.BuffName = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Buff.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Buff.SkillType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.SkillType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SkillType = SkillType(reader.ReadEnum())
+					r.SkillType = SkillType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Buff.StatType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.StatType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StatType = StatType(reader.ReadEnum())
+					r.StatType = StatType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Buff.Priority", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.Priority")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Priority = reader.ReadI32As(column.Element)
+					r.Priority = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Buff.AttributeType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.AttributeType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AttributeType = AttributeType(reader.ReadEnum())
+					r.AttributeType = AttributeType(cursor.NextI32())
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Buff.TargetType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.TargetType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TargetType = TargetType(reader.ReadEnum())
+					r.TargetType = TargetType(cursor.NextI32())
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "Buff.BuffConditionType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.BuffConditionType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffConditionType = BuffConditionType(reader.ReadEnum())
+					r.BuffConditionType = BuffConditionType(cursor.NextI32())
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "Buff.BuffValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.BuffValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffValue = reader.ReadI32As(column.Element)
+					r.BuffValue = cursor.NextI32()
 				}
 			}
 		case 11:
@@ -199,23 +209,26 @@ func (t *BuffTable) Read(filename string) error {
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "Buff.BuffTime", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.BuffTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffTime = reader.ReadI32As(column.Element)
+					r.BuffTime = cursor.NextI32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "Buff.BuffTickTime", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.BuffTickTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffTickTime = reader.ReadI32As(column.Element)
+					r.BuffTickTime = cursor.NextI32()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "Buff.BuffMaxStack", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.BuffMaxStack")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffMaxStack = reader.ReadI32As(column.Element)
+					r.BuffMaxStack = cursor.NextI32()
 				}
 			}
 		case 15:
@@ -234,16 +247,18 @@ func (t *BuffTable) Read(filename string) error {
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "Buff.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		case 18:
 			if sheetman.CheckColumn(reader, column, "Buff.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Buff.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

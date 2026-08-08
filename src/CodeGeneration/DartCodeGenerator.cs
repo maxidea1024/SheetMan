@@ -231,6 +231,10 @@ public class DartCodeGenerator : CodeGenerator<DartRecipe>
         Comment = CommentLines(table.Comment),
         Indexes = Indexes(table),
         Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
+
+        // One cursor variable for the whole method: switch cases share a scope, so
+        // each encodable column assigns it rather than declaring its own.
+        NeedsCursor = table.SerialFields.Any(UsesCursor),
     };
 
     /// <summary>
@@ -270,12 +274,51 @@ public class DartCodeGenerator : CodeGenerator<DartRecipe>
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementCount = sf.Fields.Count,
             Declarations = Declarations(sf, name),
-            ReadScalar = ReadExpression(sf),
+            ReadScalar = ScalarReadExpression(sf),
             ReadElement = ReadExpression(sf),
         };
     }
+
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"cursor = ScbColumnCursor(reader, column, count, '{tableName}.{sf.Name}');"
+            : "";
 
     /// <summary>
     /// The field declarations, each initialized.
@@ -419,6 +462,34 @@ public class DartCodeGenerator : CodeGenerator<DartRecipe>
     };
 
     // ----------------------------------------------------------- rendering
+
+    /// <summary>
+    /// The expression filling a scalar member. A scalar column can arrive encoded, so
+    /// it reads through the cursor - which also carries the lossless promotions.
+    /// Arrays are always raw and keep the direct reads of <see cref="ReadExpression"/>.
+    /// </summary>
+    private string ScalarReadExpression(SerialField sf)
+    {
+        if (!UsesCursor(sf))
+            return ReadExpression(sf);
+
+        // Only the stored index is on the wire; the accessor resolves it once every
+        // table is loaded.
+        if (sf.IsRef)
+            return "cursor.nextI32()";
+
+        switch (sf.ElementType)
+        {
+            // An enum decodes as its int value, converted exactly as the raw read was.
+            case ValueType.Enum:
+                return $"{sf.FirstField.Enum.Name.ToPascalCase()}.of(cursor.nextI32())";
+
+            case ValueType.Int32: return "cursor.nextI32()";
+            case ValueType.Int64: return "cursor.nextI64()";
+            case ValueType.Double: return "cursor.nextF64()";
+            default: return "cursor.nextString()";
+        }
+    }
 
     private string ReadExpression(SerialField sf)
     {

@@ -126,44 +126,50 @@ func (t *ExpDungeonStageTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.StageName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.StageName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StageName = reader.ReadString()
+					r.StageName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.DungeonType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.DungeonType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonType = DungeonType(reader.ReadEnum())
+					r.DungeonType = DungeonType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.DungeonFloor", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.DungeonFloor")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonFloor = reader.ReadI32As(column.Element)
+					r.DungeonFloor = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.TimeLimit", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.TimeLimit")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TimeLimit = reader.ReadI32As(column.Element)
+					r.TimeLimit = cursor.NextI32()
 				}
 			}
 		case 7:
@@ -190,16 +196,18 @@ func (t *ExpDungeonStageTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.SpawnPointCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.SpawnPointCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpawnPointCount = reader.ReadI32As(column.Element)
+					r.SpawnPointCount = cursor.NextI32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.SpawnMaxCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.SpawnMaxCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpawnMaxCount = reader.ReadI32As(column.Element)
+					r.SpawnMaxCount = cursor.NextI32()
 				}
 			}
 		case 11:
@@ -211,23 +219,26 @@ func (t *ExpDungeonStageTable) Read(filename string) error {
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.StageClearCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.StageClearCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StageClearCount = reader.ReadI32As(column.Element)
+					r.StageClearCount = cursor.NextI32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.RecommendPower", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.RecommendPower")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RecommendPower = reader.ReadString()
+					r.RecommendPower = cursor.NextString()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.RewardID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.RewardID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardID = reader.ReadI32As(column.Element)
+					r.RewardID = cursor.NextI32()
 				}
 			}
 		case 15:
@@ -253,23 +264,26 @@ func (t *ExpDungeonStageTable) Read(filename string) error {
 			}
 		case 18:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.DungeonImagePath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.DungeonImagePath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonImagePath = reader.ReadString()
+					r.DungeonImagePath = cursor.NextString()
 				}
 			}
 		case 19:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.MonsterImagePath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.MonsterImagePath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MonsterImagePath = reader.ReadString()
+					r.MonsterImagePath = cursor.NextString()
 				}
 			}
 		case 20:
 			if sheetman.CheckColumn(reader, column, "ExpDungeonStage.AssetDataPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ExpDungeonStage.AssetDataPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AssetDataPath = reader.ReadString()
+					r.AssetDataPath = cursor.NextString()
 				}
 			}
 		default:

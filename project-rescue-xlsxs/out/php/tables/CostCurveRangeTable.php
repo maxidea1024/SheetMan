@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/GrowthType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -108,36 +109,41 @@ final class CostCurveRangeTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'CostCurveRange.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurveRange.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'CostCurveRange.GrowthType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurveRange.GrowthType');
                     foreach ($records as $record) {
-                        $record->growthType = GrowthType::tryFrom($reader->readEnum()) ?? GrowthType::None;
+                        $record->growthType = GrowthType::tryFrom($cursor->nextI32()) ?? GrowthType::None;
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'CostCurveRange.RangeIndex', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurveRange.RangeIndex');
                     foreach ($records as $record) {
-                        $record->rangeIndex = $reader->readI32As($column['element']);
+                        $record->rangeIndex = $cursor->nextI32();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'CostCurveRange.StartStep', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurveRange.StartStep');
                     foreach ($records as $record) {
-                        $record->startStep = $reader->readI32As($column['element']);
+                        $record->startStep = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'CostCurveRange.EndStep', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurveRange.EndStep');
                     foreach ($records as $record) {
-                        $record->endStep = $reader->readI32As($column['element']);
+                        $record->endStep = $cursor->nextI32();
                     }
                     break;
 

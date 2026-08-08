@@ -14,6 +14,7 @@ namespace X;
 require_once __DIR__ . '/../sheetman/ScbReader.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -154,22 +155,25 @@ final class TemplateTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Template.Index', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Template.Index');
                     foreach ($records as $record) {
-                        $record->index = $reader->readI32As($column['element']);
+                        $record->index = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Template.Class', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Template.Class');
                     foreach ($records as $record) {
-                        $record->class = $reader->readString();
+                        $record->class = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Template.Int', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Template.Int');
                     foreach ($records as $record) {
-                        $record->int = $reader->readI32As($column['element']);
+                        $record->int = $cursor->nextI32();
                     }
                     break;
 
@@ -182,29 +186,33 @@ final class TemplateTable
 
                 case 5:
                     ScbReader::checkColumn($column, 'Template.Operator', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Template.Operator');
                     foreach ($records as $record) {
-                        $record->operator = $reader->readString();
+                        $record->operator = $cursor->nextString();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'Template.Namespace', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Template.Namespace');
                     foreach ($records as $record) {
-                        $record->namespace = $reader->readString();
+                        $record->namespace = $cursor->nextString();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'Template.Constructor', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Template.Constructor');
                     foreach ($records as $record) {
-                        $record->constructor = $reader->readString();
+                        $record->constructor = $cursor->nextString();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'Template.Function', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Template.Function');
                     foreach ($records as $record) {
-                        $record->function = $reader->readString();
+                        $record->function = $cursor->nextString();
                     }
                     break;
 

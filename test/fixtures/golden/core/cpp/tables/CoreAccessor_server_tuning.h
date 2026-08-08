@@ -91,25 +91,28 @@ class ServerTuningTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "ServerTuning.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ServerTuning.Index");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.index);
+            record.index = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "ServerTuning.Key", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ServerTuning.Key");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.key);
+            record.key = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "ServerTuning.Amount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ServerTuning.Amount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.amount);
+            record.amount = cursor.next_i32();
           }
           break;
         }

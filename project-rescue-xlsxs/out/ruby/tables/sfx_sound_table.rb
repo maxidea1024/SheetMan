@@ -80,33 +80,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SFXSound.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SFXSound.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SFXSound.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SFXSound.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SFXSound.Category', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SFXSound.Category')
           records.each do |record|
-            record.category = reader.read_enum
+            record.category = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'SFXSound.Path', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SFXSound.Path')
           records.each do |record|
-            record.path = reader.read_string
+            record.path = cursor.next_string
           end
         when 5
           Sheetman.check_column(column, 'SFXSound.PreloadGroup', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SFXSound.PreloadGroup')
           records.each do |record|
-            record.preload_group = reader.read_string
+            record.preload_group = cursor.next_string
           end
         when 6
           Sheetman.check_column(column, 'SFXSound.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SFXSound.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

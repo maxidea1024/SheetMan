@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/ShopType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -114,64 +115,73 @@ final class ShopInfoTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'ShopInfo.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShopInfo.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'ShopInfo.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShopInfo.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'ShopInfo.InfoName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShopInfo.InfoName');
                     foreach ($records as $record) {
-                        $record->infoName = $reader->readString();
+                        $record->infoName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'ShopInfo.ShopType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShopInfo.ShopType');
                     foreach ($records as $record) {
-                        $record->shopType = ShopType::tryFrom($reader->readEnum()) ?? ShopType::None;
+                        $record->shopType = ShopType::tryFrom($cursor->nextI32()) ?? ShopType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'ShopInfo.ConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShopInfo.ConditionID');
                     foreach ($records as $record) {
-                        $record->conditionID = $reader->readI32As($column['element']);
+                        $record->conditionID = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'ShopInfo.SheetName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShopInfo.SheetName');
                     foreach ($records as $record) {
-                        $record->sheetName = $reader->readString();
+                        $record->sheetName = $cursor->nextString();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'ShopInfo.Priority', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShopInfo.Priority');
                     foreach ($records as $record) {
-                        $record->priority = $reader->readI32As($column['element']);
+                        $record->priority = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'ShopInfo.UIPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShopInfo.UIPath');
                     foreach ($records as $record) {
-                        $record->uIPath = $reader->readString();
+                        $record->uIPath = $cursor->nextString();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'ShopInfo.ListPrefabPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShopInfo.ListPrefabPath');
                     foreach ($records as $record) {
-                        $record->listPrefabPath = $reader->readString();
+                        $record->listPrefabPath = $cursor->nextString();
                     }
                     break;
 

@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -104,32 +105,37 @@ class ShortCutTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "ShortCut.ID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ShortCut.ID")
                     for (record in loaded) {
-                        record.iD = reader.readI32As(column.element)
+                        record.iD = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "ShortCut.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "ShortCut.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "ShortCut.Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ShortCut.Type")
                     for (record in loaded) {
-                        record.type = ShortCutType.of(reader.readEnum())
+                        record.type = ShortCutType.of(cursor.nextI32())
                     }
                 }
                 4 -> {
                     checkColumn(column, "ShortCut.SubIndex", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ShortCut.SubIndex")
                     for (record in loaded) {
-                        record.subIndex = reader.readI32As(column.element)
+                        record.subIndex = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "ShortCut.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "ShortCut.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

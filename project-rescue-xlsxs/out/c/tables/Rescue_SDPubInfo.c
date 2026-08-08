@@ -14,6 +14,7 @@ static bool Rescue_SDPubInfoParse(Rescue_SDPubInfoTable_t* table, sm_reader* rea
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -61,11 +62,12 @@ static bool Rescue_SDPubInfoParse(Rescue_SDPubInfoTable_t* table, sm_reader* rea
     case 1:
       (void)sm_check_column(reader, column, "SDPubInfo.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDPubInfo.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDPubInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -73,11 +75,12 @@ static bool Rescue_SDPubInfoParse(Rescue_SDPubInfoTable_t* table, sm_reader* rea
     case 2:
       (void)sm_check_column(reader, column, "SDPubInfo.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDPubInfo.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDPubInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -85,11 +88,12 @@ static bool Rescue_SDPubInfoParse(Rescue_SDPubInfoTable_t* table, sm_reader* rea
     case 3:
       (void)sm_check_column(reader, column, "SDPubInfo.PubName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDPubInfo.PubName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDPubInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->pub_name);
+        (void)sm_cursor_next_string(&cursor, &record->pub_name);
       }
 
       break;
@@ -97,11 +101,12 @@ static bool Rescue_SDPubInfoParse(Rescue_SDPubInfoTable_t* table, sm_reader* rea
     case 4:
       (void)sm_check_column(reader, column, "SDPubInfo.UnlockCondition", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDPubInfo.UnlockCondition");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDPubInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->unlock_condition);
+        (void)sm_cursor_next_i32(&cursor, &record->unlock_condition);
       }
 
       break;
@@ -109,11 +114,12 @@ static bool Rescue_SDPubInfoParse(Rescue_SDPubInfoTable_t* table, sm_reader* rea
     case 5:
       (void)sm_check_column(reader, column, "SDPubInfo.LimitValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDPubInfo.LimitValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDPubInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->limit_value);
+        (void)sm_cursor_next_i32(&cursor, &record->limit_value);
       }
 
       break;
@@ -121,11 +127,12 @@ static bool Rescue_SDPubInfoParse(Rescue_SDPubInfoTable_t* table, sm_reader* rea
     case 6:
       (void)sm_check_column(reader, column, "SDPubInfo.BuffID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDPubInfo.BuffID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDPubInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->buff_id);
+        (void)sm_cursor_next_i32(&cursor, &record->buff_id);
       }
 
       break;
@@ -133,11 +140,12 @@ static bool Rescue_SDPubInfoParse(Rescue_SDPubInfoTable_t* table, sm_reader* rea
     case 7:
       (void)sm_check_column(reader, column, "SDPubInfo.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDPubInfo.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDPubInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

@@ -98,44 +98,50 @@ func (t *ConditionTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Condition.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Condition.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Condition.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Condition.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Condition.ConditionTargetType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Condition.ConditionTargetType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionTargetType = ConditionTargetType(reader.ReadEnum())
+					r.ConditionTargetType = ConditionTargetType(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Condition.ConditionTargetValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Condition.ConditionTargetValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionTargetValue = reader.ReadI32As(column.Element)
+					r.ConditionTargetValue = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Condition.ConditionType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Condition.ConditionType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionType = ConditionType(reader.ReadEnum())
+					r.ConditionType = ConditionType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Condition.ConditionValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Condition.ConditionValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionValue = reader.ReadI32As(column.Element)
+					r.ConditionValue = cursor.NextI32()
 				}
 			}
 		default:

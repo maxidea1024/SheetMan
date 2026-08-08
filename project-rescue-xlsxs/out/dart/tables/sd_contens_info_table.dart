@@ -78,6 +78,7 @@ class SDContensInfoTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SDContensInfoRecord>[];
@@ -93,44 +94,51 @@ class SDContensInfoTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SDContensInfo.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SDContensInfo.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SDContensInfo.InfoName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.InfoName');
           for (final record in loaded) {
-            record.infoName = reader.readString();
+            record.infoName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'SDContensInfo.SheetName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.SheetName');
           for (final record in loaded) {
-            record.sheetName = reader.readString();
+            record.sheetName = cursor.nextString();
           }
           break;
         case 5:
           checkColumn(column, 'SDContensInfo.SdContensType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.SdContensType');
           for (final record in loaded) {
-            record.sdContensType = SdContensType.of(reader.readEnum());
+            record.sdContensType = SdContensType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'SDContensInfo.ConditionID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.ConditionID');
           for (final record in loaded) {
-            record.conditionID = reader.readI32As(column.element);
+            record.conditionID = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'SDContensInfo.CurrencyType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.CurrencyType');
           for (final record in loaded) {
-            record.currencyType = CurrencyType.of(reader.readEnum());
+            record.currencyType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 8:
@@ -141,20 +149,23 @@ class SDContensInfoTable {
           break;
         case 9:
           checkColumn(column, 'SDContensInfo.CycleType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.CycleType');
           for (final record in loaded) {
-            record.cycleType = CycleType.of(reader.readEnum());
+            record.cycleType = CycleType.of(cursor.nextI32());
           }
           break;
         case 10:
           checkColumn(column, 'SDContensInfo.SDCharacterPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.SDCharacterPath');
           for (final record in loaded) {
-            record.sDCharacterPath = reader.readString();
+            record.sDCharacterPath = cursor.nextString();
           }
           break;
         case 11:
           checkColumn(column, 'SDContensInfo.PrefabPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDContensInfo.PrefabPath');
           for (final record in loaded) {
-            record.prefabPath = reader.readString();
+            record.prefabPath = cursor.nextString();
           }
           break;
         default:

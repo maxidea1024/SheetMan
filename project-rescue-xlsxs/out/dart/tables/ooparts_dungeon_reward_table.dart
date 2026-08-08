@@ -76,6 +76,7 @@ class OopartsDungeonRewardTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <OopartsDungeonRewardRecord>[];
@@ -91,44 +92,51 @@ class OopartsDungeonRewardTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'OopartsDungeonReward.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonReward.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'OopartsDungeonReward.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonReward.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'OopartsDungeonReward.RewardName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonReward.RewardName');
           for (final record in loaded) {
-            record.rewardName = reader.readString();
+            record.rewardName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'OopartsDungeonReward.RewardType1', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonReward.RewardType1');
           for (final record in loaded) {
-            record.rewardType1 = CurrencyType.of(reader.readEnum());
+            record.rewardType1 = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'OopartsDungeonReward.RewardValue1', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonReward.RewardValue1');
           for (final record in loaded) {
-            record.rewardValue1 = reader.readI32As(column.element);
+            record.rewardValue1 = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'OopartsDungeonReward.RewardType2', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonReward.RewardType2');
           for (final record in loaded) {
-            record.rewardType2 = CurrencyType.of(reader.readEnum());
+            record.rewardType2 = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 7:
           checkColumn(column, 'OopartsDungeonReward.RewardValue2', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonReward.RewardValue2');
           for (final record in loaded) {
-            record.rewardValue2 = reader.readI32As(column.element);
+            record.rewardValue2 = cursor.nextI32();
           }
           break;
         case 8:
@@ -139,14 +147,16 @@ class OopartsDungeonRewardTable {
           break;
         case 9:
           checkColumn(column, 'OopartsDungeonReward.FirstClearRewardType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonReward.FirstClearRewardType');
           for (final record in loaded) {
-            record.firstClearRewardType = CurrencyType.of(reader.readEnum());
+            record.firstClearRewardType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 10:
           checkColumn(column, 'OopartsDungeonReward.FirstClearRewardValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'OopartsDungeonReward.FirstClearRewardValue');
           for (final record in loaded) {
-            record.firstClearRewardValue = reader.readI32As(column.element);
+            record.firstClearRewardValue = cursor.nextI32();
           }
           break;
         default:

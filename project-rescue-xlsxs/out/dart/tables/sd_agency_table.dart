@@ -98,6 +98,7 @@ class SDAgencyTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SDAgencyRecord>[];
@@ -113,128 +114,149 @@ class SDAgencyTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SDAgency.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SDAgency.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SDAgency.InfoName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.InfoName');
           for (final record in loaded) {
-            record.infoName = reader.readString();
+            record.infoName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'SDAgency.AgencyType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.AgencyType');
           for (final record in loaded) {
-            record.agencyType = AgencyType.of(reader.readEnum());
+            record.agencyType = AgencyType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'SDAgency.AgencyGrade', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.AgencyGrade');
           for (final record in loaded) {
-            record.agencyGrade = AgencyGrade.of(reader.readEnum());
+            record.agencyGrade = AgencyGrade.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'SDAgency.Time', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.Time');
           for (final record in loaded) {
-            record.time = reader.readI32As(column.element);
+            record.time = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'SDAgency.AgencyWeight', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.AgencyWeight');
           for (final record in loaded) {
-            record.agencyWeight = reader.readI32As(column.element);
+            record.agencyWeight = cursor.nextI32();
           }
           break;
         case 8:
           checkColumn(column, 'SDAgency.Condition1', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.Condition1');
           for (final record in loaded) {
-            record.condition1 = JobType.of(reader.readEnum());
+            record.condition1 = JobType.of(cursor.nextI32());
           }
           break;
         case 9:
           checkColumn(column, 'SDAgency.Condition1value', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.Condition1value');
           for (final record in loaded) {
-            record.condition1value = reader.readI32As(column.element);
+            record.condition1value = cursor.nextI32();
           }
           break;
         case 10:
           checkColumn(column, 'SDAgency.Condition2', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.Condition2');
           for (final record in loaded) {
-            record.condition2 = GradeType.of(reader.readEnum());
+            record.condition2 = GradeType.of(cursor.nextI32());
           }
           break;
         case 11:
           checkColumn(column, 'SDAgency.Condition2value', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.Condition2value');
           for (final record in loaded) {
-            record.condition2value = reader.readI32As(column.element);
+            record.condition2value = cursor.nextI32();
           }
           break;
         case 12:
           checkColumn(column, 'SDAgency.Condition3', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.Condition3');
           for (final record in loaded) {
-            record.condition3 = ConditionType.of(reader.readEnum());
+            record.condition3 = ConditionType.of(cursor.nextI32());
           }
           break;
         case 13:
           checkColumn(column, 'SDAgency.ClassMinValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.ClassMinValue');
           for (final record in loaded) {
-            record.classMinValue = reader.readI32As(column.element);
+            record.classMinValue = cursor.nextI32();
           }
           break;
         case 14:
           checkColumn(column, 'SDAgency.Condition3value', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.Condition3value');
           for (final record in loaded) {
-            record.condition3value = reader.readI32As(column.element);
+            record.condition3value = cursor.nextI32();
           }
           break;
         case 15:
           checkColumn(column, 'SDAgency.RewardType1', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.RewardType1');
           for (final record in loaded) {
-            record.rewardType1 = CurrencyType.of(reader.readEnum());
+            record.rewardType1 = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 16:
           checkColumn(column, 'SDAgency.RewardValue1', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.RewardValue1');
           for (final record in loaded) {
-            record.rewardValue1 = reader.readI32As(column.element);
+            record.rewardValue1 = cursor.nextI32();
           }
           break;
         case 17:
           checkColumn(column, 'SDAgency.RewardType2', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.RewardType2');
           for (final record in loaded) {
-            record.rewardType2 = CurrencyType.of(reader.readEnum());
+            record.rewardType2 = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 18:
           checkColumn(column, 'SDAgency.RewardValue2', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.RewardValue2');
           for (final record in loaded) {
-            record.rewardValue2 = reader.readI32As(column.element);
+            record.rewardValue2 = cursor.nextI32();
           }
           break;
         case 19:
           checkColumn(column, 'SDAgency.RewardType3', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.RewardType3');
           for (final record in loaded) {
-            record.rewardType3 = CurrencyType.of(reader.readEnum());
+            record.rewardType3 = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 20:
           checkColumn(column, 'SDAgency.RewardValue3', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.RewardValue3');
           for (final record in loaded) {
-            record.rewardValue3 = reader.readI32As(column.element);
+            record.rewardValue3 = cursor.nextI32();
           }
           break;
         case 21:
           checkColumn(column, 'SDAgency.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAgency.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

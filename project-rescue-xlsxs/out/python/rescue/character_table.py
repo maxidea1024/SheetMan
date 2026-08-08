@@ -119,48 +119,59 @@ class CharacterTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Character.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Character.TitleName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.TitleName")
                 for record in records:
-                    record.title_name = reader.read_string()
+                    record.title_name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Character.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Character.CharacterType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.CharacterType")
                 for record in records:
-                    record.character_type = CharacterType(reader.read_enum())
+                    record.character_type = CharacterType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Character.Grade", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.Grade")
                 for record in records:
-                    record.grade = GradeType(reader.read_enum())
+                    record.grade = GradeType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Character.AttributeType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.AttributeType")
                 for record in records:
-                    record.attribute_type = AttributeType(reader.read_enum())
+                    record.attribute_type = AttributeType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "Character.JobType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.JobType")
                 for record in records:
-                    record.job_type = JobType(reader.read_enum())
+                    record.job_type = JobType(cursor.next_i32())
             elif column.tag == 8:
                 sheetman.check_column(column, "Character.Nation", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.Nation")
                 for record in records:
-                    record.nation = NationType(reader.read_enum())
+                    record.nation = NationType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "Character.BaseATK", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.BaseATK")
                 for record in records:
-                    record.base_atk = reader.read_i64_as(column.element)
+                    record.base_atk = cursor.next_i64()
             elif column.tag == 10:
                 sheetman.check_column(column, "Character.BaseDEF", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.BaseDEF")
                 for record in records:
-                    record.base_def = reader.read_i64_as(column.element)
+                    record.base_def = cursor.next_i64()
             elif column.tag == 11:
                 sheetman.check_column(column, "Character.BaseMHP", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.BaseMHP")
                 for record in records:
-                    record.base_mhp = reader.read_i64_as(column.element)
+                    record.base_mhp = cursor.next_i64()
             elif column.tag == 12:
                 sheetman.check_column(column, "Character.MoveSpeed", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -195,76 +206,94 @@ class CharacterTable:
                     record.is_unlocked = reader.read_bool()
             elif column.tag == 20:
                 sheetman.check_column(column, "Character.BasicAttack1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.BasicAttack1")
                 for record in records:
-                    record.basic_attack1 = reader.read_i32_as(column.element)
+                    record.basic_attack1 = cursor.next_i32()
             elif column.tag == 21:
                 sheetman.check_column(column, "Character.BasicAttack2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.BasicAttack2")
                 for record in records:
-                    record.basic_attack2 = reader.read_i32_as(column.element)
+                    record.basic_attack2 = cursor.next_i32()
             elif column.tag == 22:
                 sheetman.check_column(column, "Character.BasicAttack3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.BasicAttack3")
                 for record in records:
-                    record.basic_attack3 = reader.read_i32_as(column.element)
+                    record.basic_attack3 = cursor.next_i32()
             elif column.tag == 23:
                 sheetman.check_column(column, "Character.ActiveSkill1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.ActiveSkill1")
                 for record in records:
-                    record.active_skill1 = reader.read_i32_as(column.element)
+                    record.active_skill1 = cursor.next_i32()
             elif column.tag == 24:
                 sheetman.check_column(column, "Character.ActiveSkill2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.ActiveSkill2")
                 for record in records:
-                    record.active_skill2 = reader.read_i32_as(column.element)
+                    record.active_skill2 = cursor.next_i32()
             elif column.tag == 25:
                 sheetman.check_column(column, "Character.ActiveSkill3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.ActiveSkill3")
                 for record in records:
-                    record.active_skill3 = reader.read_i32_as(column.element)
+                    record.active_skill3 = cursor.next_i32()
             elif column.tag == 26:
                 sheetman.check_column(column, "Character.SpecialSkill1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.SpecialSkill1")
                 for record in records:
-                    record.special_skill1 = reader.read_i32_as(column.element)
+                    record.special_skill1 = cursor.next_i32()
             elif column.tag == 27:
                 sheetman.check_column(column, "Character.SpecialSkill2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.SpecialSkill2")
                 for record in records:
-                    record.special_skill2 = reader.read_i32_as(column.element)
+                    record.special_skill2 = cursor.next_i32()
             elif column.tag == 28:
                 sheetman.check_column(column, "Character.SpecialSkill3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.SpecialSkill3")
                 for record in records:
-                    record.special_skill3 = reader.read_i32_as(column.element)
+                    record.special_skill3 = cursor.next_i32()
             elif column.tag == 29:
                 sheetman.check_column(column, "Character.SpecialSkill4", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.SpecialSkill4")
                 for record in records:
-                    record.special_skill4 = reader.read_i32_as(column.element)
+                    record.special_skill4 = cursor.next_i32()
             elif column.tag == 30:
                 sheetman.check_column(column, "Character.SpecialSkill5", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.SpecialSkill5")
                 for record in records:
-                    record.special_skill5 = reader.read_i32_as(column.element)
+                    record.special_skill5 = cursor.next_i32()
             elif column.tag == 31:
                 sheetman.check_column(column, "Character.PassiveBuff1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.PassiveBuff1")
                 for record in records:
-                    record.passive_buff1 = reader.read_i32_as(column.element)
+                    record.passive_buff1 = cursor.next_i32()
             elif column.tag == 32:
                 sheetman.check_column(column, "Character.PassiveBuff2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.PassiveBuff2")
                 for record in records:
-                    record.passive_buff2 = reader.read_i32_as(column.element)
+                    record.passive_buff2 = cursor.next_i32()
             elif column.tag == 33:
                 sheetman.check_column(column, "Character.PassiveBuff3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.PassiveBuff3")
                 for record in records:
-                    record.passive_buff3 = reader.read_i32_as(column.element)
+                    record.passive_buff3 = cursor.next_i32()
             elif column.tag == 34:
                 sheetman.check_column(column, "Character.PrefabPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.PrefabPath")
                 for record in records:
-                    record.prefab_path = reader.read_string()
+                    record.prefab_path = cursor.next_string()
             elif column.tag == 35:
                 sheetman.check_column(column, "Character.SdMaterialPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.SdMaterialPath")
                 for record in records:
-                    record.sd_material_path = reader.read_string()
+                    record.sd_material_path = cursor.next_string()
             elif column.tag == 36:
                 sheetman.check_column(column, "Character.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             elif column.tag == 37:
                 sheetman.check_column(column, "Character.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Character.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

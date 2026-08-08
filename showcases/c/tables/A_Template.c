@@ -14,6 +14,7 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader) {
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -71,11 +72,12 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader) {
     case 1:
       (void)sm_check_column(reader, column, "Template.Index", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Template.Index");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         A_TemplateRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->index);
+        (void)sm_cursor_next_i32(&cursor, &record->index);
       }
 
       break;
@@ -83,11 +85,12 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader) {
     case 2:
       (void)sm_check_column(reader, column, "Template.Class", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Template.Class");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         A_TemplateRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->class_);
+        (void)sm_cursor_next_string(&cursor, &record->class_);
       }
 
       break;
@@ -95,11 +98,12 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader) {
     case 3:
       (void)sm_check_column(reader, column, "Template.Int", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Template.Int");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         A_TemplateRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->int_);
+        (void)sm_cursor_next_i32(&cursor, &record->int_);
       }
 
       break;
@@ -119,11 +123,12 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader) {
     case 5:
       (void)sm_check_column(reader, column, "Template.Operator", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Template.Operator");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         A_TemplateRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->operator_);
+        (void)sm_cursor_next_string(&cursor, &record->operator_);
       }
 
       break;
@@ -131,11 +136,12 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader) {
     case 6:
       (void)sm_check_column(reader, column, "Template.Namespace", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Template.Namespace");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         A_TemplateRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->namespace_);
+        (void)sm_cursor_next_string(&cursor, &record->namespace_);
       }
 
       break;
@@ -143,11 +149,12 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader) {
     case 7:
       (void)sm_check_column(reader, column, "Template.Constructor", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Template.Constructor");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         A_TemplateRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->constructor);
+        (void)sm_cursor_next_string(&cursor, &record->constructor);
       }
 
       break;
@@ -155,11 +162,12 @@ static bool A_TemplateParse(A_TemplateTable_t* table, sm_reader* reader) {
     case 8:
       (void)sm_check_column(reader, column, "Template.Function", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Template.Function");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         A_TemplateRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->function);
+        (void)sm_cursor_next_string(&cursor, &record->function);
       }
 
       break;

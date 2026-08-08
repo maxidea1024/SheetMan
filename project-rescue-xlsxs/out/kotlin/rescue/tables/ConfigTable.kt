@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -131,38 +132,44 @@ class ConfigTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Config.Index", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Config.Index")
                     for (record in loaded) {
-                        record.index = reader.readI32As(column.element)
+                        record.index = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Config.Id", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Config.Id")
                     for (record in loaded) {
-                        record.id = reader.readString()
+                        record.id = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Config.Category", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Config.Category")
                     for (record in loaded) {
-                        record.category = reader.readString()
+                        record.category = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Config.DataType", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Config.DataType")
                     for (record in loaded) {
-                        record.dataType = reader.readString()
+                        record.dataType = cursor.nextString()
                     }
                 }
                 5 -> {
                     checkColumn(column, "Config.DefaultValue", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Config.DefaultValue")
                     for (record in loaded) {
-                        record.defaultValue = reader.readString()
+                        record.defaultValue = cursor.nextString()
                     }
                 }
                 6 -> {
                     checkColumn(column, "Config.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Config.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

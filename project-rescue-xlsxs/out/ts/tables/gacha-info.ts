@@ -291,6 +291,7 @@ export class GachaInfoTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -304,79 +305,90 @@ export class GachaInfoTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'GachaInfo.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'GachaInfo.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'GachaInfo.GachaType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.GachaType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gachaType = reader.readEnum() as GachaType
+            record._gachaType = cursor.nextI32() as GachaType
           }
           break
         case 4:
           sheetman.checkColumn(column, 'GachaInfo.Priority', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.Priority')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._priority = reader.readI32As(column.element)
+            record._priority = cursor.nextI32()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'GachaInfo.ConditionID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.ConditionID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._conditionID = reader.readI32As(column.element)
+            record._conditionID = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'GachaInfo.RateId', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.RateId')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rateId = reader.readI32As(column.element)
+            record._rateId = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'GachaInfo.TriggerCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.TriggerCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._triggerCount = reader.readI32As(column.element)
+            record._triggerCount = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'GachaInfo.TriggerRateId', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.TriggerRateId')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._triggerRateId = reader.readI32As(column.element)
+            record._triggerRateId = cursor.nextI32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'GachaInfo.EndCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.EndCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._endCount = reader.readI32As(column.element)
+            record._endCount = cursor.nextI32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'GachaInfo.EndRateId', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.EndRateId')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._endRateId = reader.readI32As(column.element)
+            record._endRateId = cursor.nextI32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'GachaInfo.EndCharacterId', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.EndCharacterId')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._endCharacterId = reader.readI32As(column.element)
+            record._endCharacterId = cursor.nextI32()
           }
           break
         case 12:
@@ -395,16 +407,18 @@ export class GachaInfoTable {
           break
         case 14:
           sheetman.checkColumn(column, 'GachaInfo.WishListConditionID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.WishListConditionID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._wishListConditionID = reader.readI32As(column.element)
+            record._wishListConditionID = cursor.nextI32()
           }
           break
         case 15:
           sheetman.checkColumn(column, 'GachaInfo.WishListMaxValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.WishListMaxValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._wishListMaxValue = reader.readI32As(column.element)
+            record._wishListMaxValue = cursor.nextI32()
           }
           break
         case 16:
@@ -423,37 +437,42 @@ export class GachaInfoTable {
           break
         case 18:
           sheetman.checkColumn(column, 'GachaInfo.CurrencyType1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.CurrencyType1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._currencyType1 = reader.readEnum() as CurrencyType
+            record._currencyType1 = cursor.nextI32() as CurrencyType
           }
           break
         case 19:
           sheetman.checkColumn(column, 'GachaInfo.SingleCost1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.SingleCost1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._singleCost1 = reader.readI32As(column.element)
+            record._singleCost1 = cursor.nextI32()
           }
           break
         case 20:
           sheetman.checkColumn(column, 'GachaInfo.CurrencyType2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.CurrencyType2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._currencyType2 = reader.readEnum() as CurrencyType
+            record._currencyType2 = cursor.nextI32() as CurrencyType
           }
           break
         case 21:
           sheetman.checkColumn(column, 'GachaInfo.SingleCost2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.SingleCost2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._singleCost2 = reader.readI32As(column.element)
+            record._singleCost2 = cursor.nextI32()
           }
           break
         case 22:
           sheetman.checkColumn(column, 'GachaInfo.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaInfo.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         case 23:

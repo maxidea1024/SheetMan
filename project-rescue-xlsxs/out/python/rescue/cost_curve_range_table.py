@@ -84,24 +84,29 @@ class CostCurveRangeTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "CostCurveRange.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurveRange.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "CostCurveRange.GrowthType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurveRange.GrowthType")
                 for record in records:
-                    record.growth_type = GrowthType(reader.read_enum())
+                    record.growth_type = GrowthType(cursor.next_i32())
             elif column.tag == 3:
                 sheetman.check_column(column, "CostCurveRange.RangeIndex", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurveRange.RangeIndex")
                 for record in records:
-                    record.range_index = reader.read_i32_as(column.element)
+                    record.range_index = cursor.next_i32()
             elif column.tag == 4:
                 sheetman.check_column(column, "CostCurveRange.StartStep", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurveRange.StartStep")
                 for record in records:
-                    record.start_step = reader.read_i32_as(column.element)
+                    record.start_step = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "CostCurveRange.EndStep", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurveRange.EndStep")
                 for record in records:
-                    record.end_step = reader.read_i32_as(column.element)
+                    record.end_step = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "CostCurveRange.AddMultiplier", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:

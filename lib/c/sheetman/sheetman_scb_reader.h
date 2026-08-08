@@ -221,6 +221,60 @@ bool sm_check_column(sm_reader* reader, const sm_column* column, const char* fie
  * here names the column instead of corrupting the next. */
 bool sm_check_block_end(sm_reader* reader, const sm_column* column, int32_t expected_end);
 
+/* Reads one scalar column's values in row order, whatever the block's encoding.
+ *
+ * The generated row loop stays a row loop; this is the one place that knows how a
+ * delta accumulates, how long a run has left, or that a dictionary index is a
+ * reference into strings decoded once. That last one matters beyond file size: a
+ * hundred-thousand-row column with three distinct strings copies three strings into
+ * the arena, not a hundred thousand.
+ *
+ * sm_check_column has already refused any (element, encoding) pair the spec does not
+ * define, so the functions here do not re-litigate that. Sticky like every read: once
+ * the reader has failed, every next does nothing and returns false. */
+typedef struct sm_cursor {
+  sm_reader* reader;
+  const char* field_name;
+  uint8_t element;
+  uint8_t encoding;
+
+  /* The block's dictionary, decoded into the arena once and handed out per row. */
+  const char** dictionary;
+  int32_t dictionary_count;
+
+  /* A run-length family's current run: what remains of it, and its value - which
+   * is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE. */
+  int32_t run_remaining;
+  int32_t run_value;
+
+  /* The delta family's accumulator, once started. */
+  int32_t previous;
+  bool started;
+
+  /* Rows not yet handed out. A run that claims more than this is corrupt, and
+   * catching it here names the field instead of leaving it to the block-end check. */
+  int32_t rows_remaining;
+} sm_cursor;
+
+/* Opens a cursor over one column's block, right after sm_check_column. A DICT family
+ * block decodes its dictionary here, once. `field_name` is kept for error messages
+ * and has to outlive the cursor - generated code passes a literal. */
+bool sm_cursor_init(sm_cursor* cursor, sm_reader* reader, const sm_column* column,
+          int32_t row_count, const char* field_name);
+
+/* The next int32 - which also serves enums, and reference indexes. */
+bool sm_cursor_next_i32(sm_cursor* cursor, int32_t* out);
+
+/* An int64 member: an i64 column is always raw, anything narrower decodes as int32. */
+bool sm_cursor_next_i64(sm_cursor* cursor, int64_t* out);
+
+/* A double member: float columns are always raw, an i32 column decodes then widens. */
+bool sm_cursor_next_f64(sm_cursor* cursor, double* out);
+
+/* The next string - the dictionary's copy where the block has one, so rows that
+ * repeat a value share one pointer into the arena. */
+bool sm_cursor_next_string(sm_cursor* cursor, const char** out);
+
 /* Reads a whole file. The caller frees the buffer with sm_free_bytes. */
 bool sm_read_all_bytes(const char* filename, uint8_t** out_data, int32_t* out_length);
 
@@ -829,6 +883,32 @@ static void sm_describe_elements(unsigned accepted, char* out, size_t out_size) 
   out[at] = '\0';
 }
 
+/* The (element, encoding) pairs the spec defines. Arrays are always raw; integers
+ * take the integer encodings, strings the dictionary ones. */
+static bool sm_encoding_supported(const sm_column* column) {
+  if (column->encoding == SM_ENCODING_RAW)
+    return true;
+
+  if (column->kind != SM_KIND_SCALAR)
+    return false;
+
+  switch (column->element) {
+  case SM_ELEMENT_VARINT:
+    return column->encoding == SM_ENCODING_RLE;
+
+  case SM_ELEMENT_I32:
+    return column->encoding >= SM_ENCODING_VARINT
+      && column->encoding <= SM_ENCODING_DELTA_RLE;
+
+  case SM_ELEMENT_STRING:
+    return column->encoding == SM_ENCODING_DICT
+      || column->encoding == SM_ENCODING_DICT_RLE;
+
+  default:
+    return false;
+  }
+}
+
 bool sm_check_column(sm_reader* reader, const sm_column* column, const char* field_name,
           uint8_t kind, int32_t count, unsigned accepted) {
   char elements[48];
@@ -844,13 +924,14 @@ bool sm_check_column(sm_reader* reader, const sm_column* column, const char* fie
            field_name, (int)column->kind, column->count, (int)kind, count);
   }
 
-  /* An encoding this build cannot decode is refused by name, exactly like an
-   * element it cannot read. An unknown column's encoding never gets here - a skip
-   * is a skip whatever the block's layout. */
-  if (column->encoding != SM_ENCODING_RAW) {
+  /* An encoding this build cannot decode - or one the spec does not define for this
+   * element - is refused by name, exactly like an element it cannot read. An unknown
+   * column's encoding never gets here - a skip is a skip whatever the block's
+   * layout. */
+  if (!sm_encoding_supported(column)) {
     return sm_fail(reader,
-           "%s: the file's column uses encoding %d, which this reader does not "
-           "support. Regenerate the code or rebuild the data.",
+           "%s: the file's column uses encoding %d, which this reader cannot decode "
+           "for its element type. Regenerate the code or rebuild the data.",
            field_name, (int)column->encoding);
   }
 
@@ -878,6 +959,230 @@ bool sm_check_block_end(sm_reader* reader, const sm_column* column, int32_t expe
   }
 
   return true;
+}
+
+bool sm_cursor_init(sm_cursor* cursor, sm_reader* reader, const sm_column* column,
+          int32_t row_count, const char* field_name) {
+  cursor->reader = reader;
+  cursor->field_name = field_name;
+  cursor->element = column->element;
+  cursor->encoding = column->encoding;
+  cursor->dictionary = NULL;
+  cursor->dictionary_count = 0;
+  cursor->run_remaining = 0;
+  cursor->run_value = 0;
+  cursor->previous = 0;
+  cursor->started = false;
+  cursor->rows_remaining = row_count;
+
+  if (sm_failed(reader))
+    return false;
+
+  if (cursor->encoding != SM_ENCODING_DICT && cursor->encoding != SM_ENCODING_DICT_RLE)
+    return true;
+
+  {
+    int32_t count = 0;
+    int32_t at;
+
+    if (!sm_read_counter32(reader, &count))
+      return false;
+
+    if (count < 0)
+      return sm_fail(reader, "%s: the dictionary entry count is negative", field_name);
+
+    /* Each entry costs at least its one-byte length prefix, so a count the bytes
+     * left cannot cover is one the exporter could not have written - checked here
+     * because the allocation comes before the reads that would catch it. */
+    if (count > reader->length - reader->position) {
+      return sm_fail(reader,
+             "%s: a dictionary of %d entries is larger than the file can hold",
+             field_name, count);
+    }
+
+    if (count == 0)
+      return true;
+
+    if (reader->arena == NULL)
+      return sm_fail(reader, "a string was read through a reader with no arena");
+
+    cursor->dictionary = (const char**)sm_arena_alloc(
+      reader->arena, (size_t)count * sizeof *cursor->dictionary);
+
+    if (cursor->dictionary == NULL)
+      return sm_fail(reader, "%s: out of memory allocating the dictionary", field_name);
+
+    for (at = 0; at < count; ++at) {
+      if (!sm_read_string(reader, &cursor->dictionary[at]))
+        return false;
+    }
+
+    cursor->dictionary_count = count;
+    return true;
+  }
+}
+
+/* The next run of a run-length family: its length, checked against the rows the
+ * column has left, then its value. */
+static bool sm_cursor_read_run(sm_cursor* cursor) {
+  int32_t length = 0;
+
+  if (!sm_read_counter32(cursor->reader, &length))
+    return false;
+
+  /* + 1 because the row this run was read for is already counted out of
+   * rows_remaining by its next call. */
+  if (length < 1 || length > cursor->rows_remaining + 1) {
+    return sm_fail(cursor->reader,
+           "%s: a run of %d values cannot cover the %d rows left in the column",
+           cursor->field_name, length, cursor->rows_remaining + 1);
+  }
+
+  cursor->run_remaining = length;
+
+  return sm_read_counter32(cursor->reader, &cursor->run_value);
+}
+
+static bool sm_cursor_dictionary_entry(const sm_cursor* cursor, int32_t index,
+             const char** out) {
+  if (index < 0 || index >= cursor->dictionary_count) {
+    return sm_fail(cursor->reader,
+           "%s: dictionary index %d is out of range - the dictionary holds %d entries",
+           cursor->field_name, index, cursor->dictionary_count);
+  }
+
+  *out = cursor->dictionary[index];
+  return true;
+}
+
+bool sm_cursor_next_i32(sm_cursor* cursor, int32_t* out) {
+  sm_reader* reader = cursor->reader;
+
+  if (sm_failed(reader))
+    return false;
+
+  cursor->rows_remaining--;
+
+  switch (cursor->encoding) {
+  case SM_ENCODING_RAW:
+    if (cursor->element == SM_ELEMENT_I32)
+      return sm_read_int32(reader, out);
+
+    return sm_read_counter32(reader, out);
+
+  case SM_ENCODING_VARINT:
+    return sm_read_counter32(reader, out);
+
+  case SM_ENCODING_DELTA: {
+    int32_t value = 0;
+
+    if (!sm_read_counter32(reader, &value))
+      return false;
+
+    /* The addition wraps on purpose, mirroring the writer's wrapping subtraction;
+     * together they are exact for every int32 pair. On uint32_t, because signed
+     * overflow is undefined in C. */
+    if (cursor->started) {
+      cursor->previous = (int32_t)((uint32_t)cursor->previous + (uint32_t)value);
+    } else {
+      cursor->previous = value;
+      cursor->started = true;
+    }
+
+    *out = cursor->previous;
+    return true;
+  }
+
+  case SM_ENCODING_RLE:
+    if (cursor->run_remaining == 0 && !sm_cursor_read_run(cursor))
+      return false;
+
+    cursor->run_remaining--;
+    *out = cursor->run_value;
+    return true;
+
+  default: /* SM_ENCODING_DELTA_RLE; sm_check_column refused everything else. */
+    if (!cursor->started) {
+      if (!sm_read_counter32(reader, &cursor->previous))
+        return false;
+
+      cursor->started = true;
+      *out = cursor->previous;
+      return true;
+    }
+
+    if (cursor->run_remaining == 0 && !sm_cursor_read_run(cursor))
+      return false;
+
+    cursor->run_remaining--;
+    cursor->previous = (int32_t)((uint32_t)cursor->previous + (uint32_t)cursor->run_value);
+    *out = cursor->previous;
+    return true;
+  }
+}
+
+bool sm_cursor_next_i64(sm_cursor* cursor, int64_t* out) {
+  if (cursor->element == SM_ELEMENT_I64)
+    return sm_read_int64(cursor->reader, out);
+
+  {
+    int32_t narrower = 0;
+    bool ok = sm_cursor_next_i32(cursor, &narrower);
+
+    *out = narrower;
+    return ok;
+  }
+}
+
+bool sm_cursor_next_f64(sm_cursor* cursor, double* out) {
+  if (cursor->element == SM_ELEMENT_F64)
+    return sm_read_double(cursor->reader, out);
+
+  if (cursor->element == SM_ELEMENT_F32) {
+    float single = 0.0f;
+    bool ok = sm_read_float(cursor->reader, &single);
+
+    *out = single;
+    return ok;
+  }
+
+  {
+    int32_t integer = 0;
+    bool ok = sm_cursor_next_i32(cursor, &integer);
+
+    *out = integer;
+    return ok;
+  }
+}
+
+bool sm_cursor_next_string(sm_cursor* cursor, const char** out) {
+  sm_reader* reader = cursor->reader;
+
+  if (sm_failed(reader))
+    return false;
+
+  cursor->rows_remaining--;
+
+  switch (cursor->encoding) {
+  case SM_ENCODING_RAW:
+    return sm_read_string(reader, out);
+
+  case SM_ENCODING_DICT: {
+    int32_t index = 0;
+
+    if (!sm_read_counter32(reader, &index))
+      return false;
+
+    return sm_cursor_dictionary_entry(cursor, index, out);
+  }
+
+  default: /* SM_ENCODING_DICT_RLE */
+    if (cursor->run_remaining == 0 && !sm_cursor_read_run(cursor))
+      return false;
+
+    cursor->run_remaining--;
+    return sm_cursor_dictionary_entry(cursor, cursor->run_value, out);
+  }
 }
 
 /* MSVC deprecates fopen and a project built with warnings as errors will not

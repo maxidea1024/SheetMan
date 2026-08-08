@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/CurrencyType.php';
 require_once __DIR__ . '/../enums/CycleType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -127,43 +128,49 @@ final class CurrencyTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Currency.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Currency.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Currency.ItemName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.ItemName');
                     foreach ($records as $record) {
-                        $record->itemName = $reader->readString();
+                        $record->itemName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Currency.ItemType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.ItemType');
                     foreach ($records as $record) {
-                        $record->itemType = ItemType::tryFrom($reader->readEnum()) ?? ItemType::None;
+                        $record->itemType = ItemType::tryFrom($cursor->nextI32()) ?? ItemType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Currency.Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.Type');
                     foreach ($records as $record) {
-                        $record->type = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->type = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'Currency.CycleType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.CycleType');
                     foreach ($records as $record) {
-                        $record->cycleType = CycleType::tryFrom($reader->readEnum()) ?? CycleType::None;
+                        $record->cycleType = CycleType::tryFrom($cursor->nextI32()) ?? CycleType::None;
                     }
                     break;
 
@@ -176,43 +183,49 @@ final class CurrencyTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'Currency.MaxStack', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I64, ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.MaxStack');
                     foreach ($records as $record) {
-                        $record->maxStack = $reader->readI64As($column['element']);
+                        $record->maxStack = $cursor->nextI64();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'Currency.Cooltime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.Cooltime');
                     foreach ($records as $record) {
-                        $record->cooltime = $reader->readI32As($column['element']);
+                        $record->cooltime = $cursor->nextI32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'Currency.Duration', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.Duration');
                     foreach ($records as $record) {
-                        $record->duration = $reader->readI32As($column['element']);
+                        $record->duration = $cursor->nextI32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'Currency.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'Currency.DropPrefabPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.DropPrefabPath');
                     foreach ($records as $record) {
-                        $record->dropPrefabPath = $reader->readString();
+                        $record->dropPrefabPath = $cursor->nextString();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'Currency.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Currency.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

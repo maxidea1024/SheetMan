@@ -14,6 +14,7 @@ namespace Rescue;
 require_once __DIR__ . '/../sheetman/ScbReader.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -107,22 +108,25 @@ final class BGMSoundTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'BGMSound.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BGMSound.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'BGMSound.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BGMSound.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'BGMSound.Path', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BGMSound.Path');
                     foreach ($records as $record) {
-                        $record->path = $reader->readString();
+                        $record->path = $cursor->nextString();
                     }
                     break;
 
@@ -142,8 +146,9 @@ final class BGMSoundTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'BGMSound.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BGMSound.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

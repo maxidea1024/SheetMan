@@ -14,6 +14,7 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -65,11 +66,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 1:
       (void)sm_check_column(reader, column, "Package.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -77,11 +79,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 2:
       (void)sm_check_column(reader, column, "Package.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -89,11 +92,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 3:
       (void)sm_check_column(reader, column, "Package.ClassName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.ClassName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->class_name);
+        (void)sm_cursor_next_string(&cursor, &record->class_name);
       }
 
       break;
@@ -101,12 +105,13 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 4:
       (void)sm_check_column(reader, column, "Package.ItemType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.ItemType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->item_type = (Rescue_ItemType_t)scratch;
       }
 
@@ -115,12 +120,13 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 5:
       (void)sm_check_column(reader, column, "Package.PackageType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.PackageType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->package_type = (Rescue_ConsumablesType_t)scratch;
       }
 
@@ -141,11 +147,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 7:
       (void)sm_check_column(reader, column, "Package.MaxStack", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I64) | SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.MaxStack");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i64_as(reader, column->element, &record->max_stack);
+        (void)sm_cursor_next_i64(&cursor, &record->max_stack);
       }
 
       break;
@@ -153,12 +160,13 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 8:
       (void)sm_check_column(reader, column, "Package.PackageCondition", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.PackageCondition");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->package_condition = (Rescue_ConditionType_t)scratch;
       }
 
@@ -167,11 +175,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 9:
       (void)sm_check_column(reader, column, "Package.Cooltime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.Cooltime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->cooltime);
+        (void)sm_cursor_next_i32(&cursor, &record->cooltime);
       }
 
       break;
@@ -179,11 +188,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 10:
       (void)sm_check_column(reader, column, "Package.Duration", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.Duration");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->duration);
+        (void)sm_cursor_next_i32(&cursor, &record->duration);
       }
 
       break;
@@ -303,11 +313,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 15:
       (void)sm_check_column(reader, column, "Package.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;
@@ -315,11 +326,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 16:
       (void)sm_check_column(reader, column, "Package.DropPrefabPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.DropPrefabPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->drop_prefab_path);
+        (void)sm_cursor_next_string(&cursor, &record->drop_prefab_path);
       }
 
       break;
@@ -327,11 +339,12 @@ static bool Rescue_PackageParse(Rescue_PackageTable_t* table, sm_reader* reader)
     case 17:
       (void)sm_check_column(reader, column, "Package.ItemDescription", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Package.ItemDescription");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_PackageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->item_description);
+        (void)sm_cursor_next_string(&cursor, &record->item_description);
       }
 
       break;

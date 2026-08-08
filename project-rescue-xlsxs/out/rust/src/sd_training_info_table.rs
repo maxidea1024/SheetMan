@@ -108,50 +108,58 @@ impl SDTrainingInfoTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDTrainingInfo.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDTrainingInfo.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDTrainingInfo.TrainingName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.TrainingName")?;
                     for record in records.iter_mut() {
-                        record.training_name = reader.read_string()?;
+                        record.training_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDTrainingInfo.AttributeType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.AttributeType")?;
                     for record in records.iter_mut() {
-                        record.attribute_type = AttributeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.attribute_type = AttributeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SDTrainingInfo.StatType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.StatType")?;
                     for record in records.iter_mut() {
-                        record.stat_type = StatType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.stat_type = StatType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDTrainingInfo.UnlockCondition", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.UnlockCondition")?;
                     for record in records.iter_mut() {
-                        record.unlock_condition = reader.read_i32_as(column.element)?;
+                        record.unlock_condition = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "SDTrainingInfo.LevelUpCondition", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.LevelUpCondition")?;
                     for record in records.iter_mut() {
-                        record.level_up_condition = reader.read_i32_as(column.element)?;
+                        record.level_up_condition = cursor.next_i32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "SDTrainingInfo.MaxLevel", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.MaxLevel")?;
                     for record in records.iter_mut() {
-                        record.max_level = reader.read_i32_as(column.element)?;
+                        record.max_level = cursor.next_i32()?;
                     }
                 }
                 9 => {
@@ -162,20 +170,23 @@ impl SDTrainingInfoTable {
                 }
                 10 => {
                     sheetman::check_column(column, "SDTrainingInfo.LvResetCurrencyType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.LvResetCurrencyType")?;
                     for record in records.iter_mut() {
-                        record.lv_reset_currency_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.lv_reset_currency_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "SDTrainingInfo.LvResetCurrencyValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.LvResetCurrencyValue")?;
                     for record in records.iter_mut() {
-                        record.lv_reset_currency_value = reader.read_i32_as(column.element)?;
+                        record.lv_reset_currency_value = cursor.next_i32()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "SDTrainingInfo.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDTrainingInfo.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 _ => {

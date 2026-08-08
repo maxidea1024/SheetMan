@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/GradeType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -138,57 +139,65 @@ final class EquipItemClassTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'EquipItemClass.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemClass.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'EquipItemClass.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemClass.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'EquipItemClass.NameKR', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemClass.NameKR');
                     foreach ($records as $record) {
-                        $record->nameKR = $reader->readString();
+                        $record->nameKR = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'EquipItemClass.Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemClass.Type');
                     foreach ($records as $record) {
-                        $record->type = JobType::tryFrom($reader->readEnum()) ?? JobType::None;
+                        $record->type = JobType::tryFrom($cursor->nextI32()) ?? JobType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'EquipItemClass.Grade', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemClass.Grade');
                     foreach ($records as $record) {
-                        $record->grade = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
+                        $record->grade = GradeType::tryFrom($cursor->nextI32()) ?? GradeType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'EquipItemClass.TranscendStep', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemClass.TranscendStep');
                     foreach ($records as $record) {
-                        $record->transcendStep = $reader->readI32As($column['element']);
+                        $record->transcendStep = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'EquipItemClass.MaterialType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemClass.MaterialType');
                     foreach ($records as $record) {
-                        $record->materialType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->materialType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'EquipItemClass.MaterialValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemClass.MaterialValue');
                     foreach ($records as $record) {
-                        $record->materialValue = $reader->readI32As($column['element']);
+                        $record->materialValue = $cursor->nextI32();
                     }
                     break;
 

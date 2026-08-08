@@ -95,6 +95,7 @@ class ConfigTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <ConfigRecord>[];
@@ -111,38 +112,44 @@ class ConfigTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Config.Index', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Config.Index');
           for (final record in loaded) {
-            record.index = reader.readI32As(column.element);
+            record.index = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Config.Id', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Config.Id');
           for (final record in loaded) {
-            record.id = reader.readString();
+            record.id = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Config.Category', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Config.Category');
           for (final record in loaded) {
-            record.category = reader.readString();
+            record.category = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Config.DataType', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Config.DataType');
           for (final record in loaded) {
-            record.dataType = reader.readString();
+            record.dataType = cursor.nextString();
           }
           break;
         case 5:
           checkColumn(column, 'Config.DefaultValue', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Config.DefaultValue');
           for (final record in loaded) {
-            record.defaultValue = reader.readString();
+            record.defaultValue = cursor.nextString();
           }
           break;
         case 6:
           checkColumn(column, 'Config.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Config.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         default:

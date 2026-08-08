@@ -381,10 +381,11 @@ public class GoCodeGenerator : CodeGenerator<GoRecipe>
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementCount = sf.Fields.Count,
             ArrayType = "[]" + elementType,
             Declarations = Declarations(sf, name, elementType),
-            ReadScalar = ReadExpression(sf),
+            ReadScalar = ScalarReadExpression(sf),
             ReadElement = ReadExpression(sf),
         };
     }
@@ -465,6 +466,49 @@ public class GoCodeGenerator : CodeGenerator<GoRecipe>
         return sf.IsRef ? "scalar_ref" : "scalar";
     }
 
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly.
+    /// </summary>
+    /// <remarks>
+    /// A declaration rather than an assignment: Go gives each switch case a scope of
+    /// its own, so the cases that need a cursor declare one and the rest never name it -
+    /// which is what keeps Go's unused-variable error away.
+    /// </remarks>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"cursor := sheetman.NewColumnCursor(reader, column, count, \"{tableName}.{sf.Name.ToPascalCase()}\")"
+            : "";
+
     private GoAccessorView BuildAccessor() => new GoAccessorView
     {
         FileExtension = _recipe.BinaryTableFileExtension,
@@ -501,6 +545,28 @@ public class GoCodeGenerator : CodeGenerator<GoRecipe>
     };
 
     // ----------------------------------------------------------- rendering
+
+    /// <summary>
+    /// The call reading one scalar value: through the cursor where the column can
+    /// arrive encoded - which also carries the lossless promotions - and the direct
+    /// call otherwise. A reference's stored index is read by the template itself.
+    /// </summary>
+    private string ScalarReadExpression(SerialField sf)
+    {
+        if (!UsesCursor(sf))
+            return ReadExpression(sf);
+
+        return sf.ElementType switch
+        {
+            ValueType.Enum => $"{sf.FirstField.Enum.Name.ToPascalCase()}(cursor.NextI32())",
+            ValueType.Int64 => "cursor.NextI64()",
+            ValueType.Double => "cursor.NextF64()",
+            ValueType.String => "cursor.NextString()",
+
+            // Int32, and the index a reference travels as.
+            _ => "cursor.NextI32()",
+        };
+    }
 
     /// <summary>
     /// The call reading one value of a field's element type.

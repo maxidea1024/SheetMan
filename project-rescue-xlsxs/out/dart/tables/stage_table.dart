@@ -94,6 +94,7 @@ class StageTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <StageRecord>[];
@@ -109,26 +110,30 @@ class StageTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Stage.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Stage.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Stage.StageName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.StageName');
           for (final record in loaded) {
-            record.stageName = reader.readString();
+            record.stageName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Stage.AssetDataPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.AssetDataPath');
           for (final record in loaded) {
-            record.assetDataPath = reader.readString();
+            record.assetDataPath = cursor.nextString();
           }
           break;
         case 5:
@@ -140,14 +145,16 @@ class StageTable {
           break;
         case 6:
           checkColumn(column, 'Stage.SpawnPointCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.SpawnPointCount');
           for (final record in loaded) {
-            record.spawnPointCount = reader.readI32As(column.element);
+            record.spawnPointCount = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'Stage.SpawnMaxCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.SpawnMaxCount');
           for (final record in loaded) {
-            record.spawnMaxCount = reader.readI32As(column.element);
+            record.spawnMaxCount = cursor.nextI32();
           }
           break;
         case 8:
@@ -158,8 +165,9 @@ class StageTable {
           break;
         case 9:
           checkColumn(column, 'Stage.StageClearCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.StageClearCount');
           for (final record in loaded) {
-            record.stageClearCount = reader.readI32As(column.element);
+            record.stageClearCount = cursor.nextI32();
           }
           break;
         case 10:
@@ -207,20 +215,23 @@ class StageTable {
           break;
         case 17:
           checkColumn(column, 'Stage.StageDropListID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.StageDropListID');
           for (final record in loaded) {
-            record.stageDropListID = reader.readI32As(column.element);
+            record.stageDropListID = cursor.nextI32();
           }
           break;
         case 18:
           checkColumn(column, 'Stage.StageBGMID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.StageBGMID');
           for (final record in loaded) {
-            record.stageBGMID = reader.readI32As(column.element);
+            record.stageBGMID = cursor.nextI32();
           }
           break;
         case 19:
           checkColumn(column, 'Stage.BossStageBGMID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Stage.BossStageBGMID');
           for (final record in loaded) {
-            record.bossStageBGMID = reader.readI32As(column.element);
+            record.bossStageBGMID = cursor.nextI32();
           }
           break;
         default:

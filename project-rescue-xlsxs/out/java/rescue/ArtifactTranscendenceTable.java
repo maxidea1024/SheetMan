@@ -74,6 +74,7 @@ public final class ArtifactTranscendenceTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<ArtifactTranscendenceRecord> loaded = new ArrayList<>(count);
@@ -89,57 +90,65 @@ public final class ArtifactTranscendenceTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "ArtifactTranscendence.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactTranscendence.Id");
                     for (ArtifactTranscendenceRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "ArtifactTranscendence.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactTranscendence.Name");
                     for (ArtifactTranscendenceRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "ArtifactTranscendence.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactTranscendence.NameKR");
                     for (ArtifactTranscendenceRecord record : loaded) {
-                        record.nameKR = reader.readString();
+                        record.nameKR = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "ArtifactTranscendence.GradeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactTranscendence.GradeType");
                     for (ArtifactTranscendenceRecord record : loaded) {
-                        record.gradeType = GradeType.of(reader.readEnum());
+                        record.gradeType = GradeType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "ArtifactTranscendence.TranscendStep", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactTranscendence.TranscendStep");
                     for (ArtifactTranscendenceRecord record : loaded) {
-                        record.transcendStep = reader.readI32As(column.element);
+                        record.transcendStep = cursor.nextI32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "ArtifactTranscendence.MaxLevel", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactTranscendence.MaxLevel");
                     for (ArtifactTranscendenceRecord record : loaded) {
-                        record.maxLevel = reader.readI32As(column.element);
+                        record.maxLevel = cursor.nextI32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "ArtifactTranscendence.MaterialType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactTranscendence.MaterialType");
                     for (ArtifactTranscendenceRecord record : loaded) {
-                        record.materialType = CurrencyType.of(reader.readEnum());
+                        record.materialType = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "ArtifactTranscendence.MaterialCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactTranscendence.MaterialCount");
                     for (ArtifactTranscendenceRecord record : loaded) {
-                        record.materialCount = reader.readI32As(column.element);
+                        record.materialCount = cursor.nextI32();
                     }
                     break;
                 }
@@ -152,8 +161,9 @@ public final class ArtifactTranscendenceTable {
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "ArtifactTranscendence.NextStepID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactTranscendence.NextStepID");
                     for (ArtifactTranscendenceRecord record : loaded) {
-                        record.nextStepID = reader.readI32As(column.element);
+                        record.nextStepID = cursor.nextI32();
                     }
                     break;
                 }

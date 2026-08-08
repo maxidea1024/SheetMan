@@ -119,26 +119,30 @@ impl StageTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Stage.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Stage.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Stage.StageName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.StageName")?;
                     for record in records.iter_mut() {
-                        record.stage_name = reader.read_string()?;
+                        record.stage_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Stage.AssetDataPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.AssetDataPath")?;
                     for record in records.iter_mut() {
-                        record.asset_data_path = reader.read_string()?;
+                        record.asset_data_path = cursor.next_string()?;
                     }
                 }
                 5 => {
@@ -153,14 +157,16 @@ impl StageTable {
                 }
                 6 => {
                     sheetman::check_column(column, "Stage.SpawnPointCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.SpawnPointCount")?;
                     for record in records.iter_mut() {
-                        record.spawn_point_count = reader.read_i32_as(column.element)?;
+                        record.spawn_point_count = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "Stage.SpawnMaxCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.SpawnMaxCount")?;
                     for record in records.iter_mut() {
-                        record.spawn_max_count = reader.read_i32_as(column.element)?;
+                        record.spawn_max_count = cursor.next_i32()?;
                     }
                 }
                 8 => {
@@ -171,8 +177,9 @@ impl StageTable {
                 }
                 9 => {
                     sheetman::check_column(column, "Stage.StageClearCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.StageClearCount")?;
                     for record in records.iter_mut() {
-                        record.stage_clear_count = reader.read_i32_as(column.element)?;
+                        record.stage_clear_count = cursor.next_i32()?;
                     }
                 }
                 10 => {
@@ -223,20 +230,23 @@ impl StageTable {
                 }
                 17 => {
                     sheetman::check_column(column, "Stage.StageDropListID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.StageDropListID")?;
                     for record in records.iter_mut() {
-                        record.stage_drop_list_id = reader.read_i32_as(column.element)?;
+                        record.stage_drop_list_id = cursor.next_i32()?;
                     }
                 }
                 18 => {
                     sheetman::check_column(column, "Stage.StageBGMID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.StageBGMID")?;
                     for record in records.iter_mut() {
-                        record.stage_bgmid = reader.read_i32_as(column.element)?;
+                        record.stage_bgmid = cursor.next_i32()?;
                     }
                 }
                 19 => {
                     sheetman::check_column(column, "Stage.BossStageBGMID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Stage.BossStageBGMID")?;
                     for record in records.iter_mut() {
-                        record.boss_stage_bgmid = reader.read_i32_as(column.element)?;
+                        record.boss_stage_bgmid = cursor.next_i32()?;
                     }
                 }
                 _ => {

@@ -81,38 +81,45 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDDungeonCard.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonCard.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDDungeonCard.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonCard.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDDungeonCard.SDDunName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonCard.SDDunName')
           records.each do |record|
-            record.sd_dun_name = reader.read_string
+            record.sd_dun_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDDungeonCard.SDCardType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonCard.SDCardType')
           records.each do |record|
-            record.sd_card_type = reader.read_enum
+            record.sd_card_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDDungeonCard.CardCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonCard.CardCount')
           records.each do |record|
-            record.card_count = reader.read_i32_as(column.element)
+            record.card_count = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDDungeonCard.StatIconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonCard.StatIconPath')
           records.each do |record|
-            record.stat_icon_path = reader.read_string
+            record.stat_icon_path = cursor.next_string
           end
         when 7
           Sheetman.check_column(column, 'SDDungeonCard.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonCard.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

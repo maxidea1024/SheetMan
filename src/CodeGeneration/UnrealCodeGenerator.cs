@@ -327,6 +327,11 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
             Comment = CommentLines(table.Comment),
             Indexes = Indexes(table),
             Fields = table.SerialFields.Select(sf => BuildField(table, sf, members)).ToList(),
+
+            // One cursor variable for the whole read: switch cases share a scope, and
+            // C++ does not allow a jump past a live constructor, so each encodable
+            // column opens the shared cursor rather than declaring its own.
+            NeedsCursor = table.SerialFields.Any(UsesCursor),
         };
     }
 
@@ -362,6 +367,8 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
+            CursorRead = CursorRead(sf, name),
             ElementCount = sf.Fields.Count,
             Declaration = Declaration(sf, name),
 
@@ -487,6 +494,74 @@ public class UnrealCodeGenerator : CodeGenerator<UnrealRecipe>
 
         return $"SheetMan::CheckColumn(Reader, Column, TEXT(\"{tableName}.{sf.Name}\"), " +
                $"{kind}, {count}, {mask});";
+    }
+
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor Open call ahead of an encodable column's row loop, or nothing for a
+    /// column that reads the reader directly.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"Cursor.Open(Reader, Column, Header.RowCount, TEXT(\"{tableName}.{sf.Name}\"));"
+            : "";
+
+    /// <summary>
+    /// The one-line read through the cursor inside the row loop, or nothing for a
+    /// column that reads the reader directly.
+    ///
+    /// An enum goes through NextEnum, which sources the int32 from whatever the block's
+    /// encoding is and casts - the same conversion ReadEnumAs applied to the raw wire.
+    /// </summary>
+    private static string CursorRead(SerialField sf, string name)
+    {
+        if (!UsesCursor(sf))
+            return "";
+
+        if (sf.IsRef)
+            return $"Cursor.NextI32(Record.{name}Index);";
+
+        switch (sf.ElementType)
+        {
+            case ValueType.Int32:
+                return $"Cursor.NextI32(Record.{name});";
+            case ValueType.Int64:
+                return $"Cursor.NextI64(Record.{name});";
+            case ValueType.Double:
+                return $"Cursor.NextF64(Record.{name});";
+            case ValueType.Enum:
+                return $"Cursor.NextEnum(Record.{name});";
+            default:
+                return $"Cursor.NextString(Record.{name});";
+        }
     }
 
     /// <summary>

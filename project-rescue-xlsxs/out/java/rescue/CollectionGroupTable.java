@@ -74,6 +74,7 @@ public final class CollectionGroupTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<CollectionGroupRecord> loaded = new ArrayList<>(count);
@@ -89,22 +90,25 @@ public final class CollectionGroupTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "CollectionGroup.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CollectionGroup.Id");
                     for (CollectionGroupRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "CollectionGroup.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CollectionGroup.Name");
                     for (CollectionGroupRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "CollectionGroup.Index", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CollectionGroup.Index");
                     for (CollectionGroupRecord record : loaded) {
-                        record.index = reader.readI32As(column.element);
+                        record.index = cursor.nextI32();
                     }
                     break;
                 }
@@ -121,8 +125,9 @@ public final class CollectionGroupTable {
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "CollectionGroup.PrefabPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CollectionGroup.PrefabPath");
                     for (CollectionGroupRecord record : loaded) {
-                        record.prefabPath = reader.readString();
+                        record.prefabPath = cursor.nextString();
                     }
                     break;
                 }

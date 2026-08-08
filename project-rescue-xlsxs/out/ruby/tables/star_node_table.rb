@@ -84,33 +84,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'StarNode.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StarNode.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'StarNode.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StarNode.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'StarNode.InfuluenceStep', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StarNode.InfuluenceStep')
           records.each do |record|
-            record.infuluence_step = reader.read_i32_as(column.element)
+            record.infuluence_step = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'StarNode.StarNodeName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StarNode.StarNodeName')
           records.each do |record|
-            record.star_node_name = reader.read_string
+            record.star_node_name = cursor.next_string
           end
         when 5
           Sheetman.check_column(column, 'StarNode.StatType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StarNode.StatType')
           records.each do |record|
-            record.stat_type = reader.read_enum
+            record.stat_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'StarNode.StarNodeValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StarNode.StarNodeValue')
           records.each do |record|
-            record.star_node_value = reader.read_i32_as(column.element)
+            record.star_node_value = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'StarNode.StarNodeRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -125,13 +131,15 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'StarNode.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StarNode.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         when 10
           Sheetman.check_column(column, 'StarNode.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StarNode.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

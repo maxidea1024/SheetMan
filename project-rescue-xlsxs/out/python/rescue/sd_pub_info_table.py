@@ -84,32 +84,39 @@ class SDPubInfoTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDPubInfo.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDPubInfo.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDPubInfo.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDPubInfo.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDPubInfo.PubName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDPubInfo.PubName")
                 for record in records:
-                    record.pub_name = reader.read_string()
+                    record.pub_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDPubInfo.UnlockCondition", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDPubInfo.UnlockCondition")
                 for record in records:
-                    record.unlock_condition = reader.read_i32_as(column.element)
+                    record.unlock_condition = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "SDPubInfo.LimitValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDPubInfo.LimitValue")
                 for record in records:
-                    record.limit_value = reader.read_i32_as(column.element)
+                    record.limit_value = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "SDPubInfo.BuffID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDPubInfo.BuffID")
                 for record in records:
-                    record.buff_id = reader.read_i32_as(column.element)
+                    record.buff_id = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "SDPubInfo.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDPubInfo.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

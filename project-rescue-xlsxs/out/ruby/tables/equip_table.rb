@@ -87,68 +87,81 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Equip.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Equip.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Equip.EquipName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.EquipName')
           records.each do |record|
-            record.equip_name = reader.read_string
+            record.equip_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Equip.Type', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.Type')
           records.each do |record|
-            record.type = reader.read_enum
+            record.type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Equip.EquipType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.EquipType')
           records.each do |record|
-            record.equip_type = reader.read_enum
+            record.equip_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'Equip.Grade', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.Grade')
           records.each do |record|
-            record.grade = reader.read_enum
+            record.grade = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'Equip.MaxClass', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.MaxClass')
           records.each do |record|
-            record.max_class = reader.read_i32_as(column.element)
+            record.max_class = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'Equip.MaxLevel', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.MaxLevel')
           records.each do |record|
-            record.max_level = reader.read_i32_as(column.element)
+            record.max_level = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'Equip.StatType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.StatType1')
           records.each do |record|
-            record.stat_type1 = reader.read_enum
+            record.stat_type1 = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'Equip.StatType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.StatType2')
           records.each do |record|
-            record.stat_type2 = reader.read_enum
+            record.stat_type2 = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'Equip.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         when 12
           Sheetman.check_column(column, 'Equip.PrefabPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.PrefabPath')
           records.each do |record|
-            record.prefab_path = reader.read_string
+            record.prefab_path = cursor.next_string
           end
         when 13
           Sheetman.check_column(column, 'Equip.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Equip.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

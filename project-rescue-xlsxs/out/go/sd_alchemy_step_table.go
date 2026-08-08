@@ -98,44 +98,50 @@ func (t *SDAlchemyStepTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyStep.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyStep.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyStep.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyStep.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyStep.NameKR", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyStep.NameKR")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NameKR = reader.ReadString()
+					r.NameKR = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyStep.MaxLevel", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyStep.MaxLevel")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxLevel = reader.ReadI32As(column.Element)
+					r.MaxLevel = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyStep.RewardType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyStep.RewardType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardType = CurrencyType(reader.ReadEnum())
+					r.RewardType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyStep.RewardValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyStep.RewardValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardValue = reader.ReadI32As(column.Element)
+					r.RewardValue = cursor.NextI32()
 				}
 			}
 		default:

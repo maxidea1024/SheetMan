@@ -20,6 +20,7 @@ require_once __DIR__ . '/../enums/ConditionType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -143,148 +144,169 @@ final class SDAgencyTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDAgency.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDAgency.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDAgency.InfoName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.InfoName');
                     foreach ($records as $record) {
-                        $record->infoName = $reader->readString();
+                        $record->infoName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDAgency.AgencyType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.AgencyType');
                     foreach ($records as $record) {
-                        $record->agencyType = AgencyType::tryFrom($reader->readEnum()) ?? AgencyType::None;
+                        $record->agencyType = AgencyType::tryFrom($cursor->nextI32()) ?? AgencyType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDAgency.AgencyGrade', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.AgencyGrade');
                     foreach ($records as $record) {
-                        $record->agencyGrade = AgencyGrade::tryFrom($reader->readEnum()) ?? AgencyGrade::None;
+                        $record->agencyGrade = AgencyGrade::tryFrom($cursor->nextI32()) ?? AgencyGrade::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SDAgency.Time', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.Time');
                     foreach ($records as $record) {
-                        $record->time = $reader->readI32As($column['element']);
+                        $record->time = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'SDAgency.AgencyWeight', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.AgencyWeight');
                     foreach ($records as $record) {
-                        $record->agencyWeight = $reader->readI32As($column['element']);
+                        $record->agencyWeight = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'SDAgency.Condition1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.Condition1');
                     foreach ($records as $record) {
-                        $record->condition1 = JobType::tryFrom($reader->readEnum()) ?? JobType::None;
+                        $record->condition1 = JobType::tryFrom($cursor->nextI32()) ?? JobType::None;
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'SDAgency.Condition1value', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.Condition1value');
                     foreach ($records as $record) {
-                        $record->condition1value = $reader->readI32As($column['element']);
+                        $record->condition1value = $cursor->nextI32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'SDAgency.Condition2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.Condition2');
                     foreach ($records as $record) {
-                        $record->condition2 = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
+                        $record->condition2 = GradeType::tryFrom($cursor->nextI32()) ?? GradeType::None;
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'SDAgency.Condition2value', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.Condition2value');
                     foreach ($records as $record) {
-                        $record->condition2value = $reader->readI32As($column['element']);
+                        $record->condition2value = $cursor->nextI32();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'SDAgency.Condition3', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.Condition3');
                     foreach ($records as $record) {
-                        $record->condition3 = ConditionType::tryFrom($reader->readEnum()) ?? ConditionType::None;
+                        $record->condition3 = ConditionType::tryFrom($cursor->nextI32()) ?? ConditionType::None;
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'SDAgency.ClassMinValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.ClassMinValue');
                     foreach ($records as $record) {
-                        $record->classMinValue = $reader->readI32As($column['element']);
+                        $record->classMinValue = $cursor->nextI32();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'SDAgency.Condition3value', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.Condition3value');
                     foreach ($records as $record) {
-                        $record->condition3value = $reader->readI32As($column['element']);
+                        $record->condition3value = $cursor->nextI32();
                     }
                     break;
 
                 case 15:
                     ScbReader::checkColumn($column, 'SDAgency.RewardType1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.RewardType1');
                     foreach ($records as $record) {
-                        $record->rewardType1 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->rewardType1 = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'SDAgency.RewardValue1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.RewardValue1');
                     foreach ($records as $record) {
-                        $record->rewardValue1 = $reader->readI32As($column['element']);
+                        $record->rewardValue1 = $cursor->nextI32();
                     }
                     break;
 
                 case 17:
                     ScbReader::checkColumn($column, 'SDAgency.RewardType2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.RewardType2');
                     foreach ($records as $record) {
-                        $record->rewardType2 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->rewardType2 = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 18:
                     ScbReader::checkColumn($column, 'SDAgency.RewardValue2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.RewardValue2');
                     foreach ($records as $record) {
-                        $record->rewardValue2 = $reader->readI32As($column['element']);
+                        $record->rewardValue2 = $cursor->nextI32();
                     }
                     break;
 
                 case 19:
                     ScbReader::checkColumn($column, 'SDAgency.RewardType3', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.RewardType3');
                     foreach ($records as $record) {
-                        $record->rewardType3 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->rewardType3 = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 20:
                     ScbReader::checkColumn($column, 'SDAgency.RewardValue3', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.RewardValue3');
                     foreach ($records as $record) {
-                        $record->rewardValue3 = $reader->readI32As($column['element']);
+                        $record->rewardValue3 = $cursor->nextI32();
                     }
                     break;
 
                 case 21:
                     ScbReader::checkColumn($column, 'SDAgency.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAgency.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

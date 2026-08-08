@@ -136,6 +136,12 @@ internal sealed class GoFieldView
     /// <summary>The rendered CheckColumn call for this member.</summary>
     public required string ColumnCheck { get; set; }
 
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or empty for a
+    /// column that reads the reader directly.
+    /// </summary>
+    public required string CursorOpen { get; set; }
+
     /// <summary>Element count of a serial field, which is its column count.</summary>
     public required int ElementCount { get; set; }
 

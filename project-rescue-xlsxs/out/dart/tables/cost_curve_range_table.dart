@@ -68,6 +68,7 @@ class CostCurveRangeTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <CostCurveRangeRecord>[];
@@ -83,32 +84,37 @@ class CostCurveRangeTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'CostCurveRange.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurveRange.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'CostCurveRange.GrowthType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurveRange.GrowthType');
           for (final record in loaded) {
-            record.growthType = GrowthType.of(reader.readEnum());
+            record.growthType = GrowthType.of(cursor.nextI32());
           }
           break;
         case 3:
           checkColumn(column, 'CostCurveRange.RangeIndex', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurveRange.RangeIndex');
           for (final record in loaded) {
-            record.rangeIndex = reader.readI32As(column.element);
+            record.rangeIndex = cursor.nextI32();
           }
           break;
         case 4:
           checkColumn(column, 'CostCurveRange.StartStep', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurveRange.StartStep');
           for (final record in loaded) {
-            record.startStep = reader.readI32As(column.element);
+            record.startStep = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'CostCurveRange.EndStep', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurveRange.EndStep');
           for (final record in loaded) {
-            record.endStep = reader.readI32As(column.element);
+            record.endStep = cursor.nextI32();
           }
           break;
         case 6:

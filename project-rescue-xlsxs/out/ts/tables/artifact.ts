@@ -215,6 +215,7 @@ export class ArtifactTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -228,30 +229,34 @@ export class ArtifactTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Artifact.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Artifact.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Artifact.ArtifactType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.ArtifactType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._artifactType = reader.readEnum() as ArtifactJobType
+            record._artifactType = cursor.nextI32() as ArtifactJobType
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Artifact.Grade', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.Grade')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._grade = reader.readEnum() as GradeType
+            record._grade = cursor.nextI32() as GradeType
           }
           break
         case 5:
@@ -266,9 +271,10 @@ export class ArtifactTable {
           break
         case 6:
           sheetman.checkColumn(column, 'Artifact.EquipStatType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.EquipStatType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._equipStatType = reader.readEnum() as StatType
+            record._equipStatType = cursor.nextI32() as StatType
           }
           break
         case 7:
@@ -280,9 +286,10 @@ export class ArtifactTable {
           break
         case 8:
           sheetman.checkColumn(column, 'Artifact.CollectionType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.CollectionType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._collectionType = reader.readEnum() as StatType
+            record._collectionType = cursor.nextI32() as StatType
           }
           break
         case 9:
@@ -294,23 +301,26 @@ export class ArtifactTable {
           break
         case 10:
           sheetman.checkColumn(column, 'Artifact.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'Artifact.MaterialPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.MaterialPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._materialPath = reader.readString()
+            record._materialPath = cursor.nextString()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'Artifact.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Artifact.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         default:

@@ -271,6 +271,12 @@ public class PhpCodeGenerator : CodeGenerator<PhpRecipe>
         Comment = CommentLines(table.Comment),
         Indexes = Indexes(table),
         Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
+
+        // Whether any column reads through a cursor. PHP needs no declaration ahead
+        // of the first `$cursor = ...` assignment, so unlike the C# template nothing
+        // in the read method renders from this - it is here so the templates of the
+        // thirteen languages can ask the same questions of their views.
+        NeedsCursor = table.SerialFields.Any(UsesCursor),
     };
 
     /// <summary>
@@ -321,12 +327,51 @@ public class PhpCodeGenerator : CodeGenerator<PhpRecipe>
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementCount = sf.Fields.Count,
             Declarations = Declarations(sf, name),
-            ReadScalar = ReadExpression(sf),
+            ReadScalar = ScalarReadExpression(sf),
             ReadElement = ReadExpression(sf),
         };
     }
+
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"$cursor = new ScbColumnCursor($reader, $column, $count, '{tableName}.{sf.Name}');"
+            : "";
 
     /// <summary>
     /// The property declarations, each typed and initialized.
@@ -493,6 +538,38 @@ public class PhpCodeGenerator : CodeGenerator<PhpRecipe>
     };
 
     // ----------------------------------------------------------- rendering
+
+    /// <summary>
+    /// The expression that reads one scalar. A scalar column can arrive encoded, so it
+    /// reads through the cursor - which also carries the lossless promotions. Arrays
+    /// are always raw and keep <see cref="ReadExpression"/>'s direct reads.
+    /// </summary>
+    private string ScalarReadExpression(SerialField sf)
+    {
+        if (!UsesCursor(sf))
+            return ReadExpression(sf);
+
+        if (sf.IsRef)
+            return "$cursor->nextI32()";
+
+        switch (sf.ElementType)
+        {
+            // Enum values travel as their int, decoded by the cursor. `tryFrom` rather
+            // than `from` for the same reason as the raw path: a value the sheet never
+            // declared lands on the fallback instead of throwing.
+            case ValueType.Enum:
+            {
+                string name = EnumName(sf.FirstField.Enum);
+
+                return $"{name}::tryFrom($cursor->nextI32()) ?? {name}::{DefaultCaseOf(sf.FirstField.Enum)}";
+            }
+
+            case ValueType.Int32: return "$cursor->nextI32()";
+            case ValueType.Int64: return "$cursor->nextI64()";
+            case ValueType.Double: return "$cursor->nextF64()";
+            default: return "$cursor->nextString()";
+        }
+    }
 
     private string ReadExpression(SerialField sf)
     {

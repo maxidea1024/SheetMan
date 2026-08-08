@@ -79,28 +79,33 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'ShortCut.ID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShortCut.ID')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'ShortCut.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShortCut.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'ShortCut.Type', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShortCut.Type')
           records.each do |record|
-            record.type = reader.read_enum
+            record.type = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'ShortCut.SubIndex', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShortCut.SubIndex')
           records.each do |record|
-            record.sub_index = reader.read_i32_as(column.element)
+            record.sub_index = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'ShortCut.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShortCut.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -108,26 +109,30 @@ class TraitTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Trait.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Trait.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Trait.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Trait.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Trait.TraitName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Trait.TraitName")
                     for (record in loaded) {
-                        record.traitName = reader.readString()
+                        record.traitName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Trait.StatType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Trait.StatType")
                     for (record in loaded) {
-                        record.statType = StatType.of(reader.readEnum())
+                        record.statType = StatType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
@@ -146,8 +151,9 @@ class TraitTable {
                 }
                 7 -> {
                     checkColumn(column, "Trait.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Trait.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

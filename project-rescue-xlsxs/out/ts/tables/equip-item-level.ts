@@ -263,6 +263,7 @@ export class EquipItemLevelTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -276,51 +277,58 @@ export class EquipItemLevelTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'EquipItemLevel.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemLevel.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'EquipItemLevel.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemLevel.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'EquipItemLevel.NameKR', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemLevel.NameKR')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._nameKR = reader.readString()
+            record._nameKR = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'EquipItemLevel.Type', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemLevel.Type')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._type = reader.readEnum() as JobType
+            record._type = cursor.nextI32() as JobType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'EquipItemLevel.MaterialType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemLevel.MaterialType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._materialType = reader.readEnum() as CurrencyType
+            record._materialType = cursor.nextI32() as CurrencyType
           }
           break
         case 6:
           sheetman.checkColumn(column, 'EquipItemLevel.MaterialValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemLevel.MaterialValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._materialValue = reader.readI32As(column.element)
+            record._materialValue = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'EquipItemLevel.MaterialValue1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'EquipItemLevel.MaterialValue1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._materialValue1 = reader.readI32As(column.element)
+            record._materialValue1 = cursor.nextI32()
           }
           break
         case 8:

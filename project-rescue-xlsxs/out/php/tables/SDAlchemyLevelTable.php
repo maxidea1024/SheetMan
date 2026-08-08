@@ -14,6 +14,7 @@ namespace Rescue;
 require_once __DIR__ . '/../sheetman/ScbReader.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -127,57 +128,65 @@ final class SDAlchemyLevelTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.NameKR', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.NameKR');
                     foreach ($records as $record) {
-                        $record->nameKR = $reader->readString();
+                        $record->nameKR = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.LevelUpCost', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.LevelUpCost');
                     foreach ($records as $record) {
-                        $record->levelUpCost = $reader->readI32As($column['element']);
+                        $record->levelUpCost = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.LevelUpTotal', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.LevelUpTotal');
                     foreach ($records as $record) {
-                        $record->levelUpTotal = $reader->readI32As($column['element']);
+                        $record->levelUpTotal = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.Time', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I64, ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.Time');
                     foreach ($records as $record) {
-                        $record->time = $reader->readI64As($column['element']);
+                        $record->time = $cursor->nextI64();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.UseDiaCost', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.UseDiaCost');
                     foreach ($records as $record) {
-                        $record->useDiaCost = $reader->readI32As($column['element']);
+                        $record->useDiaCost = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'SDAlchemyLevel.UseItemCost', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyLevel.UseItemCost');
                     foreach ($records as $record) {
-                        $record->useItemCost = $reader->readI32As($column['element']);
+                        $record->useItemCost = $cursor->nextI32();
                     }
                     break;
 

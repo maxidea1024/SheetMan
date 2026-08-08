@@ -110,30 +110,34 @@ func (t *ArtifactTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Artifact.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Artifact.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Artifact.ArtifactType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.ArtifactType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ArtifactType = ArtifactJobType(reader.ReadEnum())
+					r.ArtifactType = ArtifactJobType(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Artifact.Grade", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.Grade")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Grade = GradeType(reader.ReadEnum())
+					r.Grade = GradeType(cursor.NextI32())
 				}
 			}
 		case 5:
@@ -149,9 +153,10 @@ func (t *ArtifactTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Artifact.EquipStatType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.EquipStatType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EquipStatType = StatType(reader.ReadEnum())
+					r.EquipStatType = StatType(cursor.NextI32())
 				}
 			}
 		case 7:
@@ -163,9 +168,10 @@ func (t *ArtifactTable) Read(filename string) error {
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Artifact.CollectionType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.CollectionType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CollectionType = StatType(reader.ReadEnum())
+					r.CollectionType = StatType(cursor.NextI32())
 				}
 			}
 		case 9:
@@ -177,23 +183,26 @@ func (t *ArtifactTable) Read(filename string) error {
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "Artifact.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "Artifact.MaterialPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.MaterialPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaterialPath = reader.ReadString()
+					r.MaterialPath = cursor.NextString()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "Artifact.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Artifact.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

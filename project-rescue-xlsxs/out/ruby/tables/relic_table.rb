@@ -89,28 +89,33 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Relic.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Relic.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Relic.RelicName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicName')
           records.each do |record|
-            record.relic_name = reader.read_string
+            record.relic_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Relic.InfuluenceStep', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.InfuluenceStep')
           records.each do |record|
-            record.infuluence_step = reader.read_i32_as(column.element)
+            record.infuluence_step = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Relic.RelicType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicType1')
           records.each do |record|
-            record.relic_type1 = reader.read_enum
+            record.relic_type1 = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'Relic.RelicValue1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -124,8 +129,9 @@ module Rescue
           end
         when 8
           Sheetman.check_column(column, 'Relic.RelicType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicType2')
           records.each do |record|
-            record.relic_type2 = reader.read_enum
+            record.relic_type2 = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'Relic.RelicValue2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -139,8 +145,9 @@ module Rescue
           end
         when 11
           Sheetman.check_column(column, 'Relic.RelicType3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.RelicType3')
           records.each do |record|
-            record.relic_type3 = reader.read_enum
+            record.relic_type3 = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'Relic.RelicValue3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -154,13 +161,15 @@ module Rescue
           end
         when 14
           Sheetman.check_column(column, 'Relic.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         when 15
           Sheetman.check_column(column, 'Relic.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Relic.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

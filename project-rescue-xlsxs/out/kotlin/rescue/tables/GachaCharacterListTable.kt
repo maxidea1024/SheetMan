@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -116,26 +117,30 @@ class GachaCharacterListTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "GachaCharacterList.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "GachaCharacterList.CharacterID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.CharacterID")
                     for (record in loaded) {
-                        record.characterID = reader.readI32As(column.element)
+                        record.characterID = cursor.nextI32()
                     }
                 }
                 3 -> {
                     checkColumn(column, "GachaCharacterList.GradeType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.GradeType")
                     for (record in loaded) {
-                        record.gradeType = GradeType.of(reader.readEnum())
+                        record.gradeType = GradeType.of(cursor.nextI32())
                     }
                 }
                 4 -> {
                     checkColumn(column, "GachaCharacterList.BaseWeight", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.BaseWeight")
                     for (record in loaded) {
-                        record.baseWeight = reader.readI32As(column.element)
+                        record.baseWeight = cursor.nextI32()
                     }
                 }
                 5 -> {
@@ -146,38 +151,44 @@ class GachaCharacterListTable {
                 }
                 6 -> {
                     checkColumn(column, "GachaCharacterList.WishlistWeight", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.WishlistWeight")
                     for (record in loaded) {
-                        record.wishlistWeight = reader.readI32As(column.element)
+                        record.wishlistWeight = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "GachaCharacterList.ClassUpCurrencyID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.ClassUpCurrencyID")
                     for (record in loaded) {
-                        record.classUpCurrencyID = reader.readI32As(column.element)
+                        record.classUpCurrencyID = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "GachaCharacterList.ClassUpCurrencyValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.ClassUpCurrencyValue")
                     for (record in loaded) {
-                        record.classUpCurrencyValue = reader.readI32As(column.element)
+                        record.classUpCurrencyValue = cursor.nextI32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "GachaCharacterList.ExConditionID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.ExConditionID")
                     for (record in loaded) {
-                        record.exConditionID = reader.readI32As(column.element)
+                        record.exConditionID = cursor.nextI32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "GachaCharacterList.ExCurrencyID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.ExCurrencyID")
                     for (record in loaded) {
-                        record.exCurrencyID = reader.readI32As(column.element)
+                        record.exCurrencyID = cursor.nextI32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "GachaCharacterList.ExCurrencyValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "GachaCharacterList.ExCurrencyValue")
                     for (record in loaded) {
-                        record.exCurrencyValue = reader.readI32As(column.element)
+                        record.exCurrencyValue = cursor.nextI32()
                     }
                 }
                 else ->

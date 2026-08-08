@@ -88,23 +88,27 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDAgencyInfo.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDAgencyInfo.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDAgencyInfo.AgencyGrade', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.AgencyGrade')
           records.each do |record|
-            record.agency_grade = reader.read_enum
+            record.agency_grade = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'SDAgencyInfo.DispatchCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.DispatchCount')
           records.each do |record|
-            record.dispatch_count = reader.read_i32_as(column.element)
+            record.dispatch_count = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDAgencyInfo.GradeSRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -143,18 +147,21 @@ module Rescue
           end
         when 12
           Sheetman.check_column(column, 'SDAgencyInfo.FreeRefresh', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.FreeRefresh')
           records.each do |record|
-            record.free_refresh = reader.read_i32_as(column.element)
+            record.free_refresh = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'SDAgencyInfo.RefreshCurrencyType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.RefreshCurrencyType')
           records.each do |record|
-            record.refresh_currency_type = reader.read_enum
+            record.refresh_currency_type = cursor.next_i32
           end
         when 14
           Sheetman.check_column(column, 'SDAgencyInfo.RefreshCurrencyValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAgencyInfo.RefreshCurrencyValue')
           records.each do |record|
-            record.refresh_currency_value = reader.read_i32_as(column.element)
+            record.refresh_currency_value = cursor.next_i32
           end
         else
           # A column added after this code was generated.

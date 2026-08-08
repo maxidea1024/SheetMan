@@ -87,68 +87,81 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDDungeonInfo.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDDungeonInfo.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDDungeonInfo.NameKR', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.NameKR')
           records.each do |record|
-            record.name_kr = reader.read_string
+            record.name_kr = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDDungeonInfo.TotalCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.TotalCount')
           records.each do |record|
-            record.total_count = reader.read_i32_as(column.element)
+            record.total_count = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDDungeonInfo.TrapCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.TrapCount')
           records.each do |record|
-            record.trap_count = reader.read_i32_as(column.element)
+            record.trap_count = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDDungeonInfo.ActionCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.ActionCount')
           records.each do |record|
-            record.action_count = reader.read_i32_as(column.element)
+            record.action_count = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'SDDungeonInfo.MatchCost', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.MatchCost')
           records.each do |record|
-            record.match_cost = reader.read_i32_as(column.element)
+            record.match_cost = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'SDDungeonInfo.MismatchCost', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.MismatchCost')
           records.each do |record|
-            record.mismatch_cost = reader.read_i32_as(column.element)
+            record.mismatch_cost = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'SDDungeonInfo.TrapCost', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.TrapCost')
           records.each do |record|
-            record.trap_cost = reader.read_i32_as(column.element)
+            record.trap_cost = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'SDDungeonInfo.ViewTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.ViewTime')
           records.each do |record|
-            record.view_time = reader.read_i32_as(column.element)
+            record.view_time = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'SDDungeonInfo.Time', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.Time')
           records.each do |record|
-            record.time = reader.read_i32_as(column.element)
+            record.time = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'SDDungeonInfo.ADCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.ADCount')
           records.each do |record|
-            record.ad_count = reader.read_i32_as(column.element)
+            record.ad_count = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'SDDungeonInfo.DailyFreeCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonInfo.DailyFreeCount')
           records.each do |record|
-            record.daily_free_count = reader.read_i32_as(column.element)
+            record.daily_free_count = cursor.next_i32
           end
         else
           # A column added after this code was generated.

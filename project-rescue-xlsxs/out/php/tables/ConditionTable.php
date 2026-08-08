@@ -16,6 +16,7 @@ require_once __DIR__ . '/../enums/ConditionTargetType.php';
 require_once __DIR__ . '/../enums/ConditionType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -109,43 +110,49 @@ final class ConditionTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Condition.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Condition.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Condition.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Condition.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Condition.ConditionTargetType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Condition.ConditionTargetType');
                     foreach ($records as $record) {
-                        $record->conditionTargetType = ConditionTargetType::tryFrom($reader->readEnum()) ?? ConditionTargetType::None;
+                        $record->conditionTargetType = ConditionTargetType::tryFrom($cursor->nextI32()) ?? ConditionTargetType::None;
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Condition.ConditionTargetValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Condition.ConditionTargetValue');
                     foreach ($records as $record) {
-                        $record->conditionTargetValue = $reader->readI32As($column['element']);
+                        $record->conditionTargetValue = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Condition.ConditionType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Condition.ConditionType');
                     foreach ($records as $record) {
-                        $record->conditionType = ConditionType::tryFrom($reader->readEnum()) ?? ConditionType::None;
+                        $record->conditionType = ConditionType::tryFrom($cursor->nextI32()) ?? ConditionType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'Condition.ConditionValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Condition.ConditionValue');
                     foreach ($records as $record) {
-                        $record->conditionValue = $reader->readI32As($column['element']);
+                        $record->conditionValue = $cursor->nextI32();
                     }
                     break;
 

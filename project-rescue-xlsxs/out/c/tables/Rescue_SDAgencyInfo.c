@@ -14,6 +14,7 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -57,11 +58,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 1:
       (void)sm_check_column(reader, column, "SDAgencyInfo.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -69,11 +71,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 2:
       (void)sm_check_column(reader, column, "SDAgencyInfo.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -81,12 +84,13 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 3:
       (void)sm_check_column(reader, column, "SDAgencyInfo.AgencyGrade", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.AgencyGrade");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->agency_grade = (Rescue_AgencyGrade_t)scratch;
       }
 
@@ -95,11 +99,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 4:
       (void)sm_check_column(reader, column, "SDAgencyInfo.DispatchCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.DispatchCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->dispatch_count);
+        (void)sm_cursor_next_i32(&cursor, &record->dispatch_count);
       }
 
       break;
@@ -191,11 +196,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 12:
       (void)sm_check_column(reader, column, "SDAgencyInfo.FreeRefresh", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.FreeRefresh");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->free_refresh);
+        (void)sm_cursor_next_i32(&cursor, &record->free_refresh);
       }
 
       break;
@@ -203,12 +209,13 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 13:
       (void)sm_check_column(reader, column, "SDAgencyInfo.RefreshCurrencyType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.RefreshCurrencyType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->refresh_currency_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -217,11 +224,12 @@ static bool Rescue_SDAgencyInfoParse(Rescue_SDAgencyInfoTable_t* table, sm_reade
     case 14:
       (void)sm_check_column(reader, column, "SDAgencyInfo.RefreshCurrencyValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAgencyInfo.RefreshCurrencyValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAgencyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->refresh_currency_value);
+        (void)sm_cursor_next_i32(&cursor, &record->refresh_currency_value);
       }
 
       break;

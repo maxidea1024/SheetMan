@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -128,56 +129,65 @@ class DailyDungeonInfoTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "DailyDungeonInfo.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "DailyDungeonInfo.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "DailyDungeonInfo.DungeonName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonName")
                     for (record in loaded) {
-                        record.dungeonName = reader.readString()
+                        record.dungeonName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "DailyDungeonInfo.DungeonType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonType")
                     for (record in loaded) {
-                        record.dungeonType = DungeonType.of(reader.readEnum())
+                        record.dungeonType = DungeonType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "DailyDungeonInfo.Priority", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.Priority")
                     for (record in loaded) {
-                        record.priority = reader.readI32As(column.element)
+                        record.priority = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "DailyDungeonInfo.CycleType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.CycleType")
                     for (record in loaded) {
-                        record.cycleType = CycleType.of(reader.readEnum())
+                        record.cycleType = CycleType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
                     checkColumn(column, "DailyDungeonInfo.EnterCondition", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCondition")
                     for (record in loaded) {
-                        record.enterCondition = reader.readI32As(column.element)
+                        record.enterCondition = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "DailyDungeonInfo.EnterCurrencyType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyType")
                     for (record in loaded) {
-                        record.enterCurrencyType = CurrencyType.of(reader.readEnum())
+                        record.enterCurrencyType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 9 -> {
                     checkColumn(column, "DailyDungeonInfo.DungeonBuffID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonBuffID")
                     for (record in loaded) {
-                        record.dungeonBuffID = reader.readI32As(column.element)
+                        record.dungeonBuffID = cursor.nextI32()
                     }
                 }
                 10 -> {
@@ -188,44 +198,51 @@ class DailyDungeonInfoTable {
                 }
                 11 -> {
                     checkColumn(column, "DailyDungeonInfo.EnterCurrencyValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyValue")
                     for (record in loaded) {
-                        record.enterCurrencyValue = reader.readI32As(column.element)
+                        record.enterCurrencyValue = cursor.nextI32()
                     }
                 }
                 12 -> {
                     checkColumn(column, "DailyDungeonInfo.FreeEnterCurrencyType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.FreeEnterCurrencyType")
                     for (record in loaded) {
-                        record.freeEnterCurrencyType = CurrencyType.of(reader.readEnum())
+                        record.freeEnterCurrencyType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 13 -> {
                     checkColumn(column, "DailyDungeonInfo.ADEnterCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.ADEnterCount")
                     for (record in loaded) {
-                        record.aDEnterCount = reader.readI32As(column.element)
+                        record.aDEnterCount = cursor.nextI32()
                     }
                 }
                 14 -> {
                     checkColumn(column, "DailyDungeonInfo.EnterCurrencyCountMax", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyCountMax")
                     for (record in loaded) {
-                        record.enterCurrencyCountMax = reader.readI32As(column.element)
+                        record.enterCurrencyCountMax = cursor.nextI32()
                     }
                 }
                 15 -> {
                     checkColumn(column, "DailyDungeonInfo.DungeonImagePath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonImagePath")
                     for (record in loaded) {
-                        record.dungeonImagePath = reader.readString()
+                        record.dungeonImagePath = cursor.nextString()
                     }
                 }
                 16 -> {
                     checkColumn(column, "DailyDungeonInfo.DungeonBGMID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonBGMID")
                     for (record in loaded) {
-                        record.dungeonBGMID = reader.readI32As(column.element)
+                        record.dungeonBGMID = cursor.nextI32()
                     }
                 }
                 17 -> {
                     checkColumn(column, "DailyDungeonInfo.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "DailyDungeonInfo.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -126,50 +127,58 @@ class SDAlchemyLevelTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDAlchemyLevel.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDAlchemyLevel.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDAlchemyLevel.NameKR", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.NameKR")
                     for (record in loaded) {
-                        record.nameKR = reader.readString()
+                        record.nameKR = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDAlchemyLevel.LevelUpCost", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.LevelUpCost")
                     for (record in loaded) {
-                        record.levelUpCost = reader.readI32As(column.element)
+                        record.levelUpCost = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDAlchemyLevel.LevelUpTotal", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.LevelUpTotal")
                     for (record in loaded) {
-                        record.levelUpTotal = reader.readI32As(column.element)
+                        record.levelUpTotal = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDAlchemyLevel.Time", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.Time")
                     for (record in loaded) {
-                        record.time = reader.readI64As(column.element)
+                        record.time = cursor.nextI64()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDAlchemyLevel.UseDiaCost", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.UseDiaCost")
                     for (record in loaded) {
-                        record.useDiaCost = reader.readI32As(column.element)
+                        record.useDiaCost = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "SDAlchemyLevel.UseItemCost", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyLevel.UseItemCost")
                     for (record in loaded) {
-                        record.useItemCost = reader.readI32As(column.element)
+                        record.useItemCost = cursor.nextI32()
                     }
                 }
                 9 -> {

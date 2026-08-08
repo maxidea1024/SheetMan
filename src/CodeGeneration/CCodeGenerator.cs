@@ -420,6 +420,11 @@ public class CCodeGenerator : CodeGenerator<CRecipe>
         HasStringFields = table.SerialFields.Any(
             sf => !sf.IsRef && sf.ElementType == ValueType.String && !sf.IsVariableLengthArray),
 
+        // One cursor variable for the whole parse rather than one per column: the
+        // declarations sit at the top of the function, and each encodable column
+        // re-initializes it.
+        NeedsCursor = table.SerialFields.Any(UsesCursor),
+
         Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
     };
 
@@ -497,12 +502,15 @@ public class CCodeGenerator : CodeGenerator<CRecipe>
             IsString = !sf.IsRef && sf.ElementType == ValueType.String,
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementCount = sf.Fields.Count,
             ElementType = ResolvedElementType(sf),
             Declarations = Declarations(sf, name),
             NeedsScratch = isEnum,
             EnumType = isEnum ? EnumName(sf.FirstField.Enum) : null,
-            ReadScalar = ReadCall(sf, $"&record->{name}"),
+            ReadScalar = UsesCursor(sf)
+                ? CursorReadCall(sf, $"&record->{name}")
+                : ReadCall(sf, $"&record->{name}"),
             ReadElement = ReadCall(sf, $"&record->{name}[element]"),
         };
     }
@@ -555,6 +563,69 @@ public class CCodeGenerator : CodeGenerator<CRecipe>
 
         return $"(void)sm_check_column(reader, column, \"{tableName}.{sf.Name}\", " +
                $"{kind}, {count}, {mask});";
+    }
+
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The rendered sm_cursor_init call ahead of an encodable column's row loop, or
+    /// nothing for a column that reads the reader directly.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"(void)sm_cursor_init(&cursor, reader, column, table->count, \"{tableName}.{sf.Name}\");"
+            : "";
+
+    /// <summary>
+    /// A complete cursor call filling the given address - the cursor carries the
+    /// lossless promotions, so nothing here looks at the column's element.
+    /// </summary>
+    private static string CursorReadCall(SerialField sf, string address)
+    {
+        // A reference index and an enum's underlying value are both int32. Neither
+        // renders through this address - the template supplies the index member and
+        // the scratch int - but the shape is right either way.
+        if (sf.IsRef || sf.ElementType == ValueType.Enum)
+            return $"sm_cursor_next_i32(&cursor, {address})";
+
+        switch (sf.ElementType)
+        {
+            case ValueType.Int32:
+                return $"sm_cursor_next_i32(&cursor, {address})";
+            case ValueType.Int64:
+                return $"sm_cursor_next_i64(&cursor, {address})";
+            case ValueType.Double:
+                return $"sm_cursor_next_f64(&cursor, {address})";
+            default: // String; UsesCursor admits nothing else.
+                return $"sm_cursor_next_string(&cursor, {address})";
+        }
     }
 
     /// <summary>

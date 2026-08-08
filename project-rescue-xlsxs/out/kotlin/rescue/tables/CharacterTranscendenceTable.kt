@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -114,50 +115,58 @@ class CharacterTranscendenceTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "CharacterTranscendence.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "CharacterTranscendence.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "CharacterTranscendence.NameKR", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.NameKR")
                     for (record in loaded) {
-                        record.nameKR = reader.readString()
+                        record.nameKR = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "CharacterTranscendence.GradeType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.GradeType")
                     for (record in loaded) {
-                        record.gradeType = GradeType.of(reader.readEnum())
+                        record.gradeType = GradeType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "CharacterTranscendence.TranscendStep", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.TranscendStep")
                     for (record in loaded) {
-                        record.transcendStep = reader.readI32As(column.element)
+                        record.transcendStep = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "CharacterTranscendence.MaxLevel", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.MaxLevel")
                     for (record in loaded) {
-                        record.maxLevel = reader.readI32As(column.element)
+                        record.maxLevel = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "CharacterTranscendence.MaterialType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.MaterialType")
                     for (record in loaded) {
-                        record.materialType = CurrencyType.of(reader.readEnum())
+                        record.materialType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 8 -> {
                     checkColumn(column, "CharacterTranscendence.MaterialCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.MaterialCount")
                     for (record in loaded) {
-                        record.materialCount = reader.readI32As(column.element)
+                        record.materialCount = cursor.nextI32()
                     }
                 }
                 9 -> {
@@ -168,8 +177,9 @@ class CharacterTranscendenceTable {
                 }
                 10 -> {
                     checkColumn(column, "CharacterTranscendence.NextStepID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CharacterTranscendence.NextStepID")
                     for (record in loaded) {
-                        record.nextStepID = reader.readI32As(column.element)
+                        record.nextStepID = cursor.nextI32()
                     }
                 }
                 else ->

@@ -98,28 +98,34 @@ class TraitDungeonStageTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "TraitDungeonStage.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "TraitDungeonStage.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "TraitDungeonStage.StageName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.StageName")
                 for record in records:
-                    record.stage_name = reader.read_string()
+                    record.stage_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "TraitDungeonStage.DungeonType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.DungeonType")
                 for record in records:
-                    record.dungeon_type = DungeonType(reader.read_enum())
+                    record.dungeon_type = DungeonType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "TraitDungeonStage.DungeonFloor", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.DungeonFloor")
                 for record in records:
-                    record.dungeon_floor = reader.read_i32_as(column.element)
+                    record.dungeon_floor = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "TraitDungeonStage.TimeLimit", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.TimeLimit")
                 for record in records:
-                    record.time_limit = reader.read_i32_as(column.element)
+                    record.time_limit = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "TraitDungeonStage.SpawnIds", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:
@@ -132,28 +138,33 @@ class TraitDungeonStageTable:
                     record.boss_id = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 9:
                 sheetman.check_column(column, "TraitDungeonStage.SpawnPointCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.SpawnPointCount")
                 for record in records:
-                    record.spawn_point_count = reader.read_i32_as(column.element)
+                    record.spawn_point_count = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "TraitDungeonStage.SpawnMaxCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.SpawnMaxCount")
                 for record in records:
-                    record.spawn_max_count = reader.read_i32_as(column.element)
+                    record.spawn_max_count = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "TraitDungeonStage.SpawnNextTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.spawn_next_time = reader.read_float()
             elif column.tag == 12:
                 sheetman.check_column(column, "TraitDungeonStage.StageClearCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.StageClearCount")
                 for record in records:
-                    record.stage_clear_count = reader.read_i32_as(column.element)
+                    record.stage_clear_count = cursor.next_i32()
             elif column.tag == 13:
                 sheetman.check_column(column, "TraitDungeonStage.RecommendPower", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.RecommendPower")
                 for record in records:
-                    record.recommend_power = reader.read_string()
+                    record.recommend_power = cursor.next_string()
             elif column.tag == 14:
                 sheetman.check_column(column, "TraitDungeonStage.RewardID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.RewardID")
                 for record in records:
-                    record.reward_id = reader.read_i32_as(column.element)
+                    record.reward_id = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "TraitDungeonStage.AtkUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -168,16 +179,19 @@ class TraitDungeonStageTable:
                     record.mhp_up_percent = reader.read_float()
             elif column.tag == 18:
                 sheetman.check_column(column, "TraitDungeonStage.DungeonImagePath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.DungeonImagePath")
                 for record in records:
-                    record.dungeon_image_path = reader.read_string()
+                    record.dungeon_image_path = cursor.next_string()
             elif column.tag == 19:
                 sheetman.check_column(column, "TraitDungeonStage.MonsterImagePath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.MonsterImagePath")
                 for record in records:
-                    record.monster_image_path = reader.read_string()
+                    record.monster_image_path = cursor.next_string()
             elif column.tag == 20:
                 sheetman.check_column(column, "TraitDungeonStage.AssetDataPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "TraitDungeonStage.AssetDataPath")
                 for record in records:
-                    record.asset_data_path = reader.read_string()
+                    record.asset_data_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

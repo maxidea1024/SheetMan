@@ -14,6 +14,7 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -59,11 +60,12 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
     case 1:
       (void)sm_check_column(reader, column, "ExpDungeonReward.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ExpDungeonReward.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ExpDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -71,11 +73,12 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
     case 2:
       (void)sm_check_column(reader, column, "ExpDungeonReward.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ExpDungeonReward.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ExpDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -83,11 +86,12 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
     case 3:
       (void)sm_check_column(reader, column, "ExpDungeonReward.RewardName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ExpDungeonReward.RewardName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ExpDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->reward_name);
+        (void)sm_cursor_next_string(&cursor, &record->reward_name);
       }
 
       break;
@@ -95,12 +99,13 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
     case 4:
       (void)sm_check_column(reader, column, "ExpDungeonReward.RewardType1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ExpDungeonReward.RewardType1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ExpDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward_type1 = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -109,11 +114,12 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
     case 5:
       (void)sm_check_column(reader, column, "ExpDungeonReward.RewardValue1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ExpDungeonReward.RewardValue1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ExpDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->reward_value1);
+        (void)sm_cursor_next_i32(&cursor, &record->reward_value1);
       }
 
       break;
@@ -121,12 +127,13 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
     case 6:
       (void)sm_check_column(reader, column, "ExpDungeonReward.RewardType2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ExpDungeonReward.RewardType2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ExpDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward_type2 = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -135,11 +142,12 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
     case 7:
       (void)sm_check_column(reader, column, "ExpDungeonReward.RewardValue2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ExpDungeonReward.RewardValue2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ExpDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->reward_value2);
+        (void)sm_cursor_next_i32(&cursor, &record->reward_value2);
       }
 
       break;
@@ -159,12 +167,13 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
     case 9:
       (void)sm_check_column(reader, column, "ExpDungeonReward.FirstClearRewardType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ExpDungeonReward.FirstClearRewardType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ExpDungeonRewardRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->first_clear_reward_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -173,11 +182,12 @@ static bool Rescue_ExpDungeonRewardParse(Rescue_ExpDungeonRewardTable_t* table, 
     case 10:
       (void)sm_check_column(reader, column, "ExpDungeonReward.FirstClearRewardValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ExpDungeonReward.FirstClearRewardValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ExpDungeonRewardRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->first_clear_reward_value);
+        (void)sm_cursor_next_i32(&cursor, &record->first_clear_reward_value);
       }
 
       break;

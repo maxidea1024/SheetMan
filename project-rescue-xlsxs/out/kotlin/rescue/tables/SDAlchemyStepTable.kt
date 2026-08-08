@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -106,38 +107,44 @@ class SDAlchemyStepTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDAlchemyStep.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyStep.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDAlchemyStep.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyStep.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDAlchemyStep.NameKR", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyStep.NameKR")
                     for (record in loaded) {
-                        record.nameKR = reader.readString()
+                        record.nameKR = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDAlchemyStep.MaxLevel", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyStep.MaxLevel")
                     for (record in loaded) {
-                        record.maxLevel = reader.readI32As(column.element)
+                        record.maxLevel = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDAlchemyStep.RewardType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyStep.RewardType")
                     for (record in loaded) {
-                        record.rewardType = CurrencyType.of(reader.readEnum())
+                        record.rewardType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDAlchemyStep.RewardValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyStep.RewardValue")
                     for (record in loaded) {
-                        record.rewardValue = reader.readI32As(column.element)
+                        record.rewardValue = cursor.nextI32()
                     }
                 }
                 else ->

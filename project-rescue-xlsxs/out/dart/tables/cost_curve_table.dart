@@ -66,6 +66,7 @@ class CostCurveTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <CostCurveRecord>[];
@@ -81,32 +82,37 @@ class CostCurveTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'CostCurve.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurve.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'CostCurve.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurve.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'CostCurve.GrowthType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurve.GrowthType');
           for (final record in loaded) {
-            record.growthType = GrowthType.of(reader.readEnum());
+            record.growthType = GrowthType.of(cursor.nextI32());
           }
           break;
         case 4:
           checkColumn(column, 'CostCurve.CostType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurve.CostType');
           for (final record in loaded) {
-            record.costType = CurrencyType.of(reader.readEnum());
+            record.costType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'CostCurve.BaseCostValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'CostCurve.BaseCostValue');
           for (final record in loaded) {
-            record.baseCostValue = reader.readI32As(column.element);
+            record.baseCostValue = cursor.nextI32();
           }
           break;
         default:

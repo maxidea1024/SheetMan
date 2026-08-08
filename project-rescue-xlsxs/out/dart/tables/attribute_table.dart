@@ -72,6 +72,7 @@ class AttributeTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <AttributeRecord>[];
@@ -87,32 +88,37 @@ class AttributeTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Attribute.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Attribute.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Attribute.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Attribute.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Attribute.AttributeName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Attribute.AttributeName');
           for (final record in loaded) {
-            record.attributeName = reader.readString();
+            record.attributeName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Attribute.AttributeType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Attribute.AttributeType');
           for (final record in loaded) {
-            record.attributeType = AttributeType.of(reader.readEnum());
+            record.attributeType = AttributeType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'Attribute.TargetAttributeType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Attribute.TargetAttributeType');
           for (final record in loaded) {
-            record.targetAttributeType = AttributeType.of(reader.readEnum());
+            record.targetAttributeType = AttributeType.of(cursor.nextI32());
           }
           break;
         case 6:
@@ -129,8 +135,9 @@ class AttributeTable {
           break;
         case 8:
           checkColumn(column, 'Attribute.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Attribute.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

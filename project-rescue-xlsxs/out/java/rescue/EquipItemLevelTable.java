@@ -74,6 +74,7 @@ public final class EquipItemLevelTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<EquipItemLevelRecord> loaded = new ArrayList<>(count);
@@ -89,50 +90,57 @@ public final class EquipItemLevelTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "EquipItemLevel.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemLevel.Id");
                     for (EquipItemLevelRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "EquipItemLevel.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemLevel.Name");
                     for (EquipItemLevelRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "EquipItemLevel.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemLevel.NameKR");
                     for (EquipItemLevelRecord record : loaded) {
-                        record.nameKR = reader.readString();
+                        record.nameKR = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "EquipItemLevel.Type", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemLevel.Type");
                     for (EquipItemLevelRecord record : loaded) {
-                        record.type = JobType.of(reader.readEnum());
+                        record.type = JobType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "EquipItemLevel.MaterialType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemLevel.MaterialType");
                     for (EquipItemLevelRecord record : loaded) {
-                        record.materialType = CurrencyType.of(reader.readEnum());
+                        record.materialType = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "EquipItemLevel.MaterialValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemLevel.MaterialValue");
                     for (EquipItemLevelRecord record : loaded) {
-                        record.materialValue = reader.readI32As(column.element);
+                        record.materialValue = cursor.nextI32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "EquipItemLevel.MaterialValue1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "EquipItemLevel.MaterialValue1");
                     for (EquipItemLevelRecord record : loaded) {
-                        record.materialValue1 = reader.readI32As(column.element);
+                        record.materialValue1 = cursor.nextI32();
                     }
                     break;
                 }

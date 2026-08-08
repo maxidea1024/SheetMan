@@ -96,37 +96,42 @@ func (t *ShortCutTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "ShortCut.ID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShortCut.ID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ID = reader.ReadI32As(column.Element)
+					r.ID = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "ShortCut.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShortCut.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "ShortCut.Type", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShortCut.Type")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Type = ShortCutType(reader.ReadEnum())
+					r.Type = ShortCutType(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "ShortCut.SubIndex", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShortCut.SubIndex")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SubIndex = reader.ReadI32As(column.Element)
+					r.SubIndex = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "ShortCut.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShortCut.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

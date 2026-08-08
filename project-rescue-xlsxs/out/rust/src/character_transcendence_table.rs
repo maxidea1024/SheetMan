@@ -103,50 +103,58 @@ impl CharacterTranscendenceTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "CharacterTranscendence.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterTranscendence.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "CharacterTranscendence.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterTranscendence.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "CharacterTranscendence.NameKR", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterTranscendence.NameKR")?;
                     for record in records.iter_mut() {
-                        record.name_kr = reader.read_string()?;
+                        record.name_kr = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "CharacterTranscendence.GradeType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterTranscendence.GradeType")?;
                     for record in records.iter_mut() {
-                        record.grade_type = GradeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.grade_type = GradeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "CharacterTranscendence.TranscendStep", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterTranscendence.TranscendStep")?;
                     for record in records.iter_mut() {
-                        record.transcend_step = reader.read_i32_as(column.element)?;
+                        record.transcend_step = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "CharacterTranscendence.MaxLevel", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterTranscendence.MaxLevel")?;
                     for record in records.iter_mut() {
-                        record.max_level = reader.read_i32_as(column.element)?;
+                        record.max_level = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "CharacterTranscendence.MaterialType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterTranscendence.MaterialType")?;
                     for record in records.iter_mut() {
-                        record.material_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.material_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "CharacterTranscendence.MaterialCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterTranscendence.MaterialCount")?;
                     for record in records.iter_mut() {
-                        record.material_count = reader.read_i32_as(column.element)?;
+                        record.material_count = cursor.next_i32()?;
                     }
                 }
                 9 => {
@@ -157,8 +165,9 @@ impl CharacterTranscendenceTable {
                 }
                 10 => {
                     sheetman::check_column(column, "CharacterTranscendence.NextStepID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterTranscendence.NextStepID")?;
                     for record in records.iter_mut() {
-                        record.next_step_id = reader.read_i32_as(column.element)?;
+                        record.next_step_id = cursor.next_i32()?;
                     }
                 }
                 _ => {

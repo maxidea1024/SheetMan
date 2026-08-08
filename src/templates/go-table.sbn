@@ -88,6 +88,9 @@ func (t *{{ table.table_name }}) Read(filename string) error {
 {{~ for field in table.fields ~}}
 		case {{ field.tag }}:
 			if {{ field.column_check }} {
+{{~ if field.cursor_open != '' ~}}
+				{{ field.cursor_open }}
+{{~ end ~}}
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
 {{~ if field.kind == 'var_array' ~}}
@@ -108,7 +111,7 @@ func (t *{{ table.table_name }}) Read(filename string) error {
 						r.{{ field.name }}[j] = {{ field.read_element }}
 					}
 {{~ else if field.kind == 'scalar_ref' ~}}
-					r.{{ field.name }}Index = reader.ReadInt32()
+					r.{{ field.name }}Index = cursor.NextI32()
 {{~ else ~}}
 					r.{{ field.name }} = {{ field.read_scalar }}
 {{~ end ~}}

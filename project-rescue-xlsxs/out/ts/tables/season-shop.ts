@@ -229,6 +229,7 @@ export class SeasonShopTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -242,44 +243,50 @@ export class SeasonShopTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'SeasonShop.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'SeasonShop.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'SeasonShop.ProductName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.ProductName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._productName = reader.readString()
+            record._productName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'SeasonShop.ShopType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.ShopType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._shopType = reader.readEnum() as ShopType
+            record._shopType = cursor.nextI32() as ShopType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'SeasonShop.ShopSlotID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.ShopSlotID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._shopSlotID = reader.readI32As(column.element)
+            record._shopSlotID = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'SeasonShop.Priority', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.Priority')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._priority = reader.readI32As(column.element)
+            record._priority = cursor.nextI32()
           }
           break
         case 7:
@@ -304,44 +311,50 @@ export class SeasonShopTable {
           break
         case 9:
           sheetman.checkColumn(column, 'SeasonShop.CycleType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.CycleType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._cycleType = reader.readEnum() as CycleType
+            record._cycleType = cursor.nextI32() as CycleType
           }
           break
         case 10:
           sheetman.checkColumn(column, 'SeasonShop.LimitValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.LimitValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._limitValue = reader.readI32As(column.element)
+            record._limitValue = cursor.nextI32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'SeasonShop.CurrencyType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.CurrencyType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._currencyType = reader.readEnum() as CurrencyType
+            record._currencyType = cursor.nextI32() as CurrencyType
           }
           break
         case 12:
           sheetman.checkColumn(column, 'SeasonShop.PriceValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.PriceValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._priceValue = reader.readI32As(column.element)
+            record._priceValue = cursor.nextI32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'SeasonShop.ConditionID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.ConditionID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._conditionID = reader.readI32As(column.element)
+            record._conditionID = cursor.nextI32()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'SeasonShop.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SeasonShop.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         default:

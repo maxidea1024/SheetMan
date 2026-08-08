@@ -92,52 +92,63 @@ class SDTrainingInfoTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDTrainingInfo.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDTrainingInfo.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDTrainingInfo.TrainingName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.TrainingName")
                 for record in records:
-                    record.training_name = reader.read_string()
+                    record.training_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDTrainingInfo.AttributeType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.AttributeType")
                 for record in records:
-                    record.attribute_type = AttributeType(reader.read_enum())
+                    record.attribute_type = AttributeType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "SDTrainingInfo.StatType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.StatType")
                 for record in records:
-                    record.stat_type = StatType(reader.read_enum())
+                    record.stat_type = StatType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "SDTrainingInfo.UnlockCondition", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.UnlockCondition")
                 for record in records:
-                    record.unlock_condition = reader.read_i32_as(column.element)
+                    record.unlock_condition = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "SDTrainingInfo.LevelUpCondition", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.LevelUpCondition")
                 for record in records:
-                    record.level_up_condition = reader.read_i32_as(column.element)
+                    record.level_up_condition = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "SDTrainingInfo.MaxLevel", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.MaxLevel")
                 for record in records:
-                    record.max_level = reader.read_i32_as(column.element)
+                    record.max_level = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "SDTrainingInfo.IsLvReset", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
                     record.is_lv_reset = reader.read_bool()
             elif column.tag == 10:
                 sheetman.check_column(column, "SDTrainingInfo.LvResetCurrencyType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyType")
                 for record in records:
-                    record.lv_reset_currency_type = CurrencyType(reader.read_enum())
+                    record.lv_reset_currency_type = CurrencyType(cursor.next_i32())
             elif column.tag == 11:
                 sheetman.check_column(column, "SDTrainingInfo.LvResetCurrencyValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyValue")
                 for record in records:
-                    record.lv_reset_currency_value = reader.read_i32_as(column.element)
+                    record.lv_reset_currency_value = cursor.next_i32()
             elif column.tag == 12:
                 sheetman.check_column(column, "SDTrainingInfo.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingInfo.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

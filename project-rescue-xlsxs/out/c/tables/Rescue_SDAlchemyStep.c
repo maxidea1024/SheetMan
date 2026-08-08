@@ -14,6 +14,7 @@ static bool Rescue_SDAlchemyStepParse(Rescue_SDAlchemyStepTable_t* table, sm_rea
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -59,11 +60,12 @@ static bool Rescue_SDAlchemyStepParse(Rescue_SDAlchemyStepTable_t* table, sm_rea
     case 1:
       (void)sm_check_column(reader, column, "SDAlchemyStep.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyStep.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyStepRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -71,11 +73,12 @@ static bool Rescue_SDAlchemyStepParse(Rescue_SDAlchemyStepTable_t* table, sm_rea
     case 2:
       (void)sm_check_column(reader, column, "SDAlchemyStep.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyStep.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyStepRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -83,11 +86,12 @@ static bool Rescue_SDAlchemyStepParse(Rescue_SDAlchemyStepTable_t* table, sm_rea
     case 3:
       (void)sm_check_column(reader, column, "SDAlchemyStep.NameKR", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyStep.NameKR");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyStepRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name_kr);
+        (void)sm_cursor_next_string(&cursor, &record->name_kr);
       }
 
       break;
@@ -95,11 +99,12 @@ static bool Rescue_SDAlchemyStepParse(Rescue_SDAlchemyStepTable_t* table, sm_rea
     case 4:
       (void)sm_check_column(reader, column, "SDAlchemyStep.MaxLevel", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyStep.MaxLevel");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyStepRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->max_level);
+        (void)sm_cursor_next_i32(&cursor, &record->max_level);
       }
 
       break;
@@ -107,12 +112,13 @@ static bool Rescue_SDAlchemyStepParse(Rescue_SDAlchemyStepTable_t* table, sm_rea
     case 5:
       (void)sm_check_column(reader, column, "SDAlchemyStep.RewardType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyStep.RewardType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyStepRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reward_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -121,11 +127,12 @@ static bool Rescue_SDAlchemyStepParse(Rescue_SDAlchemyStepTable_t* table, sm_rea
     case 6:
       (void)sm_check_column(reader, column, "SDAlchemyStep.RewardValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyStep.RewardValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyStepRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->reward_value);
+        (void)sm_cursor_next_i32(&cursor, &record->reward_value);
       }
 
       break;

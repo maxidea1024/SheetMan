@@ -288,9 +288,10 @@ public class RubyCodeGenerator : CodeGenerator<RubyRecipe>
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementCount = sf.Fields.Count,
             Initializers = Initializers(sf, name),
-            ReadScalar = ReadExpression(sf),
+            ReadScalar = ScalarReadExpression(sf),
             ReadElement = ReadExpression(sf),
         };
     }
@@ -419,6 +420,72 @@ public class RubyCodeGenerator : CodeGenerator<RubyRecipe>
     };
 
     // ----------------------------------------------------------- rendering
+
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor assignment ahead of an encodable column's row loop, or nothing for a
+    /// column that reads the reader directly. An assignment, not a declaration: Ruby
+    /// has no block-scoped declarations to collide inside the case dispatch.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"cursor = Sheetman::ColumnCursor.new(reader, column, count, '{tableName}.{sf.Name}')"
+            : "";
+
+    /// <summary>
+    /// The read for a scalar field's row: through the cursor where the column can
+    /// arrive encoded - which also carries the lossless promotions - and the direct
+    /// reader call where it is raw by spec.
+    /// </summary>
+    private string ScalarReadExpression(SerialField sf)
+    {
+        if (UsesCursor(sf))
+        {
+            // Enum values arrive as the integer the sheet declared, and a reference
+            // contributes only its stored index - the template assigns it to the
+            // index member.
+            if (sf.IsRef || sf.ElementType == ValueType.Enum)
+                return "cursor.next_i32";
+
+            return sf.ElementType switch
+            {
+                ValueType.Int32 => "cursor.next_i32",
+                ValueType.Int64 => "cursor.next_i64",
+                ValueType.Double => "cursor.next_f64",
+                _ => "cursor.next_string",
+            };
+        }
+
+        return ReadExpression(sf);
+    }
 
     private string ReadExpression(SerialField sf)
     {

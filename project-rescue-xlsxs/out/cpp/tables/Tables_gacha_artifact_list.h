@@ -101,73 +101,82 @@ class GachaArtifactListTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "GachaArtifactList.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactList.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "GachaArtifactList.ArtifactID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactList.ArtifactID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.artifact_id);
+            record.artifact_id = cursor.next_i32();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "GachaArtifactList.GradeType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactList.GradeType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.grade_type);
+            record.grade_type = static_cast<GradeType>(cursor.next_i32());
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "GachaArtifactList.BaseWeight", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactList.BaseWeight");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.base_weight);
+            record.base_weight = cursor.next_i32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "GachaArtifactList.ClassUpCurrencyID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactList.ClassUpCurrencyID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.class_up_currency_id);
+            record.class_up_currency_id = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "GachaArtifactList.ClassUpCurrencyValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactList.ClassUpCurrencyValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.class_up_currency_value);
+            record.class_up_currency_value = cursor.next_i32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "GachaArtifactList.ExConditionID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactList.ExConditionID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.ex_condition_id);
+            record.ex_condition_id = cursor.next_i32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "GachaArtifactList.ExCurrencyID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactList.ExCurrencyID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.ex_currency_id);
+            record.ex_currency_id = cursor.next_i32();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "GachaArtifactList.ExCurrencyValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "GachaArtifactList.ExCurrencyValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.ex_currency_value);
+            record.ex_currency_value = cursor.next_i32();
           }
           break;
         }

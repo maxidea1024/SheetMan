@@ -80,6 +80,7 @@ class ArtifactTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <ArtifactRecord>[];
@@ -95,26 +96,30 @@ class ArtifactTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Artifact.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Artifact.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Artifact.ArtifactType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.ArtifactType');
           for (final record in loaded) {
-            record.artifactType = ArtifactJobType.of(reader.readEnum());
+            record.artifactType = ArtifactJobType.of(cursor.nextI32());
           }
           break;
         case 4:
           checkColumn(column, 'Artifact.Grade', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.Grade');
           for (final record in loaded) {
-            record.grade = GradeType.of(reader.readEnum());
+            record.grade = GradeType.of(cursor.nextI32());
           }
           break;
         case 5:
@@ -126,8 +131,9 @@ class ArtifactTable {
           break;
         case 6:
           checkColumn(column, 'Artifact.EquipStatType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.EquipStatType');
           for (final record in loaded) {
-            record.equipStatType = StatType.of(reader.readEnum());
+            record.equipStatType = StatType.of(cursor.nextI32());
           }
           break;
         case 7:
@@ -138,8 +144,9 @@ class ArtifactTable {
           break;
         case 8:
           checkColumn(column, 'Artifact.CollectionType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.CollectionType');
           for (final record in loaded) {
-            record.collectionType = StatType.of(reader.readEnum());
+            record.collectionType = StatType.of(cursor.nextI32());
           }
           break;
         case 9:
@@ -150,20 +157,23 @@ class ArtifactTable {
           break;
         case 10:
           checkColumn(column, 'Artifact.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         case 11:
           checkColumn(column, 'Artifact.MaterialPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.MaterialPath');
           for (final record in loaded) {
-            record.materialPath = reader.readString();
+            record.materialPath = cursor.nextString();
           }
           break;
         case 12:
           checkColumn(column, 'Artifact.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Artifact.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         default:

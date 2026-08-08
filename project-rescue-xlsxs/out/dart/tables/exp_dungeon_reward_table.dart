@@ -76,6 +76,7 @@ class ExpDungeonRewardTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <ExpDungeonRewardRecord>[];
@@ -91,44 +92,51 @@ class ExpDungeonRewardTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'ExpDungeonReward.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'ExpDungeonReward.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'ExpDungeonReward.RewardName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.RewardName');
           for (final record in loaded) {
-            record.rewardName = reader.readString();
+            record.rewardName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'ExpDungeonReward.RewardType1', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.RewardType1');
           for (final record in loaded) {
-            record.rewardType1 = CurrencyType.of(reader.readEnum());
+            record.rewardType1 = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'ExpDungeonReward.RewardValue1', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.RewardValue1');
           for (final record in loaded) {
-            record.rewardValue1 = reader.readI32As(column.element);
+            record.rewardValue1 = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'ExpDungeonReward.RewardType2', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.RewardType2');
           for (final record in loaded) {
-            record.rewardType2 = CurrencyType.of(reader.readEnum());
+            record.rewardType2 = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 7:
           checkColumn(column, 'ExpDungeonReward.RewardValue2', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.RewardValue2');
           for (final record in loaded) {
-            record.rewardValue2 = reader.readI32As(column.element);
+            record.rewardValue2 = cursor.nextI32();
           }
           break;
         case 8:
@@ -139,14 +147,16 @@ class ExpDungeonRewardTable {
           break;
         case 9:
           checkColumn(column, 'ExpDungeonReward.FirstClearRewardType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.FirstClearRewardType');
           for (final record in loaded) {
-            record.firstClearRewardType = CurrencyType.of(reader.readEnum());
+            record.firstClearRewardType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 10:
           checkColumn(column, 'ExpDungeonReward.FirstClearRewardValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ExpDungeonReward.FirstClearRewardValue');
           for (final record in loaded) {
-            record.firstClearRewardValue = reader.readI32As(column.element);
+            record.firstClearRewardValue = cursor.nextI32();
           }
           break;
         default:

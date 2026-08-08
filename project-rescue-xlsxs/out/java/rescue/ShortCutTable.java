@@ -74,6 +74,7 @@ public final class ShortCutTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<ShortCutRecord> loaded = new ArrayList<>(count);
@@ -89,36 +90,41 @@ public final class ShortCutTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "ShortCut.ID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShortCut.ID");
                     for (ShortCutRecord record : loaded) {
-                        record.iD = reader.readI32As(column.element);
+                        record.iD = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "ShortCut.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShortCut.Name");
                     for (ShortCutRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "ShortCut.Type", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShortCut.Type");
                     for (ShortCutRecord record : loaded) {
-                        record.type = ShortCutType.of(reader.readEnum());
+                        record.type = ShortCutType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "ShortCut.SubIndex", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShortCut.SubIndex");
                     for (ShortCutRecord record : loaded) {
-                        record.subIndex = reader.readI32As(column.element);
+                        record.subIndex = cursor.nextI32();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "ShortCut.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShortCut.Description");
                     for (ShortCutRecord record : loaded) {
-                        record.description = reader.readString();
+                        record.description = cursor.nextString();
                     }
                     break;
                 }

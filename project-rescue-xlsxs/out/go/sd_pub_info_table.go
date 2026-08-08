@@ -100,51 +100,58 @@ func (t *SDPubInfoTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDPubInfo.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDPubInfo.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDPubInfo.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDPubInfo.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDPubInfo.PubName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDPubInfo.PubName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PubName = reader.ReadString()
+					r.PubName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDPubInfo.UnlockCondition", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDPubInfo.UnlockCondition")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.UnlockCondition = reader.ReadI32As(column.Element)
+					r.UnlockCondition = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDPubInfo.LimitValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDPubInfo.LimitValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.LimitValue = reader.ReadI32As(column.Element)
+					r.LimitValue = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDPubInfo.BuffID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDPubInfo.BuffID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffID = reader.ReadI32As(column.Element)
+					r.BuffID = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDPubInfo.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDPubInfo.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

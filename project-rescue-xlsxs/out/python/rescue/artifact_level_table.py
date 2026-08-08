@@ -86,28 +86,34 @@ class ArtifactLevelTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "ArtifactLevel.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactLevel.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "ArtifactLevel.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactLevel.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "ArtifactLevel.NameKR", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactLevel.NameKR")
                 for record in records:
-                    record.name_kr = reader.read_string()
+                    record.name_kr = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "ArtifactLevel.Level", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactLevel.Level")
                 for record in records:
-                    record.level = reader.read_i32_as(column.element)
+                    record.level = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "ArtifactLevel.CharacterEXP", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactLevel.CharacterEXP")
                 for record in records:
-                    record.character_exp = reader.read_i64_as(column.element)
+                    record.character_exp = cursor.next_i64()
             elif column.tag == 6:
                 sheetman.check_column(column, "ArtifactLevel.AccumulatedEXP", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactLevel.AccumulatedEXP")
                 for record in records:
-                    record.accumulated_exp = reader.read_i64_as(column.element)
+                    record.accumulated_exp = cursor.next_i64()
             elif column.tag == 7:
                 sheetman.check_column(column, "ArtifactLevel.ATKGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:

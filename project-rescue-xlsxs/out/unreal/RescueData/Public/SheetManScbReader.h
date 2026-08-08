@@ -719,6 +719,38 @@ namespace SheetMan
     }
 
     /**
+     * The (element, encoding) pairs the spec defines. Arrays are always raw;
+     * integers take the integer encodings, strings the dictionary ones.
+     */
+    inline bool EncodingSupported(const FSheetManColumn& Column)
+    {
+        if (Column.Encoding == EncodingRaw)
+        {
+            return true;
+        }
+
+        if (Column.Kind != KindScalar)
+        {
+            return false;
+        }
+
+        switch (Column.Element)
+        {
+        case ElementVarint:
+            return Column.Encoding == EncodingRle;
+
+        case ElementI32:
+            return Column.Encoding >= EncodingVarint && Column.Encoding <= EncodingDeltaRle;
+
+        case ElementString:
+            return Column.Encoding == EncodingDict || Column.Encoding == EncodingDictRle;
+
+        default:
+            return false;
+        }
+    }
+
+    /**
      * That a column is what the generated member expects, or a lossless promotion of it.
      *
      * Refusal names the field and both types, because a column whose type changed
@@ -741,14 +773,15 @@ namespace SheetMan
                 FieldName, Column.Kind, Column.Count, Kind, Count));
         }
 
-        // An encoding this build cannot decode is refused by name, exactly like an
-        // element it cannot read. An unknown column's encoding never gets here - a skip
-        // is a skip whatever the block's layout.
-        if (Column.Encoding != EncodingRaw)
+        // An encoding this build cannot decode - or one the spec does not define for
+        // this element - is refused by name, exactly like an element it cannot read.
+        // An unknown column's encoding never gets here - a skip is a skip whatever
+        // the block's layout.
+        if (!EncodingSupported(Column))
         {
             return Reader.FailWith(FString::Printf(
-                TEXT("%s: the file's column uses encoding %d, which this reader does not ")
-                TEXT("support. Regenerate the code or rebuild the data."),
+                TEXT("%s: the file's column uses encoding %d, which this reader cannot ")
+                TEXT("decode for its element type. Regenerate the code or rebuild the data."),
                 FieldName, Column.Encoding));
         }
 
@@ -801,4 +834,312 @@ namespace SheetMan
 
         return FMath::Clamp(Count, 0, MaxUpFront);
     }
+
+    /**
+     * Reads one scalar column's values in row order, whatever the block's encoding.
+     *
+     * The generated row loop stays a row loop; this is the one place that knows how
+     * a delta accumulates, how long a run has left, or that a dictionary index is a
+     * reference into strings decoded once. That last one matters beyond file size: a
+     * hundred-thousand-row column with three distinct strings decodes three strings,
+     * not a hundred thousand.
+     *
+     * One instance serves a whole table read. The generated switch's cases share a
+     * scope - and C++ does not allow a jump past a live constructor - so each
+     * encodable column calls Open on the same cursor rather than declaring its own,
+     * and Open resets every piece of state.
+     *
+     * CheckColumn has already refused any (element, encoding) pair the spec does not
+     * define, so the switches here do not re-litigate that. Failure is the reader's
+     * sticky flag, like every other read: once it is set, every call below does
+     * nothing and returns false.
+     */
+    class FSheetManColumnCursor
+    {
+    public:
+        FSheetManColumnCursor() = default;
+
+        /** Binds the cursor to a column block, decoding the dictionary where it has one. */
+        void Open(FSheetManBinaryReader& InReader, const FSheetManColumn& Column,
+            int32 RowCount, const TCHAR* InFieldName)
+        {
+            Reader = &InReader;
+            FieldName = InFieldName;
+            Element = Column.Element;
+            Encoding = Column.Encoding;
+            RowsRemaining = RowCount;
+            RunRemaining = 0;
+            RunValue = 0;
+            Previous = 0;
+            bStarted = false;
+            Dictionary.Empty();
+
+            if (Encoding != EncodingDict && Encoding != EncodingDictRle)
+            {
+                return;
+            }
+
+            // The block's dictionary, decoded once here and handed out per row.
+            int32 Count = 0;
+            if (!Reader->ReadCounter32(Count))
+            {
+                return;
+            }
+
+            if (Count < 0)
+            {
+                Reader->FailWith(FString::Printf(
+                    TEXT("%s: the dictionary entry count is negative"), FieldName));
+
+                return;
+            }
+
+            // Bounded, because the count came out of the file. The array grows past
+            // this if the entries really are there.
+            Dictionary.Empty(ReserveBound(Count));
+
+            while (Dictionary.Num() < Count && !Reader->HasFailed())
+            {
+                Reader->Read(Dictionary.AddDefaulted_GetRef());
+            }
+        }
+
+        /** The next int32 - which also serves enums, and reference indexes. */
+        bool NextI32(int32& Out)
+        {
+            // Explicit, because a run already in progress reads no byte: without this,
+            // a failed reader could keep handing out the run's value.
+            if (Reader->HasFailed())
+            {
+                return false;
+            }
+
+            --RowsRemaining;
+
+            switch (Encoding)
+            {
+            case EncodingRaw:
+                return Element == ElementI32 ? Reader->Read(Out) : Reader->ReadCounter32(Out);
+
+            case EncodingVarint:
+                return Reader->ReadCounter32(Out);
+
+            case EncodingDelta:
+            {
+                int32 Step = 0;
+                if (!Reader->ReadCounter32(Step))
+                {
+                    return false;
+                }
+
+                // The addition wraps on purpose, mirroring the writer's wrapping
+                // subtraction; together they are exact for every int32 pair. Done on
+                // uint32, because signed overflow is undefined in C++.
+                Previous = bStarted
+                    ? static_cast<int32>(static_cast<uint32>(Previous) + static_cast<uint32>(Step))
+                    : Step;
+                bStarted = true;
+
+                Out = Previous;
+                return true;
+            }
+
+            case EncodingRle:
+            {
+                if (RunRemaining == 0 && !ReadRun())
+                {
+                    return false;
+                }
+
+                --RunRemaining;
+                Out = RunValue;
+                return true;
+            }
+
+            default: // EncodingDeltaRle; CheckColumn refused everything else.
+            {
+                if (!bStarted)
+                {
+                    if (!Reader->ReadCounter32(Previous))
+                    {
+                        return false;
+                    }
+
+                    bStarted = true;
+                    Out = Previous;
+                    return true;
+                }
+
+                if (RunRemaining == 0 && !ReadRun())
+                {
+                    return false;
+                }
+
+                --RunRemaining;
+                Previous = static_cast<int32>(
+                    static_cast<uint32>(Previous) + static_cast<uint32>(RunValue));
+
+                Out = Previous;
+                return true;
+            }
+            }
+        }
+
+        /** An int64 member: an i64 column is always raw, anything narrower decodes as int32. */
+        bool NextI64(int64& Out)
+        {
+            if (Element == ElementI64)
+            {
+                return Reader->Read(Out);
+            }
+
+            int32 Narrower = 0;
+            const bool bOk = NextI32(Narrower);
+
+            Out = Narrower;
+            return bOk;
+        }
+
+        /** A double member: float columns are always raw, an i32 column decodes then widens. */
+        bool NextF64(double& Out)
+        {
+            if (Element == ElementF64)
+            {
+                return Reader->Read(Out);
+            }
+
+            if (Element == ElementF32)
+            {
+                float Single = 0.0f;
+                const bool bOk = Reader->Read(Single);
+
+                Out = Single;
+                return bOk;
+            }
+
+            int32 Integer = 0;
+            const bool bOk = NextI32(Integer);
+
+            Out = Integer;
+            return bOk;
+        }
+
+        /** An enum member: its value travels as an int32, whatever the block's encoding. */
+        template <typename TEnum>
+        bool NextEnum(TEnum& Out)
+        {
+            int32 Value = 0;
+            if (!NextI32(Value))
+            {
+                return false;
+            }
+
+            Out = static_cast<TEnum>(Value);
+            return true;
+        }
+
+        /** The next string - the dictionary's entry where the block has one. */
+        bool NextString(FString& Out)
+        {
+            // Explicit, for the same reason as NextI32: a run in progress reads no byte.
+            if (Reader->HasFailed())
+            {
+                return false;
+            }
+
+            --RowsRemaining;
+
+            switch (Encoding)
+            {
+            case EncodingRaw:
+                return Reader->Read(Out);
+
+            case EncodingDict:
+            {
+                int32 Index = 0;
+                if (!Reader->ReadCounter32(Index))
+                {
+                    return false;
+                }
+
+                return DictionaryEntry(Index, Out);
+            }
+
+            default: // EncodingDictRle; CheckColumn refused everything else.
+            {
+                if (RunRemaining == 0 && !ReadRun())
+                {
+                    return false;
+                }
+
+                --RunRemaining;
+                return DictionaryEntry(RunValue, Out);
+            }
+            }
+        }
+
+    private:
+        bool ReadRun()
+        {
+            int32 Length = 0;
+            if (!Reader->ReadCounter32(Length))
+            {
+                return false;
+            }
+
+            // + 1 because the row this run was read for is already counted out of
+            // RowsRemaining by its Next call.
+            if (Length < 1 || Length > RowsRemaining + 1)
+            {
+                return Reader->FailWith(FString::Printf(
+                    TEXT("%s: a run of %d values cannot cover the %d rows left in the column"),
+                    FieldName, Length, RowsRemaining + 1));
+            }
+
+            if (!Reader->ReadCounter32(RunValue))
+            {
+                return false;
+            }
+
+            // Committed only once both reads landed, so a block truncated between the
+            // length and the value cannot leave a half-read run to hand out.
+            RunRemaining = Length;
+            return true;
+        }
+
+        bool DictionaryEntry(int32 Index, FString& Out)
+        {
+            if (Index < 0 || Index >= Dictionary.Num())
+            {
+                return Reader->FailWith(FString::Printf(
+                    TEXT("%s: dictionary index %d is out of range - the dictionary ")
+                    TEXT("holds %d entries"),
+                    FieldName, Index, Dictionary.Num()));
+            }
+
+            Out = Dictionary[Index];
+            return true;
+        }
+
+        FSheetManBinaryReader* Reader = nullptr;
+        const TCHAR* FieldName = TEXT("");
+        uint8 Element = 0;
+        uint8 Encoding = 0;
+
+        /** The block's dictionary, decoded once by Open and handed out per row. */
+        TArray<FString> Dictionary;
+
+        // A run-length family's current run: what remains of it, and its value - which
+        // is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+        int32 RunRemaining = 0;
+        int32 RunValue = 0;
+
+        // The delta family's accumulator, once bStarted.
+        int32 Previous = 0;
+        bool bStarted = false;
+
+        // Rows not yet handed out. A run that claims more than this is corrupt, and
+        // catching it here names the field instead of leaving it to the block-end check.
+        int32 RowsRemaining = 0;
+    };
 }

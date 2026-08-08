@@ -298,6 +298,11 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
         Location = table.Location.ToString(),
         Comment = CommentLines(table.Comment),
         Indexes = Indexes(table),
+
+        // One cursor variable for the whole read method, assigned per column before its
+        // row loop rather than declared once per case.
+        NeedsCursor = table.SerialFields.Any(UsesCursor),
+
         Fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList(),
     };
 
@@ -357,10 +362,11 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementCount = sf.Fields.Count,
             ElementType = elementType,
             Declarations = Declarations(sf, name, elementType),
-            ReadScalar = ReadExpression(sf),
+            ReadScalar = ScalarReadExpression(sf),
             ReadElement = ReadExpression(sf),
         };
     }
@@ -454,6 +460,44 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
         return $"ScbReader.checkColumn(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {accepted});";
     }
 
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"cursor = new ScbReader.ColumnCursor(reader, column, count, \"{tableName}.{sf.Name}\");"
+            : "";
+
     private static string ReadKind(SerialField sf)
     {
         if (sf.IsVariableLengthArray)
@@ -505,6 +549,30 @@ public class JavaCodeGenerator : CodeGenerator<JavaRecipe>
     };
 
     // ----------------------------------------------------------- rendering
+
+    /// <summary>
+    /// What a scalar member reads: through the cursor, because a scalar column can
+    /// arrive encoded - which also carries the lossless promotions. A scalar reference
+    /// reads its index off the cursor in the template's own shape, and everything the
+    /// spec keeps raw falls through to the direct reads.
+    /// </summary>
+    private string ScalarReadExpression(SerialField sf)
+    {
+        if (!UsesCursor(sf) || sf.IsRef)
+            return ReadExpression(sf);
+
+        switch (sf.ElementType)
+        {
+            // Same conversion as the raw read, just sourcing the int from the cursor.
+            case ValueType.Enum:
+                return $"{sf.FirstField.Enum.Name.ToPascalCase()}.of(cursor.nextI32())";
+
+            case ValueType.Int32: return "cursor.nextI32()";
+            case ValueType.Int64: return "cursor.nextI64()";
+            case ValueType.Double: return "cursor.nextF64()";
+            default: return "cursor.nextString()";
+        }
+    }
 
     private string ReadExpression(SerialField sf)
     {

@@ -14,6 +14,7 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -65,11 +66,12 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
     case 1:
       (void)sm_check_column(reader, column, "ShopInfo.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShopInfo.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShopInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -77,11 +79,12 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
     case 2:
       (void)sm_check_column(reader, column, "ShopInfo.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShopInfo.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShopInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -89,11 +92,12 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
     case 3:
       (void)sm_check_column(reader, column, "ShopInfo.InfoName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShopInfo.InfoName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShopInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->info_name);
+        (void)sm_cursor_next_string(&cursor, &record->info_name);
       }
 
       break;
@@ -101,12 +105,13 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
     case 4:
       (void)sm_check_column(reader, column, "ShopInfo.ShopType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShopInfo.ShopType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShopInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->shop_type = (Rescue_ShopType_t)scratch;
       }
 
@@ -115,11 +120,12 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
     case 5:
       (void)sm_check_column(reader, column, "ShopInfo.ConditionID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShopInfo.ConditionID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShopInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->condition_id);
+        (void)sm_cursor_next_i32(&cursor, &record->condition_id);
       }
 
       break;
@@ -127,11 +133,12 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
     case 6:
       (void)sm_check_column(reader, column, "ShopInfo.SheetName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShopInfo.SheetName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShopInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->sheet_name);
+        (void)sm_cursor_next_string(&cursor, &record->sheet_name);
       }
 
       break;
@@ -139,11 +146,12 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
     case 7:
       (void)sm_check_column(reader, column, "ShopInfo.Priority", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShopInfo.Priority");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShopInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->priority);
+        (void)sm_cursor_next_i32(&cursor, &record->priority);
       }
 
       break;
@@ -151,11 +159,12 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
     case 8:
       (void)sm_check_column(reader, column, "ShopInfo.UIPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShopInfo.UIPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShopInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->ui_path);
+        (void)sm_cursor_next_string(&cursor, &record->ui_path);
       }
 
       break;
@@ -163,11 +172,12 @@ static bool Rescue_ShopInfoParse(Rescue_ShopInfoTable_t* table, sm_reader* reade
     case 9:
       (void)sm_check_column(reader, column, "ShopInfo.ListPrefabPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShopInfo.ListPrefabPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShopInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->list_prefab_path);
+        (void)sm_cursor_next_string(&cursor, &record->list_prefab_path);
       }
 
       break;

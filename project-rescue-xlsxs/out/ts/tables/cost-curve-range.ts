@@ -171,6 +171,7 @@ export class CostCurveRangeTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -184,37 +185,42 @@ export class CostCurveRangeTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'CostCurveRange.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CostCurveRange.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'CostCurveRange.GrowthType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CostCurveRange.GrowthType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._growthType = reader.readEnum() as GrowthType
+            record._growthType = cursor.nextI32() as GrowthType
           }
           break
         case 3:
           sheetman.checkColumn(column, 'CostCurveRange.RangeIndex', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CostCurveRange.RangeIndex')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rangeIndex = reader.readI32As(column.element)
+            record._rangeIndex = cursor.nextI32()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'CostCurveRange.StartStep', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CostCurveRange.StartStep')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._startStep = reader.readI32As(column.element)
+            record._startStep = cursor.nextI32()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'CostCurveRange.EndStep', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CostCurveRange.EndStep')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._endStep = reader.readI32As(column.element)
+            record._endStep = cursor.nextI32()
           }
           break
         case 6:

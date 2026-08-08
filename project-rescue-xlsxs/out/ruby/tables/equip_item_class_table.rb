@@ -94,43 +94,51 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'EquipItemClass.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemClass.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'EquipItemClass.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemClass.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'EquipItemClass.NameKR', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemClass.NameKR')
           records.each do |record|
-            record.name_kr = reader.read_string
+            record.name_kr = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'EquipItemClass.Type', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemClass.Type')
           records.each do |record|
-            record.type = reader.read_enum
+            record.type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'EquipItemClass.Grade', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemClass.Grade')
           records.each do |record|
-            record.grade = reader.read_enum
+            record.grade = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'EquipItemClass.TranscendStep', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemClass.TranscendStep')
           records.each do |record|
-            record.transcend_step = reader.read_i32_as(column.element)
+            record.transcend_step = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'EquipItemClass.MaterialType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemClass.MaterialType')
           records.each do |record|
-            record.material_type = reader.read_enum
+            record.material_type = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'EquipItemClass.MaterialValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'EquipItemClass.MaterialValue')
           records.each do |record|
-            record.material_value = reader.read_i32_as(column.element)
+            record.material_value = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'EquipItemClass.WeaponStatRate1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])

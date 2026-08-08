@@ -93,23 +93,27 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Stage.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Stage.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Stage.StageName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.StageName')
           records.each do |record|
-            record.stage_name = reader.read_string
+            record.stage_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Stage.AssetDataPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.AssetDataPath')
           records.each do |record|
-            record.asset_data_path = reader.read_string
+            record.asset_data_path = cursor.next_string
           end
         when 5
           Sheetman.check_column(column, 'Stage.SpawnIds', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
@@ -119,13 +123,15 @@ module Rescue
           end
         when 6
           Sheetman.check_column(column, 'Stage.SpawnPointCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.SpawnPointCount')
           records.each do |record|
-            record.spawn_point_count = reader.read_i32_as(column.element)
+            record.spawn_point_count = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'Stage.SpawnMaxCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.SpawnMaxCount')
           records.each do |record|
-            record.spawn_max_count = reader.read_i32_as(column.element)
+            record.spawn_max_count = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'Stage.SpawnNextTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -134,8 +140,9 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'Stage.StageClearCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.StageClearCount')
           records.each do |record|
-            record.stage_clear_count = reader.read_i32_as(column.element)
+            record.stage_clear_count = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'Stage.BossID', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
@@ -175,18 +182,21 @@ module Rescue
           end
         when 17
           Sheetman.check_column(column, 'Stage.StageDropListID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.StageDropListID')
           records.each do |record|
-            record.stage_drop_list_id = reader.read_i32_as(column.element)
+            record.stage_drop_list_id = cursor.next_i32
           end
         when 18
           Sheetman.check_column(column, 'Stage.StageBGMID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.StageBGMID')
           records.each do |record|
-            record.stage_bgmid = reader.read_i32_as(column.element)
+            record.stage_bgmid = cursor.next_i32
           end
         when 19
           Sheetman.check_column(column, 'Stage.BossStageBGMID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Stage.BossStageBGMID')
           records.each do |record|
-            record.boss_stage_bgmid = reader.read_i32_as(column.element)
+            record.boss_stage_bgmid = cursor.next_i32
           end
         else
           # A column added after this code was generated.

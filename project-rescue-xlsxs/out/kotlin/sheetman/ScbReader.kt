@@ -284,6 +284,160 @@ class ScbReader(private val data: ByteArray) {
 }
 
 /**
+ * Reads one scalar column's values in row order, whatever the block's encoding.
+ *
+ * The generated row loop stays a row loop; this is the one place that knows how a delta
+ * accumulates, how long a run has left, or that a dictionary index is a reference into
+ * strings decoded once. That last one matters beyond file size: a hundred-thousand-row
+ * column with three distinct strings allocates three strings, not a hundred thousand.
+ *
+ * checkColumn has already refused any (element, encoding) pair the spec does not define,
+ * so the branches here do not re-litigate that.
+ */
+class ColumnCursor(
+    private val reader: ScbReader,
+    column: Column,
+    rowCount: Int,
+    private val fieldName: String,
+) {
+    private val element: Int = column.element
+    private val encoding: Int = column.encoding
+
+    // A run-length family's current run: what remains of it, and its value - which is a
+    // plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+    private var runRemaining = 0
+    private var runValue = 0
+
+    // The delta family's accumulator, once started.
+    private var previous = 0
+    private var started = false
+
+    // Rows not yet handed out. A run that claims more than this is corrupt, and catching
+    // it here names the field instead of leaving it to the block-end check.
+    private var rowsRemaining = rowCount
+
+    /** The block's dictionary, decoded once and handed out per row. */
+    private val dictionary: Array<String> =
+        if (encoding == ENCODING_DICT || encoding == ENCODING_DICT_RLE) {
+            val count = reader.readCounter32()
+            if (count < 0) {
+                throw ScbException("$fieldName: the dictionary entry count is negative")
+            }
+
+            Array(count) { reader.readString() }
+        } else {
+            EMPTY_DICTIONARY
+        }
+
+    /** The next Int - which also serves enums, and reference indexes. */
+    fun nextI32(): Int {
+        rowsRemaining--
+
+        return when (encoding) {
+            ENCODING_RAW ->
+                if (element == ELEMENT_I32) reader.readInt32() else reader.readOptimalInt32()
+
+            ENCODING_VARINT -> reader.readOptimalInt32()
+
+            ENCODING_DELTA -> {
+                // The addition wraps on purpose - Kotlin's Int does - mirroring the
+                // writer's wrapping subtraction; together they are exact for every
+                // Int pair.
+                if (started) {
+                    previous += reader.readOptimalInt32()
+                } else {
+                    previous = reader.readOptimalInt32()
+                    started = true
+                }
+
+                previous
+            }
+
+            ENCODING_RLE -> {
+                if (runRemaining == 0) readRun()
+
+                runRemaining--
+                runValue
+            }
+
+            else -> { // ENCODING_DELTA_RLE; checkColumn refused everything else.
+                if (!started) {
+                    previous = reader.readOptimalInt32()
+                    started = true
+                } else {
+                    if (runRemaining == 0) readRun()
+
+                    runRemaining--
+                    previous += runValue
+                }
+
+                previous
+            }
+        }
+    }
+
+    /** A Long member: an i64 column is always raw, anything narrower decodes as Int. */
+    fun nextI64(): Long =
+        if (element == ELEMENT_I64) reader.readInt64() else nextI32().toLong()
+
+    /** A Double member: float columns are always raw, an i32 column decodes then widens. */
+    fun nextF64(): Double = when (element) {
+        ELEMENT_F64 -> reader.readDouble()
+        ELEMENT_F32 -> reader.readFloat().toDouble()
+        else -> nextI32().toDouble()
+    }
+
+    /** The next string - the dictionary's instance where the block has one. */
+    fun nextString(): String {
+        rowsRemaining--
+
+        return when (encoding) {
+            ENCODING_RAW -> reader.readString()
+
+            ENCODING_DICT -> dictionaryEntry(reader.readCounter32())
+
+            else -> { // ENCODING_DICT_RLE
+                if (runRemaining == 0) readRun()
+
+                runRemaining--
+                dictionaryEntry(runValue)
+            }
+        }
+    }
+
+    private fun readRun() {
+        val length = reader.readCounter32()
+
+        // + 1 because the row this run was read for is already counted out of
+        // rowsRemaining by its next* call.
+        if (length < 1 || length > rowsRemaining + 1) {
+            throw ScbException(
+                "$fieldName: a run of $length values cannot cover the " +
+                    "${rowsRemaining + 1} rows left in the column")
+        }
+
+        runRemaining = length
+        runValue = reader.readOptimalInt32()
+    }
+
+    private fun dictionaryEntry(index: Int): String {
+        if (index < 0 || index >= dictionary.size) {
+            throw ScbException(
+                "$fieldName: dictionary index $index is out of range - the " +
+                    "dictionary holds ${dictionary.size} entries")
+        }
+
+        return dictionary[index]
+    }
+
+    private companion object {
+        // One shared empty array for the encodings that carry no dictionary, so the
+        // property can stay non-nullable without an allocation per cursor.
+        val EMPTY_DICTIONARY = emptyArray<String>()
+    }
+}
+
+/**
  * Reads and checks a table file's header, returning the row count that follows it.
  *
  * The reserved byte is written as zero and is where compression or encryption flags would
@@ -365,13 +519,14 @@ fun checkColumn(column: Column, fieldName: String, kind: Int, count: Int, vararg
                 "regenerate the code or rebuild the data.")
     }
 
-    // An encoding this build cannot decode is refused by name, exactly like an element
-    // it cannot read. An unknown column's encoding never gets here - a skip is a skip
-    // whatever the block's layout.
-    if (column.encoding != ENCODING_RAW) {
+    // An encoding this build cannot decode - or one the spec does not define for this
+    // element - is refused by name, exactly like an element it cannot read. An unknown
+    // column's encoding never gets here - a skip is a skip whatever the block's layout.
+    if (!encodingSupported(column)) {
         throw ScbException(
             "$fieldName: the file's column uses encoding ${column.encoding}, which this " +
-                "reader does not support. Regenerate the code or rebuild the data.")
+                "reader cannot decode for its element type. Regenerate the code or rebuild " +
+                "the data.")
     }
 
     if (column.element !in accepted) {
@@ -379,6 +534,23 @@ fun checkColumn(column: Column, fieldName: String, kind: Int, count: Int, vararg
             "$fieldName: the file carries element type ${column.element}, which this member " +
                 "cannot read (accepts ${accepted.joinToString()}). The column changed type " +
                 "incompatibly; regenerate the code or rebuild the data.")
+    }
+}
+
+/**
+ * The (element, encoding) pairs the spec defines. Arrays are always raw; integers take
+ * the integer encodings, strings the dictionary ones.
+ */
+private fun encodingSupported(column: Column): Boolean {
+    if (column.encoding == ENCODING_RAW) return true
+    if (column.kind != KIND_SCALAR) return false
+
+    return when (column.element) {
+        ELEMENT_VARINT -> column.encoding == ENCODING_RLE
+        ELEMENT_I32 -> column.encoding in ENCODING_VARINT..ENCODING_DELTA_RLE
+        ELEMENT_STRING ->
+            column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE
+        else -> false
     }
 }
 

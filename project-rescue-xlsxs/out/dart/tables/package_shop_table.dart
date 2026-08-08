@@ -84,6 +84,7 @@ class PackageShopTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <PackageShopRecord>[];
@@ -99,38 +100,44 @@ class PackageShopTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'PackageShop.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'PackageShop.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'PackageShop.ProductName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.ProductName');
           for (final record in loaded) {
-            record.productName = reader.readString();
+            record.productName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'PackageShop.ShopType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.ShopType');
           for (final record in loaded) {
-            record.shopType = ShopType.of(reader.readEnum());
+            record.shopType = ShopType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'PackageShop.ShopSlotID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.ShopSlotID');
           for (final record in loaded) {
-            record.shopSlotID = reader.readI32As(column.element);
+            record.shopSlotID = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'PackageShop.Priority', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.Priority');
           for (final record in loaded) {
-            record.priority = reader.readI32As(column.element);
+            record.priority = cursor.nextI32();
           }
           break;
         case 7:
@@ -149,38 +156,44 @@ class PackageShopTable {
           break;
         case 9:
           checkColumn(column, 'PackageShop.CycleType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.CycleType');
           for (final record in loaded) {
-            record.cycleType = CycleType.of(reader.readEnum());
+            record.cycleType = CycleType.of(cursor.nextI32());
           }
           break;
         case 10:
           checkColumn(column, 'PackageShop.LimitValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.LimitValue');
           for (final record in loaded) {
-            record.limitValue = reader.readI32As(column.element);
+            record.limitValue = cursor.nextI32();
           }
           break;
         case 11:
           checkColumn(column, 'PackageShop.CurrencyType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.CurrencyType');
           for (final record in loaded) {
-            record.currencyType = CurrencyType.of(reader.readEnum());
+            record.currencyType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 12:
           checkColumn(column, 'PackageShop.PriceValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.PriceValue');
           for (final record in loaded) {
-            record.priceValue = reader.readI32As(column.element);
+            record.priceValue = cursor.nextI32();
           }
           break;
         case 13:
           checkColumn(column, 'PackageShop.ConditionID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.ConditionID');
           for (final record in loaded) {
-            record.conditionID = reader.readI32As(column.element);
+            record.conditionID = cursor.nextI32();
           }
           break;
         case 14:
           checkColumn(column, 'PackageShop.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'PackageShop.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -128,32 +129,37 @@ class PackageTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Package.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Package.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Package.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Package.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Package.ClassName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Package.ClassName")
                     for (record in loaded) {
-                        record.className = reader.readString()
+                        record.className = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Package.ItemType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Package.ItemType")
                     for (record in loaded) {
-                        record.itemType = ItemType.of(reader.readEnum())
+                        record.itemType = ItemType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "Package.PackageType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Package.PackageType")
                     for (record in loaded) {
-                        record.packageType = ConsumablesType.of(reader.readEnum())
+                        record.packageType = ConsumablesType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
@@ -164,26 +170,30 @@ class PackageTable {
                 }
                 7 -> {
                     checkColumn(column, "Package.MaxStack", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Package.MaxStack")
                     for (record in loaded) {
-                        record.maxStack = reader.readI64As(column.element)
+                        record.maxStack = cursor.nextI64()
                     }
                 }
                 8 -> {
                     checkColumn(column, "Package.PackageCondition", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Package.PackageCondition")
                     for (record in loaded) {
-                        record.packageCondition = ConditionType.of(reader.readEnum())
+                        record.packageCondition = ConditionType.of(cursor.nextI32())
                     }
                 }
                 9 -> {
                     checkColumn(column, "Package.Cooltime", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Package.Cooltime")
                     for (record in loaded) {
-                        record.cooltime = reader.readI32As(column.element)
+                        record.cooltime = cursor.nextI32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "Package.Duration", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Package.Duration")
                     for (record in loaded) {
-                        record.duration = reader.readI32As(column.element)
+                        record.duration = cursor.nextI32()
                     }
                 }
                 11 -> {
@@ -220,20 +230,23 @@ class PackageTable {
                 }
                 15 -> {
                     checkColumn(column, "Package.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Package.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 16 -> {
                     checkColumn(column, "Package.DropPrefabPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Package.DropPrefabPath")
                     for (record in loaded) {
-                        record.dropPrefabPath = reader.readString()
+                        record.dropPrefabPath = cursor.nextString()
                     }
                 }
                 17 -> {
                     checkColumn(column, "Package.ItemDescription", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Package.ItemDescription")
                     for (record in loaded) {
-                        record.itemDescription = reader.readString()
+                        record.itemDescription = cursor.nextString()
                     }
                 }
                 else ->

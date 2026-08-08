@@ -393,11 +393,77 @@ public class PythonCodeGenerator : CodeGenerator<PythonRecipe>
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementCount = sf.Fields.Count,
             Initializers = Initializers(sf, name),
-            ReadScalar = ReadExpression(sf),
+            ReadScalar = UsesCursor(sf) ? CursorReadExpression(sf) : ReadExpression(sf),
             ReadElement = ReadExpression(sf),
         };
+    }
+
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly. Python has no block scope, so the
+    /// assignment needs no declaration to sit under.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"cursor = sheetman.ColumnCursor(reader, column, count, \"{tableName}.{sf.Name}\")"
+            : "";
+
+    /// <summary>
+    /// The read for a scalar that goes through the cursor - which is what carries the
+    /// encodings, and the lossless promotions with them.
+    /// </summary>
+    private static string CursorReadExpression(SerialField sf)
+    {
+        // Only the stored index is on the wire; the accessor fills the value in once
+        // every table is loaded.
+        if (sf.IsRef)
+            return "cursor.next_i32()";
+
+        switch (sf.ElementType)
+        {
+            // An enum travels as an int32 through the cursor, exactly as a raw one does.
+            case ValueType.Enum:
+                return $"{sf.FirstField.Enum.Name.ToPascalCase()}(cursor.next_i32())";
+
+            case ValueType.Int32: return "cursor.next_i32()";
+            case ValueType.Int64: return "cursor.next_i64()";
+            case ValueType.Double: return "cursor.next_f64()";
+
+            default: // String; UsesCursor admits nothing else here.
+                return "cursor.next_string()";
+        }
     }
 
     /// <summary>

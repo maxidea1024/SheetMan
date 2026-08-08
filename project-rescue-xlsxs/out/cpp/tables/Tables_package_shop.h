@@ -113,49 +113,55 @@ class PackageShopTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "PackageShop.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "PackageShop.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "PackageShop.ProductName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.ProductName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.product_name);
+            record.product_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "PackageShop.ShopType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.ShopType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.shop_type);
+            record.shop_type = static_cast<ShopType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "PackageShop.ShopSlotID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.ShopSlotID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.shop_slot_id);
+            record.shop_slot_id = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "PackageShop.Priority", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.Priority");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.priority);
+            record.priority = cursor.next_i32();
           }
           break;
         }
@@ -185,49 +191,55 @@ class PackageShopTable {
         }
         case 9: {
           sheetman::check_column(column, "PackageShop.CycleType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.CycleType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.cycle_type);
+            record.cycle_type = static_cast<CycleType>(cursor.next_i32());
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "PackageShop.LimitValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.LimitValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.limit_value);
+            record.limit_value = cursor.next_i32();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "PackageShop.CurrencyType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.CurrencyType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.currency_type);
+            record.currency_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "PackageShop.PriceValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.PriceValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.price_value);
+            record.price_value = cursor.next_i32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "PackageShop.ConditionID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.ConditionID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition_id);
+            record.condition_id = cursor.next_i32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "PackageShop.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "PackageShop.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }

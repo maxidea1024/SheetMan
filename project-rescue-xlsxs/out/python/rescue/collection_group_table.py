@@ -82,16 +82,19 @@ class CollectionGroupTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "CollectionGroup.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CollectionGroup.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "CollectionGroup.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CollectionGroup.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "CollectionGroup.Index", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CollectionGroup.Index")
                 for record in records:
-                    record.index = reader.read_i32_as(column.element)
+                    record.index = cursor.next_i32()
             elif column.tag == 4:
                 sheetman.check_column(column, "CollectionGroup.CharacterList", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:
@@ -99,8 +102,9 @@ class CollectionGroupTable:
                     record.character_list = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 5:
                 sheetman.check_column(column, "CollectionGroup.PrefabPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CollectionGroup.PrefabPath")
                 for record in records:
-                    record.prefab_path = reader.read_string()
+                    record.prefab_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

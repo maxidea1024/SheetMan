@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -126,38 +127,44 @@ class SDAlchemyInfoTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDAlchemyInfo.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDAlchemyInfo.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDAlchemyInfo.NameKR", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.NameKR")
                     for (record in loaded) {
-                        record.nameKR = reader.readString()
+                        record.nameKR = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDAlchemyInfo.MaterialType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType")
                     for (record in loaded) {
-                        record.materialType = CurrencyType.of(reader.readEnum())
+                        record.materialType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDAlchemyInfo.CommonMaterialType1", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType1")
                     for (record in loaded) {
-                        record.commonMaterialType1 = CurrencyType.of(reader.readEnum())
+                        record.commonMaterialType1 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDAlchemyInfo.CommonMaterialType2", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType2")
                     for (record in loaded) {
-                        record.commonMaterialType2 = CurrencyType.of(reader.readEnum())
+                        record.commonMaterialType2 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
@@ -168,56 +175,65 @@ class SDAlchemyInfoTable {
                 }
                 8 -> {
                     checkColumn(column, "SDAlchemyInfo.StatType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.StatType")
                     for (record in loaded) {
-                        record.statType = StatType.of(reader.readEnum())
+                        record.statType = StatType.of(cursor.nextI32())
                     }
                 }
                 9 -> {
                     checkColumn(column, "SDAlchemyInfo.TargetType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.TargetType")
                     for (record in loaded) {
-                        record.targetType = TargetType.of(reader.readEnum())
+                        record.targetType = TargetType.of(cursor.nextI32())
                     }
                 }
                 10 -> {
                     checkColumn(column, "SDAlchemyInfo.MaxLevelId", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.MaxLevelId")
                     for (record in loaded) {
-                        record.maxLevelId = reader.readI32As(column.element)
+                        record.maxLevelId = cursor.nextI32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "SDAlchemyInfo.AccelerateTime", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateTime")
                     for (record in loaded) {
-                        record.accelerateTime = reader.readI32As(column.element)
+                        record.accelerateTime = cursor.nextI32()
                     }
                 }
                 12 -> {
                     checkColumn(column, "SDAlchemyInfo.AccelerateItemType1", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType1")
                     for (record in loaded) {
-                        record.accelerateItemType1 = CurrencyType.of(reader.readEnum())
+                        record.accelerateItemType1 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 13 -> {
                     checkColumn(column, "SDAlchemyInfo.AccelerateItemCost1", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost1")
                     for (record in loaded) {
-                        record.accelerateItemCost1 = reader.readI32As(column.element)
+                        record.accelerateItemCost1 = cursor.nextI32()
                     }
                 }
                 14 -> {
                     checkColumn(column, "SDAlchemyInfo.AccelerateItemType2", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType2")
                     for (record in loaded) {
-                        record.accelerateItemType2 = CurrencyType.of(reader.readEnum())
+                        record.accelerateItemType2 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 15 -> {
                     checkColumn(column, "SDAlchemyInfo.AccelerateItemCost2", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost2")
                     for (record in loaded) {
-                        record.accelerateItemCost2 = reader.readI32As(column.element)
+                        record.accelerateItemCost2 = cursor.nextI32()
                     }
                 }
                 16 -> {
                     checkColumn(column, "SDAlchemyInfo.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAlchemyInfo.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

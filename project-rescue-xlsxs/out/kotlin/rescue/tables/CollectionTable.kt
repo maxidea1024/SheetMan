@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -118,50 +119,58 @@ class CollectionTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Collection.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Collection.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Collection.CharacterID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.CharacterID")
                     for (record in loaded) {
-                        record.characterID = reader.readI32As(column.element)
+                        record.characterID = cursor.nextI32()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Collection.TabType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.TabType")
                     for (record in loaded) {
-                        record.tabType = CollectionTabType.of(reader.readEnum())
+                        record.tabType = CollectionTabType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "Collection.ConditionID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.ConditionID")
                     for (record in loaded) {
-                        record.conditionID = reader.readI32As(column.element)
+                        record.conditionID = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "Collection.RewardType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.RewardType")
                     for (record in loaded) {
-                        record.rewardType = CurrencyType.of(reader.readEnum())
+                        record.rewardType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
                     checkColumn(column, "Collection.RewardValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.RewardValue")
                     for (record in loaded) {
-                        record.rewardValue = reader.readI32As(column.element)
+                        record.rewardValue = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "Collection.RewardStatType1", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.RewardStatType1")
                     for (record in loaded) {
-                        record.rewardStatType1 = StatType.of(reader.readEnum())
+                        record.rewardStatType1 = StatType.of(cursor.nextI32())
                     }
                 }
                 9 -> {
@@ -172,20 +181,23 @@ class CollectionTable {
                 }
                 10 -> {
                     checkColumn(column, "Collection.RewardStatType2", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.RewardStatType2")
                     for (record in loaded) {
-                        record.rewardStatType2 = StatType.of(reader.readEnum())
+                        record.rewardStatType2 = StatType.of(cursor.nextI32())
                     }
                 }
                 11 -> {
                     checkColumn(column, "Collection.RewardStatValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.RewardStatValue")
                     for (record in loaded) {
-                        record.rewardStatValue = reader.readI32As(column.element)
+                        record.rewardStatValue = cursor.nextI32()
                     }
                 }
                 12 -> {
                     checkColumn(column, "Collection.ShortCutID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Collection.ShortCutID")
                     for (record in loaded) {
-                        record.shortCutID = reader.readI32As(column.element)
+                        record.shortCutID = cursor.nextI32()
                     }
                 }
                 else ->

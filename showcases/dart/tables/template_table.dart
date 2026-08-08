@@ -100,6 +100,7 @@ class TemplateTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <TemplateRecord>[];
@@ -116,20 +117,23 @@ class TemplateTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Template.Index', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Template.Index');
           for (final record in loaded) {
-            record.index = reader.readI32As(column.element);
+            record.index = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Template.Class', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Template.Class');
           for (final record in loaded) {
-            record.class_ = reader.readString();
+            record.class_ = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Template.Int', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Template.Int');
           for (final record in loaded) {
-            record.int_ = reader.readI32As(column.element);
+            record.int_ = cursor.nextI32();
           }
           break;
         case 4:
@@ -140,26 +144,30 @@ class TemplateTable {
           break;
         case 5:
           checkColumn(column, 'Template.Operator', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Template.Operator');
           for (final record in loaded) {
-            record.operator = reader.readString();
+            record.operator = cursor.nextString();
           }
           break;
         case 6:
           checkColumn(column, 'Template.Namespace', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Template.Namespace');
           for (final record in loaded) {
-            record.namespace = reader.readString();
+            record.namespace = cursor.nextString();
           }
           break;
         case 7:
           checkColumn(column, 'Template.Constructor', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Template.Constructor');
           for (final record in loaded) {
-            record.constructor = reader.readString();
+            record.constructor = cursor.nextString();
           }
           break;
         case 8:
           checkColumn(column, 'Template.Function', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Template.Function');
           for (final record in loaded) {
-            record.function = reader.readString();
+            record.function = cursor.nextString();
           }
           break;
         default:

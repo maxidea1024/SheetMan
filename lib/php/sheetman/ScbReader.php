@@ -162,7 +162,7 @@ final class ScbReader
      */
     public function skip(int $byteCount): void
     {
-        $remaining = \strlen($this->bytes) - $this->position;
+        $remaining = $this->remaining();
 
         if ($byteCount < 0 || $byteCount > $remaining) {
             throw new ScbException("Cannot skip {$byteCount} bytes with {$remaining} remaining.");
@@ -437,13 +437,15 @@ final class ScbReader
             );
         }
 
-        // An encoding this build cannot decode is refused by name, exactly like an
-        // element it cannot read. An unknown column's encoding never gets here - a skip
-        // is a skip whatever the block's layout.
-        if ($column['encoding'] !== self::ENCODING_RAW) {
+        // An encoding this build cannot decode - or one the spec does not define for
+        // this element - is refused by name, exactly like an element it cannot read. An
+        // unknown column's encoding never gets here - a skip is a skip whatever the
+        // block's layout.
+        if (!self::encodingSupported($column)) {
             throw new ScbException(
                 "{$fieldName}: the file's column uses encoding {$column['encoding']}, which "
-                . 'this reader does not support. Regenerate the code or rebuild the data.');
+                . 'this reader cannot decode for its element type. Regenerate the code or '
+                . 'rebuild the data.');
         }
 
         if (!\in_array($column['element'], $accepted, true)) {
@@ -453,6 +455,33 @@ final class ScbReader
                 . 'or rebuild the data.'
             );
         }
+    }
+
+    /**
+     * The (element, encoding) pairs the spec defines. Arrays are always raw; integers
+     * take the integer encodings, strings the dictionary ones.
+     */
+    private static function encodingSupported(array $column): bool
+    {
+        if ($column['encoding'] === self::ENCODING_RAW) {
+            return true;
+        }
+
+        if ($column['kind'] !== self::KIND_SCALAR) {
+            return false;
+        }
+
+        return match ($column['element']) {
+            self::ELEMENT_VARINT => $column['encoding'] === self::ENCODING_RLE,
+
+            self::ELEMENT_I32 => $column['encoding'] >= self::ENCODING_VARINT
+                && $column['encoding'] <= self::ENCODING_DELTA_RLE,
+
+            self::ELEMENT_STRING => $column['encoding'] === self::ENCODING_DICT
+                || $column['encoding'] === self::ENCODING_DICT_RLE,
+
+            default => false,
+        };
     }
 
     /**
@@ -516,5 +545,214 @@ final class ScbReader
         }
 
         throw new ScbException('A varint32 is longer than five bytes.');
+    }
+}
+
+/**
+ * Reads one scalar column's values in row order, whatever the block's encoding.
+ *
+ * The generated row loop stays a row loop; this is the one place that knows how a
+ * delta accumulates, how long a run has left, or that a dictionary index is a
+ * reference into strings decoded once. That last one matters beyond file size: a
+ * hundred-thousand-row column with three distinct strings decodes three strings,
+ * and copy-on-write hands them out per row without copying a byte.
+ *
+ * checkColumn has already refused any (element, encoding) pair the spec does not
+ * define, so the branches here do not re-litigate that.
+ */
+final class ScbColumnCursor
+{
+    private readonly int $element;
+    private readonly int $encoding;
+
+    /**
+     * The block's dictionary, decoded once and handed out per row.
+     *
+     * @var list<string>
+     */
+    private readonly array $dictionary;
+
+    // A run-length family's current run: what remains of it, and its value - which is
+    // a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+    private int $runRemaining = 0;
+    private int $runValue = 0;
+
+    // The delta family's accumulator, once $started.
+    private int $previous = 0;
+    private bool $started = false;
+
+    // Rows not yet handed out. A run that claims more than this is corrupt, and
+    // catching it here names the field instead of leaving it to the block-end check.
+    private int $rowsRemaining;
+
+    public function __construct(
+        private readonly ScbReader $reader,
+        array $column,
+        int $rowCount,
+        private readonly string $fieldName
+    ) {
+        $this->element = $column['element'];
+        $this->encoding = $column['encoding'];
+        $this->rowsRemaining = $rowCount;
+
+        if ($this->encoding === ScbReader::ENCODING_DICT
+            || $this->encoding === ScbReader::ENCODING_DICT_RLE) {
+            $count = $reader->readCounter32();
+
+            if ($count < 0) {
+                throw new ScbException("{$fieldName}: the dictionary entry count is negative.");
+            }
+
+            $dictionary = [];
+
+            for ($at = 0; $at < $count; $at++) {
+                $dictionary[] = $reader->readString();
+            }
+
+            $this->dictionary = $dictionary;
+        } else {
+            $this->dictionary = [];
+        }
+    }
+
+    /** The next int32 - which also serves enums, and reference indexes. */
+    public function nextI32(): int
+    {
+        $this->rowsRemaining--;
+
+        switch ($this->encoding) {
+            case ScbReader::ENCODING_RAW:
+                return $this->element === ScbReader::ELEMENT_I32
+                    ? $this->reader->readInt32()
+                    : $this->reader->readCounter32();
+
+            case ScbReader::ENCODING_VARINT:
+                return $this->reader->readCounter32();
+
+            case ScbReader::ENCODING_DELTA:
+                // The addition wraps on purpose, mirroring the writer's wrapping
+                // subtraction; together they are exact for every int32 pair. PHP's
+                // int is 64 bits, so the wrap is spelled out by wrap32.
+                if ($this->started) {
+                    $this->previous = self::wrap32($this->previous + $this->reader->readCounter32());
+                } else {
+                    $this->previous = $this->reader->readCounter32();
+                    $this->started = true;
+                }
+
+                return $this->previous;
+
+            case ScbReader::ENCODING_RLE:
+                if ($this->runRemaining === 0) {
+                    $this->readRun();
+                }
+
+                $this->runRemaining--;
+
+                return $this->runValue;
+
+            default: // ENCODING_DELTA_RLE; checkColumn refused everything else.
+                if (!$this->started) {
+                    $this->previous = $this->reader->readCounter32();
+                    $this->started = true;
+
+                    return $this->previous;
+                }
+
+                if ($this->runRemaining === 0) {
+                    $this->readRun();
+                }
+
+                $this->runRemaining--;
+                $this->previous = self::wrap32($this->previous + $this->runValue);
+
+                return $this->previous;
+        }
+    }
+
+    /** An int64 member: an i64 column is always raw, anything narrower decodes as int32. */
+    public function nextI64(): int
+    {
+        return $this->element === ScbReader::ELEMENT_I64
+            ? $this->reader->readInt64()
+            : $this->nextI32();
+    }
+
+    /** A float member: float columns are always raw, an i32 column decodes then widens. */
+    public function nextF64(): float
+    {
+        if ($this->element === ScbReader::ELEMENT_F64) {
+            return $this->reader->readDouble();
+        }
+
+        return $this->element === ScbReader::ELEMENT_F32
+            ? $this->reader->readFloat()
+            : (float)$this->nextI32();
+    }
+
+    /** The next string - the dictionary's instance where the block has one. */
+    public function nextString(): string
+    {
+        $this->rowsRemaining--;
+
+        switch ($this->encoding) {
+            case ScbReader::ENCODING_RAW:
+                return $this->reader->readString();
+
+            case ScbReader::ENCODING_DICT:
+                return $this->dictionaryEntry($this->reader->readCounter32());
+
+            default: // ENCODING_DICT_RLE
+                if ($this->runRemaining === 0) {
+                    $this->readRun();
+                }
+
+                $this->runRemaining--;
+
+                return $this->dictionaryEntry($this->runValue);
+        }
+    }
+
+    private function readRun(): void
+    {
+        $length = $this->reader->readCounter32();
+
+        // + 1 because the row this run was read for is already counted out of
+        // $rowsRemaining by its next* call.
+        if ($length < 1 || $length > $this->rowsRemaining + 1) {
+            $rows = $this->rowsRemaining + 1;
+
+            throw new ScbException(
+                "{$this->fieldName}: a run of {$length} values cannot cover the "
+                . "{$rows} rows left in the column.");
+        }
+
+        $this->runRemaining = $length;
+        $this->runValue = $this->reader->readCounter32();
+    }
+
+    private function dictionaryEntry(int $index): string
+    {
+        if ($index < 0 || $index >= \count($this->dictionary)) {
+            $held = \count($this->dictionary);
+
+            throw new ScbException(
+                "{$this->fieldName}: dictionary index {$index} is out of range - the "
+                . "dictionary holds {$held} entries.");
+        }
+
+        return $this->dictionary[$index];
+    }
+
+    /**
+     * A sum folded back into int32: the low 32 bits, sign extended - the same
+     * normalization readCounter32 applies, spelled out because PHP's int is wider
+     * than the value wrapping.
+     */
+    private static function wrap32(int $value): int
+    {
+        $value &= 0xFFFFFFFF;
+
+        return $value >= 0x80000000 ? $value - 0x100000000 : $value;
     }
 }

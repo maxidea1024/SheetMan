@@ -94,36 +94,44 @@ class SkillTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Skill.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Skill.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Skill.SkillName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.SkillName")
                 for record in records:
-                    record.skill_name = reader.read_string()
+                    record.skill_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Skill.SkillType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.SkillType")
                 for record in records:
-                    record.skill_type = SkillType(reader.read_enum())
+                    record.skill_type = SkillType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Skill.SkillSubType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.SkillSubType")
                 for record in records:
-                    record.skill_sub_type = SkillSubType(reader.read_enum())
+                    record.skill_sub_type = SkillSubType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Skill.AttributeType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.AttributeType")
                 for record in records:
-                    record.attribute_type = AttributeType(reader.read_enum())
+                    record.attribute_type = AttributeType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "Skill.TargetType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.TargetType")
                 for record in records:
-                    record.target_type = TargetType(reader.read_enum())
+                    record.target_type = TargetType(cursor.next_i32())
             elif column.tag == 8:
                 sheetman.check_column(column, "Skill.AniPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.AniPath")
                 for record in records:
-                    record.ani_path = reader.read_string()
+                    record.ani_path = cursor.next_string()
             elif column.tag == 9:
                 sheetman.check_column(column, "Skill.SkillUseRange", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -139,12 +147,14 @@ class SkillTable:
                     record.buff_id = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 12:
                 sheetman.check_column(column, "Skill.SkillIcon", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.SkillIcon")
                 for record in records:
-                    record.skill_icon = reader.read_string()
+                    record.skill_icon = cursor.next_string()
             elif column.tag == 13:
                 sheetman.check_column(column, "Skill.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Skill.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

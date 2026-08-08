@@ -82,6 +82,7 @@ class MaterialTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <MaterialRecord>[];
@@ -97,32 +98,37 @@ class MaterialTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Material.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Material.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Material.ItemName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.ItemName');
           for (final record in loaded) {
-            record.itemName = reader.readString();
+            record.itemName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Material.ItemType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.ItemType');
           for (final record in loaded) {
-            record.itemType = ItemType.of(reader.readEnum());
+            record.itemType = ItemType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'Material.Type', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.Type');
           for (final record in loaded) {
-            record.type = CurrencyType.of(reader.readEnum());
+            record.type = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 6:
@@ -133,38 +139,44 @@ class MaterialTable {
           break;
         case 7:
           checkColumn(column, 'Material.MaxStack', kindScalar, 1, [elementI64, elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.MaxStack');
           for (final record in loaded) {
-            record.maxStack = reader.readI64As(column.element);
+            record.maxStack = cursor.nextI64();
           }
           break;
         case 8:
           checkColumn(column, 'Material.Cooltime', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.Cooltime');
           for (final record in loaded) {
-            record.cooltime = reader.readI32As(column.element);
+            record.cooltime = cursor.nextI32();
           }
           break;
         case 9:
           checkColumn(column, 'Material.Duration', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.Duration');
           for (final record in loaded) {
-            record.duration = reader.readI32As(column.element);
+            record.duration = cursor.nextI32();
           }
           break;
         case 10:
           checkColumn(column, 'Material.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         case 11:
           checkColumn(column, 'Material.DropPrefabPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.DropPrefabPath');
           for (final record in loaded) {
-            record.dropPrefabPath = reader.readString();
+            record.dropPrefabPath = cursor.nextString();
           }
           break;
         case 12:
           checkColumn(column, 'Material.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Material.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         case 13:

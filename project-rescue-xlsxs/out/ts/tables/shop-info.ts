@@ -192,6 +192,7 @@ export class ShopInfoTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -205,65 +206,74 @@ export class ShopInfoTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'ShopInfo.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ShopInfo.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'ShopInfo.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ShopInfo.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'ShopInfo.InfoName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ShopInfo.InfoName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._infoName = reader.readString()
+            record._infoName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'ShopInfo.ShopType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ShopInfo.ShopType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._shopType = reader.readEnum() as ShopType
+            record._shopType = cursor.nextI32() as ShopType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'ShopInfo.ConditionID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ShopInfo.ConditionID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._conditionID = reader.readI32As(column.element)
+            record._conditionID = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'ShopInfo.SheetName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ShopInfo.SheetName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._sheetName = reader.readString()
+            record._sheetName = cursor.nextString()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'ShopInfo.Priority', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ShopInfo.Priority')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._priority = reader.readI32As(column.element)
+            record._priority = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'ShopInfo.UIPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ShopInfo.UIPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._uIPath = reader.readString()
+            record._uIPath = cursor.nextString()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'ShopInfo.ListPrefabPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ShopInfo.ListPrefabPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._listPrefabPath = reader.readString()
+            record._listPrefabPath = cursor.nextString()
           }
           break
         default:

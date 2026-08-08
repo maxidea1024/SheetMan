@@ -125,49 +125,55 @@ class ConfigTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Config.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Config.Index");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.index);
+            record.index = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Config.Id", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Config.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.id);
+            record.id = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Config.Category", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Config.Category");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.category);
+            record.category = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Config.DataType", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Config.DataType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.data_type);
+            record.data_type = cursor.next_string();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "Config.DefaultValue", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Config.DefaultValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.default_value);
+            record.default_value = cursor.next_string();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "Config.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Config.Description");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.description);
+            record.description = cursor.next_string();
           }
           break;
         }

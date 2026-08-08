@@ -82,28 +82,33 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Attribute.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Attribute.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Attribute.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Attribute.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Attribute.AttributeName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Attribute.AttributeName')
           records.each do |record|
-            record.attribute_name = reader.read_string
+            record.attribute_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Attribute.AttributeType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Attribute.AttributeType')
           records.each do |record|
-            record.attribute_type = reader.read_enum
+            record.attribute_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Attribute.TargetAttributeType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Attribute.TargetAttributeType')
           records.each do |record|
-            record.target_attribute_type = reader.read_enum
+            record.target_attribute_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'Attribute.DamageValueRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -117,8 +122,9 @@ module Rescue
           end
         when 8
           Sheetman.check_column(column, 'Attribute.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Attribute.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

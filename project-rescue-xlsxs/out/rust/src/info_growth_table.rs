@@ -111,32 +111,37 @@ impl InfoGrowthTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "InfoGrowth.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "InfoGrowth.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "InfoGrowth.InfoName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.InfoName")?;
                     for record in records.iter_mut() {
-                        record.info_name = reader.read_string()?;
+                        record.info_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "InfoGrowth.SheetName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.SheetName")?;
                     for record in records.iter_mut() {
-                        record.sheet_name = reader.read_string()?;
+                        record.sheet_name = cursor.next_string()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "InfoGrowth.GrowthType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.GrowthType")?;
                     for record in records.iter_mut() {
-                        record.growth_type = GrowthType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.growth_type = GrowthType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
@@ -147,50 +152,58 @@ impl InfoGrowthTable {
                 }
                 7 => {
                     sheetman::check_column(column, "InfoGrowth.ResetCostType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.ResetCostType")?;
                     for record in records.iter_mut() {
-                        record.reset_cost_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reset_cost_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "InfoGrowth.ResetCostValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.ResetCostValue")?;
                     for record in records.iter_mut() {
-                        record.reset_cost_value = reader.read_i32_as(column.element)?;
+                        record.reset_cost_value = cursor.next_i32()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "InfoGrowth.MaxStep", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.MaxStep")?;
                     for record in records.iter_mut() {
-                        record.max_step = reader.read_i32_as(column.element)?;
+                        record.max_step = cursor.next_i32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "InfoGrowth.MaxLevel", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.MaxLevel")?;
                     for record in records.iter_mut() {
-                        record.max_level = reader.read_i32_as(column.element)?;
+                        record.max_level = cursor.next_i32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "InfoGrowth.UnlockConditionType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.UnlockConditionType")?;
                     for record in records.iter_mut() {
-                        record.unlock_condition_type = reader.read_string()?;
+                        record.unlock_condition_type = cursor.next_string()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "InfoGrowth.UnlockConditionValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.UnlockConditionValue")?;
                     for record in records.iter_mut() {
-                        record.unlock_condition_value = reader.read_i32_as(column.element)?;
+                        record.unlock_condition_value = cursor.next_i32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "InfoGrowth.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "InfoGrowth.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "InfoGrowth.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

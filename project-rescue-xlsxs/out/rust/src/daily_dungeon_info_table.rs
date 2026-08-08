@@ -118,56 +118,65 @@ impl DailyDungeonInfoTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "DailyDungeonInfo.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "DailyDungeonInfo.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "DailyDungeonInfo.DungeonName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.DungeonName")?;
                     for record in records.iter_mut() {
-                        record.dungeon_name = reader.read_string()?;
+                        record.dungeon_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "DailyDungeonInfo.DungeonType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.DungeonType")?;
                     for record in records.iter_mut() {
-                        record.dungeon_type = DungeonType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.dungeon_type = DungeonType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "DailyDungeonInfo.Priority", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.Priority")?;
                     for record in records.iter_mut() {
-                        record.priority = reader.read_i32_as(column.element)?;
+                        record.priority = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "DailyDungeonInfo.CycleType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.CycleType")?;
                     for record in records.iter_mut() {
-                        record.cycle_type = CycleType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.cycle_type = CycleType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "DailyDungeonInfo.EnterCondition", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.EnterCondition")?;
                     for record in records.iter_mut() {
-                        record.enter_condition = reader.read_i32_as(column.element)?;
+                        record.enter_condition = cursor.next_i32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "DailyDungeonInfo.EnterCurrencyType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.EnterCurrencyType")?;
                     for record in records.iter_mut() {
-                        record.enter_currency_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.enter_currency_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "DailyDungeonInfo.DungeonBuffID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.DungeonBuffID")?;
                     for record in records.iter_mut() {
-                        record.dungeon_buff_id = reader.read_i32_as(column.element)?;
+                        record.dungeon_buff_id = cursor.next_i32()?;
                     }
                 }
                 10 => {
@@ -178,44 +187,51 @@ impl DailyDungeonInfoTable {
                 }
                 11 => {
                     sheetman::check_column(column, "DailyDungeonInfo.EnterCurrencyValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.EnterCurrencyValue")?;
                     for record in records.iter_mut() {
-                        record.enter_currency_value = reader.read_i32_as(column.element)?;
+                        record.enter_currency_value = cursor.next_i32()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "DailyDungeonInfo.FreeEnterCurrencyType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.FreeEnterCurrencyType")?;
                     for record in records.iter_mut() {
-                        record.free_enter_currency_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.free_enter_currency_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "DailyDungeonInfo.ADEnterCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.ADEnterCount")?;
                     for record in records.iter_mut() {
-                        record.ad_enter_count = reader.read_i32_as(column.element)?;
+                        record.ad_enter_count = cursor.next_i32()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "DailyDungeonInfo.EnterCurrencyCountMax", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.EnterCurrencyCountMax")?;
                     for record in records.iter_mut() {
-                        record.enter_currency_count_max = reader.read_i32_as(column.element)?;
+                        record.enter_currency_count_max = cursor.next_i32()?;
                     }
                 }
                 15 => {
                     sheetman::check_column(column, "DailyDungeonInfo.DungeonImagePath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.DungeonImagePath")?;
                     for record in records.iter_mut() {
-                        record.dungeon_image_path = reader.read_string()?;
+                        record.dungeon_image_path = cursor.next_string()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "DailyDungeonInfo.DungeonBGMID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.DungeonBGMID")?;
                     for record in records.iter_mut() {
-                        record.dungeon_bgmid = reader.read_i32_as(column.element)?;
+                        record.dungeon_bgmid = cursor.next_i32()?;
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "DailyDungeonInfo.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "DailyDungeonInfo.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 _ => {

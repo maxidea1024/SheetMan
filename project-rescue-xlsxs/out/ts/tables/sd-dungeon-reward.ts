@@ -269,6 +269,7 @@ export class SDDungeonRewardTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -282,100 +283,114 @@ export class SDDungeonRewardTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'SDDungeonReward.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'SDDungeonReward.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'SDDungeonReward.RewardName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.RewardName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardName = reader.readString()
+            record._rewardName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'SDDungeonReward.ConditionId', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.ConditionId')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._conditionId = reader.readI32As(column.element)
+            record._conditionId = cursor.nextI32()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'SDDungeonReward.RewardCommon', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.RewardCommon')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardCommon = reader.readEnum() as CurrencyType
+            record._rewardCommon = cursor.nextI32() as CurrencyType
           }
           break
         case 6:
           sheetman.checkColumn(column, 'SDDungeonReward.CommonValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.CommonValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._commonValue = reader.readI32As(column.element)
+            record._commonValue = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'SDDungeonReward.Reward1Type', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Reward1Type')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reward1Type = reader.readEnum() as CurrencyType
+            record._reward1Type = cursor.nextI32() as CurrencyType
           }
           break
         case 8:
           sheetman.checkColumn(column, 'SDDungeonReward.Reward1Value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Reward1Value')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reward1Value = reader.readI32As(column.element)
+            record._reward1Value = cursor.nextI32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'SDDungeonReward.Reward2Type', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Reward2Type')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reward2Type = reader.readEnum() as CurrencyType
+            record._reward2Type = cursor.nextI32() as CurrencyType
           }
           break
         case 10:
           sheetman.checkColumn(column, 'SDDungeonReward.Reward2Value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Reward2Value')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reward2Value = reader.readI32As(column.element)
+            record._reward2Value = cursor.nextI32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'SDDungeonReward.Reward3Type', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Reward3Type')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reward3Type = reader.readEnum() as CurrencyType
+            record._reward3Type = cursor.nextI32() as CurrencyType
           }
           break
         case 12:
           sheetman.checkColumn(column, 'SDDungeonReward.Reward3Value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Reward3Value')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reward3Value = reader.readI32As(column.element)
+            record._reward3Value = cursor.nextI32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'SDDungeonReward.Reward4Type', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Reward4Type')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reward4Type = reader.readEnum() as CurrencyType
+            record._reward4Type = cursor.nextI32() as CurrencyType
           }
           break
         case 14:
           sheetman.checkColumn(column, 'SDDungeonReward.Reward4Value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.Reward4Value')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._reward4Value = reader.readI32As(column.element)
+            record._reward4Value = cursor.nextI32()
           }
           break
         case 15:
@@ -387,16 +402,18 @@ export class SDDungeonRewardTable {
           break
         case 16:
           sheetman.checkColumn(column, 'SDDungeonReward.RewardPerfect', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.RewardPerfect')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardPerfect = reader.readEnum() as CurrencyType
+            record._rewardPerfect = cursor.nextI32() as CurrencyType
           }
           break
         case 17:
           sheetman.checkColumn(column, 'SDDungeonReward.PerfectValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.PerfectValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._perfectValue = reader.readI32As(column.element)
+            record._perfectValue = cursor.nextI32()
           }
           break
         case 18:
@@ -408,16 +425,18 @@ export class SDDungeonRewardTable {
           break
         case 19:
           sheetman.checkColumn(column, 'SDDungeonReward.RewardMin', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.RewardMin')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardMin = reader.readEnum() as CurrencyType
+            record._rewardMin = cursor.nextI32() as CurrencyType
           }
           break
         case 20:
           sheetman.checkColumn(column, 'SDDungeonReward.MinRewardValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonReward.MinRewardValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._minRewardValue = reader.readI32As(column.element)
+            record._minRewardValue = cursor.nextI32()
           }
           break
         default:

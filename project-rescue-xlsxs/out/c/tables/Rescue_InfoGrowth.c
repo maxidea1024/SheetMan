@@ -14,6 +14,7 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -67,11 +68,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 1:
       (void)sm_check_column(reader, column, "InfoGrowth.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -79,11 +81,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 2:
       (void)sm_check_column(reader, column, "InfoGrowth.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -91,11 +94,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 3:
       (void)sm_check_column(reader, column, "InfoGrowth.InfoName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.InfoName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->info_name);
+        (void)sm_cursor_next_string(&cursor, &record->info_name);
       }
 
       break;
@@ -103,11 +107,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 4:
       (void)sm_check_column(reader, column, "InfoGrowth.SheetName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.SheetName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->sheet_name);
+        (void)sm_cursor_next_string(&cursor, &record->sheet_name);
       }
 
       break;
@@ -115,12 +120,13 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 5:
       (void)sm_check_column(reader, column, "InfoGrowth.GrowthType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.GrowthType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->growth_type = (Rescue_GrowthType_t)scratch;
       }
 
@@ -141,12 +147,13 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 7:
       (void)sm_check_column(reader, column, "InfoGrowth.ResetCostType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.ResetCostType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->reset_cost_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -155,11 +162,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 8:
       (void)sm_check_column(reader, column, "InfoGrowth.ResetCostValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.ResetCostValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->reset_cost_value);
+        (void)sm_cursor_next_i32(&cursor, &record->reset_cost_value);
       }
 
       break;
@@ -167,11 +175,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 9:
       (void)sm_check_column(reader, column, "InfoGrowth.MaxStep", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.MaxStep");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->max_step);
+        (void)sm_cursor_next_i32(&cursor, &record->max_step);
       }
 
       break;
@@ -179,11 +188,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 10:
       (void)sm_check_column(reader, column, "InfoGrowth.MaxLevel", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.MaxLevel");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->max_level);
+        (void)sm_cursor_next_i32(&cursor, &record->max_level);
       }
 
       break;
@@ -191,11 +201,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 11:
       (void)sm_check_column(reader, column, "InfoGrowth.UnlockConditionType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.UnlockConditionType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->unlock_condition_type);
+        (void)sm_cursor_next_string(&cursor, &record->unlock_condition_type);
       }
 
       break;
@@ -203,11 +214,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 12:
       (void)sm_check_column(reader, column, "InfoGrowth.UnlockConditionValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.UnlockConditionValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->unlock_condition_value);
+        (void)sm_cursor_next_i32(&cursor, &record->unlock_condition_value);
       }
 
       break;
@@ -215,11 +227,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 13:
       (void)sm_check_column(reader, column, "InfoGrowth.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;
@@ -227,11 +240,12 @@ static bool Rescue_InfoGrowthParse(Rescue_InfoGrowthTable_t* table, sm_reader* r
     case 14:
       (void)sm_check_column(reader, column, "InfoGrowth.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "InfoGrowth.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_InfoGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;

@@ -104,44 +104,50 @@ func (t *ArtifactLevelTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "ArtifactLevel.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ArtifactLevel.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "ArtifactLevel.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ArtifactLevel.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "ArtifactLevel.NameKR", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ArtifactLevel.NameKR")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NameKR = reader.ReadString()
+					r.NameKR = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "ArtifactLevel.Level", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ArtifactLevel.Level")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Level = reader.ReadI32As(column.Element)
+					r.Level = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "ArtifactLevel.CharacterEXP", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ArtifactLevel.CharacterEXP")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CharacterEXP = reader.ReadI64As(column.Element)
+					r.CharacterEXP = cursor.NextI64()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "ArtifactLevel.AccumulatedEXP", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ArtifactLevel.AccumulatedEXP")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AccumulatedEXP = reader.ReadI64As(column.Element)
+					r.AccumulatedEXP = cursor.NextI64()
 				}
 			}
 		case 7:

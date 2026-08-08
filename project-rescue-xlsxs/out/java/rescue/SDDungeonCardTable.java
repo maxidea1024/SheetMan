@@ -74,6 +74,7 @@ public final class SDDungeonCardTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<SDDungeonCardRecord> loaded = new ArrayList<>(count);
@@ -89,50 +90,57 @@ public final class SDDungeonCardTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "SDDungeonCard.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonCard.Id");
                     for (SDDungeonCardRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "SDDungeonCard.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonCard.Name");
                     for (SDDungeonCardRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "SDDungeonCard.SDDunName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonCard.SDDunName");
                     for (SDDungeonCardRecord record : loaded) {
-                        record.sDDunName = reader.readString();
+                        record.sDDunName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "SDDungeonCard.SDCardType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonCard.SDCardType");
                     for (SDDungeonCardRecord record : loaded) {
-                        record.sDCardType = SDCardType.of(reader.readEnum());
+                        record.sDCardType = SDCardType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "SDDungeonCard.CardCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonCard.CardCount");
                     for (SDDungeonCardRecord record : loaded) {
-                        record.cardCount = reader.readI32As(column.element);
+                        record.cardCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "SDDungeonCard.StatIconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonCard.StatIconPath");
                     for (SDDungeonCardRecord record : loaded) {
-                        record.statIconPath = reader.readString();
+                        record.statIconPath = cursor.nextString();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "SDDungeonCard.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonCard.IconPath");
                     for (SDDungeonCardRecord record : loaded) {
-                        record.iconPath = reader.readString();
+                        record.iconPath = cursor.nextString();
                     }
                     break;
                 }

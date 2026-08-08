@@ -74,6 +74,7 @@ public final class RelicDungeonRewardTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<RelicDungeonRewardRecord> loaded = new ArrayList<>(count);
@@ -89,50 +90,57 @@ public final class RelicDungeonRewardTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.Id");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.Name");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.RewardName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.RewardName");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.rewardName = reader.readString();
+                        record.rewardName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.RewardType1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.RewardType1");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.rewardType1 = CurrencyType.of(reader.readEnum());
+                        record.rewardType1 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.RewardValue1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.RewardValue1");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.rewardValue1 = reader.readI32As(column.element);
+                        record.rewardValue1 = cursor.nextI32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.RewardType2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.RewardType2");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.rewardType2 = CurrencyType.of(reader.readEnum());
+                        record.rewardType2 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.RewardValue2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.RewardValue2");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.rewardValue2 = reader.readI32As(column.element);
+                        record.rewardValue2 = cursor.nextI32();
                     }
                     break;
                 }
@@ -145,15 +153,17 @@ public final class RelicDungeonRewardTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.FirstClearRewardType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.FirstClearRewardType");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.firstClearRewardType = CurrencyType.of(reader.readEnum());
+                        record.firstClearRewardType = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "RelicDungeonReward.FirstClearRewardValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "RelicDungeonReward.FirstClearRewardValue");
                     for (RelicDungeonRewardRecord record : loaded) {
-                        record.firstClearRewardValue = reader.readI32As(column.element);
+                        record.firstClearRewardValue = cursor.nextI32();
                     }
                     break;
                 }

@@ -98,44 +98,50 @@ func (t *SFXSoundTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SFXSound.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SFXSound.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SFXSound.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SFXSound.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SFXSound.Category", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SFXSound.Category")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Category = SFXCategoryType(reader.ReadEnum())
+					r.Category = SFXCategoryType(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SFXSound.Path", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SFXSound.Path")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Path = reader.ReadString()
+					r.Path = cursor.NextString()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SFXSound.PreloadGroup", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SFXSound.PreloadGroup")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PreloadGroup = reader.ReadString()
+					r.PreloadGroup = cursor.NextString()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SFXSound.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SFXSound.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

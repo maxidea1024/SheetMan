@@ -109,6 +109,7 @@ public final class TemplateTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<TemplateRecord> loaded = new ArrayList<>(count);
@@ -125,22 +126,25 @@ public final class TemplateTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "Template.Index", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Template.Index");
                     for (TemplateRecord record : loaded) {
-                        record.index = reader.readI32As(column.element);
+                        record.index = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "Template.Class", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Template.Class");
                     for (TemplateRecord record : loaded) {
-                        record.class_ = reader.readString();
+                        record.class_ = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "Template.Int", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Template.Int");
                     for (TemplateRecord record : loaded) {
-                        record.int_ = reader.readI32As(column.element);
+                        record.int_ = cursor.nextI32();
                     }
                     break;
                 }
@@ -153,29 +157,33 @@ public final class TemplateTable {
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "Template.Operator", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Template.Operator");
                     for (TemplateRecord record : loaded) {
-                        record.operator = reader.readString();
+                        record.operator = cursor.nextString();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "Template.Namespace", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Template.Namespace");
                     for (TemplateRecord record : loaded) {
-                        record.namespace = reader.readString();
+                        record.namespace = cursor.nextString();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "Template.Constructor", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Template.Constructor");
                     for (TemplateRecord record : loaded) {
-                        record.constructor = reader.readString();
+                        record.constructor = cursor.nextString();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "Template.Function", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Template.Function");
                     for (TemplateRecord record : loaded) {
-                        record.function = reader.readString();
+                        record.function = cursor.nextString();
                     }
                     break;
                 }

@@ -96,44 +96,51 @@ impl SDDungeonCardTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDDungeonCard.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonCard.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDDungeonCard.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonCard.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDDungeonCard.SDDunName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonCard.SDDunName")?;
                     for record in records.iter_mut() {
-                        record.sd_dun_name = reader.read_string()?;
+                        record.sd_dun_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDDungeonCard.SDCardType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonCard.SDCardType")?;
                     for record in records.iter_mut() {
-                        record.sd_card_type = SDCardType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.sd_card_type = SDCardType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SDDungeonCard.CardCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonCard.CardCount")?;
                     for record in records.iter_mut() {
-                        record.card_count = reader.read_i32_as(column.element)?;
+                        record.card_count = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDDungeonCard.StatIconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonCard.StatIconPath")?;
                     for record in records.iter_mut() {
-                        record.stat_icon_path = reader.read_string()?;
+                        record.stat_icon_path = cursor.next_string()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "SDDungeonCard.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonCard.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

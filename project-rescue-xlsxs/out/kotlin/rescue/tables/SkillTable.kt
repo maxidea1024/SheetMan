@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -120,50 +121,58 @@ class SkillTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Skill.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Skill.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Skill.SkillName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.SkillName")
                     for (record in loaded) {
-                        record.skillName = reader.readString()
+                        record.skillName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Skill.SkillType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.SkillType")
                     for (record in loaded) {
-                        record.skillType = SkillType.of(reader.readEnum())
+                        record.skillType = SkillType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "Skill.SkillSubType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.SkillSubType")
                     for (record in loaded) {
-                        record.skillSubType = SkillSubType.of(reader.readEnum())
+                        record.skillSubType = SkillSubType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "Skill.AttributeType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.AttributeType")
                     for (record in loaded) {
-                        record.attributeType = AttributeType.of(reader.readEnum())
+                        record.attributeType = AttributeType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
                     checkColumn(column, "Skill.TargetType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.TargetType")
                     for (record in loaded) {
-                        record.targetType = TargetType.of(reader.readEnum())
+                        record.targetType = TargetType.of(cursor.nextI32())
                     }
                 }
                 8 -> {
                     checkColumn(column, "Skill.AniPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.AniPath")
                     for (record in loaded) {
-                        record.aniPath = reader.readString()
+                        record.aniPath = cursor.nextString()
                     }
                 }
                 9 -> {
@@ -188,14 +197,16 @@ class SkillTable {
                 }
                 12 -> {
                     checkColumn(column, "Skill.SkillIcon", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.SkillIcon")
                     for (record in loaded) {
-                        record.skillIcon = reader.readString()
+                        record.skillIcon = cursor.nextString()
                     }
                 }
                 13 -> {
                     checkColumn(column, "Skill.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Skill.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

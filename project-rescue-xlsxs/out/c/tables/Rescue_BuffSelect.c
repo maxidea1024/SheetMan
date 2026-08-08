@@ -14,6 +14,7 @@ static bool Rescue_BuffSelectParse(Rescue_BuffSelectTable_t* table, sm_reader* r
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -61,11 +62,12 @@ static bool Rescue_BuffSelectParse(Rescue_BuffSelectTable_t* table, sm_reader* r
     case 1:
       (void)sm_check_column(reader, column, "BuffSelect.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "BuffSelect.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffSelectRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -73,11 +75,12 @@ static bool Rescue_BuffSelectParse(Rescue_BuffSelectTable_t* table, sm_reader* r
     case 2:
       (void)sm_check_column(reader, column, "BuffSelect.BuffName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "BuffSelect.BuffName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffSelectRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->buff_name);
+        (void)sm_cursor_next_string(&cursor, &record->buff_name);
       }
 
       break;
@@ -85,11 +88,12 @@ static bool Rescue_BuffSelectParse(Rescue_BuffSelectTable_t* table, sm_reader* r
     case 3:
       (void)sm_check_column(reader, column, "BuffSelect.BuffID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "BuffSelect.BuffID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffSelectRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->buff_id);
+        (void)sm_cursor_next_i32(&cursor, &record->buff_id);
       }
 
       break;
@@ -97,12 +101,13 @@ static bool Rescue_BuffSelectParse(Rescue_BuffSelectTable_t* table, sm_reader* r
     case 4:
       (void)sm_check_column(reader, column, "BuffSelect.Grade", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "BuffSelect.Grade");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffSelectRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->grade = (Rescue_GradeType_t)scratch;
       }
 
@@ -123,11 +128,12 @@ static bool Rescue_BuffSelectParse(Rescue_BuffSelectTable_t* table, sm_reader* r
     case 6:
       (void)sm_check_column(reader, column, "BuffSelect.BuffTooltip", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "BuffSelect.BuffTooltip");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffSelectRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->buff_tooltip);
+        (void)sm_cursor_next_string(&cursor, &record->buff_tooltip);
       }
 
       break;
@@ -135,11 +141,12 @@ static bool Rescue_BuffSelectParse(Rescue_BuffSelectTable_t* table, sm_reader* r
     case 7:
       (void)sm_check_column(reader, column, "BuffSelect.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "BuffSelect.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_BuffSelectRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;

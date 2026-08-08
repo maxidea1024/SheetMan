@@ -16,6 +16,7 @@ require_once __DIR__ . '/../enums/GrowthType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -107,36 +108,41 @@ final class CostCurveTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'CostCurve.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurve.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'CostCurve.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurve.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'CostCurve.GrowthType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurve.GrowthType');
                     foreach ($records as $record) {
-                        $record->growthType = GrowthType::tryFrom($reader->readEnum()) ?? GrowthType::None;
+                        $record->growthType = GrowthType::tryFrom($cursor->nextI32()) ?? GrowthType::None;
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'CostCurve.CostType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurve.CostType');
                     foreach ($records as $record) {
-                        $record->costType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->costType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'CostCurve.BaseCostValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'CostCurve.BaseCostValue');
                     foreach ($records as $record) {
-                        $record->baseCostValue = $reader->readI32As($column['element']);
+                        $record->baseCostValue = $cursor->nextI32();
                     }
                     break;
 

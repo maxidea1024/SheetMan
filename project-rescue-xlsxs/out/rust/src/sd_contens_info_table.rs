@@ -106,44 +106,51 @@ impl SDContensInfoTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDContensInfo.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDContensInfo.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDContensInfo.InfoName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.InfoName")?;
                     for record in records.iter_mut() {
-                        record.info_name = reader.read_string()?;
+                        record.info_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDContensInfo.SheetName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.SheetName")?;
                     for record in records.iter_mut() {
-                        record.sheet_name = reader.read_string()?;
+                        record.sheet_name = cursor.next_string()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SDContensInfo.SdContensType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.SdContensType")?;
                     for record in records.iter_mut() {
-                        record.sd_contens_type = SdContensType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.sd_contens_type = SdContensType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDContensInfo.ConditionID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.ConditionID")?;
                     for record in records.iter_mut() {
-                        record.condition_id = reader.read_i32_as(column.element)?;
+                        record.condition_id = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "SDContensInfo.CurrencyType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.CurrencyType")?;
                     for record in records.iter_mut() {
-                        record.currency_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.currency_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 8 => {
@@ -154,20 +161,23 @@ impl SDContensInfoTable {
                 }
                 9 => {
                     sheetman::check_column(column, "SDContensInfo.CycleType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.CycleType")?;
                     for record in records.iter_mut() {
-                        record.cycle_type = CycleType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.cycle_type = CycleType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "SDContensInfo.SDCharacterPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.SDCharacterPath")?;
                     for record in records.iter_mut() {
-                        record.sd_character_path = reader.read_string()?;
+                        record.sd_character_path = cursor.next_string()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "SDContensInfo.PrefabPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDContensInfo.PrefabPath")?;
                     for record in records.iter_mut() {
-                        record.prefab_path = reader.read_string()?;
+                        record.prefab_path = cursor.next_string()?;
                     }
                 }
                 _ => {

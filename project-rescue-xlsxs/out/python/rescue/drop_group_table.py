@@ -85,20 +85,24 @@ class DropGroupTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "DropGroup.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DropGroup.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "DropGroup.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DropGroup.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "DropGroup.DropName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DropGroup.DropName")
                 for record in records:
-                    record.drop_name = reader.read_string()
+                    record.drop_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "DropGroup.DropArea", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DropGroup.DropArea")
                 for record in records:
-                    record.drop_area = reader.read_string()
+                    record.drop_area = cursor.next_string()
             elif column.tag == 5:
                 sheetman.check_column(column, "DropGroup.DropItemIds", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:

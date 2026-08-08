@@ -84,6 +84,7 @@ class SeasonShopTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SeasonShopRecord>[];
@@ -99,38 +100,44 @@ class SeasonShopTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SeasonShop.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SeasonShop.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SeasonShop.ProductName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.ProductName');
           for (final record in loaded) {
-            record.productName = reader.readString();
+            record.productName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'SeasonShop.ShopType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.ShopType');
           for (final record in loaded) {
-            record.shopType = ShopType.of(reader.readEnum());
+            record.shopType = ShopType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'SeasonShop.ShopSlotID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.ShopSlotID');
           for (final record in loaded) {
-            record.shopSlotID = reader.readI32As(column.element);
+            record.shopSlotID = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'SeasonShop.Priority', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.Priority');
           for (final record in loaded) {
-            record.priority = reader.readI32As(column.element);
+            record.priority = cursor.nextI32();
           }
           break;
         case 7:
@@ -149,38 +156,44 @@ class SeasonShopTable {
           break;
         case 9:
           checkColumn(column, 'SeasonShop.CycleType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.CycleType');
           for (final record in loaded) {
-            record.cycleType = CycleType.of(reader.readEnum());
+            record.cycleType = CycleType.of(cursor.nextI32());
           }
           break;
         case 10:
           checkColumn(column, 'SeasonShop.LimitValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.LimitValue');
           for (final record in loaded) {
-            record.limitValue = reader.readI32As(column.element);
+            record.limitValue = cursor.nextI32();
           }
           break;
         case 11:
           checkColumn(column, 'SeasonShop.CurrencyType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.CurrencyType');
           for (final record in loaded) {
-            record.currencyType = CurrencyType.of(reader.readEnum());
+            record.currencyType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 12:
           checkColumn(column, 'SeasonShop.PriceValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.PriceValue');
           for (final record in loaded) {
-            record.priceValue = reader.readI32As(column.element);
+            record.priceValue = cursor.nextI32();
           }
           break;
         case 13:
           checkColumn(column, 'SeasonShop.ConditionID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.ConditionID');
           for (final record in loaded) {
-            record.conditionID = reader.readI32As(column.element);
+            record.conditionID = cursor.nextI32();
           }
           break;
         case 14:
           checkColumn(column, 'SeasonShop.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SeasonShop.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

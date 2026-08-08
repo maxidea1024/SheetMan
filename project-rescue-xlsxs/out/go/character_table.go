@@ -160,79 +160,90 @@ func (t *CharacterTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Character.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Character.TitleName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.TitleName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TitleName = reader.ReadString()
+					r.TitleName = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Character.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Character.CharacterType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.CharacterType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CharacterType = CharacterType(reader.ReadEnum())
+					r.CharacterType = CharacterType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Character.Grade", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.Grade")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Grade = GradeType(reader.ReadEnum())
+					r.Grade = GradeType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Character.AttributeType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.AttributeType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AttributeType = AttributeType(reader.ReadEnum())
+					r.AttributeType = AttributeType(cursor.NextI32())
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Character.JobType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.JobType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.JobType = JobType(reader.ReadEnum())
+					r.JobType = JobType(cursor.NextI32())
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Character.Nation", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.Nation")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Nation = NationType(reader.ReadEnum())
+					r.Nation = NationType(cursor.NextI32())
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "Character.BaseATK", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.BaseATK")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BaseATK = reader.ReadI64As(column.Element)
+					r.BaseATK = cursor.NextI64()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "Character.BaseDEF", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.BaseDEF")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BaseDEF = reader.ReadI64As(column.Element)
+					r.BaseDEF = cursor.NextI64()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "Character.BaseMHP", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.BaseMHP")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BaseMHP = reader.ReadI64As(column.Element)
+					r.BaseMHP = cursor.NextI64()
 				}
 			}
 		case 12:
@@ -293,128 +304,146 @@ func (t *CharacterTable) Read(filename string) error {
 			}
 		case 20:
 			if sheetman.CheckColumn(reader, column, "Character.BasicAttack1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.BasicAttack1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BasicAttack1 = reader.ReadI32As(column.Element)
+					r.BasicAttack1 = cursor.NextI32()
 				}
 			}
 		case 21:
 			if sheetman.CheckColumn(reader, column, "Character.BasicAttack2", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.BasicAttack2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BasicAttack2 = reader.ReadI32As(column.Element)
+					r.BasicAttack2 = cursor.NextI32()
 				}
 			}
 		case 22:
 			if sheetman.CheckColumn(reader, column, "Character.BasicAttack3", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.BasicAttack3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BasicAttack3 = reader.ReadI32As(column.Element)
+					r.BasicAttack3 = cursor.NextI32()
 				}
 			}
 		case 23:
 			if sheetman.CheckColumn(reader, column, "Character.ActiveSkill1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.ActiveSkill1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ActiveSkill1 = reader.ReadI32As(column.Element)
+					r.ActiveSkill1 = cursor.NextI32()
 				}
 			}
 		case 24:
 			if sheetman.CheckColumn(reader, column, "Character.ActiveSkill2", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.ActiveSkill2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ActiveSkill2 = reader.ReadI32As(column.Element)
+					r.ActiveSkill2 = cursor.NextI32()
 				}
 			}
 		case 25:
 			if sheetman.CheckColumn(reader, column, "Character.ActiveSkill3", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.ActiveSkill3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ActiveSkill3 = reader.ReadI32As(column.Element)
+					r.ActiveSkill3 = cursor.NextI32()
 				}
 			}
 		case 26:
 			if sheetman.CheckColumn(reader, column, "Character.SpecialSkill1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.SpecialSkill1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpecialSkill1 = reader.ReadI32As(column.Element)
+					r.SpecialSkill1 = cursor.NextI32()
 				}
 			}
 		case 27:
 			if sheetman.CheckColumn(reader, column, "Character.SpecialSkill2", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.SpecialSkill2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpecialSkill2 = reader.ReadI32As(column.Element)
+					r.SpecialSkill2 = cursor.NextI32()
 				}
 			}
 		case 28:
 			if sheetman.CheckColumn(reader, column, "Character.SpecialSkill3", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.SpecialSkill3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpecialSkill3 = reader.ReadI32As(column.Element)
+					r.SpecialSkill3 = cursor.NextI32()
 				}
 			}
 		case 29:
 			if sheetman.CheckColumn(reader, column, "Character.SpecialSkill4", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.SpecialSkill4")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpecialSkill4 = reader.ReadI32As(column.Element)
+					r.SpecialSkill4 = cursor.NextI32()
 				}
 			}
 		case 30:
 			if sheetman.CheckColumn(reader, column, "Character.SpecialSkill5", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.SpecialSkill5")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpecialSkill5 = reader.ReadI32As(column.Element)
+					r.SpecialSkill5 = cursor.NextI32()
 				}
 			}
 		case 31:
 			if sheetman.CheckColumn(reader, column, "Character.PassiveBuff1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.PassiveBuff1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PassiveBuff1 = reader.ReadI32As(column.Element)
+					r.PassiveBuff1 = cursor.NextI32()
 				}
 			}
 		case 32:
 			if sheetman.CheckColumn(reader, column, "Character.PassiveBuff2", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.PassiveBuff2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PassiveBuff2 = reader.ReadI32As(column.Element)
+					r.PassiveBuff2 = cursor.NextI32()
 				}
 			}
 		case 33:
 			if sheetman.CheckColumn(reader, column, "Character.PassiveBuff3", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.PassiveBuff3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PassiveBuff3 = reader.ReadI32As(column.Element)
+					r.PassiveBuff3 = cursor.NextI32()
 				}
 			}
 		case 34:
 			if sheetman.CheckColumn(reader, column, "Character.PrefabPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.PrefabPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PrefabPath = reader.ReadString()
+					r.PrefabPath = cursor.NextString()
 				}
 			}
 		case 35:
 			if sheetman.CheckColumn(reader, column, "Character.SdMaterialPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.SdMaterialPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SdMaterialPath = reader.ReadString()
+					r.SdMaterialPath = cursor.NextString()
 				}
 			}
 		case 36:
 			if sheetman.CheckColumn(reader, column, "Character.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		case 37:
 			if sheetman.CheckColumn(reader, column, "Character.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Character.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

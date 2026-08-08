@@ -85,28 +85,34 @@ class ConditionTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Condition.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Condition.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Condition.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Condition.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Condition.ConditionTargetType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Condition.ConditionTargetType")
                 for record in records:
-                    record.condition_target_type = ConditionTargetType(reader.read_enum())
+                    record.condition_target_type = ConditionTargetType(cursor.next_i32())
             elif column.tag == 4:
                 sheetman.check_column(column, "Condition.ConditionTargetValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Condition.ConditionTargetValue")
                 for record in records:
-                    record.condition_target_value = reader.read_i32_as(column.element)
+                    record.condition_target_value = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "Condition.ConditionType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Condition.ConditionType")
                 for record in records:
-                    record.condition_type = ConditionType(reader.read_enum())
+                    record.condition_type = ConditionType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Condition.ConditionValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Condition.ConditionValue")
                 for record in records:
-                    record.condition_value = reader.read_i32_as(column.element)
+                    record.condition_value = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

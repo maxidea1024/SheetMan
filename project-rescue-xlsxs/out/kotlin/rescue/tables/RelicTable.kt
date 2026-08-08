@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -124,32 +125,37 @@ class RelicTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Relic.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Relic.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Relic.RelicName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicName")
                     for (record in loaded) {
-                        record.relicName = reader.readString()
+                        record.relicName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Relic.InfuluenceStep", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.InfuluenceStep")
                     for (record in loaded) {
-                        record.infuluenceStep = reader.readI32As(column.element)
+                        record.infuluenceStep = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "Relic.RelicType1", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicType1")
                     for (record in loaded) {
-                        record.relicType1 = StatType.of(reader.readEnum())
+                        record.relicType1 = StatType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
@@ -166,8 +172,9 @@ class RelicTable {
                 }
                 8 -> {
                     checkColumn(column, "Relic.RelicType2", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicType2")
                     for (record in loaded) {
-                        record.relicType2 = StatType.of(reader.readEnum())
+                        record.relicType2 = StatType.of(cursor.nextI32())
                     }
                 }
                 9 -> {
@@ -184,8 +191,9 @@ class RelicTable {
                 }
                 11 -> {
                     checkColumn(column, "Relic.RelicType3", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.RelicType3")
                     for (record in loaded) {
-                        record.relicType3 = StatType.of(reader.readEnum())
+                        record.relicType3 = StatType.of(cursor.nextI32())
                     }
                 }
                 12 -> {
@@ -202,14 +210,16 @@ class RelicTable {
                 }
                 14 -> {
                     checkColumn(column, "Relic.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 15 -> {
                     checkColumn(column, "Relic.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Relic.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

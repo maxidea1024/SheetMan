@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -122,32 +123,37 @@ class InfoGrowthTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "InfoGrowth.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "InfoGrowth.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "InfoGrowth.InfoName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.InfoName")
                     for (record in loaded) {
-                        record.infoName = reader.readString()
+                        record.infoName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "InfoGrowth.SheetName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.SheetName")
                     for (record in loaded) {
-                        record.sheetName = reader.readString()
+                        record.sheetName = cursor.nextString()
                     }
                 }
                 5 -> {
                     checkColumn(column, "InfoGrowth.GrowthType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.GrowthType")
                     for (record in loaded) {
-                        record.growthType = GrowthType.of(reader.readEnum())
+                        record.growthType = GrowthType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
@@ -158,50 +164,58 @@ class InfoGrowthTable {
                 }
                 7 -> {
                     checkColumn(column, "InfoGrowth.ResetCostType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.ResetCostType")
                     for (record in loaded) {
-                        record.resetCostType = CurrencyType.of(reader.readEnum())
+                        record.resetCostType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 8 -> {
                     checkColumn(column, "InfoGrowth.ResetCostValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.ResetCostValue")
                     for (record in loaded) {
-                        record.resetCostValue = reader.readI32As(column.element)
+                        record.resetCostValue = cursor.nextI32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "InfoGrowth.MaxStep", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.MaxStep")
                     for (record in loaded) {
-                        record.maxStep = reader.readI32As(column.element)
+                        record.maxStep = cursor.nextI32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "InfoGrowth.MaxLevel", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.MaxLevel")
                     for (record in loaded) {
-                        record.maxLevel = reader.readI32As(column.element)
+                        record.maxLevel = cursor.nextI32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "InfoGrowth.UnlockConditionType", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.UnlockConditionType")
                     for (record in loaded) {
-                        record.unlockConditionType = reader.readString()
+                        record.unlockConditionType = cursor.nextString()
                     }
                 }
                 12 -> {
                     checkColumn(column, "InfoGrowth.UnlockConditionValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.UnlockConditionValue")
                     for (record in loaded) {
-                        record.unlockConditionValue = reader.readI32As(column.element)
+                        record.unlockConditionValue = cursor.nextI32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "InfoGrowth.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 14 -> {
                     checkColumn(column, "InfoGrowth.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "InfoGrowth.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

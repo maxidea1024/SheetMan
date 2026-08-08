@@ -83,16 +83,19 @@ class BGMSoundTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "BGMSound.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BGMSound.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "BGMSound.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BGMSound.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "BGMSound.Path", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BGMSound.Path")
                 for record in records:
-                    record.path = reader.read_string()
+                    record.path = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "BGMSound.Loop", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
@@ -103,8 +106,9 @@ class BGMSoundTable:
                     record.fade_time = reader.read_float()
             elif column.tag == 6:
                 sheetman.check_column(column, "BGMSound.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BGMSound.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

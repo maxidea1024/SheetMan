@@ -93,32 +93,37 @@ impl CostCurveTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "CostCurve.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurve.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "CostCurve.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurve.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "CostCurve.GrowthType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurve.GrowthType")?;
                     for record in records.iter_mut() {
-                        record.growth_type = GrowthType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.growth_type = GrowthType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "CostCurve.CostType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurve.CostType")?;
                     for record in records.iter_mut() {
-                        record.cost_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.cost_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "CostCurve.BaseCostValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CostCurve.BaseCostValue")?;
                     for record in records.iter_mut() {
-                        record.base_cost_value = reader.read_i32_as(column.element)?;
+                        record.base_cost_value = cursor.next_i32()?;
                     }
                 }
                 _ => {

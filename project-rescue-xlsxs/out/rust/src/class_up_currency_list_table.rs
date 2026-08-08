@@ -98,44 +98,51 @@ impl ClassUpCurrencyListTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "ClassUpCurrencyList.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ClassUpCurrencyList.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "ClassUpCurrencyList.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ClassUpCurrencyList.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "ClassUpCurrencyList.Type", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ClassUpCurrencyList.Type")?;
                     for record in records.iter_mut() {
-                        record.type_ = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.type_ = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "ClassUpCurrencyList.TargetId", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ClassUpCurrencyList.TargetId")?;
                     for record in records.iter_mut() {
-                        record.target_id = reader.read_i32_as(column.element)?;
+                        record.target_id = cursor.next_i32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "ClassUpCurrencyList.MaxCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ClassUpCurrencyList.MaxCount")?;
                     for record in records.iter_mut() {
-                        record.max_count = reader.read_i32_as(column.element)?;
+                        record.max_count = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "ClassUpCurrencyList.MaxStack", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I64, sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ClassUpCurrencyList.MaxStack")?;
                     for record in records.iter_mut() {
-                        record.max_stack = reader.read_i64_as(column.element)?;
+                        record.max_stack = cursor.next_i64()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "ClassUpCurrencyList.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "ClassUpCurrencyList.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 8 => {

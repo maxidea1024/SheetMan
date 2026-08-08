@@ -14,6 +14,7 @@ static bool Rescue_ConfigParse(Rescue_ConfigTable_t* table, sm_reader* reader) {
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -71,11 +72,12 @@ static bool Rescue_ConfigParse(Rescue_ConfigTable_t* table, sm_reader* reader) {
     case 1:
       (void)sm_check_column(reader, column, "Config.Index", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Config.Index");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ConfigRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->index);
+        (void)sm_cursor_next_i32(&cursor, &record->index);
       }
 
       break;
@@ -83,11 +85,12 @@ static bool Rescue_ConfigParse(Rescue_ConfigTable_t* table, sm_reader* reader) {
     case 2:
       (void)sm_check_column(reader, column, "Config.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Config.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ConfigRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->id);
+        (void)sm_cursor_next_string(&cursor, &record->id);
       }
 
       break;
@@ -95,11 +98,12 @@ static bool Rescue_ConfigParse(Rescue_ConfigTable_t* table, sm_reader* reader) {
     case 3:
       (void)sm_check_column(reader, column, "Config.Category", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Config.Category");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ConfigRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->category);
+        (void)sm_cursor_next_string(&cursor, &record->category);
       }
 
       break;
@@ -107,11 +111,12 @@ static bool Rescue_ConfigParse(Rescue_ConfigTable_t* table, sm_reader* reader) {
     case 4:
       (void)sm_check_column(reader, column, "Config.DataType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Config.DataType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ConfigRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->data_type);
+        (void)sm_cursor_next_string(&cursor, &record->data_type);
       }
 
       break;
@@ -119,11 +124,12 @@ static bool Rescue_ConfigParse(Rescue_ConfigTable_t* table, sm_reader* reader) {
     case 5:
       (void)sm_check_column(reader, column, "Config.DefaultValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Config.DefaultValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ConfigRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->default_value);
+        (void)sm_cursor_next_string(&cursor, &record->default_value);
       }
 
       break;
@@ -131,11 +137,12 @@ static bool Rescue_ConfigParse(Rescue_ConfigTable_t* table, sm_reader* reader) {
     case 6:
       (void)sm_check_column(reader, column, "Config.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Config.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ConfigRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

@@ -160,68 +160,79 @@ impl CharacterTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Character.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Character.TitleName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.TitleName")?;
                     for record in records.iter_mut() {
-                        record.title_name = reader.read_string()?;
+                        record.title_name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Character.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Character.CharacterType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.CharacterType")?;
                     for record in records.iter_mut() {
-                        record.character_type = CharacterType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.character_type = CharacterType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "Character.Grade", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.Grade")?;
                     for record in records.iter_mut() {
-                        record.grade = GradeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.grade = GradeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "Character.AttributeType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.AttributeType")?;
                     for record in records.iter_mut() {
-                        record.attribute_type = AttributeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.attribute_type = AttributeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "Character.JobType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.JobType")?;
                     for record in records.iter_mut() {
-                        record.job_type = JobType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.job_type = JobType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "Character.Nation", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.Nation")?;
                     for record in records.iter_mut() {
-                        record.nation = NationType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.nation = NationType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "Character.BaseATK", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I64, sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.BaseATK")?;
                     for record in records.iter_mut() {
-                        record.base_atk = reader.read_i64_as(column.element)?;
+                        record.base_atk = cursor.next_i64()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "Character.BaseDEF", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I64, sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.BaseDEF")?;
                     for record in records.iter_mut() {
-                        record.base_def = reader.read_i64_as(column.element)?;
+                        record.base_def = cursor.next_i64()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "Character.BaseMHP", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I64, sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.BaseMHP")?;
                     for record in records.iter_mut() {
-                        record.base_mhp = reader.read_i64_as(column.element)?;
+                        record.base_mhp = cursor.next_i64()?;
                     }
                 }
                 12 => {
@@ -274,110 +285,128 @@ impl CharacterTable {
                 }
                 20 => {
                     sheetman::check_column(column, "Character.BasicAttack1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.BasicAttack1")?;
                     for record in records.iter_mut() {
-                        record.basic_attack1 = reader.read_i32_as(column.element)?;
+                        record.basic_attack1 = cursor.next_i32()?;
                     }
                 }
                 21 => {
                     sheetman::check_column(column, "Character.BasicAttack2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.BasicAttack2")?;
                     for record in records.iter_mut() {
-                        record.basic_attack2 = reader.read_i32_as(column.element)?;
+                        record.basic_attack2 = cursor.next_i32()?;
                     }
                 }
                 22 => {
                     sheetman::check_column(column, "Character.BasicAttack3", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.BasicAttack3")?;
                     for record in records.iter_mut() {
-                        record.basic_attack3 = reader.read_i32_as(column.element)?;
+                        record.basic_attack3 = cursor.next_i32()?;
                     }
                 }
                 23 => {
                     sheetman::check_column(column, "Character.ActiveSkill1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.ActiveSkill1")?;
                     for record in records.iter_mut() {
-                        record.active_skill1 = reader.read_i32_as(column.element)?;
+                        record.active_skill1 = cursor.next_i32()?;
                     }
                 }
                 24 => {
                     sheetman::check_column(column, "Character.ActiveSkill2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.ActiveSkill2")?;
                     for record in records.iter_mut() {
-                        record.active_skill2 = reader.read_i32_as(column.element)?;
+                        record.active_skill2 = cursor.next_i32()?;
                     }
                 }
                 25 => {
                     sheetman::check_column(column, "Character.ActiveSkill3", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.ActiveSkill3")?;
                     for record in records.iter_mut() {
-                        record.active_skill3 = reader.read_i32_as(column.element)?;
+                        record.active_skill3 = cursor.next_i32()?;
                     }
                 }
                 26 => {
                     sheetman::check_column(column, "Character.SpecialSkill1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.SpecialSkill1")?;
                     for record in records.iter_mut() {
-                        record.special_skill1 = reader.read_i32_as(column.element)?;
+                        record.special_skill1 = cursor.next_i32()?;
                     }
                 }
                 27 => {
                     sheetman::check_column(column, "Character.SpecialSkill2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.SpecialSkill2")?;
                     for record in records.iter_mut() {
-                        record.special_skill2 = reader.read_i32_as(column.element)?;
+                        record.special_skill2 = cursor.next_i32()?;
                     }
                 }
                 28 => {
                     sheetman::check_column(column, "Character.SpecialSkill3", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.SpecialSkill3")?;
                     for record in records.iter_mut() {
-                        record.special_skill3 = reader.read_i32_as(column.element)?;
+                        record.special_skill3 = cursor.next_i32()?;
                     }
                 }
                 29 => {
                     sheetman::check_column(column, "Character.SpecialSkill4", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.SpecialSkill4")?;
                     for record in records.iter_mut() {
-                        record.special_skill4 = reader.read_i32_as(column.element)?;
+                        record.special_skill4 = cursor.next_i32()?;
                     }
                 }
                 30 => {
                     sheetman::check_column(column, "Character.SpecialSkill5", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.SpecialSkill5")?;
                     for record in records.iter_mut() {
-                        record.special_skill5 = reader.read_i32_as(column.element)?;
+                        record.special_skill5 = cursor.next_i32()?;
                     }
                 }
                 31 => {
                     sheetman::check_column(column, "Character.PassiveBuff1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.PassiveBuff1")?;
                     for record in records.iter_mut() {
-                        record.passive_buff1 = reader.read_i32_as(column.element)?;
+                        record.passive_buff1 = cursor.next_i32()?;
                     }
                 }
                 32 => {
                     sheetman::check_column(column, "Character.PassiveBuff2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.PassiveBuff2")?;
                     for record in records.iter_mut() {
-                        record.passive_buff2 = reader.read_i32_as(column.element)?;
+                        record.passive_buff2 = cursor.next_i32()?;
                     }
                 }
                 33 => {
                     sheetman::check_column(column, "Character.PassiveBuff3", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.PassiveBuff3")?;
                     for record in records.iter_mut() {
-                        record.passive_buff3 = reader.read_i32_as(column.element)?;
+                        record.passive_buff3 = cursor.next_i32()?;
                     }
                 }
                 34 => {
                     sheetman::check_column(column, "Character.PrefabPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.PrefabPath")?;
                     for record in records.iter_mut() {
-                        record.prefab_path = reader.read_string()?;
+                        record.prefab_path = cursor.next_string()?;
                     }
                 }
                 35 => {
                     sheetman::check_column(column, "Character.SdMaterialPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.SdMaterialPath")?;
                     for record in records.iter_mut() {
-                        record.sd_material_path = reader.read_string()?;
+                        record.sd_material_path = cursor.next_string()?;
                     }
                 }
                 36 => {
                     sheetman::check_column(column, "Character.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 37 => {
                     sheetman::check_column(column, "Character.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Character.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 _ => {

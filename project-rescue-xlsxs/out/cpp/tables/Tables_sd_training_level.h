@@ -102,41 +102,46 @@ class SDTrainingLevelTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "SDTrainingLevel.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "SDTrainingLevel.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "SDTrainingLevel.LevelName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.LevelName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.level_name);
+            record.level_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "SDTrainingLevel.CurrencyValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.CurrencyValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.currency_value);
+            record.currency_value = cursor.next_i32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "SDTrainingLevel.CurrencyResult", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.CurrencyResult");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.currency_result);
+            record.currency_result = cursor.next_i32();
           }
           break;
         }
@@ -174,9 +179,10 @@ class SDTrainingLevelTable {
         }
         case 10: {
           sheetman::check_column(column, "SDTrainingLevel.CommonUnlockStageID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDTrainingLevel.CommonUnlockStageID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.common_unlock_stage_id);
+            record.common_unlock_stage_id = cursor.next_i32();
           }
           break;
         }

@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/GradeType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -136,50 +137,57 @@ final class EquipItemGradeTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'EquipItemGrade.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemGrade.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'EquipItemGrade.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemGrade.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'EquipItemGrade.NameKR', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemGrade.NameKR');
                     foreach ($records as $record) {
-                        $record->nameKR = $reader->readString();
+                        $record->nameKR = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'EquipItemGrade.Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemGrade.Type');
                     foreach ($records as $record) {
-                        $record->type = JobType::tryFrom($reader->readEnum()) ?? JobType::None;
+                        $record->type = JobType::tryFrom($cursor->nextI32()) ?? JobType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'EquipItemGrade.Grade', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemGrade.Grade');
                     foreach ($records as $record) {
-                        $record->grade = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
+                        $record->grade = GradeType::tryFrom($cursor->nextI32()) ?? GradeType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'EquipItemGrade.MaterialType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemGrade.MaterialType');
                     foreach ($records as $record) {
-                        $record->materialType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->materialType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'EquipItemGrade.MaterialValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'EquipItemGrade.MaterialValue');
                     foreach ($records as $record) {
-                        $record->materialValue = $reader->readI32As($column['element']);
+                        $record->materialValue = $cursor->nextI32();
                     }
                     break;
 

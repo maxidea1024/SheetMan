@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
   "run": {
-    "generatedAt": "2026-08-08T10:19:01.0191436+09:00",
+    "generatedAt": "2026-08-08T14:38:12.3196326+09:00",
     "toolVersion": "0.0.0.0",
     "recipe": "showcase.json",
     "requestedTargetSide": "cs",
     "commit": {
-      "hash": "ef49beed379fa4b0316e6a04992dcf4c131723b4",
-      "shortHash": "ef49beed379f",
+      "hash": "476dc2ad325aecaa5be54026055ece31e988a476",
+      "shortHash": "476dc2ad325a",
       "branch": "main",
       "authorName": null,
       "authorEmail": null,
-      "committedAt": "2026-08-08T09:57:21.0000000+09:00",
-      "subject": "Rename LiteBinary to Scb across the converter, runtimes and docs",
+      "committedAt": "2026-08-08T10:19:12.0000000+09:00",
+      "subject": "Add column encodings to the format (v102): writer selection and the C# cursor",
       "origin": "git",
       "dirty": true,
       "attributable": false

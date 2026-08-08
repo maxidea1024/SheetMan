@@ -87,40 +87,49 @@ class ShopInfoTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "ShopInfo.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ShopInfo.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "ShopInfo.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ShopInfo.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "ShopInfo.InfoName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ShopInfo.InfoName")
                 for record in records:
-                    record.info_name = reader.read_string()
+                    record.info_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "ShopInfo.ShopType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ShopInfo.ShopType")
                 for record in records:
-                    record.shop_type = ShopType(reader.read_enum())
+                    record.shop_type = ShopType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "ShopInfo.ConditionID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ShopInfo.ConditionID")
                 for record in records:
-                    record.condition_id = reader.read_i32_as(column.element)
+                    record.condition_id = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "ShopInfo.SheetName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ShopInfo.SheetName")
                 for record in records:
-                    record.sheet_name = reader.read_string()
+                    record.sheet_name = cursor.next_string()
             elif column.tag == 7:
                 sheetman.check_column(column, "ShopInfo.Priority", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ShopInfo.Priority")
                 for record in records:
-                    record.priority = reader.read_i32_as(column.element)
+                    record.priority = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "ShopInfo.UIPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ShopInfo.UIPath")
                 for record in records:
-                    record.ui_path = reader.read_string()
+                    record.ui_path = cursor.next_string()
             elif column.tag == 9:
                 sheetman.check_column(column, "ShopInfo.ListPrefabPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ShopInfo.ListPrefabPath")
                 for record in records:
-                    record.list_prefab_path = reader.read_string()
+                    record.list_prefab_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

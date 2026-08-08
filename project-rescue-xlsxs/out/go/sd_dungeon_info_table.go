@@ -112,93 +112,106 @@ func (t *SDDungeonInfoTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.NameKR", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.NameKR")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NameKR = reader.ReadString()
+					r.NameKR = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.TotalCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.TotalCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TotalCount = reader.ReadI32As(column.Element)
+					r.TotalCount = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.TrapCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.TrapCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TrapCount = reader.ReadI32As(column.Element)
+					r.TrapCount = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.ActionCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.ActionCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ActionCount = reader.ReadI32As(column.Element)
+					r.ActionCount = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.MatchCost", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.MatchCost")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MatchCost = reader.ReadI32As(column.Element)
+					r.MatchCost = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.MismatchCost", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.MismatchCost")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MismatchCost = reader.ReadI32As(column.Element)
+					r.MismatchCost = cursor.NextI32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.TrapCost", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.TrapCost")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TrapCost = reader.ReadI32As(column.Element)
+					r.TrapCost = cursor.NextI32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.ViewTime", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.ViewTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ViewTime = reader.ReadI32As(column.Element)
+					r.ViewTime = cursor.NextI32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.Time", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.Time")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Time = reader.ReadI32As(column.Element)
+					r.Time = cursor.NextI32()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.ADCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.ADCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ADCount = reader.ReadI32As(column.Element)
+					r.ADCount = cursor.NextI32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "SDDungeonInfo.DailyFreeCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonInfo.DailyFreeCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DailyFreeCount = reader.ReadI32As(column.Element)
+					r.DailyFreeCount = cursor.NextI32()
 				}
 			}
 		default:

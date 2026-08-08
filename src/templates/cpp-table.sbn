@@ -79,6 +79,9 @@ class {{ table.table_name }} {
 {{~ for field in table.fields ~}}
         case {{ field.tag }}: {
           {{ field.column_check }}
+{{~ if field.cursor_open != '' ~}}
+          {{ field.cursor_open }}
+{{~ end ~}}
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
 {{~ if field.kind == "var_array" ~}}
@@ -98,8 +101,6 @@ class {{ table.table_name }} {
             for (std::size_t j = 0; j < {{ field.element_count }}; ++j) {
               {{ field.read_element }};
             }
-{{~ else if field.kind == "scalar_ref" ~}}
-            reader.read(record.{{ field.name }}_index);
 {{~ else ~}}
             {{ field.read_scalar }};
 {{~ end ~}}

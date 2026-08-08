@@ -87,40 +87,49 @@ class StatGrowthTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "StatGrowth.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StatGrowth.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "StatGrowth.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StatGrowth.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "StatGrowth.StageName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StatGrowth.StageName")
                 for record in records:
-                    record.stage_name = reader.read_string()
+                    record.stage_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "StatGrowth.StatType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StatGrowth.StatType")
                 for record in records:
-                    record.stat_type = StatType(reader.read_enum())
+                    record.stat_type = StatType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "StatGrowth.InfuluenceStep", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StatGrowth.InfuluenceStep")
                 for record in records:
-                    record.infuluence_step = reader.read_i32_as(column.element)
+                    record.infuluence_step = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "StatGrowth.Growth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StatGrowth.Growth")
                 for record in records:
-                    record.growth = reader.read_i32_as(column.element)
+                    record.growth = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "StatGrowth.GrowthValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StatGrowth.GrowthValue")
                 for record in records:
-                    record.growth_value = reader.read_i32_as(column.element)
+                    record.growth_value = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "StatGrowth.GrowthReselt", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StatGrowth.GrowthReselt")
                 for record in records:
-                    record.growth_reselt = reader.read_i32_as(column.element)
+                    record.growth_reselt = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "StatGrowth.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StatGrowth.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

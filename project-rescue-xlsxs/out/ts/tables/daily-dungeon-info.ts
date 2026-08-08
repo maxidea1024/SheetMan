@@ -250,6 +250,7 @@ export class DailyDungeonInfoTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -263,65 +264,74 @@ export class DailyDungeonInfoTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'DailyDungeonInfo.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'DailyDungeonInfo.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'DailyDungeonInfo.DungeonName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.DungeonName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dungeonName = reader.readString()
+            record._dungeonName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'DailyDungeonInfo.DungeonType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.DungeonType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dungeonType = reader.readEnum() as DungeonType
+            record._dungeonType = cursor.nextI32() as DungeonType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'DailyDungeonInfo.Priority', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.Priority')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._priority = reader.readI32As(column.element)
+            record._priority = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'DailyDungeonInfo.CycleType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.CycleType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._cycleType = reader.readEnum() as CycleType
+            record._cycleType = cursor.nextI32() as CycleType
           }
           break
         case 7:
           sheetman.checkColumn(column, 'DailyDungeonInfo.EnterCondition', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.EnterCondition')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._enterCondition = reader.readI32As(column.element)
+            record._enterCondition = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'DailyDungeonInfo.EnterCurrencyType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.EnterCurrencyType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._enterCurrencyType = reader.readEnum() as CurrencyType
+            record._enterCurrencyType = cursor.nextI32() as CurrencyType
           }
           break
         case 9:
           sheetman.checkColumn(column, 'DailyDungeonInfo.DungeonBuffID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.DungeonBuffID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dungeonBuffID = reader.readI32As(column.element)
+            record._dungeonBuffID = cursor.nextI32()
           }
           break
         case 10:
@@ -333,51 +343,58 @@ export class DailyDungeonInfoTable {
           break
         case 11:
           sheetman.checkColumn(column, 'DailyDungeonInfo.EnterCurrencyValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.EnterCurrencyValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._enterCurrencyValue = reader.readI32As(column.element)
+            record._enterCurrencyValue = cursor.nextI32()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'DailyDungeonInfo.FreeEnterCurrencyType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.FreeEnterCurrencyType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._freeEnterCurrencyType = reader.readEnum() as CurrencyType
+            record._freeEnterCurrencyType = cursor.nextI32() as CurrencyType
           }
           break
         case 13:
           sheetman.checkColumn(column, 'DailyDungeonInfo.ADEnterCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.ADEnterCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._aDEnterCount = reader.readI32As(column.element)
+            record._aDEnterCount = cursor.nextI32()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'DailyDungeonInfo.EnterCurrencyCountMax', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.EnterCurrencyCountMax')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._enterCurrencyCountMax = reader.readI32As(column.element)
+            record._enterCurrencyCountMax = cursor.nextI32()
           }
           break
         case 15:
           sheetman.checkColumn(column, 'DailyDungeonInfo.DungeonImagePath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.DungeonImagePath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dungeonImagePath = reader.readString()
+            record._dungeonImagePath = cursor.nextString()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'DailyDungeonInfo.DungeonBGMID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.DungeonBGMID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dungeonBGMID = reader.readI32As(column.element)
+            record._dungeonBGMID = cursor.nextI32()
           }
           break
         case 17:
           sheetman.checkColumn(column, 'DailyDungeonInfo.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'DailyDungeonInfo.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         default:

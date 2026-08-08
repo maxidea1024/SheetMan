@@ -96,6 +96,7 @@ class EquipItemClassTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <EquipItemClassRecord>[];
@@ -111,50 +112,58 @@ class EquipItemClassTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'EquipItemClass.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'EquipItemClass.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'EquipItemClass.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'EquipItemClass.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'EquipItemClass.NameKR', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'EquipItemClass.NameKR');
           for (final record in loaded) {
-            record.nameKR = reader.readString();
+            record.nameKR = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'EquipItemClass.Type', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'EquipItemClass.Type');
           for (final record in loaded) {
-            record.type = JobType.of(reader.readEnum());
+            record.type = JobType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'EquipItemClass.Grade', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'EquipItemClass.Grade');
           for (final record in loaded) {
-            record.grade = GradeType.of(reader.readEnum());
+            record.grade = GradeType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'EquipItemClass.TranscendStep', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'EquipItemClass.TranscendStep');
           for (final record in loaded) {
-            record.transcendStep = reader.readI32As(column.element);
+            record.transcendStep = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'EquipItemClass.MaterialType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'EquipItemClass.MaterialType');
           for (final record in loaded) {
-            record.materialType = CurrencyType.of(reader.readEnum());
+            record.materialType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 8:
           checkColumn(column, 'EquipItemClass.MaterialValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'EquipItemClass.MaterialValue');
           for (final record in loaded) {
-            record.materialValue = reader.readI32As(column.element);
+            record.materialValue = cursor.nextI32();
           }
           break;
         case 9:

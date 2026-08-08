@@ -14,6 +14,7 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -61,11 +62,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 1:
       (void)sm_check_column(reader, column, "Stage.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -73,11 +75,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 2:
       (void)sm_check_column(reader, column, "Stage.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -85,11 +88,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 3:
       (void)sm_check_column(reader, column, "Stage.StageName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.StageName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->stage_name);
+        (void)sm_cursor_next_string(&cursor, &record->stage_name);
       }
 
       break;
@@ -97,11 +101,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 4:
       (void)sm_check_column(reader, column, "Stage.AssetDataPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.AssetDataPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->asset_data_path);
+        (void)sm_cursor_next_string(&cursor, &record->asset_data_path);
       }
 
       break;
@@ -137,11 +142,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 6:
       (void)sm_check_column(reader, column, "Stage.SpawnPointCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.SpawnPointCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->spawn_point_count);
+        (void)sm_cursor_next_i32(&cursor, &record->spawn_point_count);
       }
 
       break;
@@ -149,11 +155,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 7:
       (void)sm_check_column(reader, column, "Stage.SpawnMaxCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.SpawnMaxCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->spawn_max_count);
+        (void)sm_cursor_next_i32(&cursor, &record->spawn_max_count);
       }
 
       break;
@@ -173,11 +180,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 9:
       (void)sm_check_column(reader, column, "Stage.StageClearCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.StageClearCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->stage_clear_count);
+        (void)sm_cursor_next_i32(&cursor, &record->stage_clear_count);
       }
 
       break;
@@ -285,11 +293,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 17:
       (void)sm_check_column(reader, column, "Stage.StageDropListID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.StageDropListID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->stage_drop_list_id);
+        (void)sm_cursor_next_i32(&cursor, &record->stage_drop_list_id);
       }
 
       break;
@@ -297,11 +306,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 18:
       (void)sm_check_column(reader, column, "Stage.StageBGMID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.StageBGMID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->stage_bgmid);
+        (void)sm_cursor_next_i32(&cursor, &record->stage_bgmid);
       }
 
       break;
@@ -309,11 +319,12 @@ static bool Rescue_StageParse(Rescue_StageTable_t* table, sm_reader* reader) {
     case 19:
       (void)sm_check_column(reader, column, "Stage.BossStageBGMID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Stage.BossStageBGMID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StageRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->boss_stage_bgmid);
+        (void)sm_cursor_next_i32(&cursor, &record->boss_stage_bgmid);
       }
 
       break;

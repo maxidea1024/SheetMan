@@ -68,6 +68,7 @@ class ConditionTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <ConditionRecord>[];
@@ -83,38 +84,44 @@ class ConditionTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Condition.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Condition.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Condition.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Condition.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Condition.ConditionTargetType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Condition.ConditionTargetType');
           for (final record in loaded) {
-            record.conditionTargetType = ConditionTargetType.of(reader.readEnum());
+            record.conditionTargetType = ConditionTargetType.of(cursor.nextI32());
           }
           break;
         case 4:
           checkColumn(column, 'Condition.ConditionTargetValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Condition.ConditionTargetValue');
           for (final record in loaded) {
-            record.conditionTargetValue = reader.readI32As(column.element);
+            record.conditionTargetValue = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'Condition.ConditionType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Condition.ConditionType');
           for (final record in loaded) {
-            record.conditionType = ConditionType.of(reader.readEnum());
+            record.conditionType = ConditionType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'Condition.ConditionValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Condition.ConditionValue');
           for (final record in loaded) {
-            record.conditionValue = reader.readI32As(column.element);
+            record.conditionValue = cursor.nextI32();
           }
           break;
         default:

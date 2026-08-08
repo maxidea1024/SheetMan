@@ -16,6 +16,7 @@ require_once __DIR__ . '/../enums/ItemType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -124,36 +125,41 @@ final class MaterialTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Material.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Material.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Material.ItemName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.ItemName');
                     foreach ($records as $record) {
-                        $record->itemName = $reader->readString();
+                        $record->itemName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Material.ItemType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.ItemType');
                     foreach ($records as $record) {
-                        $record->itemType = ItemType::tryFrom($reader->readEnum()) ?? ItemType::None;
+                        $record->itemType = ItemType::tryFrom($cursor->nextI32()) ?? ItemType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Material.Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.Type');
                     foreach ($records as $record) {
-                        $record->type = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->type = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
@@ -166,43 +172,49 @@ final class MaterialTable
 
                 case 7:
                     ScbReader::checkColumn($column, 'Material.MaxStack', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I64, ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.MaxStack');
                     foreach ($records as $record) {
-                        $record->maxStack = $reader->readI64As($column['element']);
+                        $record->maxStack = $cursor->nextI64();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'Material.Cooltime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.Cooltime');
                     foreach ($records as $record) {
-                        $record->cooltime = $reader->readI32As($column['element']);
+                        $record->cooltime = $cursor->nextI32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'Material.Duration', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.Duration');
                     foreach ($records as $record) {
-                        $record->duration = $reader->readI32As($column['element']);
+                        $record->duration = $cursor->nextI32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'Material.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'Material.DropPrefabPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.DropPrefabPath');
                     foreach ($records as $record) {
-                        $record->dropPrefabPath = $reader->readString();
+                        $record->dropPrefabPath = $cursor->nextString();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'Material.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Material.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

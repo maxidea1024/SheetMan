@@ -99,41 +99,46 @@ class AttributeTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Attribute.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Attribute.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Attribute.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Attribute.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Attribute.AttributeName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Attribute.AttributeName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.attribute_name);
+            record.attribute_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Attribute.AttributeType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Attribute.AttributeType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.attribute_type);
+            record.attribute_type = static_cast<AttributeType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "Attribute.TargetAttributeType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Attribute.TargetAttributeType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.target_attribute_type);
+            record.target_attribute_type = static_cast<AttributeType>(cursor.next_i32());
           }
           break;
         }
@@ -155,9 +160,10 @@ class AttributeTable {
         }
         case 8: {
           sheetman::check_column(column, "Attribute.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Attribute.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }

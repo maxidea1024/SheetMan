@@ -110,58 +110,66 @@ func (t *SDTrainingInfoTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.TrainingName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.TrainingName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TrainingName = reader.ReadString()
+					r.TrainingName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.AttributeType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.AttributeType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AttributeType = AttributeType(reader.ReadEnum())
+					r.AttributeType = AttributeType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.StatType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.StatType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StatType = StatType(reader.ReadEnum())
+					r.StatType = StatType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.UnlockCondition", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.UnlockCondition")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.UnlockCondition = reader.ReadI32As(column.Element)
+					r.UnlockCondition = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.LevelUpCondition", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.LevelUpCondition")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.LevelUpCondition = reader.ReadI32As(column.Element)
+					r.LevelUpCondition = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.MaxLevel", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.MaxLevel")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxLevel = reader.ReadI32As(column.Element)
+					r.MaxLevel = cursor.NextI32()
 				}
 			}
 		case 9:
@@ -173,23 +181,26 @@ func (t *SDTrainingInfoTable) Read(filename string) error {
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.LvResetCurrencyType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.LvResetCurrencyType = CurrencyType(reader.ReadEnum())
+					r.LvResetCurrencyType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.LvResetCurrencyValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.LvResetCurrencyValue = reader.ReadI32As(column.Element)
+					r.LvResetCurrencyValue = cursor.NextI32()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "SDTrainingInfo.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDTrainingInfo.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

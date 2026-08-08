@@ -84,28 +84,33 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDTrainingLevel.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDTrainingLevel.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDTrainingLevel.LevelName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.LevelName')
           records.each do |record|
-            record.level_name = reader.read_string
+            record.level_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDTrainingLevel.CurrencyValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.CurrencyValue')
           records.each do |record|
-            record.currency_value = reader.read_i32_as(column.element)
+            record.currency_value = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDTrainingLevel.CurrencyResult', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.CurrencyResult')
           records.each do |record|
-            record.currency_result = reader.read_i32_as(column.element)
+            record.currency_result = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDTrainingLevel.MHPGrowth', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -129,8 +134,9 @@ module Rescue
           end
         when 10
           Sheetman.check_column(column, 'SDTrainingLevel.CommonUnlockStageID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingLevel.CommonUnlockStageID')
           records.each do |record|
-            record.common_unlock_stage_id = reader.read_i32_as(column.element)
+            record.common_unlock_stage_id = cursor.next_i32
           end
         else
           # A column added after this code was generated.

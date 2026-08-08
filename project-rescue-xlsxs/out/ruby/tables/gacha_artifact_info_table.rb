@@ -97,58 +97,69 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'GachaArtifactInfo.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'GachaArtifactInfo.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'GachaArtifactInfo.GachaType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.GachaType')
           records.each do |record|
-            record.gacha_type = reader.read_enum
+            record.gacha_type = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'GachaArtifactInfo.Priority', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.Priority')
           records.each do |record|
-            record.priority = reader.read_i32_as(column.element)
+            record.priority = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'GachaArtifactInfo.ConditionID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.ConditionID')
           records.each do |record|
-            record.condition_id = reader.read_i32_as(column.element)
+            record.condition_id = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'GachaArtifactInfo.RateId', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.RateId')
           records.each do |record|
-            record.rate_id = reader.read_i32_as(column.element)
+            record.rate_id = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'GachaArtifactInfo.TriggerCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.TriggerCount')
           records.each do |record|
-            record.trigger_count = reader.read_i32_as(column.element)
+            record.trigger_count = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'GachaArtifactInfo.TriggerRateId', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.TriggerRateId')
           records.each do |record|
-            record.trigger_rate_id = reader.read_i32_as(column.element)
+            record.trigger_rate_id = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'GachaArtifactInfo.EndCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.EndCount')
           records.each do |record|
-            record.end_count = reader.read_i32_as(column.element)
+            record.end_count = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'GachaArtifactInfo.EndRateId', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.EndRateId')
           records.each do |record|
-            record.end_rate_id = reader.read_i32_as(column.element)
+            record.end_rate_id = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'GachaArtifactInfo.EndCharacterId', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.EndCharacterId')
           records.each do |record|
-            record.end_character_id = reader.read_i32_as(column.element)
+            record.end_character_id = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'GachaArtifactInfo.EnableReset', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -162,13 +173,15 @@ module Rescue
           end
         when 14
           Sheetman.check_column(column, 'GachaArtifactInfo.WishListConditionID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.WishListConditionID')
           records.each do |record|
-            record.wish_list_condition_id = reader.read_i32_as(column.element)
+            record.wish_list_condition_id = cursor.next_i32
           end
         when 15
           Sheetman.check_column(column, 'GachaArtifactInfo.WishListMaxValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.WishListMaxValue')
           records.each do |record|
-            record.wish_list_max_value = reader.read_i32_as(column.element)
+            record.wish_list_max_value = cursor.next_i32
           end
         when 16
           Sheetman.check_column(column, 'GachaArtifactInfo.IsSingle', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -182,28 +195,33 @@ module Rescue
           end
         when 18
           Sheetman.check_column(column, 'GachaArtifactInfo.CurrencyType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.CurrencyType1')
           records.each do |record|
-            record.currency_type1 = reader.read_enum
+            record.currency_type1 = cursor.next_i32
           end
         when 19
           Sheetman.check_column(column, 'GachaArtifactInfo.SingleCost1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.SingleCost1')
           records.each do |record|
-            record.single_cost1 = reader.read_i32_as(column.element)
+            record.single_cost1 = cursor.next_i32
           end
         when 20
           Sheetman.check_column(column, 'GachaArtifactInfo.CurrencyType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.CurrencyType2')
           records.each do |record|
-            record.currency_type2 = reader.read_enum
+            record.currency_type2 = cursor.next_i32
           end
         when 21
           Sheetman.check_column(column, 'GachaArtifactInfo.SingleCost2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.SingleCost2')
           records.each do |record|
-            record.single_cost2 = reader.read_i32_as(column.element)
+            record.single_cost2 = cursor.next_i32
           end
         when 22
           Sheetman.check_column(column, 'GachaArtifactInfo.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactInfo.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         when 23
           Sheetman.check_column(column, 'GachaArtifactInfo.EnableSkip', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])

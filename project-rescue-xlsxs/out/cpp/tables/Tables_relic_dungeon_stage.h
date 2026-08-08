@@ -123,49 +123,55 @@ class RelicDungeonStageTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "RelicDungeonStage.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "RelicDungeonStage.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "RelicDungeonStage.StageName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.StageName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.stage_name);
+            record.stage_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "RelicDungeonStage.DungeonType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.DungeonType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.dungeon_type);
+            record.dungeon_type = static_cast<DungeonType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "RelicDungeonStage.DungeonFloor", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.DungeonFloor");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.dungeon_floor);
+            record.dungeon_floor = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "RelicDungeonStage.TimeLimit", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.TimeLimit");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.time_limit);
+            record.time_limit = cursor.next_i32();
           }
           break;
         }
@@ -195,17 +201,19 @@ class RelicDungeonStageTable {
         }
         case 9: {
           sheetman::check_column(column, "RelicDungeonStage.SpawnPointCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.SpawnPointCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.spawn_point_count);
+            record.spawn_point_count = cursor.next_i32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "RelicDungeonStage.SpawnMaxCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.SpawnMaxCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.spawn_max_count);
+            record.spawn_max_count = cursor.next_i32();
           }
           break;
         }
@@ -219,25 +227,28 @@ class RelicDungeonStageTable {
         }
         case 12: {
           sheetman::check_column(column, "RelicDungeonStage.StageClearCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.StageClearCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.stage_clear_count);
+            record.stage_clear_count = cursor.next_i32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "RelicDungeonStage.RecommendPower", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.RecommendPower");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.recommend_power);
+            record.recommend_power = cursor.next_string();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "RelicDungeonStage.RewardID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.RewardID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.reward_id);
+            record.reward_id = cursor.next_i32();
           }
           break;
         }
@@ -267,25 +278,28 @@ class RelicDungeonStageTable {
         }
         case 18: {
           sheetman::check_column(column, "RelicDungeonStage.DungeonImagePath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.DungeonImagePath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.dungeon_image_path);
+            record.dungeon_image_path = cursor.next_string();
           }
           break;
         }
         case 19: {
           sheetman::check_column(column, "RelicDungeonStage.MonsterImagePath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.MonsterImagePath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.monster_image_path);
+            record.monster_image_path = cursor.next_string();
           }
           break;
         }
         case 20: {
           sheetman::check_column(column, "RelicDungeonStage.AssetDataPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "RelicDungeonStage.AssetDataPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.asset_data_path);
+            record.asset_data_path = cursor.next_string();
           }
           break;
         }

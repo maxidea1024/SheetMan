@@ -111,58 +111,69 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Character.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Character.TitleName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.TitleName')
           records.each do |record|
-            record.title_name = reader.read_string
+            record.title_name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Character.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Character.CharacterType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.CharacterType')
           records.each do |record|
-            record.character_type = reader.read_enum
+            record.character_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Character.Grade', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.Grade')
           records.each do |record|
-            record.grade = reader.read_enum
+            record.grade = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'Character.AttributeType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.AttributeType')
           records.each do |record|
-            record.attribute_type = reader.read_enum
+            record.attribute_type = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'Character.JobType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.JobType')
           records.each do |record|
-            record.job_type = reader.read_enum
+            record.job_type = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'Character.Nation', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.Nation')
           records.each do |record|
-            record.nation = reader.read_enum
+            record.nation = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'Character.BaseATK', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.BaseATK')
           records.each do |record|
-            record.base_atk = reader.read_i64_as(column.element)
+            record.base_atk = cursor.next_i64
           end
         when 10
           Sheetman.check_column(column, 'Character.BaseDEF', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.BaseDEF')
           records.each do |record|
-            record.base_def = reader.read_i64_as(column.element)
+            record.base_def = cursor.next_i64
           end
         when 11
           Sheetman.check_column(column, 'Character.BaseMHP', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.BaseMHP')
           records.each do |record|
-            record.base_mhp = reader.read_i64_as(column.element)
+            record.base_mhp = cursor.next_i64
           end
         when 12
           Sheetman.check_column(column, 'Character.MoveSpeed', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -206,93 +217,111 @@ module Rescue
           end
         when 20
           Sheetman.check_column(column, 'Character.BasicAttack1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.BasicAttack1')
           records.each do |record|
-            record.basic_attack1 = reader.read_i32_as(column.element)
+            record.basic_attack1 = cursor.next_i32
           end
         when 21
           Sheetman.check_column(column, 'Character.BasicAttack2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.BasicAttack2')
           records.each do |record|
-            record.basic_attack2 = reader.read_i32_as(column.element)
+            record.basic_attack2 = cursor.next_i32
           end
         when 22
           Sheetman.check_column(column, 'Character.BasicAttack3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.BasicAttack3')
           records.each do |record|
-            record.basic_attack3 = reader.read_i32_as(column.element)
+            record.basic_attack3 = cursor.next_i32
           end
         when 23
           Sheetman.check_column(column, 'Character.ActiveSkill1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.ActiveSkill1')
           records.each do |record|
-            record.active_skill1 = reader.read_i32_as(column.element)
+            record.active_skill1 = cursor.next_i32
           end
         when 24
           Sheetman.check_column(column, 'Character.ActiveSkill2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.ActiveSkill2')
           records.each do |record|
-            record.active_skill2 = reader.read_i32_as(column.element)
+            record.active_skill2 = cursor.next_i32
           end
         when 25
           Sheetman.check_column(column, 'Character.ActiveSkill3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.ActiveSkill3')
           records.each do |record|
-            record.active_skill3 = reader.read_i32_as(column.element)
+            record.active_skill3 = cursor.next_i32
           end
         when 26
           Sheetman.check_column(column, 'Character.SpecialSkill1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.SpecialSkill1')
           records.each do |record|
-            record.special_skill1 = reader.read_i32_as(column.element)
+            record.special_skill1 = cursor.next_i32
           end
         when 27
           Sheetman.check_column(column, 'Character.SpecialSkill2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.SpecialSkill2')
           records.each do |record|
-            record.special_skill2 = reader.read_i32_as(column.element)
+            record.special_skill2 = cursor.next_i32
           end
         when 28
           Sheetman.check_column(column, 'Character.SpecialSkill3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.SpecialSkill3')
           records.each do |record|
-            record.special_skill3 = reader.read_i32_as(column.element)
+            record.special_skill3 = cursor.next_i32
           end
         when 29
           Sheetman.check_column(column, 'Character.SpecialSkill4', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.SpecialSkill4')
           records.each do |record|
-            record.special_skill4 = reader.read_i32_as(column.element)
+            record.special_skill4 = cursor.next_i32
           end
         when 30
           Sheetman.check_column(column, 'Character.SpecialSkill5', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.SpecialSkill5')
           records.each do |record|
-            record.special_skill5 = reader.read_i32_as(column.element)
+            record.special_skill5 = cursor.next_i32
           end
         when 31
           Sheetman.check_column(column, 'Character.PassiveBuff1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.PassiveBuff1')
           records.each do |record|
-            record.passive_buff1 = reader.read_i32_as(column.element)
+            record.passive_buff1 = cursor.next_i32
           end
         when 32
           Sheetman.check_column(column, 'Character.PassiveBuff2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.PassiveBuff2')
           records.each do |record|
-            record.passive_buff2 = reader.read_i32_as(column.element)
+            record.passive_buff2 = cursor.next_i32
           end
         when 33
           Sheetman.check_column(column, 'Character.PassiveBuff3', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.PassiveBuff3')
           records.each do |record|
-            record.passive_buff3 = reader.read_i32_as(column.element)
+            record.passive_buff3 = cursor.next_i32
           end
         when 34
           Sheetman.check_column(column, 'Character.PrefabPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.PrefabPath')
           records.each do |record|
-            record.prefab_path = reader.read_string
+            record.prefab_path = cursor.next_string
           end
         when 35
           Sheetman.check_column(column, 'Character.SdMaterialPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.SdMaterialPath')
           records.each do |record|
-            record.sd_material_path = reader.read_string
+            record.sd_material_path = cursor.next_string
           end
         when 36
           Sheetman.check_column(column, 'Character.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         when 37
           Sheetman.check_column(column, 'Character.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Character.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

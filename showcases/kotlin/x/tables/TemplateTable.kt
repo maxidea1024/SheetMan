@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -136,20 +137,23 @@ class TemplateTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Template.Index", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Template.Index")
                     for (record in loaded) {
-                        record.index = reader.readI32As(column.element)
+                        record.index = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Template.Class", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Template.Class")
                     for (record in loaded) {
-                        record.`class` = reader.readString()
+                        record.`class` = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Template.Int", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Template.Int")
                     for (record in loaded) {
-                        record.int = reader.readI32As(column.element)
+                        record.int = cursor.nextI32()
                     }
                 }
                 4 -> {
@@ -160,26 +164,30 @@ class TemplateTable {
                 }
                 5 -> {
                     checkColumn(column, "Template.Operator", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Template.Operator")
                     for (record in loaded) {
-                        record.operator = reader.readString()
+                        record.operator = cursor.nextString()
                     }
                 }
                 6 -> {
                     checkColumn(column, "Template.Namespace", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Template.Namespace")
                     for (record in loaded) {
-                        record.namespace = reader.readString()
+                        record.namespace = cursor.nextString()
                     }
                 }
                 7 -> {
                     checkColumn(column, "Template.Constructor", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Template.Constructor")
                     for (record in loaded) {
-                        record.constructor = reader.readString()
+                        record.constructor = cursor.nextString()
                     }
                 }
                 8 -> {
                     checkColumn(column, "Template.Function", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Template.Function")
                     for (record in loaded) {
-                        record.function = reader.readString()
+                        record.function = cursor.nextString()
                     }
                 }
                 else ->

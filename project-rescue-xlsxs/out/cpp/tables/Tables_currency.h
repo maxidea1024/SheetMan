@@ -113,49 +113,55 @@ class CurrencyTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Currency.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Currency.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Currency.ItemName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.ItemName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.item_name);
+            record.item_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Currency.ItemType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.ItemType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.item_type);
+            record.item_type = static_cast<ItemType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "Currency.Type", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.Type");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.type);
+            record.type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "Currency.CycleType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.CycleType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.cycle_type);
+            record.cycle_type = static_cast<CycleType>(cursor.next_i32());
           }
           break;
         }
@@ -169,49 +175,55 @@ class CurrencyTable {
         }
         case 8: {
           sheetman::check_column(column, "Currency.MaxStack", sheetman::kKindScalar, 1, {sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.MaxStack");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i64_as(column.element, record.max_stack);
+            record.max_stack = cursor.next_i64();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "Currency.Cooltime", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.Cooltime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.cooltime);
+            record.cooltime = cursor.next_i32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "Currency.Duration", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.Duration");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.duration);
+            record.duration = cursor.next_i32();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "Currency.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "Currency.DropPrefabPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.DropPrefabPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.drop_prefab_path);
+            record.drop_prefab_path = cursor.next_string();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "Currency.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Currency.Description");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.description);
+            record.description = cursor.next_string();
           }
           break;
         }

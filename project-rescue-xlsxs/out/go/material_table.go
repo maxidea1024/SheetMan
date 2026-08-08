@@ -112,37 +112,42 @@ func (t *MaterialTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Material.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Material.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Material.ItemName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.ItemName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ItemName = reader.ReadString()
+					r.ItemName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Material.ItemType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.ItemType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ItemType = ItemType(reader.ReadEnum())
+					r.ItemType = ItemType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Material.Type", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.Type")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Type = CurrencyType(reader.ReadEnum())
+					r.Type = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 6:
@@ -154,44 +159,50 @@ func (t *MaterialTable) Read(filename string) error {
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Material.MaxStack", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.MaxStack")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxStack = reader.ReadI64As(column.Element)
+					r.MaxStack = cursor.NextI64()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Material.Cooltime", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.Cooltime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Cooltime = reader.ReadI32As(column.Element)
+					r.Cooltime = cursor.NextI32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "Material.Duration", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.Duration")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Duration = reader.ReadI32As(column.Element)
+					r.Duration = cursor.NextI32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "Material.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "Material.DropPrefabPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.DropPrefabPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DropPrefabPath = reader.ReadString()
+					r.DropPrefabPath = cursor.NextString()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "Material.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Material.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		case 13:

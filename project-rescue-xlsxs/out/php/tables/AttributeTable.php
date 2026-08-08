@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/AttributeType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -112,36 +113,41 @@ final class AttributeTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Attribute.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Attribute.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Attribute.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Attribute.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Attribute.AttributeName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Attribute.AttributeName');
                     foreach ($records as $record) {
-                        $record->attributeName = $reader->readString();
+                        $record->attributeName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Attribute.AttributeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Attribute.AttributeType');
                     foreach ($records as $record) {
-                        $record->attributeType = AttributeType::tryFrom($reader->readEnum()) ?? AttributeType::None;
+                        $record->attributeType = AttributeType::tryFrom($cursor->nextI32()) ?? AttributeType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Attribute.TargetAttributeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Attribute.TargetAttributeType');
                     foreach ($records as $record) {
-                        $record->targetAttributeType = AttributeType::tryFrom($reader->readEnum()) ?? AttributeType::None;
+                        $record->targetAttributeType = AttributeType::tryFrom($cursor->nextI32()) ?? AttributeType::None;
                     }
                     break;
 
@@ -161,8 +167,9 @@ final class AttributeTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'Attribute.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Attribute.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

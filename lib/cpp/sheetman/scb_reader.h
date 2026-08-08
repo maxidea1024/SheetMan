@@ -437,6 +437,28 @@ inline Header read_table_header(ScbReader& reader) {
   return header;
 }
 
+// The (element, encoding) pairs the spec defines. Arrays are always raw; integers
+// take the integer encodings, strings the dictionary ones.
+inline bool encoding_supported(const Column& column) {
+  if (column.encoding == kEncodingRaw) return true;
+
+  if (column.kind != kKindScalar) return false;
+
+  switch (column.element) {
+    case kElementVarint:
+      return column.encoding == kEncodingRle;
+
+    case kElementI32:
+      return column.encoding >= kEncodingVarint && column.encoding <= kEncodingDeltaRle;
+
+    case kElementString:
+      return column.encoding == kEncodingDict || column.encoding == kEncodingDictRle;
+
+    default:
+      return false;
+  }
+}
+
 // That a column is what the generated member expects, or a lossless promotion of it.
 // Refusal is by name and both types, never by reading anyway.
 inline void check_column(const Column& column, const char* field_name, std::uint8_t kind,
@@ -447,14 +469,14 @@ inline void check_column(const Column& column, const char* field_name, std::uint
                           "the schema changed shape, regenerate the code or rebuild the data");
   }
 
-  // An encoding this build cannot decode is refused by name, exactly like an element
-  // it cannot read. An unknown column's encoding never gets here - a skip is a skip
-  // whatever the block's layout.
-  if (column.encoding != kEncodingRaw) {
+  // An encoding this build cannot decode - or one the spec does not define for this
+  // element - is refused by name, exactly like an element it cannot read. An unknown
+  // column's encoding never gets here - a skip is a skip whatever the block's layout.
+  if (!encoding_supported(column)) {
     throw ScbError(std::string(field_name) + ": the file's column uses encoding " +
                           std::to_string(column.encoding) +
-                          ", which this reader does not support; regenerate the code "
-                          "or rebuild the data");
+                          ", which this reader cannot decode for its element type; "
+                          "regenerate the code or rebuild the data");
   }
 
   for (const std::uint8_t candidate : accepted) {
@@ -466,6 +488,198 @@ inline void check_column(const Column& column, const char* field_name, std::uint
                         ", which this member cannot read; the column changed type "
                         "incompatibly, regenerate the code or rebuild the data");
 }
+
+/// Reads one scalar column's values in row order, whatever the block's encoding.
+///
+/// The generated row loop stays a row loop; this is the one place that knows how a
+/// delta accumulates, how long a run has left, or that a dictionary index is a
+/// reference into strings decoded once. That last one matters beyond file size: a
+/// hundred-thousand-row column with three distinct strings decodes three strings,
+/// not a hundred thousand.
+///
+/// check_column has already refused any (element, encoding) pair the spec does not
+/// define, so the switches here do not re-litigate that.
+class ScbColumnCursor {
+ public:
+  ScbColumnCursor(ScbReader& reader, const Column& column, std::int32_t row_count,
+                  const char* field_name)
+      : reader_(reader),
+        field_name_(field_name),
+        element_(column.element),
+        encoding_(column.encoding),
+        rows_remaining_(row_count) {
+    if (encoding_ == kEncodingDict || encoding_ == kEncodingDictRle) {
+      const std::int32_t count = reader.read_counter32();
+      if (count < 0) {
+        throw ScbError(std::string(field_name) + ": the dictionary entry count is negative");
+      }
+
+      dictionary_.resize(static_cast<std::size_t>(count));
+
+      for (std::int32_t at = 0; at < count; ++at)
+        reader.read(dictionary_[static_cast<std::size_t>(at)]);
+    }
+  }
+
+  /// The next int32 - which also serves enums, and reference indexes.
+  std::int32_t next_i32() {
+    --rows_remaining_;
+
+    switch (encoding_) {
+      case kEncodingRaw: {
+        if (element_ == kElementI32) {
+          std::int32_t exact = 0;
+          reader_.read(exact);
+          return exact;
+        }
+
+        return reader_.read_counter32();
+      }
+
+      case kEncodingVarint:
+        return reader_.read_counter32();
+
+      case kEncodingDelta: {
+        // The addition wraps on purpose, mirroring the writer's wrapping subtraction;
+        // together they are exact for every int32 pair. Done in unsigned arithmetic,
+        // because signed overflow is undefined and unsigned wraps.
+        if (started_) {
+          previous_ = wrapping_add(previous_, reader_.read_counter32());
+        } else {
+          previous_ = reader_.read_counter32();
+          started_ = true;
+        }
+
+        return previous_;
+      }
+
+      case kEncodingRle: {
+        if (run_remaining_ == 0) read_run();
+
+        --run_remaining_;
+        return run_value_;
+      }
+
+      default: {  // kEncodingDeltaRle; check_column refused everything else.
+        if (!started_) {
+          previous_ = reader_.read_counter32();
+          started_ = true;
+          return previous_;
+        }
+
+        if (run_remaining_ == 0) read_run();
+
+        --run_remaining_;
+        previous_ = wrapping_add(previous_, run_value_);
+        return previous_;
+      }
+    }
+  }
+
+  /// An int64 member: an i64 column is always raw, anything narrower decodes as int32.
+  std::int64_t next_i64() {
+    if (element_ == kElementI64) {
+      std::int64_t exact = 0;
+      reader_.read(exact);
+      return exact;
+    }
+
+    return next_i32();
+  }
+
+  /// A double member: float columns are always raw, an i32 column decodes then widens.
+  double next_f64() {
+    if (element_ == kElementF64) {
+      double exact = 0.0;
+      reader_.read(exact);
+      return exact;
+    }
+
+    if (element_ == kElementF32) {
+      float single = 0.0f;
+      reader_.read(single);
+      return single;
+    }
+
+    return next_i32();
+  }
+
+  /// The next string - a copy of the dictionary's entry where the block has one.
+  std::string next_string() {
+    --rows_remaining_;
+
+    switch (encoding_) {
+      case kEncodingRaw: {
+        std::string value;
+        reader_.read(value);
+        return value;
+      }
+
+      case kEncodingDict:
+        return dictionary_entry(reader_.read_counter32());
+
+      default: {  // kEncodingDictRle
+        if (run_remaining_ == 0) read_run();
+
+        --run_remaining_;
+        return dictionary_entry(run_value_);
+      }
+    }
+  }
+
+ private:
+  /// int32 addition modulo 2^32, matching the writer's wrapping subtraction.
+  static std::int32_t wrapping_add(std::int32_t a, std::int32_t b) {
+    return static_cast<std::int32_t>(static_cast<std::uint32_t>(a) +
+                                     static_cast<std::uint32_t>(b));
+  }
+
+  void read_run() {
+    const std::int32_t length = reader_.read_counter32();
+
+    // + 1 because the row this run was read for is already counted out of
+    // rows_remaining_ by its next_* call.
+    if (length < 1 || length > rows_remaining_ + 1) {
+      throw ScbError(std::string(field_name_) + ": a run of " + std::to_string(length) +
+                            " values cannot cover the " + std::to_string(rows_remaining_ + 1) +
+                            " rows left in the column");
+    }
+
+    run_remaining_ = length;
+    run_value_ = reader_.read_counter32();
+  }
+
+  const std::string& dictionary_entry(std::int32_t index) const {
+    if (index < 0 || static_cast<std::size_t>(index) >= dictionary_.size()) {
+      throw ScbError(std::string(field_name_) + ": dictionary index " + std::to_string(index) +
+                            " is out of range - the dictionary holds " +
+                            std::to_string(dictionary_.size()) + " entries");
+    }
+
+    return dictionary_[static_cast<std::size_t>(index)];
+  }
+
+  ScbReader& reader_;
+  const char* field_name_;
+  std::uint8_t element_;
+  std::uint8_t encoding_;
+
+  /// The block's dictionary, decoded once and handed out per row.
+  std::vector<std::string> dictionary_;
+
+  // A run-length family's current run: what remains of it, and its value - which is
+  // a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+  std::int32_t run_remaining_ = 0;
+  std::int32_t run_value_ = 0;
+
+  // The delta family's accumulator, once started_.
+  std::int32_t previous_ = 0;
+  bool started_ = false;
+
+  // Rows not yet handed out. A run that claims more than this is corrupt, and
+  // catching it here names the field instead of leaving it to the block-end check.
+  std::int32_t rows_remaining_;
+};
 
 // That a block was consumed exactly: a mismatch is a format disagreement, and stopping
 // here names the column instead of corrupting the next.

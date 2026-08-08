@@ -87,40 +87,49 @@ class GachaArtifactListTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "GachaArtifactList.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactList.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "GachaArtifactList.ArtifactID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactList.ArtifactID")
                 for record in records:
-                    record.artifact_id = reader.read_i32_as(column.element)
+                    record.artifact_id = cursor.next_i32()
             elif column.tag == 3:
                 sheetman.check_column(column, "GachaArtifactList.GradeType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactList.GradeType")
                 for record in records:
-                    record.grade_type = GradeType(reader.read_enum())
+                    record.grade_type = GradeType(cursor.next_i32())
             elif column.tag == 4:
                 sheetman.check_column(column, "GachaArtifactList.BaseWeight", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactList.BaseWeight")
                 for record in records:
-                    record.base_weight = reader.read_i32_as(column.element)
+                    record.base_weight = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "GachaArtifactList.ClassUpCurrencyID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactList.ClassUpCurrencyID")
                 for record in records:
-                    record.class_up_currency_id = reader.read_i32_as(column.element)
+                    record.class_up_currency_id = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "GachaArtifactList.ClassUpCurrencyValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactList.ClassUpCurrencyValue")
                 for record in records:
-                    record.class_up_currency_value = reader.read_i32_as(column.element)
+                    record.class_up_currency_value = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "GachaArtifactList.ExConditionID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactList.ExConditionID")
                 for record in records:
-                    record.ex_condition_id = reader.read_i32_as(column.element)
+                    record.ex_condition_id = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "GachaArtifactList.ExCurrencyID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactList.ExCurrencyID")
                 for record in records:
-                    record.ex_currency_id = reader.read_i32_as(column.element)
+                    record.ex_currency_id = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "GachaArtifactList.ExCurrencyValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactList.ExCurrencyValue")
                 for record in records:
-                    record.ex_currency_value = reader.read_i32_as(column.element)
+                    record.ex_currency_value = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -114,32 +115,37 @@ class SDTrainingLevelTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDTrainingLevel.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDTrainingLevel.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDTrainingLevel.LevelName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.LevelName")
                     for (record in loaded) {
-                        record.levelName = reader.readString()
+                        record.levelName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDTrainingLevel.CurrencyValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.CurrencyValue")
                     for (record in loaded) {
-                        record.currencyValue = reader.readI32As(column.element)
+                        record.currencyValue = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDTrainingLevel.CurrencyResult", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.CurrencyResult")
                     for (record in loaded) {
-                        record.currencyResult = reader.readI32As(column.element)
+                        record.currencyResult = cursor.nextI32()
                     }
                 }
                 6 -> {
@@ -168,8 +174,9 @@ class SDTrainingLevelTable {
                 }
                 10 -> {
                     checkColumn(column, "SDTrainingLevel.CommonUnlockStageID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDTrainingLevel.CommonUnlockStageID")
                     for (record in loaded) {
-                        record.commonUnlockStageID = reader.readI32As(column.element)
+                        record.commonUnlockStageID = cursor.nextI32()
                     }
                 }
                 else ->

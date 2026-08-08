@@ -103,57 +103,64 @@ class TraitDungeonRewardTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "TraitDungeonReward.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TraitDungeonReward.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "TraitDungeonReward.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TraitDungeonReward.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "TraitDungeonReward.RewardName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TraitDungeonReward.RewardName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.reward_name);
+            record.reward_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "TraitDungeonReward.RewardType1", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TraitDungeonReward.RewardType1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.reward_type1);
+            record.reward_type1 = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "TraitDungeonReward.RewardValue1", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TraitDungeonReward.RewardValue1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.reward_value1);
+            record.reward_value1 = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "TraitDungeonReward.RewardType2", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TraitDungeonReward.RewardType2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.reward_type2);
+            record.reward_type2 = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "TraitDungeonReward.RewardValue2", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TraitDungeonReward.RewardValue2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.reward_value2);
+            record.reward_value2 = cursor.next_i32();
           }
           break;
         }
@@ -167,17 +174,19 @@ class TraitDungeonRewardTable {
         }
         case 9: {
           sheetman::check_column(column, "TraitDungeonReward.FirstClearRewardType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TraitDungeonReward.FirstClearRewardType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.first_clear_reward_type);
+            record.first_clear_reward_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "TraitDungeonReward.FirstClearRewardValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TraitDungeonReward.FirstClearRewardValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.first_clear_reward_value);
+            record.first_clear_reward_value = cursor.next_i32();
           }
           break;
         }

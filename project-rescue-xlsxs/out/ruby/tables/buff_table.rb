@@ -92,53 +92,63 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Buff.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Buff.BuffName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.BuffName')
           records.each do |record|
-            record.buff_name = reader.read_string
+            record.buff_name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Buff.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Buff.SkillType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.SkillType')
           records.each do |record|
-            record.skill_type = reader.read_enum
+            record.skill_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Buff.StatType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.StatType')
           records.each do |record|
-            record.stat_type = reader.read_enum
+            record.stat_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'Buff.Priority', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.Priority')
           records.each do |record|
-            record.priority = reader.read_i32_as(column.element)
+            record.priority = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'Buff.AttributeType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.AttributeType')
           records.each do |record|
-            record.attribute_type = reader.read_enum
+            record.attribute_type = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'Buff.TargetType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.TargetType')
           records.each do |record|
-            record.target_type = reader.read_enum
+            record.target_type = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'Buff.BuffConditionType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.BuffConditionType')
           records.each do |record|
-            record.buff_condition_type = reader.read_enum
+            record.buff_condition_type = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'Buff.BuffValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.BuffValue')
           records.each do |record|
-            record.buff_value = reader.read_i32_as(column.element)
+            record.buff_value = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'Buff.BuffValueRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -147,18 +157,21 @@ module Rescue
           end
         when 12
           Sheetman.check_column(column, 'Buff.BuffTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.BuffTime')
           records.each do |record|
-            record.buff_time = reader.read_i32_as(column.element)
+            record.buff_time = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'Buff.BuffTickTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.BuffTickTime')
           records.each do |record|
-            record.buff_tick_time = reader.read_i32_as(column.element)
+            record.buff_tick_time = cursor.next_i32
           end
         when 14
           Sheetman.check_column(column, 'Buff.BuffMaxStack', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.BuffMaxStack')
           records.each do |record|
-            record.buff_max_stack = reader.read_i32_as(column.element)
+            record.buff_max_stack = cursor.next_i32
           end
         when 15
           Sheetman.check_column(column, 'Buff.BuffCoolDownTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -172,13 +185,15 @@ module Rescue
           end
         when 17
           Sheetman.check_column(column, 'Buff.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         when 18
           Sheetman.check_column(column, 'Buff.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Buff.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

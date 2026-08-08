@@ -14,6 +14,7 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -61,11 +62,12 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 1:
       (void)sm_check_column(reader, column, "SDTrainingInfo.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -73,11 +75,12 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 2:
       (void)sm_check_column(reader, column, "SDTrainingInfo.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -85,11 +88,12 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 3:
       (void)sm_check_column(reader, column, "SDTrainingInfo.TrainingName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.TrainingName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->training_name);
+        (void)sm_cursor_next_string(&cursor, &record->training_name);
       }
 
       break;
@@ -97,12 +101,13 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 4:
       (void)sm_check_column(reader, column, "SDTrainingInfo.AttributeType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.AttributeType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->attribute_type = (Rescue_AttributeType_t)scratch;
       }
 
@@ -111,12 +116,13 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 5:
       (void)sm_check_column(reader, column, "SDTrainingInfo.StatType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.StatType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->stat_type = (Rescue_StatType_t)scratch;
       }
 
@@ -125,11 +131,12 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 6:
       (void)sm_check_column(reader, column, "SDTrainingInfo.UnlockCondition", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.UnlockCondition");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->unlock_condition);
+        (void)sm_cursor_next_i32(&cursor, &record->unlock_condition);
       }
 
       break;
@@ -137,11 +144,12 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 7:
       (void)sm_check_column(reader, column, "SDTrainingInfo.LevelUpCondition", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.LevelUpCondition");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->level_up_condition);
+        (void)sm_cursor_next_i32(&cursor, &record->level_up_condition);
       }
 
       break;
@@ -149,11 +157,12 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 8:
       (void)sm_check_column(reader, column, "SDTrainingInfo.MaxLevel", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.MaxLevel");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->max_level);
+        (void)sm_cursor_next_i32(&cursor, &record->max_level);
       }
 
       break;
@@ -173,12 +182,13 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 10:
       (void)sm_check_column(reader, column, "SDTrainingInfo.LvResetCurrencyType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.LvResetCurrencyType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->lv_reset_currency_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -187,11 +197,12 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 11:
       (void)sm_check_column(reader, column, "SDTrainingInfo.LvResetCurrencyValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.LvResetCurrencyValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->lv_reset_currency_value);
+        (void)sm_cursor_next_i32(&cursor, &record->lv_reset_currency_value);
       }
 
       break;
@@ -199,11 +210,12 @@ static bool Rescue_SDTrainingInfoParse(Rescue_SDTrainingInfoTable_t* table, sm_r
     case 12:
       (void)sm_check_column(reader, column, "SDTrainingInfo.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDTrainingInfo.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDTrainingInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

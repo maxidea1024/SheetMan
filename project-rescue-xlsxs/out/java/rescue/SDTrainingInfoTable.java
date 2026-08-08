@@ -74,6 +74,7 @@ public final class SDTrainingInfoTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<SDTrainingInfoRecord> loaded = new ArrayList<>(count);
@@ -89,57 +90,65 @@ public final class SDTrainingInfoTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.Id");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.Name");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.TrainingName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.TrainingName");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.trainingName = reader.readString();
+                        record.trainingName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.AttributeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.AttributeType");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.attributeType = AttributeType.of(reader.readEnum());
+                        record.attributeType = AttributeType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.StatType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.StatType");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.statType = StatType.of(reader.readEnum());
+                        record.statType = StatType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.UnlockCondition", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.UnlockCondition");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.unlockCondition = reader.readI32As(column.element);
+                        record.unlockCondition = cursor.nextI32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.LevelUpCondition", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.LevelUpCondition");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.levelUpCondition = reader.readI32As(column.element);
+                        record.levelUpCondition = cursor.nextI32();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.MaxLevel", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.MaxLevel");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.maxLevel = reader.readI32As(column.element);
+                        record.maxLevel = cursor.nextI32();
                     }
                     break;
                 }
@@ -152,22 +161,25 @@ public final class SDTrainingInfoTable {
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.LvResetCurrencyType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyType");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.lvResetCurrencyType = CurrencyType.of(reader.readEnum());
+                        record.lvResetCurrencyType = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.LvResetCurrencyValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.LvResetCurrencyValue");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.lvResetCurrencyValue = reader.readI32As(column.element);
+                        record.lvResetCurrencyValue = cursor.nextI32();
                     }
                     break;
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "SDTrainingInfo.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingInfo.Description");
                     for (SDTrainingInfoRecord record : loaded) {
-                        record.description = reader.readString();
+                        record.description = cursor.nextString();
                     }
                     break;
                 }

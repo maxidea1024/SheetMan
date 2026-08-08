@@ -94,56 +94,69 @@ class EquipTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Equip.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Equip.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Equip.EquipName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.EquipName")
                 for record in records:
-                    record.equip_name = reader.read_string()
+                    record.equip_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Equip.Type", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.Type")
                 for record in records:
-                    record.type_ = JobType(reader.read_enum())
+                    record.type_ = JobType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Equip.EquipType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.EquipType")
                 for record in records:
-                    record.equip_type = EquipmentType(reader.read_enum())
+                    record.equip_type = EquipmentType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Equip.Grade", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.Grade")
                 for record in records:
-                    record.grade = GradeType(reader.read_enum())
+                    record.grade = GradeType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "Equip.MaxClass", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.MaxClass")
                 for record in records:
-                    record.max_class = reader.read_i32_as(column.element)
+                    record.max_class = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "Equip.MaxLevel", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.MaxLevel")
                 for record in records:
-                    record.max_level = reader.read_i32_as(column.element)
+                    record.max_level = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "Equip.StatType1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.StatType1")
                 for record in records:
-                    record.stat_type1 = StatType(reader.read_enum())
+                    record.stat_type1 = StatType(cursor.next_i32())
             elif column.tag == 10:
                 sheetman.check_column(column, "Equip.StatType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.StatType2")
                 for record in records:
-                    record.stat_type2 = StatType(reader.read_enum())
+                    record.stat_type2 = StatType(cursor.next_i32())
             elif column.tag == 11:
                 sheetman.check_column(column, "Equip.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             elif column.tag == 12:
                 sheetman.check_column(column, "Equip.PrefabPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.PrefabPath")
                 for record in records:
-                    record.prefab_path = reader.read_string()
+                    record.prefab_path = cursor.next_string()
             elif column.tag == 13:
                 sheetman.check_column(column, "Equip.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Equip.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

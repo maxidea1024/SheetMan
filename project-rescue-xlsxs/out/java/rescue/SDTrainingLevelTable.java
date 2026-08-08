@@ -74,6 +74,7 @@ public final class SDTrainingLevelTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<SDTrainingLevelRecord> loaded = new ArrayList<>(count);
@@ -89,36 +90,41 @@ public final class SDTrainingLevelTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.Id");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.Name");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.LevelName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.LevelName");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.levelName = reader.readString();
+                        record.levelName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.CurrencyValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.CurrencyValue");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.currencyValue = reader.readI32As(column.element);
+                        record.currencyValue = cursor.nextI32();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.CurrencyResult", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.CurrencyResult");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.currencyResult = reader.readI32As(column.element);
+                        record.currencyResult = cursor.nextI32();
                     }
                     break;
                 }
@@ -152,8 +158,9 @@ public final class SDTrainingLevelTable {
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "SDTrainingLevel.CommonUnlockStageID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDTrainingLevel.CommonUnlockStageID");
                     for (SDTrainingLevelRecord record : loaded) {
-                        record.commonUnlockStageID = reader.readI32As(column.element);
+                        record.commonUnlockStageID = cursor.nextI32();
                     }
                     break;
                 }

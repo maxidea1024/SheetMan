@@ -110,58 +110,66 @@ func (t *CollectionTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Collection.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Collection.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Collection.CharacterID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.CharacterID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CharacterID = reader.ReadI32As(column.Element)
+					r.CharacterID = cursor.NextI32()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Collection.TabType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.TabType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TabType = CollectionTabType(reader.ReadEnum())
+					r.TabType = CollectionTabType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Collection.ConditionID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.ConditionID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionID = reader.ReadI32As(column.Element)
+					r.ConditionID = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Collection.RewardType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.RewardType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardType = CurrencyType(reader.ReadEnum())
+					r.RewardType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Collection.RewardValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.RewardValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardValue = reader.ReadI32As(column.Element)
+					r.RewardValue = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Collection.RewardStatType1", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.RewardStatType1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardStatType1 = StatType(reader.ReadEnum())
+					r.RewardStatType1 = StatType(cursor.NextI32())
 				}
 			}
 		case 9:
@@ -173,23 +181,26 @@ func (t *CollectionTable) Read(filename string) error {
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "Collection.RewardStatType2", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.RewardStatType2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardStatType2 = StatType(reader.ReadEnum())
+					r.RewardStatType2 = StatType(cursor.NextI32())
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "Collection.RewardStatValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.RewardStatValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardStatValue = reader.ReadI32As(column.Element)
+					r.RewardStatValue = cursor.NextI32()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "Collection.ShortCutID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Collection.ShortCutID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ShortCutID = reader.ReadI32As(column.Element)
+					r.ShortCutID = cursor.NextI32()
 				}
 			}
 		default:

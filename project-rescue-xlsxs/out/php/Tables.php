@@ -118,6 +118,7 @@ require_once __DIR__ . '/tables/CostCurveTable.php';
 require_once __DIR__ . '/tables/CostCurveRangeTable.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 

@@ -112,28 +112,34 @@ class ConfigTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Config.Index", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Config.Index")
                 for record in records:
-                    record.index = reader.read_i32_as(column.element)
+                    record.index = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Config.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Config.Id")
                 for record in records:
-                    record.id = reader.read_string()
+                    record.id = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Config.Category", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Config.Category")
                 for record in records:
-                    record.category = reader.read_string()
+                    record.category = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Config.DataType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Config.DataType")
                 for record in records:
-                    record.data_type = reader.read_string()
+                    record.data_type = cursor.next_string()
             elif column.tag == 5:
                 sheetman.check_column(column, "Config.DefaultValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Config.DefaultValue")
                 for record in records:
-                    record.default_value = reader.read_string()
+                    record.default_value = cursor.next_string()
             elif column.tag == 6:
                 sheetman.check_column(column, "Config.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Config.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

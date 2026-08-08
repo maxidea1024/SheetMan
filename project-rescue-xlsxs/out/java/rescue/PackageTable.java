@@ -74,6 +74,7 @@ public final class PackageTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<PackageRecord> loaded = new ArrayList<>(count);
@@ -89,36 +90,41 @@ public final class PackageTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "Package.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.Id");
                     for (PackageRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "Package.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.Name");
                     for (PackageRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "Package.ClassName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.ClassName");
                     for (PackageRecord record : loaded) {
-                        record.className = reader.readString();
+                        record.className = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "Package.ItemType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.ItemType");
                     for (PackageRecord record : loaded) {
-                        record.itemType = ItemType.of(reader.readEnum());
+                        record.itemType = ItemType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "Package.PackageType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.PackageType");
                     for (PackageRecord record : loaded) {
-                        record.packageType = ConsumablesType.of(reader.readEnum());
+                        record.packageType = ConsumablesType.of(cursor.nextI32());
                     }
                     break;
                 }
@@ -131,29 +137,33 @@ public final class PackageTable {
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "Package.MaxStack", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.MaxStack");
                     for (PackageRecord record : loaded) {
-                        record.maxStack = reader.readI64As(column.element);
+                        record.maxStack = cursor.nextI64();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "Package.PackageCondition", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.PackageCondition");
                     for (PackageRecord record : loaded) {
-                        record.packageCondition = ConditionType.of(reader.readEnum());
+                        record.packageCondition = ConditionType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "Package.Cooltime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.Cooltime");
                     for (PackageRecord record : loaded) {
-                        record.cooltime = reader.readI32As(column.element);
+                        record.cooltime = cursor.nextI32();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "Package.Duration", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.Duration");
                     for (PackageRecord record : loaded) {
-                        record.duration = reader.readI32As(column.element);
+                        record.duration = cursor.nextI32();
                     }
                     break;
                 }
@@ -203,22 +213,25 @@ public final class PackageTable {
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "Package.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.IconPath");
                     for (PackageRecord record : loaded) {
-                        record.iconPath = reader.readString();
+                        record.iconPath = cursor.nextString();
                     }
                     break;
                 }
                 case 16: {
                     ScbReader.checkColumn(column, "Package.DropPrefabPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.DropPrefabPath");
                     for (PackageRecord record : loaded) {
-                        record.dropPrefabPath = reader.readString();
+                        record.dropPrefabPath = cursor.nextString();
                     }
                     break;
                 }
                 case 17: {
                     ScbReader.checkColumn(column, "Package.ItemDescription", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Package.ItemDescription");
                     for (PackageRecord record : loaded) {
-                        record.itemDescription = reader.readString();
+                        record.itemDescription = cursor.nextString();
                     }
                     break;
                 }

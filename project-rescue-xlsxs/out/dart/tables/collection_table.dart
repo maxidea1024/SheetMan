@@ -80,6 +80,7 @@ class CollectionTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <CollectionRecord>[];
@@ -95,50 +96,58 @@ class CollectionTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Collection.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Collection.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Collection.CharacterID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.CharacterID');
           for (final record in loaded) {
-            record.characterID = reader.readI32As(column.element);
+            record.characterID = cursor.nextI32();
           }
           break;
         case 4:
           checkColumn(column, 'Collection.TabType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.TabType');
           for (final record in loaded) {
-            record.tabType = CollectionTabType.of(reader.readEnum());
+            record.tabType = CollectionTabType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'Collection.ConditionID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.ConditionID');
           for (final record in loaded) {
-            record.conditionID = reader.readI32As(column.element);
+            record.conditionID = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'Collection.RewardType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.RewardType');
           for (final record in loaded) {
-            record.rewardType = CurrencyType.of(reader.readEnum());
+            record.rewardType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 7:
           checkColumn(column, 'Collection.RewardValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.RewardValue');
           for (final record in loaded) {
-            record.rewardValue = reader.readI32As(column.element);
+            record.rewardValue = cursor.nextI32();
           }
           break;
         case 8:
           checkColumn(column, 'Collection.RewardStatType1', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.RewardStatType1');
           for (final record in loaded) {
-            record.rewardStatType1 = StatType.of(reader.readEnum());
+            record.rewardStatType1 = StatType.of(cursor.nextI32());
           }
           break;
         case 9:
@@ -149,20 +158,23 @@ class CollectionTable {
           break;
         case 10:
           checkColumn(column, 'Collection.RewardStatType2', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.RewardStatType2');
           for (final record in loaded) {
-            record.rewardStatType2 = StatType.of(reader.readEnum());
+            record.rewardStatType2 = StatType.of(cursor.nextI32());
           }
           break;
         case 11:
           checkColumn(column, 'Collection.RewardStatValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.RewardStatValue');
           for (final record in loaded) {
-            record.rewardStatValue = reader.readI32As(column.element);
+            record.rewardStatValue = cursor.nextI32();
           }
           break;
         case 12:
           checkColumn(column, 'Collection.ShortCutID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Collection.ShortCutID');
           for (final record in loaded) {
-            record.shortCutID = reader.readI32As(column.element);
+            record.shortCutID = cursor.nextI32();
           }
           break;
         default:

@@ -96,68 +96,83 @@ class SDAlchemyInfoTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDAlchemyInfo.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDAlchemyInfo.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDAlchemyInfo.NameKR", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.NameKR")
                 for record in records:
-                    record.name_kr = reader.read_string()
+                    record.name_kr = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDAlchemyInfo.MaterialType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType")
                 for record in records:
-                    record.material_type = CurrencyType(reader.read_enum())
+                    record.material_type = CurrencyType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "SDAlchemyInfo.CommonMaterialType1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType1")
                 for record in records:
-                    record.common_material_type1 = CurrencyType(reader.read_enum())
+                    record.common_material_type1 = CurrencyType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "SDAlchemyInfo.CommonMaterialType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType2")
                 for record in records:
-                    record.common_material_type2 = CurrencyType(reader.read_enum())
+                    record.common_material_type2 = CurrencyType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "SDAlchemyInfo.MaterialType2Rate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.material_type2_rate = reader.read_float()
             elif column.tag == 8:
                 sheetman.check_column(column, "SDAlchemyInfo.StatType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.StatType")
                 for record in records:
-                    record.stat_type = StatType(reader.read_enum())
+                    record.stat_type = StatType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "SDAlchemyInfo.TargetType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.TargetType")
                 for record in records:
-                    record.target_type = TargetType(reader.read_enum())
+                    record.target_type = TargetType(cursor.next_i32())
             elif column.tag == 10:
                 sheetman.check_column(column, "SDAlchemyInfo.MaxLevelId", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.MaxLevelId")
                 for record in records:
-                    record.max_level_id = reader.read_i32_as(column.element)
+                    record.max_level_id = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "SDAlchemyInfo.AccelerateTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateTime")
                 for record in records:
-                    record.accelerate_time = reader.read_i32_as(column.element)
+                    record.accelerate_time = cursor.next_i32()
             elif column.tag == 12:
                 sheetman.check_column(column, "SDAlchemyInfo.AccelerateItemType1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType1")
                 for record in records:
-                    record.accelerate_item_type1 = CurrencyType(reader.read_enum())
+                    record.accelerate_item_type1 = CurrencyType(cursor.next_i32())
             elif column.tag == 13:
                 sheetman.check_column(column, "SDAlchemyInfo.AccelerateItemCost1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost1")
                 for record in records:
-                    record.accelerate_item_cost1 = reader.read_i32_as(column.element)
+                    record.accelerate_item_cost1 = cursor.next_i32()
             elif column.tag == 14:
                 sheetman.check_column(column, "SDAlchemyInfo.AccelerateItemType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType2")
                 for record in records:
-                    record.accelerate_item_type2 = CurrencyType(reader.read_enum())
+                    record.accelerate_item_type2 = CurrencyType(cursor.next_i32())
             elif column.tag == 15:
                 sheetman.check_column(column, "SDAlchemyInfo.AccelerateItemCost2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost2")
                 for record in records:
-                    record.accelerate_item_cost2 = reader.read_i32_as(column.element)
+                    record.accelerate_item_cost2 = cursor.next_i32()
             elif column.tag == 16:
                 sheetman.check_column(column, "SDAlchemyInfo.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyInfo.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

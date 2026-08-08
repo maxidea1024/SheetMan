@@ -74,6 +74,7 @@ public final class ShopInfoTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<ShopInfoRecord> loaded = new ArrayList<>(count);
@@ -89,64 +90,73 @@ public final class ShopInfoTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "ShopInfo.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShopInfo.Id");
                     for (ShopInfoRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "ShopInfo.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShopInfo.Name");
                     for (ShopInfoRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "ShopInfo.InfoName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShopInfo.InfoName");
                     for (ShopInfoRecord record : loaded) {
-                        record.infoName = reader.readString();
+                        record.infoName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "ShopInfo.ShopType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShopInfo.ShopType");
                     for (ShopInfoRecord record : loaded) {
-                        record.shopType = ShopType.of(reader.readEnum());
+                        record.shopType = ShopType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "ShopInfo.ConditionID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShopInfo.ConditionID");
                     for (ShopInfoRecord record : loaded) {
-                        record.conditionID = reader.readI32As(column.element);
+                        record.conditionID = cursor.nextI32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "ShopInfo.SheetName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShopInfo.SheetName");
                     for (ShopInfoRecord record : loaded) {
-                        record.sheetName = reader.readString();
+                        record.sheetName = cursor.nextString();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "ShopInfo.Priority", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShopInfo.Priority");
                     for (ShopInfoRecord record : loaded) {
-                        record.priority = reader.readI32As(column.element);
+                        record.priority = cursor.nextI32();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "ShopInfo.UIPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShopInfo.UIPath");
                     for (ShopInfoRecord record : loaded) {
-                        record.uIPath = reader.readString();
+                        record.uIPath = cursor.nextString();
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "ShopInfo.ListPrefabPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ShopInfo.ListPrefabPath");
                     for (ShopInfoRecord record : loaded) {
-                        record.listPrefabPath = reader.readString();
+                        record.listPrefabPath = cursor.nextString();
                     }
                     break;
                 }

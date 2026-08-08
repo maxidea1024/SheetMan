@@ -161,6 +161,7 @@ export class CollectionGroupTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -174,23 +175,26 @@ export class CollectionGroupTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'CollectionGroup.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CollectionGroup.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'CollectionGroup.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CollectionGroup.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'CollectionGroup.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CollectionGroup.Index')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._index = reader.readI32As(column.element)
+            record._index = cursor.nextI32()
           }
           break
         case 4:
@@ -205,9 +209,10 @@ export class CollectionGroupTable {
           break
         case 5:
           sheetman.checkColumn(column, 'CollectionGroup.PrefabPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CollectionGroup.PrefabPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._prefabPath = reader.readString()
+            record._prefabPath = cursor.nextString()
           }
           break
         default:

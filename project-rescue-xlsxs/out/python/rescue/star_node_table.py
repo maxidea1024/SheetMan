@@ -88,28 +88,34 @@ class StarNodeTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "StarNode.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StarNode.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "StarNode.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StarNode.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "StarNode.InfuluenceStep", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StarNode.InfuluenceStep")
                 for record in records:
-                    record.infuluence_step = reader.read_i32_as(column.element)
+                    record.infuluence_step = cursor.next_i32()
             elif column.tag == 4:
                 sheetman.check_column(column, "StarNode.StarNodeName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StarNode.StarNodeName")
                 for record in records:
-                    record.star_node_name = reader.read_string()
+                    record.star_node_name = cursor.next_string()
             elif column.tag == 5:
                 sheetman.check_column(column, "StarNode.StatType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StarNode.StatType")
                 for record in records:
-                    record.stat_type = StatType(reader.read_enum())
+                    record.stat_type = StatType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "StarNode.StarNodeValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StarNode.StarNodeValue")
                 for record in records:
-                    record.star_node_value = reader.read_i32_as(column.element)
+                    record.star_node_value = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "StarNode.StarNodeRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -121,12 +127,14 @@ class StarNodeTable:
                     record.unlock_condition = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 9:
                 sheetman.check_column(column, "StarNode.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StarNode.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             elif column.tag == 10:
                 sheetman.check_column(column, "StarNode.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "StarNode.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

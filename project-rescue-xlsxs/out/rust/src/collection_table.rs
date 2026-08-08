@@ -108,50 +108,58 @@ impl CollectionTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Collection.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Collection.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Collection.CharacterID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.CharacterID")?;
                     for record in records.iter_mut() {
-                        record.character_id = reader.read_i32_as(column.element)?;
+                        record.character_id = cursor.next_i32()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Collection.TabType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.TabType")?;
                     for record in records.iter_mut() {
-                        record.tab_type = CollectionTabType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.tab_type = CollectionTabType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "Collection.ConditionID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.ConditionID")?;
                     for record in records.iter_mut() {
-                        record.condition_id = reader.read_i32_as(column.element)?;
+                        record.condition_id = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "Collection.RewardType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.RewardType")?;
                     for record in records.iter_mut() {
-                        record.reward_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "Collection.RewardValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.RewardValue")?;
                     for record in records.iter_mut() {
-                        record.reward_value = reader.read_i32_as(column.element)?;
+                        record.reward_value = cursor.next_i32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "Collection.RewardStatType1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.RewardStatType1")?;
                     for record in records.iter_mut() {
-                        record.reward_stat_type1 = StatType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_stat_type1 = StatType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 9 => {
@@ -162,20 +170,23 @@ impl CollectionTable {
                 }
                 10 => {
                     sheetman::check_column(column, "Collection.RewardStatType2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.RewardStatType2")?;
                     for record in records.iter_mut() {
-                        record.reward_stat_type2 = StatType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_stat_type2 = StatType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "Collection.RewardStatValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.RewardStatValue")?;
                     for record in records.iter_mut() {
-                        record.reward_stat_value = reader.read_i32_as(column.element)?;
+                        record.reward_stat_value = cursor.next_i32()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "Collection.ShortCutID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Collection.ShortCutID")?;
                     for record in records.iter_mut() {
-                        record.short_cut_id = reader.read_i32_as(column.element)?;
+                        record.short_cut_id = cursor.next_i32()?;
                     }
                 }
                 _ => {

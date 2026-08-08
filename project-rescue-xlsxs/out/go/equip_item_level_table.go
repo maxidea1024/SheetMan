@@ -124,51 +124,58 @@ func (t *EquipItemLevelTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "EquipItemLevel.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemLevel.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "EquipItemLevel.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemLevel.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "EquipItemLevel.NameKR", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemLevel.NameKR")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NameKR = reader.ReadString()
+					r.NameKR = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "EquipItemLevel.Type", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemLevel.Type")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Type = JobType(reader.ReadEnum())
+					r.Type = JobType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "EquipItemLevel.MaterialType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemLevel.MaterialType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaterialType = CurrencyType(reader.ReadEnum())
+					r.MaterialType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "EquipItemLevel.MaterialValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemLevel.MaterialValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaterialValue = reader.ReadI32As(column.Element)
+					r.MaterialValue = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "EquipItemLevel.MaterialValue1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "EquipItemLevel.MaterialValue1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaterialValue1 = reader.ReadI32As(column.Element)
+					r.MaterialValue1 = cursor.NextI32()
 				}
 			}
 		case 8:

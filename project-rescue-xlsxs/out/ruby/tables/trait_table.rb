@@ -81,23 +81,27 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Trait.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Trait.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Trait.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Trait.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Trait.TraitName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Trait.TraitName')
           records.each do |record|
-            record.trait_name = reader.read_string
+            record.trait_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Trait.StatType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Trait.StatType')
           records.each do |record|
-            record.stat_type = reader.read_enum
+            record.stat_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Trait.StatRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -112,8 +116,9 @@ module Rescue
           end
         when 7
           Sheetman.check_column(column, 'Trait.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Trait.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

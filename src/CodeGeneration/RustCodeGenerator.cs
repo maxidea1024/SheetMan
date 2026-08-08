@@ -494,9 +494,10 @@ public class RustCodeGenerator : CodeGenerator<RustRecipe>
             Kind = ReadKind(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
             ElementCount = sf.Fields.Count,
             Declarations = Declarations(sf, name, elementType),
-            ReadScalar = ReadExpression(sf),
+            ReadScalar = ScalarReadExpression(sf),
             ReadElement = ReadExpression(sf),
         };
     }
@@ -573,7 +574,73 @@ public class RustCodeGenerator : CodeGenerator<RustRecipe>
         return sf.IsRef ? "scalar_ref" : "scalar";
     }
 
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly. The match arm is its own scope, so the
+    /// binding lives exactly as long as the column it decodes.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? "let mut cursor = sheetman::ScbColumnCursor::new(" +
+              $"&mut reader, column, header.row_count, \"{tableName}.{sf.Name}\")?;"
+            : "";
+
     // ----------------------------------------------------------- rendering
+
+    /// <summary>
+    /// The expression that reads one scalar value: through the cursor where the column
+    /// can arrive encoded - which also carries the lossless promotions - and straight
+    /// off the reader otherwise. Arrays are always raw and keep <see cref="ReadExpression"/>.
+    /// </summary>
+    private string ScalarReadExpression(SerialField sf)
+    {
+        if (!UsesCursor(sf))
+            return ReadExpression(sf);
+
+        if (sf.IsRef)
+            return "cursor.next_i32()?";
+
+        switch (sf.ElementType)
+        {
+            case ValueType.Enum:
+                return $"{sf.FirstField.Enum.Name.ToPascalCase()}::from_value(cursor.next_i32()?)" +
+                       ".unwrap_or_default()";
+
+            case ValueType.Int32: return "cursor.next_i32()?";
+            case ValueType.Int64: return "cursor.next_i64()?";
+            case ValueType.Double: return "cursor.next_f64()?";
+            default: return "cursor.next_string()?";
+        }
+    }
 
     private string ReadExpression(SerialField sf)
     {

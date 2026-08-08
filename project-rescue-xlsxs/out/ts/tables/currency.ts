@@ -229,6 +229,7 @@ export class CurrencyTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -242,44 +243,50 @@ export class CurrencyTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Currency.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Currency.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Currency.ItemName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.ItemName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._itemName = reader.readString()
+            record._itemName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Currency.ItemType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.ItemType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._itemType = reader.readEnum() as ItemType
+            record._itemType = cursor.nextI32() as ItemType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Currency.Type', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.Type')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._type = reader.readEnum() as CurrencyType
+            record._type = cursor.nextI32() as CurrencyType
           }
           break
         case 6:
           sheetman.checkColumn(column, 'Currency.CycleType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.CycleType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._cycleType = reader.readEnum() as CycleType
+            record._cycleType = cursor.nextI32() as CycleType
           }
           break
         case 7:
@@ -291,44 +298,50 @@ export class CurrencyTable {
           break
         case 8:
           sheetman.checkColumn(column, 'Currency.MaxStack', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.MaxStack')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxStack = reader.readI64As(column.element)
+            record._maxStack = cursor.nextI64()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'Currency.Cooltime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.Cooltime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._cooltime = reader.readI32As(column.element)
+            record._cooltime = cursor.nextI32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'Currency.Duration', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.Duration')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._duration = reader.readI32As(column.element)
+            record._duration = cursor.nextI32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'Currency.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'Currency.DropPrefabPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.DropPrefabPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dropPrefabPath = reader.readString()
+            record._dropPrefabPath = cursor.nextString()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'Currency.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Currency.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         case 14:

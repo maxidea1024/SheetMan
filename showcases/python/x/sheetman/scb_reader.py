@@ -284,6 +284,166 @@ class Reader:
         raise ScbError("varint32 is longer than five bytes")
 
 
+def _wrap_int32(value):
+    """The low 32 bits of a value, sign extended.
+
+    Python's int never overflows, so the wrapping the delta encoding is defined
+    over - two's complement, 32 bits - has to be spelled out.
+    """
+    value &= 0xFFFFFFFF
+
+    return value - 0x100000000 if value >= 0x80000000 else value
+
+
+class ColumnCursor:
+    """Reads one scalar column's values in row order, whatever the block's encoding.
+
+    The generated row loop stays a row loop; this is the one place that knows how a
+    delta accumulates, how long a run has left, or that a dictionary index is a
+    reference into strings decoded once. That last one matters beyond file size: a
+    hundred-thousand-row column with three distinct strings holds three str objects,
+    not a hundred thousand.
+
+    check_column has already refused any (element, encoding) pair the spec does not
+    define, so the branches here do not re-litigate that.
+    """
+
+    __slots__ = ("_reader", "_field_name", "_element", "_encoding", "_dictionary",
+                 "_run_remaining", "_run_value", "_previous", "_started",
+                 "_rows_remaining")
+
+    def __init__(self, reader, column, row_count, field_name):
+        self._reader = reader
+        self._field_name = field_name
+        self._element = column.element
+        self._encoding = column.encoding
+
+        # A run-length family's current run: what remains of it, and its value - which
+        # is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+        self._run_remaining = 0
+        self._run_value = 0
+
+        # The delta family's accumulator, once started.
+        self._previous = 0
+        self._started = False
+
+        # Rows not yet handed out. A run that claims more than this is corrupt, and
+        # catching it here names the field instead of leaving it to the block-end check.
+        self._rows_remaining = row_count
+
+        if column.encoding in (ENCODING_DICT, ENCODING_DICT_RLE):
+            count = reader.read_counter32()
+
+            if count < 0:
+                raise ScbError(
+                    "%s: the dictionary entry count is negative" % field_name)
+
+            # Decoded once and handed out per row.
+            self._dictionary = [reader.read_string() for _ in range(count)]
+        else:
+            self._dictionary = None
+
+    def next_i32(self):
+        """The next int32 - which also serves enums, and reference indexes."""
+        self._rows_remaining -= 1
+        encoding = self._encoding
+
+        if encoding == ENCODING_RAW:
+            if self._element == ELEMENT_I32:
+                return self._reader.read_int32()
+            return self._reader.read_optimal_int32()
+
+        if encoding == ENCODING_VARINT:
+            return self._reader.read_optimal_int32()
+
+        if encoding == ENCODING_DELTA:
+            # The addition wraps on purpose, mirroring the writer's wrapping
+            # subtraction; together they are exact for every int32 pair.
+            if self._started:
+                self._previous = _wrap_int32(
+                    self._previous + self._reader.read_optimal_int32())
+            else:
+                self._previous = self._reader.read_optimal_int32()
+                self._started = True
+
+            return self._previous
+
+        if encoding == ENCODING_RLE:
+            if self._run_remaining == 0:
+                self._read_run()
+
+            self._run_remaining -= 1
+            return self._run_value
+
+        # ENCODING_DELTA_RLE; check_column refused everything else.
+        if not self._started:
+            self._previous = self._reader.read_optimal_int32()
+            self._started = True
+            return self._previous
+
+        if self._run_remaining == 0:
+            self._read_run()
+
+        self._run_remaining -= 1
+        self._previous = _wrap_int32(self._previous + self._run_value)
+        return self._previous
+
+    def next_i64(self):
+        """An int64 member: an i64 column is always raw, anything narrower decodes as int32."""
+        if self._element == ELEMENT_I64:
+            return self._reader.read_int64()
+
+        return self.next_i32()
+
+    def next_f64(self):
+        """A double member: float columns are always raw, an i32 column decodes then widens."""
+        if self._element == ELEMENT_F64:
+            return self._reader.read_double()
+
+        if self._element == ELEMENT_F32:
+            return self._reader.read_float()
+
+        return self.next_i32()
+
+    def next_string(self):
+        """The next string - the dictionary's instance where the block has one."""
+        self._rows_remaining -= 1
+
+        if self._encoding == ENCODING_RAW:
+            return self._reader.read_string()
+
+        if self._encoding == ENCODING_DICT:
+            return self._dictionary_entry(self._reader.read_counter32())
+
+        # ENCODING_DICT_RLE
+        if self._run_remaining == 0:
+            self._read_run()
+
+        self._run_remaining -= 1
+        return self._dictionary_entry(self._run_value)
+
+    def _read_run(self):
+        length = self._reader.read_counter32()
+
+        # + 1 because the row this run was read for is already counted out of
+        # _rows_remaining by its next_* call.
+        if length < 1 or length > self._rows_remaining + 1:
+            raise ScbError(
+                "%s: a run of %d values cannot cover the %d rows left in the column"
+                % (self._field_name, length, self._rows_remaining + 1))
+
+        self._run_remaining = length
+        self._run_value = self._reader.read_optimal_int32()
+
+    def _dictionary_entry(self, index):
+        if index < 0 or index >= len(self._dictionary):
+            raise ScbError(
+                "%s: dictionary index %d is out of range - the dictionary holds %d entries"
+                % (self._field_name, index, len(self._dictionary)))
+
+        return self._dictionary[index]
+
+
 def read_table_header(reader):
     """Reads and checks a table file's header.
 
@@ -358,19 +518,45 @@ def check_column(column, field_name, kind, count, accepted):
             "(kind %d, count %d). The schema changed shape; regenerate the code or rebuild "
             "the data." % (field_name, column.kind, column.count, kind, count))
 
-    # An encoding this build cannot decode is refused by name, exactly like an
-    # element it cannot read. An unknown column's encoding never gets here - a skip
-    # is a skip whatever the block's layout.
-    if column.encoding != ENCODING_RAW:
+    # An encoding this build cannot decode - or one the spec does not define for
+    # this element - is refused by name, exactly like an element it cannot read.
+    # An unknown column's encoding never gets here - a skip is a skip whatever the
+    # block's layout.
+    if not _encoding_supported(column):
         raise ScbError(
-            "%s: the file's column uses encoding %d, which this reader does not support. "
-            "Regenerate the code or rebuild the data." % (field_name, column.encoding))
+            "%s: the file's column uses encoding %d, which this reader cannot decode "
+            "for its element type. Regenerate the code or rebuild the data."
+            % (field_name, column.encoding))
 
     if column.element not in accepted:
         raise ScbError(
             "%s: the file carries element type %d, which this member cannot read "
             "(accepts %s). The column changed type incompatibly; regenerate the code or "
             "rebuild the data." % (field_name, column.element, accepted))
+
+
+def _encoding_supported(column):
+    """The (element, encoding) pairs the spec defines.
+
+    Arrays are always raw; integers take the integer encodings, strings the
+    dictionary ones.
+    """
+    if column.encoding == ENCODING_RAW:
+        return True
+
+    if column.kind != KIND_SCALAR:
+        return False
+
+    if column.element == ELEMENT_VARINT:
+        return column.encoding == ENCODING_RLE
+
+    if column.element == ELEMENT_I32:
+        return ENCODING_VARINT <= column.encoding <= ENCODING_DELTA_RLE
+
+    if column.element == ELEMENT_STRING:
+        return column.encoding in (ENCODING_DICT, ENCODING_DICT_RLE)
+
+    return False
 
 
 def check_block_end(reader, column, expected_end):

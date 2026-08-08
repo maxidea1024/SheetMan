@@ -14,6 +14,7 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -67,11 +68,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 1:
       (void)sm_check_column(reader, column, "Character.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -79,11 +81,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 2:
       (void)sm_check_column(reader, column, "Character.TitleName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.TitleName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->title_name);
+        (void)sm_cursor_next_string(&cursor, &record->title_name);
       }
 
       break;
@@ -91,11 +94,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 3:
       (void)sm_check_column(reader, column, "Character.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -103,12 +107,13 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 4:
       (void)sm_check_column(reader, column, "Character.CharacterType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.CharacterType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->character_type = (Rescue_CharacterType_t)scratch;
       }
 
@@ -117,12 +122,13 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 5:
       (void)sm_check_column(reader, column, "Character.Grade", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.Grade");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->grade = (Rescue_GradeType_t)scratch;
       }
 
@@ -131,12 +137,13 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 6:
       (void)sm_check_column(reader, column, "Character.AttributeType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.AttributeType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->attribute_type = (Rescue_AttributeType_t)scratch;
       }
 
@@ -145,12 +152,13 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 7:
       (void)sm_check_column(reader, column, "Character.JobType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.JobType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->job_type = (Rescue_JobType_t)scratch;
       }
 
@@ -159,12 +167,13 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 8:
       (void)sm_check_column(reader, column, "Character.Nation", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.Nation");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->nation = (Rescue_NationType_t)scratch;
       }
 
@@ -173,11 +182,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 9:
       (void)sm_check_column(reader, column, "Character.BaseATK", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I64) | SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.BaseATK");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i64_as(reader, column->element, &record->base_atk);
+        (void)sm_cursor_next_i64(&cursor, &record->base_atk);
       }
 
       break;
@@ -185,11 +195,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 10:
       (void)sm_check_column(reader, column, "Character.BaseDEF", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I64) | SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.BaseDEF");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i64_as(reader, column->element, &record->base_def);
+        (void)sm_cursor_next_i64(&cursor, &record->base_def);
       }
 
       break;
@@ -197,11 +208,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 11:
       (void)sm_check_column(reader, column, "Character.BaseMHP", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I64) | SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.BaseMHP");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i64_as(reader, column->element, &record->base_mhp);
+        (void)sm_cursor_next_i64(&cursor, &record->base_mhp);
       }
 
       break;
@@ -305,11 +317,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 20:
       (void)sm_check_column(reader, column, "Character.BasicAttack1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.BasicAttack1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->basic_attack1);
+        (void)sm_cursor_next_i32(&cursor, &record->basic_attack1);
       }
 
       break;
@@ -317,11 +330,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 21:
       (void)sm_check_column(reader, column, "Character.BasicAttack2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.BasicAttack2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->basic_attack2);
+        (void)sm_cursor_next_i32(&cursor, &record->basic_attack2);
       }
 
       break;
@@ -329,11 +343,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 22:
       (void)sm_check_column(reader, column, "Character.BasicAttack3", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.BasicAttack3");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->basic_attack3);
+        (void)sm_cursor_next_i32(&cursor, &record->basic_attack3);
       }
 
       break;
@@ -341,11 +356,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 23:
       (void)sm_check_column(reader, column, "Character.ActiveSkill1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.ActiveSkill1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->active_skill1);
+        (void)sm_cursor_next_i32(&cursor, &record->active_skill1);
       }
 
       break;
@@ -353,11 +369,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 24:
       (void)sm_check_column(reader, column, "Character.ActiveSkill2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.ActiveSkill2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->active_skill2);
+        (void)sm_cursor_next_i32(&cursor, &record->active_skill2);
       }
 
       break;
@@ -365,11 +382,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 25:
       (void)sm_check_column(reader, column, "Character.ActiveSkill3", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.ActiveSkill3");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->active_skill3);
+        (void)sm_cursor_next_i32(&cursor, &record->active_skill3);
       }
 
       break;
@@ -377,11 +395,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 26:
       (void)sm_check_column(reader, column, "Character.SpecialSkill1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.SpecialSkill1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->special_skill1);
+        (void)sm_cursor_next_i32(&cursor, &record->special_skill1);
       }
 
       break;
@@ -389,11 +408,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 27:
       (void)sm_check_column(reader, column, "Character.SpecialSkill2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.SpecialSkill2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->special_skill2);
+        (void)sm_cursor_next_i32(&cursor, &record->special_skill2);
       }
 
       break;
@@ -401,11 +421,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 28:
       (void)sm_check_column(reader, column, "Character.SpecialSkill3", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.SpecialSkill3");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->special_skill3);
+        (void)sm_cursor_next_i32(&cursor, &record->special_skill3);
       }
 
       break;
@@ -413,11 +434,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 29:
       (void)sm_check_column(reader, column, "Character.SpecialSkill4", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.SpecialSkill4");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->special_skill4);
+        (void)sm_cursor_next_i32(&cursor, &record->special_skill4);
       }
 
       break;
@@ -425,11 +447,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 30:
       (void)sm_check_column(reader, column, "Character.SpecialSkill5", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.SpecialSkill5");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->special_skill5);
+        (void)sm_cursor_next_i32(&cursor, &record->special_skill5);
       }
 
       break;
@@ -437,11 +460,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 31:
       (void)sm_check_column(reader, column, "Character.PassiveBuff1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.PassiveBuff1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->passive_buff1);
+        (void)sm_cursor_next_i32(&cursor, &record->passive_buff1);
       }
 
       break;
@@ -449,11 +473,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 32:
       (void)sm_check_column(reader, column, "Character.PassiveBuff2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.PassiveBuff2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->passive_buff2);
+        (void)sm_cursor_next_i32(&cursor, &record->passive_buff2);
       }
 
       break;
@@ -461,11 +486,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 33:
       (void)sm_check_column(reader, column, "Character.PassiveBuff3", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.PassiveBuff3");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->passive_buff3);
+        (void)sm_cursor_next_i32(&cursor, &record->passive_buff3);
       }
 
       break;
@@ -473,11 +499,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 34:
       (void)sm_check_column(reader, column, "Character.PrefabPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.PrefabPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->prefab_path);
+        (void)sm_cursor_next_string(&cursor, &record->prefab_path);
       }
 
       break;
@@ -485,11 +512,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 35:
       (void)sm_check_column(reader, column, "Character.SdMaterialPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.SdMaterialPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->sd_material_path);
+        (void)sm_cursor_next_string(&cursor, &record->sd_material_path);
       }
 
       break;
@@ -497,11 +525,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 36:
       (void)sm_check_column(reader, column, "Character.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;
@@ -509,11 +538,12 @@ static bool Rescue_CharacterParse(Rescue_CharacterTable_t* table, sm_reader* rea
     case 37:
       (void)sm_check_column(reader, column, "Character.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Character.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

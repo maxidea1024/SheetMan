@@ -112,33 +112,37 @@ class SDAgencyInfoTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "SDAgencyInfo.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "SDAgencyInfo.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "SDAgencyInfo.AgencyGrade", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.AgencyGrade");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.agency_grade);
+            record.agency_grade = static_cast<AgencyGrade>(cursor.next_i32());
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "SDAgencyInfo.DispatchCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.DispatchCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.dispatch_count);
+            record.dispatch_count = cursor.next_i32();
           }
           break;
         }
@@ -200,25 +204,28 @@ class SDAgencyInfoTable {
         }
         case 12: {
           sheetman::check_column(column, "SDAgencyInfo.FreeRefresh", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.FreeRefresh");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.free_refresh);
+            record.free_refresh = cursor.next_i32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "SDAgencyInfo.RefreshCurrencyType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.RefreshCurrencyType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.refresh_currency_type);
+            record.refresh_currency_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "SDAgencyInfo.RefreshCurrencyValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAgencyInfo.RefreshCurrencyValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.refresh_currency_value);
+            record.refresh_currency_value = cursor.next_i32();
           }
           break;
         }

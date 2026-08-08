@@ -98,28 +98,34 @@ class OopartsDungeonStageTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "OopartsDungeonStage.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "OopartsDungeonStage.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "OopartsDungeonStage.StageName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.StageName")
                 for record in records:
-                    record.stage_name = reader.read_string()
+                    record.stage_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "OopartsDungeonStage.DungeonType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.DungeonType")
                 for record in records:
-                    record.dungeon_type = DungeonType(reader.read_enum())
+                    record.dungeon_type = DungeonType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "OopartsDungeonStage.DungeonFloor", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.DungeonFloor")
                 for record in records:
-                    record.dungeon_floor = reader.read_i32_as(column.element)
+                    record.dungeon_floor = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "OopartsDungeonStage.TimeLimit", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.TimeLimit")
                 for record in records:
-                    record.time_limit = reader.read_i32_as(column.element)
+                    record.time_limit = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "OopartsDungeonStage.SpawnIds", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:
@@ -132,28 +138,33 @@ class OopartsDungeonStageTable:
                     record.boss_id = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 9:
                 sheetman.check_column(column, "OopartsDungeonStage.SpawnPointCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnPointCount")
                 for record in records:
-                    record.spawn_point_count = reader.read_i32_as(column.element)
+                    record.spawn_point_count = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "OopartsDungeonStage.SpawnMaxCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnMaxCount")
                 for record in records:
-                    record.spawn_max_count = reader.read_i32_as(column.element)
+                    record.spawn_max_count = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "OopartsDungeonStage.SpawnNextTime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.spawn_next_time = reader.read_float()
             elif column.tag == 12:
                 sheetman.check_column(column, "OopartsDungeonStage.StageClearCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.StageClearCount")
                 for record in records:
-                    record.stage_clear_count = reader.read_i32_as(column.element)
+                    record.stage_clear_count = cursor.next_i32()
             elif column.tag == 13:
                 sheetman.check_column(column, "OopartsDungeonStage.RecommendPower", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.RecommendPower")
                 for record in records:
-                    record.recommend_power = reader.read_string()
+                    record.recommend_power = cursor.next_string()
             elif column.tag == 14:
                 sheetman.check_column(column, "OopartsDungeonStage.RewardID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.RewardID")
                 for record in records:
-                    record.reward_id = reader.read_i32_as(column.element)
+                    record.reward_id = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "OopartsDungeonStage.AtkUpPercent", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -168,16 +179,19 @@ class OopartsDungeonStageTable:
                     record.mhp_up_percent = reader.read_float()
             elif column.tag == 18:
                 sheetman.check_column(column, "OopartsDungeonStage.DungeonImagePath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.DungeonImagePath")
                 for record in records:
-                    record.dungeon_image_path = reader.read_string()
+                    record.dungeon_image_path = cursor.next_string()
             elif column.tag == 19:
                 sheetman.check_column(column, "OopartsDungeonStage.MonsterImagePath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.MonsterImagePath")
                 for record in records:
-                    record.monster_image_path = reader.read_string()
+                    record.monster_image_path = cursor.next_string()
             elif column.tag == 20:
                 sheetman.check_column(column, "OopartsDungeonStage.AssetDataPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "OopartsDungeonStage.AssetDataPath")
                 for record in records:
-                    record.asset_data_path = reader.read_string()
+                    record.asset_data_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

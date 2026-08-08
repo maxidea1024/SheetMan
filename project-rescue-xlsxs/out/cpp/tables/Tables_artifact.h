@@ -109,33 +109,37 @@ class ArtifactTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Artifact.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Artifact.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Artifact.ArtifactType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.ArtifactType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.artifact_type);
+            record.artifact_type = static_cast<ArtifactJobType>(cursor.next_i32());
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Artifact.Grade", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.Grade");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.grade);
+            record.grade = static_cast<GradeType>(cursor.next_i32());
           }
           break;
         }
@@ -153,9 +157,10 @@ class ArtifactTable {
         }
         case 6: {
           sheetman::check_column(column, "Artifact.EquipStatType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.EquipStatType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.equip_stat_type);
+            record.equip_stat_type = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
@@ -169,9 +174,10 @@ class ArtifactTable {
         }
         case 8: {
           sheetman::check_column(column, "Artifact.CollectionType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.CollectionType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.collection_type);
+            record.collection_type = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
@@ -185,25 +191,28 @@ class ArtifactTable {
         }
         case 10: {
           sheetman::check_column(column, "Artifact.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "Artifact.MaterialPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.MaterialPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.material_path);
+            record.material_path = cursor.next_string();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "Artifact.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Artifact.Description");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.description);
+            record.description = cursor.next_string();
           }
           break;
         }

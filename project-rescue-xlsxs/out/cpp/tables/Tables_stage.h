@@ -120,33 +120,37 @@ class StageTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Stage.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Stage.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Stage.StageName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.StageName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.stage_name);
+            record.stage_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Stage.AssetDataPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.AssetDataPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.asset_data_path);
+            record.asset_data_path = cursor.next_string();
           }
           break;
         }
@@ -164,17 +168,19 @@ class StageTable {
         }
         case 6: {
           sheetman::check_column(column, "Stage.SpawnPointCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.SpawnPointCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.spawn_point_count);
+            record.spawn_point_count = cursor.next_i32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "Stage.SpawnMaxCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.SpawnMaxCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.spawn_max_count);
+            record.spawn_max_count = cursor.next_i32();
           }
           break;
         }
@@ -188,9 +194,10 @@ class StageTable {
         }
         case 9: {
           sheetman::check_column(column, "Stage.StageClearCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.StageClearCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.stage_clear_count);
+            record.stage_clear_count = cursor.next_i32();
           }
           break;
         }
@@ -256,25 +263,28 @@ class StageTable {
         }
         case 17: {
           sheetman::check_column(column, "Stage.StageDropListID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.StageDropListID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.stage_drop_list_id);
+            record.stage_drop_list_id = cursor.next_i32();
           }
           break;
         }
         case 18: {
           sheetman::check_column(column, "Stage.StageBGMID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.StageBGMID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.stage_bgmid);
+            record.stage_bgmid = cursor.next_i32();
           }
           break;
         }
         case 19: {
           sheetman::check_column(column, "Stage.BossStageBGMID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Stage.BossStageBGMID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.boss_stage_bgmid);
+            record.boss_stage_bgmid = cursor.next_i32();
           }
           break;
         }

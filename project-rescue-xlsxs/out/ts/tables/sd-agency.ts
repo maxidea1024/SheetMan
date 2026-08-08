@@ -281,6 +281,7 @@ export class SDAgencyTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -294,149 +295,170 @@ export class SDAgencyTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'SDAgency.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'SDAgency.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'SDAgency.InfoName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.InfoName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._infoName = reader.readString()
+            record._infoName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'SDAgency.AgencyType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.AgencyType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._agencyType = reader.readEnum() as AgencyType
+            record._agencyType = cursor.nextI32() as AgencyType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'SDAgency.AgencyGrade', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.AgencyGrade')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._agencyGrade = reader.readEnum() as AgencyGrade
+            record._agencyGrade = cursor.nextI32() as AgencyGrade
           }
           break
         case 6:
           sheetman.checkColumn(column, 'SDAgency.Time', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.Time')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._time = reader.readI32As(column.element)
+            record._time = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'SDAgency.AgencyWeight', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.AgencyWeight')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._agencyWeight = reader.readI32As(column.element)
+            record._agencyWeight = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'SDAgency.Condition1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.Condition1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._condition1 = reader.readEnum() as JobType
+            record._condition1 = cursor.nextI32() as JobType
           }
           break
         case 9:
           sheetman.checkColumn(column, 'SDAgency.Condition1value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.Condition1value')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._condition1value = reader.readI32As(column.element)
+            record._condition1value = cursor.nextI32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'SDAgency.Condition2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.Condition2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._condition2 = reader.readEnum() as GradeType
+            record._condition2 = cursor.nextI32() as GradeType
           }
           break
         case 11:
           sheetman.checkColumn(column, 'SDAgency.Condition2value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.Condition2value')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._condition2value = reader.readI32As(column.element)
+            record._condition2value = cursor.nextI32()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'SDAgency.Condition3', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.Condition3')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._condition3 = reader.readEnum() as ConditionType
+            record._condition3 = cursor.nextI32() as ConditionType
           }
           break
         case 13:
           sheetman.checkColumn(column, 'SDAgency.ClassMinValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.ClassMinValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._classMinValue = reader.readI32As(column.element)
+            record._classMinValue = cursor.nextI32()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'SDAgency.Condition3value', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.Condition3value')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._condition3value = reader.readI32As(column.element)
+            record._condition3value = cursor.nextI32()
           }
           break
         case 15:
           sheetman.checkColumn(column, 'SDAgency.RewardType1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.RewardType1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardType1 = reader.readEnum() as CurrencyType
+            record._rewardType1 = cursor.nextI32() as CurrencyType
           }
           break
         case 16:
           sheetman.checkColumn(column, 'SDAgency.RewardValue1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.RewardValue1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardValue1 = reader.readI32As(column.element)
+            record._rewardValue1 = cursor.nextI32()
           }
           break
         case 17:
           sheetman.checkColumn(column, 'SDAgency.RewardType2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.RewardType2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardType2 = reader.readEnum() as CurrencyType
+            record._rewardType2 = cursor.nextI32() as CurrencyType
           }
           break
         case 18:
           sheetman.checkColumn(column, 'SDAgency.RewardValue2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.RewardValue2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardValue2 = reader.readI32As(column.element)
+            record._rewardValue2 = cursor.nextI32()
           }
           break
         case 19:
           sheetman.checkColumn(column, 'SDAgency.RewardType3', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.RewardType3')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardType3 = reader.readEnum() as CurrencyType
+            record._rewardType3 = cursor.nextI32() as CurrencyType
           }
           break
         case 20:
           sheetman.checkColumn(column, 'SDAgency.RewardValue3', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.RewardValue3')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardValue3 = reader.readI32As(column.element)
+            record._rewardValue3 = cursor.nextI32()
           }
           break
         case 21:
           sheetman.checkColumn(column, 'SDAgency.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAgency.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         default:

@@ -163,6 +163,7 @@ export class ExcelTypedTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -176,16 +177,18 @@ export class ExcelTypedTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'ExcelTyped.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ExcelTyped.Index')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._index = reader.readI32As(column.element)
+            record._index = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'ExcelTyped.IntFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ExcelTyped.IntFromNumeric')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._intFromNumeric = reader.readI32As(column.element)
+            record._intFromNumeric = cursor.nextI32()
           }
           break
         case 3:
@@ -204,9 +207,10 @@ export class ExcelTypedTable {
           break
         case 5:
           sheetman.checkColumn(column, 'ExcelTyped.BigFromNumeric', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ExcelTyped.BigFromNumeric')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._bigFromNumeric = reader.readI64As(column.element)
+            record._bigFromNumeric = cursor.nextI64()
           }
           break
         default:

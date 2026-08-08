@@ -98,32 +98,37 @@ impl AttributeTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Attribute.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Attribute.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Attribute.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Attribute.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Attribute.AttributeName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Attribute.AttributeName")?;
                     for record in records.iter_mut() {
-                        record.attribute_name = reader.read_string()?;
+                        record.attribute_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Attribute.AttributeType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Attribute.AttributeType")?;
                     for record in records.iter_mut() {
-                        record.attribute_type = AttributeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.attribute_type = AttributeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "Attribute.TargetAttributeType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Attribute.TargetAttributeType")?;
                     for record in records.iter_mut() {
-                        record.target_attribute_type = AttributeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.target_attribute_type = AttributeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
@@ -140,8 +145,9 @@ impl AttributeTable {
                 }
                 8 => {
                     sheetman::check_column(column, "Attribute.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Attribute.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

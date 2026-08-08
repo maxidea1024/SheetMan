@@ -221,6 +221,7 @@ export class MaterialTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -234,37 +235,42 @@ export class MaterialTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Material.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Material.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Material.ItemName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.ItemName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._itemName = reader.readString()
+            record._itemName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Material.ItemType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.ItemType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._itemType = reader.readEnum() as ItemType
+            record._itemType = cursor.nextI32() as ItemType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Material.Type', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.Type')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._type = reader.readEnum() as CurrencyType
+            record._type = cursor.nextI32() as CurrencyType
           }
           break
         case 6:
@@ -276,44 +282,50 @@ export class MaterialTable {
           break
         case 7:
           sheetman.checkColumn(column, 'Material.MaxStack', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.MaxStack')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxStack = reader.readI64As(column.element)
+            record._maxStack = cursor.nextI64()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'Material.Cooltime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.Cooltime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._cooltime = reader.readI32As(column.element)
+            record._cooltime = cursor.nextI32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'Material.Duration', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.Duration')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._duration = reader.readI32As(column.element)
+            record._duration = cursor.nextI32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'Material.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'Material.DropPrefabPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.DropPrefabPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dropPrefabPath = reader.readString()
+            record._dropPrefabPath = cursor.nextString()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'Material.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Material.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         case 13:

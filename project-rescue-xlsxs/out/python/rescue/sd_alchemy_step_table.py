@@ -84,28 +84,34 @@ class SDAlchemyStepTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDAlchemyStep.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyStep.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDAlchemyStep.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyStep.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDAlchemyStep.NameKR", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyStep.NameKR")
                 for record in records:
-                    record.name_kr = reader.read_string()
+                    record.name_kr = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDAlchemyStep.MaxLevel", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyStep.MaxLevel")
                 for record in records:
-                    record.max_level = reader.read_i32_as(column.element)
+                    record.max_level = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "SDAlchemyStep.RewardType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyStep.RewardType")
                 for record in records:
-                    record.reward_type = CurrencyType(reader.read_enum())
+                    record.reward_type = CurrencyType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "SDAlchemyStep.RewardValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAlchemyStep.RewardValue")
                 for record in records:
-                    record.reward_value = reader.read_i32_as(column.element)
+                    record.reward_value = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

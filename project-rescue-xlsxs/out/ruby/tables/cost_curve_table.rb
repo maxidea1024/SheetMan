@@ -79,28 +79,33 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'CostCurve.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurve.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'CostCurve.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurve.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'CostCurve.GrowthType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurve.GrowthType')
           records.each do |record|
-            record.growth_type = reader.read_enum
+            record.growth_type = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'CostCurve.CostType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurve.CostType')
           records.each do |record|
-            record.cost_type = reader.read_enum
+            record.cost_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'CostCurve.BaseCostValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurve.BaseCostValue')
           records.each do |record|
-            record.base_cost_value = reader.read_i32_as(column.element)
+            record.base_cost_value = cursor.next_i32
           end
         else
           # A column added after this code was generated.

@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/StatType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -114,64 +115,73 @@ final class StatGrowthTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'StatGrowth.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StatGrowth.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'StatGrowth.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StatGrowth.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'StatGrowth.StageName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StatGrowth.StageName');
                     foreach ($records as $record) {
-                        $record->stageName = $reader->readString();
+                        $record->stageName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'StatGrowth.StatType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StatGrowth.StatType');
                     foreach ($records as $record) {
-                        $record->statType = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->statType = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'StatGrowth.InfuluenceStep', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StatGrowth.InfuluenceStep');
                     foreach ($records as $record) {
-                        $record->infuluenceStep = $reader->readI32As($column['element']);
+                        $record->infuluenceStep = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'StatGrowth.Growth', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StatGrowth.Growth');
                     foreach ($records as $record) {
-                        $record->growth = $reader->readI32As($column['element']);
+                        $record->growth = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'StatGrowth.GrowthValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StatGrowth.GrowthValue');
                     foreach ($records as $record) {
-                        $record->growthValue = $reader->readI32As($column['element']);
+                        $record->growthValue = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'StatGrowth.GrowthReselt', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StatGrowth.GrowthReselt');
                     foreach ($records as $record) {
-                        $record->growthReselt = $reader->readI32As($column['element']);
+                        $record->growthReselt = $cursor->nextI32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'StatGrowth.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StatGrowth.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

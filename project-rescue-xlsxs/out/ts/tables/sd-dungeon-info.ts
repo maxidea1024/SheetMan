@@ -217,6 +217,7 @@ export class SDDungeonInfoTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -230,93 +231,106 @@ export class SDDungeonInfoTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'SDDungeonInfo.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'SDDungeonInfo.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'SDDungeonInfo.NameKR', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.NameKR')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._nameKR = reader.readString()
+            record._nameKR = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'SDDungeonInfo.TotalCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.TotalCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._totalCount = reader.readI32As(column.element)
+            record._totalCount = cursor.nextI32()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'SDDungeonInfo.TrapCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.TrapCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._trapCount = reader.readI32As(column.element)
+            record._trapCount = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'SDDungeonInfo.ActionCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.ActionCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._actionCount = reader.readI32As(column.element)
+            record._actionCount = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'SDDungeonInfo.MatchCost', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.MatchCost')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._matchCost = reader.readI32As(column.element)
+            record._matchCost = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'SDDungeonInfo.MismatchCost', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.MismatchCost')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._mismatchCost = reader.readI32As(column.element)
+            record._mismatchCost = cursor.nextI32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'SDDungeonInfo.TrapCost', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.TrapCost')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._trapCost = reader.readI32As(column.element)
+            record._trapCost = cursor.nextI32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'SDDungeonInfo.ViewTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.ViewTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._viewTime = reader.readI32As(column.element)
+            record._viewTime = cursor.nextI32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'SDDungeonInfo.Time', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.Time')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._time = reader.readI32As(column.element)
+            record._time = cursor.nextI32()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'SDDungeonInfo.ADCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.ADCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._aDCount = reader.readI32As(column.element)
+            record._aDCount = cursor.nextI32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'SDDungeonInfo.DailyFreeCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDDungeonInfo.DailyFreeCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dailyFreeCount = reader.readI32As(column.element)
+            record._dailyFreeCount = cursor.nextI32()
           }
           break
         default:

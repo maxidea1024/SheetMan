@@ -88,33 +88,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SeasonShop.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SeasonShop.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SeasonShop.ProductName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.ProductName')
           records.each do |record|
-            record.product_name = reader.read_string
+            record.product_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SeasonShop.ShopType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.ShopType')
           records.each do |record|
-            record.shop_type = reader.read_enum
+            record.shop_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SeasonShop.ShopSlotID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.ShopSlotID')
           records.each do |record|
-            record.shop_slot_id = reader.read_i32_as(column.element)
+            record.shop_slot_id = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SeasonShop.Priority', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.Priority')
           records.each do |record|
-            record.priority = reader.read_i32_as(column.element)
+            record.priority = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'SeasonShop.ItemID', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
@@ -130,33 +136,39 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'SeasonShop.CycleType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.CycleType')
           records.each do |record|
-            record.cycle_type = reader.read_enum
+            record.cycle_type = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'SeasonShop.LimitValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.LimitValue')
           records.each do |record|
-            record.limit_value = reader.read_i32_as(column.element)
+            record.limit_value = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'SeasonShop.CurrencyType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.CurrencyType')
           records.each do |record|
-            record.currency_type = reader.read_enum
+            record.currency_type = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'SeasonShop.PriceValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.PriceValue')
           records.each do |record|
-            record.price_value = reader.read_i32_as(column.element)
+            record.price_value = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'SeasonShop.ConditionID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.ConditionID')
           records.each do |record|
-            record.condition_id = reader.read_i32_as(column.element)
+            record.condition_id = cursor.next_i32
           end
         when 14
           Sheetman.check_column(column, 'SeasonShop.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SeasonShop.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

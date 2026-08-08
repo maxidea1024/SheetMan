@@ -100,49 +100,55 @@ class CharacterLevelTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "CharacterLevel.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterLevel.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "CharacterLevel.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterLevel.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "CharacterLevel.NameKR", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterLevel.NameKR");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name_kr);
+            record.name_kr = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "CharacterLevel.Level", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterLevel.Level");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.level);
+            record.level = cursor.next_i32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "CharacterLevel.CharacterEXP", sheetman::kKindScalar, 1, {sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterLevel.CharacterEXP");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i64_as(column.element, record.character_exp);
+            record.character_exp = cursor.next_i64();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "CharacterLevel.AccumulatedEXP", sheetman::kKindScalar, 1, {sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterLevel.AccumulatedEXP");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i64_as(column.element, record.accumulated_exp);
+            record.accumulated_exp = cursor.next_i64();
           }
           break;
         }

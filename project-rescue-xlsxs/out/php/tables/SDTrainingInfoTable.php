@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/StatType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -122,57 +123,65 @@ final class SDTrainingInfoTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.TrainingName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.TrainingName');
                     foreach ($records as $record) {
-                        $record->trainingName = $reader->readString();
+                        $record->trainingName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.AttributeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.AttributeType');
                     foreach ($records as $record) {
-                        $record->attributeType = AttributeType::tryFrom($reader->readEnum()) ?? AttributeType::None;
+                        $record->attributeType = AttributeType::tryFrom($cursor->nextI32()) ?? AttributeType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.StatType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.StatType');
                     foreach ($records as $record) {
-                        $record->statType = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->statType = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.UnlockCondition', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.UnlockCondition');
                     foreach ($records as $record) {
-                        $record->unlockCondition = $reader->readI32As($column['element']);
+                        $record->unlockCondition = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.LevelUpCondition', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.LevelUpCondition');
                     foreach ($records as $record) {
-                        $record->levelUpCondition = $reader->readI32As($column['element']);
+                        $record->levelUpCondition = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.MaxLevel', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.MaxLevel');
                     foreach ($records as $record) {
-                        $record->maxLevel = $reader->readI32As($column['element']);
+                        $record->maxLevel = $cursor->nextI32();
                     }
                     break;
 
@@ -185,22 +194,25 @@ final class SDTrainingInfoTable
 
                 case 10:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.LvResetCurrencyType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.LvResetCurrencyType');
                     foreach ($records as $record) {
-                        $record->lvResetCurrencyType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->lvResetCurrencyType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.LvResetCurrencyValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.LvResetCurrencyValue');
                     foreach ($records as $record) {
-                        $record->lvResetCurrencyValue = $reader->readI32As($column['element']);
+                        $record->lvResetCurrencyValue = $cursor->nextI32();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'SDTrainingInfo.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDTrainingInfo.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

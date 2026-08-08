@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -110,32 +111,37 @@ class AttributeTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Attribute.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Attribute.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Attribute.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Attribute.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Attribute.AttributeName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Attribute.AttributeName")
                     for (record in loaded) {
-                        record.attributeName = reader.readString()
+                        record.attributeName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Attribute.AttributeType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Attribute.AttributeType")
                     for (record in loaded) {
-                        record.attributeType = AttributeType.of(reader.readEnum())
+                        record.attributeType = AttributeType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "Attribute.TargetAttributeType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Attribute.TargetAttributeType")
                     for (record in loaded) {
-                        record.targetAttributeType = AttributeType.of(reader.readEnum())
+                        record.targetAttributeType = AttributeType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
@@ -152,8 +158,9 @@ class AttributeTable {
                 }
                 8 -> {
                     checkColumn(column, "Attribute.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Attribute.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

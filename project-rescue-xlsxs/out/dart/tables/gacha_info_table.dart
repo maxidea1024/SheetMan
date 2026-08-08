@@ -102,6 +102,7 @@ class GachaInfoTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <GachaInfoRecord>[];
@@ -117,68 +118,79 @@ class GachaInfoTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'GachaInfo.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'GachaInfo.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'GachaInfo.GachaType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.GachaType');
           for (final record in loaded) {
-            record.gachaType = GachaType.of(reader.readEnum());
+            record.gachaType = GachaType.of(cursor.nextI32());
           }
           break;
         case 4:
           checkColumn(column, 'GachaInfo.Priority', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.Priority');
           for (final record in loaded) {
-            record.priority = reader.readI32As(column.element);
+            record.priority = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'GachaInfo.ConditionID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.ConditionID');
           for (final record in loaded) {
-            record.conditionID = reader.readI32As(column.element);
+            record.conditionID = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'GachaInfo.RateId', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.RateId');
           for (final record in loaded) {
-            record.rateId = reader.readI32As(column.element);
+            record.rateId = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'GachaInfo.TriggerCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.TriggerCount');
           for (final record in loaded) {
-            record.triggerCount = reader.readI32As(column.element);
+            record.triggerCount = cursor.nextI32();
           }
           break;
         case 8:
           checkColumn(column, 'GachaInfo.TriggerRateId', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.TriggerRateId');
           for (final record in loaded) {
-            record.triggerRateId = reader.readI32As(column.element);
+            record.triggerRateId = cursor.nextI32();
           }
           break;
         case 9:
           checkColumn(column, 'GachaInfo.EndCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.EndCount');
           for (final record in loaded) {
-            record.endCount = reader.readI32As(column.element);
+            record.endCount = cursor.nextI32();
           }
           break;
         case 10:
           checkColumn(column, 'GachaInfo.EndRateId', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.EndRateId');
           for (final record in loaded) {
-            record.endRateId = reader.readI32As(column.element);
+            record.endRateId = cursor.nextI32();
           }
           break;
         case 11:
           checkColumn(column, 'GachaInfo.EndCharacterId', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.EndCharacterId');
           for (final record in loaded) {
-            record.endCharacterId = reader.readI32As(column.element);
+            record.endCharacterId = cursor.nextI32();
           }
           break;
         case 12:
@@ -195,14 +207,16 @@ class GachaInfoTable {
           break;
         case 14:
           checkColumn(column, 'GachaInfo.WishListConditionID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.WishListConditionID');
           for (final record in loaded) {
-            record.wishListConditionID = reader.readI32As(column.element);
+            record.wishListConditionID = cursor.nextI32();
           }
           break;
         case 15:
           checkColumn(column, 'GachaInfo.WishListMaxValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.WishListMaxValue');
           for (final record in loaded) {
-            record.wishListMaxValue = reader.readI32As(column.element);
+            record.wishListMaxValue = cursor.nextI32();
           }
           break;
         case 16:
@@ -219,32 +233,37 @@ class GachaInfoTable {
           break;
         case 18:
           checkColumn(column, 'GachaInfo.CurrencyType1', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.CurrencyType1');
           for (final record in loaded) {
-            record.currencyType1 = CurrencyType.of(reader.readEnum());
+            record.currencyType1 = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 19:
           checkColumn(column, 'GachaInfo.SingleCost1', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.SingleCost1');
           for (final record in loaded) {
-            record.singleCost1 = reader.readI32As(column.element);
+            record.singleCost1 = cursor.nextI32();
           }
           break;
         case 20:
           checkColumn(column, 'GachaInfo.CurrencyType2', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.CurrencyType2');
           for (final record in loaded) {
-            record.currencyType2 = CurrencyType.of(reader.readEnum());
+            record.currencyType2 = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 21:
           checkColumn(column, 'GachaInfo.SingleCost2', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.SingleCost2');
           for (final record in loaded) {
-            record.singleCost2 = reader.readI32As(column.element);
+            record.singleCost2 = cursor.nextI32();
           }
           break;
         case 22:
           checkColumn(column, 'GachaInfo.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaInfo.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         case 23:

@@ -114,18 +114,21 @@ module X
         case column.tag
         when 1
           Sheetman.check_column(column, 'Template.Index', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Template.Index')
           records.each do |record|
-            record.index = reader.read_i32_as(column.element)
+            record.index = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Template.Class', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Template.Class')
           records.each do |record|
-            record.class_ = reader.read_string
+            record.class_ = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Template.Int', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Template.Int')
           records.each do |record|
-            record.int = reader.read_i32_as(column.element)
+            record.int = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'Template.Delete', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -134,23 +137,27 @@ module X
           end
         when 5
           Sheetman.check_column(column, 'Template.Operator', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Template.Operator')
           records.each do |record|
-            record.operator = reader.read_string
+            record.operator = cursor.next_string
           end
         when 6
           Sheetman.check_column(column, 'Template.Namespace', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Template.Namespace')
           records.each do |record|
-            record.namespace = reader.read_string
+            record.namespace = cursor.next_string
           end
         when 7
           Sheetman.check_column(column, 'Template.Constructor', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Template.Constructor')
           records.each do |record|
-            record.constructor = reader.read_string
+            record.constructor = cursor.next_string
           end
         when 8
           Sheetman.check_column(column, 'Template.Function', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Template.Function')
           records.each do |record|
-            record.function = reader.read_string
+            record.function = cursor.next_string
           end
         else
           # A column added after this code was generated.

@@ -278,6 +278,11 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                                    .Where(x => x.sf.IsRef)
                                    .Select(x => x.view)
                                    .ToList(),
+
+            // One cursor variable for the whole method: switch cases share a scope in
+            // JavaScript too, so each encodable column assigns it rather than declaring
+            // its own.
+            NeedsCursor = table.SerialFields.Any(UsesCursor),
         };
     }
 
@@ -350,6 +355,7 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             BinaryRead = BinaryReadExpression(sf),
             Tag = sf.FirstField.Tag.Value,
             ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
+            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
         };
     }
 
@@ -526,8 +532,68 @@ public class TsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
         return $"sheetman.checkColumn(column, '{tableName}.{sf.Name}', {kind}, {count}, [{accepted}])";
     }
 
+    /// <summary>
+    /// Whether a field's column reads through the cursor: every scalar column whose
+    /// element the encodings apply to, or promote from. Arrays are always raw and keep
+    /// reading the reader directly, as do the scalar elements that stay raw by spec.
+    /// </summary>
+    private static bool UsesCursor(SerialField sf)
+    {
+        if (sf.IsArray)
+            return false;
+
+        if (sf.IsRef)
+            return true;
+
+        switch (sf.ElementType)
+        {
+            // Int64 and Double are here for their promotions: the file may carry an
+            // i32 column - encoded - where the member has since widened.
+            case ValueType.Int32:
+            case ValueType.Int64:
+            case ValueType.Double:
+            case ValueType.Enum:
+            case ValueType.String:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or nothing for
+    /// a column that reads the reader directly.
+    /// </summary>
+    private static string CursorOpen(SerialField sf, string tableName)
+        => UsesCursor(sf)
+            ? $"cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, '{tableName}.{sf.Name}')"
+            : "";
+
     private string BinaryReadExpression(SerialField sf)
     {
+        // A scalar column can arrive encoded, so it reads through the cursor - which
+        // also carries the lossless promotions. Arrays are always raw and keep the
+        // direct reads below.
+        if (UsesCursor(sf))
+        {
+            if (sf.ElementType == ValueType.Enum)
+                return $"cursor.nextI32() as {ToTypescriptTypename(sf.FirstField)}";
+
+            // Only the stored index is on the wire; the value is filled in once
+            // every table is loaded.
+            if (sf.IsRef)
+                return "cursor.nextI32()";
+
+            return sf.ElementType switch
+            {
+                ValueType.Int32 => "cursor.nextI32()",
+                ValueType.Int64 => "cursor.nextI64()",
+                ValueType.Double => "cursor.nextF64()",
+                _ => "cursor.nextString()",
+            };
+        }
+
         return sf.ElementType switch
         {
             // Enum values travel zig-zag encoded rather than fixed width.

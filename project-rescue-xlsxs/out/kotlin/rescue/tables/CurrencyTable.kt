@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -122,38 +123,44 @@ class CurrencyTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Currency.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Currency.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Currency.ItemName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.ItemName")
                     for (record in loaded) {
-                        record.itemName = reader.readString()
+                        record.itemName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Currency.ItemType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.ItemType")
                     for (record in loaded) {
-                        record.itemType = ItemType.of(reader.readEnum())
+                        record.itemType = ItemType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "Currency.Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.Type")
                     for (record in loaded) {
-                        record.type = CurrencyType.of(reader.readEnum())
+                        record.type = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "Currency.CycleType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.CycleType")
                     for (record in loaded) {
-                        record.cycleType = CycleType.of(reader.readEnum())
+                        record.cycleType = CycleType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
@@ -164,38 +171,44 @@ class CurrencyTable {
                 }
                 8 -> {
                     checkColumn(column, "Currency.MaxStack", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.MaxStack")
                     for (record in loaded) {
-                        record.maxStack = reader.readI64As(column.element)
+                        record.maxStack = cursor.nextI64()
                     }
                 }
                 9 -> {
                     checkColumn(column, "Currency.Cooltime", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.Cooltime")
                     for (record in loaded) {
-                        record.cooltime = reader.readI32As(column.element)
+                        record.cooltime = cursor.nextI32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "Currency.Duration", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.Duration")
                     for (record in loaded) {
-                        record.duration = reader.readI32As(column.element)
+                        record.duration = cursor.nextI32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "Currency.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 12 -> {
                     checkColumn(column, "Currency.DropPrefabPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.DropPrefabPath")
                     for (record in loaded) {
-                        record.dropPrefabPath = reader.readString()
+                        record.dropPrefabPath = cursor.nextString()
                     }
                 }
                 13 -> {
                     checkColumn(column, "Currency.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Currency.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 14 -> {

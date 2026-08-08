@@ -83,48 +83,57 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'ShopInfo.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShopInfo.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'ShopInfo.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShopInfo.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'ShopInfo.InfoName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShopInfo.InfoName')
           records.each do |record|
-            record.info_name = reader.read_string
+            record.info_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'ShopInfo.ShopType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShopInfo.ShopType')
           records.each do |record|
-            record.shop_type = reader.read_enum
+            record.shop_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'ShopInfo.ConditionID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShopInfo.ConditionID')
           records.each do |record|
-            record.condition_id = reader.read_i32_as(column.element)
+            record.condition_id = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'ShopInfo.SheetName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShopInfo.SheetName')
           records.each do |record|
-            record.sheet_name = reader.read_string
+            record.sheet_name = cursor.next_string
           end
         when 7
           Sheetman.check_column(column, 'ShopInfo.Priority', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShopInfo.Priority')
           records.each do |record|
-            record.priority = reader.read_i32_as(column.element)
+            record.priority = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'ShopInfo.UIPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShopInfo.UIPath')
           records.each do |record|
-            record.ui_path = reader.read_string
+            record.ui_path = cursor.next_string
           end
         when 9
           Sheetman.check_column(column, 'ShopInfo.ListPrefabPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ShopInfo.ListPrefabPath')
           records.each do |record|
-            record.list_prefab_path = reader.read_string
+            record.list_prefab_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

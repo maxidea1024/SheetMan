@@ -112,41 +112,46 @@ class InfoGrowthTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "InfoGrowth.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "InfoGrowth.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "InfoGrowth.InfoName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.InfoName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.info_name);
+            record.info_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "InfoGrowth.SheetName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.SheetName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sheet_name);
+            record.sheet_name = cursor.next_string();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "InfoGrowth.GrowthType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.GrowthType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.growth_type);
+            record.growth_type = static_cast<GrowthType>(cursor.next_i32());
           }
           break;
         }
@@ -160,65 +165,73 @@ class InfoGrowthTable {
         }
         case 7: {
           sheetman::check_column(column, "InfoGrowth.ResetCostType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.ResetCostType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.reset_cost_type);
+            record.reset_cost_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "InfoGrowth.ResetCostValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.ResetCostValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.reset_cost_value);
+            record.reset_cost_value = cursor.next_i32();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "InfoGrowth.MaxStep", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.MaxStep");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.max_step);
+            record.max_step = cursor.next_i32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "InfoGrowth.MaxLevel", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.MaxLevel");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.max_level);
+            record.max_level = cursor.next_i32();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "InfoGrowth.UnlockConditionType", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.UnlockConditionType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.unlock_condition_type);
+            record.unlock_condition_type = cursor.next_string();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "InfoGrowth.UnlockConditionValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.UnlockConditionValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.unlock_condition_value);
+            record.unlock_condition_value = cursor.next_i32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "InfoGrowth.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.Description");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.description);
+            record.description = cursor.next_string();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "InfoGrowth.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "InfoGrowth.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }

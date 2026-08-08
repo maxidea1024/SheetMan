@@ -200,6 +200,7 @@ export class CharacterTranscendenceTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -213,58 +214,66 @@ export class CharacterTranscendenceTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'CharacterTranscendence.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CharacterTranscendence.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'CharacterTranscendence.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CharacterTranscendence.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'CharacterTranscendence.NameKR', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CharacterTranscendence.NameKR')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._nameKR = reader.readString()
+            record._nameKR = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'CharacterTranscendence.GradeType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CharacterTranscendence.GradeType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gradeType = reader.readEnum() as GradeType
+            record._gradeType = cursor.nextI32() as GradeType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'CharacterTranscendence.TranscendStep', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CharacterTranscendence.TranscendStep')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._transcendStep = reader.readI32As(column.element)
+            record._transcendStep = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'CharacterTranscendence.MaxLevel', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CharacterTranscendence.MaxLevel')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxLevel = reader.readI32As(column.element)
+            record._maxLevel = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'CharacterTranscendence.MaterialType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CharacterTranscendence.MaterialType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._materialType = reader.readEnum() as CurrencyType
+            record._materialType = cursor.nextI32() as CurrencyType
           }
           break
         case 8:
           sheetman.checkColumn(column, 'CharacterTranscendence.MaterialCount', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CharacterTranscendence.MaterialCount')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._materialCount = reader.readI32As(column.element)
+            record._materialCount = cursor.nextI32()
           }
           break
         case 9:
@@ -276,9 +285,10 @@ export class CharacterTranscendenceTable {
           break
         case 10:
           sheetman.checkColumn(column, 'CharacterTranscendence.NextStepID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'CharacterTranscendence.NextStepID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._nextStepID = reader.readI32As(column.element)
+            record._nextStepID = cursor.nextI32()
           }
           break
         default:

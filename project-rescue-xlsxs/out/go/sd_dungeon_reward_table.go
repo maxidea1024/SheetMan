@@ -126,100 +126,114 @@ func (t *SDDungeonRewardTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.RewardName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.RewardName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardName = reader.ReadString()
+					r.RewardName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.ConditionId", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.ConditionId")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionId = reader.ReadI32As(column.Element)
+					r.ConditionId = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.RewardCommon", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.RewardCommon")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardCommon = CurrencyType(reader.ReadEnum())
+					r.RewardCommon = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.CommonValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.CommonValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CommonValue = reader.ReadI32As(column.Element)
+					r.CommonValue = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Reward1Type", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Reward1Type")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Reward1Type = CurrencyType(reader.ReadEnum())
+					r.Reward1Type = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Reward1Value", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Reward1Value")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Reward1Value = reader.ReadI32As(column.Element)
+					r.Reward1Value = cursor.NextI32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Reward2Type", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Reward2Type")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Reward2Type = CurrencyType(reader.ReadEnum())
+					r.Reward2Type = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Reward2Value", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Reward2Value")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Reward2Value = reader.ReadI32As(column.Element)
+					r.Reward2Value = cursor.NextI32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Reward3Type", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Reward3Type")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Reward3Type = CurrencyType(reader.ReadEnum())
+					r.Reward3Type = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Reward3Value", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Reward3Value")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Reward3Value = reader.ReadI32As(column.Element)
+					r.Reward3Value = cursor.NextI32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Reward4Type", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Reward4Type")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Reward4Type = CurrencyType(reader.ReadEnum())
+					r.Reward4Type = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.Reward4Value", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.Reward4Value")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Reward4Value = reader.ReadI32As(column.Element)
+					r.Reward4Value = cursor.NextI32()
 				}
 			}
 		case 15:
@@ -231,16 +245,18 @@ func (t *SDDungeonRewardTable) Read(filename string) error {
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.RewardPerfect", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.RewardPerfect")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardPerfect = CurrencyType(reader.ReadEnum())
+					r.RewardPerfect = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.PerfectValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.PerfectValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PerfectValue = reader.ReadI32As(column.Element)
+					r.PerfectValue = cursor.NextI32()
 				}
 			}
 		case 18:
@@ -252,16 +268,18 @@ func (t *SDDungeonRewardTable) Read(filename string) error {
 			}
 		case 19:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.RewardMin", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.RewardMin")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardMin = CurrencyType(reader.ReadEnum())
+					r.RewardMin = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 20:
 			if sheetman.CheckColumn(reader, column, "SDDungeonReward.MinRewardValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonReward.MinRewardValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MinRewardValue = reader.ReadI32As(column.Element)
+					r.MinRewardValue = cursor.NextI32()
 				}
 			}
 		default:

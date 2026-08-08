@@ -89,6 +89,13 @@ bool {{ table.table_name }}::Read(const FString& Filename)
 
     Loaded.Empty(Header.RowCount);
     Loaded.SetNum(Header.RowCount);
+{{~ if table.needs_cursor ~}}
+
+    // One cursor for the whole read: the switch's cases share a scope, and C++ does
+    // not allow a jump past a live constructor, so each encodable column opens this
+    // one rather than declaring its own.
+    SheetMan::FSheetManColumnCursor Cursor;
+{{~ end ~}}
 
     // Column by column, matched by tag rather than by position: a column this build has no
     // member for is skipped by its declared length, and one whose type no longer fits the
@@ -103,6 +110,9 @@ bool {{ table.table_name }}::Read(const FString& Filename)
 {{~ for field in table.fields ~}}
         case {{ field.tag }}:
             {{ field.column_check }}
+{{~ if field.cursor_open != '' ~}}
+            {{ field.cursor_open }}
+{{~ end ~}}
 
             for ({{ table.record_name }}& Record : Loaded)
             {
@@ -130,6 +140,8 @@ bool {{ table.table_name }}::Read(const FString& Filename)
                 {
                     Reader.{{ field.read_call }}(Column.Element, Record.{{ field.name }}.AddDefaulted_GetRef());
                 }
+{{~ else if field.cursor_read != '' ~}}
+                {{ field.cursor_read }}
 {{~ else if field.kind == 'scalar_ref' ~}}
                 Reader.Read(Record.{{ field.name }}Index);
 {{~ else ~}}

@@ -106,44 +106,50 @@ func (t *StarNodeTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "StarNode.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StarNode.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "StarNode.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StarNode.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "StarNode.InfuluenceStep", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StarNode.InfuluenceStep")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.InfuluenceStep = reader.ReadI32As(column.Element)
+					r.InfuluenceStep = cursor.NextI32()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "StarNode.StarNodeName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StarNode.StarNodeName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StarNodeName = reader.ReadString()
+					r.StarNodeName = cursor.NextString()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "StarNode.StatType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StarNode.StatType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StatType = StatType(reader.ReadEnum())
+					r.StatType = StatType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "StarNode.StarNodeValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StarNode.StarNodeValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StarNodeValue = reader.ReadI32As(column.Element)
+					r.StarNodeValue = cursor.NextI32()
 				}
 			}
 		case 7:
@@ -166,16 +172,18 @@ func (t *StarNodeTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "StarNode.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StarNode.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "StarNode.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "StarNode.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

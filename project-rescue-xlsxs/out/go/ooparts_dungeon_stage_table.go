@@ -126,44 +126,50 @@ func (t *OopartsDungeonStageTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.StageName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.StageName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StageName = reader.ReadString()
+					r.StageName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.DungeonType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.DungeonType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonType = DungeonType(reader.ReadEnum())
+					r.DungeonType = DungeonType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.DungeonFloor", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.DungeonFloor")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonFloor = reader.ReadI32As(column.Element)
+					r.DungeonFloor = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.TimeLimit", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.TimeLimit")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TimeLimit = reader.ReadI32As(column.Element)
+					r.TimeLimit = cursor.NextI32()
 				}
 			}
 		case 7:
@@ -190,16 +196,18 @@ func (t *OopartsDungeonStageTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.SpawnPointCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnPointCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpawnPointCount = reader.ReadI32As(column.Element)
+					r.SpawnPointCount = cursor.NextI32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.SpawnMaxCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnMaxCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpawnMaxCount = reader.ReadI32As(column.Element)
+					r.SpawnMaxCount = cursor.NextI32()
 				}
 			}
 		case 11:
@@ -211,23 +219,26 @@ func (t *OopartsDungeonStageTable) Read(filename string) error {
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.StageClearCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.StageClearCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StageClearCount = reader.ReadI32As(column.Element)
+					r.StageClearCount = cursor.NextI32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.RecommendPower", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.RecommendPower")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RecommendPower = reader.ReadString()
+					r.RecommendPower = cursor.NextString()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.RewardID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.RewardID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardID = reader.ReadI32As(column.Element)
+					r.RewardID = cursor.NextI32()
 				}
 			}
 		case 15:
@@ -253,23 +264,26 @@ func (t *OopartsDungeonStageTable) Read(filename string) error {
 			}
 		case 18:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.DungeonImagePath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.DungeonImagePath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonImagePath = reader.ReadString()
+					r.DungeonImagePath = cursor.NextString()
 				}
 			}
 		case 19:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.MonsterImagePath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.MonsterImagePath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MonsterImagePath = reader.ReadString()
+					r.MonsterImagePath = cursor.NextString()
 				}
 			}
 		case 20:
 			if sheetman.CheckColumn(reader, column, "OopartsDungeonStage.AssetDataPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "OopartsDungeonStage.AssetDataPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AssetDataPath = reader.ReadString()
+					r.AssetDataPath = cursor.NextString()
 				}
 			}
 		default:

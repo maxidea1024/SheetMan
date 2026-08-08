@@ -131,25 +131,28 @@ class TemplateTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Template.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Template.Index");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.index);
+            record.index = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Template.Class", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Template.Class");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sm_class);
+            record.sm_class = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Template.Int", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Template.Int");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.sm_int);
+            record.sm_int = cursor.next_i32();
           }
           break;
         }
@@ -163,33 +166,37 @@ class TemplateTable {
         }
         case 5: {
           sheetman::check_column(column, "Template.Operator", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Template.Operator");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sm_operator);
+            record.sm_operator = cursor.next_string();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "Template.Namespace", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Template.Namespace");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sm_namespace);
+            record.sm_namespace = cursor.next_string();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "Template.Constructor", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Template.Constructor");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.constructor);
+            record.constructor = cursor.next_string();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "Template.Function", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Template.Function");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.function);
+            record.function = cursor.next_string();
           }
           break;
         }

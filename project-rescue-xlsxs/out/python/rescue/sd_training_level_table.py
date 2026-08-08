@@ -87,24 +87,29 @@ class SDTrainingLevelTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDTrainingLevel.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDTrainingLevel.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDTrainingLevel.LevelName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.LevelName")
                 for record in records:
-                    record.level_name = reader.read_string()
+                    record.level_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDTrainingLevel.CurrencyValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.CurrencyValue")
                 for record in records:
-                    record.currency_value = reader.read_i32_as(column.element)
+                    record.currency_value = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "SDTrainingLevel.CurrencyResult", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.CurrencyResult")
                 for record in records:
-                    record.currency_result = reader.read_i32_as(column.element)
+                    record.currency_result = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "SDTrainingLevel.MHPGrowth", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -123,8 +128,9 @@ class SDTrainingLevelTable:
                     record.def_total = reader.read_float()
             elif column.tag == 10:
                 sheetman.check_column(column, "SDTrainingLevel.CommonUnlockStageID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDTrainingLevel.CommonUnlockStageID")
                 for record in records:
-                    record.common_unlock_stage_id = reader.read_i32_as(column.element)
+                    record.common_unlock_stage_id = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

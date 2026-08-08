@@ -90,6 +90,7 @@ class PackageTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <PackageRecord>[];
@@ -105,32 +106,37 @@ class PackageTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Package.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Package.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Package.ClassName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.ClassName');
           for (final record in loaded) {
-            record.className = reader.readString();
+            record.className = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Package.ItemType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.ItemType');
           for (final record in loaded) {
-            record.itemType = ItemType.of(reader.readEnum());
+            record.itemType = ItemType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'Package.PackageType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.PackageType');
           for (final record in loaded) {
-            record.packageType = ConsumablesType.of(reader.readEnum());
+            record.packageType = ConsumablesType.of(cursor.nextI32());
           }
           break;
         case 6:
@@ -141,26 +147,30 @@ class PackageTable {
           break;
         case 7:
           checkColumn(column, 'Package.MaxStack', kindScalar, 1, [elementI64, elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.MaxStack');
           for (final record in loaded) {
-            record.maxStack = reader.readI64As(column.element);
+            record.maxStack = cursor.nextI64();
           }
           break;
         case 8:
           checkColumn(column, 'Package.PackageCondition', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.PackageCondition');
           for (final record in loaded) {
-            record.packageCondition = ConditionType.of(reader.readEnum());
+            record.packageCondition = ConditionType.of(cursor.nextI32());
           }
           break;
         case 9:
           checkColumn(column, 'Package.Cooltime', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.Cooltime');
           for (final record in loaded) {
-            record.cooltime = reader.readI32As(column.element);
+            record.cooltime = cursor.nextI32();
           }
           break;
         case 10:
           checkColumn(column, 'Package.Duration', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.Duration');
           for (final record in loaded) {
-            record.duration = reader.readI32As(column.element);
+            record.duration = cursor.nextI32();
           }
           break;
         case 11:
@@ -193,20 +203,23 @@ class PackageTable {
           break;
         case 15:
           checkColumn(column, 'Package.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         case 16:
           checkColumn(column, 'Package.DropPrefabPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.DropPrefabPath');
           for (final record in loaded) {
-            record.dropPrefabPath = reader.readString();
+            record.dropPrefabPath = cursor.nextString();
           }
           break;
         case 17:
           checkColumn(column, 'Package.ItemDescription', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Package.ItemDescription');
           for (final record in loaded) {
-            record.itemDescription = reader.readString();
+            record.itemDescription = cursor.nextString();
           }
           break;
         default:

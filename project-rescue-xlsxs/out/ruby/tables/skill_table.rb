@@ -87,43 +87,51 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Skill.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Skill.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Skill.SkillName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.SkillName')
           records.each do |record|
-            record.skill_name = reader.read_string
+            record.skill_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Skill.SkillType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.SkillType')
           records.each do |record|
-            record.skill_type = reader.read_enum
+            record.skill_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Skill.SkillSubType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.SkillSubType')
           records.each do |record|
-            record.skill_sub_type = reader.read_enum
+            record.skill_sub_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'Skill.AttributeType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.AttributeType')
           records.each do |record|
-            record.attribute_type = reader.read_enum
+            record.attribute_type = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'Skill.TargetType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.TargetType')
           records.each do |record|
-            record.target_type = reader.read_enum
+            record.target_type = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'Skill.AniPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.AniPath')
           records.each do |record|
-            record.ani_path = reader.read_string
+            record.ani_path = cursor.next_string
           end
         when 9
           Sheetman.check_column(column, 'Skill.SkillUseRange', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -143,13 +151,15 @@ module Rescue
           end
         when 12
           Sheetman.check_column(column, 'Skill.SkillIcon', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.SkillIcon')
           records.each do |record|
-            record.skill_icon = reader.read_string
+            record.skill_icon = cursor.next_string
           end
         when 13
           Sheetman.check_column(column, 'Skill.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Skill.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

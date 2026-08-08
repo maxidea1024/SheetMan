@@ -76,6 +76,7 @@ class SDTrainingLevelTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SDTrainingLevelRecord>[];
@@ -91,32 +92,37 @@ class SDTrainingLevelTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SDTrainingLevel.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SDTrainingLevel.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SDTrainingLevel.LevelName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.LevelName');
           for (final record in loaded) {
-            record.levelName = reader.readString();
+            record.levelName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'SDTrainingLevel.CurrencyValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.CurrencyValue');
           for (final record in loaded) {
-            record.currencyValue = reader.readI32As(column.element);
+            record.currencyValue = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'SDTrainingLevel.CurrencyResult', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.CurrencyResult');
           for (final record in loaded) {
-            record.currencyResult = reader.readI32As(column.element);
+            record.currencyResult = cursor.nextI32();
           }
           break;
         case 6:
@@ -145,8 +151,9 @@ class SDTrainingLevelTable {
           break;
         case 10:
           checkColumn(column, 'SDTrainingLevel.CommonUnlockStageID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDTrainingLevel.CommonUnlockStageID');
           for (final record in loaded) {
-            record.commonUnlockStageID = reader.readI32As(column.element);
+            record.commonUnlockStageID = cursor.nextI32();
           }
           break;
         default:

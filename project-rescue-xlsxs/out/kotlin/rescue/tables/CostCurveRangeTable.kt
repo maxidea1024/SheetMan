@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -106,32 +107,37 @@ class CostCurveRangeTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "CostCurveRange.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurveRange.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "CostCurveRange.GrowthType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurveRange.GrowthType")
                     for (record in loaded) {
-                        record.growthType = GrowthType.of(reader.readEnum())
+                        record.growthType = GrowthType.of(cursor.nextI32())
                     }
                 }
                 3 -> {
                     checkColumn(column, "CostCurveRange.RangeIndex", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurveRange.RangeIndex")
                     for (record in loaded) {
-                        record.rangeIndex = reader.readI32As(column.element)
+                        record.rangeIndex = cursor.nextI32()
                     }
                 }
                 4 -> {
                     checkColumn(column, "CostCurveRange.StartStep", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurveRange.StartStep")
                     for (record in loaded) {
-                        record.startStep = reader.readI32As(column.element)
+                        record.startStep = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "CostCurveRange.EndStep", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurveRange.EndStep")
                     for (record in loaded) {
-                        record.endStep = reader.readI32As(column.element)
+                        record.endStep = cursor.nextI32()
                     }
                 }
                 6 -> {

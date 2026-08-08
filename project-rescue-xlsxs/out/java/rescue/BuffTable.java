@@ -74,6 +74,7 @@ public final class BuffTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<BuffRecord> loaded = new ArrayList<>(count);
@@ -89,71 +90,81 @@ public final class BuffTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "Buff.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.Id");
                     for (BuffRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "Buff.BuffName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.BuffName");
                     for (BuffRecord record : loaded) {
-                        record.buffName = reader.readString();
+                        record.buffName = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "Buff.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.Name");
                     for (BuffRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "Buff.SkillType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.SkillType");
                     for (BuffRecord record : loaded) {
-                        record.skillType = SkillType.of(reader.readEnum());
+                        record.skillType = SkillType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "Buff.StatType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.StatType");
                     for (BuffRecord record : loaded) {
-                        record.statType = StatType.of(reader.readEnum());
+                        record.statType = StatType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "Buff.Priority", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.Priority");
                     for (BuffRecord record : loaded) {
-                        record.priority = reader.readI32As(column.element);
+                        record.priority = cursor.nextI32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "Buff.AttributeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.AttributeType");
                     for (BuffRecord record : loaded) {
-                        record.attributeType = AttributeType.of(reader.readEnum());
+                        record.attributeType = AttributeType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "Buff.TargetType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.TargetType");
                     for (BuffRecord record : loaded) {
-                        record.targetType = TargetType.of(reader.readEnum());
+                        record.targetType = TargetType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "Buff.BuffConditionType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.BuffConditionType");
                     for (BuffRecord record : loaded) {
-                        record.buffConditionType = BuffConditionType.of(reader.readEnum());
+                        record.buffConditionType = BuffConditionType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "Buff.BuffValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.BuffValue");
                     for (BuffRecord record : loaded) {
-                        record.buffValue = reader.readI32As(column.element);
+                        record.buffValue = cursor.nextI32();
                     }
                     break;
                 }
@@ -166,22 +177,25 @@ public final class BuffTable {
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "Buff.BuffTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.BuffTime");
                     for (BuffRecord record : loaded) {
-                        record.buffTime = reader.readI32As(column.element);
+                        record.buffTime = cursor.nextI32();
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "Buff.BuffTickTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.BuffTickTime");
                     for (BuffRecord record : loaded) {
-                        record.buffTickTime = reader.readI32As(column.element);
+                        record.buffTickTime = cursor.nextI32();
                     }
                     break;
                 }
                 case 14: {
                     ScbReader.checkColumn(column, "Buff.BuffMaxStack", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.BuffMaxStack");
                     for (BuffRecord record : loaded) {
-                        record.buffMaxStack = reader.readI32As(column.element);
+                        record.buffMaxStack = cursor.nextI32();
                     }
                     break;
                 }
@@ -201,15 +215,17 @@ public final class BuffTable {
                 }
                 case 17: {
                     ScbReader.checkColumn(column, "Buff.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.IconPath");
                     for (BuffRecord record : loaded) {
-                        record.iconPath = reader.readString();
+                        record.iconPath = cursor.nextString();
                     }
                     break;
                 }
                 case 18: {
                     ScbReader.checkColumn(column, "Buff.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Buff.Description");
                     for (BuffRecord record : loaded) {
-                        record.description = reader.readString();
+                        record.description = cursor.nextString();
                     }
                     break;
                 }

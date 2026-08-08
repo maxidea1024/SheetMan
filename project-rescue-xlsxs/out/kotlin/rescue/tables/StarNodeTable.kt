@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -114,38 +115,44 @@ class StarNodeTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "StarNode.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StarNode.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "StarNode.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "StarNode.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "StarNode.InfuluenceStep", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StarNode.InfuluenceStep")
                     for (record in loaded) {
-                        record.infuluenceStep = reader.readI32As(column.element)
+                        record.infuluenceStep = cursor.nextI32()
                     }
                 }
                 4 -> {
                     checkColumn(column, "StarNode.StarNodeName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "StarNode.StarNodeName")
                     for (record in loaded) {
-                        record.starNodeName = reader.readString()
+                        record.starNodeName = cursor.nextString()
                     }
                 }
                 5 -> {
                     checkColumn(column, "StarNode.StatType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StarNode.StatType")
                     for (record in loaded) {
-                        record.statType = StatType.of(reader.readEnum())
+                        record.statType = StatType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "StarNode.StarNodeValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StarNode.StarNodeValue")
                     for (record in loaded) {
-                        record.starNodeValue = reader.readI32As(column.element)
+                        record.starNodeValue = cursor.nextI32()
                     }
                 }
                 7 -> {
@@ -164,14 +171,16 @@ class StarNodeTable {
                 }
                 9 -> {
                     checkColumn(column, "StarNode.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "StarNode.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 10 -> {
                     checkColumn(column, "StarNode.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "StarNode.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

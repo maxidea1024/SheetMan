@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/StatType.php';
 require_once __DIR__ . '/../enums/TargetType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -130,43 +131,49 @@ final class SDAlchemyInfoTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.NameKR', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.NameKR');
                     foreach ($records as $record) {
-                        $record->nameKR = $reader->readString();
+                        $record->nameKR = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.MaterialType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.MaterialType');
                     foreach ($records as $record) {
-                        $record->materialType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->materialType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.CommonMaterialType1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.CommonMaterialType1');
                     foreach ($records as $record) {
-                        $record->commonMaterialType1 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->commonMaterialType1 = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.CommonMaterialType2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.CommonMaterialType2');
                     foreach ($records as $record) {
-                        $record->commonMaterialType2 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->commonMaterialType2 = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
@@ -179,64 +186,73 @@ final class SDAlchemyInfoTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.StatType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.StatType');
                     foreach ($records as $record) {
-                        $record->statType = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->statType = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.TargetType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.TargetType');
                     foreach ($records as $record) {
-                        $record->targetType = TargetType::tryFrom($reader->readEnum()) ?? TargetType::None;
+                        $record->targetType = TargetType::tryFrom($cursor->nextI32()) ?? TargetType::None;
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.MaxLevelId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.MaxLevelId');
                     foreach ($records as $record) {
-                        $record->maxLevelId = $reader->readI32As($column['element']);
+                        $record->maxLevelId = $cursor->nextI32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.AccelerateTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.AccelerateTime');
                     foreach ($records as $record) {
-                        $record->accelerateTime = $reader->readI32As($column['element']);
+                        $record->accelerateTime = $cursor->nextI32();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.AccelerateItemType1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.AccelerateItemType1');
                     foreach ($records as $record) {
-                        $record->accelerateItemType1 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->accelerateItemType1 = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.AccelerateItemCost1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.AccelerateItemCost1');
                     foreach ($records as $record) {
-                        $record->accelerateItemCost1 = $reader->readI32As($column['element']);
+                        $record->accelerateItemCost1 = $cursor->nextI32();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.AccelerateItemType2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.AccelerateItemType2');
                     foreach ($records as $record) {
-                        $record->accelerateItemType2 = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->accelerateItemType2 = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 15:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.AccelerateItemCost2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.AccelerateItemCost2');
                     foreach ($records as $record) {
-                        $record->accelerateItemCost2 = $reader->readI32As($column['element']);
+                        $record->accelerateItemCost2 = $cursor->nextI32();
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'SDAlchemyInfo.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDAlchemyInfo.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

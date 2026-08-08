@@ -122,38 +122,44 @@ impl TraitDungeonStageTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "TraitDungeonStage.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "TraitDungeonStage.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "TraitDungeonStage.StageName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.StageName")?;
                     for record in records.iter_mut() {
-                        record.stage_name = reader.read_string()?;
+                        record.stage_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "TraitDungeonStage.DungeonType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.DungeonType")?;
                     for record in records.iter_mut() {
-                        record.dungeon_type = DungeonType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.dungeon_type = DungeonType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "TraitDungeonStage.DungeonFloor", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.DungeonFloor")?;
                     for record in records.iter_mut() {
-                        record.dungeon_floor = reader.read_i32_as(column.element)?;
+                        record.dungeon_floor = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "TraitDungeonStage.TimeLimit", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.TimeLimit")?;
                     for record in records.iter_mut() {
-                        record.time_limit = reader.read_i32_as(column.element)?;
+                        record.time_limit = cursor.next_i32()?;
                     }
                 }
                 7 => {
@@ -178,14 +184,16 @@ impl TraitDungeonStageTable {
                 }
                 9 => {
                     sheetman::check_column(column, "TraitDungeonStage.SpawnPointCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.SpawnPointCount")?;
                     for record in records.iter_mut() {
-                        record.spawn_point_count = reader.read_i32_as(column.element)?;
+                        record.spawn_point_count = cursor.next_i32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "TraitDungeonStage.SpawnMaxCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.SpawnMaxCount")?;
                     for record in records.iter_mut() {
-                        record.spawn_max_count = reader.read_i32_as(column.element)?;
+                        record.spawn_max_count = cursor.next_i32()?;
                     }
                 }
                 11 => {
@@ -196,20 +204,23 @@ impl TraitDungeonStageTable {
                 }
                 12 => {
                     sheetman::check_column(column, "TraitDungeonStage.StageClearCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.StageClearCount")?;
                     for record in records.iter_mut() {
-                        record.stage_clear_count = reader.read_i32_as(column.element)?;
+                        record.stage_clear_count = cursor.next_i32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "TraitDungeonStage.RecommendPower", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.RecommendPower")?;
                     for record in records.iter_mut() {
-                        record.recommend_power = reader.read_string()?;
+                        record.recommend_power = cursor.next_string()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "TraitDungeonStage.RewardID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.RewardID")?;
                     for record in records.iter_mut() {
-                        record.reward_id = reader.read_i32_as(column.element)?;
+                        record.reward_id = cursor.next_i32()?;
                     }
                 }
                 15 => {
@@ -232,20 +243,23 @@ impl TraitDungeonStageTable {
                 }
                 18 => {
                     sheetman::check_column(column, "TraitDungeonStage.DungeonImagePath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.DungeonImagePath")?;
                     for record in records.iter_mut() {
-                        record.dungeon_image_path = reader.read_string()?;
+                        record.dungeon_image_path = cursor.next_string()?;
                     }
                 }
                 19 => {
                     sheetman::check_column(column, "TraitDungeonStage.MonsterImagePath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.MonsterImagePath")?;
                     for record in records.iter_mut() {
-                        record.monster_image_path = reader.read_string()?;
+                        record.monster_image_path = cursor.next_string()?;
                     }
                 }
                 20 => {
                     sheetman::check_column(column, "TraitDungeonStage.AssetDataPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "TraitDungeonStage.AssetDataPath")?;
                     for record in records.iter_mut() {
-                        record.asset_data_path = reader.read_string()?;
+                        record.asset_data_path = cursor.next_string()?;
                     }
                 }
                 _ => {

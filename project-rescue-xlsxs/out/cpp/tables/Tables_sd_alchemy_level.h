@@ -114,65 +114,73 @@ class SDAlchemyLevelTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "SDAlchemyLevel.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "SDAlchemyLevel.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "SDAlchemyLevel.NameKR", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.NameKR");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name_kr);
+            record.name_kr = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "SDAlchemyLevel.LevelUpCost", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.LevelUpCost");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.level_up_cost);
+            record.level_up_cost = cursor.next_i32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "SDAlchemyLevel.LevelUpTotal", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.LevelUpTotal");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.level_up_total);
+            record.level_up_total = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "SDAlchemyLevel.Time", sheetman::kKindScalar, 1, {sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.Time");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i64_as(column.element, record.time);
+            record.time = cursor.next_i64();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "SDAlchemyLevel.UseDiaCost", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.UseDiaCost");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.use_dia_cost);
+            record.use_dia_cost = cursor.next_i32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "SDAlchemyLevel.UseItemCost", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDAlchemyLevel.UseItemCost");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.use_item_cost);
+            record.use_item_cost = cursor.next_i32();
           }
           break;
         }

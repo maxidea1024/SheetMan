@@ -74,6 +74,7 @@ public final class AttributeTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<AttributeRecord> loaded = new ArrayList<>(count);
@@ -89,36 +90,41 @@ public final class AttributeTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "Attribute.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Attribute.Id");
                     for (AttributeRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "Attribute.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Attribute.Name");
                     for (AttributeRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "Attribute.AttributeName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Attribute.AttributeName");
                     for (AttributeRecord record : loaded) {
-                        record.attributeName = reader.readString();
+                        record.attributeName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "Attribute.AttributeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Attribute.AttributeType");
                     for (AttributeRecord record : loaded) {
-                        record.attributeType = AttributeType.of(reader.readEnum());
+                        record.attributeType = AttributeType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "Attribute.TargetAttributeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Attribute.TargetAttributeType");
                     for (AttributeRecord record : loaded) {
-                        record.targetAttributeType = AttributeType.of(reader.readEnum());
+                        record.targetAttributeType = AttributeType.of(cursor.nextI32());
                     }
                     break;
                 }
@@ -138,8 +144,9 @@ public final class AttributeTable {
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "Attribute.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Attribute.IconPath");
                     for (AttributeRecord record : loaded) {
-                        record.iconPath = reader.readString();
+                        record.iconPath = cursor.nextString();
                     }
                     break;
                 }

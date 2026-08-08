@@ -118,44 +118,50 @@ func (t *SDAlchemyInfoTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.NameKR", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.NameKR")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NameKR = reader.ReadString()
+					r.NameKR = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.MaterialType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.MaterialType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaterialType = CurrencyType(reader.ReadEnum())
+					r.MaterialType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.CommonMaterialType1", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CommonMaterialType1 = CurrencyType(reader.ReadEnum())
+					r.CommonMaterialType1 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.CommonMaterialType2", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.CommonMaterialType2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CommonMaterialType2 = CurrencyType(reader.ReadEnum())
+					r.CommonMaterialType2 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 7:
@@ -167,65 +173,74 @@ func (t *SDAlchemyInfoTable) Read(filename string) error {
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.StatType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.StatType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StatType = StatType(reader.ReadEnum())
+					r.StatType = StatType(cursor.NextI32())
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.TargetType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.TargetType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TargetType = TargetType(reader.ReadEnum())
+					r.TargetType = TargetType(cursor.NextI32())
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.MaxLevelId", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.MaxLevelId")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxLevelId = reader.ReadI32As(column.Element)
+					r.MaxLevelId = cursor.NextI32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.AccelerateTime", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateTime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AccelerateTime = reader.ReadI32As(column.Element)
+					r.AccelerateTime = cursor.NextI32()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.AccelerateItemType1", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AccelerateItemType1 = CurrencyType(reader.ReadEnum())
+					r.AccelerateItemType1 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.AccelerateItemCost1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AccelerateItemCost1 = reader.ReadI32As(column.Element)
+					r.AccelerateItemCost1 = cursor.NextI32()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.AccelerateItemType2", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemType2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AccelerateItemType2 = CurrencyType(reader.ReadEnum())
+					r.AccelerateItemType2 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.AccelerateItemCost2", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.AccelerateItemCost2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AccelerateItemCost2 = reader.ReadI32As(column.Element)
+					r.AccelerateItemCost2 = cursor.NextI32()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyInfo.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyInfo.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

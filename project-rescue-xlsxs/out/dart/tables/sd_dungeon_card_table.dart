@@ -70,6 +70,7 @@ class SDDungeonCardTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SDDungeonCardRecord>[];
@@ -85,44 +86,51 @@ class SDDungeonCardTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SDDungeonCard.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonCard.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SDDungeonCard.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonCard.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SDDungeonCard.SDDunName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonCard.SDDunName');
           for (final record in loaded) {
-            record.sDDunName = reader.readString();
+            record.sDDunName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'SDDungeonCard.SDCardType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonCard.SDCardType');
           for (final record in loaded) {
-            record.sDCardType = SDCardType.of(reader.readEnum());
+            record.sDCardType = SDCardType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'SDDungeonCard.CardCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonCard.CardCount');
           for (final record in loaded) {
-            record.cardCount = reader.readI32As(column.element);
+            record.cardCount = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'SDDungeonCard.StatIconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonCard.StatIconPath');
           for (final record in loaded) {
-            record.statIconPath = reader.readString();
+            record.statIconPath = cursor.nextString();
           }
           break;
         case 7:
           checkColumn(column, 'SDDungeonCard.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonCard.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

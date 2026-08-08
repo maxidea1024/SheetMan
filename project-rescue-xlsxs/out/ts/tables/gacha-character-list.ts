@@ -206,6 +206,7 @@ export class GachaCharacterListTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -219,30 +220,34 @@ export class GachaCharacterListTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'GachaCharacterList.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'GachaCharacterList.CharacterID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.CharacterID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._characterID = reader.readI32As(column.element)
+            record._characterID = cursor.nextI32()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'GachaCharacterList.GradeType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.GradeType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._gradeType = reader.readEnum() as GradeType
+            record._gradeType = cursor.nextI32() as GradeType
           }
           break
         case 4:
           sheetman.checkColumn(column, 'GachaCharacterList.BaseWeight', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.BaseWeight')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._baseWeight = reader.readI32As(column.element)
+            record._baseWeight = cursor.nextI32()
           }
           break
         case 5:
@@ -254,44 +259,50 @@ export class GachaCharacterListTable {
           break
         case 6:
           sheetman.checkColumn(column, 'GachaCharacterList.WishlistWeight', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.WishlistWeight')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._wishlistWeight = reader.readI32As(column.element)
+            record._wishlistWeight = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'GachaCharacterList.ClassUpCurrencyID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.ClassUpCurrencyID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._classUpCurrencyID = reader.readI32As(column.element)
+            record._classUpCurrencyID = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'GachaCharacterList.ClassUpCurrencyValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.ClassUpCurrencyValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._classUpCurrencyValue = reader.readI32As(column.element)
+            record._classUpCurrencyValue = cursor.nextI32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'GachaCharacterList.ExConditionID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.ExConditionID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._exConditionID = reader.readI32As(column.element)
+            record._exConditionID = cursor.nextI32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'GachaCharacterList.ExCurrencyID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.ExCurrencyID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._exCurrencyID = reader.readI32As(column.element)
+            record._exCurrencyID = cursor.nextI32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'GachaCharacterList.ExCurrencyValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'GachaCharacterList.ExCurrencyValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._exCurrencyValue = reader.readI32As(column.element)
+            record._exCurrencyValue = cursor.nextI32()
           }
           break
         default:

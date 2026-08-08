@@ -14,6 +14,7 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -59,11 +60,12 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 1:
       (void)sm_check_column(reader, column, "CharacterTranscendence.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -71,11 +73,12 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 2:
       (void)sm_check_column(reader, column, "CharacterTranscendence.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -83,11 +86,12 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 3:
       (void)sm_check_column(reader, column, "CharacterTranscendence.NameKR", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.NameKR");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name_kr);
+        (void)sm_cursor_next_string(&cursor, &record->name_kr);
       }
 
       break;
@@ -95,12 +99,13 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 4:
       (void)sm_check_column(reader, column, "CharacterTranscendence.GradeType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.GradeType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->grade_type = (Rescue_GradeType_t)scratch;
       }
 
@@ -109,11 +114,12 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 5:
       (void)sm_check_column(reader, column, "CharacterTranscendence.TranscendStep", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.TranscendStep");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->transcend_step);
+        (void)sm_cursor_next_i32(&cursor, &record->transcend_step);
       }
 
       break;
@@ -121,11 +127,12 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 6:
       (void)sm_check_column(reader, column, "CharacterTranscendence.MaxLevel", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.MaxLevel");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->max_level);
+        (void)sm_cursor_next_i32(&cursor, &record->max_level);
       }
 
       break;
@@ -133,12 +140,13 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 7:
       (void)sm_check_column(reader, column, "CharacterTranscendence.MaterialType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.MaterialType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->material_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -147,11 +155,12 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 8:
       (void)sm_check_column(reader, column, "CharacterTranscendence.MaterialCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.MaterialCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->material_count);
+        (void)sm_cursor_next_i32(&cursor, &record->material_count);
       }
 
       break;
@@ -171,11 +180,12 @@ static bool Rescue_CharacterTranscendenceParse(Rescue_CharacterTranscendenceTabl
     case 10:
       (void)sm_check_column(reader, column, "CharacterTranscendence.NextStepID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "CharacterTranscendence.NextStepID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_CharacterTranscendenceRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->next_step_id);
+        (void)sm_cursor_next_i32(&cursor, &record->next_step_id);
       }
 
       break;

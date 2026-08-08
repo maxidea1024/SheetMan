@@ -122,86 +122,100 @@ impl SDDungeonRewardTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDDungeonReward.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDDungeonReward.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDDungeonReward.RewardName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.RewardName")?;
                     for record in records.iter_mut() {
-                        record.reward_name = reader.read_string()?;
+                        record.reward_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDDungeonReward.ConditionId", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.ConditionId")?;
                     for record in records.iter_mut() {
-                        record.condition_id = reader.read_i32_as(column.element)?;
+                        record.condition_id = cursor.next_i32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SDDungeonReward.RewardCommon", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.RewardCommon")?;
                     for record in records.iter_mut() {
-                        record.reward_common = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_common = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDDungeonReward.CommonValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.CommonValue")?;
                     for record in records.iter_mut() {
-                        record.common_value = reader.read_i32_as(column.element)?;
+                        record.common_value = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "SDDungeonReward.Reward1Type", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Reward1Type")?;
                     for record in records.iter_mut() {
-                        record.reward1_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward1_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "SDDungeonReward.Reward1Value", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Reward1Value")?;
                     for record in records.iter_mut() {
-                        record.reward1_value = reader.read_i32_as(column.element)?;
+                        record.reward1_value = cursor.next_i32()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "SDDungeonReward.Reward2Type", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Reward2Type")?;
                     for record in records.iter_mut() {
-                        record.reward2_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward2_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "SDDungeonReward.Reward2Value", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Reward2Value")?;
                     for record in records.iter_mut() {
-                        record.reward2_value = reader.read_i32_as(column.element)?;
+                        record.reward2_value = cursor.next_i32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "SDDungeonReward.Reward3Type", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Reward3Type")?;
                     for record in records.iter_mut() {
-                        record.reward3_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward3_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "SDDungeonReward.Reward3Value", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Reward3Value")?;
                     for record in records.iter_mut() {
-                        record.reward3_value = reader.read_i32_as(column.element)?;
+                        record.reward3_value = cursor.next_i32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "SDDungeonReward.Reward4Type", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Reward4Type")?;
                     for record in records.iter_mut() {
-                        record.reward4_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward4_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "SDDungeonReward.Reward4Value", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.Reward4Value")?;
                     for record in records.iter_mut() {
-                        record.reward4_value = reader.read_i32_as(column.element)?;
+                        record.reward4_value = cursor.next_i32()?;
                     }
                 }
                 15 => {
@@ -212,14 +226,16 @@ impl SDDungeonRewardTable {
                 }
                 16 => {
                     sheetman::check_column(column, "SDDungeonReward.RewardPerfect", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.RewardPerfect")?;
                     for record in records.iter_mut() {
-                        record.reward_perfect = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_perfect = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "SDDungeonReward.PerfectValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.PerfectValue")?;
                     for record in records.iter_mut() {
-                        record.perfect_value = reader.read_i32_as(column.element)?;
+                        record.perfect_value = cursor.next_i32()?;
                     }
                 }
                 18 => {
@@ -230,14 +246,16 @@ impl SDDungeonRewardTable {
                 }
                 19 => {
                     sheetman::check_column(column, "SDDungeonReward.RewardMin", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.RewardMin")?;
                     for record in records.iter_mut() {
-                        record.reward_min = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_min = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 20 => {
                     sheetman::check_column(column, "SDDungeonReward.MinRewardValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonReward.MinRewardValue")?;
                     for record in records.iter_mut() {
-                        record.min_reward_value = reader.read_i32_as(column.element)?;
+                        record.min_reward_value = cursor.next_i32()?;
                     }
                 }
                 _ => {

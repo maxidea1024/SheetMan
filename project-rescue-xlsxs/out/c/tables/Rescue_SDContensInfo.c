@@ -14,6 +14,7 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -65,11 +66,12 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 1:
       (void)sm_check_column(reader, column, "SDContensInfo.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -77,11 +79,12 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 2:
       (void)sm_check_column(reader, column, "SDContensInfo.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -89,11 +92,12 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 3:
       (void)sm_check_column(reader, column, "SDContensInfo.InfoName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.InfoName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->info_name);
+        (void)sm_cursor_next_string(&cursor, &record->info_name);
       }
 
       break;
@@ -101,11 +105,12 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 4:
       (void)sm_check_column(reader, column, "SDContensInfo.SheetName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.SheetName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->sheet_name);
+        (void)sm_cursor_next_string(&cursor, &record->sheet_name);
       }
 
       break;
@@ -113,12 +118,13 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 5:
       (void)sm_check_column(reader, column, "SDContensInfo.SdContensType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.SdContensType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->sd_contens_type = (Rescue_SdContensType_t)scratch;
       }
 
@@ -127,11 +133,12 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 6:
       (void)sm_check_column(reader, column, "SDContensInfo.ConditionID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.ConditionID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->condition_id);
+        (void)sm_cursor_next_i32(&cursor, &record->condition_id);
       }
 
       break;
@@ -139,12 +146,13 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 7:
       (void)sm_check_column(reader, column, "SDContensInfo.CurrencyType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.CurrencyType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->currency_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -165,12 +173,13 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 9:
       (void)sm_check_column(reader, column, "SDContensInfo.CycleType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.CycleType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->cycle_type = (Rescue_CycleType_t)scratch;
       }
 
@@ -179,11 +188,12 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 10:
       (void)sm_check_column(reader, column, "SDContensInfo.SDCharacterPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.SDCharacterPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->sd_character_path);
+        (void)sm_cursor_next_string(&cursor, &record->sd_character_path);
       }
 
       break;
@@ -191,11 +201,12 @@ static bool Rescue_SDContensInfoParse(Rescue_SDContensInfoTable_t* table, sm_rea
     case 11:
       (void)sm_check_column(reader, column, "SDContensInfo.PrefabPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDContensInfo.PrefabPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDContensInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->prefab_path);
+        (void)sm_cursor_next_string(&cursor, &record->prefab_path);
       }
 
       break;

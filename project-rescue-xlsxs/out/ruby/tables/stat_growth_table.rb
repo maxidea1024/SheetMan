@@ -83,48 +83,57 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'StatGrowth.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StatGrowth.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'StatGrowth.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StatGrowth.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'StatGrowth.StageName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StatGrowth.StageName')
           records.each do |record|
-            record.stage_name = reader.read_string
+            record.stage_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'StatGrowth.StatType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StatGrowth.StatType')
           records.each do |record|
-            record.stat_type = reader.read_enum
+            record.stat_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'StatGrowth.InfuluenceStep', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StatGrowth.InfuluenceStep')
           records.each do |record|
-            record.infuluence_step = reader.read_i32_as(column.element)
+            record.infuluence_step = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'StatGrowth.Growth', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StatGrowth.Growth')
           records.each do |record|
-            record.growth = reader.read_i32_as(column.element)
+            record.growth = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'StatGrowth.GrowthValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StatGrowth.GrowthValue')
           records.each do |record|
-            record.growth_value = reader.read_i32_as(column.element)
+            record.growth_value = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'StatGrowth.GrowthReselt', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StatGrowth.GrowthReselt')
           records.each do |record|
-            record.growth_reselt = reader.read_i32_as(column.element)
+            record.growth_reselt = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'StatGrowth.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'StatGrowth.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

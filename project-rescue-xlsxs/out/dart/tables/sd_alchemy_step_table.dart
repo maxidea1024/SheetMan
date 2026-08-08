@@ -68,6 +68,7 @@ class SDAlchemyStepTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SDAlchemyStepRecord>[];
@@ -83,38 +84,44 @@ class SDAlchemyStepTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SDAlchemyStep.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyStep.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SDAlchemyStep.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyStep.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SDAlchemyStep.NameKR', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyStep.NameKR');
           for (final record in loaded) {
-            record.nameKR = reader.readString();
+            record.nameKR = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'SDAlchemyStep.MaxLevel', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyStep.MaxLevel');
           for (final record in loaded) {
-            record.maxLevel = reader.readI32As(column.element);
+            record.maxLevel = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'SDAlchemyStep.RewardType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyStep.RewardType');
           for (final record in loaded) {
-            record.rewardType = CurrencyType.of(reader.readEnum());
+            record.rewardType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'SDAlchemyStep.RewardValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDAlchemyStep.RewardValue');
           for (final record in loaded) {
-            record.rewardValue = reader.readI32As(column.element);
+            record.rewardValue = cursor.nextI32();
           }
           break;
         default:

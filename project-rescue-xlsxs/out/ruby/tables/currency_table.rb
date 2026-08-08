@@ -88,33 +88,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Currency.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Currency.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Currency.ItemName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.ItemName')
           records.each do |record|
-            record.item_name = reader.read_string
+            record.item_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Currency.ItemType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.ItemType')
           records.each do |record|
-            record.item_type = reader.read_enum
+            record.item_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Currency.Type', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.Type')
           records.each do |record|
-            record.type = reader.read_enum
+            record.type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'Currency.CycleType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.CycleType')
           records.each do |record|
-            record.cycle_type = reader.read_enum
+            record.cycle_type = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'Currency.Stackable', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -123,33 +129,39 @@ module Rescue
           end
         when 8
           Sheetman.check_column(column, 'Currency.MaxStack', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.MaxStack')
           records.each do |record|
-            record.max_stack = reader.read_i64_as(column.element)
+            record.max_stack = cursor.next_i64
           end
         when 9
           Sheetman.check_column(column, 'Currency.Cooltime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.Cooltime')
           records.each do |record|
-            record.cooltime = reader.read_i32_as(column.element)
+            record.cooltime = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'Currency.Duration', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.Duration')
           records.each do |record|
-            record.duration = reader.read_i32_as(column.element)
+            record.duration = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'Currency.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         when 12
           Sheetman.check_column(column, 'Currency.DropPrefabPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.DropPrefabPath')
           records.each do |record|
-            record.drop_prefab_path = reader.read_string
+            record.drop_prefab_path = cursor.next_string
           end
         when 13
           Sheetman.check_column(column, 'Currency.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Currency.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         when 14
           Sheetman.check_column(column, 'Currency.ShortCutIndex', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

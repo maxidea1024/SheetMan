@@ -14,6 +14,7 @@ namespace Rescue;
 require_once __DIR__ . '/../sheetman/ScbReader.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -135,29 +136,33 @@ final class StageTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Stage.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Stage.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Stage.StageName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.StageName');
                     foreach ($records as $record) {
-                        $record->stageName = $reader->readString();
+                        $record->stageName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Stage.AssetDataPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.AssetDataPath');
                     foreach ($records as $record) {
-                        $record->assetDataPath = $reader->readString();
+                        $record->assetDataPath = $cursor->nextString();
                     }
                     break;
 
@@ -174,15 +179,17 @@ final class StageTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'Stage.SpawnPointCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.SpawnPointCount');
                     foreach ($records as $record) {
-                        $record->spawnPointCount = $reader->readI32As($column['element']);
+                        $record->spawnPointCount = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'Stage.SpawnMaxCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.SpawnMaxCount');
                     foreach ($records as $record) {
-                        $record->spawnMaxCount = $reader->readI32As($column['element']);
+                        $record->spawnMaxCount = $cursor->nextI32();
                     }
                     break;
 
@@ -195,8 +202,9 @@ final class StageTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'Stage.StageClearCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.StageClearCount');
                     foreach ($records as $record) {
-                        $record->stageClearCount = $reader->readI32As($column['element']);
+                        $record->stageClearCount = $cursor->nextI32();
                     }
                     break;
 
@@ -255,22 +263,25 @@ final class StageTable
 
                 case 17:
                     ScbReader::checkColumn($column, 'Stage.StageDropListID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.StageDropListID');
                     foreach ($records as $record) {
-                        $record->stageDropListID = $reader->readI32As($column['element']);
+                        $record->stageDropListID = $cursor->nextI32();
                     }
                     break;
 
                 case 18:
                     ScbReader::checkColumn($column, 'Stage.StageBGMID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.StageBGMID');
                     foreach ($records as $record) {
-                        $record->stageBGMID = $reader->readI32As($column['element']);
+                        $record->stageBGMID = $cursor->nextI32();
                     }
                     break;
 
                 case 19:
                     ScbReader::checkColumn($column, 'Stage.BossStageBGMID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Stage.BossStageBGMID');
                     foreach ($records as $record) {
-                        $record->bossStageBGMID = $reader->readI32As($column['element']);
+                        $record->bossStageBGMID = $cursor->nextI32();
                     }
                     break;
 

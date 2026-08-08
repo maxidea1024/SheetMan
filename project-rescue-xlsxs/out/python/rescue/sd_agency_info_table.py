@@ -93,20 +93,24 @@ class SDAgencyInfoTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDAgencyInfo.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDAgencyInfo.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDAgencyInfo.AgencyGrade", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.AgencyGrade")
                 for record in records:
-                    record.agency_grade = AgencyGrade(reader.read_enum())
+                    record.agency_grade = AgencyGrade(cursor.next_i32())
             elif column.tag == 4:
                 sheetman.check_column(column, "SDAgencyInfo.DispatchCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.DispatchCount")
                 for record in records:
-                    record.dispatch_count = reader.read_i32_as(column.element)
+                    record.dispatch_count = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "SDAgencyInfo.GradeSRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -137,16 +141,19 @@ class SDAgencyInfoTable:
                     record.grade_f_rate = reader.read_float()
             elif column.tag == 12:
                 sheetman.check_column(column, "SDAgencyInfo.FreeRefresh", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.FreeRefresh")
                 for record in records:
-                    record.free_refresh = reader.read_i32_as(column.element)
+                    record.free_refresh = cursor.next_i32()
             elif column.tag == 13:
                 sheetman.check_column(column, "SDAgencyInfo.RefreshCurrencyType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyType")
                 for record in records:
-                    record.refresh_currency_type = CurrencyType(reader.read_enum())
+                    record.refresh_currency_type = CurrencyType(cursor.next_i32())
             elif column.tag == 14:
                 sheetman.check_column(column, "SDAgencyInfo.RefreshCurrencyValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyValue")
                 for record in records:
-                    record.refresh_currency_value = reader.read_i32_as(column.element)
+                    record.refresh_currency_value = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

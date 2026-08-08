@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -120,32 +121,37 @@ class MaterialTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Material.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Material.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Material.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Material.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Material.ItemName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Material.ItemName")
                     for (record in loaded) {
-                        record.itemName = reader.readString()
+                        record.itemName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Material.ItemType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Material.ItemType")
                     for (record in loaded) {
-                        record.itemType = ItemType.of(reader.readEnum())
+                        record.itemType = ItemType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "Material.Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Material.Type")
                     for (record in loaded) {
-                        record.type = CurrencyType.of(reader.readEnum())
+                        record.type = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
@@ -156,38 +162,44 @@ class MaterialTable {
                 }
                 7 -> {
                     checkColumn(column, "Material.MaxStack", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Material.MaxStack")
                     for (record in loaded) {
-                        record.maxStack = reader.readI64As(column.element)
+                        record.maxStack = cursor.nextI64()
                     }
                 }
                 8 -> {
                     checkColumn(column, "Material.Cooltime", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Material.Cooltime")
                     for (record in loaded) {
-                        record.cooltime = reader.readI32As(column.element)
+                        record.cooltime = cursor.nextI32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "Material.Duration", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Material.Duration")
                     for (record in loaded) {
-                        record.duration = reader.readI32As(column.element)
+                        record.duration = cursor.nextI32()
                     }
                 }
                 10 -> {
                     checkColumn(column, "Material.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Material.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 11 -> {
                     checkColumn(column, "Material.DropPrefabPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Material.DropPrefabPath")
                     for (record in loaded) {
-                        record.dropPrefabPath = reader.readString()
+                        record.dropPrefabPath = cursor.nextString()
                     }
                 }
                 12 -> {
                     checkColumn(column, "Material.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Material.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 13 -> {

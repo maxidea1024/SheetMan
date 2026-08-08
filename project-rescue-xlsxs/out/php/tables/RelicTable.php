@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/StatType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -126,36 +127,41 @@ final class RelicTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Relic.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Relic.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Relic.RelicName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicName');
                     foreach ($records as $record) {
-                        $record->relicName = $reader->readString();
+                        $record->relicName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Relic.InfuluenceStep', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.InfuluenceStep');
                     foreach ($records as $record) {
-                        $record->infuluenceStep = $reader->readI32As($column['element']);
+                        $record->infuluenceStep = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Relic.RelicType1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicType1');
                     foreach ($records as $record) {
-                        $record->relicType1 = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->relicType1 = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
@@ -175,8 +181,9 @@ final class RelicTable
 
                 case 8:
                     ScbReader::checkColumn($column, 'Relic.RelicType2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicType2');
                     foreach ($records as $record) {
-                        $record->relicType2 = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->relicType2 = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
@@ -196,8 +203,9 @@ final class RelicTable
 
                 case 11:
                     ScbReader::checkColumn($column, 'Relic.RelicType3', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.RelicType3');
                     foreach ($records as $record) {
-                        $record->relicType3 = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->relicType3 = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
@@ -217,15 +225,17 @@ final class RelicTable
 
                 case 14:
                     ScbReader::checkColumn($column, 'Relic.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 
                 case 15:
                     ScbReader::checkColumn($column, 'Relic.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Relic.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

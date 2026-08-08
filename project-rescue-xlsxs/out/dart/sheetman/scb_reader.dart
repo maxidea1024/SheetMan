@@ -322,6 +322,166 @@ class ScbReader {
   }
 }
 
+/// Reads one scalar column's values in row order, whatever the block's encoding.
+///
+/// The generated row loop stays a row loop; this is the one place that knows how a
+/// delta accumulates, how long a run has left, or that a dictionary index is a
+/// reference into strings decoded once. That last one matters beyond file size: a
+/// hundred-thousand-row column with three distinct strings allocates three strings,
+/// not a hundred thousand.
+///
+/// checkColumn has already refused any (element, encoding) pair the spec does not
+/// define, so the switches here do not re-litigate that.
+class ScbColumnCursor {
+  ScbColumnCursor(this._reader, Column column, int rowCount, this._fieldName)
+      : _element = column.element,
+        _encoding = column.encoding,
+        _rowsRemaining = rowCount {
+    if (_encoding == encodingDict || _encoding == encodingDictRle) {
+      final count = _reader.readCounter32();
+
+      if (count < 0) {
+        throw ScbException('$_fieldName: the dictionary entry count is negative');
+      }
+
+      _dictionary = List<String>.generate(count, (_) => _reader.readString());
+    }
+  }
+
+  final ScbReader _reader;
+  final String _fieldName;
+  final int _element;
+  final int _encoding;
+
+  /// The block's dictionary, decoded once and handed out per row.
+  List<String>? _dictionary;
+
+  // A run-length family's current run: what remains of it, and its value - which is a
+  // plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+  int _runRemaining = 0;
+  int _runValue = 0;
+
+  // The delta family's accumulator, once _started.
+  int _previous = 0;
+  bool _started = false;
+
+  // Rows not yet handed out. A run that claims more than this is corrupt, and catching
+  // it here names the field instead of leaving it to the block-end check.
+  int _rowsRemaining;
+
+  /// The next int32 - which also serves enums, and reference indexes.
+  int nextI32() {
+    _rowsRemaining--;
+
+    switch (_encoding) {
+      case encodingRaw:
+        return _element == elementI32 ? _reader.readInt32() : _reader.readOptimalInt32();
+
+      case encodingVarint:
+        return _reader.readOptimalInt32();
+
+      case encodingDelta:
+        // The addition wraps on purpose, mirroring the writer's wrapping subtraction;
+        // together they are exact for every int32 pair.
+        if (_started) {
+          _previous = _wrap32(_previous + _reader.readOptimalInt32());
+        } else {
+          _previous = _reader.readOptimalInt32();
+          _started = true;
+        }
+
+        return _previous;
+
+      case encodingRle:
+        if (_runRemaining == 0) _readRun();
+
+        _runRemaining--;
+        return _runValue;
+
+      default: // encodingDeltaRle; checkColumn refused everything else.
+        if (!_started) {
+          _previous = _reader.readOptimalInt32();
+          _started = true;
+          return _previous;
+        }
+
+        if (_runRemaining == 0) _readRun();
+
+        _runRemaining--;
+        _previous = _wrap32(_previous + _runValue);
+        return _previous;
+    }
+  }
+
+  /// A 64-bit member: an i64 column is always raw, anything narrower decodes as int32.
+  /// BigInt, for the same reason as readInt64.
+  BigInt nextI64() =>
+      _element == elementI64 ? _reader.readInt64() : BigInt.from(nextI32());
+
+  /// A double member: float columns are always raw, an i32 column decodes then widens.
+  double nextF64() {
+    if (_element == elementF64) return _reader.readDouble();
+    if (_element == elementF32) return _reader.readFloat();
+    return nextI32().toDouble();
+  }
+
+  /// The next string - the dictionary's instance where the block has one.
+  String nextString() {
+    _rowsRemaining--;
+
+    switch (_encoding) {
+      case encodingRaw:
+        return _reader.readString();
+
+      case encodingDict:
+        return _dictionaryEntry(_reader.readCounter32());
+
+      default: // encodingDictRle
+        if (_runRemaining == 0) _readRun();
+
+        _runRemaining--;
+        return _dictionaryEntry(_runValue);
+    }
+  }
+
+  void _readRun() {
+    final length = _reader.readCounter32();
+
+    // + 1 because the row this run was read for is already counted out of
+    // _rowsRemaining by its next call.
+    if (length < 1 || length > _rowsRemaining + 1) {
+      throw ScbException(
+          '$_fieldName: a run of $length values cannot cover the '
+          '${_rowsRemaining + 1} rows left in the column');
+    }
+
+    _runRemaining = length;
+    _runValue = _reader.readOptimalInt32();
+  }
+
+  String _dictionaryEntry(int index) {
+    final dictionary = _dictionary!;
+
+    if (index < 0 || index >= dictionary.length) {
+      throw ScbException(
+          '$_fieldName: dictionary index $index is out of range - the '
+          'dictionary holds ${dictionary.length} entries');
+    }
+
+    return dictionary[index];
+  }
+
+  /// The delta family's 32-bit wrap. Dart's int is wider than the format's (64 bits
+  /// on the VM, 53 on the web), so the wrap is explicit: the low 32 bits of the sum,
+  /// sign-extended. The mask is 32-bit on the web too - here that truncation is the
+  /// point - while the sign extension is arithmetic, for the same reason
+  /// readOptimalInt32 divides rather than shifts.
+  static int _wrap32(int value) {
+    value &= 0xFFFFFFFF;
+    return value >= 0x80000000 ? value - 0x100000000 : value;
+  }
+}
+
 /// Reads and checks a table file's header, returning the row count that follows it.
 ///
 /// The reserved byte is written as zero and is where compression or encryption flags
@@ -400,13 +560,14 @@ void checkColumn(Column column, String fieldName, int kind, int count, List<int>
         'regenerate the code or rebuild the data.');
   }
 
-  // An encoding this build cannot decode is refused by name, exactly like an element
-  // it cannot read. An unknown column's encoding never gets here - a skip is a skip
-  // whatever the block's layout.
-  if (column.encoding != encodingRaw) {
+  // An encoding this build cannot decode - or one the spec does not define for this
+  // element - is refused by name, exactly like an element it cannot read. An unknown
+  // column's encoding never gets here - a skip is a skip whatever the block's layout.
+  if (!_encodingSupported(column)) {
     throw ScbException(
         "$fieldName: the file's column uses encoding ${column.encoding}, which this "
-        'reader does not support. Regenerate the code or rebuild the data.');
+        'reader cannot decode for its element type. Regenerate the code or rebuild '
+        'the data.');
   }
 
   if (!accepted.contains(column.element)) {
@@ -414,6 +575,27 @@ void checkColumn(Column column, String fieldName, int kind, int count, List<int>
         '$fieldName: the file carries element type ${column.element}, which this member '
         'cannot read (accepts $accepted). The column changed type incompatibly; regenerate '
         'the code or rebuild the data.');
+  }
+}
+
+/// The (element, encoding) pairs the spec defines. Arrays are always raw; integers
+/// take the integer encodings, strings the dictionary ones.
+bool _encodingSupported(Column column) {
+  if (column.encoding == encodingRaw) return true;
+  if (column.kind != kindScalar) return false;
+
+  switch (column.element) {
+    case elementVarint:
+      return column.encoding == encodingRle;
+
+    case elementI32:
+      return column.encoding >= encodingVarint && column.encoding <= encodingDeltaRle;
+
+    case elementString:
+      return column.encoding == encodingDict || column.encoding == encodingDictRle;
+
+    default:
+      return false;
   }
 }
 

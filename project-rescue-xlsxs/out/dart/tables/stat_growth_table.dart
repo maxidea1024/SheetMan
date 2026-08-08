@@ -74,6 +74,7 @@ class StatGrowthTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <StatGrowthRecord>[];
@@ -89,56 +90,65 @@ class StatGrowthTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'StatGrowth.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StatGrowth.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'StatGrowth.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'StatGrowth.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'StatGrowth.StageName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'StatGrowth.StageName');
           for (final record in loaded) {
-            record.stageName = reader.readString();
+            record.stageName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'StatGrowth.StatType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StatGrowth.StatType');
           for (final record in loaded) {
-            record.statType = StatType.of(reader.readEnum());
+            record.statType = StatType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'StatGrowth.InfuluenceStep', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StatGrowth.InfuluenceStep');
           for (final record in loaded) {
-            record.infuluenceStep = reader.readI32As(column.element);
+            record.infuluenceStep = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'StatGrowth.Growth', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StatGrowth.Growth');
           for (final record in loaded) {
-            record.growth = reader.readI32As(column.element);
+            record.growth = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'StatGrowth.GrowthValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StatGrowth.GrowthValue');
           for (final record in loaded) {
-            record.growthValue = reader.readI32As(column.element);
+            record.growthValue = cursor.nextI32();
           }
           break;
         case 8:
           checkColumn(column, 'StatGrowth.GrowthReselt', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'StatGrowth.GrowthReselt');
           for (final record in loaded) {
-            record.growthReselt = reader.readI32As(column.element);
+            record.growthReselt = cursor.nextI32();
           }
           break;
         case 9:
           checkColumn(column, 'StatGrowth.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'StatGrowth.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

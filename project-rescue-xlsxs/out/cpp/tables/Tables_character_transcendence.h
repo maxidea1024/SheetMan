@@ -104,65 +104,73 @@ class CharacterTranscendenceTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "CharacterTranscendence.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterTranscendence.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "CharacterTranscendence.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterTranscendence.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "CharacterTranscendence.NameKR", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterTranscendence.NameKR");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name_kr);
+            record.name_kr = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "CharacterTranscendence.GradeType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterTranscendence.GradeType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.grade_type);
+            record.grade_type = static_cast<GradeType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "CharacterTranscendence.TranscendStep", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterTranscendence.TranscendStep");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.transcend_step);
+            record.transcend_step = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "CharacterTranscendence.MaxLevel", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterTranscendence.MaxLevel");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.max_level);
+            record.max_level = cursor.next_i32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "CharacterTranscendence.MaterialType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterTranscendence.MaterialType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.material_type);
+            record.material_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "CharacterTranscendence.MaterialCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterTranscendence.MaterialCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.material_count);
+            record.material_count = cursor.next_i32();
           }
           break;
         }
@@ -176,9 +184,10 @@ class CharacterTranscendenceTable {
         }
         case 10: {
           sheetman::check_column(column, "CharacterTranscendence.NextStepID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CharacterTranscendence.NextStepID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.next_step_id);
+            record.next_step_id = cursor.next_i32();
           }
           break;
         }

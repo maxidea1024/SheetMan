@@ -185,6 +185,7 @@ export class AttributeTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -198,37 +199,42 @@ export class AttributeTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Attribute.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Attribute.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Attribute.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Attribute.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Attribute.AttributeName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Attribute.AttributeName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._attributeName = reader.readString()
+            record._attributeName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Attribute.AttributeType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Attribute.AttributeType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._attributeType = reader.readEnum() as AttributeType
+            record._attributeType = cursor.nextI32() as AttributeType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Attribute.TargetAttributeType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Attribute.TargetAttributeType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._targetAttributeType = reader.readEnum() as AttributeType
+            record._targetAttributeType = cursor.nextI32() as AttributeType
           }
           break
         case 6:
@@ -247,9 +253,10 @@ export class AttributeTable {
           break
         case 8:
           sheetman.checkColumn(column, 'Attribute.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Attribute.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         default:

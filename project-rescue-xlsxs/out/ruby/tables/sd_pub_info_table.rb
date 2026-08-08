@@ -81,38 +81,45 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDPubInfo.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDPubInfo.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDPubInfo.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDPubInfo.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDPubInfo.PubName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDPubInfo.PubName')
           records.each do |record|
-            record.pub_name = reader.read_string
+            record.pub_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDPubInfo.UnlockCondition', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDPubInfo.UnlockCondition')
           records.each do |record|
-            record.unlock_condition = reader.read_i32_as(column.element)
+            record.unlock_condition = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDPubInfo.LimitValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDPubInfo.LimitValue')
           records.each do |record|
-            record.limit_value = reader.read_i32_as(column.element)
+            record.limit_value = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDPubInfo.BuffID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDPubInfo.BuffID')
           records.each do |record|
-            record.buff_id = reader.read_i32_as(column.element)
+            record.buff_id = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'SDPubInfo.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDPubInfo.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

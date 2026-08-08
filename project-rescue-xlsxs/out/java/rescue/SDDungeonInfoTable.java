@@ -74,6 +74,7 @@ public final class SDDungeonInfoTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<SDDungeonInfoRecord> loaded = new ArrayList<>(count);
@@ -89,92 +90,105 @@ public final class SDDungeonInfoTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.Id");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.Name");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.NameKR");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.nameKR = reader.readString();
+                        record.nameKR = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.TotalCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.TotalCount");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.totalCount = reader.readI32As(column.element);
+                        record.totalCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.TrapCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.TrapCount");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.trapCount = reader.readI32As(column.element);
+                        record.trapCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.ActionCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.ActionCount");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.actionCount = reader.readI32As(column.element);
+                        record.actionCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.MatchCost", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.MatchCost");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.matchCost = reader.readI32As(column.element);
+                        record.matchCost = cursor.nextI32();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.MismatchCost", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.MismatchCost");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.mismatchCost = reader.readI32As(column.element);
+                        record.mismatchCost = cursor.nextI32();
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.TrapCost", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.TrapCost");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.trapCost = reader.readI32As(column.element);
+                        record.trapCost = cursor.nextI32();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.ViewTime", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.ViewTime");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.viewTime = reader.readI32As(column.element);
+                        record.viewTime = cursor.nextI32();
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.Time", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.Time");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.time = reader.readI32As(column.element);
+                        record.time = cursor.nextI32();
                     }
                     break;
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.ADCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.ADCount");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.aDCount = reader.readI32As(column.element);
+                        record.aDCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "SDDungeonInfo.DailyFreeCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDDungeonInfo.DailyFreeCount");
                     for (SDDungeonInfoRecord record : loaded) {
-                        record.dailyFreeCount = reader.readI32As(column.element);
+                        record.dailyFreeCount = cursor.nextI32();
                     }
                     break;
                 }

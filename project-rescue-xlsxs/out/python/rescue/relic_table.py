@@ -93,24 +93,29 @@ class RelicTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Relic.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Relic.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Relic.RelicName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicName")
                 for record in records:
-                    record.relic_name = reader.read_string()
+                    record.relic_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Relic.InfuluenceStep", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.InfuluenceStep")
                 for record in records:
-                    record.infuluence_step = reader.read_i32_as(column.element)
+                    record.infuluence_step = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "Relic.RelicType1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicType1")
                 for record in records:
-                    record.relic_type1 = StatType(reader.read_enum())
+                    record.relic_type1 = StatType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Relic.RelicValue1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -121,8 +126,9 @@ class RelicTable:
                     record.relic_inc_value1 = reader.read_float()
             elif column.tag == 8:
                 sheetman.check_column(column, "Relic.RelicType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicType2")
                 for record in records:
-                    record.relic_type2 = StatType(reader.read_enum())
+                    record.relic_type2 = StatType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "Relic.RelicValue2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -133,8 +139,9 @@ class RelicTable:
                     record.relic_inc_value2 = reader.read_float()
             elif column.tag == 11:
                 sheetman.check_column(column, "Relic.RelicType3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.RelicType3")
                 for record in records:
-                    record.relic_type3 = StatType(reader.read_enum())
+                    record.relic_type3 = StatType(cursor.next_i32())
             elif column.tag == 12:
                 sheetman.check_column(column, "Relic.RelicValue3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -145,12 +152,14 @@ class RelicTable:
                     record.relic_inc_value3 = reader.read_float()
             elif column.tag == 14:
                 sheetman.check_column(column, "Relic.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             elif column.tag == 15:
                 sheetman.check_column(column, "Relic.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Relic.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

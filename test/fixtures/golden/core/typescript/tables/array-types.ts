@@ -175,6 +175,7 @@ export class ArrayTypesTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -188,9 +189,10 @@ export class ArrayTypesTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'ArrayTypes.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'ArrayTypes.Index')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._index = reader.readI32As(column.element)
+            record._index = cursor.nextI32()
           }
           break
         case 2:

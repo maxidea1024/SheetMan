@@ -88,44 +88,53 @@ class GoldDungeonRewardTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "GoldDungeonReward.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GoldDungeonReward.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "GoldDungeonReward.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GoldDungeonReward.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "GoldDungeonReward.RewardName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GoldDungeonReward.RewardName")
                 for record in records:
-                    record.reward_name = reader.read_string()
+                    record.reward_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "GoldDungeonReward.RewardType1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GoldDungeonReward.RewardType1")
                 for record in records:
-                    record.reward_type1 = CurrencyType(reader.read_enum())
+                    record.reward_type1 = CurrencyType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "GoldDungeonReward.RewardValue1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GoldDungeonReward.RewardValue1")
                 for record in records:
-                    record.reward_value1 = reader.read_i32_as(column.element)
+                    record.reward_value1 = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "GoldDungeonReward.RewardType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GoldDungeonReward.RewardType2")
                 for record in records:
-                    record.reward_type2 = CurrencyType(reader.read_enum())
+                    record.reward_type2 = CurrencyType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "GoldDungeonReward.RewardValue2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GoldDungeonReward.RewardValue2")
                 for record in records:
-                    record.reward_value2 = reader.read_i32_as(column.element)
+                    record.reward_value2 = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "GoldDungeonReward.IsFirstClear", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
                     record.is_first_clear = reader.read_bool()
             elif column.tag == 9:
                 sheetman.check_column(column, "GoldDungeonReward.FirstClearRewardType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GoldDungeonReward.FirstClearRewardType")
                 for record in records:
-                    record.first_clear_reward_type = CurrencyType(reader.read_enum())
+                    record.first_clear_reward_type = CurrencyType(cursor.next_i32())
             elif column.tag == 10:
                 sheetman.check_column(column, "GoldDungeonReward.FirstClearRewardValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GoldDungeonReward.FirstClearRewardValue")
                 for record in records:
-                    record.first_clear_reward_value = reader.read_i32_as(column.element)
+                    record.first_clear_reward_value = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

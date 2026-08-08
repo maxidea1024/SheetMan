@@ -96,26 +96,30 @@ impl TraitTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Trait.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Trait.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Trait.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Trait.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Trait.TraitName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Trait.TraitName")?;
                     for record in records.iter_mut() {
-                        record.trait_name = reader.read_string()?;
+                        record.trait_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Trait.StatType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Trait.StatType")?;
                     for record in records.iter_mut() {
-                        record.stat_type = StatType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.stat_type = StatType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
@@ -136,8 +140,9 @@ impl TraitTable {
                 }
                 7 => {
                     sheetman::check_column(column, "Trait.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Trait.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

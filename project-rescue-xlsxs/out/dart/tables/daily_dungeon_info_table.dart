@@ -90,6 +90,7 @@ class DailyDungeonInfoTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <DailyDungeonInfoRecord>[];
@@ -105,56 +106,65 @@ class DailyDungeonInfoTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'DailyDungeonInfo.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'DailyDungeonInfo.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'DailyDungeonInfo.DungeonName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.DungeonName');
           for (final record in loaded) {
-            record.dungeonName = reader.readString();
+            record.dungeonName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'DailyDungeonInfo.DungeonType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.DungeonType');
           for (final record in loaded) {
-            record.dungeonType = DungeonType.of(reader.readEnum());
+            record.dungeonType = DungeonType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'DailyDungeonInfo.Priority', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.Priority');
           for (final record in loaded) {
-            record.priority = reader.readI32As(column.element);
+            record.priority = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'DailyDungeonInfo.CycleType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.CycleType');
           for (final record in loaded) {
-            record.cycleType = CycleType.of(reader.readEnum());
+            record.cycleType = CycleType.of(cursor.nextI32());
           }
           break;
         case 7:
           checkColumn(column, 'DailyDungeonInfo.EnterCondition', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.EnterCondition');
           for (final record in loaded) {
-            record.enterCondition = reader.readI32As(column.element);
+            record.enterCondition = cursor.nextI32();
           }
           break;
         case 8:
           checkColumn(column, 'DailyDungeonInfo.EnterCurrencyType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.EnterCurrencyType');
           for (final record in loaded) {
-            record.enterCurrencyType = CurrencyType.of(reader.readEnum());
+            record.enterCurrencyType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 9:
           checkColumn(column, 'DailyDungeonInfo.DungeonBuffID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.DungeonBuffID');
           for (final record in loaded) {
-            record.dungeonBuffID = reader.readI32As(column.element);
+            record.dungeonBuffID = cursor.nextI32();
           }
           break;
         case 10:
@@ -165,44 +175,51 @@ class DailyDungeonInfoTable {
           break;
         case 11:
           checkColumn(column, 'DailyDungeonInfo.EnterCurrencyValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.EnterCurrencyValue');
           for (final record in loaded) {
-            record.enterCurrencyValue = reader.readI32As(column.element);
+            record.enterCurrencyValue = cursor.nextI32();
           }
           break;
         case 12:
           checkColumn(column, 'DailyDungeonInfo.FreeEnterCurrencyType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.FreeEnterCurrencyType');
           for (final record in loaded) {
-            record.freeEnterCurrencyType = CurrencyType.of(reader.readEnum());
+            record.freeEnterCurrencyType = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 13:
           checkColumn(column, 'DailyDungeonInfo.ADEnterCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.ADEnterCount');
           for (final record in loaded) {
-            record.aDEnterCount = reader.readI32As(column.element);
+            record.aDEnterCount = cursor.nextI32();
           }
           break;
         case 14:
           checkColumn(column, 'DailyDungeonInfo.EnterCurrencyCountMax', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.EnterCurrencyCountMax');
           for (final record in loaded) {
-            record.enterCurrencyCountMax = reader.readI32As(column.element);
+            record.enterCurrencyCountMax = cursor.nextI32();
           }
           break;
         case 15:
           checkColumn(column, 'DailyDungeonInfo.DungeonImagePath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.DungeonImagePath');
           for (final record in loaded) {
-            record.dungeonImagePath = reader.readString();
+            record.dungeonImagePath = cursor.nextString();
           }
           break;
         case 16:
           checkColumn(column, 'DailyDungeonInfo.DungeonBGMID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.DungeonBGMID');
           for (final record in loaded) {
-            record.dungeonBGMID = reader.readI32As(column.element);
+            record.dungeonBGMID = cursor.nextI32();
           }
           break;
         case 17:
           checkColumn(column, 'DailyDungeonInfo.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'DailyDungeonInfo.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         default:

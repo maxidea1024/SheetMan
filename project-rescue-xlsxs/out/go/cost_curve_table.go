@@ -96,37 +96,42 @@ func (t *CostCurveTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "CostCurve.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurve.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "CostCurve.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurve.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "CostCurve.GrowthType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurve.GrowthType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GrowthType = GrowthType(reader.ReadEnum())
+					r.GrowthType = GrowthType(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "CostCurve.CostType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurve.CostType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CostType = CurrencyType(reader.ReadEnum())
+					r.CostType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "CostCurve.BaseCostValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CostCurve.BaseCostValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BaseCostValue = reader.ReadI32As(column.Element)
+					r.BaseCostValue = cursor.NextI32()
 				}
 			}
 		default:

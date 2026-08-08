@@ -82,38 +82,45 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'ClassUpCurrencyList.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ClassUpCurrencyList.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'ClassUpCurrencyList.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ClassUpCurrencyList.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'ClassUpCurrencyList.Type', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ClassUpCurrencyList.Type')
           records.each do |record|
-            record.type = reader.read_enum
+            record.type = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'ClassUpCurrencyList.TargetId', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ClassUpCurrencyList.TargetId')
           records.each do |record|
-            record.target_id = reader.read_i32_as(column.element)
+            record.target_id = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'ClassUpCurrencyList.MaxCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ClassUpCurrencyList.MaxCount')
           records.each do |record|
-            record.max_count = reader.read_i32_as(column.element)
+            record.max_count = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'ClassUpCurrencyList.MaxStack', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ClassUpCurrencyList.MaxStack')
           records.each do |record|
-            record.max_stack = reader.read_i64_as(column.element)
+            record.max_stack = cursor.next_i64
           end
         when 7
           Sheetman.check_column(column, 'ClassUpCurrencyList.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ClassUpCurrencyList.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         when 8
           Sheetman.check_column(column, 'ClassUpCurrencyList.ShortCutIndex', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])

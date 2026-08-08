@@ -160,6 +160,13 @@ internal sealed class RustFieldView
     /// <summary>The rendered check_column call for this member.</summary>
     public required string ColumnCheck { get; set; }
 
+    /// <summary>
+    /// The cursor construction ahead of the row loop, for a scalar column that can
+    /// arrive encoded. Empty for everything that reads the reader directly, and the
+    /// template emits nothing - the binding only exists where the reads use it.
+    /// </summary>
+    public required string CursorOpen { get; set; }
+
     public required int ElementCount { get; set; }
 
     public required string ReadScalar { get; set; }

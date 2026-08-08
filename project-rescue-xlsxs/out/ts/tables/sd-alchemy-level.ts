@@ -238,6 +238,7 @@ export class SDAlchemyLevelTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -251,58 +252,66 @@ export class SDAlchemyLevelTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'SDAlchemyLevel.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'SDAlchemyLevel.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'SDAlchemyLevel.NameKR', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.NameKR')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._nameKR = reader.readString()
+            record._nameKR = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'SDAlchemyLevel.LevelUpCost', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.LevelUpCost')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._levelUpCost = reader.readI32As(column.element)
+            record._levelUpCost = cursor.nextI32()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'SDAlchemyLevel.LevelUpTotal', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.LevelUpTotal')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._levelUpTotal = reader.readI32As(column.element)
+            record._levelUpTotal = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'SDAlchemyLevel.Time', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.Time')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._time = reader.readI64As(column.element)
+            record._time = cursor.nextI64()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'SDAlchemyLevel.UseDiaCost', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.UseDiaCost')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._useDiaCost = reader.readI32As(column.element)
+            record._useDiaCost = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'SDAlchemyLevel.UseItemCost', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyLevel.UseItemCost')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._useItemCost = reader.readI32As(column.element)
+            record._useItemCost = cursor.nextI32()
           }
           break
         case 9:

@@ -81,23 +81,27 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'BuffSelect.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BuffSelect.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'BuffSelect.BuffName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BuffSelect.BuffName')
           records.each do |record|
-            record.buff_name = reader.read_string
+            record.buff_name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'BuffSelect.BuffID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BuffSelect.BuffID')
           records.each do |record|
-            record.buff_id = reader.read_i32_as(column.element)
+            record.buff_id = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'BuffSelect.Grade', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BuffSelect.Grade')
           records.each do |record|
-            record.grade = reader.read_enum
+            record.grade = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'BuffSelect.BuffRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -106,13 +110,15 @@ module Rescue
           end
         when 6
           Sheetman.check_column(column, 'BuffSelect.BuffTooltip', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BuffSelect.BuffTooltip')
           records.each do |record|
-            record.buff_tooltip = reader.read_string
+            record.buff_tooltip = cursor.next_string
           end
         when 7
           Sheetman.check_column(column, 'BuffSelect.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'BuffSelect.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

@@ -100,56 +100,65 @@ impl StatGrowthTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "StatGrowth.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StatGrowth.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "StatGrowth.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StatGrowth.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "StatGrowth.StageName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StatGrowth.StageName")?;
                     for record in records.iter_mut() {
-                        record.stage_name = reader.read_string()?;
+                        record.stage_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "StatGrowth.StatType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StatGrowth.StatType")?;
                     for record in records.iter_mut() {
-                        record.stat_type = StatType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.stat_type = StatType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "StatGrowth.InfuluenceStep", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StatGrowth.InfuluenceStep")?;
                     for record in records.iter_mut() {
-                        record.infuluence_step = reader.read_i32_as(column.element)?;
+                        record.infuluence_step = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "StatGrowth.Growth", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StatGrowth.Growth")?;
                     for record in records.iter_mut() {
-                        record.growth = reader.read_i32_as(column.element)?;
+                        record.growth = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "StatGrowth.GrowthValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StatGrowth.GrowthValue")?;
                     for record in records.iter_mut() {
-                        record.growth_value = reader.read_i32_as(column.element)?;
+                        record.growth_value = cursor.next_i32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "StatGrowth.GrowthReselt", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StatGrowth.GrowthReselt")?;
                     for record in records.iter_mut() {
-                        record.growth_reselt = reader.read_i32_as(column.element)?;
+                        record.growth_reselt = cursor.next_i32()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "StatGrowth.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "StatGrowth.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

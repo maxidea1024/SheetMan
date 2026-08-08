@@ -112,105 +112,118 @@ class EquipTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Equip.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Equip.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Equip.EquipName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.EquipName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.equip_name);
+            record.equip_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Equip.Type", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.Type");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.type);
+            record.type = static_cast<JobType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "Equip.EquipType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.EquipType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.equip_type);
+            record.equip_type = static_cast<EquipmentType>(cursor.next_i32());
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "Equip.Grade", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.Grade");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.grade);
+            record.grade = static_cast<GradeType>(cursor.next_i32());
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "Equip.MaxClass", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.MaxClass");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.max_class);
+            record.max_class = cursor.next_i32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "Equip.MaxLevel", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.MaxLevel");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.max_level);
+            record.max_level = cursor.next_i32();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "Equip.StatType1", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.StatType1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.stat_type1);
+            record.stat_type1 = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "Equip.StatType2", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.StatType2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.stat_type2);
+            record.stat_type2 = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "Equip.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "Equip.PrefabPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.PrefabPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.prefab_path);
+            record.prefab_path = cursor.next_string();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "Equip.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Equip.Description");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.description);
+            record.description = cursor.next_string();
           }
           break;
         }

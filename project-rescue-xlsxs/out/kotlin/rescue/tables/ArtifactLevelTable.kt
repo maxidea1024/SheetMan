@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -112,38 +113,44 @@ class ArtifactLevelTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "ArtifactLevel.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactLevel.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "ArtifactLevel.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactLevel.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "ArtifactLevel.NameKR", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactLevel.NameKR")
                     for (record in loaded) {
-                        record.nameKR = reader.readString()
+                        record.nameKR = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "ArtifactLevel.Level", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactLevel.Level")
                     for (record in loaded) {
-                        record.level = reader.readI32As(column.element)
+                        record.level = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "ArtifactLevel.CharacterEXP", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactLevel.CharacterEXP")
                     for (record in loaded) {
-                        record.characterEXP = reader.readI64As(column.element)
+                        record.characterEXP = cursor.nextI64()
                     }
                 }
                 6 -> {
                     checkColumn(column, "ArtifactLevel.AccumulatedEXP", KIND_SCALAR, 1, ELEMENT_I64, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "ArtifactLevel.AccumulatedEXP")
                     for (record in loaded) {
-                        record.accumulatedEXP = reader.readI64As(column.element)
+                        record.accumulatedEXP = cursor.nextI64()
                     }
                 }
                 7 -> {

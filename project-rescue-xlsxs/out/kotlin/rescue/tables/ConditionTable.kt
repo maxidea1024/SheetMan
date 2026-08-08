@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -106,38 +107,44 @@ class ConditionTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Condition.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Condition.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Condition.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Condition.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Condition.ConditionTargetType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Condition.ConditionTargetType")
                     for (record in loaded) {
-                        record.conditionTargetType = ConditionTargetType.of(reader.readEnum())
+                        record.conditionTargetType = ConditionTargetType.of(cursor.nextI32())
                     }
                 }
                 4 -> {
                     checkColumn(column, "Condition.ConditionTargetValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Condition.ConditionTargetValue")
                     for (record in loaded) {
-                        record.conditionTargetValue = reader.readI32As(column.element)
+                        record.conditionTargetValue = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "Condition.ConditionType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Condition.ConditionType")
                     for (record in loaded) {
-                        record.conditionType = ConditionType.of(reader.readEnum())
+                        record.conditionType = ConditionType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "Condition.ConditionValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Condition.ConditionValue")
                     for (record in loaded) {
-                        record.conditionValue = reader.readI32As(column.element)
+                        record.conditionValue = cursor.nextI32()
                     }
                 }
                 else ->

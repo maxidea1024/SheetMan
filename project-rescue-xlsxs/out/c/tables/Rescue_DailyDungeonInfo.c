@@ -14,6 +14,7 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -63,11 +64,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 1:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -75,11 +77,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 2:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -87,11 +90,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 3:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.DungeonName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.DungeonName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->dungeon_name);
+        (void)sm_cursor_next_string(&cursor, &record->dungeon_name);
       }
 
       break;
@@ -99,12 +103,13 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 4:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.DungeonType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.DungeonType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->dungeon_type = (Rescue_DungeonType_t)scratch;
       }
 
@@ -113,11 +118,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 5:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.Priority", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.Priority");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->priority);
+        (void)sm_cursor_next_i32(&cursor, &record->priority);
       }
 
       break;
@@ -125,12 +131,13 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 6:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.CycleType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.CycleType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->cycle_type = (Rescue_CycleType_t)scratch;
       }
 
@@ -139,11 +146,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 7:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.EnterCondition", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.EnterCondition");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->enter_condition);
+        (void)sm_cursor_next_i32(&cursor, &record->enter_condition);
       }
 
       break;
@@ -151,12 +159,13 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 8:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.EnterCurrencyType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.EnterCurrencyType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->enter_currency_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -165,11 +174,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 9:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.DungeonBuffID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.DungeonBuffID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->dungeon_buff_id);
+        (void)sm_cursor_next_i32(&cursor, &record->dungeon_buff_id);
       }
 
       break;
@@ -189,11 +199,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 11:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.EnterCurrencyValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.EnterCurrencyValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->enter_currency_value);
+        (void)sm_cursor_next_i32(&cursor, &record->enter_currency_value);
       }
 
       break;
@@ -201,12 +212,13 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 12:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.FreeEnterCurrencyType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.FreeEnterCurrencyType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->free_enter_currency_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -215,11 +227,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 13:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.ADEnterCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.ADEnterCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->ad_enter_count);
+        (void)sm_cursor_next_i32(&cursor, &record->ad_enter_count);
       }
 
       break;
@@ -227,11 +240,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 14:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.EnterCurrencyCountMax", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.EnterCurrencyCountMax");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->enter_currency_count_max);
+        (void)sm_cursor_next_i32(&cursor, &record->enter_currency_count_max);
       }
 
       break;
@@ -239,11 +253,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 15:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.DungeonImagePath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.DungeonImagePath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->dungeon_image_path);
+        (void)sm_cursor_next_string(&cursor, &record->dungeon_image_path);
       }
 
       break;
@@ -251,11 +266,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 16:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.DungeonBGMID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.DungeonBGMID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->dungeon_bgmid);
+        (void)sm_cursor_next_i32(&cursor, &record->dungeon_bgmid);
       }
 
       break;
@@ -263,11 +279,12 @@ static bool Rescue_DailyDungeonInfoParse(Rescue_DailyDungeonInfoTable_t* table, 
     case 17:
       (void)sm_check_column(reader, column, "DailyDungeonInfo.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "DailyDungeonInfo.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_DailyDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

@@ -14,6 +14,7 @@ static bool Rescue_ShortCutParse(Rescue_ShortCutTable_t* table, sm_reader* reade
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -59,11 +60,12 @@ static bool Rescue_ShortCutParse(Rescue_ShortCutTable_t* table, sm_reader* reade
     case 1:
       (void)sm_check_column(reader, column, "ShortCut.ID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShortCut.ID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShortCutRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -71,11 +73,12 @@ static bool Rescue_ShortCutParse(Rescue_ShortCutTable_t* table, sm_reader* reade
     case 2:
       (void)sm_check_column(reader, column, "ShortCut.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShortCut.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShortCutRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -83,12 +86,13 @@ static bool Rescue_ShortCutParse(Rescue_ShortCutTable_t* table, sm_reader* reade
     case 3:
       (void)sm_check_column(reader, column, "ShortCut.Type", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShortCut.Type");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShortCutRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->type = (Rescue_ShortCutType_t)scratch;
       }
 
@@ -97,11 +101,12 @@ static bool Rescue_ShortCutParse(Rescue_ShortCutTable_t* table, sm_reader* reade
     case 4:
       (void)sm_check_column(reader, column, "ShortCut.SubIndex", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShortCut.SubIndex");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShortCutRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->sub_index);
+        (void)sm_cursor_next_i32(&cursor, &record->sub_index);
       }
 
       break;
@@ -109,11 +114,12 @@ static bool Rescue_ShortCutParse(Rescue_ShortCutTable_t* table, sm_reader* reade
     case 5:
       (void)sm_check_column(reader, column, "ShortCut.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ShortCut.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ShortCutRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

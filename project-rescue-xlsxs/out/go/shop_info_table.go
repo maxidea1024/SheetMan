@@ -104,65 +104,74 @@ func (t *ShopInfoTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "ShopInfo.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShopInfo.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "ShopInfo.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShopInfo.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "ShopInfo.InfoName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShopInfo.InfoName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.InfoName = reader.ReadString()
+					r.InfoName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "ShopInfo.ShopType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShopInfo.ShopType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ShopType = ShopType(reader.ReadEnum())
+					r.ShopType = ShopType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "ShopInfo.ConditionID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShopInfo.ConditionID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionID = reader.ReadI32As(column.Element)
+					r.ConditionID = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "ShopInfo.SheetName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShopInfo.SheetName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SheetName = reader.ReadString()
+					r.SheetName = cursor.NextString()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "ShopInfo.Priority", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShopInfo.Priority")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Priority = reader.ReadI32As(column.Element)
+					r.Priority = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "ShopInfo.UIPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShopInfo.UIPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.UIPath = reader.ReadString()
+					r.UIPath = cursor.NextString()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "ShopInfo.ListPrefabPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ShopInfo.ListPrefabPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ListPrefabPath = reader.ReadString()
+					r.ListPrefabPath = cursor.NextString()
 				}
 			}
 		default:

@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/StatType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -117,43 +118,49 @@ final class StarNodeTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'StarNode.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StarNode.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'StarNode.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StarNode.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'StarNode.InfuluenceStep', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StarNode.InfuluenceStep');
                     foreach ($records as $record) {
-                        $record->infuluenceStep = $reader->readI32As($column['element']);
+                        $record->infuluenceStep = $cursor->nextI32();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'StarNode.StarNodeName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StarNode.StarNodeName');
                     foreach ($records as $record) {
-                        $record->starNodeName = $reader->readString();
+                        $record->starNodeName = $cursor->nextString();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'StarNode.StatType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StarNode.StatType');
                     foreach ($records as $record) {
-                        $record->statType = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->statType = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'StarNode.StarNodeValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StarNode.StarNodeValue');
                     foreach ($records as $record) {
-                        $record->starNodeValue = $reader->readI32As($column['element']);
+                        $record->starNodeValue = $cursor->nextI32();
                     }
                     break;
 
@@ -177,15 +184,17 @@ final class StarNodeTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'StarNode.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StarNode.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'StarNode.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'StarNode.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

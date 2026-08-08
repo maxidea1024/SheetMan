@@ -84,38 +84,45 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'TraitDungeonReward.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'TraitDungeonReward.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'TraitDungeonReward.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'TraitDungeonReward.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'TraitDungeonReward.RewardName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'TraitDungeonReward.RewardName')
           records.each do |record|
-            record.reward_name = reader.read_string
+            record.reward_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'TraitDungeonReward.RewardType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'TraitDungeonReward.RewardType1')
           records.each do |record|
-            record.reward_type1 = reader.read_enum
+            record.reward_type1 = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'TraitDungeonReward.RewardValue1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'TraitDungeonReward.RewardValue1')
           records.each do |record|
-            record.reward_value1 = reader.read_i32_as(column.element)
+            record.reward_value1 = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'TraitDungeonReward.RewardType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'TraitDungeonReward.RewardType2')
           records.each do |record|
-            record.reward_type2 = reader.read_enum
+            record.reward_type2 = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'TraitDungeonReward.RewardValue2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'TraitDungeonReward.RewardValue2')
           records.each do |record|
-            record.reward_value2 = reader.read_i32_as(column.element)
+            record.reward_value2 = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'TraitDungeonReward.IsFirstClear', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -124,13 +131,15 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'TraitDungeonReward.FirstClearRewardType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'TraitDungeonReward.FirstClearRewardType')
           records.each do |record|
-            record.first_clear_reward_type = reader.read_enum
+            record.first_clear_reward_type = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'TraitDungeonReward.FirstClearRewardValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'TraitDungeonReward.FirstClearRewardValue')
           records.each do |record|
-            record.first_clear_reward_value = reader.read_i32_as(column.element)
+            record.first_clear_reward_value = cursor.next_i32
           end
         else
           # A column added after this code was generated.

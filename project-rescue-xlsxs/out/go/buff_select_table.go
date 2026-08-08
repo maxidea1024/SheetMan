@@ -100,30 +100,34 @@ func (t *BuffSelectTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "BuffSelect.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "BuffSelect.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "BuffSelect.BuffName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "BuffSelect.BuffName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffName = reader.ReadString()
+					r.BuffName = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "BuffSelect.BuffID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "BuffSelect.BuffID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffID = reader.ReadI32As(column.Element)
+					r.BuffID = cursor.NextI32()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "BuffSelect.Grade", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "BuffSelect.Grade")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Grade = GradeType(reader.ReadEnum())
+					r.Grade = GradeType(cursor.NextI32())
 				}
 			}
 		case 5:
@@ -135,16 +139,18 @@ func (t *BuffSelectTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "BuffSelect.BuffTooltip", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "BuffSelect.BuffTooltip")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BuffTooltip = reader.ReadString()
+					r.BuffTooltip = cursor.NextString()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "BuffSelect.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "BuffSelect.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

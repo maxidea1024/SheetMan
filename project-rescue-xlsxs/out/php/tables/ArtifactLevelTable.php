@@ -14,6 +14,7 @@ namespace Rescue;
 require_once __DIR__ . '/../sheetman/ScbReader.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -113,43 +114,49 @@ final class ArtifactLevelTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'ArtifactLevel.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactLevel.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'ArtifactLevel.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactLevel.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'ArtifactLevel.NameKR', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactLevel.NameKR');
                     foreach ($records as $record) {
-                        $record->nameKR = $reader->readString();
+                        $record->nameKR = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'ArtifactLevel.Level', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactLevel.Level');
                     foreach ($records as $record) {
-                        $record->level = $reader->readI32As($column['element']);
+                        $record->level = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'ArtifactLevel.CharacterEXP', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I64, ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactLevel.CharacterEXP');
                     foreach ($records as $record) {
-                        $record->characterEXP = $reader->readI64As($column['element']);
+                        $record->characterEXP = $cursor->nextI64();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'ArtifactLevel.AccumulatedEXP', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I64, ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactLevel.AccumulatedEXP');
                     foreach ($records as $record) {
-                        $record->accumulatedEXP = $reader->readI64As($column['element']);
+                        $record->accumulatedEXP = $cursor->nextI64();
                     }
                     break;
 

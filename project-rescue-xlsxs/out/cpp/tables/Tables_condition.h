@@ -96,49 +96,55 @@ class ConditionTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Condition.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Condition.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Condition.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Condition.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Condition.ConditionTargetType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Condition.ConditionTargetType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.condition_target_type);
+            record.condition_target_type = static_cast<ConditionTargetType>(cursor.next_i32());
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Condition.ConditionTargetValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Condition.ConditionTargetValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition_target_value);
+            record.condition_target_value = cursor.next_i32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "Condition.ConditionType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Condition.ConditionType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.condition_type);
+            record.condition_type = static_cast<ConditionType>(cursor.next_i32());
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "Condition.ConditionValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Condition.ConditionValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition_value);
+            record.condition_value = cursor.next_i32();
           }
           break;
         }

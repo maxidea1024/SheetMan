@@ -94,38 +94,44 @@ impl SDAlchemyStepTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDAlchemyStep.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyStep.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDAlchemyStep.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyStep.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDAlchemyStep.NameKR", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyStep.NameKR")?;
                     for record in records.iter_mut() {
-                        record.name_kr = reader.read_string()?;
+                        record.name_kr = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDAlchemyStep.MaxLevel", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyStep.MaxLevel")?;
                     for record in records.iter_mut() {
-                        record.max_level = reader.read_i32_as(column.element)?;
+                        record.max_level = cursor.next_i32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SDAlchemyStep.RewardType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyStep.RewardType")?;
                     for record in records.iter_mut() {
-                        record.reward_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.reward_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDAlchemyStep.RewardValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyStep.RewardValue")?;
                     for record in records.iter_mut() {
-                        record.reward_value = reader.read_i32_as(column.element)?;
+                        record.reward_value = cursor.next_i32()?;
                     }
                 }
                 _ => {

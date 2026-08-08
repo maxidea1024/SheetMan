@@ -89,48 +89,58 @@ class GachaCharacterListTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "GachaCharacterList.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "GachaCharacterList.CharacterID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.CharacterID")
                 for record in records:
-                    record.character_id = reader.read_i32_as(column.element)
+                    record.character_id = cursor.next_i32()
             elif column.tag == 3:
                 sheetman.check_column(column, "GachaCharacterList.GradeType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.GradeType")
                 for record in records:
-                    record.grade_type = GradeType(reader.read_enum())
+                    record.grade_type = GradeType(cursor.next_i32())
             elif column.tag == 4:
                 sheetman.check_column(column, "GachaCharacterList.BaseWeight", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.BaseWeight")
                 for record in records:
-                    record.base_weight = reader.read_i32_as(column.element)
+                    record.base_weight = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "GachaCharacterList.IsWishlist", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
                     record.is_wishlist = reader.read_bool()
             elif column.tag == 6:
                 sheetman.check_column(column, "GachaCharacterList.WishlistWeight", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.WishlistWeight")
                 for record in records:
-                    record.wishlist_weight = reader.read_i32_as(column.element)
+                    record.wishlist_weight = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "GachaCharacterList.ClassUpCurrencyID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.ClassUpCurrencyID")
                 for record in records:
-                    record.class_up_currency_id = reader.read_i32_as(column.element)
+                    record.class_up_currency_id = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "GachaCharacterList.ClassUpCurrencyValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.ClassUpCurrencyValue")
                 for record in records:
-                    record.class_up_currency_value = reader.read_i32_as(column.element)
+                    record.class_up_currency_value = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "GachaCharacterList.ExConditionID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.ExConditionID")
                 for record in records:
-                    record.ex_condition_id = reader.read_i32_as(column.element)
+                    record.ex_condition_id = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "GachaCharacterList.ExCurrencyID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.ExCurrencyID")
                 for record in records:
-                    record.ex_currency_id = reader.read_i32_as(column.element)
+                    record.ex_currency_id = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "GachaCharacterList.ExCurrencyValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaCharacterList.ExCurrencyValue")
                 for record in records:
-                    record.ex_currency_value = reader.read_i32_as(column.element)
+                    record.ex_currency_value = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

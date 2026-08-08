@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -130,62 +131,72 @@ class BuffTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Buff.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Buff.BuffName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.BuffName")
                     for (record in loaded) {
-                        record.buffName = reader.readString()
+                        record.buffName = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Buff.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Buff.SkillType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.SkillType")
                     for (record in loaded) {
-                        record.skillType = SkillType.of(reader.readEnum())
+                        record.skillType = SkillType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "Buff.StatType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.StatType")
                     for (record in loaded) {
-                        record.statType = StatType.of(reader.readEnum())
+                        record.statType = StatType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "Buff.Priority", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.Priority")
                     for (record in loaded) {
-                        record.priority = reader.readI32As(column.element)
+                        record.priority = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "Buff.AttributeType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.AttributeType")
                     for (record in loaded) {
-                        record.attributeType = AttributeType.of(reader.readEnum())
+                        record.attributeType = AttributeType.of(cursor.nextI32())
                     }
                 }
                 8 -> {
                     checkColumn(column, "Buff.TargetType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.TargetType")
                     for (record in loaded) {
-                        record.targetType = TargetType.of(reader.readEnum())
+                        record.targetType = TargetType.of(cursor.nextI32())
                     }
                 }
                 9 -> {
                     checkColumn(column, "Buff.BuffConditionType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.BuffConditionType")
                     for (record in loaded) {
-                        record.buffConditionType = BuffConditionType.of(reader.readEnum())
+                        record.buffConditionType = BuffConditionType.of(cursor.nextI32())
                     }
                 }
                 10 -> {
                     checkColumn(column, "Buff.BuffValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.BuffValue")
                     for (record in loaded) {
-                        record.buffValue = reader.readI32As(column.element)
+                        record.buffValue = cursor.nextI32()
                     }
                 }
                 11 -> {
@@ -196,20 +207,23 @@ class BuffTable {
                 }
                 12 -> {
                     checkColumn(column, "Buff.BuffTime", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.BuffTime")
                     for (record in loaded) {
-                        record.buffTime = reader.readI32As(column.element)
+                        record.buffTime = cursor.nextI32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "Buff.BuffTickTime", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.BuffTickTime")
                     for (record in loaded) {
-                        record.buffTickTime = reader.readI32As(column.element)
+                        record.buffTickTime = cursor.nextI32()
                     }
                 }
                 14 -> {
                     checkColumn(column, "Buff.BuffMaxStack", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.BuffMaxStack")
                     for (record in loaded) {
-                        record.buffMaxStack = reader.readI32As(column.element)
+                        record.buffMaxStack = cursor.nextI32()
                     }
                 }
                 15 -> {
@@ -226,14 +240,16 @@ class BuffTable {
                 }
                 17 -> {
                     checkColumn(column, "Buff.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 18 -> {
                     checkColumn(column, "Buff.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Buff.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

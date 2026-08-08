@@ -95,41 +95,46 @@ class CostCurveRangeTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "CostCurveRange.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurveRange.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "CostCurveRange.GrowthType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurveRange.GrowthType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.growth_type);
+            record.growth_type = static_cast<GrowthType>(cursor.next_i32());
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "CostCurveRange.RangeIndex", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurveRange.RangeIndex");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.range_index);
+            record.range_index = cursor.next_i32();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "CostCurveRange.StartStep", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurveRange.StartStep");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.start_step);
+            record.start_step = cursor.next_i32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "CostCurveRange.EndStep", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurveRange.EndStep");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.end_step);
+            record.end_step = cursor.next_i32();
           }
           break;
         }

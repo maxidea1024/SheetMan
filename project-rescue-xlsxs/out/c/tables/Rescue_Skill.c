@@ -14,6 +14,7 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -65,11 +66,12 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 1:
       (void)sm_check_column(reader, column, "Skill.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -77,11 +79,12 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 2:
       (void)sm_check_column(reader, column, "Skill.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -89,11 +92,12 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 3:
       (void)sm_check_column(reader, column, "Skill.SkillName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.SkillName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->skill_name);
+        (void)sm_cursor_next_string(&cursor, &record->skill_name);
       }
 
       break;
@@ -101,12 +105,13 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 4:
       (void)sm_check_column(reader, column, "Skill.SkillType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.SkillType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->skill_type = (Rescue_SkillType_t)scratch;
       }
 
@@ -115,12 +120,13 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 5:
       (void)sm_check_column(reader, column, "Skill.SkillSubType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.SkillSubType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->skill_sub_type = (Rescue_SkillSubType_t)scratch;
       }
 
@@ -129,12 +135,13 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 6:
       (void)sm_check_column(reader, column, "Skill.AttributeType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.AttributeType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->attribute_type = (Rescue_AttributeType_t)scratch;
       }
 
@@ -143,12 +150,13 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 7:
       (void)sm_check_column(reader, column, "Skill.TargetType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.TargetType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->target_type = (Rescue_TargetType_t)scratch;
       }
 
@@ -157,11 +165,12 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 8:
       (void)sm_check_column(reader, column, "Skill.AniPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.AniPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->ani_path);
+        (void)sm_cursor_next_string(&cursor, &record->ani_path);
       }
 
       break;
@@ -221,11 +230,12 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 12:
       (void)sm_check_column(reader, column, "Skill.SkillIcon", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.SkillIcon");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->skill_icon);
+        (void)sm_cursor_next_string(&cursor, &record->skill_icon);
       }
 
       break;
@@ -233,11 +243,12 @@ static bool Rescue_SkillParse(Rescue_SkillTable_t* table, sm_reader* reader) {
     case 13:
       (void)sm_check_column(reader, column, "Skill.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Skill.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SkillRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

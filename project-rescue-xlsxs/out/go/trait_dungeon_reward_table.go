@@ -106,51 +106,58 @@ func (t *TraitDungeonRewardTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "TraitDungeonReward.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "TraitDungeonReward.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "TraitDungeonReward.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "TraitDungeonReward.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "TraitDungeonReward.RewardName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "TraitDungeonReward.RewardName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardName = reader.ReadString()
+					r.RewardName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "TraitDungeonReward.RewardType1", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "TraitDungeonReward.RewardType1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardType1 = CurrencyType(reader.ReadEnum())
+					r.RewardType1 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "TraitDungeonReward.RewardValue1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "TraitDungeonReward.RewardValue1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardValue1 = reader.ReadI32As(column.Element)
+					r.RewardValue1 = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "TraitDungeonReward.RewardType2", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "TraitDungeonReward.RewardType2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardType2 = CurrencyType(reader.ReadEnum())
+					r.RewardType2 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "TraitDungeonReward.RewardValue2", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "TraitDungeonReward.RewardValue2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardValue2 = reader.ReadI32As(column.Element)
+					r.RewardValue2 = cursor.NextI32()
 				}
 			}
 		case 8:
@@ -162,16 +169,18 @@ func (t *TraitDungeonRewardTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "TraitDungeonReward.FirstClearRewardType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "TraitDungeonReward.FirstClearRewardType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.FirstClearRewardType = CurrencyType(reader.ReadEnum())
+					r.FirstClearRewardType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "TraitDungeonReward.FirstClearRewardValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "TraitDungeonReward.FirstClearRewardValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.FirstClearRewardValue = reader.ReadI32As(column.Element)
+					r.FirstClearRewardValue = cursor.NextI32()
 				}
 			}
 		default:

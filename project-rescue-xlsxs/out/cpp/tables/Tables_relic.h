@@ -113,41 +113,46 @@ class RelicTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Relic.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Relic.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Relic.RelicName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.relic_name);
+            record.relic_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Relic.InfuluenceStep", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.InfuluenceStep");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.infuluence_step);
+            record.infuluence_step = cursor.next_i32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "Relic.RelicType1", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicType1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.relic_type1);
+            record.relic_type1 = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
@@ -169,9 +174,10 @@ class RelicTable {
         }
         case 8: {
           sheetman::check_column(column, "Relic.RelicType2", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicType2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.relic_type2);
+            record.relic_type2 = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
@@ -193,9 +199,10 @@ class RelicTable {
         }
         case 11: {
           sheetman::check_column(column, "Relic.RelicType3", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.RelicType3");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.relic_type3);
+            record.relic_type3 = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
@@ -217,17 +224,19 @@ class RelicTable {
         }
         case 14: {
           sheetman::check_column(column, "Relic.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.Description");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.description);
+            record.description = cursor.next_string();
           }
           break;
         }
         case 15: {
           sheetman::check_column(column, "Relic.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Relic.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }

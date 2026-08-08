@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -136,99 +137,113 @@ final class SDDungeonRewardTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDDungeonReward.RewardName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.RewardName');
                     foreach ($records as $record) {
-                        $record->rewardName = $reader->readString();
+                        $record->rewardName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDDungeonReward.ConditionId', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.ConditionId');
                     foreach ($records as $record) {
-                        $record->conditionId = $reader->readI32As($column['element']);
+                        $record->conditionId = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDDungeonReward.RewardCommon', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.RewardCommon');
                     foreach ($records as $record) {
-                        $record->rewardCommon = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->rewardCommon = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SDDungeonReward.CommonValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.CommonValue');
                     foreach ($records as $record) {
-                        $record->commonValue = $reader->readI32As($column['element']);
+                        $record->commonValue = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Reward1Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Reward1Type');
                     foreach ($records as $record) {
-                        $record->reward1Type = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->reward1Type = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Reward1Value', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Reward1Value');
                     foreach ($records as $record) {
-                        $record->reward1Value = $reader->readI32As($column['element']);
+                        $record->reward1Value = $cursor->nextI32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Reward2Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Reward2Type');
                     foreach ($records as $record) {
-                        $record->reward2Type = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->reward2Type = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Reward2Value', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Reward2Value');
                     foreach ($records as $record) {
-                        $record->reward2Value = $reader->readI32As($column['element']);
+                        $record->reward2Value = $cursor->nextI32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Reward3Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Reward3Type');
                     foreach ($records as $record) {
-                        $record->reward3Type = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->reward3Type = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Reward3Value', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Reward3Value');
                     foreach ($records as $record) {
-                        $record->reward3Value = $reader->readI32As($column['element']);
+                        $record->reward3Value = $cursor->nextI32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Reward4Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Reward4Type');
                     foreach ($records as $record) {
-                        $record->reward4Type = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->reward4Type = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'SDDungeonReward.Reward4Value', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.Reward4Value');
                     foreach ($records as $record) {
-                        $record->reward4Value = $reader->readI32As($column['element']);
+                        $record->reward4Value = $cursor->nextI32();
                     }
                     break;
 
@@ -241,15 +256,17 @@ final class SDDungeonRewardTable
 
                 case 16:
                     ScbReader::checkColumn($column, 'SDDungeonReward.RewardPerfect', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.RewardPerfect');
                     foreach ($records as $record) {
-                        $record->rewardPerfect = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->rewardPerfect = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 17:
                     ScbReader::checkColumn($column, 'SDDungeonReward.PerfectValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.PerfectValue');
                     foreach ($records as $record) {
-                        $record->perfectValue = $reader->readI32As($column['element']);
+                        $record->perfectValue = $cursor->nextI32();
                     }
                     break;
 
@@ -262,15 +279,17 @@ final class SDDungeonRewardTable
 
                 case 19:
                     ScbReader::checkColumn($column, 'SDDungeonReward.RewardMin', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.RewardMin');
                     foreach ($records as $record) {
-                        $record->rewardMin = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->rewardMin = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 20:
                     ScbReader::checkColumn($column, 'SDDungeonReward.MinRewardValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonReward.MinRewardValue');
                     foreach ($records as $record) {
-                        $record->minRewardValue = $reader->readI32As($column['element']);
+                        $record->minRewardValue = $cursor->nextI32();
                     }
                     break;
 

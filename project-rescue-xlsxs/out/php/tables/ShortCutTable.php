@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/ShortCutType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -106,36 +107,41 @@ final class ShortCutTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'ShortCut.ID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShortCut.ID');
                     foreach ($records as $record) {
-                        $record->iD = $reader->readI32As($column['element']);
+                        $record->iD = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'ShortCut.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShortCut.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'ShortCut.Type', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShortCut.Type');
                     foreach ($records as $record) {
-                        $record->type = ShortCutType::tryFrom($reader->readEnum()) ?? ShortCutType::None;
+                        $record->type = ShortCutType::tryFrom($cursor->nextI32()) ?? ShortCutType::None;
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'ShortCut.SubIndex', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShortCut.SubIndex');
                     foreach ($records as $record) {
-                        $record->subIndex = $reader->readI32As($column['element']);
+                        $record->subIndex = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'ShortCut.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ShortCut.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

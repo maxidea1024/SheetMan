@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -118,26 +119,30 @@ class ArtifactTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Artifact.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Artifact.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Artifact.ArtifactType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.ArtifactType")
                     for (record in loaded) {
-                        record.artifactType = ArtifactJobType.of(reader.readEnum())
+                        record.artifactType = ArtifactJobType.of(cursor.nextI32())
                     }
                 }
                 4 -> {
                     checkColumn(column, "Artifact.Grade", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.Grade")
                     for (record in loaded) {
-                        record.grade = GradeType.of(reader.readEnum())
+                        record.grade = GradeType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
@@ -150,8 +155,9 @@ class ArtifactTable {
                 }
                 6 -> {
                     checkColumn(column, "Artifact.EquipStatType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.EquipStatType")
                     for (record in loaded) {
-                        record.equipStatType = StatType.of(reader.readEnum())
+                        record.equipStatType = StatType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
@@ -162,8 +168,9 @@ class ArtifactTable {
                 }
                 8 -> {
                     checkColumn(column, "Artifact.CollectionType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.CollectionType")
                     for (record in loaded) {
-                        record.collectionType = StatType.of(reader.readEnum())
+                        record.collectionType = StatType.of(cursor.nextI32())
                     }
                 }
                 9 -> {
@@ -174,20 +181,23 @@ class ArtifactTable {
                 }
                 10 -> {
                     checkColumn(column, "Artifact.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 11 -> {
                     checkColumn(column, "Artifact.MaterialPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.MaterialPath")
                     for (record in loaded) {
-                        record.materialPath = reader.readString()
+                        record.materialPath = cursor.nextString()
                     }
                 }
                 12 -> {
                     checkColumn(column, "Artifact.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Artifact.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

@@ -101,6 +101,78 @@ public class BinaryFormatTests
     }
 
     /// <summary>
+    /// Which encoding the writer picks for each conformance column, pinned by name.
+    ///
+    /// The corpus data is shaped so that every encoding of the spec wins somewhere -
+    /// that is what makes the thirteen conformance harnesses cover every decode path,
+    /// not just the ones their data happened to trigger. This test is the other half
+    /// of that arrangement: if the writer's selection drifts (a tweak to a candidate,
+    /// a change in the data), the coverage does not silently narrow - this fails,
+    /// naming the column that moved.
+    /// </summary>
+    [Fact]
+    public void The_conformance_corpus_exercises_every_encoding()
+    {
+        var conversion = SheetManRunner.Convert("conformance");
+        Assert.True(conversion.Succeeded,
+            $"Conversion failed.{Environment.NewLine}{conversion.Describe()}");
+
+        string binaryDir = Path.Combine(RepoLayout.OutputDir("conformance"), "binary");
+
+        // (tag, encoding) per column, in descriptor order. Encodings by number:
+        // 0 raw, 1 varint, 2 delta, 3 rle, 4 delta-rle, 5 dict, 6 dict-rle.
+        AssertEncodings(Path.Combine(binaryDir, "Vectors.scb"), new byte[]
+        {
+            4,      // index:     ascending by one    -> delta-rle
+            2,      // intVal:    varying small steps -> delta
+            0,      // bigVal:    i64 stays raw by spec
+            0,      // floatVal
+            0,      // doubleVal
+            6,      // text:      few words, long runs -> dict-rle
+            0,      // flag
+            0,      // when
+            0,      // span
+            0,      // uid
+            3,      // label:     two long runs       -> rle
+            0, 0, 0, 0,  // ints, strs, labels, uids: arrays stay raw by spec
+            1,      // owner:     small, irregular    -> varint
+            1,      // tier
+        });
+
+        AssertEncodings(Path.Combine(binaryDir, "Owners.scb"), new byte[]
+        {
+            4,      // index:     ascending by one    -> delta-rle
+            5,      // name:      two words alternating, no runs -> dict
+            4,      // rank:      ascending by ten    -> delta-rle
+        });
+    }
+
+    private static void AssertEncodings(string path, byte[] expected)
+    {
+        var reader = new FormatWalker(File.ReadAllBytes(path));
+
+        reader.ReadFixed32();                            // version
+        reader.ReadByte();                               // flags
+        reader.ReadCounter32();                          // row count
+        int columnCount = reader.ReadCounter32();
+
+        Assert.Equal(expected.Length, columnCount);
+
+        for (int at = 0; at < columnCount; at++)
+        {
+            reader.ReadCounter32();                      // tag
+            reader.ReadByte();                           // wire
+            byte encoding = reader.ReadByte();
+            reader.ReadCounter32();                      // elements per row
+            reader.ReadFixed32();                        // block length
+
+            Assert.True(expected[at] == encoding,
+                $"{Path.GetFileName(path)}: column {at} uses encoding {encoding}, " +
+                $"expected {expected[at]}.");
+        }
+    }
+
+    /// <summary>
     /// The invariant every reader checks before it allocates: the blocks are all that
     /// follows the header, so their declared lengths add up to the bytes left, and no
     /// row costs less than one byte in any raw block. An encoded block has no such

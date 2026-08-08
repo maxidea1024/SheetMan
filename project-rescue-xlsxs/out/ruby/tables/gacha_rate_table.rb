@@ -80,8 +80,9 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'GachaRate.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaRate.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'GachaRate.URRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])

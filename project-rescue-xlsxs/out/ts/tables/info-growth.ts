@@ -228,6 +228,7 @@ export class InfoGrowthTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -241,37 +242,42 @@ export class InfoGrowthTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'InfoGrowth.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'InfoGrowth.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'InfoGrowth.InfoName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.InfoName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._infoName = reader.readString()
+            record._infoName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'InfoGrowth.SheetName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.SheetName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._sheetName = reader.readString()
+            record._sheetName = cursor.nextString()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'InfoGrowth.GrowthType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.GrowthType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._growthType = reader.readEnum() as GrowthType
+            record._growthType = cursor.nextI32() as GrowthType
           }
           break
         case 6:
@@ -283,58 +289,66 @@ export class InfoGrowthTable {
           break
         case 7:
           sheetman.checkColumn(column, 'InfoGrowth.ResetCostType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.ResetCostType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._resetCostType = reader.readEnum() as CurrencyType
+            record._resetCostType = cursor.nextI32() as CurrencyType
           }
           break
         case 8:
           sheetman.checkColumn(column, 'InfoGrowth.ResetCostValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.ResetCostValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._resetCostValue = reader.readI32As(column.element)
+            record._resetCostValue = cursor.nextI32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'InfoGrowth.MaxStep', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.MaxStep')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxStep = reader.readI32As(column.element)
+            record._maxStep = cursor.nextI32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'InfoGrowth.MaxLevel', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.MaxLevel')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxLevel = reader.readI32As(column.element)
+            record._maxLevel = cursor.nextI32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'InfoGrowth.UnlockConditionType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.UnlockConditionType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._unlockConditionType = reader.readString()
+            record._unlockConditionType = cursor.nextString()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'InfoGrowth.UnlockConditionValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.UnlockConditionValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._unlockConditionValue = reader.readI32As(column.element)
+            record._unlockConditionValue = cursor.nextI32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'InfoGrowth.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'InfoGrowth.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'InfoGrowth.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         default:

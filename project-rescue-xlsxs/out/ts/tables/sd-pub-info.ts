@@ -175,6 +175,7 @@ export class SDPubInfoTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -188,51 +189,58 @@ export class SDPubInfoTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'SDPubInfo.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDPubInfo.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'SDPubInfo.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDPubInfo.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'SDPubInfo.PubName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDPubInfo.PubName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._pubName = reader.readString()
+            record._pubName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'SDPubInfo.UnlockCondition', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDPubInfo.UnlockCondition')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._unlockCondition = reader.readI32As(column.element)
+            record._unlockCondition = cursor.nextI32()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'SDPubInfo.LimitValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDPubInfo.LimitValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._limitValue = reader.readI32As(column.element)
+            record._limitValue = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'SDPubInfo.BuffID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDPubInfo.BuffID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffID = reader.readI32As(column.element)
+            record._buffID = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'SDPubInfo.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDPubInfo.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         default:

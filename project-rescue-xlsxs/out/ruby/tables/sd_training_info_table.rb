@@ -86,43 +86,51 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDTrainingInfo.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDTrainingInfo.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDTrainingInfo.TrainingName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.TrainingName')
           records.each do |record|
-            record.training_name = reader.read_string
+            record.training_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDTrainingInfo.AttributeType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.AttributeType')
           records.each do |record|
-            record.attribute_type = reader.read_enum
+            record.attribute_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDTrainingInfo.StatType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.StatType')
           records.each do |record|
-            record.stat_type = reader.read_enum
+            record.stat_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDTrainingInfo.UnlockCondition', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.UnlockCondition')
           records.each do |record|
-            record.unlock_condition = reader.read_i32_as(column.element)
+            record.unlock_condition = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'SDTrainingInfo.LevelUpCondition', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.LevelUpCondition')
           records.each do |record|
-            record.level_up_condition = reader.read_i32_as(column.element)
+            record.level_up_condition = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'SDTrainingInfo.MaxLevel', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.MaxLevel')
           records.each do |record|
-            record.max_level = reader.read_i32_as(column.element)
+            record.max_level = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'SDTrainingInfo.IsLvReset', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -131,18 +139,21 @@ module Rescue
           end
         when 10
           Sheetman.check_column(column, 'SDTrainingInfo.LvResetCurrencyType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.LvResetCurrencyType')
           records.each do |record|
-            record.lv_reset_currency_type = reader.read_enum
+            record.lv_reset_currency_type = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'SDTrainingInfo.LvResetCurrencyValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.LvResetCurrencyValue')
           records.each do |record|
-            record.lv_reset_currency_value = reader.read_i32_as(column.element)
+            record.lv_reset_currency_value = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'SDTrainingInfo.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDTrainingInfo.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

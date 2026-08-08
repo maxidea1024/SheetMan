@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -132,26 +133,30 @@ class StageTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "Stage.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "Stage.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "Stage.StageName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.StageName")
                     for (record in loaded) {
-                        record.stageName = reader.readString()
+                        record.stageName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "Stage.AssetDataPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.AssetDataPath")
                     for (record in loaded) {
-                        record.assetDataPath = reader.readString()
+                        record.assetDataPath = cursor.nextString()
                     }
                 }
                 5 -> {
@@ -164,14 +169,16 @@ class StageTable {
                 }
                 6 -> {
                     checkColumn(column, "Stage.SpawnPointCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.SpawnPointCount")
                     for (record in loaded) {
-                        record.spawnPointCount = reader.readI32As(column.element)
+                        record.spawnPointCount = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "Stage.SpawnMaxCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.SpawnMaxCount")
                     for (record in loaded) {
-                        record.spawnMaxCount = reader.readI32As(column.element)
+                        record.spawnMaxCount = cursor.nextI32()
                     }
                 }
                 8 -> {
@@ -182,8 +189,9 @@ class StageTable {
                 }
                 9 -> {
                     checkColumn(column, "Stage.StageClearCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.StageClearCount")
                     for (record in loaded) {
-                        record.stageClearCount = reader.readI32As(column.element)
+                        record.stageClearCount = cursor.nextI32()
                     }
                 }
                 10 -> {
@@ -232,20 +240,23 @@ class StageTable {
                 }
                 17 -> {
                     checkColumn(column, "Stage.StageDropListID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.StageDropListID")
                     for (record in loaded) {
-                        record.stageDropListID = reader.readI32As(column.element)
+                        record.stageDropListID = cursor.nextI32()
                     }
                 }
                 18 -> {
                     checkColumn(column, "Stage.StageBGMID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.StageBGMID")
                     for (record in loaded) {
-                        record.stageBGMID = reader.readI32As(column.element)
+                        record.stageBGMID = cursor.nextI32()
                     }
                 }
                 19 -> {
                     checkColumn(column, "Stage.BossStageBGMID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "Stage.BossStageBGMID")
                     for (record in loaded) {
-                        record.bossStageBGMID = reader.readI32As(column.element)
+                        record.bossStageBGMID = cursor.nextI32()
                     }
                 }
                 else ->

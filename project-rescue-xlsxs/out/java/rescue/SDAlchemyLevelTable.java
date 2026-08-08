@@ -74,6 +74,7 @@ public final class SDAlchemyLevelTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<SDAlchemyLevelRecord> loaded = new ArrayList<>(count);
@@ -89,57 +90,65 @@ public final class SDAlchemyLevelTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.Id");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.Name");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.NameKR");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.nameKR = reader.readString();
+                        record.nameKR = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.LevelUpCost", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.LevelUpCost");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.levelUpCost = reader.readI32As(column.element);
+                        record.levelUpCost = cursor.nextI32();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.LevelUpTotal", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.LevelUpTotal");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.levelUpTotal = reader.readI32As(column.element);
+                        record.levelUpTotal = cursor.nextI32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.Time", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.Time");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.time = reader.readI64As(column.element);
+                        record.time = cursor.nextI64();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.UseDiaCost", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.UseDiaCost");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.useDiaCost = reader.readI32As(column.element);
+                        record.useDiaCost = cursor.nextI32();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "SDAlchemyLevel.UseItemCost", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAlchemyLevel.UseItemCost");
                     for (SDAlchemyLevelRecord record : loaded) {
-                        record.useItemCost = reader.readI32As(column.element);
+                        record.useItemCost = cursor.nextI32();
                     }
                     break;
                 }

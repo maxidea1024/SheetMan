@@ -96,6 +96,7 @@ class SDDungeonRewardTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SDDungeonRewardRecord>[];
@@ -111,86 +112,100 @@ class SDDungeonRewardTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SDDungeonReward.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SDDungeonReward.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SDDungeonReward.RewardName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.RewardName');
           for (final record in loaded) {
-            record.rewardName = reader.readString();
+            record.rewardName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'SDDungeonReward.ConditionId', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.ConditionId');
           for (final record in loaded) {
-            record.conditionId = reader.readI32As(column.element);
+            record.conditionId = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'SDDungeonReward.RewardCommon', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.RewardCommon');
           for (final record in loaded) {
-            record.rewardCommon = CurrencyType.of(reader.readEnum());
+            record.rewardCommon = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'SDDungeonReward.CommonValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.CommonValue');
           for (final record in loaded) {
-            record.commonValue = reader.readI32As(column.element);
+            record.commonValue = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'SDDungeonReward.Reward1Type', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Reward1Type');
           for (final record in loaded) {
-            record.reward1Type = CurrencyType.of(reader.readEnum());
+            record.reward1Type = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 8:
           checkColumn(column, 'SDDungeonReward.Reward1Value', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Reward1Value');
           for (final record in loaded) {
-            record.reward1Value = reader.readI32As(column.element);
+            record.reward1Value = cursor.nextI32();
           }
           break;
         case 9:
           checkColumn(column, 'SDDungeonReward.Reward2Type', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Reward2Type');
           for (final record in loaded) {
-            record.reward2Type = CurrencyType.of(reader.readEnum());
+            record.reward2Type = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 10:
           checkColumn(column, 'SDDungeonReward.Reward2Value', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Reward2Value');
           for (final record in loaded) {
-            record.reward2Value = reader.readI32As(column.element);
+            record.reward2Value = cursor.nextI32();
           }
           break;
         case 11:
           checkColumn(column, 'SDDungeonReward.Reward3Type', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Reward3Type');
           for (final record in loaded) {
-            record.reward3Type = CurrencyType.of(reader.readEnum());
+            record.reward3Type = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 12:
           checkColumn(column, 'SDDungeonReward.Reward3Value', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Reward3Value');
           for (final record in loaded) {
-            record.reward3Value = reader.readI32As(column.element);
+            record.reward3Value = cursor.nextI32();
           }
           break;
         case 13:
           checkColumn(column, 'SDDungeonReward.Reward4Type', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Reward4Type');
           for (final record in loaded) {
-            record.reward4Type = CurrencyType.of(reader.readEnum());
+            record.reward4Type = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 14:
           checkColumn(column, 'SDDungeonReward.Reward4Value', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.Reward4Value');
           for (final record in loaded) {
-            record.reward4Value = reader.readI32As(column.element);
+            record.reward4Value = cursor.nextI32();
           }
           break;
         case 15:
@@ -201,14 +216,16 @@ class SDDungeonRewardTable {
           break;
         case 16:
           checkColumn(column, 'SDDungeonReward.RewardPerfect', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.RewardPerfect');
           for (final record in loaded) {
-            record.rewardPerfect = CurrencyType.of(reader.readEnum());
+            record.rewardPerfect = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 17:
           checkColumn(column, 'SDDungeonReward.PerfectValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.PerfectValue');
           for (final record in loaded) {
-            record.perfectValue = reader.readI32As(column.element);
+            record.perfectValue = cursor.nextI32();
           }
           break;
         case 18:
@@ -219,14 +236,16 @@ class SDDungeonRewardTable {
           break;
         case 19:
           checkColumn(column, 'SDDungeonReward.RewardMin', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.RewardMin');
           for (final record in loaded) {
-            record.rewardMin = CurrencyType.of(reader.readEnum());
+            record.rewardMin = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 20:
           checkColumn(column, 'SDDungeonReward.MinRewardValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonReward.MinRewardValue');
           for (final record in loaded) {
-            record.minRewardValue = reader.readI32As(column.element);
+            record.minRewardValue = cursor.nextI32();
           }
           break;
         default:

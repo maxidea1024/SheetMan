@@ -82,6 +82,7 @@ class SDDungeonInfoTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <SDDungeonInfoRecord>[];
@@ -97,80 +98,93 @@ class SDDungeonInfoTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'SDDungeonInfo.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'SDDungeonInfo.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'SDDungeonInfo.NameKR', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.NameKR');
           for (final record in loaded) {
-            record.nameKR = reader.readString();
+            record.nameKR = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'SDDungeonInfo.TotalCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.TotalCount');
           for (final record in loaded) {
-            record.totalCount = reader.readI32As(column.element);
+            record.totalCount = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'SDDungeonInfo.TrapCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.TrapCount');
           for (final record in loaded) {
-            record.trapCount = reader.readI32As(column.element);
+            record.trapCount = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'SDDungeonInfo.ActionCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.ActionCount');
           for (final record in loaded) {
-            record.actionCount = reader.readI32As(column.element);
+            record.actionCount = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'SDDungeonInfo.MatchCost', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.MatchCost');
           for (final record in loaded) {
-            record.matchCost = reader.readI32As(column.element);
+            record.matchCost = cursor.nextI32();
           }
           break;
         case 8:
           checkColumn(column, 'SDDungeonInfo.MismatchCost', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.MismatchCost');
           for (final record in loaded) {
-            record.mismatchCost = reader.readI32As(column.element);
+            record.mismatchCost = cursor.nextI32();
           }
           break;
         case 9:
           checkColumn(column, 'SDDungeonInfo.TrapCost', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.TrapCost');
           for (final record in loaded) {
-            record.trapCost = reader.readI32As(column.element);
+            record.trapCost = cursor.nextI32();
           }
           break;
         case 10:
           checkColumn(column, 'SDDungeonInfo.ViewTime', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.ViewTime');
           for (final record in loaded) {
-            record.viewTime = reader.readI32As(column.element);
+            record.viewTime = cursor.nextI32();
           }
           break;
         case 11:
           checkColumn(column, 'SDDungeonInfo.Time', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.Time');
           for (final record in loaded) {
-            record.time = reader.readI32As(column.element);
+            record.time = cursor.nextI32();
           }
           break;
         case 12:
           checkColumn(column, 'SDDungeonInfo.ADCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.ADCount');
           for (final record in loaded) {
-            record.aDCount = reader.readI32As(column.element);
+            record.aDCount = cursor.nextI32();
           }
           break;
         case 13:
           checkColumn(column, 'SDDungeonInfo.DailyFreeCount', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'SDDungeonInfo.DailyFreeCount');
           for (final record in loaded) {
-            record.dailyFreeCount = reader.readI32As(column.element);
+            record.dailyFreeCount = cursor.nextI32();
           }
           break;
         default:

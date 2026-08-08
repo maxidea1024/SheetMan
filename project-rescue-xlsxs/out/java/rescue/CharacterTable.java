@@ -74,6 +74,7 @@ public final class CharacterTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<CharacterRecord> loaded = new ArrayList<>(count);
@@ -89,78 +90,89 @@ public final class CharacterTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "Character.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.Id");
                     for (CharacterRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "Character.TitleName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.TitleName");
                     for (CharacterRecord record : loaded) {
-                        record.titleName = reader.readString();
+                        record.titleName = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "Character.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.Name");
                     for (CharacterRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "Character.CharacterType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.CharacterType");
                     for (CharacterRecord record : loaded) {
-                        record.characterType = CharacterType.of(reader.readEnum());
+                        record.characterType = CharacterType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "Character.Grade", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.Grade");
                     for (CharacterRecord record : loaded) {
-                        record.grade = GradeType.of(reader.readEnum());
+                        record.grade = GradeType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "Character.AttributeType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.AttributeType");
                     for (CharacterRecord record : loaded) {
-                        record.attributeType = AttributeType.of(reader.readEnum());
+                        record.attributeType = AttributeType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "Character.JobType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.JobType");
                     for (CharacterRecord record : loaded) {
-                        record.jobType = JobType.of(reader.readEnum());
+                        record.jobType = JobType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "Character.Nation", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.Nation");
                     for (CharacterRecord record : loaded) {
-                        record.nation = NationType.of(reader.readEnum());
+                        record.nation = NationType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "Character.BaseATK", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.BaseATK");
                     for (CharacterRecord record : loaded) {
-                        record.baseATK = reader.readI64As(column.element);
+                        record.baseATK = cursor.nextI64();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "Character.BaseDEF", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.BaseDEF");
                     for (CharacterRecord record : loaded) {
-                        record.baseDEF = reader.readI64As(column.element);
+                        record.baseDEF = cursor.nextI64();
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "Character.BaseMHP", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.BaseMHP");
                     for (CharacterRecord record : loaded) {
-                        record.baseMHP = reader.readI64As(column.element);
+                        record.baseMHP = cursor.nextI64();
                     }
                     break;
                 }
@@ -222,127 +234,145 @@ public final class CharacterTable {
                 }
                 case 20: {
                     ScbReader.checkColumn(column, "Character.BasicAttack1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.BasicAttack1");
                     for (CharacterRecord record : loaded) {
-                        record.basicAttack1 = reader.readI32As(column.element);
+                        record.basicAttack1 = cursor.nextI32();
                     }
                     break;
                 }
                 case 21: {
                     ScbReader.checkColumn(column, "Character.BasicAttack2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.BasicAttack2");
                     for (CharacterRecord record : loaded) {
-                        record.basicAttack2 = reader.readI32As(column.element);
+                        record.basicAttack2 = cursor.nextI32();
                     }
                     break;
                 }
                 case 22: {
                     ScbReader.checkColumn(column, "Character.BasicAttack3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.BasicAttack3");
                     for (CharacterRecord record : loaded) {
-                        record.basicAttack3 = reader.readI32As(column.element);
+                        record.basicAttack3 = cursor.nextI32();
                     }
                     break;
                 }
                 case 23: {
                     ScbReader.checkColumn(column, "Character.ActiveSkill1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.ActiveSkill1");
                     for (CharacterRecord record : loaded) {
-                        record.activeSkill1 = reader.readI32As(column.element);
+                        record.activeSkill1 = cursor.nextI32();
                     }
                     break;
                 }
                 case 24: {
                     ScbReader.checkColumn(column, "Character.ActiveSkill2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.ActiveSkill2");
                     for (CharacterRecord record : loaded) {
-                        record.activeSkill2 = reader.readI32As(column.element);
+                        record.activeSkill2 = cursor.nextI32();
                     }
                     break;
                 }
                 case 25: {
                     ScbReader.checkColumn(column, "Character.ActiveSkill3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.ActiveSkill3");
                     for (CharacterRecord record : loaded) {
-                        record.activeSkill3 = reader.readI32As(column.element);
+                        record.activeSkill3 = cursor.nextI32();
                     }
                     break;
                 }
                 case 26: {
                     ScbReader.checkColumn(column, "Character.SpecialSkill1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.SpecialSkill1");
                     for (CharacterRecord record : loaded) {
-                        record.specialSkill1 = reader.readI32As(column.element);
+                        record.specialSkill1 = cursor.nextI32();
                     }
                     break;
                 }
                 case 27: {
                     ScbReader.checkColumn(column, "Character.SpecialSkill2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.SpecialSkill2");
                     for (CharacterRecord record : loaded) {
-                        record.specialSkill2 = reader.readI32As(column.element);
+                        record.specialSkill2 = cursor.nextI32();
                     }
                     break;
                 }
                 case 28: {
                     ScbReader.checkColumn(column, "Character.SpecialSkill3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.SpecialSkill3");
                     for (CharacterRecord record : loaded) {
-                        record.specialSkill3 = reader.readI32As(column.element);
+                        record.specialSkill3 = cursor.nextI32();
                     }
                     break;
                 }
                 case 29: {
                     ScbReader.checkColumn(column, "Character.SpecialSkill4", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.SpecialSkill4");
                     for (CharacterRecord record : loaded) {
-                        record.specialSkill4 = reader.readI32As(column.element);
+                        record.specialSkill4 = cursor.nextI32();
                     }
                     break;
                 }
                 case 30: {
                     ScbReader.checkColumn(column, "Character.SpecialSkill5", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.SpecialSkill5");
                     for (CharacterRecord record : loaded) {
-                        record.specialSkill5 = reader.readI32As(column.element);
+                        record.specialSkill5 = cursor.nextI32();
                     }
                     break;
                 }
                 case 31: {
                     ScbReader.checkColumn(column, "Character.PassiveBuff1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.PassiveBuff1");
                     for (CharacterRecord record : loaded) {
-                        record.passiveBuff1 = reader.readI32As(column.element);
+                        record.passiveBuff1 = cursor.nextI32();
                     }
                     break;
                 }
                 case 32: {
                     ScbReader.checkColumn(column, "Character.PassiveBuff2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.PassiveBuff2");
                     for (CharacterRecord record : loaded) {
-                        record.passiveBuff2 = reader.readI32As(column.element);
+                        record.passiveBuff2 = cursor.nextI32();
                     }
                     break;
                 }
                 case 33: {
                     ScbReader.checkColumn(column, "Character.PassiveBuff3", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.PassiveBuff3");
                     for (CharacterRecord record : loaded) {
-                        record.passiveBuff3 = reader.readI32As(column.element);
+                        record.passiveBuff3 = cursor.nextI32();
                     }
                     break;
                 }
                 case 34: {
                     ScbReader.checkColumn(column, "Character.PrefabPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.PrefabPath");
                     for (CharacterRecord record : loaded) {
-                        record.prefabPath = reader.readString();
+                        record.prefabPath = cursor.nextString();
                     }
                     break;
                 }
                 case 35: {
                     ScbReader.checkColumn(column, "Character.SdMaterialPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.SdMaterialPath");
                     for (CharacterRecord record : loaded) {
-                        record.sdMaterialPath = reader.readString();
+                        record.sdMaterialPath = cursor.nextString();
                     }
                     break;
                 }
                 case 36: {
                     ScbReader.checkColumn(column, "Character.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.IconPath");
                     for (CharacterRecord record : loaded) {
-                        record.iconPath = reader.readString();
+                        record.iconPath = cursor.nextString();
                     }
                     break;
                 }
                 case 37: {
                     ScbReader.checkColumn(column, "Character.Description", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Character.Description");
                     for (CharacterRecord record : loaded) {
-                        record.description = reader.readString();
+                        record.description = cursor.nextString();
                     }
                     break;
                 }

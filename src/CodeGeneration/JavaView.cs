@@ -106,6 +106,10 @@ internal sealed class JavaTableView
     /// </summary>
     public required IReadOnlyList<JavaIndexView> Indexes { get; set; }
 
+    /// <summary>Whether any column reads through the cursor, and so whether the read
+    /// method declares its one cursor variable.</summary>
+    public required bool NeedsCursor { get; set; }
+
     public required IReadOnlyList<JavaFieldView> Fields { get; set; }
 }
 
@@ -159,6 +163,12 @@ internal sealed class JavaFieldView
 
     /// <summary>The rendered checkColumn call for this member.</summary>
     public required string ColumnCheck { get; set; }
+
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or empty for a
+    /// column that reads the reader directly.
+    /// </summary>
+    public required string CursorOpen { get; set; }
 
     public required int ElementCount { get; set; }
 

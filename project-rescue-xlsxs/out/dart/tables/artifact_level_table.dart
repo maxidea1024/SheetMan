@@ -74,6 +74,7 @@ class ArtifactLevelTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <ArtifactLevelRecord>[];
@@ -89,38 +90,44 @@ class ArtifactLevelTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'ArtifactLevel.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactLevel.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'ArtifactLevel.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactLevel.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'ArtifactLevel.NameKR', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactLevel.NameKR');
           for (final record in loaded) {
-            record.nameKR = reader.readString();
+            record.nameKR = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'ArtifactLevel.Level', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactLevel.Level');
           for (final record in loaded) {
-            record.level = reader.readI32As(column.element);
+            record.level = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'ArtifactLevel.CharacterEXP', kindScalar, 1, [elementI64, elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactLevel.CharacterEXP');
           for (final record in loaded) {
-            record.characterEXP = reader.readI64As(column.element);
+            record.characterEXP = cursor.nextI64();
           }
           break;
         case 6:
           checkColumn(column, 'ArtifactLevel.AccumulatedEXP', kindScalar, 1, [elementI64, elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'ArtifactLevel.AccumulatedEXP');
           for (final record in loaded) {
-            record.accumulatedEXP = reader.readI64As(column.element);
+            record.accumulatedEXP = cursor.nextI64();
           }
           break;
         case 7:

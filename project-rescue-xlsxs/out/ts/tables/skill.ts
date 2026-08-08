@@ -223,6 +223,7 @@ export class SkillTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -236,58 +237,66 @@ export class SkillTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Skill.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Skill.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Skill.SkillName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.SkillName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._skillName = reader.readString()
+            record._skillName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Skill.SkillType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.SkillType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._skillType = reader.readEnum() as SkillType
+            record._skillType = cursor.nextI32() as SkillType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Skill.SkillSubType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.SkillSubType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._skillSubType = reader.readEnum() as SkillSubType
+            record._skillSubType = cursor.nextI32() as SkillSubType
           }
           break
         case 6:
           sheetman.checkColumn(column, 'Skill.AttributeType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.AttributeType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._attributeType = reader.readEnum() as AttributeType
+            record._attributeType = cursor.nextI32() as AttributeType
           }
           break
         case 7:
           sheetman.checkColumn(column, 'Skill.TargetType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.TargetType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._targetType = reader.readEnum() as TargetType
+            record._targetType = cursor.nextI32() as TargetType
           }
           break
         case 8:
           sheetman.checkColumn(column, 'Skill.AniPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.AniPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._aniPath = reader.readString()
+            record._aniPath = cursor.nextString()
           }
           break
         case 9:
@@ -316,16 +325,18 @@ export class SkillTable {
           break
         case 12:
           sheetman.checkColumn(column, 'Skill.SkillIcon', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.SkillIcon')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._skillIcon = reader.readString()
+            record._skillIcon = cursor.nextString()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'Skill.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Skill.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         default:

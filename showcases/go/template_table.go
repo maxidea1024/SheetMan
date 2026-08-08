@@ -139,23 +139,26 @@ func (t *TemplateTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Template.Index", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Template.Index")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Index = reader.ReadI32As(column.Element)
+					r.Index = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Template.Class", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Template.Class")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Class = reader.ReadString()
+					r.Class = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Template.Int", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Template.Int")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Int = reader.ReadI32As(column.Element)
+					r.Int = cursor.NextI32()
 				}
 			}
 		case 4:
@@ -167,30 +170,34 @@ func (t *TemplateTable) Read(filename string) error {
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Template.Operator", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Template.Operator")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Operator = reader.ReadString()
+					r.Operator = cursor.NextString()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Template.Namespace", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Template.Namespace")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Namespace = reader.ReadString()
+					r.Namespace = cursor.NextString()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Template.Constructor", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Template.Constructor")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Constructor = reader.ReadString()
+					r.Constructor = cursor.NextString()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Template.Function", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Template.Function")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Function = reader.ReadString()
+					r.Function = cursor.NextString()
 				}
 			}
 		default:

@@ -84,43 +84,51 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'ArtifactTranscendence.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'ArtifactTranscendence.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'ArtifactTranscendence.NameKR', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.NameKR')
           records.each do |record|
-            record.name_kr = reader.read_string
+            record.name_kr = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'ArtifactTranscendence.GradeType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.GradeType')
           records.each do |record|
-            record.grade_type = reader.read_enum
+            record.grade_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'ArtifactTranscendence.TranscendStep', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.TranscendStep')
           records.each do |record|
-            record.transcend_step = reader.read_i32_as(column.element)
+            record.transcend_step = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'ArtifactTranscendence.MaxLevel', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.MaxLevel')
           records.each do |record|
-            record.max_level = reader.read_i32_as(column.element)
+            record.max_level = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'ArtifactTranscendence.MaterialType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.MaterialType')
           records.each do |record|
-            record.material_type = reader.read_enum
+            record.material_type = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'ArtifactTranscendence.MaterialCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.MaterialCount')
           records.each do |record|
-            record.material_count = reader.read_i32_as(column.element)
+            record.material_count = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'ArtifactTranscendence.PowerMultiplier', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -129,8 +137,9 @@ module Rescue
           end
         when 10
           Sheetman.check_column(column, 'ArtifactTranscendence.NextStepID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'ArtifactTranscendence.NextStepID')
           records.each do |record|
-            record.next_step_id = reader.read_i32_as(column.element)
+            record.next_step_id = cursor.next_i32
           end
         else
           # A column added after this code was generated.

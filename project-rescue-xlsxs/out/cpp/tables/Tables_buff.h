@@ -123,81 +123,91 @@ class BuffTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Buff.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Buff.BuffName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.BuffName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.buff_name);
+            record.buff_name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Buff.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Buff.SkillType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.SkillType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.skill_type);
+            record.skill_type = static_cast<SkillType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "Buff.StatType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.StatType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.stat_type);
+            record.stat_type = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "Buff.Priority", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.Priority");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.priority);
+            record.priority = cursor.next_i32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "Buff.AttributeType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.AttributeType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.attribute_type);
+            record.attribute_type = static_cast<AttributeType>(cursor.next_i32());
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "Buff.TargetType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.TargetType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.target_type);
+            record.target_type = static_cast<TargetType>(cursor.next_i32());
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "Buff.BuffConditionType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.BuffConditionType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.buff_condition_type);
+            record.buff_condition_type = static_cast<BuffConditionType>(cursor.next_i32());
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "Buff.BuffValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.BuffValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.buff_value);
+            record.buff_value = cursor.next_i32();
           }
           break;
         }
@@ -211,25 +221,28 @@ class BuffTable {
         }
         case 12: {
           sheetman::check_column(column, "Buff.BuffTime", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.BuffTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.buff_time);
+            record.buff_time = cursor.next_i32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "Buff.BuffTickTime", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.BuffTickTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.buff_tick_time);
+            record.buff_tick_time = cursor.next_i32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "Buff.BuffMaxStack", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.BuffMaxStack");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.buff_max_stack);
+            record.buff_max_stack = cursor.next_i32();
           }
           break;
         }
@@ -251,17 +264,19 @@ class BuffTable {
         }
         case 17: {
           sheetman::check_column(column, "Buff.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }
         case 18: {
           sheetman::check_column(column, "Buff.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Buff.Description");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.description);
+            record.description = cursor.next_string();
           }
           break;
         }

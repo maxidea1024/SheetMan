@@ -96,26 +96,30 @@ impl BuffSelectTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "BuffSelect.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "BuffSelect.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "BuffSelect.BuffName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "BuffSelect.BuffName")?;
                     for record in records.iter_mut() {
-                        record.buff_name = reader.read_string()?;
+                        record.buff_name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "BuffSelect.BuffID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "BuffSelect.BuffID")?;
                     for record in records.iter_mut() {
-                        record.buff_id = reader.read_i32_as(column.element)?;
+                        record.buff_id = cursor.next_i32()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "BuffSelect.Grade", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "BuffSelect.Grade")?;
                     for record in records.iter_mut() {
-                        record.grade = GradeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.grade = GradeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
@@ -126,14 +130,16 @@ impl BuffSelectTable {
                 }
                 6 => {
                     sheetman::check_column(column, "BuffSelect.BuffTooltip", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "BuffSelect.BuffTooltip")?;
                     for record in records.iter_mut() {
-                        record.buff_tooltip = reader.read_string()?;
+                        record.buff_tooltip = cursor.next_string()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "BuffSelect.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "BuffSelect.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

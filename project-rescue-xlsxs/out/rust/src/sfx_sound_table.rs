@@ -94,38 +94,44 @@ impl SFXSoundTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SFXSound.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SFXSound.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SFXSound.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SFXSound.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SFXSound.Category", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SFXSound.Category")?;
                     for record in records.iter_mut() {
-                        record.category = SFXCategoryType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.category = SFXCategoryType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SFXSound.Path", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SFXSound.Path")?;
                     for record in records.iter_mut() {
-                        record.path = reader.read_string()?;
+                        record.path = cursor.next_string()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SFXSound.PreloadGroup", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SFXSound.PreloadGroup")?;
                     for record in records.iter_mut() {
-                        record.preload_group = reader.read_string()?;
+                        record.preload_group = cursor.next_string()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SFXSound.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SFXSound.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 _ => {

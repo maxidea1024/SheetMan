@@ -100,6 +100,9 @@ final class {{ table.table_name }}
 {{~ for field in table.fields ~}}
                 case {{ field.tag }}:
                     {{ field.column_check }}
+{{~ if field.cursor_open != '' ~}}
+                    {{ field.cursor_open }}
+{{~ end ~}}
                     foreach ($records as $record) {
 {{~ if field.kind == 'var_array' ~}}
                         $elementCount = $reader->readCounter32();
@@ -119,7 +122,7 @@ final class {{ table.table_name }}
                             $record->{{ field.name }}[] = {{ field.read_element }};
                         }
 {{~ else if field.kind == 'scalar_ref' ~}}
-                        $record->{{ field.name }}Index = $reader->readInt32();
+                        $record->{{ field.name }}Index = $cursor->nextI32();
 {{~ else ~}}
                         $record->{{ field.name }} = {{ field.read_scalar }};
 {{~ end ~}}

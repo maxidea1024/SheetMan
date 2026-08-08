@@ -74,6 +74,7 @@ public final class StageTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<StageRecord> loaded = new ArrayList<>(count);
@@ -89,29 +90,33 @@ public final class StageTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "Stage.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.Id");
                     for (StageRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "Stage.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.Name");
                     for (StageRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "Stage.StageName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.StageName");
                     for (StageRecord record : loaded) {
-                        record.stageName = reader.readString();
+                        record.stageName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "Stage.AssetDataPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.AssetDataPath");
                     for (StageRecord record : loaded) {
-                        record.assetDataPath = reader.readString();
+                        record.assetDataPath = cursor.nextString();
                     }
                     break;
                 }
@@ -128,15 +133,17 @@ public final class StageTable {
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "Stage.SpawnPointCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.SpawnPointCount");
                     for (StageRecord record : loaded) {
-                        record.spawnPointCount = reader.readI32As(column.element);
+                        record.spawnPointCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "Stage.SpawnMaxCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.SpawnMaxCount");
                     for (StageRecord record : loaded) {
-                        record.spawnMaxCount = reader.readI32As(column.element);
+                        record.spawnMaxCount = cursor.nextI32();
                     }
                     break;
                 }
@@ -149,8 +156,9 @@ public final class StageTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "Stage.StageClearCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.StageClearCount");
                     for (StageRecord record : loaded) {
-                        record.stageClearCount = reader.readI32As(column.element);
+                        record.stageClearCount = cursor.nextI32();
                     }
                     break;
                 }
@@ -209,22 +217,25 @@ public final class StageTable {
                 }
                 case 17: {
                     ScbReader.checkColumn(column, "Stage.StageDropListID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.StageDropListID");
                     for (StageRecord record : loaded) {
-                        record.stageDropListID = reader.readI32As(column.element);
+                        record.stageDropListID = cursor.nextI32();
                     }
                     break;
                 }
                 case 18: {
                     ScbReader.checkColumn(column, "Stage.StageBGMID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.StageBGMID");
                     for (StageRecord record : loaded) {
-                        record.stageBGMID = reader.readI32As(column.element);
+                        record.stageBGMID = cursor.nextI32();
                     }
                     break;
                 }
                 case 19: {
                     ScbReader.checkColumn(column, "Stage.BossStageBGMID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "Stage.BossStageBGMID");
                     for (StageRecord record : loaded) {
-                        record.bossStageBGMID = reader.readI32As(column.element);
+                        record.bossStageBGMID = cursor.nextI32();
                     }
                     break;
                 }

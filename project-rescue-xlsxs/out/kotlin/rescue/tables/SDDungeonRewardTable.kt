@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -134,86 +135,100 @@ class SDDungeonRewardTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDDungeonReward.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDDungeonReward.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDDungeonReward.RewardName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.RewardName")
                     for (record in loaded) {
-                        record.rewardName = reader.readString()
+                        record.rewardName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDDungeonReward.ConditionId", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.ConditionId")
                     for (record in loaded) {
-                        record.conditionId = reader.readI32As(column.element)
+                        record.conditionId = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDDungeonReward.RewardCommon", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.RewardCommon")
                     for (record in loaded) {
-                        record.rewardCommon = CurrencyType.of(reader.readEnum())
+                        record.rewardCommon = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDDungeonReward.CommonValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.CommonValue")
                     for (record in loaded) {
-                        record.commonValue = reader.readI32As(column.element)
+                        record.commonValue = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDDungeonReward.Reward1Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Reward1Type")
                     for (record in loaded) {
-                        record.reward1Type = CurrencyType.of(reader.readEnum())
+                        record.reward1Type = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 8 -> {
                     checkColumn(column, "SDDungeonReward.Reward1Value", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Reward1Value")
                     for (record in loaded) {
-                        record.reward1Value = reader.readI32As(column.element)
+                        record.reward1Value = cursor.nextI32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "SDDungeonReward.Reward2Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Reward2Type")
                     for (record in loaded) {
-                        record.reward2Type = CurrencyType.of(reader.readEnum())
+                        record.reward2Type = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 10 -> {
                     checkColumn(column, "SDDungeonReward.Reward2Value", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Reward2Value")
                     for (record in loaded) {
-                        record.reward2Value = reader.readI32As(column.element)
+                        record.reward2Value = cursor.nextI32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "SDDungeonReward.Reward3Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Reward3Type")
                     for (record in loaded) {
-                        record.reward3Type = CurrencyType.of(reader.readEnum())
+                        record.reward3Type = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 12 -> {
                     checkColumn(column, "SDDungeonReward.Reward3Value", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Reward3Value")
                     for (record in loaded) {
-                        record.reward3Value = reader.readI32As(column.element)
+                        record.reward3Value = cursor.nextI32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "SDDungeonReward.Reward4Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Reward4Type")
                     for (record in loaded) {
-                        record.reward4Type = CurrencyType.of(reader.readEnum())
+                        record.reward4Type = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 14 -> {
                     checkColumn(column, "SDDungeonReward.Reward4Value", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.Reward4Value")
                     for (record in loaded) {
-                        record.reward4Value = reader.readI32As(column.element)
+                        record.reward4Value = cursor.nextI32()
                     }
                 }
                 15 -> {
@@ -224,14 +239,16 @@ class SDDungeonRewardTable {
                 }
                 16 -> {
                     checkColumn(column, "SDDungeonReward.RewardPerfect", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.RewardPerfect")
                     for (record in loaded) {
-                        record.rewardPerfect = CurrencyType.of(reader.readEnum())
+                        record.rewardPerfect = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 17 -> {
                     checkColumn(column, "SDDungeonReward.PerfectValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.PerfectValue")
                     for (record in loaded) {
-                        record.perfectValue = reader.readI32As(column.element)
+                        record.perfectValue = cursor.nextI32()
                     }
                 }
                 18 -> {
@@ -242,14 +259,16 @@ class SDDungeonRewardTable {
                 }
                 19 -> {
                     checkColumn(column, "SDDungeonReward.RewardMin", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.RewardMin")
                     for (record in loaded) {
-                        record.rewardMin = CurrencyType.of(reader.readEnum())
+                        record.rewardMin = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 20 -> {
                     checkColumn(column, "SDDungeonReward.MinRewardValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonReward.MinRewardValue")
                     for (record in loaded) {
-                        record.minRewardValue = reader.readI32As(column.element)
+                        record.minRewardValue = cursor.nextI32()
                     }
                 }
                 else ->

@@ -86,32 +86,39 @@ class ClassUpCurrencyListTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "ClassUpCurrencyList.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ClassUpCurrencyList.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "ClassUpCurrencyList.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ClassUpCurrencyList.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "ClassUpCurrencyList.Type", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ClassUpCurrencyList.Type")
                 for record in records:
-                    record.type_ = CurrencyType(reader.read_enum())
+                    record.type_ = CurrencyType(cursor.next_i32())
             elif column.tag == 4:
                 sheetman.check_column(column, "ClassUpCurrencyList.TargetId", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ClassUpCurrencyList.TargetId")
                 for record in records:
-                    record.target_id = reader.read_i32_as(column.element)
+                    record.target_id = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "ClassUpCurrencyList.MaxCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ClassUpCurrencyList.MaxCount")
                 for record in records:
-                    record.max_count = reader.read_i32_as(column.element)
+                    record.max_count = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "ClassUpCurrencyList.MaxStack", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ClassUpCurrencyList.MaxStack")
                 for record in records:
-                    record.max_stack = reader.read_i64_as(column.element)
+                    record.max_stack = cursor.next_i64()
             elif column.tag == 7:
                 sheetman.check_column(column, "ClassUpCurrencyList.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ClassUpCurrencyList.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             elif column.tag == 8:
                 sheetman.check_column(column, "ClassUpCurrencyList.ShortCutIndex", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:

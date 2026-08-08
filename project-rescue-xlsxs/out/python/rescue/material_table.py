@@ -92,52 +92,63 @@ class MaterialTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Material.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Material.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Material.ItemName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.ItemName")
                 for record in records:
-                    record.item_name = reader.read_string()
+                    record.item_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Material.ItemType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.ItemType")
                 for record in records:
-                    record.item_type = ItemType(reader.read_enum())
+                    record.item_type = ItemType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Material.Type", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.Type")
                 for record in records:
-                    record.type_ = CurrencyType(reader.read_enum())
+                    record.type_ = CurrencyType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Material.Stackable", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
                     record.stackable = reader.read_bool()
             elif column.tag == 7:
                 sheetman.check_column(column, "Material.MaxStack", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.MaxStack")
                 for record in records:
-                    record.max_stack = reader.read_i64_as(column.element)
+                    record.max_stack = cursor.next_i64()
             elif column.tag == 8:
                 sheetman.check_column(column, "Material.Cooltime", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.Cooltime")
                 for record in records:
-                    record.cooltime = reader.read_i32_as(column.element)
+                    record.cooltime = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "Material.Duration", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.Duration")
                 for record in records:
-                    record.duration = reader.read_i32_as(column.element)
+                    record.duration = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "Material.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             elif column.tag == 11:
                 sheetman.check_column(column, "Material.DropPrefabPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.DropPrefabPath")
                 for record in records:
-                    record.drop_prefab_path = reader.read_string()
+                    record.drop_prefab_path = cursor.next_string()
             elif column.tag == 12:
                 sheetman.check_column(column, "Material.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Material.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             elif column.tag == 13:
                 sheetman.check_column(column, "Material.ShortCutIndex", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:

@@ -14,6 +14,7 @@ namespace Rescue;
 require_once __DIR__ . '/../sheetman/ScbReader.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -121,92 +122,105 @@ final class SDDungeonInfoTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.NameKR', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.NameKR');
                     foreach ($records as $record) {
-                        $record->nameKR = $reader->readString();
+                        $record->nameKR = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.TotalCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.TotalCount');
                     foreach ($records as $record) {
-                        $record->totalCount = $reader->readI32As($column['element']);
+                        $record->totalCount = $cursor->nextI32();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.TrapCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.TrapCount');
                     foreach ($records as $record) {
-                        $record->trapCount = $reader->readI32As($column['element']);
+                        $record->trapCount = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.ActionCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.ActionCount');
                     foreach ($records as $record) {
-                        $record->actionCount = $reader->readI32As($column['element']);
+                        $record->actionCount = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.MatchCost', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.MatchCost');
                     foreach ($records as $record) {
-                        $record->matchCost = $reader->readI32As($column['element']);
+                        $record->matchCost = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.MismatchCost', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.MismatchCost');
                     foreach ($records as $record) {
-                        $record->mismatchCost = $reader->readI32As($column['element']);
+                        $record->mismatchCost = $cursor->nextI32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.TrapCost', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.TrapCost');
                     foreach ($records as $record) {
-                        $record->trapCost = $reader->readI32As($column['element']);
+                        $record->trapCost = $cursor->nextI32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.ViewTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.ViewTime');
                     foreach ($records as $record) {
-                        $record->viewTime = $reader->readI32As($column['element']);
+                        $record->viewTime = $cursor->nextI32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.Time', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.Time');
                     foreach ($records as $record) {
-                        $record->time = $reader->readI32As($column['element']);
+                        $record->time = $cursor->nextI32();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.ADCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.ADCount');
                     foreach ($records as $record) {
-                        $record->aDCount = $reader->readI32As($column['element']);
+                        $record->aDCount = $cursor->nextI32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'SDDungeonInfo.DailyFreeCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonInfo.DailyFreeCount');
                     foreach ($records as $record) {
-                        $record->dailyFreeCount = $reader->readI32As($column['element']);
+                        $record->dailyFreeCount = $cursor->nextI32();
                     }
                     break;
 

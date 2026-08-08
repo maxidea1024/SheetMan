@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -108,44 +109,51 @@ class SDPubInfoTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDPubInfo.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDPubInfo.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDPubInfo.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDPubInfo.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDPubInfo.PubName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDPubInfo.PubName")
                     for (record in loaded) {
-                        record.pubName = reader.readString()
+                        record.pubName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDPubInfo.UnlockCondition", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDPubInfo.UnlockCondition")
                     for (record in loaded) {
-                        record.unlockCondition = reader.readI32As(column.element)
+                        record.unlockCondition = cursor.nextI32()
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDPubInfo.LimitValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDPubInfo.LimitValue")
                     for (record in loaded) {
-                        record.limitValue = reader.readI32As(column.element)
+                        record.limitValue = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDPubInfo.BuffID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDPubInfo.BuffID")
                     for (record in loaded) {
-                        record.buffID = reader.readI32As(column.element)
+                        record.buffID = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDPubInfo.Description", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDPubInfo.Description")
                     for (record in loaded) {
-                        record.description = reader.readString()
+                        record.description = cursor.nextString()
                     }
                 }
                 else ->

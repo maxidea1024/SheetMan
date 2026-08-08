@@ -129,68 +129,79 @@ impl GachaInfoTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "GachaInfo.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "GachaInfo.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "GachaInfo.GachaType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.GachaType")?;
                     for record in records.iter_mut() {
-                        record.gacha_type = GachaType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.gacha_type = GachaType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "GachaInfo.Priority", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.Priority")?;
                     for record in records.iter_mut() {
-                        record.priority = reader.read_i32_as(column.element)?;
+                        record.priority = cursor.next_i32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "GachaInfo.ConditionID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.ConditionID")?;
                     for record in records.iter_mut() {
-                        record.condition_id = reader.read_i32_as(column.element)?;
+                        record.condition_id = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "GachaInfo.RateId", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.RateId")?;
                     for record in records.iter_mut() {
-                        record.rate_id = reader.read_i32_as(column.element)?;
+                        record.rate_id = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "GachaInfo.TriggerCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.TriggerCount")?;
                     for record in records.iter_mut() {
-                        record.trigger_count = reader.read_i32_as(column.element)?;
+                        record.trigger_count = cursor.next_i32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "GachaInfo.TriggerRateId", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.TriggerRateId")?;
                     for record in records.iter_mut() {
-                        record.trigger_rate_id = reader.read_i32_as(column.element)?;
+                        record.trigger_rate_id = cursor.next_i32()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "GachaInfo.EndCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.EndCount")?;
                     for record in records.iter_mut() {
-                        record.end_count = reader.read_i32_as(column.element)?;
+                        record.end_count = cursor.next_i32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "GachaInfo.EndRateId", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.EndRateId")?;
                     for record in records.iter_mut() {
-                        record.end_rate_id = reader.read_i32_as(column.element)?;
+                        record.end_rate_id = cursor.next_i32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "GachaInfo.EndCharacterId", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.EndCharacterId")?;
                     for record in records.iter_mut() {
-                        record.end_character_id = reader.read_i32_as(column.element)?;
+                        record.end_character_id = cursor.next_i32()?;
                     }
                 }
                 12 => {
@@ -207,14 +218,16 @@ impl GachaInfoTable {
                 }
                 14 => {
                     sheetman::check_column(column, "GachaInfo.WishListConditionID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.WishListConditionID")?;
                     for record in records.iter_mut() {
-                        record.wish_list_condition_id = reader.read_i32_as(column.element)?;
+                        record.wish_list_condition_id = cursor.next_i32()?;
                     }
                 }
                 15 => {
                     sheetman::check_column(column, "GachaInfo.WishListMaxValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.WishListMaxValue")?;
                     for record in records.iter_mut() {
-                        record.wish_list_max_value = reader.read_i32_as(column.element)?;
+                        record.wish_list_max_value = cursor.next_i32()?;
                     }
                 }
                 16 => {
@@ -231,32 +244,37 @@ impl GachaInfoTable {
                 }
                 18 => {
                     sheetman::check_column(column, "GachaInfo.CurrencyType1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.CurrencyType1")?;
                     for record in records.iter_mut() {
-                        record.currency_type1 = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.currency_type1 = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 19 => {
                     sheetman::check_column(column, "GachaInfo.SingleCost1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.SingleCost1")?;
                     for record in records.iter_mut() {
-                        record.single_cost1 = reader.read_i32_as(column.element)?;
+                        record.single_cost1 = cursor.next_i32()?;
                     }
                 }
                 20 => {
                     sheetman::check_column(column, "GachaInfo.CurrencyType2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.CurrencyType2")?;
                     for record in records.iter_mut() {
-                        record.currency_type2 = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.currency_type2 = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 21 => {
                     sheetman::check_column(column, "GachaInfo.SingleCost2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.SingleCost2")?;
                     for record in records.iter_mut() {
-                        record.single_cost2 = reader.read_i32_as(column.element)?;
+                        record.single_cost2 = cursor.next_i32()?;
                     }
                 }
                 22 => {
                     sheetman::check_column(column, "GachaInfo.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "GachaInfo.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 23 => {

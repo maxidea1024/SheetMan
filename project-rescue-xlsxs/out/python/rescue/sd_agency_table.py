@@ -104,88 +104,109 @@ class SDAgencyTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDAgency.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDAgency.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDAgency.InfoName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.InfoName")
                 for record in records:
-                    record.info_name = reader.read_string()
+                    record.info_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDAgency.AgencyType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.AgencyType")
                 for record in records:
-                    record.agency_type = AgencyType(reader.read_enum())
+                    record.agency_type = AgencyType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "SDAgency.AgencyGrade", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.AgencyGrade")
                 for record in records:
-                    record.agency_grade = AgencyGrade(reader.read_enum())
+                    record.agency_grade = AgencyGrade(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "SDAgency.Time", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.Time")
                 for record in records:
-                    record.time = reader.read_i32_as(column.element)
+                    record.time = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "SDAgency.AgencyWeight", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.AgencyWeight")
                 for record in records:
-                    record.agency_weight = reader.read_i32_as(column.element)
+                    record.agency_weight = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "SDAgency.Condition1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.Condition1")
                 for record in records:
-                    record.condition1 = JobType(reader.read_enum())
+                    record.condition1 = JobType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "SDAgency.Condition1value", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.Condition1value")
                 for record in records:
-                    record.condition1value = reader.read_i32_as(column.element)
+                    record.condition1value = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "SDAgency.Condition2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.Condition2")
                 for record in records:
-                    record.condition2 = GradeType(reader.read_enum())
+                    record.condition2 = GradeType(cursor.next_i32())
             elif column.tag == 11:
                 sheetman.check_column(column, "SDAgency.Condition2value", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.Condition2value")
                 for record in records:
-                    record.condition2value = reader.read_i32_as(column.element)
+                    record.condition2value = cursor.next_i32()
             elif column.tag == 12:
                 sheetman.check_column(column, "SDAgency.Condition3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.Condition3")
                 for record in records:
-                    record.condition3 = ConditionType(reader.read_enum())
+                    record.condition3 = ConditionType(cursor.next_i32())
             elif column.tag == 13:
                 sheetman.check_column(column, "SDAgency.ClassMinValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.ClassMinValue")
                 for record in records:
-                    record.class_min_value = reader.read_i32_as(column.element)
+                    record.class_min_value = cursor.next_i32()
             elif column.tag == 14:
                 sheetman.check_column(column, "SDAgency.Condition3value", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.Condition3value")
                 for record in records:
-                    record.condition3value = reader.read_i32_as(column.element)
+                    record.condition3value = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "SDAgency.RewardType1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.RewardType1")
                 for record in records:
-                    record.reward_type1 = CurrencyType(reader.read_enum())
+                    record.reward_type1 = CurrencyType(cursor.next_i32())
             elif column.tag == 16:
                 sheetman.check_column(column, "SDAgency.RewardValue1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.RewardValue1")
                 for record in records:
-                    record.reward_value1 = reader.read_i32_as(column.element)
+                    record.reward_value1 = cursor.next_i32()
             elif column.tag == 17:
                 sheetman.check_column(column, "SDAgency.RewardType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.RewardType2")
                 for record in records:
-                    record.reward_type2 = CurrencyType(reader.read_enum())
+                    record.reward_type2 = CurrencyType(cursor.next_i32())
             elif column.tag == 18:
                 sheetman.check_column(column, "SDAgency.RewardValue2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.RewardValue2")
                 for record in records:
-                    record.reward_value2 = reader.read_i32_as(column.element)
+                    record.reward_value2 = cursor.next_i32()
             elif column.tag == 19:
                 sheetman.check_column(column, "SDAgency.RewardType3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.RewardType3")
                 for record in records:
-                    record.reward_type3 = CurrencyType(reader.read_enum())
+                    record.reward_type3 = CurrencyType(cursor.next_i32())
             elif column.tag == 20:
                 sheetman.check_column(column, "SDAgency.RewardValue3", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.RewardValue3")
                 for record in records:
-                    record.reward_value3 = reader.read_i32_as(column.element)
+                    record.reward_value3 = cursor.next_i32()
             elif column.tag == 21:
                 sheetman.check_column(column, "SDAgency.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDAgency.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

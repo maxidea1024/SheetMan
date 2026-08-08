@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/CurrencyType.php';
 require_once __DIR__ . '/../enums/CycleType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -120,50 +121,57 @@ final class SDContensInfoTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDContensInfo.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDContensInfo.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDContensInfo.InfoName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.InfoName');
                     foreach ($records as $record) {
-                        $record->infoName = $reader->readString();
+                        $record->infoName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDContensInfo.SheetName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.SheetName');
                     foreach ($records as $record) {
-                        $record->sheetName = $reader->readString();
+                        $record->sheetName = $cursor->nextString();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDContensInfo.SdContensType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.SdContensType');
                     foreach ($records as $record) {
-                        $record->sdContensType = SdContensType::tryFrom($reader->readEnum()) ?? SdContensType::None;
+                        $record->sdContensType = SdContensType::tryFrom($cursor->nextI32()) ?? SdContensType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SDContensInfo.ConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.ConditionID');
                     foreach ($records as $record) {
-                        $record->conditionID = $reader->readI32As($column['element']);
+                        $record->conditionID = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'SDContensInfo.CurrencyType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.CurrencyType');
                     foreach ($records as $record) {
-                        $record->currencyType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->currencyType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
@@ -176,22 +184,25 @@ final class SDContensInfoTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'SDContensInfo.CycleType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.CycleType');
                     foreach ($records as $record) {
-                        $record->cycleType = CycleType::tryFrom($reader->readEnum()) ?? CycleType::None;
+                        $record->cycleType = CycleType::tryFrom($cursor->nextI32()) ?? CycleType::None;
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'SDContensInfo.SDCharacterPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.SDCharacterPath');
                     foreach ($records as $record) {
-                        $record->sDCharacterPath = $reader->readString();
+                        $record->sDCharacterPath = $cursor->nextString();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'SDContensInfo.PrefabPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDContensInfo.PrefabPath');
                     foreach ($records as $record) {
-                        $record->prefabPath = $reader->readString();
+                        $record->prefabPath = $cursor->nextString();
                     }
                     break;
 

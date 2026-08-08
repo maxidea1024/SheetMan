@@ -97,72 +97,88 @@ class DailyDungeonInfoTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "DailyDungeonInfo.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "DailyDungeonInfo.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "DailyDungeonInfo.DungeonName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonName")
                 for record in records:
-                    record.dungeon_name = reader.read_string()
+                    record.dungeon_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "DailyDungeonInfo.DungeonType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonType")
                 for record in records:
-                    record.dungeon_type = DungeonType(reader.read_enum())
+                    record.dungeon_type = DungeonType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "DailyDungeonInfo.Priority", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.Priority")
                 for record in records:
-                    record.priority = reader.read_i32_as(column.element)
+                    record.priority = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "DailyDungeonInfo.CycleType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.CycleType")
                 for record in records:
-                    record.cycle_type = CycleType(reader.read_enum())
+                    record.cycle_type = CycleType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "DailyDungeonInfo.EnterCondition", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCondition")
                 for record in records:
-                    record.enter_condition = reader.read_i32_as(column.element)
+                    record.enter_condition = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "DailyDungeonInfo.EnterCurrencyType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyType")
                 for record in records:
-                    record.enter_currency_type = CurrencyType(reader.read_enum())
+                    record.enter_currency_type = CurrencyType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "DailyDungeonInfo.DungeonBuffID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonBuffID")
                 for record in records:
-                    record.dungeon_buff_id = reader.read_i32_as(column.element)
+                    record.dungeon_buff_id = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "DailyDungeonInfo.BuffValueRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.buff_value_rate = reader.read_float()
             elif column.tag == 11:
                 sheetman.check_column(column, "DailyDungeonInfo.EnterCurrencyValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyValue")
                 for record in records:
-                    record.enter_currency_value = reader.read_i32_as(column.element)
+                    record.enter_currency_value = cursor.next_i32()
             elif column.tag == 12:
                 sheetman.check_column(column, "DailyDungeonInfo.FreeEnterCurrencyType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.FreeEnterCurrencyType")
                 for record in records:
-                    record.free_enter_currency_type = CurrencyType(reader.read_enum())
+                    record.free_enter_currency_type = CurrencyType(cursor.next_i32())
             elif column.tag == 13:
                 sheetman.check_column(column, "DailyDungeonInfo.ADEnterCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.ADEnterCount")
                 for record in records:
-                    record.ad_enter_count = reader.read_i32_as(column.element)
+                    record.ad_enter_count = cursor.next_i32()
             elif column.tag == 14:
                 sheetman.check_column(column, "DailyDungeonInfo.EnterCurrencyCountMax", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyCountMax")
                 for record in records:
-                    record.enter_currency_count_max = reader.read_i32_as(column.element)
+                    record.enter_currency_count_max = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "DailyDungeonInfo.DungeonImagePath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonImagePath")
                 for record in records:
-                    record.dungeon_image_path = reader.read_string()
+                    record.dungeon_image_path = cursor.next_string()
             elif column.tag == 16:
                 sheetman.check_column(column, "DailyDungeonInfo.DungeonBGMID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonBGMID")
                 for record in records:
-                    record.dungeon_bgmid = reader.read_i32_as(column.element)
+                    record.dungeon_bgmid = cursor.next_i32()
             elif column.tag == 17:
                 sheetman.check_column(column, "DailyDungeonInfo.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "DailyDungeonInfo.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

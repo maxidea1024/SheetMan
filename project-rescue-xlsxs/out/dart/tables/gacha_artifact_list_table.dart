@@ -74,6 +74,7 @@ class GachaArtifactListTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <GachaArtifactListRecord>[];
@@ -89,56 +90,65 @@ class GachaArtifactListTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'GachaArtifactList.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactList.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'GachaArtifactList.ArtifactID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactList.ArtifactID');
           for (final record in loaded) {
-            record.artifactID = reader.readI32As(column.element);
+            record.artifactID = cursor.nextI32();
           }
           break;
         case 3:
           checkColumn(column, 'GachaArtifactList.GradeType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactList.GradeType');
           for (final record in loaded) {
-            record.gradeType = GradeType.of(reader.readEnum());
+            record.gradeType = GradeType.of(cursor.nextI32());
           }
           break;
         case 4:
           checkColumn(column, 'GachaArtifactList.BaseWeight', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactList.BaseWeight');
           for (final record in loaded) {
-            record.baseWeight = reader.readI32As(column.element);
+            record.baseWeight = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'GachaArtifactList.ClassUpCurrencyID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactList.ClassUpCurrencyID');
           for (final record in loaded) {
-            record.classUpCurrencyID = reader.readI32As(column.element);
+            record.classUpCurrencyID = cursor.nextI32();
           }
           break;
         case 6:
           checkColumn(column, 'GachaArtifactList.ClassUpCurrencyValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactList.ClassUpCurrencyValue');
           for (final record in loaded) {
-            record.classUpCurrencyValue = reader.readI32As(column.element);
+            record.classUpCurrencyValue = cursor.nextI32();
           }
           break;
         case 7:
           checkColumn(column, 'GachaArtifactList.ExConditionID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactList.ExConditionID');
           for (final record in loaded) {
-            record.exConditionID = reader.readI32As(column.element);
+            record.exConditionID = cursor.nextI32();
           }
           break;
         case 8:
           checkColumn(column, 'GachaArtifactList.ExCurrencyID', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactList.ExCurrencyID');
           for (final record in loaded) {
-            record.exCurrencyID = reader.readI32As(column.element);
+            record.exCurrencyID = cursor.nextI32();
           }
           break;
         case 9:
           checkColumn(column, 'GachaArtifactList.ExCurrencyValue', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'GachaArtifactList.ExCurrencyValue');
           for (final record in loaded) {
-            record.exCurrencyValue = reader.readI32As(column.element);
+            record.exCurrencyValue = cursor.nextI32();
           }
           break;
         default:

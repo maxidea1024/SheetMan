@@ -102,48 +102,59 @@ class GachaArtifactInfoTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "GachaArtifactInfo.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "GachaArtifactInfo.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "GachaArtifactInfo.GachaType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.GachaType")
                 for record in records:
-                    record.gacha_type = GachaType(reader.read_enum())
+                    record.gacha_type = GachaType(cursor.next_i32())
             elif column.tag == 4:
                 sheetman.check_column(column, "GachaArtifactInfo.Priority", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.Priority")
                 for record in records:
-                    record.priority = reader.read_i32_as(column.element)
+                    record.priority = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "GachaArtifactInfo.ConditionID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.ConditionID")
                 for record in records:
-                    record.condition_id = reader.read_i32_as(column.element)
+                    record.condition_id = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "GachaArtifactInfo.RateId", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.RateId")
                 for record in records:
-                    record.rate_id = reader.read_i32_as(column.element)
+                    record.rate_id = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "GachaArtifactInfo.TriggerCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.TriggerCount")
                 for record in records:
-                    record.trigger_count = reader.read_i32_as(column.element)
+                    record.trigger_count = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "GachaArtifactInfo.TriggerRateId", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.TriggerRateId")
                 for record in records:
-                    record.trigger_rate_id = reader.read_i32_as(column.element)
+                    record.trigger_rate_id = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "GachaArtifactInfo.EndCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.EndCount")
                 for record in records:
-                    record.end_count = reader.read_i32_as(column.element)
+                    record.end_count = cursor.next_i32()
             elif column.tag == 10:
                 sheetman.check_column(column, "GachaArtifactInfo.EndRateId", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.EndRateId")
                 for record in records:
-                    record.end_rate_id = reader.read_i32_as(column.element)
+                    record.end_rate_id = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "GachaArtifactInfo.EndCharacterId", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.EndCharacterId")
                 for record in records:
-                    record.end_character_id = reader.read_i32_as(column.element)
+                    record.end_character_id = cursor.next_i32()
             elif column.tag == 12:
                 sheetman.check_column(column, "GachaArtifactInfo.EnableReset", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
@@ -154,12 +165,14 @@ class GachaArtifactInfoTable:
                     record.is_shared_counter = reader.read_bool()
             elif column.tag == 14:
                 sheetman.check_column(column, "GachaArtifactInfo.WishListConditionID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.WishListConditionID")
                 for record in records:
-                    record.wish_list_condition_id = reader.read_i32_as(column.element)
+                    record.wish_list_condition_id = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "GachaArtifactInfo.WishListMaxValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.WishListMaxValue")
                 for record in records:
-                    record.wish_list_max_value = reader.read_i32_as(column.element)
+                    record.wish_list_max_value = cursor.next_i32()
             elif column.tag == 16:
                 sheetman.check_column(column, "GachaArtifactInfo.IsSingle", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
@@ -170,24 +183,29 @@ class GachaArtifactInfoTable:
                     record.is_ten = reader.read_bool()
             elif column.tag == 18:
                 sheetman.check_column(column, "GachaArtifactInfo.CurrencyType1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.CurrencyType1")
                 for record in records:
-                    record.currency_type1 = CurrencyType(reader.read_enum())
+                    record.currency_type1 = CurrencyType(cursor.next_i32())
             elif column.tag == 19:
                 sheetman.check_column(column, "GachaArtifactInfo.SingleCost1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.SingleCost1")
                 for record in records:
-                    record.single_cost1 = reader.read_i32_as(column.element)
+                    record.single_cost1 = cursor.next_i32()
             elif column.tag == 20:
                 sheetman.check_column(column, "GachaArtifactInfo.CurrencyType2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.CurrencyType2")
                 for record in records:
-                    record.currency_type2 = CurrencyType(reader.read_enum())
+                    record.currency_type2 = CurrencyType(cursor.next_i32())
             elif column.tag == 21:
                 sheetman.check_column(column, "GachaArtifactInfo.SingleCost2", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.SingleCost2")
                 for record in records:
-                    record.single_cost2 = reader.read_i32_as(column.element)
+                    record.single_cost2 = cursor.next_i32()
             elif column.tag == 22:
                 sheetman.check_column(column, "GachaArtifactInfo.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "GachaArtifactInfo.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             elif column.tag == 23:
                 sheetman.check_column(column, "GachaArtifactInfo.EnableSkip", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:

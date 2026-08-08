@@ -80,33 +80,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Condition.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Condition.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Condition.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Condition.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Condition.ConditionTargetType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Condition.ConditionTargetType')
           records.each do |record|
-            record.condition_target_type = reader.read_enum
+            record.condition_target_type = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'Condition.ConditionTargetValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Condition.ConditionTargetValue')
           records.each do |record|
-            record.condition_target_value = reader.read_i32_as(column.element)
+            record.condition_target_value = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Condition.ConditionType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Condition.ConditionType')
           records.each do |record|
-            record.condition_type = reader.read_enum
+            record.condition_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'Condition.ConditionValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Condition.ConditionValue')
           records.each do |record|
-            record.condition_value = reader.read_i32_as(column.element)
+            record.condition_value = cursor.next_i32
           end
         else
           # A column added after this code was generated.

@@ -108,26 +108,30 @@ impl ArtifactTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Artifact.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Artifact.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Artifact.ArtifactType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.ArtifactType")?;
                     for record in records.iter_mut() {
-                        record.artifact_type = ArtifactJobType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.artifact_type = ArtifactJobType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Artifact.Grade", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.Grade")?;
                     for record in records.iter_mut() {
-                        record.grade = GradeType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.grade = GradeType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
@@ -142,8 +146,9 @@ impl ArtifactTable {
                 }
                 6 => {
                     sheetman::check_column(column, "Artifact.EquipStatType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.EquipStatType")?;
                     for record in records.iter_mut() {
-                        record.equip_stat_type = StatType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.equip_stat_type = StatType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 7 => {
@@ -154,8 +159,9 @@ impl ArtifactTable {
                 }
                 8 => {
                     sheetman::check_column(column, "Artifact.CollectionType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.CollectionType")?;
                     for record in records.iter_mut() {
-                        record.collection_type = StatType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.collection_type = StatType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 9 => {
@@ -166,20 +172,23 @@ impl ArtifactTable {
                 }
                 10 => {
                     sheetman::check_column(column, "Artifact.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "Artifact.MaterialPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.MaterialPath")?;
                     for record in records.iter_mut() {
-                        record.material_path = reader.read_string()?;
+                        record.material_path = cursor.next_string()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "Artifact.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Artifact.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 _ => {

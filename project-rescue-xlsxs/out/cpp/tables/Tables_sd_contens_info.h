@@ -107,57 +107,64 @@ class SDContensInfoTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "SDContensInfo.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "SDContensInfo.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "SDContensInfo.InfoName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.InfoName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.info_name);
+            record.info_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "SDContensInfo.SheetName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.SheetName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sheet_name);
+            record.sheet_name = cursor.next_string();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "SDContensInfo.SdContensType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.SdContensType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.sd_contens_type);
+            record.sd_contens_type = static_cast<SdContensType>(cursor.next_i32());
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "SDContensInfo.ConditionID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.ConditionID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition_id);
+            record.condition_id = cursor.next_i32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "SDContensInfo.CurrencyType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.CurrencyType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.currency_type);
+            record.currency_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
@@ -171,25 +178,28 @@ class SDContensInfoTable {
         }
         case 9: {
           sheetman::check_column(column, "SDContensInfo.CycleType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.CycleType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.cycle_type);
+            record.cycle_type = static_cast<CycleType>(cursor.next_i32());
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "SDContensInfo.SDCharacterPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.SDCharacterPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.sd_character_path);
+            record.sd_character_path = cursor.next_string();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "SDContensInfo.PrefabPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDContensInfo.PrefabPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.prefab_path);
+            record.prefab_path = cursor.next_string();
           }
           break;
         }

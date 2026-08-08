@@ -120,65 +120,74 @@ func (t *DailyDungeonInfoTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.DungeonName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonName = reader.ReadString()
+					r.DungeonName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.DungeonType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonType = DungeonType(reader.ReadEnum())
+					r.DungeonType = DungeonType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.Priority", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.Priority")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Priority = reader.ReadI32As(column.Element)
+					r.Priority = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.CycleType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.CycleType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CycleType = CycleType(reader.ReadEnum())
+					r.CycleType = CycleType(cursor.NextI32())
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.EnterCondition", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCondition")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EnterCondition = reader.ReadI32As(column.Element)
+					r.EnterCondition = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.EnterCurrencyType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EnterCurrencyType = CurrencyType(reader.ReadEnum())
+					r.EnterCurrencyType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.DungeonBuffID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonBuffID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonBuffID = reader.ReadI32As(column.Element)
+					r.DungeonBuffID = cursor.NextI32()
 				}
 			}
 		case 10:
@@ -190,51 +199,58 @@ func (t *DailyDungeonInfoTable) Read(filename string) error {
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.EnterCurrencyValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EnterCurrencyValue = reader.ReadI32As(column.Element)
+					r.EnterCurrencyValue = cursor.NextI32()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.FreeEnterCurrencyType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.FreeEnterCurrencyType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.FreeEnterCurrencyType = CurrencyType(reader.ReadEnum())
+					r.FreeEnterCurrencyType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.ADEnterCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.ADEnterCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ADEnterCount = reader.ReadI32As(column.Element)
+					r.ADEnterCount = cursor.NextI32()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.EnterCurrencyCountMax", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.EnterCurrencyCountMax")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.EnterCurrencyCountMax = reader.ReadI32As(column.Element)
+					r.EnterCurrencyCountMax = cursor.NextI32()
 				}
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.DungeonImagePath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonImagePath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonImagePath = reader.ReadString()
+					r.DungeonImagePath = cursor.NextString()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.DungeonBGMID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.DungeonBGMID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DungeonBGMID = reader.ReadI32As(column.Element)
+					r.DungeonBGMID = cursor.NextI32()
 				}
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "DailyDungeonInfo.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "DailyDungeonInfo.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

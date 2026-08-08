@@ -114,30 +114,34 @@ func (t *SDAgencyInfoTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.AgencyGrade", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.AgencyGrade")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AgencyGrade = AgencyGrade(reader.ReadEnum())
+					r.AgencyGrade = AgencyGrade(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.DispatchCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.DispatchCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DispatchCount = reader.ReadI32As(column.Element)
+					r.DispatchCount = cursor.NextI32()
 				}
 			}
 		case 5:
@@ -191,23 +195,26 @@ func (t *SDAgencyInfoTable) Read(filename string) error {
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.FreeRefresh", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.FreeRefresh")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.FreeRefresh = reader.ReadI32As(column.Element)
+					r.FreeRefresh = cursor.NextI32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.RefreshCurrencyType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RefreshCurrencyType = CurrencyType(reader.ReadEnum())
+					r.RefreshCurrencyType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "SDAgencyInfo.RefreshCurrencyValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RefreshCurrencyValue = reader.ReadI32As(column.Element)
+					r.RefreshCurrencyValue = cursor.NextI32()
 				}
 			}
 		default:

@@ -854,6 +854,50 @@ internal static class Program
                  "2000-02-29 12:00:00", "1.00:00:00", "80000000-0000-0000-0000-000000000001",
                  "One", "", "é", "", "80000000-0000-0000-0000-000000000001", "3", "1");
 
+        // The encoding rows: enough of each shape that every column encoding of
+        // spec/scb-v102-column-encoding.md wins somewhere in this corpus, so all
+        // thirteen readers decode all seven layouts - not just the ones their own
+        // fixture data happened to trigger. What wins where is pinned by the
+        // encoding-selection test in BinaryFormatTests, so a drift in the writer's
+        // choices is a failure with a column name rather than a quiet coverage hole.
+        //
+        //   index    steps by one            -> delta-RLE (one run of +1 deltas)
+        //   intVal   large values, small     -> delta (varying deltas, so the RLE of
+        //            varying steps              them buys nothing) - and rows 5 and 6
+        //                                       above already sit at the int32
+        //                                       extremes, so the delta between them
+        //                                       exercises the wrapping rule
+        //   text     ten rows per word       -> dict-RLE (few entries, long runs)
+        //   label    two long runs           -> RLE
+        //   owner,   small values in an      -> varint (no runs to speak of, deltas
+        //   tier     irregular pattern          no cheaper than the values)
+        //
+        // The pattern arrays are what keep the irregular columns irregular: no run
+        // long enough for RLE, no delta stream cheaper than the values themselves.
+        string[] words = { "alpha", "beta", "gamma" };
+        int[] pattern = { 1, 3, 2, 3, 1, 2 };
+        int[] steps = { 5, 2, 9, 3, 7, 1, 8, 4, 6, 2 };
+        int walk = 1073741824;
+
+        for (int at = 0; at < 30; at++)
+        {
+            walk += steps[at % steps.Length];
+
+            spec.Row(
+                (7 + at).ToString(),
+                walk.ToString(),
+                (at * 3).ToString(),
+                "0.5", "0.25",
+                words[at / 10],
+                at % 2 == 0 ? "Y" : "N",
+                "2022-03-01 09:00:00", "0.00:05:00",
+                "6f9619ff-8b86-d011-b42d-00c04fc964ff",
+                at < 15 ? "One" : "Large",
+                "", "", "", "",
+                pattern[at % pattern.Length].ToString(),
+                pattern[(at + 3) % pattern.Length].ToString());
+        }
+
         b.Table(8, 1, spec);
 
         // The table the two references point into.
@@ -877,7 +921,16 @@ internal static class Program
             .Row("2", "second", "20")
             .Row("3", "third", "30");
 
-        b.Table(8, 20, owners);
+        // The rows that give the plain dictionary encoding somewhere to win: two
+        // words alternating leave no runs for dict-RLE to compress, so the index
+        // stream stays one plain counter per row. rank keeps stepping by ten, which
+        // hands delta-RLE a second, smaller table to win in.
+        for (int at = 4; at <= 15; at++)
+            owners.Row(at.ToString(), at % 2 == 0 ? "red" : "blue", (at * 10).ToString());
+
+        // Below Vectors, which the encoding rows made forty-odd rows tall. Entities may
+        // not overlap, and these two share a column band.
+        b.Table(8, 46, owners);
 
         // A constant set, so every language's constants file is generated, compiled and
         // read by its harness.
@@ -898,7 +951,7 @@ internal static class Program
         };
 
         limits
-            .Constant("MaxOwners", "int", "3", "how many rows Owners has")
+            .Constant("MaxOwners", "int", "15", "how many rows Owners has")
             .Constant("Huge", "bigint", "9223372036854775807", "past what a double carries exactly")
             .Constant("Ratio", "float", "0.25", "single precision")
             .Constant("Precise", "double", "5E-324", "the smallest denormal")

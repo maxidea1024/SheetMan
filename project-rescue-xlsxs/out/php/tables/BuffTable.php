@@ -19,6 +19,7 @@ require_once __DIR__ . '/../enums/TargetType.php';
 require_once __DIR__ . '/../enums/BuffConditionType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -136,71 +137,81 @@ final class BuffTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Buff.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Buff.BuffName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.BuffName');
                     foreach ($records as $record) {
-                        $record->buffName = $reader->readString();
+                        $record->buffName = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Buff.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Buff.SkillType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.SkillType');
                     foreach ($records as $record) {
-                        $record->skillType = SkillType::tryFrom($reader->readEnum()) ?? SkillType::None;
+                        $record->skillType = SkillType::tryFrom($cursor->nextI32()) ?? SkillType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Buff.StatType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.StatType');
                     foreach ($records as $record) {
-                        $record->statType = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->statType = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'Buff.Priority', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.Priority');
                     foreach ($records as $record) {
-                        $record->priority = $reader->readI32As($column['element']);
+                        $record->priority = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'Buff.AttributeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.AttributeType');
                     foreach ($records as $record) {
-                        $record->attributeType = AttributeType::tryFrom($reader->readEnum()) ?? AttributeType::None;
+                        $record->attributeType = AttributeType::tryFrom($cursor->nextI32()) ?? AttributeType::None;
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'Buff.TargetType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.TargetType');
                     foreach ($records as $record) {
-                        $record->targetType = TargetType::tryFrom($reader->readEnum()) ?? TargetType::None;
+                        $record->targetType = TargetType::tryFrom($cursor->nextI32()) ?? TargetType::None;
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'Buff.BuffConditionType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.BuffConditionType');
                     foreach ($records as $record) {
-                        $record->buffConditionType = BuffConditionType::tryFrom($reader->readEnum()) ?? BuffConditionType::None;
+                        $record->buffConditionType = BuffConditionType::tryFrom($cursor->nextI32()) ?? BuffConditionType::None;
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'Buff.BuffValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.BuffValue');
                     foreach ($records as $record) {
-                        $record->buffValue = $reader->readI32As($column['element']);
+                        $record->buffValue = $cursor->nextI32();
                     }
                     break;
 
@@ -213,22 +224,25 @@ final class BuffTable
 
                 case 12:
                     ScbReader::checkColumn($column, 'Buff.BuffTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.BuffTime');
                     foreach ($records as $record) {
-                        $record->buffTime = $reader->readI32As($column['element']);
+                        $record->buffTime = $cursor->nextI32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'Buff.BuffTickTime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.BuffTickTime');
                     foreach ($records as $record) {
-                        $record->buffTickTime = $reader->readI32As($column['element']);
+                        $record->buffTickTime = $cursor->nextI32();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'Buff.BuffMaxStack', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.BuffMaxStack');
                     foreach ($records as $record) {
-                        $record->buffMaxStack = $reader->readI32As($column['element']);
+                        $record->buffMaxStack = $cursor->nextI32();
                     }
                     break;
 
@@ -248,15 +262,17 @@ final class BuffTable
 
                 case 17:
                     ScbReader::checkColumn($column, 'Buff.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 
                 case 18:
                     ScbReader::checkColumn($column, 'Buff.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Buff.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

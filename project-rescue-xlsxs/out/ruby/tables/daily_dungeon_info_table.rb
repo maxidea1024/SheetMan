@@ -91,48 +91,57 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'DailyDungeonInfo.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'DailyDungeonInfo.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'DailyDungeonInfo.DungeonName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.DungeonName')
           records.each do |record|
-            record.dungeon_name = reader.read_string
+            record.dungeon_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'DailyDungeonInfo.DungeonType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.DungeonType')
           records.each do |record|
-            record.dungeon_type = reader.read_enum
+            record.dungeon_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'DailyDungeonInfo.Priority', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.Priority')
           records.each do |record|
-            record.priority = reader.read_i32_as(column.element)
+            record.priority = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'DailyDungeonInfo.CycleType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.CycleType')
           records.each do |record|
-            record.cycle_type = reader.read_enum
+            record.cycle_type = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'DailyDungeonInfo.EnterCondition', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.EnterCondition')
           records.each do |record|
-            record.enter_condition = reader.read_i32_as(column.element)
+            record.enter_condition = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'DailyDungeonInfo.EnterCurrencyType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.EnterCurrencyType')
           records.each do |record|
-            record.enter_currency_type = reader.read_enum
+            record.enter_currency_type = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'DailyDungeonInfo.DungeonBuffID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.DungeonBuffID')
           records.each do |record|
-            record.dungeon_buff_id = reader.read_i32_as(column.element)
+            record.dungeon_buff_id = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'DailyDungeonInfo.BuffValueRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -141,38 +150,45 @@ module Rescue
           end
         when 11
           Sheetman.check_column(column, 'DailyDungeonInfo.EnterCurrencyValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.EnterCurrencyValue')
           records.each do |record|
-            record.enter_currency_value = reader.read_i32_as(column.element)
+            record.enter_currency_value = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'DailyDungeonInfo.FreeEnterCurrencyType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.FreeEnterCurrencyType')
           records.each do |record|
-            record.free_enter_currency_type = reader.read_enum
+            record.free_enter_currency_type = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'DailyDungeonInfo.ADEnterCount', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.ADEnterCount')
           records.each do |record|
-            record.ad_enter_count = reader.read_i32_as(column.element)
+            record.ad_enter_count = cursor.next_i32
           end
         when 14
           Sheetman.check_column(column, 'DailyDungeonInfo.EnterCurrencyCountMax', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.EnterCurrencyCountMax')
           records.each do |record|
-            record.enter_currency_count_max = reader.read_i32_as(column.element)
+            record.enter_currency_count_max = cursor.next_i32
           end
         when 15
           Sheetman.check_column(column, 'DailyDungeonInfo.DungeonImagePath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.DungeonImagePath')
           records.each do |record|
-            record.dungeon_image_path = reader.read_string
+            record.dungeon_image_path = cursor.next_string
           end
         when 16
           Sheetman.check_column(column, 'DailyDungeonInfo.DungeonBGMID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.DungeonBGMID')
           records.each do |record|
-            record.dungeon_bgmid = reader.read_i32_as(column.element)
+            record.dungeon_bgmid = cursor.next_i32
           end
         when 17
           Sheetman.check_column(column, 'DailyDungeonInfo.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'DailyDungeonInfo.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

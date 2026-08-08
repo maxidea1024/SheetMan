@@ -14,6 +14,7 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -65,11 +66,12 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 1:
       (void)sm_check_column(reader, column, "Equip.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -77,11 +79,12 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 2:
       (void)sm_check_column(reader, column, "Equip.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -89,11 +92,12 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 3:
       (void)sm_check_column(reader, column, "Equip.EquipName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.EquipName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->equip_name);
+        (void)sm_cursor_next_string(&cursor, &record->equip_name);
       }
 
       break;
@@ -101,12 +105,13 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 4:
       (void)sm_check_column(reader, column, "Equip.Type", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.Type");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->type = (Rescue_JobType_t)scratch;
       }
 
@@ -115,12 +120,13 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 5:
       (void)sm_check_column(reader, column, "Equip.EquipType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.EquipType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->equip_type = (Rescue_EquipmentType_t)scratch;
       }
 
@@ -129,12 +135,13 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 6:
       (void)sm_check_column(reader, column, "Equip.Grade", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.Grade");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->grade = (Rescue_GradeType_t)scratch;
       }
 
@@ -143,11 +150,12 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 7:
       (void)sm_check_column(reader, column, "Equip.MaxClass", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.MaxClass");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->max_class);
+        (void)sm_cursor_next_i32(&cursor, &record->max_class);
       }
 
       break;
@@ -155,11 +163,12 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 8:
       (void)sm_check_column(reader, column, "Equip.MaxLevel", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.MaxLevel");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->max_level);
+        (void)sm_cursor_next_i32(&cursor, &record->max_level);
       }
 
       break;
@@ -167,12 +176,13 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 9:
       (void)sm_check_column(reader, column, "Equip.StatType1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.StatType1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->stat_type1 = (Rescue_StatType_t)scratch;
       }
 
@@ -181,12 +191,13 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 10:
       (void)sm_check_column(reader, column, "Equip.StatType2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.StatType2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->stat_type2 = (Rescue_StatType_t)scratch;
       }
 
@@ -195,11 +206,12 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 11:
       (void)sm_check_column(reader, column, "Equip.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;
@@ -207,11 +219,12 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 12:
       (void)sm_check_column(reader, column, "Equip.PrefabPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.PrefabPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->prefab_path);
+        (void)sm_cursor_next_string(&cursor, &record->prefab_path);
       }
 
       break;
@@ -219,11 +232,12 @@ static bool Rescue_EquipParse(Rescue_EquipTable_t* table, sm_reader* reader) {
     case 13:
       (void)sm_check_column(reader, column, "Equip.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Equip.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_EquipRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

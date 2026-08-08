@@ -74,6 +74,7 @@ public final class SDAgencyInfoTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<SDAgencyInfoRecord> loaded = new ArrayList<>(count);
@@ -89,29 +90,33 @@ public final class SDAgencyInfoTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.Id");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.Name");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.AgencyGrade", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.AgencyGrade");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.agencyGrade = AgencyGrade.of(reader.readEnum());
+                        record.agencyGrade = AgencyGrade.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.DispatchCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.DispatchCount");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.dispatchCount = reader.readI32As(column.element);
+                        record.dispatchCount = cursor.nextI32();
                     }
                     break;
                 }
@@ -166,22 +171,25 @@ public final class SDAgencyInfoTable {
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.FreeRefresh", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.FreeRefresh");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.freeRefresh = reader.readI32As(column.element);
+                        record.freeRefresh = cursor.nextI32();
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.RefreshCurrencyType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyType");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.refreshCurrencyType = CurrencyType.of(reader.readEnum());
+                        record.refreshCurrencyType = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 14: {
                     ScbReader.checkColumn(column, "SDAgencyInfo.RefreshCurrencyValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyValue");
                     for (SDAgencyInfoRecord record : loaded) {
-                        record.refreshCurrencyValue = reader.readI32As(column.element);
+                        record.refreshCurrencyValue = cursor.nextI32();
                     }
                     break;
                 }

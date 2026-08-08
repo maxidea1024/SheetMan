@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/GradeType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -118,29 +119,33 @@ final class GachaCharacterListTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'GachaCharacterList.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'GachaCharacterList.CharacterID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.CharacterID');
                     foreach ($records as $record) {
-                        $record->characterID = $reader->readI32As($column['element']);
+                        $record->characterID = $cursor->nextI32();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'GachaCharacterList.GradeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.GradeType');
                     foreach ($records as $record) {
-                        $record->gradeType = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
+                        $record->gradeType = GradeType::tryFrom($cursor->nextI32()) ?? GradeType::None;
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'GachaCharacterList.BaseWeight', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.BaseWeight');
                     foreach ($records as $record) {
-                        $record->baseWeight = $reader->readI32As($column['element']);
+                        $record->baseWeight = $cursor->nextI32();
                     }
                     break;
 
@@ -153,43 +158,49 @@ final class GachaCharacterListTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'GachaCharacterList.WishlistWeight', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.WishlistWeight');
                     foreach ($records as $record) {
-                        $record->wishlistWeight = $reader->readI32As($column['element']);
+                        $record->wishlistWeight = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'GachaCharacterList.ClassUpCurrencyID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.ClassUpCurrencyID');
                     foreach ($records as $record) {
-                        $record->classUpCurrencyID = $reader->readI32As($column['element']);
+                        $record->classUpCurrencyID = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'GachaCharacterList.ClassUpCurrencyValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.ClassUpCurrencyValue');
                     foreach ($records as $record) {
-                        $record->classUpCurrencyValue = $reader->readI32As($column['element']);
+                        $record->classUpCurrencyValue = $cursor->nextI32();
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'GachaCharacterList.ExConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.ExConditionID');
                     foreach ($records as $record) {
-                        $record->exConditionID = $reader->readI32As($column['element']);
+                        $record->exConditionID = $cursor->nextI32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'GachaCharacterList.ExCurrencyID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.ExCurrencyID');
                     foreach ($records as $record) {
-                        $record->exCurrencyID = $reader->readI32As($column['element']);
+                        $record->exCurrencyID = $cursor->nextI32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'GachaCharacterList.ExCurrencyValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'GachaCharacterList.ExCurrencyValue');
                     foreach ($records as $record) {
-                        $record->exCurrencyValue = $reader->readI32As($column['element']);
+                        $record->exCurrencyValue = $cursor->nextI32();
                     }
                     break;
 

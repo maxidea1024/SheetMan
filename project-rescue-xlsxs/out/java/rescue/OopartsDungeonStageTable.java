@@ -74,6 +74,7 @@ public final class OopartsDungeonStageTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<OopartsDungeonStageRecord> loaded = new ArrayList<>(count);
@@ -89,43 +90,49 @@ public final class OopartsDungeonStageTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.Id");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.Name");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.StageName", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.StageName");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.stageName = reader.readString();
+                        record.stageName = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.DungeonType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.DungeonType");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.dungeonType = DungeonType.of(reader.readEnum());
+                        record.dungeonType = DungeonType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.DungeonFloor", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.DungeonFloor");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.dungeonFloor = reader.readI32As(column.element);
+                        record.dungeonFloor = cursor.nextI32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.TimeLimit", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.TimeLimit");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.timeLimit = reader.readI32As(column.element);
+                        record.timeLimit = cursor.nextI32();
                     }
                     break;
                 }
@@ -153,15 +160,17 @@ public final class OopartsDungeonStageTable {
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.SpawnPointCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnPointCount");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.spawnPointCount = reader.readI32As(column.element);
+                        record.spawnPointCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.SpawnMaxCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.SpawnMaxCount");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.spawnMaxCount = reader.readI32As(column.element);
+                        record.spawnMaxCount = cursor.nextI32();
                     }
                     break;
                 }
@@ -174,22 +183,25 @@ public final class OopartsDungeonStageTable {
                 }
                 case 12: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.StageClearCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.StageClearCount");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.stageClearCount = reader.readI32As(column.element);
+                        record.stageClearCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 13: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.RecommendPower", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.RecommendPower");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.recommendPower = reader.readString();
+                        record.recommendPower = cursor.nextString();
                     }
                     break;
                 }
                 case 14: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.RewardID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.RewardID");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.rewardID = reader.readI32As(column.element);
+                        record.rewardID = cursor.nextI32();
                     }
                     break;
                 }
@@ -216,22 +228,25 @@ public final class OopartsDungeonStageTable {
                 }
                 case 18: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.DungeonImagePath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.DungeonImagePath");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.dungeonImagePath = reader.readString();
+                        record.dungeonImagePath = cursor.nextString();
                     }
                     break;
                 }
                 case 19: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.MonsterImagePath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.MonsterImagePath");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.monsterImagePath = reader.readString();
+                        record.monsterImagePath = cursor.nextString();
                     }
                     break;
                 }
                 case 20: {
                     ScbReader.checkColumn(column, "OopartsDungeonStage.AssetDataPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "OopartsDungeonStage.AssetDataPath");
                     for (OopartsDungeonStageRecord record : loaded) {
-                        record.assetDataPath = reader.readString();
+                        record.assetDataPath = cursor.nextString();
                     }
                     break;
                 }

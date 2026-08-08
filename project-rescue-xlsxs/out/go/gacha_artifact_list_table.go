@@ -104,65 +104,74 @@ func (t *GachaArtifactListTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactList.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactList.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactList.ArtifactID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactList.ArtifactID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ArtifactID = reader.ReadI32As(column.Element)
+					r.ArtifactID = cursor.NextI32()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactList.GradeType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactList.GradeType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeType = GradeType(reader.ReadEnum())
+					r.GradeType = GradeType(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactList.BaseWeight", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactList.BaseWeight")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BaseWeight = reader.ReadI32As(column.Element)
+					r.BaseWeight = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactList.ClassUpCurrencyID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactList.ClassUpCurrencyID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ClassUpCurrencyID = reader.ReadI32As(column.Element)
+					r.ClassUpCurrencyID = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactList.ClassUpCurrencyValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactList.ClassUpCurrencyValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ClassUpCurrencyValue = reader.ReadI32As(column.Element)
+					r.ClassUpCurrencyValue = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactList.ExConditionID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactList.ExConditionID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ExConditionID = reader.ReadI32As(column.Element)
+					r.ExConditionID = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactList.ExCurrencyID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactList.ExCurrencyID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ExCurrencyID = reader.ReadI32As(column.Element)
+					r.ExCurrencyID = cursor.NextI32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "GachaArtifactList.ExCurrencyValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaArtifactList.ExCurrencyValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ExCurrencyValue = reader.ReadI32As(column.Element)
+					r.ExCurrencyValue = cursor.NextI32()
 				}
 			}
 		default:

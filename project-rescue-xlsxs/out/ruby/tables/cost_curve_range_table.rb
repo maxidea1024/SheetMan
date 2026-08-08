@@ -80,28 +80,33 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'CostCurveRange.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurveRange.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'CostCurveRange.GrowthType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurveRange.GrowthType')
           records.each do |record|
-            record.growth_type = reader.read_enum
+            record.growth_type = cursor.next_i32
           end
         when 3
           Sheetman.check_column(column, 'CostCurveRange.RangeIndex', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurveRange.RangeIndex')
           records.each do |record|
-            record.range_index = reader.read_i32_as(column.element)
+            record.range_index = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'CostCurveRange.StartStep', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurveRange.StartStep')
           records.each do |record|
-            record.start_step = reader.read_i32_as(column.element)
+            record.start_step = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'CostCurveRange.EndStep', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'CostCurveRange.EndStep')
           records.each do |record|
-            record.end_step = reader.read_i32_as(column.element)
+            record.end_step = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'CostCurveRange.AddMultiplier', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])

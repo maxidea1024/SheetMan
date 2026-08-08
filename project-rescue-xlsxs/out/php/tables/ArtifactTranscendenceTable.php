@@ -16,6 +16,7 @@ require_once __DIR__ . '/../enums/GradeType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -117,57 +118,65 @@ final class ArtifactTranscendenceTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'ArtifactTranscendence.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactTranscendence.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'ArtifactTranscendence.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactTranscendence.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'ArtifactTranscendence.NameKR', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactTranscendence.NameKR');
                     foreach ($records as $record) {
-                        $record->nameKR = $reader->readString();
+                        $record->nameKR = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'ArtifactTranscendence.GradeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactTranscendence.GradeType');
                     foreach ($records as $record) {
-                        $record->gradeType = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
+                        $record->gradeType = GradeType::tryFrom($cursor->nextI32()) ?? GradeType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'ArtifactTranscendence.TranscendStep', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactTranscendence.TranscendStep');
                     foreach ($records as $record) {
-                        $record->transcendStep = $reader->readI32As($column['element']);
+                        $record->transcendStep = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'ArtifactTranscendence.MaxLevel', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactTranscendence.MaxLevel');
                     foreach ($records as $record) {
-                        $record->maxLevel = $reader->readI32As($column['element']);
+                        $record->maxLevel = $cursor->nextI32();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'ArtifactTranscendence.MaterialType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactTranscendence.MaterialType');
                     foreach ($records as $record) {
-                        $record->materialType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->materialType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'ArtifactTranscendence.MaterialCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactTranscendence.MaterialCount');
                     foreach ($records as $record) {
-                        $record->materialCount = $reader->readI32As($column['element']);
+                        $record->materialCount = $cursor->nextI32();
                     }
                     break;
 
@@ -180,8 +189,9 @@ final class ArtifactTranscendenceTable
 
                 case 10:
                     ScbReader::checkColumn($column, 'ArtifactTranscendence.NextStepID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ArtifactTranscendence.NextStepID');
                     foreach ($records as $record) {
-                        $record->nextStepID = $reader->readI32As($column['element']);
+                        $record->nextStepID = $cursor->nextI32();
                     }
                     break;
 

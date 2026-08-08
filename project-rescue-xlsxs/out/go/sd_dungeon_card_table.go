@@ -100,51 +100,58 @@ func (t *SDDungeonCardTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDDungeonCard.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonCard.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDDungeonCard.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonCard.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDDungeonCard.SDDunName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonCard.SDDunName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SDDunName = reader.ReadString()
+					r.SDDunName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDDungeonCard.SDCardType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonCard.SDCardType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SDCardType = SDCardType(reader.ReadEnum())
+					r.SDCardType = SDCardType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDDungeonCard.CardCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonCard.CardCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CardCount = reader.ReadI32As(column.Element)
+					r.CardCount = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDDungeonCard.StatIconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonCard.StatIconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StatIconPath = reader.ReadString()
+					r.StatIconPath = cursor.NextString()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDDungeonCard.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDDungeonCard.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

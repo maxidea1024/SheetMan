@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -104,32 +105,37 @@ class CostCurveTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "CostCurve.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurve.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "CostCurve.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurve.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "CostCurve.GrowthType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurve.GrowthType")
                     for (record in loaded) {
-                        record.growthType = GrowthType.of(reader.readEnum())
+                        record.growthType = GrowthType.of(cursor.nextI32())
                     }
                 }
                 4 -> {
                     checkColumn(column, "CostCurve.CostType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurve.CostType")
                     for (record in loaded) {
-                        record.costType = CurrencyType.of(reader.readEnum())
+                        record.costType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "CostCurve.BaseCostValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "CostCurve.BaseCostValue")
                     for (record in loaded) {
-                        record.baseCostValue = reader.readI32As(column.element)
+                        record.baseCostValue = cursor.nextI32()
                     }
                 }
                 else ->

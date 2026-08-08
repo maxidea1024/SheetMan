@@ -82,6 +82,7 @@ class EquipTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <EquipRecord>[];
@@ -97,80 +98,93 @@ class EquipTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Equip.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Equip.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Equip.EquipName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.EquipName');
           for (final record in loaded) {
-            record.equipName = reader.readString();
+            record.equipName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Equip.Type', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.Type');
           for (final record in loaded) {
-            record.type = JobType.of(reader.readEnum());
+            record.type = JobType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'Equip.EquipType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.EquipType');
           for (final record in loaded) {
-            record.equipType = EquipmentType.of(reader.readEnum());
+            record.equipType = EquipmentType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'Equip.Grade', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.Grade');
           for (final record in loaded) {
-            record.grade = GradeType.of(reader.readEnum());
+            record.grade = GradeType.of(cursor.nextI32());
           }
           break;
         case 7:
           checkColumn(column, 'Equip.MaxClass', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.MaxClass');
           for (final record in loaded) {
-            record.maxClass = reader.readI32As(column.element);
+            record.maxClass = cursor.nextI32();
           }
           break;
         case 8:
           checkColumn(column, 'Equip.MaxLevel', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.MaxLevel');
           for (final record in loaded) {
-            record.maxLevel = reader.readI32As(column.element);
+            record.maxLevel = cursor.nextI32();
           }
           break;
         case 9:
           checkColumn(column, 'Equip.StatType1', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.StatType1');
           for (final record in loaded) {
-            record.statType1 = StatType.of(reader.readEnum());
+            record.statType1 = StatType.of(cursor.nextI32());
           }
           break;
         case 10:
           checkColumn(column, 'Equip.StatType2', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.StatType2');
           for (final record in loaded) {
-            record.statType2 = StatType.of(reader.readEnum());
+            record.statType2 = StatType.of(cursor.nextI32());
           }
           break;
         case 11:
           checkColumn(column, 'Equip.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         case 12:
           checkColumn(column, 'Equip.PrefabPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.PrefabPath');
           for (final record in loaded) {
-            record.prefabPath = reader.readString();
+            record.prefabPath = cursor.nextString();
           }
           break;
         case 13:
           checkColumn(column, 'Equip.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Equip.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         default:

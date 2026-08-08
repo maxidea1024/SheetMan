@@ -122,38 +122,44 @@ impl OopartsDungeonStageTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "OopartsDungeonStage.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "OopartsDungeonStage.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "OopartsDungeonStage.StageName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.StageName")?;
                     for record in records.iter_mut() {
-                        record.stage_name = reader.read_string()?;
+                        record.stage_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "OopartsDungeonStage.DungeonType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.DungeonType")?;
                     for record in records.iter_mut() {
-                        record.dungeon_type = DungeonType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.dungeon_type = DungeonType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "OopartsDungeonStage.DungeonFloor", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.DungeonFloor")?;
                     for record in records.iter_mut() {
-                        record.dungeon_floor = reader.read_i32_as(column.element)?;
+                        record.dungeon_floor = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "OopartsDungeonStage.TimeLimit", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.TimeLimit")?;
                     for record in records.iter_mut() {
-                        record.time_limit = reader.read_i32_as(column.element)?;
+                        record.time_limit = cursor.next_i32()?;
                     }
                 }
                 7 => {
@@ -178,14 +184,16 @@ impl OopartsDungeonStageTable {
                 }
                 9 => {
                     sheetman::check_column(column, "OopartsDungeonStage.SpawnPointCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.SpawnPointCount")?;
                     for record in records.iter_mut() {
-                        record.spawn_point_count = reader.read_i32_as(column.element)?;
+                        record.spawn_point_count = cursor.next_i32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "OopartsDungeonStage.SpawnMaxCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.SpawnMaxCount")?;
                     for record in records.iter_mut() {
-                        record.spawn_max_count = reader.read_i32_as(column.element)?;
+                        record.spawn_max_count = cursor.next_i32()?;
                     }
                 }
                 11 => {
@@ -196,20 +204,23 @@ impl OopartsDungeonStageTable {
                 }
                 12 => {
                     sheetman::check_column(column, "OopartsDungeonStage.StageClearCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.StageClearCount")?;
                     for record in records.iter_mut() {
-                        record.stage_clear_count = reader.read_i32_as(column.element)?;
+                        record.stage_clear_count = cursor.next_i32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "OopartsDungeonStage.RecommendPower", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.RecommendPower")?;
                     for record in records.iter_mut() {
-                        record.recommend_power = reader.read_string()?;
+                        record.recommend_power = cursor.next_string()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "OopartsDungeonStage.RewardID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.RewardID")?;
                     for record in records.iter_mut() {
-                        record.reward_id = reader.read_i32_as(column.element)?;
+                        record.reward_id = cursor.next_i32()?;
                     }
                 }
                 15 => {
@@ -232,20 +243,23 @@ impl OopartsDungeonStageTable {
                 }
                 18 => {
                     sheetman::check_column(column, "OopartsDungeonStage.DungeonImagePath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.DungeonImagePath")?;
                     for record in records.iter_mut() {
-                        record.dungeon_image_path = reader.read_string()?;
+                        record.dungeon_image_path = cursor.next_string()?;
                     }
                 }
                 19 => {
                     sheetman::check_column(column, "OopartsDungeonStage.MonsterImagePath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.MonsterImagePath")?;
                     for record in records.iter_mut() {
-                        record.monster_image_path = reader.read_string()?;
+                        record.monster_image_path = cursor.next_string()?;
                     }
                 }
                 20 => {
                     sheetman::check_column(column, "OopartsDungeonStage.AssetDataPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "OopartsDungeonStage.AssetDataPath")?;
                     for record in records.iter_mut() {
-                        record.asset_data_path = reader.read_string()?;
+                        record.asset_data_path = cursor.next_string()?;
                     }
                 }
                 _ => {

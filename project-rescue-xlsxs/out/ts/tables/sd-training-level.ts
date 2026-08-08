@@ -196,6 +196,7 @@ export class SDTrainingLevelTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -209,37 +210,42 @@ export class SDTrainingLevelTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'SDTrainingLevel.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'SDTrainingLevel.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'SDTrainingLevel.LevelName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.LevelName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._levelName = reader.readString()
+            record._levelName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'SDTrainingLevel.CurrencyValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.CurrencyValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._currencyValue = reader.readI32As(column.element)
+            record._currencyValue = cursor.nextI32()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'SDTrainingLevel.CurrencyResult', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.CurrencyResult')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._currencyResult = reader.readI32As(column.element)
+            record._currencyResult = cursor.nextI32()
           }
           break
         case 6:
@@ -272,9 +278,10 @@ export class SDTrainingLevelTable {
           break
         case 10:
           sheetman.checkColumn(column, 'SDTrainingLevel.CommonUnlockStageID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDTrainingLevel.CommonUnlockStageID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._commonUnlockStageID = reader.readI32As(column.element)
+            record._commonUnlockStageID = cursor.nextI32()
           }
           break
         default:

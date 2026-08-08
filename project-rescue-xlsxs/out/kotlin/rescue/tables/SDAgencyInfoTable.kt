@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -122,26 +123,30 @@ class SDAgencyInfoTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDAgencyInfo.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDAgencyInfo.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDAgencyInfo.AgencyGrade", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.AgencyGrade")
                     for (record in loaded) {
-                        record.agencyGrade = AgencyGrade.of(reader.readEnum())
+                        record.agencyGrade = AgencyGrade.of(cursor.nextI32())
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDAgencyInfo.DispatchCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.DispatchCount")
                     for (record in loaded) {
-                        record.dispatchCount = reader.readI32As(column.element)
+                        record.dispatchCount = cursor.nextI32()
                     }
                 }
                 5 -> {
@@ -188,20 +193,23 @@ class SDAgencyInfoTable {
                 }
                 12 -> {
                     checkColumn(column, "SDAgencyInfo.FreeRefresh", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.FreeRefresh")
                     for (record in loaded) {
-                        record.freeRefresh = reader.readI32As(column.element)
+                        record.freeRefresh = cursor.nextI32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "SDAgencyInfo.RefreshCurrencyType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyType")
                     for (record in loaded) {
-                        record.refreshCurrencyType = CurrencyType.of(reader.readEnum())
+                        record.refreshCurrencyType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 14 -> {
                     checkColumn(column, "SDAgencyInfo.RefreshCurrencyValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDAgencyInfo.RefreshCurrencyValue")
                     for (record in loaded) {
-                        record.refreshCurrencyValue = reader.readI32As(column.element)
+                        record.refreshCurrencyValue = cursor.nextI32()
                     }
                 }
                 else ->

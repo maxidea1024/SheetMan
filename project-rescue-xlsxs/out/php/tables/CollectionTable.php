@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/CurrencyType.php';
 require_once __DIR__ . '/../enums/StatType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -122,57 +123,65 @@ final class CollectionTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Collection.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Collection.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Collection.CharacterID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.CharacterID');
                     foreach ($records as $record) {
-                        $record->characterID = $reader->readI32As($column['element']);
+                        $record->characterID = $cursor->nextI32();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Collection.TabType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.TabType');
                     foreach ($records as $record) {
-                        $record->tabType = CollectionTabType::tryFrom($reader->readEnum()) ?? CollectionTabType::None;
+                        $record->tabType = CollectionTabType::tryFrom($cursor->nextI32()) ?? CollectionTabType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Collection.ConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.ConditionID');
                     foreach ($records as $record) {
-                        $record->conditionID = $reader->readI32As($column['element']);
+                        $record->conditionID = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'Collection.RewardType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.RewardType');
                     foreach ($records as $record) {
-                        $record->rewardType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->rewardType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'Collection.RewardValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.RewardValue');
                     foreach ($records as $record) {
-                        $record->rewardValue = $reader->readI32As($column['element']);
+                        $record->rewardValue = $cursor->nextI32();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'Collection.RewardStatType1', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.RewardStatType1');
                     foreach ($records as $record) {
-                        $record->rewardStatType1 = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->rewardStatType1 = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
@@ -185,22 +194,25 @@ final class CollectionTable
 
                 case 10:
                     ScbReader::checkColumn($column, 'Collection.RewardStatType2', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.RewardStatType2');
                     foreach ($records as $record) {
-                        $record->rewardStatType2 = StatType::tryFrom($reader->readEnum()) ?? StatType::None;
+                        $record->rewardStatType2 = StatType::tryFrom($cursor->nextI32()) ?? StatType::None;
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'Collection.RewardStatValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.RewardStatValue');
                     foreach ($records as $record) {
-                        $record->rewardStatValue = $reader->readI32As($column['element']);
+                        $record->rewardStatValue = $cursor->nextI32();
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'Collection.ShortCutID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Collection.ShortCutID');
                     foreach ($records as $record) {
-                        $record->shortCutID = $reader->readI32As($column['element']);
+                        $record->shortCutID = $cursor->nextI32();
                     }
                     break;
 

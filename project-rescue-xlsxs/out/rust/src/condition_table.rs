@@ -95,38 +95,44 @@ impl ConditionTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Condition.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Condition.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Condition.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Condition.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Condition.ConditionTargetType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Condition.ConditionTargetType")?;
                     for record in records.iter_mut() {
-                        record.condition_target_type = ConditionTargetType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.condition_target_type = ConditionTargetType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Condition.ConditionTargetValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Condition.ConditionTargetValue")?;
                     for record in records.iter_mut() {
-                        record.condition_target_value = reader.read_i32_as(column.element)?;
+                        record.condition_target_value = cursor.next_i32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "Condition.ConditionType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Condition.ConditionType")?;
                     for record in records.iter_mut() {
-                        record.condition_type = ConditionType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.condition_type = ConditionType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "Condition.ConditionValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Condition.ConditionValue")?;
                     for record in records.iter_mut() {
-                        record.condition_value = reader.read_i32_as(column.element)?;
+                        record.condition_value = cursor.next_i32()?;
                     }
                 }
                 _ => {

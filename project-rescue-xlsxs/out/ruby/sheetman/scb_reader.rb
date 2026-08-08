@@ -276,6 +276,152 @@ module Sheetman
     end
   end
 
+  # Reads one scalar column's values in row order, whatever the block's encoding.
+  #
+  # The generated row loop stays a row loop; this is the one place that knows how a
+  # delta accumulates, how long a run has left, or that a dictionary index is a
+  # reference into strings decoded once. That last one matters beyond file size: a
+  # hundred-thousand-row column with three distinct strings allocates three strings,
+  # not a hundred thousand - and the rows share them, which is safe because a record
+  # only ever reads what it was handed.
+  #
+  # check_column has already refused any (element, encoding) pair the spec does not
+  # define, so the dispatches here do not re-litigate that.
+  class ColumnCursor
+    def initialize(reader, column, row_count, field_name)
+      @reader = reader
+      @field_name = field_name
+      @element = column.element
+      @encoding = column.encoding
+
+      # A run-length family's current run: what remains of it, and its value - which
+      # is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+      @run_remaining = 0
+      @run_value = 0
+
+      # The delta family's accumulator, once @started.
+      @previous = 0
+      @started = false
+
+      # Rows not yet handed out. A run that claims more than this is corrupt, and
+      # catching it here names the field instead of leaving it to the block-end check.
+      @rows_remaining = row_count
+
+      # The block's dictionary, decoded once and handed out per row.
+      @dictionary =
+        if @encoding == ENCODING_DICT || @encoding == ENCODING_DICT_RLE
+          count = reader.read_counter32
+          raise ScbError, "#{field_name}: the dictionary entry count is negative" if count.negative?
+
+          Array.new(count) { reader.read_string }
+        end
+    end
+
+    # The next int32 - which also serves enums, and reference indexes.
+    def next_i32
+      @rows_remaining -= 1
+
+      case @encoding
+      when ENCODING_RAW
+        @element == ELEMENT_I32 ? @reader.read_int32 : @reader.read_optimal_int32
+      when ENCODING_VARINT
+        @reader.read_optimal_int32
+      when ENCODING_DELTA
+        # The addition wraps on purpose, mirroring the writer's wrapping subtraction;
+        # together they are exact for every int32 pair.
+        if @started
+          @previous = wrap_int32(@previous + @reader.read_optimal_int32)
+        else
+          @previous = @reader.read_optimal_int32
+          @started = true
+        end
+
+        @previous
+      when ENCODING_RLE
+        read_run if @run_remaining.zero?
+
+        @run_remaining -= 1
+        @run_value
+      else # ENCODING_DELTA_RLE; check_column refused everything else.
+        unless @started
+          @previous = @reader.read_optimal_int32
+          @started = true
+          return @previous
+        end
+
+        read_run if @run_remaining.zero?
+
+        @run_remaining -= 1
+        @previous = wrap_int32(@previous + @run_value)
+      end
+    end
+
+    # A 64-bit member: an i64 column is always raw, anything narrower decodes as int32.
+    def next_i64
+      @element == ELEMENT_I64 ? @reader.read_int64 : next_i32
+    end
+
+    # A float member: float columns are always raw, an i32 column decodes then widens.
+    def next_f64
+      case @element
+      when ELEMENT_F64 then @reader.read_double
+      when ELEMENT_F32 then @reader.read_float
+      else next_i32
+      end
+    end
+
+    # The next string - the dictionary's instance where the block has one.
+    def next_string
+      @rows_remaining -= 1
+
+      case @encoding
+      when ENCODING_RAW
+        @reader.read_string
+      when ENCODING_DICT
+        dictionary_entry(@reader.read_counter32)
+      else # ENCODING_DICT_RLE
+        read_run if @run_remaining.zero?
+
+        @run_remaining -= 1
+        dictionary_entry(@run_value)
+      end
+    end
+
+    private
+
+    def read_run
+      length = @reader.read_counter32
+
+      # + 1 because the row this run was read for is already counted out of
+      # @rows_remaining by its next_* call.
+      if length < 1 || length > @rows_remaining + 1
+        raise ScbError,
+              "#{@field_name}: a run of #{length} values cannot cover the " \
+              "#{@rows_remaining + 1} rows left in the column"
+      end
+
+      @run_remaining = length
+      @run_value = @reader.read_optimal_int32
+    end
+
+    def dictionary_entry(index)
+      if index.negative? || index >= @dictionary.length
+        raise ScbError,
+              "#{@field_name}: dictionary index #{index} is out of range - the " \
+              "dictionary holds #{@dictionary.length} entries"
+      end
+
+      @dictionary[index]
+    end
+
+    # A 32-bit wrapping sum. Ruby's Integer never overflows on its own, so the wrap
+    # the format asks for is spelled out: keep the low 32 bits and sign-extend.
+    def wrap_int32(value)
+      value &= 0xFFFFFFFF
+      value >= 0x80000000 ? value - 0x100000000 : value
+    end
+  end
+
   # Reads and checks a table file's header, returning the row count that follows it.
   #
   # The reserved byte is written as zero and is where compression or encryption flags
@@ -350,12 +496,14 @@ module Sheetman
             'changed shape; regenerate the code or rebuild the data.'
     end
 
-    # An encoding this build cannot decode is refused by name, exactly like an
-    # element it cannot read. An unknown column's encoding never gets here - a skip
-    # is a skip whatever the block's layout.
-    if column.encoding != ENCODING_RAW
+    # An encoding this build cannot decode - or one the spec does not define for
+    # this element - is refused by name, exactly like an element it cannot read.
+    # An unknown column's encoding never gets here - a skip is a skip whatever the
+    # block's layout.
+    unless encoding_supported?(column)
       raise ScbError,
-            "#{field_name}: the file's column uses encoding #{column.encoding}, which this "             'reader does not support. Regenerate the code or rebuild the data.'
+            "#{field_name}: the file's column uses encoding #{column.encoding}, which this " \
+            'reader cannot decode for its element type. Regenerate the code or rebuild the data.'
     end
 
     return if accepted.include?(column.element)
@@ -364,6 +512,24 @@ module Sheetman
           "#{field_name}: the file carries element type #{column.element}, which this member " \
           "cannot read (accepts #{accepted}). The column changed type incompatibly; " \
           'regenerate the code or rebuild the data.'
+  end
+
+  # The (element, encoding) pairs the spec defines. Arrays are always raw; integers
+  # take the integer encodings, strings the dictionary ones.
+  def self.encoding_supported?(column)
+    return true if column.encoding == ENCODING_RAW
+    return false unless column.kind == KIND_SCALAR
+
+    case column.element
+    when ELEMENT_VARINT
+      column.encoding == ENCODING_RLE
+    when ELEMENT_I32
+      column.encoding >= ENCODING_VARINT && column.encoding <= ENCODING_DELTA_RLE
+    when ELEMENT_STRING
+      column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE
+    else
+      false
+    end
   end
 
   # That a block was consumed exactly: a mismatch is a format disagreement, and stopping

@@ -86,23 +86,27 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Artifact.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Artifact.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Artifact.ArtifactType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.ArtifactType')
           records.each do |record|
-            record.artifact_type = reader.read_enum
+            record.artifact_type = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'Artifact.Grade', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.Grade')
           records.each do |record|
-            record.grade = reader.read_enum
+            record.grade = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'Artifact.EquipSkillID', Sheetman::KIND_VAR_ARRAY, 0, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
@@ -112,8 +116,9 @@ module Rescue
           end
         when 6
           Sheetman.check_column(column, 'Artifact.EquipStatType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.EquipStatType')
           records.each do |record|
-            record.equip_stat_type = reader.read_enum
+            record.equip_stat_type = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'Artifact.EquipStatRate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -122,8 +127,9 @@ module Rescue
           end
         when 8
           Sheetman.check_column(column, 'Artifact.CollectionType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.CollectionType')
           records.each do |record|
-            record.collection_type = reader.read_enum
+            record.collection_type = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'Artifact.CollectionVlaue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -132,18 +138,21 @@ module Rescue
           end
         when 10
           Sheetman.check_column(column, 'Artifact.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         when 11
           Sheetman.check_column(column, 'Artifact.MaterialPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.MaterialPath')
           records.each do |record|
-            record.material_path = reader.read_string
+            record.material_path = cursor.next_string
           end
         when 12
           Sheetman.check_column(column, 'Artifact.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Artifact.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

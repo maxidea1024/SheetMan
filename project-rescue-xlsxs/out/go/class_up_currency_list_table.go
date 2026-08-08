@@ -102,51 +102,58 @@ func (t *ClassUpCurrencyListTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "ClassUpCurrencyList.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ClassUpCurrencyList.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "ClassUpCurrencyList.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ClassUpCurrencyList.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "ClassUpCurrencyList.Type", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ClassUpCurrencyList.Type")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Type = CurrencyType(reader.ReadEnum())
+					r.Type = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "ClassUpCurrencyList.TargetId", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ClassUpCurrencyList.TargetId")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TargetId = reader.ReadI32As(column.Element)
+					r.TargetId = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "ClassUpCurrencyList.MaxCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ClassUpCurrencyList.MaxCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxCount = reader.ReadI32As(column.Element)
+					r.MaxCount = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "ClassUpCurrencyList.MaxStack", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ClassUpCurrencyList.MaxStack")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxStack = reader.ReadI64As(column.Element)
+					r.MaxStack = cursor.NextI64()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "ClassUpCurrencyList.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "ClassUpCurrencyList.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		case 8:

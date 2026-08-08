@@ -86,24 +86,29 @@ class AttributeTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Attribute.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Attribute.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Attribute.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Attribute.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Attribute.AttributeName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Attribute.AttributeName")
                 for record in records:
-                    record.attribute_name = reader.read_string()
+                    record.attribute_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "Attribute.AttributeType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Attribute.AttributeType")
                 for record in records:
-                    record.attribute_type = AttributeType(reader.read_enum())
+                    record.attribute_type = AttributeType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Attribute.TargetAttributeType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Attribute.TargetAttributeType")
                 for record in records:
-                    record.target_attribute_type = AttributeType(reader.read_enum())
+                    record.target_attribute_type = AttributeType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "Attribute.DamageValueRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
@@ -114,8 +119,9 @@ class AttributeTable:
                     record.is_visible = reader.read_bool()
             elif column.tag == 8:
                 sheetman.check_column(column, "Attribute.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Attribute.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

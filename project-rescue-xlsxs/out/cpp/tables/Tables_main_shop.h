@@ -113,49 +113,55 @@ class MainShopTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "MainShop.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "MainShop.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "MainShop.ProductName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.ProductName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.product_name);
+            record.product_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "MainShop.ShopType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.ShopType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.shop_type);
+            record.shop_type = static_cast<ShopType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "MainShop.ShopSlotID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.ShopSlotID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.shop_slot_id);
+            record.shop_slot_id = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "MainShop.Priority", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.Priority");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.priority);
+            record.priority = cursor.next_i32();
           }
           break;
         }
@@ -185,49 +191,55 @@ class MainShopTable {
         }
         case 9: {
           sheetman::check_column(column, "MainShop.CycleType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.CycleType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.cycle_type);
+            record.cycle_type = static_cast<CycleType>(cursor.next_i32());
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "MainShop.LimitValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.LimitValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.limit_value);
+            record.limit_value = cursor.next_i32();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "MainShop.CurrencyType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.CurrencyType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.currency_type);
+            record.currency_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "MainShop.PriceValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.PriceValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.price_value);
+            record.price_value = cursor.next_i32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "MainShop.ConditionID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.ConditionID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition_id);
+            record.condition_id = cursor.next_i32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "MainShop.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "MainShop.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }

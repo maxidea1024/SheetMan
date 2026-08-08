@@ -243,6 +243,7 @@ export class SDAlchemyInfoTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -256,44 +257,50 @@ export class SDAlchemyInfoTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'SDAlchemyInfo.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'SDAlchemyInfo.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'SDAlchemyInfo.NameKR', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.NameKR')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._nameKR = reader.readString()
+            record._nameKR = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'SDAlchemyInfo.MaterialType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.MaterialType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._materialType = reader.readEnum() as CurrencyType
+            record._materialType = cursor.nextI32() as CurrencyType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'SDAlchemyInfo.CommonMaterialType1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.CommonMaterialType1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._commonMaterialType1 = reader.readEnum() as CurrencyType
+            record._commonMaterialType1 = cursor.nextI32() as CurrencyType
           }
           break
         case 6:
           sheetman.checkColumn(column, 'SDAlchemyInfo.CommonMaterialType2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.CommonMaterialType2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._commonMaterialType2 = reader.readEnum() as CurrencyType
+            record._commonMaterialType2 = cursor.nextI32() as CurrencyType
           }
           break
         case 7:
@@ -305,65 +312,74 @@ export class SDAlchemyInfoTable {
           break
         case 8:
           sheetman.checkColumn(column, 'SDAlchemyInfo.StatType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.StatType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._statType = reader.readEnum() as StatType
+            record._statType = cursor.nextI32() as StatType
           }
           break
         case 9:
           sheetman.checkColumn(column, 'SDAlchemyInfo.TargetType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.TargetType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._targetType = reader.readEnum() as TargetType
+            record._targetType = cursor.nextI32() as TargetType
           }
           break
         case 10:
           sheetman.checkColumn(column, 'SDAlchemyInfo.MaxLevelId', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.MaxLevelId')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxLevelId = reader.readI32As(column.element)
+            record._maxLevelId = cursor.nextI32()
           }
           break
         case 11:
           sheetman.checkColumn(column, 'SDAlchemyInfo.AccelerateTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.AccelerateTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._accelerateTime = reader.readI32As(column.element)
+            record._accelerateTime = cursor.nextI32()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'SDAlchemyInfo.AccelerateItemType1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.AccelerateItemType1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._accelerateItemType1 = reader.readEnum() as CurrencyType
+            record._accelerateItemType1 = cursor.nextI32() as CurrencyType
           }
           break
         case 13:
           sheetman.checkColumn(column, 'SDAlchemyInfo.AccelerateItemCost1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.AccelerateItemCost1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._accelerateItemCost1 = reader.readI32As(column.element)
+            record._accelerateItemCost1 = cursor.nextI32()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'SDAlchemyInfo.AccelerateItemType2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.AccelerateItemType2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._accelerateItemType2 = reader.readEnum() as CurrencyType
+            record._accelerateItemType2 = cursor.nextI32() as CurrencyType
           }
           break
         case 15:
           sheetman.checkColumn(column, 'SDAlchemyInfo.AccelerateItemCost2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.AccelerateItemCost2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._accelerateItemCost2 = reader.readI32As(column.element)
+            record._accelerateItemCost2 = cursor.nextI32()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'SDAlchemyInfo.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'SDAlchemyInfo.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         default:

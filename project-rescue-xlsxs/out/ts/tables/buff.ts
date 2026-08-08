@@ -259,6 +259,7 @@ export class BuffTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -272,72 +273,82 @@ export class BuffTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Buff.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Buff.BuffName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.BuffName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffName = reader.readString()
+            record._buffName = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Buff.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Buff.SkillType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.SkillType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._skillType = reader.readEnum() as SkillType
+            record._skillType = cursor.nextI32() as SkillType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Buff.StatType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.StatType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._statType = reader.readEnum() as StatType
+            record._statType = cursor.nextI32() as StatType
           }
           break
         case 6:
           sheetman.checkColumn(column, 'Buff.Priority', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.Priority')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._priority = reader.readI32As(column.element)
+            record._priority = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'Buff.AttributeType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.AttributeType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._attributeType = reader.readEnum() as AttributeType
+            record._attributeType = cursor.nextI32() as AttributeType
           }
           break
         case 8:
           sheetman.checkColumn(column, 'Buff.TargetType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.TargetType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._targetType = reader.readEnum() as TargetType
+            record._targetType = cursor.nextI32() as TargetType
           }
           break
         case 9:
           sheetman.checkColumn(column, 'Buff.BuffConditionType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.BuffConditionType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffConditionType = reader.readEnum() as BuffConditionType
+            record._buffConditionType = cursor.nextI32() as BuffConditionType
           }
           break
         case 10:
           sheetman.checkColumn(column, 'Buff.BuffValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.BuffValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffValue = reader.readI32As(column.element)
+            record._buffValue = cursor.nextI32()
           }
           break
         case 11:
@@ -349,23 +360,26 @@ export class BuffTable {
           break
         case 12:
           sheetman.checkColumn(column, 'Buff.BuffTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.BuffTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffTime = reader.readI32As(column.element)
+            record._buffTime = cursor.nextI32()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'Buff.BuffTickTime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.BuffTickTime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffTickTime = reader.readI32As(column.element)
+            record._buffTickTime = cursor.nextI32()
           }
           break
         case 14:
           sheetman.checkColumn(column, 'Buff.BuffMaxStack', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.BuffMaxStack')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._buffMaxStack = reader.readI32As(column.element)
+            record._buffMaxStack = cursor.nextI32()
           }
           break
         case 15:
@@ -384,16 +398,18 @@ export class BuffTable {
           break
         case 17:
           sheetman.checkColumn(column, 'Buff.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         case 18:
           sheetman.checkColumn(column, 'Buff.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Buff.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         default:

@@ -91,48 +91,58 @@ class SDContensInfoTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDContensInfo.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDContensInfo.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDContensInfo.InfoName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.InfoName")
                 for record in records:
-                    record.info_name = reader.read_string()
+                    record.info_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDContensInfo.SheetName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.SheetName")
                 for record in records:
-                    record.sheet_name = reader.read_string()
+                    record.sheet_name = cursor.next_string()
             elif column.tag == 5:
                 sheetman.check_column(column, "SDContensInfo.SdContensType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.SdContensType")
                 for record in records:
-                    record.sd_contens_type = SdContensType(reader.read_enum())
+                    record.sd_contens_type = SdContensType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "SDContensInfo.ConditionID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.ConditionID")
                 for record in records:
-                    record.condition_id = reader.read_i32_as(column.element)
+                    record.condition_id = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "SDContensInfo.CurrencyType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.CurrencyType")
                 for record in records:
-                    record.currency_type = CurrencyType(reader.read_enum())
+                    record.currency_type = CurrencyType(cursor.next_i32())
             elif column.tag == 8:
                 sheetman.check_column(column, "SDContensInfo.EnableReset", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
                     record.enable_reset = reader.read_bool()
             elif column.tag == 9:
                 sheetman.check_column(column, "SDContensInfo.CycleType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.CycleType")
                 for record in records:
-                    record.cycle_type = CycleType(reader.read_enum())
+                    record.cycle_type = CycleType(cursor.next_i32())
             elif column.tag == 10:
                 sheetman.check_column(column, "SDContensInfo.SDCharacterPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.SDCharacterPath")
                 for record in records:
-                    record.sd_character_path = reader.read_string()
+                    record.sd_character_path = cursor.next_string()
             elif column.tag == 11:
                 sheetman.check_column(column, "SDContensInfo.PrefabPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDContensInfo.PrefabPath")
                 for record in records:
-                    record.prefab_path = reader.read_string()
+                    record.prefab_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

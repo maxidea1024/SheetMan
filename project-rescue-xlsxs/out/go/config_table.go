@@ -134,44 +134,50 @@ func (t *ConfigTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Config.Index", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Config.Index")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Index = reader.ReadI32As(column.Element)
+					r.Index = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Config.Id", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Config.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadString()
+					r.Id = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Config.Category", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Config.Category")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Category = reader.ReadString()
+					r.Category = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Config.DataType", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Config.DataType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DataType = reader.ReadString()
+					r.DataType = cursor.NextString()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Config.DefaultValue", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Config.DefaultValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DefaultValue = reader.ReadString()
+					r.DefaultValue = cursor.NextString()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Config.Description", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Config.Description")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Description = reader.ReadString()
+					r.Description = cursor.NextString()
 				}
 			}
 		default:

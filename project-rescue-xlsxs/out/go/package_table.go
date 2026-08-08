@@ -120,37 +120,42 @@ func (t *PackageTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Package.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Package.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Package.ClassName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.ClassName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ClassName = reader.ReadString()
+					r.ClassName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Package.ItemType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.ItemType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ItemType = ItemType(reader.ReadEnum())
+					r.ItemType = ItemType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Package.PackageType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.PackageType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PackageType = ConsumablesType(reader.ReadEnum())
+					r.PackageType = ConsumablesType(cursor.NextI32())
 				}
 			}
 		case 6:
@@ -162,30 +167,34 @@ func (t *PackageTable) Read(filename string) error {
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Package.MaxStack", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.MaxStack")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxStack = reader.ReadI64As(column.Element)
+					r.MaxStack = cursor.NextI64()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Package.PackageCondition", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.PackageCondition")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PackageCondition = ConditionType(reader.ReadEnum())
+					r.PackageCondition = ConditionType(cursor.NextI32())
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "Package.Cooltime", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.Cooltime")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Cooltime = reader.ReadI32As(column.Element)
+					r.Cooltime = cursor.NextI32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "Package.Duration", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.Duration")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Duration = reader.ReadI32As(column.Element)
+					r.Duration = cursor.NextI32()
 				}
 			}
 		case 11:
@@ -234,23 +243,26 @@ func (t *PackageTable) Read(filename string) error {
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "Package.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "Package.DropPrefabPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.DropPrefabPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.DropPrefabPath = reader.ReadString()
+					r.DropPrefabPath = cursor.NextString()
 				}
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "Package.ItemDescription", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Package.ItemDescription")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ItemDescription = reader.ReadString()
+					r.ItemDescription = cursor.NextString()
 				}
 			}
 		default:

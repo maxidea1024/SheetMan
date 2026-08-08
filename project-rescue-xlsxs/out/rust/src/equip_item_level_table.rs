@@ -121,44 +121,51 @@ impl EquipItemLevelTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "EquipItemLevel.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemLevel.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "EquipItemLevel.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemLevel.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "EquipItemLevel.NameKR", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemLevel.NameKR")?;
                     for record in records.iter_mut() {
-                        record.name_kr = reader.read_string()?;
+                        record.name_kr = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "EquipItemLevel.Type", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemLevel.Type")?;
                     for record in records.iter_mut() {
-                        record.type_ = JobType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.type_ = JobType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "EquipItemLevel.MaterialType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemLevel.MaterialType")?;
                     for record in records.iter_mut() {
-                        record.material_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.material_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "EquipItemLevel.MaterialValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemLevel.MaterialValue")?;
                     for record in records.iter_mut() {
-                        record.material_value = reader.read_i32_as(column.element)?;
+                        record.material_value = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "EquipItemLevel.MaterialValue1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "EquipItemLevel.MaterialValue1")?;
                     for record in records.iter_mut() {
-                        record.material_value1 = reader.read_i32_as(column.element)?;
+                        record.material_value1 = cursor.next_i32()?;
                     }
                 }
                 8 => {

@@ -114,44 +114,50 @@ func (t *SeasonShopTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.ProductName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.ProductName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ProductName = reader.ReadString()
+					r.ProductName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.ShopType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.ShopType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ShopType = ShopType(reader.ReadEnum())
+					r.ShopType = ShopType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.ShopSlotID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.ShopSlotID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ShopSlotID = reader.ReadI32As(column.Element)
+					r.ShopSlotID = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.Priority", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.Priority")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Priority = reader.ReadI32As(column.Element)
+					r.Priority = cursor.NextI32()
 				}
 			}
 		case 7:
@@ -178,44 +184,50 @@ func (t *SeasonShopTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.CycleType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.CycleType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CycleType = CycleType(reader.ReadEnum())
+					r.CycleType = CycleType(cursor.NextI32())
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.LimitValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.LimitValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.LimitValue = reader.ReadI32As(column.Element)
+					r.LimitValue = cursor.NextI32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.CurrencyType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.CurrencyType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CurrencyType = CurrencyType(reader.ReadEnum())
+					r.CurrencyType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.PriceValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.PriceValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PriceValue = reader.ReadI32As(column.Element)
+					r.PriceValue = cursor.NextI32()
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.ConditionID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.ConditionID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionID = reader.ReadI32As(column.Element)
+					r.ConditionID = cursor.NextI32()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "SeasonShop.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SeasonShop.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

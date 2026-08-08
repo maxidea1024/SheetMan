@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/SDCardType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -110,50 +111,57 @@ final class SDDungeonCardTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SDDungeonCard.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonCard.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SDDungeonCard.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonCard.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SDDungeonCard.SDDunName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonCard.SDDunName');
                     foreach ($records as $record) {
-                        $record->sDDunName = $reader->readString();
+                        $record->sDDunName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SDDungeonCard.SDCardType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonCard.SDCardType');
                     foreach ($records as $record) {
-                        $record->sDCardType = SDCardType::tryFrom($reader->readEnum()) ?? SDCardType::None;
+                        $record->sDCardType = SDCardType::tryFrom($cursor->nextI32()) ?? SDCardType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SDDungeonCard.CardCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonCard.CardCount');
                     foreach ($records as $record) {
-                        $record->cardCount = $reader->readI32As($column['element']);
+                        $record->cardCount = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SDDungeonCard.StatIconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonCard.StatIconPath');
                     foreach ($records as $record) {
-                        $record->statIconPath = $reader->readString();
+                        $record->statIconPath = $cursor->nextString();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'SDDungeonCard.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SDDungeonCard.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

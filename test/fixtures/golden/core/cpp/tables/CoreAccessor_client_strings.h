@@ -91,25 +91,28 @@ class ClientStringsTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "ClientStrings.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ClientStrings.Index");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.index);
+            record.index = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "ClientStrings.Key", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ClientStrings.Key");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.key);
+            record.key = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "ClientStrings.Text", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ClientStrings.Text");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.text);
+            record.text = cursor.next_string();
           }
           break;
         }

@@ -70,6 +70,7 @@ class TraitTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <TraitRecord>[];
@@ -85,26 +86,30 @@ class TraitTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Trait.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Trait.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Trait.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Trait.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Trait.TraitName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Trait.TraitName');
           for (final record in loaded) {
-            record.traitName = reader.readString();
+            record.traitName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Trait.StatType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Trait.StatType');
           for (final record in loaded) {
-            record.statType = StatType.of(reader.readEnum());
+            record.statType = StatType.of(cursor.nextI32());
           }
           break;
         case 5:
@@ -122,8 +127,9 @@ class TraitTable {
           break;
         case 7:
           checkColumn(column, 'Trait.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Trait.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

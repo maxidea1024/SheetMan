@@ -74,6 +74,7 @@ public final class GachaRateTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<GachaRateRecord> loaded = new ArrayList<>(count);
@@ -89,8 +90,9 @@ public final class GachaRateTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "GachaRate.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaRate.Id");
                     for (GachaRateRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }

@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -116,44 +117,51 @@ class SDContensInfoTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDContensInfo.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDContensInfo.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDContensInfo.InfoName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.InfoName")
                     for (record in loaded) {
-                        record.infoName = reader.readString()
+                        record.infoName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDContensInfo.SheetName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.SheetName")
                     for (record in loaded) {
-                        record.sheetName = reader.readString()
+                        record.sheetName = cursor.nextString()
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDContensInfo.SdContensType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.SdContensType")
                     for (record in loaded) {
-                        record.sdContensType = SdContensType.of(reader.readEnum())
+                        record.sdContensType = SdContensType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDContensInfo.ConditionID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.ConditionID")
                     for (record in loaded) {
-                        record.conditionID = reader.readI32As(column.element)
+                        record.conditionID = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDContensInfo.CurrencyType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.CurrencyType")
                     for (record in loaded) {
-                        record.currencyType = CurrencyType.of(reader.readEnum())
+                        record.currencyType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 8 -> {
@@ -164,20 +172,23 @@ class SDContensInfoTable {
                 }
                 9 -> {
                     checkColumn(column, "SDContensInfo.CycleType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.CycleType")
                     for (record in loaded) {
-                        record.cycleType = CycleType.of(reader.readEnum())
+                        record.cycleType = CycleType.of(cursor.nextI32())
                     }
                 }
                 10 -> {
                     checkColumn(column, "SDContensInfo.SDCharacterPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.SDCharacterPath")
                     for (record in loaded) {
-                        record.sDCharacterPath = reader.readString()
+                        record.sDCharacterPath = cursor.nextString()
                     }
                 }
                 11 -> {
                     checkColumn(column, "SDContensInfo.PrefabPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDContensInfo.PrefabPath")
                     for (record in loaded) {
-                        record.prefabPath = reader.readString()
+                        record.prefabPath = cursor.nextString()
                     }
                 }
                 else ->

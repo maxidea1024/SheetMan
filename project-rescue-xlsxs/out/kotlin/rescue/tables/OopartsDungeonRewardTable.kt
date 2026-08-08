@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -114,44 +115,51 @@ class OopartsDungeonRewardTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "OopartsDungeonReward.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonReward.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "OopartsDungeonReward.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonReward.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "OopartsDungeonReward.RewardName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonReward.RewardName")
                     for (record in loaded) {
-                        record.rewardName = reader.readString()
+                        record.rewardName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "OopartsDungeonReward.RewardType1", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonReward.RewardType1")
                     for (record in loaded) {
-                        record.rewardType1 = CurrencyType.of(reader.readEnum())
+                        record.rewardType1 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "OopartsDungeonReward.RewardValue1", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonReward.RewardValue1")
                     for (record in loaded) {
-                        record.rewardValue1 = reader.readI32As(column.element)
+                        record.rewardValue1 = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "OopartsDungeonReward.RewardType2", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonReward.RewardType2")
                     for (record in loaded) {
-                        record.rewardType2 = CurrencyType.of(reader.readEnum())
+                        record.rewardType2 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
                     checkColumn(column, "OopartsDungeonReward.RewardValue2", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonReward.RewardValue2")
                     for (record in loaded) {
-                        record.rewardValue2 = reader.readI32As(column.element)
+                        record.rewardValue2 = cursor.nextI32()
                     }
                 }
                 8 -> {
@@ -162,14 +170,16 @@ class OopartsDungeonRewardTable {
                 }
                 9 -> {
                     checkColumn(column, "OopartsDungeonReward.FirstClearRewardType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonReward.FirstClearRewardType")
                     for (record in loaded) {
-                        record.firstClearRewardType = CurrencyType.of(reader.readEnum())
+                        record.firstClearRewardType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 10 -> {
                     checkColumn(column, "OopartsDungeonReward.FirstClearRewardValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "OopartsDungeonReward.FirstClearRewardValue")
                     for (record in loaded) {
-                        record.firstClearRewardValue = reader.readI32As(column.element)
+                        record.firstClearRewardValue = cursor.nextI32()
                     }
                 }
                 else ->

@@ -79,6 +79,169 @@ public final class ScbReader {
         public int byteLength;
     }
 
+    /**
+     * Reads one scalar column's values in row order, whatever the block's encoding.
+     *
+     * <p>The generated row loop stays a row loop; this is the one place that knows how a
+     * delta accumulates, how long a run has left, or that a dictionary index is a
+     * reference into strings decoded once. That last one matters beyond file size: a
+     * hundred-thousand-row column with three distinct strings allocates three strings,
+     * not a hundred thousand.
+     *
+     * <p>checkColumn has already refused any (element, encoding) pair the spec does not
+     * define, so the switches here do not re-litigate that.
+     */
+    public static final class ColumnCursor {
+        private final ScbReader reader;
+        private final String fieldName;
+        private final int element;
+        private final int encoding;
+
+        /** The block's dictionary, decoded once and handed out per row. */
+        private final String[] dictionary;
+
+        // A run-length family's current run: what remains of it, and its value - which is
+        // a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+        private int runRemaining;
+        private int runValue;
+
+        // The delta family's accumulator, once started.
+        private int previous;
+        private boolean started;
+
+        // Rows not yet handed out. A run that claims more than this is corrupt, and
+        // catching it here names the field instead of leaving it to the block-end check.
+        private int rowsRemaining;
+
+        public ColumnCursor(ScbReader reader, Column column, int rowCount, String fieldName) {
+            this.reader = reader;
+            this.fieldName = fieldName;
+            this.element = column.element;
+            this.encoding = column.encoding;
+            this.rowsRemaining = rowCount;
+
+            if (encoding == ENCODING_DICT || encoding == ENCODING_DICT_RLE) {
+                int count = reader.readCounter32();
+
+                if (count < 0) {
+                    throw new ScbException(fieldName + ": the dictionary entry count is negative");
+                }
+
+                dictionary = new String[count];
+
+                for (int at = 0; at < count; at++) {
+                    dictionary[at] = reader.readString();
+                }
+            } else {
+                dictionary = null;
+            }
+        }
+
+        /** The next int - which also serves enums, and reference indexes. */
+        public int nextI32() {
+            rowsRemaining--;
+
+            switch (encoding) {
+                case ENCODING_RAW:
+                    return element == ELEMENT_I32 ? reader.readInt32() : reader.readOptimalInt32();
+
+                case ENCODING_VARINT:
+                    return reader.readOptimalInt32();
+
+                case ENCODING_DELTA:
+                    // The addition wraps on purpose - which is what Java int arithmetic
+                    // does - mirroring the writer's wrapping subtraction; together they
+                    // are exact for every int32 pair.
+                    if (started) {
+                        previous += reader.readOptimalInt32();
+                    } else {
+                        previous = reader.readOptimalInt32();
+                        started = true;
+                    }
+                    return previous;
+
+                case ENCODING_RLE:
+                    if (runRemaining == 0) {
+                        readRun();
+                    }
+                    runRemaining--;
+                    return runValue;
+
+                default: // ENCODING_DELTA_RLE; checkColumn refused everything else.
+                    if (!started) {
+                        previous = reader.readOptimalInt32();
+                        started = true;
+                        return previous;
+                    }
+                    if (runRemaining == 0) {
+                        readRun();
+                    }
+                    runRemaining--;
+                    previous += runValue;
+                    return previous;
+            }
+        }
+
+        /** A long member: an i64 column is always raw, anything narrower decodes as an int. */
+        public long nextI64() {
+            return element == ELEMENT_I64 ? reader.readInt64() : nextI32();
+        }
+
+        /** A double member: float columns are always raw, an i32 column decodes then widens. */
+        public double nextF64() {
+            if (element == ELEMENT_F64) {
+                return reader.readDouble();
+            }
+
+            return element == ELEMENT_F32 ? reader.readFloat() : nextI32();
+        }
+
+        /** The next string - the dictionary's instance where the block has one. */
+        public String nextString() {
+            rowsRemaining--;
+
+            switch (encoding) {
+                case ENCODING_RAW:
+                    return reader.readString();
+
+                case ENCODING_DICT:
+                    return dictionaryEntry(reader.readCounter32());
+
+                default: // ENCODING_DICT_RLE
+                    if (runRemaining == 0) {
+                        readRun();
+                    }
+                    runRemaining--;
+                    return dictionaryEntry(runValue);
+            }
+        }
+
+        private void readRun() {
+            int length = reader.readCounter32();
+
+            // + 1 because the row this run was read for is already counted out of
+            // rowsRemaining by its next call.
+            if (length < 1 || length > rowsRemaining + 1) {
+                throw new ScbException(
+                    fieldName + ": a run of " + length + " values cannot cover the "
+                        + (rowsRemaining + 1) + " rows left in the column");
+            }
+
+            runRemaining = length;
+            runValue = reader.readOptimalInt32();
+        }
+
+        private String dictionaryEntry(int index) {
+            if (index < 0 || index >= dictionary.length) {
+                throw new ScbException(
+                    fieldName + ": dictionary index " + index + " is out of range - the "
+                        + "dictionary holds " + dictionary.length + " entries");
+            }
+
+            return dictionary[index];
+        }
+    }
+
     /** A table file is truncated, malformed, or not a table file. */
     /**
      * A lookup for a key no row carries.
@@ -441,13 +604,14 @@ public final class ScbReader {
                     + "). The schema changed shape; regenerate the code or rebuild the data.");
         }
 
-        // An encoding this build cannot decode is refused by name, exactly like an element
-        // it cannot read. An unknown column's encoding never gets here - a skip is a skip
-        // whatever the block's layout.
-        if (column.encoding != ENCODING_RAW) {
+        // An encoding this build cannot decode - or one the spec does not define for this
+        // element - is refused by name, exactly like an element it cannot read. An unknown
+        // column's encoding never gets here - a skip is a skip whatever the block's layout.
+        if (!encodingSupported(column)) {
             throw new ScbException(
                 fieldName + ": the file's column uses encoding " + column.encoding + ", which "
-                    + "this reader does not support. Regenerate the code or rebuild the data.");
+                    + "this reader cannot decode for its element type. Regenerate the code or "
+                    + "rebuild the data.");
         }
 
         for (int candidate : accepted) {
@@ -460,6 +624,34 @@ public final class ScbReader {
             fieldName + ": the file carries element type " + column.element + ", which this member "
                 + "cannot read. The column changed type incompatibly; regenerate the code or "
                 + "rebuild the data.");
+    }
+
+    /**
+     * The (element, encoding) pairs the spec defines. Arrays are always raw; integers
+     * take the integer encodings, strings the dictionary ones.
+     */
+    private static boolean encodingSupported(Column column) {
+        if (column.encoding == ENCODING_RAW) {
+            return true;
+        }
+
+        if (column.kind != KIND_SCALAR) {
+            return false;
+        }
+
+        switch (column.element) {
+            case ELEMENT_VARINT:
+                return column.encoding == ENCODING_RLE;
+
+            case ELEMENT_I32:
+                return column.encoding >= ENCODING_VARINT && column.encoding <= ENCODING_DELTA_RLE;
+
+            case ELEMENT_STRING:
+                return column.encoding == ENCODING_DICT || column.encoding == ENCODING_DICT_RLE;
+
+            default:
+                return false;
+        }
     }
 
     /**

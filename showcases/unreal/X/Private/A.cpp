@@ -82,6 +82,11 @@ bool FTemplateTable::Read(const FString& Filename)
     Loaded.Empty(Header.RowCount);
     Loaded.SetNum(Header.RowCount);
 
+    // One cursor for the whole read: the switch's cases share a scope, and C++ does
+    // not allow a jump past a live constructor, so each encodable column opens this
+    // one rather than declaring its own.
+    SheetMan::FSheetManColumnCursor Cursor;
+
     // Column by column, matched by tag rather than by position: a column this build has no
     // member for is skipped by its declared length, and one whose type no longer fits the
     // member stops the read naming the field. Rows arrive default constructed, so a member
@@ -94,30 +99,33 @@ bool FTemplateTable::Read(const FString& Filename)
         {
         case 1:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Index"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementI32) | SheetMan::ElementMask(SheetMan::ElementVarint));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Template.Index"));
 
             for (FTemplateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.Index);
+                Cursor.NextI32(Record.Index);
             }
 
             break;
 
         case 2:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Class"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Template.Class"));
 
             for (FTemplateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.Class);
+                Cursor.NextString(Record.Class);
             }
 
             break;
 
         case 3:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Int"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementI32) | SheetMan::ElementMask(SheetMan::ElementVarint));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Template.Int"));
 
             for (FTemplateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.Int);
+                Cursor.NextI32(Record.Int);
             }
 
             break;
@@ -134,40 +142,44 @@ bool FTemplateTable::Read(const FString& Filename)
 
         case 5:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Operator"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Template.Operator"));
 
             for (FTemplateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.Operator);
+                Cursor.NextString(Record.Operator);
             }
 
             break;
 
         case 6:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Namespace"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Template.Namespace"));
 
             for (FTemplateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.Namespace);
+                Cursor.NextString(Record.Namespace);
             }
 
             break;
 
         case 7:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Constructor"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Template.Constructor"));
 
             for (FTemplateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.Constructor);
+                Cursor.NextString(Record.Constructor);
             }
 
             break;
 
         case 8:
             SheetMan::CheckColumn(Reader, Column, TEXT("Template.Function"), SheetMan::KindScalar, 1, SheetMan::ElementMask(SheetMan::ElementString));
+            Cursor.Open(Reader, Column, Header.RowCount, TEXT("Template.Function"));
 
             for (FTemplateRow& Record : Loaded)
             {
-                Reader.ReadAs(Column.Element, Record.Function);
+                Cursor.NextString(Record.Function);
             }
 
             break;

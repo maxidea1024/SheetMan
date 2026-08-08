@@ -14,6 +14,7 @@ static bool Rescue_AttributeParse(Rescue_AttributeTable_t* table, sm_reader* rea
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -61,11 +62,12 @@ static bool Rescue_AttributeParse(Rescue_AttributeTable_t* table, sm_reader* rea
     case 1:
       (void)sm_check_column(reader, column, "Attribute.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Attribute.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_AttributeRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -73,11 +75,12 @@ static bool Rescue_AttributeParse(Rescue_AttributeTable_t* table, sm_reader* rea
     case 2:
       (void)sm_check_column(reader, column, "Attribute.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Attribute.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_AttributeRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -85,11 +88,12 @@ static bool Rescue_AttributeParse(Rescue_AttributeTable_t* table, sm_reader* rea
     case 3:
       (void)sm_check_column(reader, column, "Attribute.AttributeName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Attribute.AttributeName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_AttributeRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->attribute_name);
+        (void)sm_cursor_next_string(&cursor, &record->attribute_name);
       }
 
       break;
@@ -97,12 +101,13 @@ static bool Rescue_AttributeParse(Rescue_AttributeTable_t* table, sm_reader* rea
     case 4:
       (void)sm_check_column(reader, column, "Attribute.AttributeType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Attribute.AttributeType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_AttributeRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->attribute_type = (Rescue_AttributeType_t)scratch;
       }
 
@@ -111,12 +116,13 @@ static bool Rescue_AttributeParse(Rescue_AttributeTable_t* table, sm_reader* rea
     case 5:
       (void)sm_check_column(reader, column, "Attribute.TargetAttributeType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Attribute.TargetAttributeType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_AttributeRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->target_attribute_type = (Rescue_AttributeType_t)scratch;
       }
 
@@ -149,11 +155,12 @@ static bool Rescue_AttributeParse(Rescue_AttributeTable_t* table, sm_reader* rea
     case 8:
       (void)sm_check_column(reader, column, "Attribute.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "Attribute.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_AttributeRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;

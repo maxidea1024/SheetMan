@@ -14,6 +14,7 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -59,11 +60,12 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
     case 1:
       (void)sm_check_column(reader, column, "ArtifactLevel.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ArtifactLevel.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ArtifactLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -71,11 +73,12 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
     case 2:
       (void)sm_check_column(reader, column, "ArtifactLevel.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ArtifactLevel.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ArtifactLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -83,11 +86,12 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
     case 3:
       (void)sm_check_column(reader, column, "ArtifactLevel.NameKR", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ArtifactLevel.NameKR");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ArtifactLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name_kr);
+        (void)sm_cursor_next_string(&cursor, &record->name_kr);
       }
 
       break;
@@ -95,11 +99,12 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
     case 4:
       (void)sm_check_column(reader, column, "ArtifactLevel.Level", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ArtifactLevel.Level");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ArtifactLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->level);
+        (void)sm_cursor_next_i32(&cursor, &record->level);
       }
 
       break;
@@ -107,11 +112,12 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
     case 5:
       (void)sm_check_column(reader, column, "ArtifactLevel.CharacterEXP", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I64) | SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ArtifactLevel.CharacterEXP");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ArtifactLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_i64_as(reader, column->element, &record->character_exp);
+        (void)sm_cursor_next_i64(&cursor, &record->character_exp);
       }
 
       break;
@@ -119,11 +125,12 @@ static bool Rescue_ArtifactLevelParse(Rescue_ArtifactLevelTable_t* table, sm_rea
     case 6:
       (void)sm_check_column(reader, column, "ArtifactLevel.AccumulatedEXP", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I64) | SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "ArtifactLevel.AccumulatedEXP");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_ArtifactLevelRecord_t* record = &table->records[row];
 
-        (void)sm_read_i64_as(reader, column->element, &record->accumulated_exp);
+        (void)sm_cursor_next_i64(&cursor, &record->accumulated_exp);
       }
 
       break;

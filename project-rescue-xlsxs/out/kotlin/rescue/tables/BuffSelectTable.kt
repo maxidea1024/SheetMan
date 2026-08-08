@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -108,26 +109,30 @@ class BuffSelectTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "BuffSelect.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "BuffSelect.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "BuffSelect.BuffName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "BuffSelect.BuffName")
                     for (record in loaded) {
-                        record.buffName = reader.readString()
+                        record.buffName = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "BuffSelect.BuffID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "BuffSelect.BuffID")
                     for (record in loaded) {
-                        record.buffID = reader.readI32As(column.element)
+                        record.buffID = cursor.nextI32()
                     }
                 }
                 4 -> {
                     checkColumn(column, "BuffSelect.Grade", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "BuffSelect.Grade")
                     for (record in loaded) {
-                        record.grade = GradeType.of(reader.readEnum())
+                        record.grade = GradeType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
@@ -138,14 +143,16 @@ class BuffSelectTable {
                 }
                 6 -> {
                     checkColumn(column, "BuffSelect.BuffTooltip", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "BuffSelect.BuffTooltip")
                     for (record in loaded) {
-                        record.buffTooltip = reader.readString()
+                        record.buffTooltip = cursor.nextString()
                     }
                 }
                 7 -> {
                     checkColumn(column, "BuffSelect.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "BuffSelect.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

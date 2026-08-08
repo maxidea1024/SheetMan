@@ -92,20 +92,24 @@ class ArtifactTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Artifact.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Artifact.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Artifact.ArtifactType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.ArtifactType")
                 for record in records:
-                    record.artifact_type = ArtifactJobType(reader.read_enum())
+                    record.artifact_type = ArtifactJobType(cursor.next_i32())
             elif column.tag == 4:
                 sheetman.check_column(column, "Artifact.Grade", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.Grade")
                 for record in records:
-                    record.grade = GradeType(reader.read_enum())
+                    record.grade = GradeType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "Artifact.EquipSkillID", sheetman.KIND_VAR_ARRAY, 0, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
                 for record in records:
@@ -113,32 +117,37 @@ class ArtifactTable:
                     record.equip_skill_id = [reader.read_i32_as(column.element) for _ in range(element_count)]
             elif column.tag == 6:
                 sheetman.check_column(column, "Artifact.EquipStatType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.EquipStatType")
                 for record in records:
-                    record.equip_stat_type = StatType(reader.read_enum())
+                    record.equip_stat_type = StatType(cursor.next_i32())
             elif column.tag == 7:
                 sheetman.check_column(column, "Artifact.EquipStatRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.equip_stat_rate = reader.read_float()
             elif column.tag == 8:
                 sheetman.check_column(column, "Artifact.CollectionType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.CollectionType")
                 for record in records:
-                    record.collection_type = StatType(reader.read_enum())
+                    record.collection_type = StatType(cursor.next_i32())
             elif column.tag == 9:
                 sheetman.check_column(column, "Artifact.CollectionVlaue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.collection_vlaue = reader.read_float()
             elif column.tag == 10:
                 sheetman.check_column(column, "Artifact.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             elif column.tag == 11:
                 sheetman.check_column(column, "Artifact.MaterialPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.MaterialPath")
                 for record in records:
-                    record.material_path = reader.read_string()
+                    record.material_path = cursor.next_string()
             elif column.tag == 12:
                 sheetman.check_column(column, "Artifact.Description", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Artifact.Description")
                 for record in records:
-                    record.description = reader.read_string()
+                    record.description = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

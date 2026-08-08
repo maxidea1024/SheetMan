@@ -161,6 +161,15 @@ internal sealed class CTableView
     /// <summary>Whether any member holds strings, and so needs the pre-read pass.</summary>
     public required bool HasStringFields { get; set; }
 
+    /// <summary>
+    /// Whether any column reads through the cursor, and so the parse declares one.
+    ///
+    /// One cursor variable for the whole function rather than one per column: C89
+    /// declarations sit at the top of the block, and each encodable column
+    /// re-initializes it.
+    /// </summary>
+    public required bool NeedsCursor { get; set; }
+
     public required IReadOnlyList<CFieldView> Fields { get; set; }
 }
 
@@ -236,6 +245,12 @@ internal sealed class CFieldView
 
     /// <summary>The rendered sm_check_column call for this member.</summary>
     public required string ColumnCheck { get; set; }
+
+    /// <summary>
+    /// The rendered sm_cursor_init call ahead of an encodable column's row loop, or
+    /// empty for a column that reads the reader directly.
+    /// </summary>
+    public required string CursorOpen { get; set; }
 
     public required int ElementCount { get; set; }
 

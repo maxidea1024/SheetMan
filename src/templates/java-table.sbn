@@ -62,6 +62,9 @@ public final class {{ table.table_name }} {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+{{~ if table.needs_cursor ~}}
+        ScbReader.ColumnCursor cursor;
+{{~ end ~}}
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<{{ table.record_name }}> loaded = new ArrayList<>(count);
@@ -80,6 +83,9 @@ public final class {{ table.table_name }} {
 {{~ for field in table.fields ~}}
                 case {{ field.tag }}: {
                     {{ field.column_check }}
+{{~ if field.cursor_open != '' ~}}
+                    {{ field.cursor_open }}
+{{~ end ~}}
                     for ({{ table.record_name }} record : loaded) {
 {{~ if field.kind == 'var_array' ~}}
                         int elementCount = reader.readCounter32();
@@ -99,7 +105,7 @@ public final class {{ table.table_name }} {
                             record.{{ field.name }}[j] = {{ field.read_element }};
                         }
 {{~ else if field.kind == 'scalar_ref' ~}}
-                        record.{{ field.name }}Index = reader.readInt32();
+                        record.{{ field.name }}Index = cursor.nextI32();
 {{~ else ~}}
                         record.{{ field.name }} = {{ field.read_scalar }};
 {{~ end ~}}

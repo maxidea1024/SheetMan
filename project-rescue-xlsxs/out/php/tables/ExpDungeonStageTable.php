@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/DungeonType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -138,43 +139,49 @@ final class ExpDungeonStageTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.StageName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.StageName');
                     foreach ($records as $record) {
-                        $record->stageName = $reader->readString();
+                        $record->stageName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.DungeonType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.DungeonType');
                     foreach ($records as $record) {
-                        $record->dungeonType = DungeonType::tryFrom($reader->readEnum()) ?? DungeonType::None;
+                        $record->dungeonType = DungeonType::tryFrom($cursor->nextI32()) ?? DungeonType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.DungeonFloor', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.DungeonFloor');
                     foreach ($records as $record) {
-                        $record->dungeonFloor = $reader->readI32As($column['element']);
+                        $record->dungeonFloor = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.TimeLimit', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.TimeLimit');
                     foreach ($records as $record) {
-                        $record->timeLimit = $reader->readI32As($column['element']);
+                        $record->timeLimit = $cursor->nextI32();
                     }
                     break;
 
@@ -202,15 +209,17 @@ final class ExpDungeonStageTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.SpawnPointCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.SpawnPointCount');
                     foreach ($records as $record) {
-                        $record->spawnPointCount = $reader->readI32As($column['element']);
+                        $record->spawnPointCount = $cursor->nextI32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.SpawnMaxCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.SpawnMaxCount');
                     foreach ($records as $record) {
-                        $record->spawnMaxCount = $reader->readI32As($column['element']);
+                        $record->spawnMaxCount = $cursor->nextI32();
                     }
                     break;
 
@@ -223,22 +232,25 @@ final class ExpDungeonStageTable
 
                 case 12:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.StageClearCount', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.StageClearCount');
                     foreach ($records as $record) {
-                        $record->stageClearCount = $reader->readI32As($column['element']);
+                        $record->stageClearCount = $cursor->nextI32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.RecommendPower', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.RecommendPower');
                     foreach ($records as $record) {
-                        $record->recommendPower = $reader->readString();
+                        $record->recommendPower = $cursor->nextString();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.RewardID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.RewardID');
                     foreach ($records as $record) {
-                        $record->rewardID = $reader->readI32As($column['element']);
+                        $record->rewardID = $cursor->nextI32();
                     }
                     break;
 
@@ -265,22 +277,25 @@ final class ExpDungeonStageTable
 
                 case 18:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.DungeonImagePath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.DungeonImagePath');
                     foreach ($records as $record) {
-                        $record->dungeonImagePath = $reader->readString();
+                        $record->dungeonImagePath = $cursor->nextString();
                     }
                     break;
 
                 case 19:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.MonsterImagePath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.MonsterImagePath');
                     foreach ($records as $record) {
-                        $record->monsterImagePath = $reader->readString();
+                        $record->monsterImagePath = $cursor->nextString();
                     }
                     break;
 
                 case 20:
                     ScbReader::checkColumn($column, 'ExpDungeonStage.AssetDataPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'ExpDungeonStage.AssetDataPath');
                     foreach ($records as $record) {
-                        $record->assetDataPath = $reader->readString();
+                        $record->assetDataPath = $cursor->nextString();
                     }
                     break;
 

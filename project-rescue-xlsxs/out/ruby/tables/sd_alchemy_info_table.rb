@@ -90,33 +90,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDAlchemyInfo.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDAlchemyInfo.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDAlchemyInfo.NameKR', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.NameKR')
           records.each do |record|
-            record.name_kr = reader.read_string
+            record.name_kr = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDAlchemyInfo.MaterialType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.MaterialType')
           records.each do |record|
-            record.material_type = reader.read_enum
+            record.material_type = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDAlchemyInfo.CommonMaterialType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.CommonMaterialType1')
           records.each do |record|
-            record.common_material_type1 = reader.read_enum
+            record.common_material_type1 = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDAlchemyInfo.CommonMaterialType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.CommonMaterialType2')
           records.each do |record|
-            record.common_material_type2 = reader.read_enum
+            record.common_material_type2 = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'SDAlchemyInfo.MaterialType2Rate', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])
@@ -125,48 +131,57 @@ module Rescue
           end
         when 8
           Sheetman.check_column(column, 'SDAlchemyInfo.StatType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.StatType')
           records.each do |record|
-            record.stat_type = reader.read_enum
+            record.stat_type = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'SDAlchemyInfo.TargetType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.TargetType')
           records.each do |record|
-            record.target_type = reader.read_enum
+            record.target_type = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'SDAlchemyInfo.MaxLevelId', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.MaxLevelId')
           records.each do |record|
-            record.max_level_id = reader.read_i32_as(column.element)
+            record.max_level_id = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'SDAlchemyInfo.AccelerateTime', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.AccelerateTime')
           records.each do |record|
-            record.accelerate_time = reader.read_i32_as(column.element)
+            record.accelerate_time = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'SDAlchemyInfo.AccelerateItemType1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.AccelerateItemType1')
           records.each do |record|
-            record.accelerate_item_type1 = reader.read_enum
+            record.accelerate_item_type1 = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'SDAlchemyInfo.AccelerateItemCost1', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.AccelerateItemCost1')
           records.each do |record|
-            record.accelerate_item_cost1 = reader.read_i32_as(column.element)
+            record.accelerate_item_cost1 = cursor.next_i32
           end
         when 14
           Sheetman.check_column(column, 'SDAlchemyInfo.AccelerateItemType2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.AccelerateItemType2')
           records.each do |record|
-            record.accelerate_item_type2 = reader.read_enum
+            record.accelerate_item_type2 = cursor.next_i32
           end
         when 15
           Sheetman.check_column(column, 'SDAlchemyInfo.AccelerateItemCost2', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.AccelerateItemCost2')
           records.each do |record|
-            record.accelerate_item_cost2 = reader.read_i32_as(column.element)
+            record.accelerate_item_cost2 = cursor.next_i32
           end
         when 16
           Sheetman.check_column(column, 'SDAlchemyInfo.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyInfo.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

@@ -192,6 +192,7 @@ export class StatGrowthTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -205,65 +206,74 @@ export class StatGrowthTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'StatGrowth.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StatGrowth.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'StatGrowth.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StatGrowth.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'StatGrowth.StageName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StatGrowth.StageName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._stageName = reader.readString()
+            record._stageName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'StatGrowth.StatType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StatGrowth.StatType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._statType = reader.readEnum() as StatType
+            record._statType = cursor.nextI32() as StatType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'StatGrowth.InfuluenceStep', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StatGrowth.InfuluenceStep')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._infuluenceStep = reader.readI32As(column.element)
+            record._infuluenceStep = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'StatGrowth.Growth', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StatGrowth.Growth')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._growth = reader.readI32As(column.element)
+            record._growth = cursor.nextI32()
           }
           break
         case 7:
           sheetman.checkColumn(column, 'StatGrowth.GrowthValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StatGrowth.GrowthValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._growthValue = reader.readI32As(column.element)
+            record._growthValue = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'StatGrowth.GrowthReselt', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StatGrowth.GrowthReselt')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._growthReselt = reader.readI32As(column.element)
+            record._growthReselt = cursor.nextI32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'StatGrowth.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'StatGrowth.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         default:

@@ -84,24 +84,29 @@ class CostCurveTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "CostCurve.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurve.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "CostCurve.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurve.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "CostCurve.GrowthType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurve.GrowthType")
                 for record in records:
-                    record.growth_type = GrowthType(reader.read_enum())
+                    record.growth_type = GrowthType(cursor.next_i32())
             elif column.tag == 4:
                 sheetman.check_column(column, "CostCurve.CostType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurve.CostType")
                 for record in records:
-                    record.cost_type = CurrencyType(reader.read_enum())
+                    record.cost_type = CurrencyType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "CostCurve.BaseCostValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "CostCurve.BaseCostValue")
                 for record in records:
-                    record.base_cost_value = reader.read_i32_as(column.element)
+                    record.base_cost_value = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

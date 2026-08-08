@@ -90,43 +90,51 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDAlchemyLevel.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDAlchemyLevel.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDAlchemyLevel.NameKR', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.NameKR')
           records.each do |record|
-            record.name_kr = reader.read_string
+            record.name_kr = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDAlchemyLevel.LevelUpCost', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.LevelUpCost')
           records.each do |record|
-            record.level_up_cost = reader.read_i32_as(column.element)
+            record.level_up_cost = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDAlchemyLevel.LevelUpTotal', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.LevelUpTotal')
           records.each do |record|
-            record.level_up_total = reader.read_i32_as(column.element)
+            record.level_up_total = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDAlchemyLevel.Time', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I64, Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.Time')
           records.each do |record|
-            record.time = reader.read_i64_as(column.element)
+            record.time = cursor.next_i64
           end
         when 7
           Sheetman.check_column(column, 'SDAlchemyLevel.UseDiaCost', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.UseDiaCost')
           records.each do |record|
-            record.use_dia_cost = reader.read_i32_as(column.element)
+            record.use_dia_cost = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'SDAlchemyLevel.UseItemCost', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyLevel.UseItemCost')
           records.each do |record|
-            record.use_item_cost = reader.read_i32_as(column.element)
+            record.use_item_cost = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'SDAlchemyLevel.CritDMGValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_F32])

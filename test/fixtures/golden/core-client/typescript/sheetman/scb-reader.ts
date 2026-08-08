@@ -293,6 +293,165 @@ export class ScbReader {
 }
 
 /**
+ * Reads one scalar column's values in row order, whatever the block's encoding.
+ *
+ * The generated row loop stays a row loop; this is the one place that knows how
+ * a delta accumulates, how long a run has left, or that a dictionary index is a
+ * reference into strings decoded once. That last one matters beyond file size: a
+ * hundred-thousand-row column with three distinct strings allocates three strings,
+ * not a hundred thousand.
+ *
+ * checkColumn has already refused any (element, encoding) pair the spec does not
+ * define, so the switches here do not re-litigate that.
+ */
+export class ScbColumnCursor {
+  private readonly reader: ScbReader
+  private readonly fieldName: string
+  private readonly element: number
+  private readonly encoding: number
+
+  /** The block's dictionary, decoded once and handed out per row. */
+  private readonly dictionary: string[] = []
+
+  // A run-length family's current run: what remains of it, and its value - which
+  // is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+  private runRemaining = 0
+  private runValue = 0
+
+  // The delta family's accumulator, once started.
+  private previous = 0
+  private started = false
+
+  // Rows not yet handed out. A run that claims more than this is corrupt, and
+  // catching it here names the field instead of leaving it to the block-end check.
+  private rowsRemaining: number
+
+  constructor(reader: ScbReader, column: ScbColumn, rowCount: number, fieldName: string) {
+    this.reader = reader
+    this.fieldName = fieldName
+    this.element = column.element
+    this.encoding = column.encoding
+    this.rowsRemaining = rowCount
+
+    if (this.encoding === ENCODING_DICT || this.encoding === ENCODING_DICT_RLE) {
+      const count = reader.readCounter32()
+      if (count < 0) throw new ScbError(`${fieldName}: the dictionary entry count is negative`)
+
+      for (let at = 0; at < count; at++)
+        this.dictionary.push(reader.readString())
+    }
+  }
+
+  /** The next int32 - which also serves enums, and reference indexes. */
+  nextI32(): number {
+    this.rowsRemaining--
+
+    switch (this.encoding) {
+      case ENCODING_RAW:
+        return this.element === ELEMENT_I32 ? this.reader.readInt32() : this.reader.readCounter32()
+
+      case ENCODING_VARINT:
+        return this.reader.readCounter32()
+
+      case ENCODING_DELTA: {
+        // The addition wraps on purpose, mirroring the writer's wrapping
+        // subtraction; together they are exact for every int32 pair. `| 0`
+        // is the wrap: it folds the double-range sum back into an int32.
+        if (this.started) {
+          this.previous = (this.previous + this.reader.readCounter32()) | 0
+        } else {
+          this.previous = this.reader.readCounter32()
+          this.started = true
+        }
+
+        return this.previous
+      }
+
+      case ENCODING_RLE: {
+        if (this.runRemaining === 0) this.readRun()
+
+        this.runRemaining--
+        return this.runValue
+      }
+
+      default: { // ENCODING_DELTA_RLE; checkColumn refused everything else.
+        if (!this.started) {
+          this.previous = this.reader.readCounter32()
+          this.started = true
+          return this.previous
+        }
+
+        if (this.runRemaining === 0) this.readRun()
+
+        this.runRemaining--
+        this.previous = (this.previous + this.runValue) | 0
+        return this.previous
+      }
+    }
+  }
+
+  /** An int64 member: an i64 column is always raw, anything narrower decodes as int32. */
+  nextI64(): bigint {
+    if (this.element === ELEMENT_I64) return this.reader.readInt64()
+
+    return BigInt(this.nextI32())
+  }
+
+  /** A double member: float columns are always raw, an i32 column decodes then widens. */
+  nextF64(): number {
+    if (this.element === ELEMENT_F64) return this.reader.readDouble()
+    if (this.element === ELEMENT_F32) return this.reader.readFloat()
+
+    return this.nextI32()
+  }
+
+  /** The next string - the dictionary's instance where the block has one. */
+  nextString(): string {
+    this.rowsRemaining--
+
+    switch (this.encoding) {
+      case ENCODING_RAW:
+        return this.reader.readString()
+
+      case ENCODING_DICT:
+        return this.dictionaryEntry(this.reader.readCounter32())
+
+      default: { // ENCODING_DICT_RLE
+        if (this.runRemaining === 0) this.readRun()
+
+        this.runRemaining--
+        return this.dictionaryEntry(this.runValue)
+      }
+    }
+  }
+
+  private readRun(): void {
+    const length = this.reader.readCounter32()
+
+    // + 1 because the row this run was read for is already counted out of
+    // rowsRemaining by its next call.
+    if (length < 1 || length > this.rowsRemaining + 1) {
+      throw new ScbError(
+        `${this.fieldName}: a run of ${length} values cannot cover the ` +
+        `${this.rowsRemaining + 1} rows left in the column`)
+    }
+
+    this.runRemaining = length
+    this.runValue = this.reader.readCounter32()
+  }
+
+  private dictionaryEntry(index: number): string {
+    if (index < 0 || index >= this.dictionary.length) {
+      throw new ScbError(
+        `${this.fieldName}: dictionary index ${index} is out of range - the ` +
+        `dictionary holds ${this.dictionary.length} entries`)
+    }
+
+    return this.dictionary[index]
+  }
+}
+
+/**
  * Reads and checks the file header, returning the row count that follows it.
  *
  * The reserved byte is written as zero and is where compression or encryption
@@ -371,19 +530,43 @@ export function checkColumn(
       `match the generated member (kind ${kind}, count ${count}). The schema changed shape; ` +
       'regenerate the code or rebuild the data.')
   }
-  // An encoding this build cannot decode is refused by name, exactly like an element
-  // it cannot read. An unknown column's encoding never gets here - a skip is a skip
-  // whatever the block's layout.
-  if (column.encoding !== ENCODING_RAW) {
+  // An encoding this build cannot decode - or one the spec does not define for this
+  // element - is refused by name, exactly like an element it cannot read. An unknown
+  // column's encoding never gets here - a skip is a skip whatever the block's layout.
+  if (!encodingSupported(column)) {
     throw new ScbError(
       `${fieldName}: the file's column uses encoding ${column.encoding}, which this ` +
-      'reader does not support. Regenerate the code or rebuild the data.')
+      'reader cannot decode for its element type. Regenerate the code or rebuild the data.')
   }
   if (!accepted.includes(column.element)) {
     throw new ScbError(
       `${fieldName}: the file carries element type ${column.element}, which this member ` +
       `cannot read (accepts: ${accepted.join(', ')}). The column changed type incompatibly; ` +
       'regenerate the code or rebuild the data.')
+  }
+}
+
+/**
+ * The (element, encoding) pairs the spec defines. Arrays are always raw;
+ * integers take the integer encodings, strings the dictionary ones.
+ */
+function encodingSupported(column: ScbColumn): boolean {
+  if (column.encoding === ENCODING_RAW) return true
+
+  if (column.kind !== KIND_SCALAR) return false
+
+  switch (column.element) {
+    case ELEMENT_VARINT:
+      return column.encoding === ENCODING_RLE
+
+    case ELEMENT_I32:
+      return column.encoding >= ENCODING_VARINT && column.encoding <= ENCODING_DELTA_RLE
+
+    case ELEMENT_STRING:
+      return column.encoding === ENCODING_DICT || column.encoding === ENCODING_DICT_RLE
+
+    default:
+      return false
   }
 }
 

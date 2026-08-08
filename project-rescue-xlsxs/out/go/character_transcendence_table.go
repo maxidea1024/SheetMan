@@ -106,58 +106,66 @@ func (t *CharacterTranscendenceTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "CharacterTranscendence.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterTranscendence.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "CharacterTranscendence.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterTranscendence.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "CharacterTranscendence.NameKR", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterTranscendence.NameKR")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NameKR = reader.ReadString()
+					r.NameKR = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "CharacterTranscendence.GradeType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterTranscendence.GradeType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeType = GradeType(reader.ReadEnum())
+					r.GradeType = GradeType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "CharacterTranscendence.TranscendStep", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterTranscendence.TranscendStep")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TranscendStep = reader.ReadI32As(column.Element)
+					r.TranscendStep = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "CharacterTranscendence.MaxLevel", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterTranscendence.MaxLevel")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaxLevel = reader.ReadI32As(column.Element)
+					r.MaxLevel = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "CharacterTranscendence.MaterialType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterTranscendence.MaterialType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaterialType = CurrencyType(reader.ReadEnum())
+					r.MaterialType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "CharacterTranscendence.MaterialCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterTranscendence.MaterialCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.MaterialCount = reader.ReadI32As(column.Element)
+					r.MaterialCount = cursor.NextI32()
 				}
 			}
 		case 9:
@@ -169,9 +177,10 @@ func (t *CharacterTranscendenceTable) Read(filename string) error {
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "CharacterTranscendence.NextStepID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterTranscendence.NextStepID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NextStepID = reader.ReadI32As(column.Element)
+					r.NextStepID = cursor.NextI32()
 				}
 			}
 		default:

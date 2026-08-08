@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -108,44 +109,51 @@ class SDDungeonCardTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SDDungeonCard.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonCard.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SDDungeonCard.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonCard.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SDDungeonCard.SDDunName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonCard.SDDunName")
                     for (record in loaded) {
-                        record.sDDunName = reader.readString()
+                        record.sDDunName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SDDungeonCard.SDCardType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonCard.SDCardType")
                     for (record in loaded) {
-                        record.sDCardType = SDCardType.of(reader.readEnum())
+                        record.sDCardType = SDCardType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "SDDungeonCard.CardCount", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonCard.CardCount")
                     for (record in loaded) {
-                        record.cardCount = reader.readI32As(column.element)
+                        record.cardCount = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "SDDungeonCard.StatIconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonCard.StatIconPath")
                     for (record in loaded) {
-                        record.statIconPath = reader.readString()
+                        record.statIconPath = cursor.nextString()
                     }
                 }
                 7 -> {
                     checkColumn(column, "SDDungeonCard.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SDDungeonCard.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

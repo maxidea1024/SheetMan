@@ -109,65 +109,73 @@ class CollectionTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Collection.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Collection.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Collection.CharacterID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.CharacterID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.character_id);
+            record.character_id = cursor.next_i32();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Collection.TabType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.TabType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.tab_type);
+            record.tab_type = static_cast<CollectionTabType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "Collection.ConditionID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.ConditionID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.condition_id);
+            record.condition_id = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "Collection.RewardType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.RewardType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.reward_type);
+            record.reward_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "Collection.RewardValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.RewardValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.reward_value);
+            record.reward_value = cursor.next_i32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "Collection.RewardStatType1", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.RewardStatType1");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.reward_stat_type1);
+            record.reward_stat_type1 = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
@@ -181,25 +189,28 @@ class CollectionTable {
         }
         case 10: {
           sheetman::check_column(column, "Collection.RewardStatType2", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.RewardStatType2");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.reward_stat_type2);
+            record.reward_stat_type2 = static_cast<StatType>(cursor.next_i32());
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "Collection.RewardStatValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.RewardStatValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.reward_stat_value);
+            record.reward_stat_value = cursor.next_i32();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "Collection.ShortCutID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Collection.ShortCutID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.short_cut_id);
+            record.short_cut_id = cursor.next_i32();
           }
           break;
         }

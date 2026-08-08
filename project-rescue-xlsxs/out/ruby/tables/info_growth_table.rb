@@ -88,28 +88,33 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'InfoGrowth.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'InfoGrowth.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'InfoGrowth.InfoName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.InfoName')
           records.each do |record|
-            record.info_name = reader.read_string
+            record.info_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'InfoGrowth.SheetName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.SheetName')
           records.each do |record|
-            record.sheet_name = reader.read_string
+            record.sheet_name = cursor.next_string
           end
         when 5
           Sheetman.check_column(column, 'InfoGrowth.GrowthType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.GrowthType')
           records.each do |record|
-            record.growth_type = reader.read_enum
+            record.growth_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'InfoGrowth.Reset', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -118,43 +123,51 @@ module Rescue
           end
         when 7
           Sheetman.check_column(column, 'InfoGrowth.ResetCostType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.ResetCostType')
           records.each do |record|
-            record.reset_cost_type = reader.read_enum
+            record.reset_cost_type = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'InfoGrowth.ResetCostValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.ResetCostValue')
           records.each do |record|
-            record.reset_cost_value = reader.read_i32_as(column.element)
+            record.reset_cost_value = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'InfoGrowth.MaxStep', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.MaxStep')
           records.each do |record|
-            record.max_step = reader.read_i32_as(column.element)
+            record.max_step = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'InfoGrowth.MaxLevel', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.MaxLevel')
           records.each do |record|
-            record.max_level = reader.read_i32_as(column.element)
+            record.max_level = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'InfoGrowth.UnlockConditionType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.UnlockConditionType')
           records.each do |record|
-            record.unlock_condition_type = reader.read_string
+            record.unlock_condition_type = cursor.next_string
           end
         when 12
           Sheetman.check_column(column, 'InfoGrowth.UnlockConditionValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.UnlockConditionValue')
           records.each do |record|
-            record.unlock_condition_value = reader.read_i32_as(column.element)
+            record.unlock_condition_value = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'InfoGrowth.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         when 14
           Sheetman.check_column(column, 'InfoGrowth.IconPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'InfoGrowth.IconPath')
           records.each do |record|
-            record.icon_path = reader.read_string
+            record.icon_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

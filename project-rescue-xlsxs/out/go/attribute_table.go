@@ -102,37 +102,42 @@ func (t *AttributeTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Attribute.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Attribute.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Attribute.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Attribute.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Attribute.AttributeName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Attribute.AttributeName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AttributeName = reader.ReadString()
+					r.AttributeName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Attribute.AttributeType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Attribute.AttributeType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AttributeType = AttributeType(reader.ReadEnum())
+					r.AttributeType = AttributeType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "Attribute.TargetAttributeType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Attribute.TargetAttributeType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.TargetAttributeType = AttributeType(reader.ReadEnum())
+					r.TargetAttributeType = AttributeType(cursor.NextI32())
 				}
 			}
 		case 6:
@@ -151,9 +156,10 @@ func (t *AttributeTable) Read(filename string) error {
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "Attribute.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Attribute.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

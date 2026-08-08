@@ -94,73 +94,87 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDDungeonReward.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDDungeonReward.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDDungeonReward.RewardName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.RewardName')
           records.each do |record|
-            record.reward_name = reader.read_string
+            record.reward_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDDungeonReward.ConditionId', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.ConditionId')
           records.each do |record|
-            record.condition_id = reader.read_i32_as(column.element)
+            record.condition_id = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDDungeonReward.RewardCommon', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.RewardCommon')
           records.each do |record|
-            record.reward_common = reader.read_enum
+            record.reward_common = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDDungeonReward.CommonValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.CommonValue')
           records.each do |record|
-            record.common_value = reader.read_i32_as(column.element)
+            record.common_value = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'SDDungeonReward.Reward1Type', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Reward1Type')
           records.each do |record|
-            record.reward1_type = reader.read_enum
+            record.reward1_type = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'SDDungeonReward.Reward1Value', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Reward1Value')
           records.each do |record|
-            record.reward1_value = reader.read_i32_as(column.element)
+            record.reward1_value = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'SDDungeonReward.Reward2Type', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Reward2Type')
           records.each do |record|
-            record.reward2_type = reader.read_enum
+            record.reward2_type = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'SDDungeonReward.Reward2Value', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Reward2Value')
           records.each do |record|
-            record.reward2_value = reader.read_i32_as(column.element)
+            record.reward2_value = cursor.next_i32
           end
         when 11
           Sheetman.check_column(column, 'SDDungeonReward.Reward3Type', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Reward3Type')
           records.each do |record|
-            record.reward3_type = reader.read_enum
+            record.reward3_type = cursor.next_i32
           end
         when 12
           Sheetman.check_column(column, 'SDDungeonReward.Reward3Value', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Reward3Value')
           records.each do |record|
-            record.reward3_value = reader.read_i32_as(column.element)
+            record.reward3_value = cursor.next_i32
           end
         when 13
           Sheetman.check_column(column, 'SDDungeonReward.Reward4Type', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Reward4Type')
           records.each do |record|
-            record.reward4_type = reader.read_enum
+            record.reward4_type = cursor.next_i32
           end
         when 14
           Sheetman.check_column(column, 'SDDungeonReward.Reward4Value', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.Reward4Value')
           records.each do |record|
-            record.reward4_value = reader.read_i32_as(column.element)
+            record.reward4_value = cursor.next_i32
           end
         when 15
           Sheetman.check_column(column, 'SDDungeonReward.IsPerfect', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -169,13 +183,15 @@ module Rescue
           end
         when 16
           Sheetman.check_column(column, 'SDDungeonReward.RewardPerfect', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.RewardPerfect')
           records.each do |record|
-            record.reward_perfect = reader.read_enum
+            record.reward_perfect = cursor.next_i32
           end
         when 17
           Sheetman.check_column(column, 'SDDungeonReward.PerfectValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.PerfectValue')
           records.each do |record|
-            record.perfect_value = reader.read_i32_as(column.element)
+            record.perfect_value = cursor.next_i32
           end
         when 18
           Sheetman.check_column(column, 'SDDungeonReward.IsMinReward', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -184,13 +200,15 @@ module Rescue
           end
         when 19
           Sheetman.check_column(column, 'SDDungeonReward.RewardMin', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.RewardMin')
           records.each do |record|
-            record.reward_min = reader.read_enum
+            record.reward_min = cursor.next_i32
           end
         when 20
           Sheetman.check_column(column, 'SDDungeonReward.MinRewardValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDDungeonReward.MinRewardValue')
           records.each do |record|
-            record.min_reward_value = reader.read_i32_as(column.element)
+            record.min_reward_value = cursor.next_i32
           end
         else
           # A column added after this code was generated.

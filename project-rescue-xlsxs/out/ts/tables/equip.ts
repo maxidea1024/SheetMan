@@ -223,6 +223,7 @@ export class EquipTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -236,93 +237,106 @@ export class EquipTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Equip.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Equip.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Equip.EquipName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.EquipName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._equipName = reader.readString()
+            record._equipName = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Equip.Type', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.Type')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._type = reader.readEnum() as JobType
+            record._type = cursor.nextI32() as JobType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Equip.EquipType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.EquipType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._equipType = reader.readEnum() as EquipmentType
+            record._equipType = cursor.nextI32() as EquipmentType
           }
           break
         case 6:
           sheetman.checkColumn(column, 'Equip.Grade', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.Grade')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._grade = reader.readEnum() as GradeType
+            record._grade = cursor.nextI32() as GradeType
           }
           break
         case 7:
           sheetman.checkColumn(column, 'Equip.MaxClass', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.MaxClass')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxClass = reader.readI32As(column.element)
+            record._maxClass = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'Equip.MaxLevel', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.MaxLevel')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxLevel = reader.readI32As(column.element)
+            record._maxLevel = cursor.nextI32()
           }
           break
         case 9:
           sheetman.checkColumn(column, 'Equip.StatType1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.StatType1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._statType1 = reader.readEnum() as StatType
+            record._statType1 = cursor.nextI32() as StatType
           }
           break
         case 10:
           sheetman.checkColumn(column, 'Equip.StatType2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.StatType2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._statType2 = reader.readEnum() as StatType
+            record._statType2 = cursor.nextI32() as StatType
           }
           break
         case 11:
           sheetman.checkColumn(column, 'Equip.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'Equip.PrefabPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.PrefabPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._prefabPath = reader.readString()
+            record._prefabPath = cursor.nextString()
           }
           break
         case 13:
           sheetman.checkColumn(column, 'Equip.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Equip.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         default:

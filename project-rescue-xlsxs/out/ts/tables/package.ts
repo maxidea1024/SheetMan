@@ -250,6 +250,7 @@ export class PackageTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -263,37 +264,42 @@ export class PackageTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Package.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Package.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Package.ClassName', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.ClassName')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._className = reader.readString()
+            record._className = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Package.ItemType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.ItemType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._itemType = reader.readEnum() as ItemType
+            record._itemType = cursor.nextI32() as ItemType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Package.PackageType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.PackageType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._packageType = reader.readEnum() as ConsumablesType
+            record._packageType = cursor.nextI32() as ConsumablesType
           }
           break
         case 6:
@@ -305,30 +311,34 @@ export class PackageTable {
           break
         case 7:
           sheetman.checkColumn(column, 'Package.MaxStack', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I64, sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.MaxStack')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._maxStack = reader.readI64As(column.element)
+            record._maxStack = cursor.nextI64()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'Package.PackageCondition', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.PackageCondition')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._packageCondition = reader.readEnum() as ConditionType
+            record._packageCondition = cursor.nextI32() as ConditionType
           }
           break
         case 9:
           sheetman.checkColumn(column, 'Package.Cooltime', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.Cooltime')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._cooltime = reader.readI32As(column.element)
+            record._cooltime = cursor.nextI32()
           }
           break
         case 10:
           sheetman.checkColumn(column, 'Package.Duration', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.Duration')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._duration = reader.readI32As(column.element)
+            record._duration = cursor.nextI32()
           }
           break
         case 11:
@@ -373,23 +383,26 @@ export class PackageTable {
           break
         case 15:
           sheetman.checkColumn(column, 'Package.IconPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.IconPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._iconPath = reader.readString()
+            record._iconPath = cursor.nextString()
           }
           break
         case 16:
           sheetman.checkColumn(column, 'Package.DropPrefabPath', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.DropPrefabPath')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dropPrefabPath = reader.readString()
+            record._dropPrefabPath = cursor.nextString()
           }
           break
         case 17:
           sheetman.checkColumn(column, 'Package.ItemDescription', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Package.ItemDescription')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._itemDescription = reader.readString()
+            record._itemDescription = cursor.nextString()
           }
           break
         default:

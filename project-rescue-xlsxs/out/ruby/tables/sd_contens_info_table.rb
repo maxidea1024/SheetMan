@@ -85,38 +85,45 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDContensInfo.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDContensInfo.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDContensInfo.InfoName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.InfoName')
           records.each do |record|
-            record.info_name = reader.read_string
+            record.info_name = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDContensInfo.SheetName', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.SheetName')
           records.each do |record|
-            record.sheet_name = reader.read_string
+            record.sheet_name = cursor.next_string
           end
         when 5
           Sheetman.check_column(column, 'SDContensInfo.SdContensType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.SdContensType')
           records.each do |record|
-            record.sd_contens_type = reader.read_enum
+            record.sd_contens_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDContensInfo.ConditionID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.ConditionID')
           records.each do |record|
-            record.condition_id = reader.read_i32_as(column.element)
+            record.condition_id = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'SDContensInfo.CurrencyType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.CurrencyType')
           records.each do |record|
-            record.currency_type = reader.read_enum
+            record.currency_type = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'SDContensInfo.EnableReset', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_BOOL])
@@ -125,18 +132,21 @@ module Rescue
           end
         when 9
           Sheetman.check_column(column, 'SDContensInfo.CycleType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.CycleType')
           records.each do |record|
-            record.cycle_type = reader.read_enum
+            record.cycle_type = cursor.next_i32
           end
         when 10
           Sheetman.check_column(column, 'SDContensInfo.SDCharacterPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.SDCharacterPath')
           records.each do |record|
-            record.sd_character_path = reader.read_string
+            record.sd_character_path = cursor.next_string
           end
         when 11
           Sheetman.check_column(column, 'SDContensInfo.PrefabPath', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDContensInfo.PrefabPath')
           records.each do |record|
-            record.prefab_path = reader.read_string
+            record.prefab_path = cursor.next_string
           end
         else
           # A column added after this code was generated.

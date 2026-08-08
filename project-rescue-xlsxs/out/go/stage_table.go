@@ -124,30 +124,34 @@ func (t *StageTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "Stage.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "Stage.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "Stage.StageName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.StageName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StageName = reader.ReadString()
+					r.StageName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "Stage.AssetDataPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.AssetDataPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AssetDataPath = reader.ReadString()
+					r.AssetDataPath = cursor.NextString()
 				}
 			}
 		case 5:
@@ -163,16 +167,18 @@ func (t *StageTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "Stage.SpawnPointCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.SpawnPointCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpawnPointCount = reader.ReadI32As(column.Element)
+					r.SpawnPointCount = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "Stage.SpawnMaxCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.SpawnMaxCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SpawnMaxCount = reader.ReadI32As(column.Element)
+					r.SpawnMaxCount = cursor.NextI32()
 				}
 			}
 		case 8:
@@ -184,9 +190,10 @@ func (t *StageTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "Stage.StageClearCount", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.StageClearCount")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StageClearCount = reader.ReadI32As(column.Element)
+					r.StageClearCount = cursor.NextI32()
 				}
 			}
 		case 10:
@@ -244,23 +251,26 @@ func (t *StageTable) Read(filename string) error {
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "Stage.StageDropListID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.StageDropListID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StageDropListID = reader.ReadI32As(column.Element)
+					r.StageDropListID = cursor.NextI32()
 				}
 			}
 		case 18:
 			if sheetman.CheckColumn(reader, column, "Stage.StageBGMID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.StageBGMID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.StageBGMID = reader.ReadI32As(column.Element)
+					r.StageBGMID = cursor.NextI32()
 				}
 			}
 		case 19:
 			if sheetman.CheckColumn(reader, column, "Stage.BossStageBGMID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "Stage.BossStageBGMID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BossStageBGMID = reader.ReadI32As(column.Element)
+					r.BossStageBGMID = cursor.NextI32()
 				}
 			}
 		default:

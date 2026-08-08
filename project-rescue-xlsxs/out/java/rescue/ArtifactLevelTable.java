@@ -74,6 +74,7 @@ public final class ArtifactLevelTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<ArtifactLevelRecord> loaded = new ArrayList<>(count);
@@ -89,43 +90,49 @@ public final class ArtifactLevelTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "ArtifactLevel.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactLevel.Id");
                     for (ArtifactLevelRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "ArtifactLevel.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactLevel.Name");
                     for (ArtifactLevelRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "ArtifactLevel.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactLevel.NameKR");
                     for (ArtifactLevelRecord record : loaded) {
-                        record.nameKR = reader.readString();
+                        record.nameKR = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "ArtifactLevel.Level", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactLevel.Level");
                     for (ArtifactLevelRecord record : loaded) {
-                        record.level = reader.readI32As(column.element);
+                        record.level = cursor.nextI32();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "ArtifactLevel.CharacterEXP", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactLevel.CharacterEXP");
                     for (ArtifactLevelRecord record : loaded) {
-                        record.characterEXP = reader.readI64As(column.element);
+                        record.characterEXP = cursor.nextI64();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "ArtifactLevel.AccumulatedEXP", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "ArtifactLevel.AccumulatedEXP");
                     for (ArtifactLevelRecord record : loaded) {
-                        record.accumulatedEXP = reader.readI64As(column.element);
+                        record.accumulatedEXP = cursor.nextI64();
                     }
                     break;
                 }

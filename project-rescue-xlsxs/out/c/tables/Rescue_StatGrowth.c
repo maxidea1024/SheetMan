@@ -14,6 +14,7 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -61,11 +62,12 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
     case 1:
       (void)sm_check_column(reader, column, "StatGrowth.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "StatGrowth.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StatGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -73,11 +75,12 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
     case 2:
       (void)sm_check_column(reader, column, "StatGrowth.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "StatGrowth.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StatGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -85,11 +88,12 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
     case 3:
       (void)sm_check_column(reader, column, "StatGrowth.StageName", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "StatGrowth.StageName");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StatGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->stage_name);
+        (void)sm_cursor_next_string(&cursor, &record->stage_name);
       }
 
       break;
@@ -97,12 +101,13 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
     case 4:
       (void)sm_check_column(reader, column, "StatGrowth.StatType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "StatGrowth.StatType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StatGrowthRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->stat_type = (Rescue_StatType_t)scratch;
       }
 
@@ -111,11 +116,12 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
     case 5:
       (void)sm_check_column(reader, column, "StatGrowth.InfuluenceStep", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "StatGrowth.InfuluenceStep");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StatGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->infuluence_step);
+        (void)sm_cursor_next_i32(&cursor, &record->infuluence_step);
       }
 
       break;
@@ -123,11 +129,12 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
     case 6:
       (void)sm_check_column(reader, column, "StatGrowth.Growth", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "StatGrowth.Growth");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StatGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->growth);
+        (void)sm_cursor_next_i32(&cursor, &record->growth);
       }
 
       break;
@@ -135,11 +142,12 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
     case 7:
       (void)sm_check_column(reader, column, "StatGrowth.GrowthValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "StatGrowth.GrowthValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StatGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->growth_value);
+        (void)sm_cursor_next_i32(&cursor, &record->growth_value);
       }
 
       break;
@@ -147,11 +155,12 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
     case 8:
       (void)sm_check_column(reader, column, "StatGrowth.GrowthReselt", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "StatGrowth.GrowthReselt");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StatGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->growth_reselt);
+        (void)sm_cursor_next_i32(&cursor, &record->growth_reselt);
       }
 
       break;
@@ -159,11 +168,12 @@ static bool Rescue_StatGrowthParse(Rescue_StatGrowthTable_t* table, sm_reader* r
     case 9:
       (void)sm_check_column(reader, column, "StatGrowth.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "StatGrowth.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_StatGrowthRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;

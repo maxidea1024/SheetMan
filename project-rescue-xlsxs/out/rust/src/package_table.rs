@@ -118,32 +118,37 @@ impl PackageTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "Package.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "Package.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "Package.ClassName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.ClassName")?;
                     for record in records.iter_mut() {
-                        record.class_name = reader.read_string()?;
+                        record.class_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "Package.ItemType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.ItemType")?;
                     for record in records.iter_mut() {
-                        record.item_type = ItemType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.item_type = ItemType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "Package.PackageType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.PackageType")?;
                     for record in records.iter_mut() {
-                        record.package_type = ConsumablesType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.package_type = ConsumablesType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
@@ -154,26 +159,30 @@ impl PackageTable {
                 }
                 7 => {
                     sheetman::check_column(column, "Package.MaxStack", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I64, sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.MaxStack")?;
                     for record in records.iter_mut() {
-                        record.max_stack = reader.read_i64_as(column.element)?;
+                        record.max_stack = cursor.next_i64()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "Package.PackageCondition", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.PackageCondition")?;
                     for record in records.iter_mut() {
-                        record.package_condition = ConditionType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.package_condition = ConditionType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "Package.Cooltime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.Cooltime")?;
                     for record in records.iter_mut() {
-                        record.cooltime = reader.read_i32_as(column.element)?;
+                        record.cooltime = cursor.next_i32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "Package.Duration", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.Duration")?;
                     for record in records.iter_mut() {
-                        record.duration = reader.read_i32_as(column.element)?;
+                        record.duration = cursor.next_i32()?;
                     }
                 }
                 11 => {
@@ -218,20 +227,23 @@ impl PackageTable {
                 }
                 15 => {
                     sheetman::check_column(column, "Package.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "Package.DropPrefabPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.DropPrefabPath")?;
                     for record in records.iter_mut() {
-                        record.drop_prefab_path = reader.read_string()?;
+                        record.drop_prefab_path = cursor.next_string()?;
                     }
                 }
                 17 => {
                     sheetman::check_column(column, "Package.ItemDescription", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "Package.ItemDescription")?;
                     for record in records.iter_mut() {
-                        record.item_description = reader.read_string()?;
+                        record.item_description = cursor.next_string()?;
                     }
                 }
                 _ => {

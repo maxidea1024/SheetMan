@@ -84,6 +84,7 @@ class CurrencyTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <CurrencyRecord>[];
@@ -99,38 +100,44 @@ class CurrencyTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Currency.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Currency.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Currency.ItemName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.ItemName');
           for (final record in loaded) {
-            record.itemName = reader.readString();
+            record.itemName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Currency.ItemType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.ItemType');
           for (final record in loaded) {
-            record.itemType = ItemType.of(reader.readEnum());
+            record.itemType = ItemType.of(cursor.nextI32());
           }
           break;
         case 5:
           checkColumn(column, 'Currency.Type', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.Type');
           for (final record in loaded) {
-            record.type = CurrencyType.of(reader.readEnum());
+            record.type = CurrencyType.of(cursor.nextI32());
           }
           break;
         case 6:
           checkColumn(column, 'Currency.CycleType', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.CycleType');
           for (final record in loaded) {
-            record.cycleType = CycleType.of(reader.readEnum());
+            record.cycleType = CycleType.of(cursor.nextI32());
           }
           break;
         case 7:
@@ -141,38 +148,44 @@ class CurrencyTable {
           break;
         case 8:
           checkColumn(column, 'Currency.MaxStack', kindScalar, 1, [elementI64, elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.MaxStack');
           for (final record in loaded) {
-            record.maxStack = reader.readI64As(column.element);
+            record.maxStack = cursor.nextI64();
           }
           break;
         case 9:
           checkColumn(column, 'Currency.Cooltime', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.Cooltime');
           for (final record in loaded) {
-            record.cooltime = reader.readI32As(column.element);
+            record.cooltime = cursor.nextI32();
           }
           break;
         case 10:
           checkColumn(column, 'Currency.Duration', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.Duration');
           for (final record in loaded) {
-            record.duration = reader.readI32As(column.element);
+            record.duration = cursor.nextI32();
           }
           break;
         case 11:
           checkColumn(column, 'Currency.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         case 12:
           checkColumn(column, 'Currency.DropPrefabPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.DropPrefabPath');
           for (final record in loaded) {
-            record.dropPrefabPath = reader.readString();
+            record.dropPrefabPath = cursor.nextString();
           }
           break;
         case 13:
           checkColumn(column, 'Currency.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Currency.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         case 14:

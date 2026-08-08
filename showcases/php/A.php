@@ -15,6 +15,7 @@ require_once __DIR__ . '/sheetman/ScbReader.php';
 require_once __DIR__ . '/tables/TemplateTable.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 

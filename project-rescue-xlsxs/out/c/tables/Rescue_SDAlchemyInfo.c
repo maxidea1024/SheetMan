@@ -14,6 +14,7 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -61,11 +62,12 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 1:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -73,11 +75,12 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 2:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -85,11 +88,12 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 3:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.NameKR", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.NameKR");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name_kr);
+        (void)sm_cursor_next_string(&cursor, &record->name_kr);
       }
 
       break;
@@ -97,12 +101,13 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 4:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.MaterialType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.MaterialType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->material_type = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -111,12 +116,13 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 5:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.CommonMaterialType1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.CommonMaterialType1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->common_material_type1 = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -125,12 +131,13 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 6:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.CommonMaterialType2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.CommonMaterialType2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->common_material_type2 = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -151,12 +158,13 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 8:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.StatType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.StatType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->stat_type = (Rescue_StatType_t)scratch;
       }
 
@@ -165,12 +173,13 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 9:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.TargetType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.TargetType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->target_type = (Rescue_TargetType_t)scratch;
       }
 
@@ -179,11 +188,12 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 10:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.MaxLevelId", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.MaxLevelId");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->max_level_id);
+        (void)sm_cursor_next_i32(&cursor, &record->max_level_id);
       }
 
       break;
@@ -191,11 +201,12 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 11:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.AccelerateTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.AccelerateTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->accelerate_time);
+        (void)sm_cursor_next_i32(&cursor, &record->accelerate_time);
       }
 
       break;
@@ -203,12 +214,13 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 12:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.AccelerateItemType1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.AccelerateItemType1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->accelerate_item_type1 = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -217,11 +229,12 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 13:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.AccelerateItemCost1", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.AccelerateItemCost1");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->accelerate_item_cost1);
+        (void)sm_cursor_next_i32(&cursor, &record->accelerate_item_cost1);
       }
 
       break;
@@ -229,12 +242,13 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 14:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.AccelerateItemType2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.AccelerateItemType2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->accelerate_item_type2 = (Rescue_CurrencyType_t)scratch;
       }
 
@@ -243,11 +257,12 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 15:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.AccelerateItemCost2", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.AccelerateItemCost2");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->accelerate_item_cost2);
+        (void)sm_cursor_next_i32(&cursor, &record->accelerate_item_cost2);
       }
 
       break;
@@ -255,11 +270,12 @@ static bool Rescue_SDAlchemyInfoParse(Rescue_SDAlchemyInfoTable_t* table, sm_rea
     case 16:
       (void)sm_check_column(reader, column, "SDAlchemyInfo.IconPath", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDAlchemyInfo.IconPath");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDAlchemyInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->icon_path);
+        (void)sm_cursor_next_string(&cursor, &record->icon_path);
       }
 
       break;

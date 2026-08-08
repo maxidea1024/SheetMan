@@ -83,48 +83,57 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'GachaArtifactList.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactList.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'GachaArtifactList.ArtifactID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactList.ArtifactID')
           records.each do |record|
-            record.artifact_id = reader.read_i32_as(column.element)
+            record.artifact_id = cursor.next_i32
           end
         when 3
           Sheetman.check_column(column, 'GachaArtifactList.GradeType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactList.GradeType')
           records.each do |record|
-            record.grade_type = reader.read_enum
+            record.grade_type = cursor.next_i32
           end
         when 4
           Sheetman.check_column(column, 'GachaArtifactList.BaseWeight', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactList.BaseWeight')
           records.each do |record|
-            record.base_weight = reader.read_i32_as(column.element)
+            record.base_weight = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'GachaArtifactList.ClassUpCurrencyID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactList.ClassUpCurrencyID')
           records.each do |record|
-            record.class_up_currency_id = reader.read_i32_as(column.element)
+            record.class_up_currency_id = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'GachaArtifactList.ClassUpCurrencyValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactList.ClassUpCurrencyValue')
           records.each do |record|
-            record.class_up_currency_value = reader.read_i32_as(column.element)
+            record.class_up_currency_value = cursor.next_i32
           end
         when 7
           Sheetman.check_column(column, 'GachaArtifactList.ExConditionID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactList.ExConditionID')
           records.each do |record|
-            record.ex_condition_id = reader.read_i32_as(column.element)
+            record.ex_condition_id = cursor.next_i32
           end
         when 8
           Sheetman.check_column(column, 'GachaArtifactList.ExCurrencyID', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactList.ExCurrencyID')
           records.each do |record|
-            record.ex_currency_id = reader.read_i32_as(column.element)
+            record.ex_currency_id = cursor.next_i32
           end
         when 9
           Sheetman.check_column(column, 'GachaArtifactList.ExCurrencyValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'GachaArtifactList.ExCurrencyValue')
           records.each do |record|
-            record.ex_currency_value = reader.read_i32_as(column.element)
+            record.ex_currency_value = cursor.next_i32
           end
         else
           # A column added after this code was generated.

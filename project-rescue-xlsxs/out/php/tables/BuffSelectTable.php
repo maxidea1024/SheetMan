@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/GradeType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -110,29 +111,33 @@ final class BuffSelectTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'BuffSelect.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BuffSelect.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'BuffSelect.BuffName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BuffSelect.BuffName');
                     foreach ($records as $record) {
-                        $record->buffName = $reader->readString();
+                        $record->buffName = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'BuffSelect.BuffID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BuffSelect.BuffID');
                     foreach ($records as $record) {
-                        $record->buffID = $reader->readI32As($column['element']);
+                        $record->buffID = $cursor->nextI32();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'BuffSelect.Grade', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BuffSelect.Grade');
                     foreach ($records as $record) {
-                        $record->grade = GradeType::tryFrom($reader->readEnum()) ?? GradeType::None;
+                        $record->grade = GradeType::tryFrom($cursor->nextI32()) ?? GradeType::None;
                     }
                     break;
 
@@ -145,15 +150,17 @@ final class BuffSelectTable
 
                 case 6:
                     ScbReader::checkColumn($column, 'BuffSelect.BuffTooltip', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BuffSelect.BuffTooltip');
                     foreach ($records as $record) {
-                        $record->buffTooltip = $reader->readString();
+                        $record->buffTooltip = $cursor->nextString();
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'BuffSelect.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'BuffSelect.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

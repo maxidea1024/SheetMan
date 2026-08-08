@@ -74,6 +74,7 @@ public final class CharacterLevelTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<CharacterLevelRecord> loaded = new ArrayList<>(count);
@@ -89,43 +90,49 @@ public final class CharacterLevelTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "CharacterLevel.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterLevel.Id");
                     for (CharacterLevelRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "CharacterLevel.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterLevel.Name");
                     for (CharacterLevelRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "CharacterLevel.NameKR", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterLevel.NameKR");
                     for (CharacterLevelRecord record : loaded) {
-                        record.nameKR = reader.readString();
+                        record.nameKR = cursor.nextString();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "CharacterLevel.Level", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterLevel.Level");
                     for (CharacterLevelRecord record : loaded) {
-                        record.level = reader.readI32As(column.element);
+                        record.level = cursor.nextI32();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "CharacterLevel.CharacterEXP", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterLevel.CharacterEXP");
                     for (CharacterLevelRecord record : loaded) {
-                        record.characterEXP = reader.readI64As(column.element);
+                        record.characterEXP = cursor.nextI64();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "CharacterLevel.AccumulatedEXP", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I64, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CharacterLevel.AccumulatedEXP");
                     for (CharacterLevelRecord record : loaded) {
-                        record.accumulatedEXP = reader.readI64As(column.element);
+                        record.accumulatedEXP = cursor.nextI64();
                     }
                     break;
                 }

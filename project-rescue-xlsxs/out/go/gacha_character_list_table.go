@@ -108,30 +108,34 @@ func (t *GachaCharacterListTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.CharacterID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.CharacterID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CharacterID = reader.ReadI32As(column.Element)
+					r.CharacterID = cursor.NextI32()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.GradeType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.GradeType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.GradeType = GradeType(reader.ReadEnum())
+					r.GradeType = GradeType(cursor.NextI32())
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.BaseWeight", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.BaseWeight")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.BaseWeight = reader.ReadI32As(column.Element)
+					r.BaseWeight = cursor.NextI32()
 				}
 			}
 		case 5:
@@ -143,44 +147,50 @@ func (t *GachaCharacterListTable) Read(filename string) error {
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.WishlistWeight", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.WishlistWeight")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.WishlistWeight = reader.ReadI32As(column.Element)
+					r.WishlistWeight = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.ClassUpCurrencyID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.ClassUpCurrencyID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ClassUpCurrencyID = reader.ReadI32As(column.Element)
+					r.ClassUpCurrencyID = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.ClassUpCurrencyValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.ClassUpCurrencyValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ClassUpCurrencyValue = reader.ReadI32As(column.Element)
+					r.ClassUpCurrencyValue = cursor.NextI32()
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.ExConditionID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.ExConditionID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ExConditionID = reader.ReadI32As(column.Element)
+					r.ExConditionID = cursor.NextI32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.ExCurrencyID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.ExCurrencyID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ExCurrencyID = reader.ReadI32As(column.Element)
+					r.ExCurrencyID = cursor.NextI32()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "GachaCharacterList.ExCurrencyValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "GachaCharacterList.ExCurrencyValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ExCurrencyValue = reader.ReadI32As(column.Element)
+					r.ExCurrencyValue = cursor.NextI32()
 				}
 			}
 		default:

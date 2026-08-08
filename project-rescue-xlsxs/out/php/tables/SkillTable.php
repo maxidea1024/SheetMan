@@ -18,6 +18,7 @@ require_once __DIR__ . '/../enums/AttributeType.php';
 require_once __DIR__ . '/../enums/TargetType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -126,57 +127,65 @@ final class SkillTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Skill.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Skill.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Skill.SkillName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.SkillName');
                     foreach ($records as $record) {
-                        $record->skillName = $reader->readString();
+                        $record->skillName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Skill.SkillType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.SkillType');
                     foreach ($records as $record) {
-                        $record->skillType = SkillType::tryFrom($reader->readEnum()) ?? SkillType::None;
+                        $record->skillType = SkillType::tryFrom($cursor->nextI32()) ?? SkillType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Skill.SkillSubType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.SkillSubType');
                     foreach ($records as $record) {
-                        $record->skillSubType = SkillSubType::tryFrom($reader->readEnum()) ?? SkillSubType::None;
+                        $record->skillSubType = SkillSubType::tryFrom($cursor->nextI32()) ?? SkillSubType::None;
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'Skill.AttributeType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.AttributeType');
                     foreach ($records as $record) {
-                        $record->attributeType = AttributeType::tryFrom($reader->readEnum()) ?? AttributeType::None;
+                        $record->attributeType = AttributeType::tryFrom($cursor->nextI32()) ?? AttributeType::None;
                     }
                     break;
 
                 case 7:
                     ScbReader::checkColumn($column, 'Skill.TargetType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.TargetType');
                     foreach ($records as $record) {
-                        $record->targetType = TargetType::tryFrom($reader->readEnum()) ?? TargetType::None;
+                        $record->targetType = TargetType::tryFrom($cursor->nextI32()) ?? TargetType::None;
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'Skill.AniPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.AniPath');
                     foreach ($records as $record) {
-                        $record->aniPath = $reader->readString();
+                        $record->aniPath = $cursor->nextString();
                     }
                     break;
 
@@ -207,15 +216,17 @@ final class SkillTable
 
                 case 12:
                     ScbReader::checkColumn($column, 'Skill.SkillIcon', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.SkillIcon');
                     foreach ($records as $record) {
-                        $record->skillIcon = $reader->readString();
+                        $record->skillIcon = $cursor->nextString();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'Skill.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Skill.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

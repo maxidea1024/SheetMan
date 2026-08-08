@@ -116,36 +116,43 @@ class TemplateTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "Template.Index", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Template.Index")
                 for record in records:
-                    record.index = reader.read_i32_as(column.element)
+                    record.index = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "Template.Class", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Template.Class")
                 for record in records:
-                    record.class_ = reader.read_string()
+                    record.class_ = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "Template.Int", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Template.Int")
                 for record in records:
-                    record.int = reader.read_i32_as(column.element)
+                    record.int = cursor.next_i32()
             elif column.tag == 4:
                 sheetman.check_column(column, "Template.Delete", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
                     record.delete = reader.read_bool()
             elif column.tag == 5:
                 sheetman.check_column(column, "Template.Operator", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Template.Operator")
                 for record in records:
-                    record.operator = reader.read_string()
+                    record.operator = cursor.next_string()
             elif column.tag == 6:
                 sheetman.check_column(column, "Template.Namespace", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Template.Namespace")
                 for record in records:
-                    record.namespace = reader.read_string()
+                    record.namespace = cursor.next_string()
             elif column.tag == 7:
                 sheetman.check_column(column, "Template.Constructor", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Template.Constructor")
                 for record in records:
-                    record.constructor = reader.read_string()
+                    record.constructor = cursor.next_string()
             elif column.tag == 8:
                 sheetman.check_column(column, "Template.Function", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "Template.Function")
                 for record in records:
-                    record.function = reader.read_string()
+                    record.function = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

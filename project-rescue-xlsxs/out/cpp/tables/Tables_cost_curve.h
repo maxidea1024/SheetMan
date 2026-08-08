@@ -94,41 +94,46 @@ class CostCurveTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "CostCurve.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurve.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "CostCurve.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurve.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "CostCurve.GrowthType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurve.GrowthType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.growth_type);
+            record.growth_type = static_cast<GrowthType>(cursor.next_i32());
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "CostCurve.CostType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurve.CostType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.cost_type);
+            record.cost_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "CostCurve.BaseCostValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "CostCurve.BaseCostValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.base_cost_value);
+            record.base_cost_value = cursor.next_i32();
           }
           break;
         }

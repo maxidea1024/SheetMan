@@ -98,84 +98,102 @@ class SDDungeonRewardTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "SDDungeonReward.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "SDDungeonReward.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "SDDungeonReward.RewardName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.RewardName")
                 for record in records:
-                    record.reward_name = reader.read_string()
+                    record.reward_name = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "SDDungeonReward.ConditionId", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.ConditionId")
                 for record in records:
-                    record.condition_id = reader.read_i32_as(column.element)
+                    record.condition_id = cursor.next_i32()
             elif column.tag == 5:
                 sheetman.check_column(column, "SDDungeonReward.RewardCommon", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.RewardCommon")
                 for record in records:
-                    record.reward_common = CurrencyType(reader.read_enum())
+                    record.reward_common = CurrencyType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "SDDungeonReward.CommonValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.CommonValue")
                 for record in records:
-                    record.common_value = reader.read_i32_as(column.element)
+                    record.common_value = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "SDDungeonReward.Reward1Type", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Reward1Type")
                 for record in records:
-                    record.reward1_type = CurrencyType(reader.read_enum())
+                    record.reward1_type = CurrencyType(cursor.next_i32())
             elif column.tag == 8:
                 sheetman.check_column(column, "SDDungeonReward.Reward1Value", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Reward1Value")
                 for record in records:
-                    record.reward1_value = reader.read_i32_as(column.element)
+                    record.reward1_value = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "SDDungeonReward.Reward2Type", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Reward2Type")
                 for record in records:
-                    record.reward2_type = CurrencyType(reader.read_enum())
+                    record.reward2_type = CurrencyType(cursor.next_i32())
             elif column.tag == 10:
                 sheetman.check_column(column, "SDDungeonReward.Reward2Value", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Reward2Value")
                 for record in records:
-                    record.reward2_value = reader.read_i32_as(column.element)
+                    record.reward2_value = cursor.next_i32()
             elif column.tag == 11:
                 sheetman.check_column(column, "SDDungeonReward.Reward3Type", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Reward3Type")
                 for record in records:
-                    record.reward3_type = CurrencyType(reader.read_enum())
+                    record.reward3_type = CurrencyType(cursor.next_i32())
             elif column.tag == 12:
                 sheetman.check_column(column, "SDDungeonReward.Reward3Value", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Reward3Value")
                 for record in records:
-                    record.reward3_value = reader.read_i32_as(column.element)
+                    record.reward3_value = cursor.next_i32()
             elif column.tag == 13:
                 sheetman.check_column(column, "SDDungeonReward.Reward4Type", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Reward4Type")
                 for record in records:
-                    record.reward4_type = CurrencyType(reader.read_enum())
+                    record.reward4_type = CurrencyType(cursor.next_i32())
             elif column.tag == 14:
                 sheetman.check_column(column, "SDDungeonReward.Reward4Value", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.Reward4Value")
                 for record in records:
-                    record.reward4_value = reader.read_i32_as(column.element)
+                    record.reward4_value = cursor.next_i32()
             elif column.tag == 15:
                 sheetman.check_column(column, "SDDungeonReward.IsPerfect", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
                     record.is_perfect = reader.read_bool()
             elif column.tag == 16:
                 sheetman.check_column(column, "SDDungeonReward.RewardPerfect", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.RewardPerfect")
                 for record in records:
-                    record.reward_perfect = CurrencyType(reader.read_enum())
+                    record.reward_perfect = CurrencyType(cursor.next_i32())
             elif column.tag == 17:
                 sheetman.check_column(column, "SDDungeonReward.PerfectValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.PerfectValue")
                 for record in records:
-                    record.perfect_value = reader.read_i32_as(column.element)
+                    record.perfect_value = cursor.next_i32()
             elif column.tag == 18:
                 sheetman.check_column(column, "SDDungeonReward.IsMinReward", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_BOOL,))
                 for record in records:
                     record.is_min_reward = reader.read_bool()
             elif column.tag == 19:
                 sheetman.check_column(column, "SDDungeonReward.RewardMin", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.RewardMin")
                 for record in records:
-                    record.reward_min = CurrencyType(reader.read_enum())
+                    record.reward_min = CurrencyType(cursor.next_i32())
             elif column.tag == 20:
                 sheetman.check_column(column, "SDDungeonReward.MinRewardValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "SDDungeonReward.MinRewardValue")
                 for record in records:
-                    record.min_reward_value = reader.read_i32_as(column.element)
+                    record.min_reward_value = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

@@ -107,80 +107,93 @@ impl SDDungeonInfoTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDDungeonInfo.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDDungeonInfo.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDDungeonInfo.NameKR", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.NameKR")?;
                     for record in records.iter_mut() {
-                        record.name_kr = reader.read_string()?;
+                        record.name_kr = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDDungeonInfo.TotalCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.TotalCount")?;
                     for record in records.iter_mut() {
-                        record.total_count = reader.read_i32_as(column.element)?;
+                        record.total_count = cursor.next_i32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SDDungeonInfo.TrapCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.TrapCount")?;
                     for record in records.iter_mut() {
-                        record.trap_count = reader.read_i32_as(column.element)?;
+                        record.trap_count = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDDungeonInfo.ActionCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.ActionCount")?;
                     for record in records.iter_mut() {
-                        record.action_count = reader.read_i32_as(column.element)?;
+                        record.action_count = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "SDDungeonInfo.MatchCost", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.MatchCost")?;
                     for record in records.iter_mut() {
-                        record.match_cost = reader.read_i32_as(column.element)?;
+                        record.match_cost = cursor.next_i32()?;
                     }
                 }
                 8 => {
                     sheetman::check_column(column, "SDDungeonInfo.MismatchCost", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.MismatchCost")?;
                     for record in records.iter_mut() {
-                        record.mismatch_cost = reader.read_i32_as(column.element)?;
+                        record.mismatch_cost = cursor.next_i32()?;
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "SDDungeonInfo.TrapCost", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.TrapCost")?;
                     for record in records.iter_mut() {
-                        record.trap_cost = reader.read_i32_as(column.element)?;
+                        record.trap_cost = cursor.next_i32()?;
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "SDDungeonInfo.ViewTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.ViewTime")?;
                     for record in records.iter_mut() {
-                        record.view_time = reader.read_i32_as(column.element)?;
+                        record.view_time = cursor.next_i32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "SDDungeonInfo.Time", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.Time")?;
                     for record in records.iter_mut() {
-                        record.time = reader.read_i32_as(column.element)?;
+                        record.time = cursor.next_i32()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "SDDungeonInfo.ADCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.ADCount")?;
                     for record in records.iter_mut() {
-                        record.ad_count = reader.read_i32_as(column.element)?;
+                        record.ad_count = cursor.next_i32()?;
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "SDDungeonInfo.DailyFreeCount", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDDungeonInfo.DailyFreeCount")?;
                     for record in records.iter_mut() {
-                        record.daily_free_count = reader.read_i32_as(column.element)?;
+                        record.daily_free_count = cursor.next_i32()?;
                     }
                 }
                 _ => {

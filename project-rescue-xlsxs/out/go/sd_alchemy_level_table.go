@@ -118,58 +118,66 @@ func (t *SDAlchemyLevelTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.NameKR", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.NameKR")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NameKR = reader.ReadString()
+					r.NameKR = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.LevelUpCost", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.LevelUpCost")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.LevelUpCost = reader.ReadI32As(column.Element)
+					r.LevelUpCost = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.LevelUpTotal", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.LevelUpTotal")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.LevelUpTotal = reader.ReadI32As(column.Element)
+					r.LevelUpTotal = cursor.NextI32()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.Time", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.Time")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Time = reader.ReadI64As(column.Element)
+					r.Time = cursor.NextI64()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.UseDiaCost", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.UseDiaCost")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.UseDiaCost = reader.ReadI32As(column.Element)
+					r.UseDiaCost = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "SDAlchemyLevel.UseItemCost", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAlchemyLevel.UseItemCost")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.UseItemCost = reader.ReadI32As(column.Element)
+					r.UseItemCost = cursor.NextI32()
 				}
 			}
 		case 9:

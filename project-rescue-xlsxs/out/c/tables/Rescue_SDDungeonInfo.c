@@ -14,6 +14,7 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -59,11 +60,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 1:
       (void)sm_check_column(reader, column, "SDDungeonInfo.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -71,11 +73,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 2:
       (void)sm_check_column(reader, column, "SDDungeonInfo.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -83,11 +86,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 3:
       (void)sm_check_column(reader, column, "SDDungeonInfo.NameKR", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.NameKR");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name_kr);
+        (void)sm_cursor_next_string(&cursor, &record->name_kr);
       }
 
       break;
@@ -95,11 +99,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 4:
       (void)sm_check_column(reader, column, "SDDungeonInfo.TotalCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.TotalCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->total_count);
+        (void)sm_cursor_next_i32(&cursor, &record->total_count);
       }
 
       break;
@@ -107,11 +112,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 5:
       (void)sm_check_column(reader, column, "SDDungeonInfo.TrapCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.TrapCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->trap_count);
+        (void)sm_cursor_next_i32(&cursor, &record->trap_count);
       }
 
       break;
@@ -119,11 +125,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 6:
       (void)sm_check_column(reader, column, "SDDungeonInfo.ActionCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.ActionCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->action_count);
+        (void)sm_cursor_next_i32(&cursor, &record->action_count);
       }
 
       break;
@@ -131,11 +138,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 7:
       (void)sm_check_column(reader, column, "SDDungeonInfo.MatchCost", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.MatchCost");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->match_cost);
+        (void)sm_cursor_next_i32(&cursor, &record->match_cost);
       }
 
       break;
@@ -143,11 +151,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 8:
       (void)sm_check_column(reader, column, "SDDungeonInfo.MismatchCost", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.MismatchCost");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->mismatch_cost);
+        (void)sm_cursor_next_i32(&cursor, &record->mismatch_cost);
       }
 
       break;
@@ -155,11 +164,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 9:
       (void)sm_check_column(reader, column, "SDDungeonInfo.TrapCost", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.TrapCost");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->trap_cost);
+        (void)sm_cursor_next_i32(&cursor, &record->trap_cost);
       }
 
       break;
@@ -167,11 +177,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 10:
       (void)sm_check_column(reader, column, "SDDungeonInfo.ViewTime", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.ViewTime");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->view_time);
+        (void)sm_cursor_next_i32(&cursor, &record->view_time);
       }
 
       break;
@@ -179,11 +190,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 11:
       (void)sm_check_column(reader, column, "SDDungeonInfo.Time", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.Time");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->time);
+        (void)sm_cursor_next_i32(&cursor, &record->time);
       }
 
       break;
@@ -191,11 +203,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 12:
       (void)sm_check_column(reader, column, "SDDungeonInfo.ADCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.ADCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->ad_count);
+        (void)sm_cursor_next_i32(&cursor, &record->ad_count);
       }
 
       break;
@@ -203,11 +216,12 @@ static bool Rescue_SDDungeonInfoParse(Rescue_SDDungeonInfoTable_t* table, sm_rea
     case 13:
       (void)sm_check_column(reader, column, "SDDungeonInfo.DailyFreeCount", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SDDungeonInfo.DailyFreeCount");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SDDungeonInfoRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->daily_free_count);
+        (void)sm_cursor_next_i32(&cursor, &record->daily_free_count);
       }
 
       break;

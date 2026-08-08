@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -112,56 +113,65 @@ class StatGrowthTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "StatGrowth.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StatGrowth.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "StatGrowth.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "StatGrowth.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "StatGrowth.StageName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "StatGrowth.StageName")
                     for (record in loaded) {
-                        record.stageName = reader.readString()
+                        record.stageName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "StatGrowth.StatType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StatGrowth.StatType")
                     for (record in loaded) {
-                        record.statType = StatType.of(reader.readEnum())
+                        record.statType = StatType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "StatGrowth.InfuluenceStep", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StatGrowth.InfuluenceStep")
                     for (record in loaded) {
-                        record.infuluenceStep = reader.readI32As(column.element)
+                        record.infuluenceStep = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "StatGrowth.Growth", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StatGrowth.Growth")
                     for (record in loaded) {
-                        record.growth = reader.readI32As(column.element)
+                        record.growth = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "StatGrowth.GrowthValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StatGrowth.GrowthValue")
                     for (record in loaded) {
-                        record.growthValue = reader.readI32As(column.element)
+                        record.growthValue = cursor.nextI32()
                     }
                 }
                 8 -> {
                     checkColumn(column, "StatGrowth.GrowthReselt", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "StatGrowth.GrowthReselt")
                     for (record in loaded) {
-                        record.growthReselt = reader.readI32As(column.element)
+                        record.growthReselt = cursor.nextI32()
                     }
                 }
                 9 -> {
                     checkColumn(column, "StatGrowth.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "StatGrowth.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

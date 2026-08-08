@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -114,44 +115,51 @@ class TraitDungeonRewardTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "TraitDungeonReward.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "TraitDungeonReward.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "TraitDungeonReward.RewardName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.RewardName")
                     for (record in loaded) {
-                        record.rewardName = reader.readString()
+                        record.rewardName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "TraitDungeonReward.RewardType1", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.RewardType1")
                     for (record in loaded) {
-                        record.rewardType1 = CurrencyType.of(reader.readEnum())
+                        record.rewardType1 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "TraitDungeonReward.RewardValue1", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.RewardValue1")
                     for (record in loaded) {
-                        record.rewardValue1 = reader.readI32As(column.element)
+                        record.rewardValue1 = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "TraitDungeonReward.RewardType2", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.RewardType2")
                     for (record in loaded) {
-                        record.rewardType2 = CurrencyType.of(reader.readEnum())
+                        record.rewardType2 = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 7 -> {
                     checkColumn(column, "TraitDungeonReward.RewardValue2", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.RewardValue2")
                     for (record in loaded) {
-                        record.rewardValue2 = reader.readI32As(column.element)
+                        record.rewardValue2 = cursor.nextI32()
                     }
                 }
                 8 -> {
@@ -162,14 +170,16 @@ class TraitDungeonRewardTable {
                 }
                 9 -> {
                     checkColumn(column, "TraitDungeonReward.FirstClearRewardType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.FirstClearRewardType")
                     for (record in loaded) {
-                        record.firstClearRewardType = CurrencyType.of(reader.readEnum())
+                        record.firstClearRewardType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 10 -> {
                     checkColumn(column, "TraitDungeonReward.FirstClearRewardValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "TraitDungeonReward.FirstClearRewardValue")
                     for (record in loaded) {
-                        record.firstClearRewardValue = reader.readI32As(column.element)
+                        record.firstClearRewardValue = cursor.nextI32()
                     }
                 }
                 else ->

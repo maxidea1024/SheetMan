@@ -128,149 +128,170 @@ func (t *SDAgencyTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDAgency.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDAgency.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDAgency.InfoName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.InfoName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.InfoName = reader.ReadString()
+					r.InfoName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDAgency.AgencyType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.AgencyType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AgencyType = AgencyType(reader.ReadEnum())
+					r.AgencyType = AgencyType(cursor.NextI32())
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDAgency.AgencyGrade", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.AgencyGrade")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AgencyGrade = AgencyGrade(reader.ReadEnum())
+					r.AgencyGrade = AgencyGrade(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDAgency.Time", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.Time")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Time = reader.ReadI32As(column.Element)
+					r.Time = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDAgency.AgencyWeight", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.AgencyWeight")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AgencyWeight = reader.ReadI32As(column.Element)
+					r.AgencyWeight = cursor.NextI32()
 				}
 			}
 		case 8:
 			if sheetman.CheckColumn(reader, column, "SDAgency.Condition1", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.Condition1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Condition1 = JobType(reader.ReadEnum())
+					r.Condition1 = JobType(cursor.NextI32())
 				}
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SDAgency.Condition1value", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.Condition1value")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Condition1value = reader.ReadI32As(column.Element)
+					r.Condition1value = cursor.NextI32()
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "SDAgency.Condition2", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.Condition2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Condition2 = GradeType(reader.ReadEnum())
+					r.Condition2 = GradeType(cursor.NextI32())
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "SDAgency.Condition2value", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.Condition2value")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Condition2value = reader.ReadI32As(column.Element)
+					r.Condition2value = cursor.NextI32()
 				}
 			}
 		case 12:
 			if sheetman.CheckColumn(reader, column, "SDAgency.Condition3", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.Condition3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Condition3 = ConditionType(reader.ReadEnum())
+					r.Condition3 = ConditionType(cursor.NextI32())
 				}
 			}
 		case 13:
 			if sheetman.CheckColumn(reader, column, "SDAgency.ClassMinValue", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.ClassMinValue")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ClassMinValue = reader.ReadI32As(column.Element)
+					r.ClassMinValue = cursor.NextI32()
 				}
 			}
 		case 14:
 			if sheetman.CheckColumn(reader, column, "SDAgency.Condition3value", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.Condition3value")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Condition3value = reader.ReadI32As(column.Element)
+					r.Condition3value = cursor.NextI32()
 				}
 			}
 		case 15:
 			if sheetman.CheckColumn(reader, column, "SDAgency.RewardType1", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.RewardType1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardType1 = CurrencyType(reader.ReadEnum())
+					r.RewardType1 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 16:
 			if sheetman.CheckColumn(reader, column, "SDAgency.RewardValue1", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.RewardValue1")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardValue1 = reader.ReadI32As(column.Element)
+					r.RewardValue1 = cursor.NextI32()
 				}
 			}
 		case 17:
 			if sheetman.CheckColumn(reader, column, "SDAgency.RewardType2", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.RewardType2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardType2 = CurrencyType(reader.ReadEnum())
+					r.RewardType2 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 18:
 			if sheetman.CheckColumn(reader, column, "SDAgency.RewardValue2", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.RewardValue2")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardValue2 = reader.ReadI32As(column.Element)
+					r.RewardValue2 = cursor.NextI32()
 				}
 			}
 		case 19:
 			if sheetman.CheckColumn(reader, column, "SDAgency.RewardType3", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.RewardType3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardType3 = CurrencyType(reader.ReadEnum())
+					r.RewardType3 = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 20:
 			if sheetman.CheckColumn(reader, column, "SDAgency.RewardValue3", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.RewardValue3")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.RewardValue3 = reader.ReadI32As(column.Element)
+					r.RewardValue3 = cursor.NextI32()
 				}
 			}
 		case 21:
 			if sheetman.CheckColumn(reader, column, "SDAgency.IconPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDAgency.IconPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.IconPath = reader.ReadString()
+					r.IconPath = cursor.NextString()
 				}
 			}
 		default:

@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -122,38 +123,44 @@ class SeasonShopTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "SeasonShop.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "SeasonShop.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "SeasonShop.ProductName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.ProductName")
                     for (record in loaded) {
-                        record.productName = reader.readString()
+                        record.productName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "SeasonShop.ShopType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.ShopType")
                     for (record in loaded) {
-                        record.shopType = ShopType.of(reader.readEnum())
+                        record.shopType = ShopType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "SeasonShop.ShopSlotID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.ShopSlotID")
                     for (record in loaded) {
-                        record.shopSlotID = reader.readI32As(column.element)
+                        record.shopSlotID = cursor.nextI32()
                     }
                 }
                 6 -> {
                     checkColumn(column, "SeasonShop.Priority", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.Priority")
                     for (record in loaded) {
-                        record.priority = reader.readI32As(column.element)
+                        record.priority = cursor.nextI32()
                     }
                 }
                 7 -> {
@@ -174,38 +181,44 @@ class SeasonShopTable {
                 }
                 9 -> {
                     checkColumn(column, "SeasonShop.CycleType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.CycleType")
                     for (record in loaded) {
-                        record.cycleType = CycleType.of(reader.readEnum())
+                        record.cycleType = CycleType.of(cursor.nextI32())
                     }
                 }
                 10 -> {
                     checkColumn(column, "SeasonShop.LimitValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.LimitValue")
                     for (record in loaded) {
-                        record.limitValue = reader.readI32As(column.element)
+                        record.limitValue = cursor.nextI32()
                     }
                 }
                 11 -> {
                     checkColumn(column, "SeasonShop.CurrencyType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.CurrencyType")
                     for (record in loaded) {
-                        record.currencyType = CurrencyType.of(reader.readEnum())
+                        record.currencyType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 12 -> {
                     checkColumn(column, "SeasonShop.PriceValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.PriceValue")
                     for (record in loaded) {
-                        record.priceValue = reader.readI32As(column.element)
+                        record.priceValue = cursor.nextI32()
                     }
                 }
                 13 -> {
                     checkColumn(column, "SeasonShop.ConditionID", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.ConditionID")
                     for (record in loaded) {
-                        record.conditionID = reader.readI32As(column.element)
+                        record.conditionID = cursor.nextI32()
                     }
                 }
                 14 -> {
                     checkColumn(column, "SeasonShop.IconPath", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "SeasonShop.IconPath")
                     for (record in loaded) {
-                        record.iconPath = reader.readString()
+                        record.iconPath = cursor.nextString()
                     }
                 }
                 else ->

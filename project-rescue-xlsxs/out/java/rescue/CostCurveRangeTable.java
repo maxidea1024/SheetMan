@@ -74,6 +74,7 @@ public final class CostCurveRangeTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<CostCurveRangeRecord> loaded = new ArrayList<>(count);
@@ -89,36 +90,41 @@ public final class CostCurveRangeTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "CostCurveRange.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CostCurveRange.Id");
                     for (CostCurveRangeRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "CostCurveRange.GrowthType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CostCurveRange.GrowthType");
                     for (CostCurveRangeRecord record : loaded) {
-                        record.growthType = GrowthType.of(reader.readEnum());
+                        record.growthType = GrowthType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "CostCurveRange.RangeIndex", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CostCurveRange.RangeIndex");
                     for (CostCurveRangeRecord record : loaded) {
-                        record.rangeIndex = reader.readI32As(column.element);
+                        record.rangeIndex = cursor.nextI32();
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "CostCurveRange.StartStep", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CostCurveRange.StartStep");
                     for (CostCurveRangeRecord record : loaded) {
-                        record.startStep = reader.readI32As(column.element);
+                        record.startStep = cursor.nextI32();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "CostCurveRange.EndStep", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "CostCurveRange.EndStep");
                     for (CostCurveRangeRecord record : loaded) {
-                        record.endStep = reader.readI32As(column.element);
+                        record.endStep = cursor.nextI32();
                     }
                     break;
                 }

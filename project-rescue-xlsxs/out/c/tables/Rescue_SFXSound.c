@@ -14,6 +14,7 @@ static bool Rescue_SFXSoundParse(Rescue_SFXSoundTable_t* table, sm_reader* reade
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -63,11 +64,12 @@ static bool Rescue_SFXSoundParse(Rescue_SFXSoundTable_t* table, sm_reader* reade
     case 1:
       (void)sm_check_column(reader, column, "SFXSound.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SFXSound.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SFXSoundRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -75,11 +77,12 @@ static bool Rescue_SFXSoundParse(Rescue_SFXSoundTable_t* table, sm_reader* reade
     case 2:
       (void)sm_check_column(reader, column, "SFXSound.Name", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SFXSound.Name");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SFXSoundRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->name);
+        (void)sm_cursor_next_string(&cursor, &record->name);
       }
 
       break;
@@ -87,12 +90,13 @@ static bool Rescue_SFXSoundParse(Rescue_SFXSoundTable_t* table, sm_reader* reade
     case 3:
       (void)sm_check_column(reader, column, "SFXSound.Category", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SFXSound.Category");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SFXSoundRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->category = (Rescue_SFXCategoryType_t)scratch;
       }
 
@@ -101,11 +105,12 @@ static bool Rescue_SFXSoundParse(Rescue_SFXSoundTable_t* table, sm_reader* reade
     case 4:
       (void)sm_check_column(reader, column, "SFXSound.Path", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SFXSound.Path");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SFXSoundRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->path);
+        (void)sm_cursor_next_string(&cursor, &record->path);
       }
 
       break;
@@ -113,11 +118,12 @@ static bool Rescue_SFXSoundParse(Rescue_SFXSoundTable_t* table, sm_reader* reade
     case 5:
       (void)sm_check_column(reader, column, "SFXSound.PreloadGroup", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SFXSound.PreloadGroup");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SFXSoundRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->preload_group);
+        (void)sm_cursor_next_string(&cursor, &record->preload_group);
       }
 
       break;
@@ -125,11 +131,12 @@ static bool Rescue_SFXSoundParse(Rescue_SFXSoundTable_t* table, sm_reader* reade
     case 6:
       (void)sm_check_column(reader, column, "SFXSound.Description", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_STRING));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "SFXSound.Description");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_SFXSoundRecord_t* record = &table->records[row];
 
-        (void)sm_read_string(reader, &record->description);
+        (void)sm_cursor_next_string(&cursor, &record->description);
       }
 
       break;

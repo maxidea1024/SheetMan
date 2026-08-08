@@ -89,44 +89,53 @@ class ArtifactTranscendenceTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "ArtifactTranscendence.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "ArtifactTranscendence.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "ArtifactTranscendence.NameKR", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.NameKR")
                 for record in records:
-                    record.name_kr = reader.read_string()
+                    record.name_kr = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "ArtifactTranscendence.GradeType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.GradeType")
                 for record in records:
-                    record.grade_type = GradeType(reader.read_enum())
+                    record.grade_type = GradeType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "ArtifactTranscendence.TranscendStep", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.TranscendStep")
                 for record in records:
-                    record.transcend_step = reader.read_i32_as(column.element)
+                    record.transcend_step = cursor.next_i32()
             elif column.tag == 6:
                 sheetman.check_column(column, "ArtifactTranscendence.MaxLevel", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.MaxLevel")
                 for record in records:
-                    record.max_level = reader.read_i32_as(column.element)
+                    record.max_level = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "ArtifactTranscendence.MaterialType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.MaterialType")
                 for record in records:
-                    record.material_type = CurrencyType(reader.read_enum())
+                    record.material_type = CurrencyType(cursor.next_i32())
             elif column.tag == 8:
                 sheetman.check_column(column, "ArtifactTranscendence.MaterialCount", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.MaterialCount")
                 for record in records:
-                    record.material_count = reader.read_i32_as(column.element)
+                    record.material_count = cursor.next_i32()
             elif column.tag == 9:
                 sheetman.check_column(column, "ArtifactTranscendence.PowerMultiplier", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.power_multiplier = reader.read_float()
             elif column.tag == 10:
                 sheetman.check_column(column, "ArtifactTranscendence.NextStepID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "ArtifactTranscendence.NextStepID")
                 for record in records:
-                    record.next_step_id = reader.read_i32_as(column.element)
+                    record.next_step_id = cursor.next_i32()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

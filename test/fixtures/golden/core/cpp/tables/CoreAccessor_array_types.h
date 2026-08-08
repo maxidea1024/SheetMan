@@ -98,9 +98,10 @@ class ArrayTypesTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "ArrayTypes.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "ArrayTypes.Index");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.index);
+            record.index = cursor.next_i32();
           }
           break;
         }

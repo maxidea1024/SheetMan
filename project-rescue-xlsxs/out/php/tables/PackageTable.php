@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/ConsumablesType.php';
 require_once __DIR__ . '/../enums/ConditionType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -136,36 +137,41 @@ final class PackageTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Package.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Package.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Package.ClassName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.ClassName');
                     foreach ($records as $record) {
-                        $record->className = $reader->readString();
+                        $record->className = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Package.ItemType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.ItemType');
                     foreach ($records as $record) {
-                        $record->itemType = ItemType::tryFrom($reader->readEnum()) ?? ItemType::None;
+                        $record->itemType = ItemType::tryFrom($cursor->nextI32()) ?? ItemType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Package.PackageType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.PackageType');
                     foreach ($records as $record) {
-                        $record->packageType = ConsumablesType::tryFrom($reader->readEnum()) ?? ConsumablesType::None;
+                        $record->packageType = ConsumablesType::tryFrom($cursor->nextI32()) ?? ConsumablesType::None;
                     }
                     break;
 
@@ -178,29 +184,33 @@ final class PackageTable
 
                 case 7:
                     ScbReader::checkColumn($column, 'Package.MaxStack', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I64, ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.MaxStack');
                     foreach ($records as $record) {
-                        $record->maxStack = $reader->readI64As($column['element']);
+                        $record->maxStack = $cursor->nextI64();
                     }
                     break;
 
                 case 8:
                     ScbReader::checkColumn($column, 'Package.PackageCondition', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.PackageCondition');
                     foreach ($records as $record) {
-                        $record->packageCondition = ConditionType::tryFrom($reader->readEnum()) ?? ConditionType::None;
+                        $record->packageCondition = ConditionType::tryFrom($cursor->nextI32()) ?? ConditionType::None;
                     }
                     break;
 
                 case 9:
                     ScbReader::checkColumn($column, 'Package.Cooltime', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.Cooltime');
                     foreach ($records as $record) {
-                        $record->cooltime = $reader->readI32As($column['element']);
+                        $record->cooltime = $cursor->nextI32();
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'Package.Duration', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.Duration');
                     foreach ($records as $record) {
-                        $record->duration = $reader->readI32As($column['element']);
+                        $record->duration = $cursor->nextI32();
                     }
                     break;
 
@@ -250,22 +260,25 @@ final class PackageTable
 
                 case 15:
                     ScbReader::checkColumn($column, 'Package.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 
                 case 16:
                     ScbReader::checkColumn($column, 'Package.DropPrefabPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.DropPrefabPath');
                     foreach ($records as $record) {
-                        $record->dropPrefabPath = $reader->readString();
+                        $record->dropPrefabPath = $cursor->nextString();
                     }
                     break;
 
                 case 17:
                     ScbReader::checkColumn($column, 'Package.ItemDescription', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Package.ItemDescription');
                     foreach ($records as $record) {
-                        $record->itemDescription = $reader->readString();
+                        $record->itemDescription = $cursor->nextString();
                     }
                     break;
 

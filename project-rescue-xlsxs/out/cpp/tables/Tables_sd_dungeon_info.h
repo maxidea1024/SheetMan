@@ -108,105 +108,118 @@ class SDDungeonInfoTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "SDDungeonInfo.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "SDDungeonInfo.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "SDDungeonInfo.NameKR", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.NameKR");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name_kr);
+            record.name_kr = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "SDDungeonInfo.TotalCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.TotalCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.total_count);
+            record.total_count = cursor.next_i32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "SDDungeonInfo.TrapCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.TrapCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.trap_count);
+            record.trap_count = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "SDDungeonInfo.ActionCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.ActionCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.action_count);
+            record.action_count = cursor.next_i32();
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "SDDungeonInfo.MatchCost", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.MatchCost");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.match_cost);
+            record.match_cost = cursor.next_i32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "SDDungeonInfo.MismatchCost", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.MismatchCost");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.mismatch_cost);
+            record.mismatch_cost = cursor.next_i32();
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "SDDungeonInfo.TrapCost", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.TrapCost");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.trap_cost);
+            record.trap_cost = cursor.next_i32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "SDDungeonInfo.ViewTime", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.ViewTime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.view_time);
+            record.view_time = cursor.next_i32();
           }
           break;
         }
         case 11: {
           sheetman::check_column(column, "SDDungeonInfo.Time", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.Time");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.time);
+            record.time = cursor.next_i32();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "SDDungeonInfo.ADCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.ADCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.ad_count);
+            record.ad_count = cursor.next_i32();
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "SDDungeonInfo.DailyFreeCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "SDDungeonInfo.DailyFreeCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.daily_free_count);
+            record.daily_free_count = cursor.next_i32();
           }
           break;
         }

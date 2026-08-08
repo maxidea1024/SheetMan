@@ -172,6 +172,7 @@ export class ConditionTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -185,44 +186,50 @@ export class ConditionTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Condition.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Condition.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Condition.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Condition.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Condition.ConditionTargetType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Condition.ConditionTargetType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._conditionTargetType = reader.readEnum() as ConditionTargetType
+            record._conditionTargetType = cursor.nextI32() as ConditionTargetType
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Condition.ConditionTargetValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Condition.ConditionTargetValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._conditionTargetValue = reader.readI32As(column.element)
+            record._conditionTargetValue = cursor.nextI32()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Condition.ConditionType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Condition.ConditionType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._conditionType = reader.readEnum() as ConditionType
+            record._conditionType = cursor.nextI32() as ConditionType
           }
           break
         case 6:
           sheetman.checkColumn(column, 'Condition.ConditionValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Condition.ConditionValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._conditionValue = reader.readI32As(column.element)
+            record._conditionValue = cursor.nextI32()
           }
           break
         default:

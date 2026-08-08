@@ -95,44 +95,51 @@ impl SDPubInfoTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDPubInfo.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDPubInfo.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDPubInfo.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDPubInfo.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDPubInfo.PubName", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDPubInfo.PubName")?;
                     for record in records.iter_mut() {
-                        record.pub_name = reader.read_string()?;
+                        record.pub_name = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDPubInfo.UnlockCondition", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDPubInfo.UnlockCondition")?;
                     for record in records.iter_mut() {
-                        record.unlock_condition = reader.read_i32_as(column.element)?;
+                        record.unlock_condition = cursor.next_i32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SDPubInfo.LimitValue", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDPubInfo.LimitValue")?;
                     for record in records.iter_mut() {
-                        record.limit_value = reader.read_i32_as(column.element)?;
+                        record.limit_value = cursor.next_i32()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDPubInfo.BuffID", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDPubInfo.BuffID")?;
                     for record in records.iter_mut() {
-                        record.buff_id = reader.read_i32_as(column.element)?;
+                        record.buff_id = cursor.next_i32()?;
                     }
                 }
                 7 => {
                     sheetman::check_column(column, "SDPubInfo.Description", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDPubInfo.Description")?;
                     for record in records.iter_mut() {
-                        record.description = reader.read_string()?;
+                        record.description = cursor.next_string()?;
                     }
                 }
                 _ => {

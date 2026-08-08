@@ -215,6 +215,7 @@ export class CollectionTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -228,58 +229,66 @@ export class CollectionTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Collection.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readI32As(column.element)
+            record._id = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Collection.Name', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.Name')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._name = reader.readString()
+            record._name = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Collection.CharacterID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.CharacterID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._characterID = reader.readI32As(column.element)
+            record._characterID = cursor.nextI32()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Collection.TabType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.TabType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._tabType = reader.readEnum() as CollectionTabType
+            record._tabType = cursor.nextI32() as CollectionTabType
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Collection.ConditionID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.ConditionID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._conditionID = reader.readI32As(column.element)
+            record._conditionID = cursor.nextI32()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'Collection.RewardType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.RewardType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardType = reader.readEnum() as CurrencyType
+            record._rewardType = cursor.nextI32() as CurrencyType
           }
           break
         case 7:
           sheetman.checkColumn(column, 'Collection.RewardValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.RewardValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardValue = reader.readI32As(column.element)
+            record._rewardValue = cursor.nextI32()
           }
           break
         case 8:
           sheetman.checkColumn(column, 'Collection.RewardStatType1', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.RewardStatType1')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardStatType1 = reader.readEnum() as StatType
+            record._rewardStatType1 = cursor.nextI32() as StatType
           }
           break
         case 9:
@@ -291,23 +300,26 @@ export class CollectionTable {
           break
         case 10:
           sheetman.checkColumn(column, 'Collection.RewardStatType2', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.RewardStatType2')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardStatType2 = reader.readEnum() as StatType
+            record._rewardStatType2 = cursor.nextI32() as StatType
           }
           break
         case 11:
           sheetman.checkColumn(column, 'Collection.RewardStatValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.RewardStatValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._rewardStatValue = reader.readI32As(column.element)
+            record._rewardStatValue = cursor.nextI32()
           }
           break
         case 12:
           sheetman.checkColumn(column, 'Collection.ShortCutID', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Collection.ShortCutID')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._shortCutID = reader.readI32As(column.element)
+            record._shortCutID = cursor.nextI32()
           }
           break
         default:

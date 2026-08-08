@@ -74,6 +74,15 @@ internal sealed class UnrealTableView
     public required IReadOnlyList<UnrealIndexView> Indexes { get; set; }
 
     public required IReadOnlyList<UnrealFieldView> Fields { get; set; }
+
+    /// <summary>
+    /// Whether any column reads through the cursor, and so the read declares one.
+    ///
+    /// One cursor variable for the whole method: the switch's cases share a scope, and
+    /// C++ does not allow a jump past a live constructor, so each encodable column
+    /// opens the shared cursor rather than declaring its own.
+    /// </summary>
+    public required bool NeedsCursor { get; set; }
 }
 
 /// <summary>
@@ -154,6 +163,18 @@ internal sealed class UnrealFieldView
 
     /// <summary>The rendered CheckColumn call for this member.</summary>
     public required string ColumnCheck { get; set; }
+
+    /// <summary>
+    /// The cursor Open call ahead of an encodable column's row loop, or empty for a
+    /// column that reads the reader directly.
+    /// </summary>
+    public required string CursorOpen { get; set; }
+
+    /// <summary>
+    /// The one-line read through the cursor inside the row loop, or empty for a
+    /// column that reads the reader directly.
+    /// </summary>
+    public required string CursorRead { get; set; }
 
     /// <summary>
     /// Name for the local holding a variable length array's element count.

@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -132,44 +133,51 @@ class EquipItemLevelTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "EquipItemLevel.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemLevel.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "EquipItemLevel.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemLevel.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "EquipItemLevel.NameKR", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemLevel.NameKR")
                     for (record in loaded) {
-                        record.nameKR = reader.readString()
+                        record.nameKR = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "EquipItemLevel.Type", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemLevel.Type")
                     for (record in loaded) {
-                        record.type = JobType.of(reader.readEnum())
+                        record.type = JobType.of(cursor.nextI32())
                     }
                 }
                 5 -> {
                     checkColumn(column, "EquipItemLevel.MaterialType", KIND_SCALAR, 1, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemLevel.MaterialType")
                     for (record in loaded) {
-                        record.materialType = CurrencyType.of(reader.readEnum())
+                        record.materialType = CurrencyType.of(cursor.nextI32())
                     }
                 }
                 6 -> {
                     checkColumn(column, "EquipItemLevel.MaterialValue", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemLevel.MaterialValue")
                     for (record in loaded) {
-                        record.materialValue = reader.readI32As(column.element)
+                        record.materialValue = cursor.nextI32()
                     }
                 }
                 7 -> {
                     checkColumn(column, "EquipItemLevel.MaterialValue1", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "EquipItemLevel.MaterialValue1")
                     for (record in loaded) {
-                        record.materialValue1 = reader.readI32As(column.element)
+                        record.materialValue1 = cursor.nextI32()
                     }
                 }
                 8 -> {

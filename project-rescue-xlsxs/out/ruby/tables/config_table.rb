@@ -111,33 +111,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'Config.Index', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Config.Index')
           records.each do |record|
-            record.index = reader.read_i32_as(column.element)
+            record.index = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'Config.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Config.Id')
           records.each do |record|
-            record.id = reader.read_string
+            record.id = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'Config.Category', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Config.Category')
           records.each do |record|
-            record.category = reader.read_string
+            record.category = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'Config.DataType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Config.DataType')
           records.each do |record|
-            record.data_type = reader.read_string
+            record.data_type = cursor.next_string
           end
         when 5
           Sheetman.check_column(column, 'Config.DefaultValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Config.DefaultValue')
           records.each do |record|
-            record.default_value = reader.read_string
+            record.default_value = cursor.next_string
           end
         when 6
           Sheetman.check_column(column, 'Config.Description', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'Config.Description')
           records.each do |record|
-            record.description = reader.read_string
+            record.description = cursor.next_string
           end
         else
           # A column added after this code was generated.

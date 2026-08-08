@@ -108,17 +108,19 @@ class TestFieldTypesTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "TestFieldTypes.Index", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.Index");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.index);
+            record.index = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "TestFieldTypes.StringField", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.StringField");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.string_field);
+            record.string_field = cursor.next_string();
           }
           break;
         }
@@ -132,17 +134,19 @@ class TestFieldTypesTable {
         }
         case 4: {
           sheetman::check_column(column, "TestFieldTypes.IntField", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.IntField");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.int_field);
+            record.int_field = cursor.next_i32();
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "TestFieldTypes.BigIntField", sheetman::kKindScalar, 1, {sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.BigIntField");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i64_as(column.element, record.big_int_field);
+            record.big_int_field = cursor.next_i64();
           }
           break;
         }
@@ -156,9 +160,10 @@ class TestFieldTypesTable {
         }
         case 7: {
           sheetman::check_column(column, "TestFieldTypes.DoubleField", sheetman::kKindScalar, 1, {sheetman::kElementF64, sheetman::kElementF32, sheetman::kElementI32});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.DoubleField");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_f64_as(column.element, record.double_field);
+            record.double_field = cursor.next_f64();
           }
           break;
         }
@@ -188,9 +193,10 @@ class TestFieldTypesTable {
         }
         case 11: {
           sheetman::check_column(column, "TestFieldTypes.ValueTypeField", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "TestFieldTypes.ValueTypeField");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.value_type_field);
+            record.value_type_field = static_cast<ValueType>(cursor.next_i32());
           }
           break;
         }

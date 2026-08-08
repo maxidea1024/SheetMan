@@ -99,38 +99,44 @@ impl CharacterLevelTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "CharacterLevel.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterLevel.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "CharacterLevel.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterLevel.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "CharacterLevel.NameKR", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterLevel.NameKR")?;
                     for record in records.iter_mut() {
-                        record.name_kr = reader.read_string()?;
+                        record.name_kr = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "CharacterLevel.Level", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterLevel.Level")?;
                     for record in records.iter_mut() {
-                        record.level = reader.read_i32_as(column.element)?;
+                        record.level = cursor.next_i32()?;
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "CharacterLevel.CharacterEXP", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I64, sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterLevel.CharacterEXP")?;
                     for record in records.iter_mut() {
-                        record.character_exp = reader.read_i64_as(column.element)?;
+                        record.character_exp = cursor.next_i64()?;
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "CharacterLevel.AccumulatedEXP", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I64, sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "CharacterLevel.AccumulatedEXP")?;
                     for record in records.iter_mut() {
-                        record.accumulated_exp = reader.read_i64_as(column.element)?;
+                        record.accumulated_exp = cursor.next_i64()?;
                     }
                 }
                 7 => {

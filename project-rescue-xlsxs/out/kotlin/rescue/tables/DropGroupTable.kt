@@ -17,6 +17,7 @@ import sheetman.readAllBytes
 import sheetman.readTableHeader
 import sheetman.checkColumn
 import sheetman.checkBlockEnd
+import sheetman.ColumnCursor
 import sheetman.ELEMENT_VARINT
 import sheetman.ELEMENT_BOOL
 import sheetman.ELEMENT_I32
@@ -110,26 +111,30 @@ class DropGroupTable {
             when (column.tag) {
                 1 -> {
                     checkColumn(column, "DropGroup.Id", KIND_SCALAR, 1, ELEMENT_I32, ELEMENT_VARINT)
+                    val cursor = ColumnCursor(reader, column, count, "DropGroup.Id")
                     for (record in loaded) {
-                        record.id = reader.readI32As(column.element)
+                        record.id = cursor.nextI32()
                     }
                 }
                 2 -> {
                     checkColumn(column, "DropGroup.Name", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "DropGroup.Name")
                     for (record in loaded) {
-                        record.name = reader.readString()
+                        record.name = cursor.nextString()
                     }
                 }
                 3 -> {
                     checkColumn(column, "DropGroup.DropName", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "DropGroup.DropName")
                     for (record in loaded) {
-                        record.dropName = reader.readString()
+                        record.dropName = cursor.nextString()
                     }
                 }
                 4 -> {
                     checkColumn(column, "DropGroup.DropArea", KIND_SCALAR, 1, ELEMENT_STRING)
+                    val cursor = ColumnCursor(reader, column, count, "DropGroup.DropArea")
                     for (record in loaded) {
-                        record.dropArea = reader.readString()
+                        record.dropArea = cursor.nextString()
                     }
                 }
                 5 -> {

@@ -108,51 +108,58 @@ func (t *SDContensInfoTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.InfoName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.InfoName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.InfoName = reader.ReadString()
+					r.InfoName = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.SheetName", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.SheetName")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SheetName = reader.ReadString()
+					r.SheetName = cursor.NextString()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.SdContensType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.SdContensType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SdContensType = SdContensType(reader.ReadEnum())
+					r.SdContensType = SdContensType(cursor.NextI32())
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.ConditionID", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.ConditionID")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.ConditionID = reader.ReadI32As(column.Element)
+					r.ConditionID = cursor.NextI32()
 				}
 			}
 		case 7:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.CurrencyType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.CurrencyType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CurrencyType = CurrencyType(reader.ReadEnum())
+					r.CurrencyType = CurrencyType(cursor.NextI32())
 				}
 			}
 		case 8:
@@ -164,23 +171,26 @@ func (t *SDContensInfoTable) Read(filename string) error {
 			}
 		case 9:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.CycleType", sheetman.KindScalar, 1, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.CycleType")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CycleType = CycleType(reader.ReadEnum())
+					r.CycleType = CycleType(cursor.NextI32())
 				}
 			}
 		case 10:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.SDCharacterPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.SDCharacterPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.SDCharacterPath = reader.ReadString()
+					r.SDCharacterPath = cursor.NextString()
 				}
 			}
 		case 11:
 			if sheetman.CheckColumn(reader, column, "SDContensInfo.PrefabPath", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "SDContensInfo.PrefabPath")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.PrefabPath = reader.ReadString()
+					r.PrefabPath = cursor.NextString()
 				}
 			}
 		default:

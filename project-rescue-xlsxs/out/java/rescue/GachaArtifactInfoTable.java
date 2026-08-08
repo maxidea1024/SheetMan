@@ -74,6 +74,7 @@ public final class GachaArtifactInfoTable {
         ScbReader reader = new ScbReader(ScbReader.readAllBytes(filename));
         ScbReader.Header header = ScbReader.readTableHeader(reader);
         int count = header.rowCount;
+        ScbReader.ColumnCursor cursor;
 
         // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
         List<GachaArtifactInfoRecord> loaded = new ArrayList<>(count);
@@ -89,78 +90,89 @@ public final class GachaArtifactInfoTable {
             switch (column.tag) {
                 case 1: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.Id", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.Id");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.id = reader.readI32As(column.element);
+                        record.id = cursor.nextI32();
                     }
                     break;
                 }
                 case 2: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.Name", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.Name");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.name = reader.readString();
+                        record.name = cursor.nextString();
                     }
                     break;
                 }
                 case 3: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.GachaType", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.GachaType");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.gachaType = GachaType.of(reader.readEnum());
+                        record.gachaType = GachaType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 4: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.Priority", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.Priority");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.priority = reader.readI32As(column.element);
+                        record.priority = cursor.nextI32();
                     }
                     break;
                 }
                 case 5: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.ConditionID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.ConditionID");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.conditionID = reader.readI32As(column.element);
+                        record.conditionID = cursor.nextI32();
                     }
                     break;
                 }
                 case 6: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.RateId", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.RateId");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.rateId = reader.readI32As(column.element);
+                        record.rateId = cursor.nextI32();
                     }
                     break;
                 }
                 case 7: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.TriggerCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.TriggerCount");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.triggerCount = reader.readI32As(column.element);
+                        record.triggerCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 8: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.TriggerRateId", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.TriggerRateId");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.triggerRateId = reader.readI32As(column.element);
+                        record.triggerRateId = cursor.nextI32();
                     }
                     break;
                 }
                 case 9: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.EndCount", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.EndCount");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.endCount = reader.readI32As(column.element);
+                        record.endCount = cursor.nextI32();
                     }
                     break;
                 }
                 case 10: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.EndRateId", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.EndRateId");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.endRateId = reader.readI32As(column.element);
+                        record.endRateId = cursor.nextI32();
                     }
                     break;
                 }
                 case 11: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.EndCharacterId", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.EndCharacterId");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.endCharacterId = reader.readI32As(column.element);
+                        record.endCharacterId = cursor.nextI32();
                     }
                     break;
                 }
@@ -180,15 +192,17 @@ public final class GachaArtifactInfoTable {
                 }
                 case 14: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.WishListConditionID", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.WishListConditionID");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.wishListConditionID = reader.readI32As(column.element);
+                        record.wishListConditionID = cursor.nextI32();
                     }
                     break;
                 }
                 case 15: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.WishListMaxValue", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.WishListMaxValue");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.wishListMaxValue = reader.readI32As(column.element);
+                        record.wishListMaxValue = cursor.nextI32();
                     }
                     break;
                 }
@@ -208,36 +222,41 @@ public final class GachaArtifactInfoTable {
                 }
                 case 18: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.CurrencyType1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.CurrencyType1");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.currencyType1 = CurrencyType.of(reader.readEnum());
+                        record.currencyType1 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 19: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.SingleCost1", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.SingleCost1");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.singleCost1 = reader.readI32As(column.element);
+                        record.singleCost1 = cursor.nextI32();
                     }
                     break;
                 }
                 case 20: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.CurrencyType2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.CurrencyType2");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.currencyType2 = CurrencyType.of(reader.readEnum());
+                        record.currencyType2 = CurrencyType.of(cursor.nextI32());
                     }
                     break;
                 }
                 case 21: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.SingleCost2", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_I32, ScbReader.ELEMENT_VARINT);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.SingleCost2");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.singleCost2 = reader.readI32As(column.element);
+                        record.singleCost2 = cursor.nextI32();
                     }
                     break;
                 }
                 case 22: {
                     ScbReader.checkColumn(column, "GachaArtifactInfo.IconPath", ScbReader.KIND_SCALAR, 1, ScbReader.ELEMENT_STRING);
+                    cursor = new ScbReader.ColumnCursor(reader, column, count, "GachaArtifactInfo.IconPath");
                     for (GachaArtifactInfoRecord record : loaded) {
-                        record.iconPath = reader.readString();
+                        record.iconPath = cursor.nextString();
                     }
                     break;
                 }

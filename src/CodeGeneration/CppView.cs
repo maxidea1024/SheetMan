@@ -174,6 +174,13 @@ internal sealed class CppFieldView
     /// <summary>The rendered check_column call for this member.</summary>
     public required string ColumnCheck { get; set; }
 
+    /// <summary>
+    /// The cursor construction ahead of an encodable column's row loop, or empty for a
+    /// column that reads the reader directly. A declaration inside the case's own block,
+    /// so - unlike C#'s shared switch scope - no table-level shared variable is needed.
+    /// </summary>
+    public required string CursorOpen { get; set; }
+
     public required string Name { get; set; }
 
     /// <summary>Element count of a serial field, which is its column count.</summary>

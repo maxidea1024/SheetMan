@@ -470,13 +470,14 @@ func CheckColumn(r *Reader, col Column, fieldName string, kind uint8, count int3
 		return false
 	}
 
-	// An encoding this build cannot decode is refused by name, exactly like an element
-	// it cannot read. An unknown column's encoding never gets here - a skip is a skip
-	// whatever the block's layout.
-	if col.Encoding != EncodingRaw {
+	// An encoding this build cannot decode - or one the spec does not define for this
+	// element - is refused by name, exactly like an element it cannot read. An unknown
+	// column's encoding never gets here - a skip is a skip whatever the block's layout.
+	if !encodingSupported(col) {
 		r.err = fmt.Errorf(
-			"sheetman: %s: the file's column uses encoding %d, which this reader does not "+
-				"support; regenerate the code or rebuild the data", fieldName, col.Encoding)
+			"sheetman: %s: the file's column uses encoding %d, which this reader cannot "+
+				"decode for its element type; regenerate the code or rebuild the data",
+			fieldName, col.Encoding)
 		return false
 	}
 
@@ -491,6 +492,240 @@ func CheckColumn(r *Reader, col Column, fieldName string, kind uint8, count int3
 			"(accepts %v); the column changed type incompatibly, regenerate the code or "+
 			"rebuild the data", fieldName, col.Element, accepted)
 	return false
+}
+
+// encodingSupported reports whether (element, encoding) is a pair the spec defines.
+// Arrays are always raw; integers take the integer encodings, strings the
+// dictionary ones.
+func encodingSupported(col Column) bool {
+	if col.Encoding == EncodingRaw {
+		return true
+	}
+
+	if col.Kind != KindScalar {
+		return false
+	}
+
+	switch col.Element {
+	case ElementVarint:
+		return col.Encoding == EncodingRle
+
+	case ElementI32:
+		return col.Encoding >= EncodingVarint && col.Encoding <= EncodingDeltaRle
+
+	case ElementString:
+		return col.Encoding == EncodingDict || col.Encoding == EncodingDictRle
+
+	default:
+		return false
+	}
+}
+
+// ColumnCursor reads one scalar column's values in row order, whatever the block's
+// encoding.
+//
+// The generated row loop stays a row loop; this is the one place that knows how a
+// delta accumulates, how long a run has left, or that a dictionary index is a
+// reference into strings decoded once. That last one matters beyond file size: a
+// hundred-thousand-row column with three distinct strings allocates three strings,
+// not a hundred thousand.
+//
+// CheckColumn has already refused any (element, encoding) pair the spec does not
+// define, so the switches here do not re-litigate that. Failures land in the
+// reader's sticky error, like every other read.
+type ColumnCursor struct {
+	reader    *Reader
+	fieldName string
+	element   uint8
+	encoding  uint8
+
+	// The block's dictionary, decoded once and handed out per row.
+	dictionary []string
+
+	// A run-length family's current run: what remains of it, and its value - which
+	// is a plain value for RLE, a delta for DELTA_RLE, an index for DICT_RLE.
+	runRemaining int32
+	runValue     int32
+
+	// The delta family's accumulator, once started.
+	previous int32
+	started  bool
+
+	// Rows not yet handed out. A run that claims more than this is corrupt, and
+	// catching it here names the field instead of leaving it to the block-end check.
+	rowsRemaining int32
+}
+
+// NewColumnCursor opens a scalar column at the head of its block, after its
+// CheckColumn passed. A dictionary encoding decodes its dictionary here, once.
+func NewColumnCursor(r *Reader, column Column, rowCount int32, fieldName string) *ColumnCursor {
+	c := &ColumnCursor{
+		reader:        r,
+		fieldName:     fieldName,
+		element:       column.Element,
+		encoding:      column.Encoding,
+		rowsRemaining: rowCount,
+	}
+
+	if column.Encoding == EncodingDict || column.Encoding == EncodingDictRle {
+		count := r.ReadCounter32()
+		if count < 0 && r.err == nil {
+			r.err = fmt.Errorf(
+				"sheetman: %s: the dictionary entry count is negative", fieldName)
+		}
+
+		if r.err == nil {
+			c.dictionary = make([]string, count)
+
+			for at := range c.dictionary {
+				c.dictionary[at] = r.ReadString()
+			}
+		}
+	}
+
+	return c
+}
+
+// NextI32 returns the next int32 - which also serves enums, and reference indexes.
+func (c *ColumnCursor) NextI32() int32 {
+	if c.reader.err != nil {
+		return 0
+	}
+
+	c.rowsRemaining--
+
+	switch c.encoding {
+	case EncodingRaw:
+		if c.element == ElementI32 {
+			return c.reader.ReadInt32()
+		}
+		return c.reader.ReadOptimalInt32()
+
+	case EncodingVarint:
+		return c.reader.ReadOptimalInt32()
+
+	case EncodingDelta:
+		// The addition wraps on purpose - Go's int32 arithmetic is two's complement -
+		// mirroring the writer's wrapping subtraction; together they are exact for
+		// every int32 pair.
+		if c.started {
+			c.previous += c.reader.ReadOptimalInt32()
+		} else {
+			c.previous = c.reader.ReadOptimalInt32()
+			c.started = true
+		}
+		return c.previous
+
+	case EncodingRle:
+		if c.runRemaining == 0 && !c.readRun() {
+			return 0
+		}
+
+		c.runRemaining--
+		return c.runValue
+
+	default: // EncodingDeltaRle; CheckColumn refused everything else.
+		if !c.started {
+			c.previous = c.reader.ReadOptimalInt32()
+			c.started = true
+			return c.previous
+		}
+
+		if c.runRemaining == 0 && !c.readRun() {
+			return 0
+		}
+
+		c.runRemaining--
+		c.previous += c.runValue
+		return c.previous
+	}
+}
+
+// NextI64 reads an int64 member: an i64 column is always raw, anything narrower
+// decodes as int32.
+func (c *ColumnCursor) NextI64() int64 {
+	if c.element == ElementI64 {
+		return c.reader.ReadInt64()
+	}
+
+	return int64(c.NextI32())
+}
+
+// NextF64 reads a float64 member: float columns are always raw, an i32 column
+// decodes then widens.
+func (c *ColumnCursor) NextF64() float64 {
+	switch c.element {
+	case ElementF64:
+		return c.reader.ReadFloat64()
+
+	case ElementF32:
+		return float64(c.reader.ReadFloat32())
+
+	default:
+		return float64(c.NextI32())
+	}
+}
+
+// NextString returns the next string - the dictionary's instance where the block
+// has one.
+func (c *ColumnCursor) NextString() string {
+	if c.reader.err != nil {
+		return ""
+	}
+
+	c.rowsRemaining--
+
+	switch c.encoding {
+	case EncodingRaw:
+		return c.reader.ReadString()
+
+	case EncodingDict:
+		return c.dictionaryEntry(c.reader.ReadCounter32())
+
+	default: // EncodingDictRle
+		if c.runRemaining == 0 && !c.readRun() {
+			return ""
+		}
+
+		c.runRemaining--
+		return c.dictionaryEntry(c.runValue)
+	}
+}
+
+func (c *ColumnCursor) readRun() bool {
+	length := c.reader.ReadCounter32()
+	if c.reader.err != nil {
+		return false
+	}
+
+	// + 1 because the row this run was read for is already counted out of
+	// rowsRemaining by its Next call.
+	if length < 1 || length > c.rowsRemaining+1 {
+		c.reader.err = fmt.Errorf(
+			"sheetman: %s: a run of %d values cannot cover the %d rows left in the column",
+			c.fieldName, length, c.rowsRemaining+1)
+		return false
+	}
+
+	c.runRemaining = length
+	c.runValue = c.reader.ReadOptimalInt32()
+
+	return c.reader.err == nil
+}
+
+func (c *ColumnCursor) dictionaryEntry(index int32) string {
+	if c.reader.err != nil {
+		return ""
+	}
+
+	if index < 0 || int(index) >= len(c.dictionary) {
+		c.reader.err = fmt.Errorf(
+			"sheetman: %s: dictionary index %d is out of range - the dictionary holds %d entries",
+			c.fieldName, index, len(c.dictionary))
+		return ""
+	}
+
+	return c.dictionary[index]
 }
 
 // CheckBlockEnd verifies a block was consumed exactly: a mismatch is a format

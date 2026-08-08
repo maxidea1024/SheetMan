@@ -104,44 +104,50 @@ func (t *CharacterLevelTable) Read(filename string) error {
 		switch column.Tag {
 		case 1:
 			if sheetman.CheckColumn(reader, column, "CharacterLevel.Id", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterLevel.Id")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Id = reader.ReadI32As(column.Element)
+					r.Id = cursor.NextI32()
 				}
 			}
 		case 2:
 			if sheetman.CheckColumn(reader, column, "CharacterLevel.Name", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterLevel.Name")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Name = reader.ReadString()
+					r.Name = cursor.NextString()
 				}
 			}
 		case 3:
 			if sheetman.CheckColumn(reader, column, "CharacterLevel.NameKR", sheetman.KindScalar, 1, sheetman.ElementString) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterLevel.NameKR")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.NameKR = reader.ReadString()
+					r.NameKR = cursor.NextString()
 				}
 			}
 		case 4:
 			if sheetman.CheckColumn(reader, column, "CharacterLevel.Level", sheetman.KindScalar, 1, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterLevel.Level")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.Level = reader.ReadI32As(column.Element)
+					r.Level = cursor.NextI32()
 				}
 			}
 		case 5:
 			if sheetman.CheckColumn(reader, column, "CharacterLevel.CharacterEXP", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterLevel.CharacterEXP")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.CharacterEXP = reader.ReadI64As(column.Element)
+					r.CharacterEXP = cursor.NextI64()
 				}
 			}
 		case 6:
 			if sheetman.CheckColumn(reader, column, "CharacterLevel.AccumulatedEXP", sheetman.KindScalar, 1, sheetman.ElementI64, sheetman.ElementI32, sheetman.ElementVarint) {
+				cursor := sheetman.NewColumnCursor(reader, column, count, "CharacterLevel.AccumulatedEXP")
 				for i := int32(0); i < count; i++ {
 					r := &records[i]
-					r.AccumulatedEXP = reader.ReadI64As(column.Element)
+					r.AccumulatedEXP = cursor.NextI64()
 				}
 			}
 		case 7:

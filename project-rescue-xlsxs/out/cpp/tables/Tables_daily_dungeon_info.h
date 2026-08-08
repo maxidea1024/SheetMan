@@ -119,73 +119,82 @@ class DailyDungeonInfoTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "DailyDungeonInfo.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "DailyDungeonInfo.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "DailyDungeonInfo.DungeonName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.DungeonName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.dungeon_name);
+            record.dungeon_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "DailyDungeonInfo.DungeonType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.DungeonType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.dungeon_type);
+            record.dungeon_type = static_cast<DungeonType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "DailyDungeonInfo.Priority", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.Priority");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.priority);
+            record.priority = cursor.next_i32();
           }
           break;
         }
         case 6: {
           sheetman::check_column(column, "DailyDungeonInfo.CycleType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.CycleType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.cycle_type);
+            record.cycle_type = static_cast<CycleType>(cursor.next_i32());
           }
           break;
         }
         case 7: {
           sheetman::check_column(column, "DailyDungeonInfo.EnterCondition", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.EnterCondition");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.enter_condition);
+            record.enter_condition = cursor.next_i32();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "DailyDungeonInfo.EnterCurrencyType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.EnterCurrencyType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.enter_currency_type);
+            record.enter_currency_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "DailyDungeonInfo.DungeonBuffID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.DungeonBuffID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.dungeon_buff_id);
+            record.dungeon_buff_id = cursor.next_i32();
           }
           break;
         }
@@ -199,57 +208,64 @@ class DailyDungeonInfoTable {
         }
         case 11: {
           sheetman::check_column(column, "DailyDungeonInfo.EnterCurrencyValue", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.EnterCurrencyValue");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.enter_currency_value);
+            record.enter_currency_value = cursor.next_i32();
           }
           break;
         }
         case 12: {
           sheetman::check_column(column, "DailyDungeonInfo.FreeEnterCurrencyType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.FreeEnterCurrencyType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.free_enter_currency_type);
+            record.free_enter_currency_type = static_cast<CurrencyType>(cursor.next_i32());
           }
           break;
         }
         case 13: {
           sheetman::check_column(column, "DailyDungeonInfo.ADEnterCount", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.ADEnterCount");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.ad_enter_count);
+            record.ad_enter_count = cursor.next_i32();
           }
           break;
         }
         case 14: {
           sheetman::check_column(column, "DailyDungeonInfo.EnterCurrencyCountMax", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.EnterCurrencyCountMax");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.enter_currency_count_max);
+            record.enter_currency_count_max = cursor.next_i32();
           }
           break;
         }
         case 15: {
           sheetman::check_column(column, "DailyDungeonInfo.DungeonImagePath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.DungeonImagePath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.dungeon_image_path);
+            record.dungeon_image_path = cursor.next_string();
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "DailyDungeonInfo.DungeonBGMID", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.DungeonBGMID");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.dungeon_bgmid);
+            record.dungeon_bgmid = cursor.next_i32();
           }
           break;
         }
         case 17: {
           sheetman::check_column(column, "DailyDungeonInfo.Description", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "DailyDungeonInfo.Description");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.description);
+            record.description = cursor.next_string();
           }
           break;
         }

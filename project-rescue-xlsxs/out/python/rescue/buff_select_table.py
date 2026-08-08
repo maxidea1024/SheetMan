@@ -85,32 +85,38 @@ class BuffSelectTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "BuffSelect.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BuffSelect.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "BuffSelect.BuffName", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BuffSelect.BuffName")
                 for record in records:
-                    record.buff_name = reader.read_string()
+                    record.buff_name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "BuffSelect.BuffID", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BuffSelect.BuffID")
                 for record in records:
-                    record.buff_id = reader.read_i32_as(column.element)
+                    record.buff_id = cursor.next_i32()
             elif column.tag == 4:
                 sheetman.check_column(column, "BuffSelect.Grade", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BuffSelect.Grade")
                 for record in records:
-                    record.grade = GradeType(reader.read_enum())
+                    record.grade = GradeType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "BuffSelect.BuffRate", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:
                     record.buff_rate = reader.read_float()
             elif column.tag == 6:
                 sheetman.check_column(column, "BuffSelect.BuffTooltip", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BuffSelect.BuffTooltip")
                 for record in records:
-                    record.buff_tooltip = reader.read_string()
+                    record.buff_tooltip = cursor.next_string()
             elif column.tag == 7:
                 sheetman.check_column(column, "BuffSelect.IconPath", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "BuffSelect.IconPath")
                 for record in records:
-                    record.icon_path = reader.read_string()
+                    record.icon_path = cursor.next_string()
             else:
                 # A column added after this code was generated.
                 reader.skip(column.byte_length)

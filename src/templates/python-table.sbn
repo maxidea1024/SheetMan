@@ -81,6 +81,9 @@ class {{ table.table_name }}:
 {{~ for field in table.fields ~}}
             {{ if for.first }}if{{ else }}elif{{ end }} column.tag == {{ field.tag }}:
                 {{ field.column_check }}
+{{~ if field.cursor_open != '' ~}}
+                {{ field.cursor_open }}
+{{~ end ~}}
                 for record in records:
 {{~ if field.kind == 'var_array' ~}}
                     element_count = reader.read_counter32()
@@ -91,7 +94,7 @@ class {{ table.table_name }}:
 {{~ else if field.kind == 'serial' ~}}
                     record.{{ field.name }} = [{{ field.read_element }} for _ in range({{ field.element_count }})]
 {{~ else if field.kind == 'scalar_ref' ~}}
-                    record.{{ field.name }}_index = reader.read_int32()
+                    record.{{ field.name }}_index = {{ field.read_scalar }}
 {{~ else ~}}
                     record.{{ field.name }} = {{ field.read_scalar }}
 {{~ end ~}}

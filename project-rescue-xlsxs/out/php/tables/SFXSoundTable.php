@@ -15,6 +15,7 @@ require_once __DIR__ . '/../sheetman/ScbReader.php';
 require_once __DIR__ . '/../enums/SFXCategoryType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -108,43 +109,49 @@ final class SFXSoundTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SFXSound.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SFXSound.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SFXSound.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SFXSound.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SFXSound.Category', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SFXSound.Category');
                     foreach ($records as $record) {
-                        $record->category = SFXCategoryType::tryFrom($reader->readEnum()) ?? SFXCategoryType::None;
+                        $record->category = SFXCategoryType::tryFrom($cursor->nextI32()) ?? SFXCategoryType::None;
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SFXSound.Path', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SFXSound.Path');
                     foreach ($records as $record) {
-                        $record->path = $reader->readString();
+                        $record->path = $cursor->nextString();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SFXSound.PreloadGroup', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SFXSound.PreloadGroup');
                     foreach ($records as $record) {
-                        $record->preloadGroup = $reader->readString();
+                        $record->preloadGroup = $cursor->nextString();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SFXSound.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SFXSound.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 

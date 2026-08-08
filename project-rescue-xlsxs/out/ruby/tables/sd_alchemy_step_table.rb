@@ -80,33 +80,39 @@ module Rescue
         case column.tag
         when 1
           Sheetman.check_column(column, 'SDAlchemyStep.Id', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyStep.Id')
           records.each do |record|
-            record.id = reader.read_i32_as(column.element)
+            record.id = cursor.next_i32
           end
         when 2
           Sheetman.check_column(column, 'SDAlchemyStep.Name', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyStep.Name')
           records.each do |record|
-            record.name = reader.read_string
+            record.name = cursor.next_string
           end
         when 3
           Sheetman.check_column(column, 'SDAlchemyStep.NameKR', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_STRING])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyStep.NameKR')
           records.each do |record|
-            record.name_kr = reader.read_string
+            record.name_kr = cursor.next_string
           end
         when 4
           Sheetman.check_column(column, 'SDAlchemyStep.MaxLevel', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyStep.MaxLevel')
           records.each do |record|
-            record.max_level = reader.read_i32_as(column.element)
+            record.max_level = cursor.next_i32
           end
         when 5
           Sheetman.check_column(column, 'SDAlchemyStep.RewardType', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyStep.RewardType')
           records.each do |record|
-            record.reward_type = reader.read_enum
+            record.reward_type = cursor.next_i32
           end
         when 6
           Sheetman.check_column(column, 'SDAlchemyStep.RewardValue', Sheetman::KIND_SCALAR, 1, [Sheetman::ELEMENT_I32, Sheetman::ELEMENT_VARINT])
+          cursor = Sheetman::ColumnCursor.new(reader, column, count, 'SDAlchemyStep.RewardValue')
           records.each do |record|
-            record.reward_value = reader.read_i32_as(column.element)
+            record.reward_value = cursor.next_i32
           end
         else
           # A column added after this code was generated.

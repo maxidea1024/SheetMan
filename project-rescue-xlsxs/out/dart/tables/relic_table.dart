@@ -86,6 +86,7 @@ class RelicTable {
     final reader = ScbReader(readAllBytes(filename));
     final header = readTableHeader(reader);
     final count = header.rowCount;
+    late ScbColumnCursor cursor;
 
     // Read into storage of its own and published at the end: reading a table that is already loaded is a refresh, and one that turns out to be unreadable has to leave the rows already there alone.
     final loaded = <RelicRecord>[];
@@ -101,32 +102,37 @@ class RelicTable {
       switch (column.tag) {
         case 1:
           checkColumn(column, 'Relic.Id', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.Id');
           for (final record in loaded) {
-            record.id = reader.readI32As(column.element);
+            record.id = cursor.nextI32();
           }
           break;
         case 2:
           checkColumn(column, 'Relic.Name', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.Name');
           for (final record in loaded) {
-            record.name = reader.readString();
+            record.name = cursor.nextString();
           }
           break;
         case 3:
           checkColumn(column, 'Relic.RelicName', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicName');
           for (final record in loaded) {
-            record.relicName = reader.readString();
+            record.relicName = cursor.nextString();
           }
           break;
         case 4:
           checkColumn(column, 'Relic.InfuluenceStep', kindScalar, 1, [elementI32, elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.InfuluenceStep');
           for (final record in loaded) {
-            record.infuluenceStep = reader.readI32As(column.element);
+            record.infuluenceStep = cursor.nextI32();
           }
           break;
         case 5:
           checkColumn(column, 'Relic.RelicType1', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicType1');
           for (final record in loaded) {
-            record.relicType1 = StatType.of(reader.readEnum());
+            record.relicType1 = StatType.of(cursor.nextI32());
           }
           break;
         case 6:
@@ -143,8 +149,9 @@ class RelicTable {
           break;
         case 8:
           checkColumn(column, 'Relic.RelicType2', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicType2');
           for (final record in loaded) {
-            record.relicType2 = StatType.of(reader.readEnum());
+            record.relicType2 = StatType.of(cursor.nextI32());
           }
           break;
         case 9:
@@ -161,8 +168,9 @@ class RelicTable {
           break;
         case 11:
           checkColumn(column, 'Relic.RelicType3', kindScalar, 1, [elementVarint]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.RelicType3');
           for (final record in loaded) {
-            record.relicType3 = StatType.of(reader.readEnum());
+            record.relicType3 = StatType.of(cursor.nextI32());
           }
           break;
         case 12:
@@ -179,14 +187,16 @@ class RelicTable {
           break;
         case 14:
           checkColumn(column, 'Relic.Description', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.Description');
           for (final record in loaded) {
-            record.description = reader.readString();
+            record.description = cursor.nextString();
           }
           break;
         case 15:
           checkColumn(column, 'Relic.IconPath', kindScalar, 1, [elementString]);
+          cursor = ScbColumnCursor(reader, column, count, 'Relic.IconPath');
           for (final record in loaded) {
-            record.iconPath = reader.readString();
+            record.iconPath = cursor.nextString();
           }
           break;
         default:

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Rescue;
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 

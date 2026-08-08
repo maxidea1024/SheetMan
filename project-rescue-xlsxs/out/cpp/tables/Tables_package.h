@@ -119,41 +119,46 @@ class PackageTable {
       switch (column.tag) {
         case 1: {
           sheetman::check_column(column, "Package.Id", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.Id");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.id);
+            record.id = cursor.next_i32();
           }
           break;
         }
         case 2: {
           sheetman::check_column(column, "Package.Name", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.Name");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.name);
+            record.name = cursor.next_string();
           }
           break;
         }
         case 3: {
           sheetman::check_column(column, "Package.ClassName", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.ClassName");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.class_name);
+            record.class_name = cursor.next_string();
           }
           break;
         }
         case 4: {
           sheetman::check_column(column, "Package.ItemType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.ItemType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.item_type);
+            record.item_type = static_cast<ItemType>(cursor.next_i32());
           }
           break;
         }
         case 5: {
           sheetman::check_column(column, "Package.PackageType", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.PackageType");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.package_type);
+            record.package_type = static_cast<ConsumablesType>(cursor.next_i32());
           }
           break;
         }
@@ -167,33 +172,37 @@ class PackageTable {
         }
         case 7: {
           sheetman::check_column(column, "Package.MaxStack", sheetman::kKindScalar, 1, {sheetman::kElementI64, sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.MaxStack");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i64_as(column.element, record.max_stack);
+            record.max_stack = cursor.next_i64();
           }
           break;
         }
         case 8: {
           sheetman::check_column(column, "Package.PackageCondition", sheetman::kKindScalar, 1, {sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.PackageCondition");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_enum(record.package_condition);
+            record.package_condition = static_cast<ConditionType>(cursor.next_i32());
           }
           break;
         }
         case 9: {
           sheetman::check_column(column, "Package.Cooltime", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.Cooltime");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.cooltime);
+            record.cooltime = cursor.next_i32();
           }
           break;
         }
         case 10: {
           sheetman::check_column(column, "Package.Duration", sheetman::kKindScalar, 1, {sheetman::kElementI32, sheetman::kElementVarint});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.Duration");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read_i32_as(column.element, record.duration);
+            record.duration = cursor.next_i32();
           }
           break;
         }
@@ -247,25 +256,28 @@ class PackageTable {
         }
         case 15: {
           sheetman::check_column(column, "Package.IconPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.IconPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.icon_path);
+            record.icon_path = cursor.next_string();
           }
           break;
         }
         case 16: {
           sheetman::check_column(column, "Package.DropPrefabPath", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.DropPrefabPath");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.drop_prefab_path);
+            record.drop_prefab_path = cursor.next_string();
           }
           break;
         }
         case 17: {
           sheetman::check_column(column, "Package.ItemDescription", sheetman::kKindScalar, 1, {sheetman::kElementString});
+          sheetman::ScbColumnCursor cursor(reader, column, header.row_count, "Package.ItemDescription");
           for (std::size_t i = 0; i < row_count; ++i) {
             auto& record = records[i];
-            reader.read(record.item_description);
+            record.item_description = cursor.next_string();
           }
           break;
         }

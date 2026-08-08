@@ -98,32 +98,39 @@ class EquipItemLevelTable:
             block_end = reader.position + column.byte_length
             if column.tag == 1:
                 sheetman.check_column(column, "EquipItemLevel.Id", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.Id")
                 for record in records:
-                    record.id = reader.read_i32_as(column.element)
+                    record.id = cursor.next_i32()
             elif column.tag == 2:
                 sheetman.check_column(column, "EquipItemLevel.Name", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.Name")
                 for record in records:
-                    record.name = reader.read_string()
+                    record.name = cursor.next_string()
             elif column.tag == 3:
                 sheetman.check_column(column, "EquipItemLevel.NameKR", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_STRING,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.NameKR")
                 for record in records:
-                    record.name_kr = reader.read_string()
+                    record.name_kr = cursor.next_string()
             elif column.tag == 4:
                 sheetman.check_column(column, "EquipItemLevel.Type", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.Type")
                 for record in records:
-                    record.type_ = JobType(reader.read_enum())
+                    record.type_ = JobType(cursor.next_i32())
             elif column.tag == 5:
                 sheetman.check_column(column, "EquipItemLevel.MaterialType", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_VARINT,))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.MaterialType")
                 for record in records:
-                    record.material_type = CurrencyType(reader.read_enum())
+                    record.material_type = CurrencyType(cursor.next_i32())
             elif column.tag == 6:
                 sheetman.check_column(column, "EquipItemLevel.MaterialValue", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.MaterialValue")
                 for record in records:
-                    record.material_value = reader.read_i32_as(column.element)
+                    record.material_value = cursor.next_i32()
             elif column.tag == 7:
                 sheetman.check_column(column, "EquipItemLevel.MaterialValue1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT))
+                cursor = sheetman.ColumnCursor(reader, column, count, "EquipItemLevel.MaterialValue1")
                 for record in records:
-                    record.material_value1 = reader.read_i32_as(column.element)
+                    record.material_value1 = cursor.next_i32()
             elif column.tag == 8:
                 sheetman.check_column(column, "EquipItemLevel.WeaponStatRate1", sheetman.KIND_SCALAR, 1, (sheetman.ELEMENT_F32,))
                 for record in records:

@@ -201,6 +201,7 @@ export class ConfigTable {
   public readBinaryFrom(data: Uint8Array): void {
     const reader = new sheetman.ScbReader(data)
     const { rowCount, columns } = sheetman.readTableHeader(reader)
+    let cursor: sheetman.ScbColumnCursor
 
     // Built here and published at the end, so a file that turns out to be truncated - or
     // a column this build cannot read - leaves the rows already loaded exactly as they are.
@@ -214,44 +215,50 @@ export class ConfigTable {
       switch (column.tag) {
         case 1:
           sheetman.checkColumn(column, 'Config.Index', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_I32, sheetman.ELEMENT_VARINT])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Config.Index')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._index = reader.readI32As(column.element)
+            record._index = cursor.nextI32()
           }
           break
         case 2:
           sheetman.checkColumn(column, 'Config.Id', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Config.Id')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._id = reader.readString()
+            record._id = cursor.nextString()
           }
           break
         case 3:
           sheetman.checkColumn(column, 'Config.Category', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Config.Category')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._category = reader.readString()
+            record._category = cursor.nextString()
           }
           break
         case 4:
           sheetman.checkColumn(column, 'Config.DataType', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Config.DataType')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._dataType = reader.readString()
+            record._dataType = cursor.nextString()
           }
           break
         case 5:
           sheetman.checkColumn(column, 'Config.DefaultValue', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Config.DefaultValue')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._defaultValue = reader.readString()
+            record._defaultValue = cursor.nextString()
           }
           break
         case 6:
           sheetman.checkColumn(column, 'Config.Description', sheetman.KIND_SCALAR, 1, [sheetman.ELEMENT_STRING])
+          cursor = new sheetman.ScbColumnCursor(reader, column, rowCount, 'Config.Description')
           for (let i = 0; i < rowCount; ++i) {
             const record = records[i]
-            record._description = reader.readString()
+            record._description = cursor.nextString()
           }
           break
         default:

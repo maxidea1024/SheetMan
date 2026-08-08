@@ -116,38 +116,44 @@ impl SDAlchemyInfoTable {
             match column.tag {
                 1 => {
                     sheetman::check_column(column, "SDAlchemyInfo.Id", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.Id")?;
                     for record in records.iter_mut() {
-                        record.id = reader.read_i32_as(column.element)?;
+                        record.id = cursor.next_i32()?;
                     }
                 }
                 2 => {
                     sheetman::check_column(column, "SDAlchemyInfo.Name", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.Name")?;
                     for record in records.iter_mut() {
-                        record.name = reader.read_string()?;
+                        record.name = cursor.next_string()?;
                     }
                 }
                 3 => {
                     sheetman::check_column(column, "SDAlchemyInfo.NameKR", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.NameKR")?;
                     for record in records.iter_mut() {
-                        record.name_kr = reader.read_string()?;
+                        record.name_kr = cursor.next_string()?;
                     }
                 }
                 4 => {
                     sheetman::check_column(column, "SDAlchemyInfo.MaterialType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.MaterialType")?;
                     for record in records.iter_mut() {
-                        record.material_type = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.material_type = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 5 => {
                     sheetman::check_column(column, "SDAlchemyInfo.CommonMaterialType1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.CommonMaterialType1")?;
                     for record in records.iter_mut() {
-                        record.common_material_type1 = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.common_material_type1 = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 6 => {
                     sheetman::check_column(column, "SDAlchemyInfo.CommonMaterialType2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.CommonMaterialType2")?;
                     for record in records.iter_mut() {
-                        record.common_material_type2 = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.common_material_type2 = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 7 => {
@@ -158,56 +164,65 @@ impl SDAlchemyInfoTable {
                 }
                 8 => {
                     sheetman::check_column(column, "SDAlchemyInfo.StatType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.StatType")?;
                     for record in records.iter_mut() {
-                        record.stat_type = StatType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.stat_type = StatType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 9 => {
                     sheetman::check_column(column, "SDAlchemyInfo.TargetType", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.TargetType")?;
                     for record in records.iter_mut() {
-                        record.target_type = TargetType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.target_type = TargetType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 10 => {
                     sheetman::check_column(column, "SDAlchemyInfo.MaxLevelId", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.MaxLevelId")?;
                     for record in records.iter_mut() {
-                        record.max_level_id = reader.read_i32_as(column.element)?;
+                        record.max_level_id = cursor.next_i32()?;
                     }
                 }
                 11 => {
                     sheetman::check_column(column, "SDAlchemyInfo.AccelerateTime", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.AccelerateTime")?;
                     for record in records.iter_mut() {
-                        record.accelerate_time = reader.read_i32_as(column.element)?;
+                        record.accelerate_time = cursor.next_i32()?;
                     }
                 }
                 12 => {
                     sheetman::check_column(column, "SDAlchemyInfo.AccelerateItemType1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.AccelerateItemType1")?;
                     for record in records.iter_mut() {
-                        record.accelerate_item_type1 = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.accelerate_item_type1 = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 13 => {
                     sheetman::check_column(column, "SDAlchemyInfo.AccelerateItemCost1", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.AccelerateItemCost1")?;
                     for record in records.iter_mut() {
-                        record.accelerate_item_cost1 = reader.read_i32_as(column.element)?;
+                        record.accelerate_item_cost1 = cursor.next_i32()?;
                     }
                 }
                 14 => {
                     sheetman::check_column(column, "SDAlchemyInfo.AccelerateItemType2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.AccelerateItemType2")?;
                     for record in records.iter_mut() {
-                        record.accelerate_item_type2 = CurrencyType::from_value(reader.read_enum()?).unwrap_or_default();
+                        record.accelerate_item_type2 = CurrencyType::from_value(cursor.next_i32()?).unwrap_or_default();
                     }
                 }
                 15 => {
                     sheetman::check_column(column, "SDAlchemyInfo.AccelerateItemCost2", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_I32, sheetman::ELEMENT_VARINT])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.AccelerateItemCost2")?;
                     for record in records.iter_mut() {
-                        record.accelerate_item_cost2 = reader.read_i32_as(column.element)?;
+                        record.accelerate_item_cost2 = cursor.next_i32()?;
                     }
                 }
                 16 => {
                     sheetman::check_column(column, "SDAlchemyInfo.IconPath", sheetman::KIND_SCALAR, 1, &[sheetman::ELEMENT_STRING])?;
+                    let mut cursor = sheetman::ScbColumnCursor::new(&mut reader, column, header.row_count, "SDAlchemyInfo.IconPath")?;
                     for record in records.iter_mut() {
-                        record.icon_path = reader.read_string()?;
+                        record.icon_path = cursor.next_string()?;
                     }
                 }
                 _ => {

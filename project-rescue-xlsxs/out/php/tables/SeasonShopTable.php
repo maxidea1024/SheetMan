@@ -17,6 +17,7 @@ require_once __DIR__ . '/../enums/CycleType.php';
 require_once __DIR__ . '/../enums/CurrencyType.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -128,43 +129,49 @@ final class SeasonShopTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'SeasonShop.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readI32As($column['element']);
+                        $record->id = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'SeasonShop.Name', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.Name');
                     foreach ($records as $record) {
-                        $record->name = $reader->readString();
+                        $record->name = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'SeasonShop.ProductName', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.ProductName');
                     foreach ($records as $record) {
-                        $record->productName = $reader->readString();
+                        $record->productName = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'SeasonShop.ShopType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.ShopType');
                     foreach ($records as $record) {
-                        $record->shopType = ShopType::tryFrom($reader->readEnum()) ?? ShopType::None;
+                        $record->shopType = ShopType::tryFrom($cursor->nextI32()) ?? ShopType::None;
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'SeasonShop.ShopSlotID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.ShopSlotID');
                     foreach ($records as $record) {
-                        $record->shopSlotID = $reader->readI32As($column['element']);
+                        $record->shopSlotID = $cursor->nextI32();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'SeasonShop.Priority', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.Priority');
                     foreach ($records as $record) {
-                        $record->priority = $reader->readI32As($column['element']);
+                        $record->priority = $cursor->nextI32();
                     }
                     break;
 
@@ -192,43 +199,49 @@ final class SeasonShopTable
 
                 case 9:
                     ScbReader::checkColumn($column, 'SeasonShop.CycleType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.CycleType');
                     foreach ($records as $record) {
-                        $record->cycleType = CycleType::tryFrom($reader->readEnum()) ?? CycleType::None;
+                        $record->cycleType = CycleType::tryFrom($cursor->nextI32()) ?? CycleType::None;
                     }
                     break;
 
                 case 10:
                     ScbReader::checkColumn($column, 'SeasonShop.LimitValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.LimitValue');
                     foreach ($records as $record) {
-                        $record->limitValue = $reader->readI32As($column['element']);
+                        $record->limitValue = $cursor->nextI32();
                     }
                     break;
 
                 case 11:
                     ScbReader::checkColumn($column, 'SeasonShop.CurrencyType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.CurrencyType');
                     foreach ($records as $record) {
-                        $record->currencyType = CurrencyType::tryFrom($reader->readEnum()) ?? CurrencyType::None;
+                        $record->currencyType = CurrencyType::tryFrom($cursor->nextI32()) ?? CurrencyType::None;
                     }
                     break;
 
                 case 12:
                     ScbReader::checkColumn($column, 'SeasonShop.PriceValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.PriceValue');
                     foreach ($records as $record) {
-                        $record->priceValue = $reader->readI32As($column['element']);
+                        $record->priceValue = $cursor->nextI32();
                     }
                     break;
 
                 case 13:
                     ScbReader::checkColumn($column, 'SeasonShop.ConditionID', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.ConditionID');
                     foreach ($records as $record) {
-                        $record->conditionID = $reader->readI32As($column['element']);
+                        $record->conditionID = $cursor->nextI32();
                     }
                     break;
 
                 case 14:
                     ScbReader::checkColumn($column, 'SeasonShop.IconPath', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'SeasonShop.IconPath');
                     foreach ($records as $record) {
-                        $record->iconPath = $reader->readString();
+                        $record->iconPath = $cursor->nextString();
                     }
                     break;
 

@@ -14,6 +14,7 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
   int32_t at;
   sm_column* columns = NULL;
   int32_t column_count = 0;
+  sm_cursor cursor;
 
   if (!sm_read_table_header(reader, &table->count, &columns, &column_count))
     return false;
@@ -46,11 +47,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 1:
       (void)sm_check_column(reader, column, "GachaCharacterList.Id", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.Id");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->id);
+        (void)sm_cursor_next_i32(&cursor, &record->id);
       }
 
       break;
@@ -58,11 +60,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 2:
       (void)sm_check_column(reader, column, "GachaCharacterList.CharacterID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.CharacterID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->character_id);
+        (void)sm_cursor_next_i32(&cursor, &record->character_id);
       }
 
       break;
@@ -70,12 +73,13 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 3:
       (void)sm_check_column(reader, column, "GachaCharacterList.GradeType", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.GradeType");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
         int32_t scratch = 0;
 
-        (void)sm_read_enum(reader, &scratch);
+        (void)sm_cursor_next_i32(&cursor, &scratch);
         record->grade_type = (Rescue_GradeType_t)scratch;
       }
 
@@ -84,11 +88,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 4:
       (void)sm_check_column(reader, column, "GachaCharacterList.BaseWeight", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.BaseWeight");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->base_weight);
+        (void)sm_cursor_next_i32(&cursor, &record->base_weight);
       }
 
       break;
@@ -108,11 +113,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 6:
       (void)sm_check_column(reader, column, "GachaCharacterList.WishlistWeight", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.WishlistWeight");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->wishlist_weight);
+        (void)sm_cursor_next_i32(&cursor, &record->wishlist_weight);
       }
 
       break;
@@ -120,11 +126,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 7:
       (void)sm_check_column(reader, column, "GachaCharacterList.ClassUpCurrencyID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.ClassUpCurrencyID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->class_up_currency_id);
+        (void)sm_cursor_next_i32(&cursor, &record->class_up_currency_id);
       }
 
       break;
@@ -132,11 +139,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 8:
       (void)sm_check_column(reader, column, "GachaCharacterList.ClassUpCurrencyValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.ClassUpCurrencyValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->class_up_currency_value);
+        (void)sm_cursor_next_i32(&cursor, &record->class_up_currency_value);
       }
 
       break;
@@ -144,11 +152,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 9:
       (void)sm_check_column(reader, column, "GachaCharacterList.ExConditionID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.ExConditionID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->ex_condition_id);
+        (void)sm_cursor_next_i32(&cursor, &record->ex_condition_id);
       }
 
       break;
@@ -156,11 +165,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 10:
       (void)sm_check_column(reader, column, "GachaCharacterList.ExCurrencyID", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.ExCurrencyID");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->ex_currency_id);
+        (void)sm_cursor_next_i32(&cursor, &record->ex_currency_id);
       }
 
       break;
@@ -168,11 +178,12 @@ static bool Rescue_GachaCharacterListParse(Rescue_GachaCharacterListTable_t* tab
     case 11:
       (void)sm_check_column(reader, column, "GachaCharacterList.ExCurrencyValue", SM_KIND_SCALAR, 1, SM_ELEMENT_MASK(SM_ELEMENT_I32) | SM_ELEMENT_MASK(SM_ELEMENT_VARINT));
 
+      (void)sm_cursor_init(&cursor, reader, column, table->count, "GachaCharacterList.ExCurrencyValue");
 
       for (row = 0; row < table->count && !sm_failed(reader); ++row) {
         Rescue_GachaCharacterListRecord_t* record = &table->records[row];
 
-        (void)sm_read_i32_as(reader, column->element, &record->ex_currency_value);
+        (void)sm_cursor_next_i32(&cursor, &record->ex_currency_value);
       }
 
       break;

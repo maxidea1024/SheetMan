@@ -14,6 +14,7 @@ namespace Rescue;
 require_once __DIR__ . '/../sheetman/ScbReader.php';
 
 use SheetMan\ScbReader;
+use SheetMan\ScbColumnCursor;
 use SheetMan\RecordNotFoundException;
 use SheetMan\Uuid;
 
@@ -148,43 +149,49 @@ final class ConfigTable
             switch ($column['tag']) {
                 case 1:
                     ScbReader::checkColumn($column, 'Config.Index', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_I32, ScbReader::ELEMENT_VARINT]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Config.Index');
                     foreach ($records as $record) {
-                        $record->index = $reader->readI32As($column['element']);
+                        $record->index = $cursor->nextI32();
                     }
                     break;
 
                 case 2:
                     ScbReader::checkColumn($column, 'Config.Id', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Config.Id');
                     foreach ($records as $record) {
-                        $record->id = $reader->readString();
+                        $record->id = $cursor->nextString();
                     }
                     break;
 
                 case 3:
                     ScbReader::checkColumn($column, 'Config.Category', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Config.Category');
                     foreach ($records as $record) {
-                        $record->category = $reader->readString();
+                        $record->category = $cursor->nextString();
                     }
                     break;
 
                 case 4:
                     ScbReader::checkColumn($column, 'Config.DataType', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Config.DataType');
                     foreach ($records as $record) {
-                        $record->dataType = $reader->readString();
+                        $record->dataType = $cursor->nextString();
                     }
                     break;
 
                 case 5:
                     ScbReader::checkColumn($column, 'Config.DefaultValue', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Config.DefaultValue');
                     foreach ($records as $record) {
-                        $record->defaultValue = $reader->readString();
+                        $record->defaultValue = $cursor->nextString();
                     }
                     break;
 
                 case 6:
                     ScbReader::checkColumn($column, 'Config.Description', ScbReader::KIND_SCALAR, 1, [ScbReader::ELEMENT_STRING]);
+                    $cursor = new ScbColumnCursor($reader, $column, $count, 'Config.Description');
                     foreach ($records as $record) {
-                        $record->description = $reader->readString();
+                        $record->description = $cursor->nextString();
                     }
                     break;
 
