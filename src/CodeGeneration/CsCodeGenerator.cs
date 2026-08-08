@@ -30,6 +30,16 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     private Model _model;
     private RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe _csharpReceipe;
 
+    /// <summary>
+    /// A record group generates a struct and an array of it; a member column fills one of
+    /// its fields.
+    /// </summary>
+    /// <remarks>
+    /// The first of the thirteen. The others follow the same split - declaration per
+    /// field, reading per wire column - and refuse a record by name until they do.
+    /// </remarks>
+    protected override bool SupportsNestedFields => true;
+
     protected override void Run(TargetContext context, RecipeModel.CodeGenerationRecipeGroup.CSharpRecipe csharpRecipe)
     {
         // A blank path means the entry is inert - which is what every list in the
@@ -174,6 +184,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     private CsTableView BuildTable(Table table)
     {
         var fields = table.SerialFields.Select(sf => BuildField(table, sf)).ToList();
+        var columns = table.WireColumns.Select(wire => BuildColumn(table, wire)).ToList();
 
         return new CsTableView
         {
@@ -181,6 +192,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             RawName = table.Name,
             Comment = CommentLines(table.Comment),
             Fields = fields,
+            Columns = columns,
 
             IndexedFields = table.SerialFields
                                  .Select((sf, i) => new { sf, view = fields[i] })
@@ -201,8 +213,9 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                 sf => sf.ElementType == Models.ValueType.Enum && sf.IsArray),
 
             // One cursor variable for the whole method: switch cases share a scope, so
-            // each encodable column assigns it rather than declaring its own.
-            NeedsCursor = table.SerialFields.Any(UsesCursor),
+            // each encodable column assigns it rather than declaring its own. Asked of the
+            // columns, because that is what the switch has a case for.
+            NeedsCursor = table.WireColumns.Any(UsesCursor),
 
             // Pascal-casing a folded group's name gives the property it is exposed under
             // - `TextEn_array` becomes `TextEnArray` - so these literals name the very
@@ -226,14 +239,64 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             ? ""
             : "GetBy" + refTable.SerialFields.First(sf => sf.IsIndexer).Name.ToPascalCase() + "OrThrow";
 
+    /// <summary>
+    /// One column of the file: how it is checked, how it is decoded, and where its values
+    /// land.
+    /// </summary>
+    /// <remarks>
+    /// The member it fills is the group's for a scalar column. A record group's member
+    /// columns each fill one field of the generated element type, which is where these
+    /// three differ from the group's - see spec/nested-fields.md.
+    /// </remarks>
+    private CsColumnView BuildColumn(Table table, WireColumn wire)
+    {
+        string fieldType = ToCSharpTypeName(wire.TagCarrier);
+        string fieldName = "_" + wire.Group.Name.ToCamelCase();
+        string refTable = wire.TagCarrier.RefTableName.ToPascalCase();
+
+        // A record's member column assigns one field of the element rather than the member
+        // itself: `record._slot[j].Id` instead of `record._slot[j]`. Everything else about
+        // reading it is the same, which is why this is a suffix and not a second path.
+        string memberAccess = (wire.Member is null) ? "" : "." + wire.Member.Name.ToPascalCase();
+
+        // A member of an array-valued record loops over the elements without allocating:
+        // the array is a struct array created with the record, so unlike a serial field
+        // there is nothing to `new` per column - and doing so per member would throw away
+        // whatever the previous member had written.
+        string readKind = (wire.Member is not null && wire.IsFixedArray)
+            ? "record_serial"
+            : ReadKind(wire);
+
+        return new CsColumnView
+        {
+            Tag = wire.TagCarrier.Tag.Value,
+            ColumnCheck = ColumnCheck(wire, table.Name.ToPascalCase()),
+            ReadKind = readKind,
+            CursorOpen = CursorOpen(wire, table.Name.ToPascalCase()),
+            ElementRead = ElementReadLines(wire, fieldName, fieldType, refTable, memberAccess),
+            RunCall = RunCall(wire),
+            RunRead = RunReadLines(wire, fieldName, fieldType, refTable, memberAccess),
+            FieldName = fieldName,
+            FieldType = fieldType,
+            PropName = wire.Group.Name.ToPascalCase(),
+        };
+    }
+
     private CsFieldView BuildField(Table table, SerialField sf)
     {
+        if (sf.IsRecord)
+            return BuildRecordField(sf);
+
         string fieldType = ToCSharpTypeName(sf.FirstField);
         string fieldName = "_" + sf.Name.ToCamelCase();
         string refTable = sf.FirstField.RefTableName.ToPascalCase();
 
         return new CsFieldView
         {
+            IsRecord = false,
+            RecordTypeName = "",
+            Members = Array.Empty<CsRecordMemberView>(),
+            NeedsElementInit = false,
             Comment = CommentLines(sf.FirstField.Comment),
             PropName = sf.Name.ToPascalCase(),
             FieldName = fieldName,
@@ -244,13 +307,6 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             RefLookup = PrimaryLookup(sf.FirstField.ResolvedRefTable),
             RefField = sf.FirstField.RefFieldName.ToPascalCase(),
             Kind = DeclarationKind(sf),
-            ReadKind = ReadKind(sf),
-            Tag = sf.FirstField.Tag.Value,
-            ColumnCheck = ColumnCheck(sf, table.Name.ToPascalCase()),
-            CursorOpen = CursorOpen(sf, table.Name.ToPascalCase()),
-            ElementRead = ElementReadLines(sf, fieldName, fieldType, refTable),
-            RunCall = RunCall(sf),
-            RunRead = RunReadLines(sf, fieldName, fieldType, refTable),
 
             // A reference to a whole row is assigned the target record; one that names a
             // field is assigned that field's value, which is the field's own type.
@@ -259,6 +315,58 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                 : fieldType,
 
             ReferencesField = !string.IsNullOrEmpty(sf.FirstField.RefFieldName),
+        };
+    }
+
+    /// <summary>
+    /// A record group: the element type to declare, and the member holding one or an array
+    /// of them.
+    /// </summary>
+    /// <remarks>
+    /// The element type is a struct. Two reasons, both about the read path: an array of
+    /// structs needs no per-element allocation, so a table of twenty thousand rows with a
+    /// four-element record does not make eighty thousand objects; and `array[j].Member = x`
+    /// is a legal assignment on a struct array, which is exactly what each member column's
+    /// read does.
+    ///
+    /// No reference members - the model refuses those - so nothing here has the index
+    /// arrays and setters a reference would need.
+    /// </remarks>
+    private CsFieldView BuildRecordField(SerialField sf)
+    {
+        var members = sf.Members.Select((member, at) => new CsRecordMemberView
+        {
+            Comment = CommentLines(member.FirstField.Comment),
+            PropName = member.Name.ToPascalCase(),
+            FieldType = ToCSharpTypeName(member.FirstField),
+            Initializer = member.ElementType == Models.ValueType.String ? " = \"\"" : "",
+            IsFirst = at == 0,
+        }).ToList();
+
+        return new CsFieldView
+        {
+            IsRecord = true,
+            RecordTypeName = sf.Name.ToPascalCase() + "Entry",
+            Members = members,
+            NeedsElementInit = members.Any(m => m.Initializer.Length > 0),
+
+            // The group's own comment is the first member's column comment - a record has
+            // no header cell of its own, so that is the nearest thing the sheet said.
+            Comment = CommentLines(sf.Members[0].FirstField.Comment),
+            PropName = sf.Name.ToPascalCase(),
+            FieldName = "_" + sf.Name.ToCamelCase(),
+            FieldType = sf.Name.ToPascalCase() + "Entry",
+            Initializer = "",
+            ElementCount = sf.RecordElementCount,
+            Kind = sf.IsArray ? "record_array" : "record",
+
+            // None of these apply to a record. A reference belongs to a member and members
+            // cannot be references yet, so there is nothing to resolve.
+            RefTable = "",
+            RefLookup = "",
+            RefField = "",
+            ReferenceSetterType = "",
+            ReferencesField = false,
         };
     }
 
@@ -299,12 +407,12 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
         return sf.IsRef ? "scalar_ref" : "scalar";
     }
 
-    private static string ReadKind(SerialField sf)
+    private static string ReadKind(WireColumn wire)
     {
-        if (!sf.IsArray)
-            return "scalar";
+        if (wire.IsVariableLengthArray)
+            return "var_array";
 
-        return sf.IsVariableLengthArray ? "var_array" : "serial";
+        return wire.IsFixedArray ? "serial" : "scalar";
     }
 
     /// <summary>
@@ -321,21 +429,21 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// double member says f64, f32 and i32, and everything else is exact. Anything not
     /// listed is refused by name before a byte of the block is read.
     /// </remarks>
-    private static string ColumnCheck(SerialField sf, string tableName)
+    private static string ColumnCheck(WireColumn wire, string tableName)
     {
-        string kind = sf.IsVariableLengthArray
+        string kind = wire.IsVariableLengthArray
             ? "ScbTable.KindVarArray"
-            : (sf.Fields.Count > 1 ? "ScbTable.KindFixedArray" : "ScbTable.KindScalar");
+            : (wire.IsFixedArray ? "ScbTable.KindFixedArray" : "ScbTable.KindScalar");
 
-        int count = sf.IsVariableLengthArray ? 0 : sf.Fields.Count;
+        int count = wire.IsVariableLengthArray ? 0 : wire.Cells.Count;
 
         string accepted;
 
-        if (sf.IsRef)
+        if (wire.IsRef)
             accepted = "ScbTable.ElementI32";
         else
         {
-            switch (sf.ElementType)
+            switch (wire.ElementType)
             {
                 case Models.ValueType.Int32:
                     accepted = "ScbTable.ElementI32, ScbTable.ElementVarint";
@@ -360,11 +468,11 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                     break;
 
                 default:
-                    throw new SheetManException($"The csharp generator cannot check type `{sf.Type}`.");
+                    throw new SheetManException($"The csharp generator cannot check type `{wire.Type}`.");
             }
         }
 
-        return $"ScbTable.CheckColumn(column, \"{tableName}.{sf.Name}\", {kind}, {count}, {accepted});";
+        return $"ScbTable.CheckColumn(column, \"{tableName}.{wire.Name}\", {kind}, {count}, {accepted});";
     }
 
     /// <summary>
@@ -378,15 +486,15 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// element the encodings apply to, or promote from. Arrays are always raw and keep
     /// reading the reader directly, as do the scalar elements that stay raw by spec.
     /// </summary>
-    private static bool UsesCursor(SerialField sf)
+    private static bool UsesCursor(WireColumn wire)
     {
-        if (sf.IsArray)
+        if (wire.IsFixedArray || wire.IsVariableLengthArray)
             return false;
 
-        if (sf.IsRef)
+        if (wire.IsRef)
             return true;
 
-        switch (sf.ElementType)
+        switch (wire.ElementType)
         {
             // Int64 and Double are here for their promotions as well as their own
             // dictionaries: the file may carry an i32 column - encoded - where the
@@ -415,9 +523,9 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// The cursor construction ahead of an encodable column's row loop, or nothing for
     /// a column that reads the reader directly.
     /// </summary>
-    private static string CursorOpen(SerialField sf, string tableName)
-        => UsesCursor(sf)
-            ? $"cursor = new ScbColumnCursor(reader, column, count, \"{tableName}.{sf.Name}\");"
+    private static string CursorOpen(WireColumn wire, string tableName)
+        => UsesCursor(wire)
+            ? $"cursor = new ScbColumnCursor(reader, column, count, \"{tableName}.{wire.Name}\");"
             : "";
 
     /// <summary>
@@ -430,15 +538,15 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// their encodings are dictionaries, where the per-row work is already one index
     /// lookup - as do arrays, which are always raw.
     /// </remarks>
-    private static string RunCall(SerialField sf)
+    private static string RunCall(WireColumn wire)
     {
-        if (sf.IsArray || !UsesCursor(sf))
+        if (!UsesCursor(wire))
             return "";
 
-        if (sf.IsRef || sf.ElementType == Models.ValueType.Enum)
+        if (wire.IsRef || wire.ElementType == Models.ValueType.Enum)
             return "NextSameI32";
 
-        switch (sf.ElementType)
+        switch (wire.ElementType)
         {
             case Models.ValueType.Int32:
                 return "NextSameI32";
@@ -454,15 +562,15 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
     /// the template builds around <see cref="RunCall"/>.
     /// </summary>
     private static IReadOnlyList<string> RunReadLines(
-        SerialField sf, string fieldName, string fieldType, string refTable)
+        WireColumn wire, string fieldName, string fieldType, string refTable, string memberAccess)
     {
-        if (RunCall(sf).Length == 0)
+        if (RunCall(wire).Length == 0)
             return Array.Empty<string>();
 
-        if (sf.ElementType == Models.ValueType.Enum)
-            return new[] { $"record.{fieldName} = ({fieldType})value;" };
+        if (wire.ElementType == Models.ValueType.Enum)
+            return new[] { $"record.{fieldName}{memberAccess} = ({fieldType})value;" };
 
-        if (sf.IsRef)
+        if (wire.IsRef)
         {
             return new[]
             {
@@ -472,27 +580,31 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             };
         }
 
-        return new[] { $"record.{fieldName} = value;" };
+        return new[] { $"record.{fieldName}{memberAccess} = value;" };
     }
 
     private static IReadOnlyList<string> ElementReadLines(
-        SerialField sf, string fieldName, string fieldType, string refTable)
+        WireColumn wire, string fieldName, string fieldType, string refTable, string memberAccess)
     {
-        string target = sf.IsArray ? $"record.{fieldName}[j]" : $"record.{fieldName}";
-        string flag = sf.IsArray ? $"record.{fieldName}_F[j]" : $"record.{fieldName}_F";
-        string index = sf.IsArray
+        bool isArray = wire.IsFixedArray || wire.IsVariableLengthArray;
+
+        string target = isArray
+            ? $"record.{fieldName}[j]{memberAccess}"
+            : $"record.{fieldName}{memberAccess}";
+        string flag = isArray ? $"record.{fieldName}_F[j]" : $"record.{fieldName}_F";
+        string index = isArray
             ? $"record.{fieldName}_{refTable}_index[j]"
             : $"record.{fieldName}_{refTable}_index";
 
         // A scalar column can arrive encoded, so it reads through the cursor - which
         // also carries the lossless promotions. Arrays are always raw and keep the
         // direct reads further down.
-        if (UsesCursor(sf))
+        if (UsesCursor(wire))
         {
-            if (sf.ElementType == Models.ValueType.Enum)
+            if (wire.ElementType == Models.ValueType.Enum)
                 return new[] { $"{target} = ({fieldType})cursor.NextI32();" };
 
-            if (sf.IsRef)
+            if (wire.IsRef)
             {
                 // Only the stored index is on the wire; the value is filled in once
                 // every table is loaded, and the flag records whether that happened.
@@ -504,7 +616,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
                 };
             }
 
-            switch (sf.ElementType)
+            switch (wire.ElementType)
             {
                 case Models.ValueType.Int32:
                     return new[] { $"{target} = cursor.NextI32();" };
@@ -528,7 +640,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             }
         }
 
-        if (sf.ElementType == Models.ValueType.Enum)
+        if (wire.ElementType == Models.ValueType.Enum)
         {
             // Enum values are zig-zag encoded, and the reader hands back an int.
             return new[]
@@ -538,7 +650,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
             };
         }
 
-        if (sf.IsRef)
+        if (wire.IsRef)
         {
             return new[]
             {
@@ -550,7 +662,7 @@ public class CsCodeGenerator : CodeGenerator<RecipeModel.CodeGenerationRecipeGro
 
         // The three promotable members read through the As-helpers, so a file written
         // before the column was widened still reads. Everything else is exact.
-        switch (sf.ElementType)
+        switch (wire.ElementType)
         {
             case Models.ValueType.Int32:
                 return new[] { $"{target} = reader.ReadI32As(column.Element);" };

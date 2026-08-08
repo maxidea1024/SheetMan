@@ -44,7 +44,12 @@
             /// </summary>
 {{~ end ~}}
 {{~ end ~}}
-{{~ if field.kind == 'array_ref' || field.kind == 'array' ~}}
+{{~ if field.kind == 'record_array' ~}}
+            public {{ field.field_type }}[] {{ field.prop_name }} => {{ field.field_name }};
+            public const int {{ field.prop_name }}_N = {{ field.element_count }};
+{{~ else if field.kind == 'record' ~}}
+            public {{ field.field_type }} {{ field.prop_name }} => {{ field.field_name }};
+{{~ else if field.kind == 'array_ref' || field.kind == 'array' ~}}
             public {{ field.field_type }}[] {{ field.prop_name }} => {{ field.field_name }};
             public const int {{ field.prop_name }}_N = {{ field.element_count }};
 {{~ else if field.kind == 'var_array' ~}}
@@ -54,6 +59,73 @@
 {{~ end ~}}
 {{~ end ~}}
             #endregion
+{{~## The element type of each record group. A struct, so an array of them needs no
+      per-element allocation and `array[j].Member = x` is a legal assignment - which is
+      exactly what a member column's read does. See spec/nested-fields.md. ##~}}
+{{~ for field in table.fields ~}}
+{{~ if field.is_record }}
+            /// <summary>One element of <see cref="{{ field.prop_name }}"/>.</summary>
+            [System.Serializable]
+            public struct {{ field.record_type_name }}
+            {
+{{~## No field initializers: those are C# 10 in a struct and need an explicit
+      parameterless constructor, and this has to compile as the C# 8 Unity 2020.3
+      accepts. The factory below fills the strings instead. ##~}}
+{{~ for member in field.members ~}}
+{{~ for line in member.comment ~}}
+                /// {{ line }}
+{{~ end ~}}
+                public {{ member.field_type }} {{ member.prop_name }};
+{{~ end ~}}
+
+                public override string ToString()
+                {
+                    var sb = new StringBuilder("{");
+{{~ for member in field.members ~}}
+{{~ if member.is_first ~}}
+                    sb.Append("\"{{ member.prop_name }}\":"); ToStringHelper.ToString({{ member.prop_name }}, sb);
+{{~ else ~}}
+                    sb.Append(",\"{{ member.prop_name }}\":"); ToStringHelper.ToString({{ member.prop_name }}, sb);
+{{~ end ~}}
+{{~ end ~}}
+                    sb.Append("}");
+                    return sb.ToString();
+                }
+            }
+{{~ if field.needs_element_init }}
+{{~## A string member of a record starts empty rather than null, the same guarantee every
+      other string member of a generated record has. It matters when a file predates the
+      member: no column, so nothing writes the field, and null is a crash one field later.
+      A struct cannot say so itself, so this does. ##~}}
+{{~ if field.kind == 'record_array' ~}}
+            private static {{ field.record_type_name }}[] New{{ field.record_type_name }}Array()
+            {
+                var result = new {{ field.record_type_name }}[{{ field.prop_name }}_N];
+                for (int i = 0; i < result.Length; i++)
+                {
+{{~ for member in field.members ~}}
+{{~ if member.initializer != '' ~}}
+                    result[i].{{ member.prop_name }}{{ member.initializer }};
+{{~ end ~}}
+{{~ end ~}}
+                }
+                return result;
+            }
+{{~ else ~}}
+            private static {{ field.record_type_name }} New{{ field.record_type_name }}()
+            {
+                var result = default({{ field.record_type_name }});
+{{~ for member in field.members ~}}
+{{~ if member.initializer != '' ~}}
+                result.{{ member.prop_name }}{{ member.initializer }};
+{{~ end ~}}
+{{~ end ~}}
+                return result;
+            }
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
 {{~ if table.reference_fields | array.size > 0 }}
             #region Reference wiring
 {{~## Called by the accessor once every table is read, and by nothing else. Kept
@@ -72,7 +144,21 @@
 {{~## Written by the enclosing table as it reads, and by the accessor as it
       resolves references - hence `internal` and `public` rather than `private`. ##~}}
 {{~ for field in table.fields ~}}
-{{~ if field.kind == 'array_ref' ~}}
+{{~ if field.kind == 'record_array' ~}}
+{{~## Allocated with the record, not by the read. Each member column fills one field of
+      each element, so allocating per column would discard what the previous one wrote. ##~}}
+{{~ if field.needs_element_init ~}}
+            internal {{ field.field_type }}[] {{ field.field_name }} = New{{ field.record_type_name }}Array();
+{{~ else ~}}
+            internal {{ field.field_type }}[] {{ field.field_name }} = new {{ field.field_type }}[{{ field.prop_name }}_N];
+{{~ end ~}}
+{{~ else if field.kind == 'record' ~}}
+{{~ if field.needs_element_init ~}}
+            internal {{ field.field_type }} {{ field.field_name }} = New{{ field.record_type_name }}();
+{{~ else ~}}
+            internal {{ field.field_type }} {{ field.field_name }};
+{{~ end ~}}
+{{~ else if field.kind == 'array_ref' ~}}
             internal {{ field.field_type }}[] {{ field.field_name }} = new {{ field.field_type }}[{{ field.prop_name }}_N];
             public int[] {{ field.field_name }}_{{ field.ref_table }}_index = new int[{{ field.prop_name }}_N];
             public bool[] {{ field.field_name }}_F = new bool[{{ field.prop_name }}_N];
@@ -221,57 +307,73 @@
 
                 switch (column.Tag)
                 {
-{{~ for field in table.fields ~}}
-                    case {{ field.tag }}:
-                        {{ field.column_check }}
-{{~ if field.read_kind == 'var_array' ~}}
+{{~## One case per column of the file, not per declared member. They are the same
+      thing for every table without a record group, and a record group is one column
+      per member - so the switch loops over `table.columns`. ##~}}
+{{~ for column in table.columns ~}}
+                    case {{ column.tag }}:
+                        {{ column.column_check }}
+{{~ if column.read_kind == 'var_array' ~}}
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
                             reader.TryReadCounter32(out int elementCount);
-                            record.{{ field.field_name }} = new {{ field.field_type }}[elementCount];
+                            record.{{ column.field_name }} = new {{ column.field_type }}[elementCount];
                             for (int j = 0; j < elementCount; ++j)
                             {
-{{~ for line in field.element_read ~}}
+{{~ for line in column.element_read ~}}
                                 {{ line }}
 {{~ end ~}}
                             }
                         }
-{{~ else if field.read_kind == 'serial' ~}}
+{{~ else if column.read_kind == 'serial' ~}}
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-                            record.{{ field.field_name }} = new {{ field.field_type }}[Record.{{ field.prop_name }}_N];
-                            for (int j = 0; j < Record.{{ field.prop_name }}_N; ++j)
+                            record.{{ column.field_name }} = new {{ column.field_type }}[Record.{{ column.prop_name }}_N];
+                            for (int j = 0; j < Record.{{ column.prop_name }}_N; ++j)
                             {
-{{~ for line in field.element_read ~}}
+{{~ for line in column.element_read ~}}
                                 {{ line }}
 {{~ end ~}}
                             }
                         }
-{{~ else if field.run_call != '' ~}}
-                        {{ field.cursor_open }}
+{{~ else if column.read_kind == 'record_serial' ~}}
+{{~## One member of an array-valued record. No allocation: the struct array came with
+      the record, and re-creating it here would discard the members read before this one. ##~}}
+                        for (int i = 0; i < count; i++)
+                        {
+                            var record = records[i];
+                            for (int j = 0; j < Record.{{ column.prop_name }}_N; ++j)
+                            {
+{{~ for line in column.element_read ~}}
+                                {{ line }}
+{{~ end ~}}
+                            }
+                        }
+{{~ else if column.run_call != '' ~}}
+                        {{ column.cursor_open }}
                         for (int i = 0; i < count; )
                         {
                             // One call per run of equal values, not one per row - over a
                             // run-length encoded column this is most of the decode.
-                            int n = cursor.{{ field.run_call }}(count - i, out var value);
+                            int n = cursor.{{ column.run_call }}(count - i, out var value);
                             do
                             {
                                 var record = records[i++];
-{{~ for line in field.run_read ~}}
+{{~ for line in column.run_read ~}}
                                 {{ line }}
 {{~ end ~}}
                             } while (--n > 0);
                         }
 {{~ else ~}}
-{{~ if field.cursor_open != '' ~}}
-                        {{ field.cursor_open }}
+{{~ if column.cursor_open != '' ~}}
+                        {{ column.cursor_open }}
 {{~ end ~}}
                         for (int i = 0; i < count; i++)
                         {
                             var record = records[i];
-{{~ for line in field.element_read ~}}
+{{~ for line in column.element_read ~}}
                             {{ line }}
 {{~ end ~}}
                         }

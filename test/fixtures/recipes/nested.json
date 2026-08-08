@@ -23,6 +23,16 @@
     "GoogleSheets": []
   },
 
+  "CodeGenerations": {
+    "CSharp": [
+      {
+        "Path": "test/fixtures/output/nested/csharp",
+        "Namespace": "SheetMan.Fixtures.Nested",
+        "AccessorName": "NestedAccessor"
+      }
+    ]
+  },
+
   "Exports": {
     "Binary": [
       {

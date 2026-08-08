@@ -21,8 +21,12 @@ public class NestedTargetSupportTests
     /// </summary>
     /// <remarks>
     /// Delete this test when every target supports records. Until then it is what keeps
-    /// the twelve that do not from emitting output that differs from the one that does for
+    /// the ones that do not from emitting output that differs from the ones that do for
     /// reasons nobody can see.
+    ///
+    /// The recipe names whichever target has not learned yet. It named `csharp` until
+    /// csharp learned, and this test is what said so - it stopped failing, which is a
+    /// refusal test's way of reporting that the thing it guards has moved on.
     /// </remarks>
     [Fact]
     public void A_target_that_does_not_support_records_refuses_by_name()
@@ -34,7 +38,7 @@ public class NestedTargetSupportTests
         string output = result.StdOut + result.StdErr;
 
         // The target, so it is clear which of the thirteen is the one that cannot.
-        Assert.Contains("csharp", output);
+        Assert.Contains("typescript", output);
         Assert.Contains("does not support nested fields", output);
 
         // And the table and the first group it could not take, so it is clear what to

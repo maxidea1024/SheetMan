@@ -1,9 +1,12 @@
 {
-  // The same workbook as `nested`, with a code target added.
+  // The same workbook as `nested`, with a target that has not learned what a record is.
   //
-  // Expected to fail, and that is the point: a target that has not learned what a record
-  // is must say so by name rather than reach for the single column a record group does
-  // not have. Delete this recipe when every target supports them.
+  // Expected to fail, and that is the point: such a target must say so by name rather
+  // than reach for the single column a record group does not have.
+  //
+  // It named `csharp` until csharp learned, at which point this test stopped failing and
+  // said so - so when the target here starts supporting records, move it to another one
+  // that does not. Delete the recipe when the last one lands.
 
   "Sources": {
     "Xlsx": [
@@ -16,11 +19,9 @@
   },
 
   "CodeGenerations": {
-    "CSharp": [
+    "Typescript": [
       {
-        "Path": "test/fixtures/output/nested-unsupported/csharp",
-        "Namespace": "SheetMan.Fixtures.Nested",
-        "AccessorName": "NestedAccessor"
+        "Path": "test/fixtures/output/nested-unsupported/typescript"
       }
     ]
   }

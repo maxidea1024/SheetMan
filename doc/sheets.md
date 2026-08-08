@@ -388,6 +388,64 @@ index@1    Name@2    Price@3    #OldColor@4    *Grade@5
 
 
 
+## 중첩 필드 — 컬럼 여러 개를 레코드 하나로
+
+`SerialField`와 `T[]`은 둘 다 **원소가 스칼라**입니다. 원소가 여러 값을 묶은 것일 때는
+멤버 이름을 `.`으로 붙입니다.
+
+|시트의 컬럼 이름|나오는 것|
+|--|--|
+|`Pos.X` `Pos.Y`|`Pos` — 레코드 하나. `record.Pos.X`|
+|`Slot1.Id` `Slot1.Count` `Slot2.Id` `Slot2.Count`|`Slot` — 레코드의 배열, 길이 2. `record.Slot[0].Id`|
+|`Slot1` `Slot2`|스칼라 배열 (지금까지와 같음)|
+
+배열 길이는 **연번이 정합니다** — `Text1`/`Text2`가 접히는 것과 같은 규칙이고, 그룹 이름 쪽에
+번호를 답니다. 연번이 없으면 배열이 아니라 레코드 하나입니다.
+
+**타입·주석·target-side는 멤버 컬럼마다 따로 적습니다.** 멤버가 서로 다른 타입일 수 있고,
+그것이 배열 대신 레코드를 쓰는 이유입니다.
+
+```
+Pos.X    Pos.Y    Slot1.Id   Slot1.Label   Slot2.Id   Slot2.Label
+float    float    int        string        int        string
+```
+
+```csharp
+var r = GameData.Loadout.FindByIndex(1);
+r.Pos.X;               // 1.5
+r.Slot[0].Label;       // "sword"
+Loadout.Record.Slot_N; // 2
+```
+
+### 규칙
+
+|규칙|내용|
+|--|--|
+|깊이 1까지|멤버가 또 그룹일 수는 없습니다. `Slot1.Inner.Id`는 오류입니다|
+|모든 원소가 모든 멤버를|`Slot2.Label`을 빼먹으면 오류입니다. 아무도 쓰지 않는 값이 기본값처럼 읽히기 때문입니다|
+|번호가 일관되게|멤버끼리 원소 번호가 다르면 오류입니다 (`Slot1`/`Slot2` 와 `Slot1`/`Slot3`)|
+|target-side는 레코드 단위|멤버끼리 다르면 오류입니다. 반쪽만 든 레코드는 만들 수 없습니다|
+|기본 인덱스는 안 됨|`*` 보조 인덱스도 안 됩니다. 인덱스는 값 하나여야 합니다|
+|참조는 아직 안 됨|멤버에 `foreign`은 오류입니다. 키를 `int`로 들고 있는 것은 됩니다|
+
+### 어느 타깃이 되는가
+
+> **지금은 `csharp` · `json` · `binary` 세 타깃뿐입니다.** 나머지는 전부 — 코드 생성기 12개와
+> `html` · 데이터베이스 · `summary` · `history` 까지 — 레코드를 만나면 **이름을 대며 거부**합니다.
+> 조용히 다른 모양으로 내보내는 것보다 낫기 때문입니다. 하나씩 늘리는 중이고,
+> 진행 상황은 [중첩 필드 스펙](../spec/nested-fields.md)에 있습니다.
+>
+> ```
+> Target `go` does not support nested fields yet.
+>   Table `Item` field `Slot` is a record group of 2 member(s).
+> ```
+
+**파일 형식은 바뀌지 않았습니다.** 레코드의 배열은 **멤버마다 고정 배열 컬럼 하나**로 저장되므로
+(API는 구조체의 배열, 파일은 배열의 구조체), 형식 버전도 그대로이고 멤버마다 컬럼 인코딩이
+따로 걸립니다. 멤버를 추가하는 것은 컬럼 태그가 하나 늘는 **가산적 변경**입니다.
+
+
+
 ## Null 참조
 
 작성중

@@ -317,6 +317,19 @@ public class Table
                     + $"{member.Fields[i].GroupOrdinal}. Every member must use the same element numbers.");
             }
 
+            // A reference inside a record is refused for now rather than half-supported.
+            // Resolution generates a stored-index array and a setter per field, and
+            // extending both to reach `[j].Member` is work that has not been done - so
+            // the alternative to this message is generated code that compiles and never
+            // resolves.
+            if (member.IsRef)
+            {
+                throw new SheetManException(member.FirstField.DetailTypeLocation,
+                    $"Record group `{Name}.{group.Name}` member `{member.Name}` references another "
+                    + $"table. A reference inside a record group is not supported yet. Move the "
+                    + $"column out of the group, or carry the key as a plain `int` for now.");
+            }
+
             // Target side belongs to the record, not to its members. Half a record in one
             // build is not a shape any generator has.
             if (member.FirstField.TargetSide != first.FirstField.TargetSide)

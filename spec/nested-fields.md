@@ -209,10 +209,47 @@ Target `go` does not support nested fields yet.
 |2|모델 (`SerialField.Kind`·`Members`) 과 폴딩, 와이어 컬럼 단위 태그 배정|**됨**|
 |3|`nested` 픽스처 + JSON 익스포터 + 골든. 모르는 타깃은 이름을 대며 거부|**됨**|
 |4|바이너리 writer — [`WireColumn`](../src/Models/WireColumn.cs)을 1급 개념으로. 위의 디스크립터가 결과|**됨**|
-|5|C# 생성기 + 템플릿(§6의 구조로). 끝까지 한 번(시트 → `.scb` → 생성 코드로 되읽기) 돌아가는 지점|다음|
-|6|나머지 12개 언어. 하나씩, 적합성 코퍼스에 모양 추가|—|
-|7|HTML·DB 익스포터, 쇼케이스 재생성, `doc/sheets.md`에 사용자용 설명|—|
+|5|C# 생성기 + 템플릿(§6의 구조로). **시트 → `.scb` → 생성 코드로 되읽기까지 확인**|**됨**|
+|6|나머지 12개 언어. 하나씩, 적합성 코퍼스에 모양 추가|다음|
+|7|HTML·DB 익스포터, 쇼케이스 재생성|—|
 |8|`uwo` 레이아웃 파서에서 이 모델로 번역|—|
+
+5단계에서 생성되는 것과, 그것이 실제로 읽어낸 값입니다.
+
+```csharp
+public struct SlotEntry { public int Id; public string Label; }
+
+public SlotEntry[] Slot => _slot;
+public const int Slot_N = 2;
+
+internal SlotEntry[] _slot = NewSlotEntryArray();   // 원소별 할당 없음
+```
+
+```
+case 5:  // Loadout.Slot.Id — 멤버 하나가 컬럼 하나
+    for (int i = 0; i < count; i++) {
+        var record = records[i];
+        for (int j = 0; j < Record.Slot_N; ++j)
+            record._slot[j].Id = reader.ReadI32As(column.Element);
+    }
+```
+
+```
+pos  = {"X":1.5,"Y":-2.5}
+slot = [{"Id":10,"Label":"sword"}, {"Id":11,"Label":"shield"}]
+```
+
+JSON 익스포트와 값이 같습니다. 그리고 이 코드는 **C# 8 · netstandard2.1로 경고 없이
+컴파일**됩니다 — 유니티 2020.3이 받는 수준입니다.
+
+> **원소 타입을 `struct`로 한 이유가 둘입니다.** 배열이 원소별 할당을 하지 않고
+> (21,000행 × 17원소 테이블이면 357,000개 객체를 만들지 않는다는 뜻입니다),
+> `array[j].Member = x`가 구조체 배열에서 합법이라 멤버 컬럼의 읽기가 그대로 대입이 됩니다.
+>
+> 대가가 하나 있었습니다 — **구조체는 필드 초기화자를 쓸 수 없습니다**(C# 10 기능이고
+> 명시적 무인자 생성자가 필요합니다). 그런데 문자열 멤버는 `null`이 아니라 `""`로
+> 시작해야 합니다. 그 멤버가 생기기 전에 쓰인 파일에는 컬럼이 없어서 아무도 그 필드를
+> 쓰지 않고, `null`은 한 필드 뒤에서 터지기 때문입니다. 그래서 정적 팩토리가 채웁니다.
 
 3단계까지의 결과로 **표기가 실제로 동작하는 것을 JSON에서 확인할 수 있습니다.**
 
