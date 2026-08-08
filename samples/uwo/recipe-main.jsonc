@@ -1,0 +1,34 @@
+{
+  // The live main workbook: 140 sheets, 144 defined names, the largest thing uwo has that
+  // is actually data. Reads samples/uwo/converted, which convert-xlsb.ps1 produces.
+  //
+  // Expected to stop partway for now - this workbook uses `strkey`, scalar arrays and the
+  // tile shape, none of which the layout reads yet. It is here to measure what importing a
+  // 61 MB workbook costs, because NPOI holds one whole in memory and that is the only
+  // argument for changing how workbooks are read.
+  //
+  //     dotnet run --project src/SheetMan.csproj -- --recipe samples/uwo/recipe-main.jsonc
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "samples/uwo/converted",
+        "FileExtensionPatterns": ".xlsx",
+        "Layout": "uwo",
+
+        // The one workbook, by the sheets of a handful of its tables. Without this the
+        // folder is every converted workbook at once, which is a different measurement.
+        "IncludeSheets": [
+          "Item", "Mate", "Character", "CEquip", "Shop", "WorldPassive", "ShipSlot"
+        ]
+      }
+    ],
+    "GoogleSheets": []
+  },
+
+  "Exports": {
+    "Json": [
+      { "Path": "samples/uwo/out-main/json", "Indented": true }
+    ]
+  }
+}
