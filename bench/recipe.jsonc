@@ -2,7 +2,7 @@
   // Data for the format benchmark in bench/: the rescue workbooks, exported three ways
   // from one conversion so the files can only differ by format, never by content.
   //
-  // The sheet list is the one project-rescue-xlsxs/recipe.jsonc explains; it is copied
+  // The sheet list is the one samples/rescue/recipe.jsonc explains; it is copied
   // rather than shared because a recipe has no include mechanism, and the benchmark
   // wants exports that recipe does not make (compact rows, no indentation).
   //
@@ -13,7 +13,7 @@
   "Sources": {
     "Xlsx": [
       {
-        "Path": "project-rescue-xlsxs",
+        "Path": "samples/rescue",
         "FileExtensionPatterns": ".xlsx",
         "Layout": "rescue",
         "OnDuplicateIndex": "keep-first",

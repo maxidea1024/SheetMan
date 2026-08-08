@@ -1,0 +1,193 @@
+{
+  // Converting an existing project's workbooks, in that project's own layout.
+  //
+  // The sheets these files came from are read by a Unity editor tool that downloads each
+  // one as CSV and generates a class from it. What it downloads is decided by a list in
+  // Assets/Editor/GoogleSheetsConfig.asset, and the workbooks here hold considerably more
+  // than that list names - reference tabs, unregistered systems, notes.
+  //
+  // `IncludeSheets` below is that list, so this recipe converts exactly what the game
+  // actually loads. Sheets left out of it are not converted and their contents are not
+  // checked; see 데이터-이슈-보고-20260807.md for what is in them and why that matters the
+  // day one of them is registered.
+  //
+  // Run from the repository root:
+  //
+  //     dotnet run --project src/SheetMan.csproj -- --recipe samples/rescue/recipe.jsonc
+
+  "Sources": {
+    "Xlsx": [
+      {
+        "Path": "samples/rescue",
+        "FileExtensionPatterns": ".xlsx",
+
+        // Not `sheetman`: these workbooks have no entity markers. One table per sheet,
+        // named by the sheet tab, three header rows. See doc/sheets.md.
+        "Layout": "rescue",
+
+        // `ArtifactLevelTable` rows 48-104 all carry index 45, which is a copy-fill
+        // mistake in the source spreadsheet rather than anything this tool can resolve:
+        // levels 46 to 101 are unreachable either way. Keeping the first row lets the
+        // rest of the conversion run while that is fixed, and every dropped row is
+        // logged. Put this back to `error` once it is.
+        "OnDuplicateIndex": "keep-first",
+
+        "IncludeSheets": [
+          // The enum collection. Every `enum:Name` column below resolves against it.
+          "TableEnums",
+
+          // ItemData.xlsx
+          "CurrencyTable",
+          "PackageTable",
+          "EquipTable",
+          "EquipItemLevelTable",
+          "EquipItemClassTable",
+          "EquipItemGradeTable",
+          "MaterialTable",
+          "ClassUpCurrencyListTable",
+
+          // MasterData.xlsx
+          "CharacterTable",
+          "SkillTable",
+          "CharacterLevelTable",
+          "CharacterTranscendenceTable",
+          "ArtifactTable",
+          "ArtifactLevelTable",
+          "ArtifactTranscendenceTable",
+          "StageTable",
+          "BuffTable",
+          "BuffSelectTable",
+          "ConfigTable",
+          "DropGroupTable",
+          "AttributeTable",
+          "ShortCutTable",
+
+          // SD_Contens.xlsx
+          "SDContensInfoTable",
+          "SDAgencyTable",
+          "SDAgencyInfoTable",
+          // "SDShopInfoTable" is registered in the game but cannot be converted yet: it has
+          // both an `IconPath` column (J, "아이콘", empty in every row) and an `Icon_Path`
+          // one (L, "아이콘 경로", the one actually used). Those normalize to one name.
+          // Put a `#` in front of J's description in the spreadsheet and this line goes back.
+          "SDPubInfoTable",
+          "SDTrainingInfoTable",
+          "SDTrainingLevelTable",
+          "SDDungeonInfoTable",
+          "SDDungeonCardTable",
+          "SDDungeonRewardTable",
+          "SDAlchemyInfoTable",
+          "SDAlchemyStepTable",
+          "SDAlchemyLevelTable",
+
+          // DailyDungeon.xlsx
+          "DailyDungeonInfoTable",
+          "GoldDungeonStageTable",
+          "GoldDungeonRewardTable",
+          "ExpDungeonStageTable",
+          "ExpDungeonRewardTable",
+          "TraitDungeonStageTable",
+          "TraitDungeonRewardTable",
+          "RelicDungeonStageTable",
+          "RelicDungeonRewardTable",
+          "OopartsDungeonStageTable",
+          "OopartsDungeonRewardTable",
+
+          // StageGrowth.xlsx
+          "InfoGrowthTable",
+          "StatGrowthTable",
+          "TraitTable",
+          "RelicTable",
+          "StarNodeTable",
+          "CostCurveTable",
+          "CostCurveRangeTable",
+
+          // CollectionData.xlsx
+          "CollectionGroupTable",
+          "CollectionTable",
+
+          // ConditionData.xlsx
+          "ConditionTable",
+
+          // SoundData.xlsx
+          "BGMSoundTable",
+          "SFXSoundTable",
+
+          // ShopData.xlsx
+          "ShopInfoTable",
+          "MainShopTable",
+          "PackageShopTable",
+          "SeasonShopTable",
+          "CashShopTable",
+
+          // GachaData.xlsx
+          "GachaInfoTable",
+          "GachaRateTable",
+          "GachaCharacterListTable",
+          "GachaArtifactListTable",
+          "GachaArtifactInfoTable"
+        ]
+      }
+    ]
+  },
+
+  "Exports": {
+    "Json": [
+      { "Path": "samples/rescue/out/json", "UseCompactRowFormat": false, "Indented": true }
+    ],
+    "Binary": [
+      { "Path": "samples/rescue/out/binary" }
+    ]
+  },
+
+  // Every language, so this doubles as the answer to "what would our data look like
+  // over there" for a team deciding where to take it. The updater is on everywhere:
+  // a converted project is exactly the case that wants to patch data without shipping
+  // a build.
+  "Targets": [
+    { "Type": "go", "Path": "samples/rescue/out/go", "PackageName": "rescue", "ModulePath": "rescue", "WriteUpdater": true },
+    { "Type": "rust", "Path": "samples/rescue/out/rust", "CrateName": "rescue", "WriteUpdater": true },
+    { "Type": "python", "Path": "samples/rescue/out/python", "PackageName": "rescue", "WriteUpdater": true },
+    { "Type": "java", "Path": "samples/rescue/out/java", "PackageName": "rescue", "AccessorName": "Tables", "WriteUpdater": true },
+    { "Type": "kotlin", "Path": "samples/rescue/out/kotlin", "PackageName": "rescue", "AccessorName": "Tables", "WriteUpdater": true },
+    { "Type": "ruby", "Path": "samples/rescue/out/ruby", "ModuleName": "Rescue", "AccessorName": "tables", "WriteUpdater": true },
+    { "Type": "dart", "Path": "samples/rescue/out/dart", "AccessorName": "tables", "WriteUpdater": true },
+    { "Type": "unreal", "Path": "samples/rescue/out/unreal", "ModuleName": "RescueData", "AccessorName": "FRescueData", "WriteUpdater": true },
+    { "Type": "c", "Path": "samples/rescue/out/c", "AccessorName": "Rescue", "WriteUpdater": true },
+    { "Type": "php", "Path": "samples/rescue/out/php", "Namespace": "Rescue", "AccessorName": "Tables", "WriteUpdater": true },
+
+    // What this conversion produced, as one reviewable document: tables, columns,
+    // row counts, and what changed since the last run. `Author: none` because the
+    // output is committed and handed around: a name and an e-mail address are
+    // personal data, and nothing in this document needs them.
+    { "Type": "summary", "Path": "samples/rescue/out/summary", "Author": "none" }
+  ],
+
+  "CodeGenerations": {
+    "CSharp": [
+      {
+        "Path": "samples/rescue/out/cs",
+        "Namespace": "Rescue.Tables",
+        "AccessorName": "Tables",
+        "WriteUpdater": true
+      }
+    ],
+    "Cpp": [
+      {
+        "Path": "samples/rescue/out/cpp",
+        "Namespace": "rescue",
+        "AccessorName": "Tables",
+        "BinaryTableFileExtension": ".scb",
+        "WriteUpdater": true
+      }
+    ],
+    "Typescript": [
+      { "Path": "samples/rescue/out/ts", "WriteUpdater": true }
+    ],
+
+    // For reading: what came out, table by table, without opening a binary.
+    "Html": [
+      { "Path": "samples/rescue/out/html" }
+    ]
+  }
+}

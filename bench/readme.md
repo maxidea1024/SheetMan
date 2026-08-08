@@ -32,4 +32,4 @@ dotnet run --project bench/SheetMan.Bench.csproj -c Release -- json-compact benc
 |`Program.cs`|측정과 검증. 힙 기준선을 어디서 잡는지, 왜 로드를 `await`하지 않는지가 주석에 있습니다|
 |`JsonPath.cs`|JSON 쪽 로더. 생성된 `Record`를 거울처럼 본뜬 DTO 타입을 시작 시 만들어, 데이터셋이 재생성되어도 하네스가 따라갑니다|
 
-바이너리 경로는 [project-rescue-xlsxs/out/cs](../project-rescue-xlsxs/out/cs)의 생성된 리더를 그대로 컴파일해 씁니다 — 소비자 프로젝트가 컴파일했을 바로 그 코드입니다.
+바이너리 경로는 [samples/rescue/out/cs](../samples/rescue/out/cs)의 생성된 리더를 그대로 컴파일해 씁니다 — 소비자 프로젝트가 컴파일했을 바로 그 코드입니다.

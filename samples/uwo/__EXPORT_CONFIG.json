@@ -1,0 +1,28 @@
+{
+  "IgnoreMap": {
+    "UWO_테이블.xlsm": [
+      "Define",
+      "ListBodyShape",
+      "ListCapeShape",
+      "ListFaceAccShape",
+      "ListFaceShape",
+      "ListHairShape",
+      "ListHatShape",
+      "RefCharacter",
+      "RefTownDialogue"
+    ],
+    "UWO_TownNpc.xlsx": [
+      "ListCharacter",
+      "ListTownDialog"
+    ]
+  },
+  "BaseDirectory": "../../cms/xls",
+  "ValidationLuaPath": "../validation/main.lua",
+  "ExportDirForClient": "../client",
+  "ExportDirForServer": "../server",
+  "ExternalToolDir": "../../../tools",
+  "ExternalToolTimeout": 10000,
+  "MinExportDirForClient": "",
+  "MinExportDirForServer": "",
+  "ExportDirForTextSet": "../textset"
+}

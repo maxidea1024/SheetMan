@@ -1,0 +1,5 @@
+# 엑셀 워크북은 전부 바이너리입니다. 이 저장소는 autocrlf가 켜진 환경에서 쓰이고,
+# git의 자동 판별에만 맡기면 개행 변환이 워크북을 깨뜨릴 여지가 남습니다.
+*.xlsx binary
+*.xlsm binary
+*.xlsb binary

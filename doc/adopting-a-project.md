@@ -82,7 +82,7 @@ enum 값은 라벨이 등장한 순서로 매겨집니다. 시트에 값을 적�
 {
   "Sources": {
     "Xlsx": [{
-      "Path": "project-rescue-xlsxs",
+      "Path": "samples/rescue",
       "FileExtensionPatterns": ".xlsx",
       "Layout": "rescue",
 
@@ -99,7 +99,7 @@ enum 값은 라벨이 등장한 순서로 매겨집니다. 시트에 값을 적�
 }
 ```
 
-적어놓고 없는 시트는 오류입니다 — 시트 이름이 바뀌면 조용히 빠지지 않고 변환이 멈추며, 실제로 있는 시트 목록을 함께 보여줍니다. 전체는 [project-rescue-xlsxs/recipe.jsonc](../project-rescue-xlsxs/recipe.jsonc)에 있습니다.
+적어놓고 없는 시트는 오류입니다 — 시트 이름이 바뀌면 조용히 빠지지 않고 변환이 멈추며, 실제로 있는 시트 목록을 함께 보여줍니다. 전체는 [samples/rescue/recipe.jsonc](../samples/rescue/recipe.jsonc)에 있습니다.
 
 > 범위를 좁힌 효과가 큽니다. 85장 전부를 대상으로 했을 때는 관용 규칙이 넷 필요했는데, 68장으로 좁히자 셋이 필요 없어졌습니다. 미정의 enum, `none`이 든 숫자 컬럼, 정의에 없는 라벨이 전부 등록되지 않은 시트에만 있었습니다.
 
@@ -131,10 +131,10 @@ recipe에 추가한 설정은 한 줄뿐이었습니다.
 ## 3. 변환과 확인
 
 ```
-sheetman --recipe project-rescue-xlsxs/recipe.jsonc
+sheetman --recipe samples/rescue/recipe.jsonc
 ```
 
-68장에서 **테이블 67개, enum 37개, 103,395행**이 나왔습니다. 산출물은 [project-rescue-xlsxs/out/](../project-rescue-xlsxs/out/)에 있고, 13개 언어 코드와 바이너리·JSON·HTML 문서가 들어 있습니다.
+68장에서 **테이블 67개, enum 37개, 103,395행**이 나왔습니다. 산출물은 [samples/rescue/out/](../samples/rescue/out/)에 있고, 13개 언어 코드와 바이너리·JSON·HTML 문서가 들어 있습니다.
 
 확인한 방법은 셋입니다.
 
@@ -144,7 +144,7 @@ sheetman --recipe project-rescue-xlsxs/recipe.jsonc
 
 ## 4. 원본에 돌려보낼 것
 
-변환기가 잡아낸 것 중 데이터 자체의 문제는 [별도 보고서](../project-rescue-xlsxs/데이터-이슈-보고-20260807.md)로 정리했습니다. 등록 목록과 대조하면 **지금 쓰이고 있어 문제가 되는 것**과 **아직 안 쓰이는 시트에 있는 것**이 구분되므로, 그 구분을 붙여서 전달했습니다.
+변환기가 잡아낸 것 중 데이터 자체의 문제는 [별도 보고서](../samples/rescue/데이터-이슈-보고-20260807.md)로 정리했습니다. 등록 목록과 대조하면 **지금 쓰이고 있어 문제가 되는 것**과 **아직 안 쓰이는 시트에 있는 것**이 구분되므로, 그 구분을 붙여서 전달했습니다.
 
 ## 두 레이아웃을 같이 쓰기
 
@@ -158,6 +158,8 @@ sheetman --recipe project-rescue-xlsxs/recipe.jsonc
   { "Path": "./other-sheets", "Layout": "rescue", "ArrayDelimiter": "|" }
 ]
 ```
+
+> 레이아웃 하나가 더 준비 중입니다. 라이브 서비스 중인 프로젝트의 것이고, 정의된 이름으로 테이블 경계를 잡고 컬럼 이름으로 중첩 구조를 만듭니다 — 규격과 우리에게 없는 것은 [uwo 레이아웃 분석](uwo-레이아웃-분석-20260808.md)에 있습니다.
 
 이름 정규화는 양쪽이 같습니다. `STAR_LEVEL`은 `STARLEVEL`이 되고, `Icon_Path`와 `IconPath`는 같은 이름으로 충돌해 오류가 납니다. 그대로 두면 snake_case 언어에서 13번 서로 다르게 깨지므로 변환 단계에서 잡습니다. 데이터 셀은 원문(`STAR_LEVEL`)으로 매칭되므로 시트는 고치지 않아도 됩니다.
 

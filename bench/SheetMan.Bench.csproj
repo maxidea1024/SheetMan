@@ -17,7 +17,7 @@
          project would compile. The benchmark's data comes from bench/recipe.jsonc,
          which converts the same workbooks with the same checkout of the tool, so
          the two cannot disagree about the schema. -->
-    <Compile Include="..\project-rescue-xlsxs\out\cs\**\*.cs" LinkBase="rescue-generated" />
+    <Compile Include="..\samples\rescue\out\cs\**\*.cs" LinkBase="rescue-generated" />
   </ItemGroup>
 
 </Project>

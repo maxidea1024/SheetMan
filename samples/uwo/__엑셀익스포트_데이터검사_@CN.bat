@@ -1,0 +1,18 @@
+@ECHO OFF
+REM luajit 을 사용하여 빠르게 검사합니다.
+
+CHCP 65001
+
+SET CURRENT_PATH=%cd%
+SET CURRDIR=%~dp0
+SET TOOL_PATH=%CURRDIR%..\..\tools\luajit\luajit.exe
+SET MAINLUA=%CURRDIR%..\validation\main_luajit.lua
+SET VALIDATOR_PATH=%CURRDIR%\..\validation
+SET CONTENT_PATH=%CURRDIR%..\..\Unreal\Content
+SET CMS_PATH=%CURRDIR%..\client
+
+CD %VALIDATOR_PATH%
+CALL %TOOL_PATH% %MAINLUA% %CONTENT_PATH% %CMS_PATH% false CN
+CD %CURRENT_PATH%
+
+PAUSE
