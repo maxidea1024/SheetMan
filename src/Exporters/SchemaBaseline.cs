@@ -242,14 +242,17 @@ public class SchemaBaseline
     {
         var columns = new Dictionary<string, Column>();
 
-        foreach (var sf in table.SerialFields)
+        // Keyed by tag, so the unit has to be the wire column - a record group holds one
+        // per member. Reading serial fields here would key a whole group by its first
+        // member's tag and describe the other members as columns that had vanished.
+        foreach (var column in table.WireColumns)
         {
-            columns[sf.FirstField.Tag.Value.ToString()] = new Column
+            columns[column.TagCarrier.Tag.Value.ToString()] = new Column
             {
-                Name = sf.Name,
-                Element = ScbFormat.ElementFor(sf),
-                Kind = ScbFormat.KindFor(sf),
-                Count = ScbFormat.CountFor(sf),
+                Name = column.Name,
+                Element = ScbFormat.ElementFor(column),
+                Kind = ScbFormat.KindFor(column),
+                Count = ScbFormat.CountFor(column),
                 ExplicitTag = table.HasExplicitTags,
             };
         }

@@ -137,15 +137,15 @@ public static class ScbFormat
 
     // ------------------------------------------------------------- mapping
 
-    /// <summary>The element type a serial field's values travel as.</summary>
-    public static byte ElementFor(SerialField sf)
+    /// <summary>The element type a column's values travel as.</summary>
+    public static byte ElementFor(WireColumn column)
     {
         // A reference is stored as the target's primary index, which the cooker
         // guarantees is an int32.
-        if (sf.IsRef)
+        if (column.IsRef)
             return ElementI32;
 
-        switch (sf.ElementType)
+        switch (column.ElementType)
         {
             case ValueType.String: return ElementString;
             case ValueType.Bool: return ElementBool;
@@ -163,28 +163,28 @@ public static class ScbFormat
 
             default:
                 throw new SheetManException(
-                    $"The binary exporter cannot map type `{sf.Type}` onto a wire element.");
+                    $"The binary exporter cannot map type `{column.Type}` onto a wire element.");
         }
     }
 
-    /// <summary>The kind of a serial field's column, mirroring what the generators emit.</summary>
-    public static byte KindFor(SerialField sf)
+    /// <summary>The kind of a column, mirroring what the generators emit.</summary>
+    public static byte KindFor(WireColumn column)
     {
-        if (sf.IsVariableLengthArray)
+        if (column.IsVariableLengthArray)
             return KindVarArray;
 
-        return sf.Fields.Count > 1 ? KindFixedArray : KindScalar;
+        return column.IsFixedArray ? KindFixedArray : KindScalar;
     }
 
     /// <summary>
-    /// The descriptor's element count: 1 for a scalar, the column count for a fixed
+    /// The descriptor's element count: 1 for a scalar, the element count for a fixed
     /// array, and 0 for a variable one, whose rows carry their own.
     /// </summary>
-    public static int CountFor(SerialField sf)
+    public static int CountFor(WireColumn column)
     {
-        if (sf.IsVariableLengthArray)
+        if (column.IsVariableLengthArray)
             return 0;
 
-        return sf.Fields.Count;
+        return column.Cells.Count;
     }
 }

@@ -17,6 +17,17 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
 {
     private Manifest _manifest;
 
+    /// <summary>
+    /// A record group is already expressible: it is one fixed-array column per member.
+    /// </summary>
+    /// <remarks>
+    /// Nothing was added to the format for it. Because the file is column oriented, an
+    /// array of records is a struct of arrays - and `KindFixedArray` with the member's
+    /// element type is exactly that. So no new kind, no version bump, and the column
+    /// encodings keep applying per member, which storing a record as one blob would have
+    /// defeated. spec/nested-fields.md has the layout.
+    /// </remarks>
+    protected override bool SupportsNestedFields => true;
 
     protected override void Run(TargetContext context, RecipeModel.ExportRecipeGroup.BinaryRecipe binaryRecipe)
     {
@@ -53,16 +64,20 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     private void ExportTable(RecipeModel.ExportRecipeGroup.BinaryRecipe recipe, Table table)
     {
         ScbWriter writer = new ScbWriter();
-        var serials = table.SerialFields;
+
+        // Wire columns, not serial fields. They are the same list for every table written
+        // before records existed, and differ for a record group: it stores one column per
+        // member, so the file is a struct of arrays where the API is an array of structs.
+        var columns = table.WireColumns;
 
         // Every column is encoded into its own buffer before a byte of the file
         // exists, because the descriptor states each block's encoding and length up
         // front - and which encoding wins is only known once the candidates have
         // actually been written out and measured.
-        var blocks = new ColumnBlock[serials.Count];
+        var blocks = new ColumnBlock[columns.Count];
 
-        for (int at = 0; at < serials.Count; at++)
-            blocks[at] = EncodeColumn(table, serials[at]);
+        for (int at = 0; at < columns.Count; at++)
+            blocks[at] = EncodeColumn(table, columns[at]);
 
         writer.Write(ScbFormat.Version);
         writer.Write((byte)0);                      // flags: no compression, no encryption
@@ -72,23 +87,23 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
         // reader matches columns by tag rather than position, skips a tag it does not
         // know by the block's byte length, and refuses a wire it cannot read by name -
         // which between them is the whole of what makes schema changes survivable.
-        writer.WriteCounter32(serials.Count);
+        writer.WriteCounter32(columns.Count);
 
-        for (int at = 0; at < serials.Count; at++)
+        for (int at = 0; at < columns.Count; at++)
         {
-            var sf = serials[at];
+            var column = columns[at];
 
-            writer.WriteCounter32(sf.FirstField.Tag.Value);
-            writer.Write(ScbFormat.Wire(ScbFormat.ElementFor(sf), ScbFormat.KindFor(sf)));
+            writer.WriteCounter32(column.TagCarrier.Tag.Value);
+            writer.Write(ScbFormat.Wire(ScbFormat.ElementFor(column), ScbFormat.KindFor(column)));
             writer.Write(blocks[at].Encoding);
-            writer.WriteCounter32(ScbFormat.CountFor(sf));
+            writer.WriteCounter32(ScbFormat.CountFor(column));
             writer.Write((uint)blocks[at].Payload.Length);
         }
 
         // Column-oriented: each column's rows are one contiguous block. That is what
         // lets an unknown column be skipped in a single advance, with no per-type skip
         // logic for thirteen readers to each get subtly wrong.
-        for (int at = 0; at < serials.Count; at++)
+        for (int at = 0; at < columns.Count; at++)
             writer.Write(blocks[at].Payload.WrittenSpan);
 
         var filename = Path.Combine(recipe.Path, table.Name + recipe.FileExtension);
@@ -127,19 +142,19 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     /// measured byte count is the one selector that is never wrong. The candidates
     /// and their layouts are spec/scb-v102-column-encoding.md.
     /// </summary>
-    private static ColumnBlock EncodeColumn(Table table, SerialField sf)
+    private static ColumnBlock EncodeColumn(Table table, WireColumn column)
     {
         var raw = new ScbWriter();
 
         foreach (var row in table.Data)
         {
-            if (sf.IsVariableLengthArray)
+            if (column.IsVariableLengthArray)
             {
-                ExportArrayValue(raw, row[sf.FirstField.Index].Value, sf.FirstField);
+                ExportArrayValue(raw, row[column.TagCarrier.Index].Value, column.TagCarrier);
                 continue;
             }
 
-            foreach (var field in sf.Fields)
+            foreach (var field in column.Cells)
                 ExportValue(raw, row[field.Index].Value, field);
         }
 
@@ -148,14 +163,14 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
         // Only a scalar column repeats itself in a way the encodings model. An array's
         // rows differ in length as well as value, and encoding that would put a second
         // dimension into every candidate for the 1.8 percent of bytes it holds.
-        if (ScbFormat.KindFor(sf) != ScbFormat.KindScalar)
+        if (ScbFormat.KindFor(column) != ScbFormat.KindScalar)
             return best;
 
-        switch (ScbFormat.ElementFor(sf))
+        switch (ScbFormat.ElementFor(column))
         {
             case ScbFormat.ElementI32:
             {
-                int[] values = CollectInt32Column(table, sf);
+                int[] values = CollectInt32Column(table, column);
 
                 best = Smaller(best, ScbFormat.EncodingVarint, EncodeVarint(values));
                 best = Smaller(best, ScbFormat.EncodingDelta, EncodeDelta(values));
@@ -168,14 +183,14 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
             {
                 // Raw already is a varint stream, so of the integer candidates only
                 // run-length encoding can say anything raw does not.
-                best = Smaller(best, ScbFormat.EncodingRle, EncodeRle(CollectInt32Column(table, sf)));
+                best = Smaller(best, ScbFormat.EncodingRle, EncodeRle(CollectInt32Column(table, column)));
                 break;
             }
 
             case ScbFormat.ElementBool:
             {
                 var values = new int[table.Data.Count];
-                int index = sf.FirstField.Index;
+                int index = column.TagCarrier.Index;
 
                 for (int at = 0; at < values.Length; at++)
                     values[at] = (bool)table.Data[at][index].Value ? 1 : 0;
@@ -186,7 +201,7 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
 
             case ScbFormat.ElementString:
             {
-                string[] values = CollectStringColumn(table, sf);
+                string[] values = CollectStringColumn(table, column);
 
                 best = Smaller(best, ScbFormat.EncodingDict, EncodeDict(values));
                 best = Smaller(best, ScbFormat.EncodingDictRle, EncodeDictRle(values));
@@ -202,7 +217,7 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
             // set had 18,718 floats among 1,065 distinct ones.
             case ScbFormat.ElementF32:
             {
-                var values = CollectRawColumn(table, sf, 4);
+                var values = CollectRawColumn(table, column, 4);
 
                 best = Smaller(best, ScbFormat.EncodingDict, EncodeValueDict(values, false));
                 best = Smaller(best, ScbFormat.EncodingDictRle, EncodeValueDict(values, true));
@@ -212,7 +227,7 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
             case ScbFormat.ElementI64:
             case ScbFormat.ElementF64:
             {
-                var values = CollectRawColumn(table, sf, 8);
+                var values = CollectRawColumn(table, column, 8);
 
                 best = Smaller(best, ScbFormat.EncodingDict, EncodeValueDict(values, false));
                 best = Smaller(best, ScbFormat.EncodingDictRle, EncodeValueDict(values, true));
@@ -236,9 +251,9 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     // ------------------------------------------------- column value collection
 
     /// <summary>A scalar int32 column's values: ints, enums and reference indexes alike.</summary>
-    private static int[] CollectInt32Column(Table table, SerialField sf)
+    private static int[] CollectInt32Column(Table table, WireColumn column)
     {
-        int index = sf.FirstField.Index;
+        int index = column.TagCarrier.Index;
         var values = new int[table.Data.Count];
 
         for (int at = 0; at < values.Length; at++)
@@ -255,10 +270,10 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
     /// written - a float's exact bit pattern, ticks, either of them - and no second
     /// encoding path exists to disagree with the first.
     /// </summary>
-    private static byte[][] CollectRawColumn(Table table, SerialField sf, int width)
+    private static byte[][] CollectRawColumn(Table table, WireColumn column, int width)
     {
         var scratch = new ScbWriter();
-        var field = sf.FirstField;
+        var field = column.TagCarrier;
 
         foreach (var row in table.Data)
             ExportValue(scratch, row[field.Index].Value, field);
@@ -272,9 +287,9 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
         return values;
     }
 
-    private static string[] CollectStringColumn(Table table, SerialField sf)
+    private static string[] CollectStringColumn(Table table, WireColumn column)
     {
-        int index = sf.FirstField.Index;
+        int index = column.TagCarrier.Index;
         var values = new string[table.Data.Count];
 
         for (int at = 0; at < values.Length; at++)

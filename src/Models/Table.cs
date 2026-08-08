@@ -107,6 +107,18 @@ public class Table
     private List<SerialField> _serialFields;
 
     /// <summary>
+    /// The columns of this table as a binary file holds them.
+    /// </summary>
+    /// <remarks>
+    /// Not the same list as <see cref="SerialFields"/>: a record group is one column per
+    /// member. Everything that has to agree about what a wire tag identifies - the writer,
+    /// the tag assignment, the baseline check - reads this rather than deciding for itself.
+    /// </remarks>
+    [JsonIgnore]
+    public List<WireColumn> WireColumns => _wireColumns ??= WireColumn.Of(this);
+    private List<WireColumn> _wireColumns;
+
+    /// <summary>
     /// Presents one column as its own group, for a table that does not fold.
     /// </summary>
     private static SerialField OneColumnSerialField(Field field)

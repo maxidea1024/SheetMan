@@ -425,13 +425,13 @@ public sealed class CookingContext
 
         // The unit being tagged is a wire column, not a group. They are the same thing for
         // every table written before records existed, and differ for a record group: it
-        // stores one column per member, so it takes one tag per member. Flattened here so
-        // the two modes below cannot disagree about what a tag identifies.
-        var columns = serials
-            .SelectMany(sf => sf.WireColumns.Select(field => (Group: sf, Field: field)))
-            .ToList();
+        // stores one column per member, so it takes one tag per member.
+        //
+        // The same list the writer and the baseline check read, deliberately - three places
+        // deciding separately what a tag identifies is how they come to disagree.
+        var columns = table.WireColumns;
 
-        var tagged = columns.Where(c => c.Field.Tag is not null).ToList();
+        var tagged = columns.Where(c => c.TagCarrier.Tag is not null).ToList();
 
         if (tagged.Count == 0)
         {
@@ -449,7 +449,7 @@ public sealed class CookingContext
             table.HasExplicitTags = false;
 
             for (int position = 0; position < columns.Count; position++)
-                columns[position].Field.Tag = position + 1;
+                columns[position].TagCarrier.Tag = position + 1;
 
             return;
         }
@@ -457,8 +457,8 @@ public sealed class CookingContext
         if (tagged.Count != columns.Count)
         {
             var untagged = columns
-                .Where(c => c.Field.Tag is null)
-                .Select(c => c.Group.WireColumnName(c.Field));
+                .Where(c => c.TagCarrier.Tag is null)
+                .Select(c => c.Name);
 
             throw new SheetManException(table.Location,
                 $"Table `{table.Name}` tags some fields and not others: " +
@@ -471,10 +471,11 @@ public sealed class CookingContext
         foreach (int reserved in table.ReservedTags)
             seen[reserved] = "a `#`-excluded column";
 
-        foreach (var (group, field) in columns)
+        foreach (var column in columns)
         {
+            var field = column.TagCarrier;
             int tag = field.Tag.Value;
-            string name = group.WireColumnName(field);
+            string name = column.Name;
 
             if (seen.TryGetValue(tag, out string holder))
             {
