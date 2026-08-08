@@ -36,6 +36,13 @@ public class BinaryExporter : Target<RecipeModel.ExportRecipeGroup.BinaryRecipe>
 
         _manifest = Manifest.Load(manifestFilename);
 
+        // Before anything is written, while the ledger is still the previous run's: a
+        // table renamed or removed leaves its file behind otherwise, and a stale .scb is
+        // worse than a stale source file - it ships, and a build still asking for the old
+        // name reads it.
+        if (binaryRecipe.Sweep)
+            _manifest.PruneStaleFiles(binaryRecipe.Path);
+
         // context.Model is already narrowed to this entry's target side.
         foreach (var table in context.Model.Tables)
             ExportTable(binaryRecipe, table);

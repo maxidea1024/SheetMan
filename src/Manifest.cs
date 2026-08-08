@@ -72,6 +72,29 @@ public class Manifest
         }
     }
 
+    /// <summary>
+    /// Asks for the files this ledger already lists to be removed unless this run writes
+    /// them again.
+    /// </summary>
+    /// <remarks>
+    /// Called right after loading, while <see cref="Items"/> is still the previous run's
+    /// record: rename a table and its old file simply stays in the output directory, and
+    /// a stale data file is worse than a stale source file. It ships, it costs transfer,
+    /// and a build still asking for the old name reads it - old values, from a rollback
+    /// nobody performed.
+    ///
+    /// The ledger is the permission. Nothing outside it can be named here, so a directory
+    /// holding somebody else's files is untouchable no matter what is in it.
+    /// </remarks>
+    public void PruneStaleFiles(string directory)
+    {
+        foreach (var item in Items)
+        {
+            if (!string.IsNullOrEmpty(item.Name))
+                StagingFiles.RegisterPruneCandidate(System.IO.Path.Combine(directory, item.Name));
+        }
+    }
+
     public static Manifest Load(string filename)
     {
         // Read from the committed output rather than from staging: staging is emptied

@@ -28,6 +28,11 @@ public class JsonExporter : Target<RecipeModel.ExportRecipeGroup.JsonRecipe>
 
         _manifest = Manifest.Load(manifestFilename);
 
+        // Before anything is written, while the ledger is still the previous run's: a
+        // table renamed or removed leaves its file behind otherwise.
+        if (recipe.Sweep)
+            _manifest.PruneStaleFiles(recipe.Path);
+
         // context.Model is already narrowed to this entry's target side.
         foreach (var table in context.Model.Tables)
             ExportTable(recipe, table);

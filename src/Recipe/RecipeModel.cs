@@ -137,6 +137,20 @@ public class RecipeModel
             /// </summary>
             public string TargetSide { get; set; } = "cs";
 
+            /// <summary>Removes files this run did not write.</summary>
+            /// <remarks>
+            /// On, because the output is a file per table: rename or delete a table and
+            /// its old file stays behind. A stale data file is worse than a stale source
+            /// file - it ships, it costs transfer, and a build still asking for the old
+            /// name reads it, which is old values from a rollback nobody performed.
+            ///
+            /// Only files the manifest already lists are removed. That ledger is this
+            /// tool's own record of what it put here, so a directory holding anything
+            /// else is untouchable - the file has to have been written by a previous run
+            /// to be removable by this one.
+            /// </remarks>
+            public bool Sweep { get; set; } = true;
+
             /// <summary>
             /// Where to keep the record of the columns data was last written with.
             ///
@@ -197,6 +211,20 @@ public class RecipeModel
             /// generated reader will not match the data.
             /// </summary>
             public string TargetSide { get; set; } = "cs";
+
+            /// <summary>Removes files this run did not write.</summary>
+            /// <remarks>
+            /// On, because the output is a file per table: rename or delete a table and
+            /// its old file stays behind. A stale data file is worse than a stale source
+            /// file - it ships, it costs transfer, and a build still asking for the old
+            /// name reads it, which is old values from a rollback nobody performed.
+            ///
+            /// Only files the manifest already lists are removed. That ledger is this
+            /// tool's own record of what it put here, so a directory holding anything
+            /// else is untouchable - the file has to have been written by a previous run
+            /// to be removable by this one.
+            /// </remarks>
+            public bool Sweep { get; set; } = true;
         }
 
         /// <summary>

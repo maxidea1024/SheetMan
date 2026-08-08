@@ -104,20 +104,24 @@ counter32  columnCount
 
 ### 번호와 적용 대상
 
-|번호|이름|적용 가능한 컬럼|
+|번호|이름|적용 가능한 원소 (스칼라만)|
 |--|--|--|
-|0|RAW|전부 (v101의 배치 그대로)|
-|1|VARINT|i32 스칼라|
-|2|DELTA|i32 스칼라|
-|3|RLE|i32 스칼라, varint 스칼라|
-|4|DELTA_RLE|i32 스칼라|
-|5|DICT|string 스칼라|
-|6|DICT_RLE|string 스칼라|
+|0|RAW|전부|
+|1|VARINT|i32|
+|2|DELTA|i32|
+|3|RLE|i32, varint, bool|
+|4|DELTA_RLE|i32|
+|5|DICT|string, i64, f32, f64|
+|6|DICT_RLE|string, i64, f32, f64|
+|7|DICT_FRONT|string|
+|8|DICT_FRONT_RLE|string|
 
-- **스칼라만** 인코딩합니다(종류 0). 고정 배열·가변 배열은 항상 RAW입니다. 측정상 스칼라 string + 스칼라 i32 + enum이 전체 바이트의 98% 이상이라, 배열 인코딩은 복잡도만큼의 이득이 없습니다.
-- i64·f32·f64·bool·uuid는 항상 RAW입니다. i64를 varint 계열로 옮기려면 13개 언어 전부에 varint64가 필요한데, i64는 전체의 0.3%입니다.
-- foreign 참조 인덱스는 i32이므로 i32 규칙을 그대로 따릅니다.
-- 리더는 위 표에 없는 (원소, 인코딩) 조합을 만나면 — 예: string 컬럼에 DELTA — 필드 이름을 짚어 멈춥니다. 모르는 번호도 같습니다.
+**사전은 원소로 매개변수화됩니다.** DICT 계열의 사전 항목은 그 컬럼 원소의 **RAW 형태 그대로**입니다 — string은 `counter32` 길이 + UTF-8, i64·f64는 `fixed64`, f32는 `fixed32`. 그래서 인코딩 번호가 늘지 않고도 사전이 문자열 밖으로 나갑니다. 실측에서 f32 컬럼은 값의 5.7%만 유니크였고(`0.0`이 2,450번), i64도 마찬가지였습니다 — 「실수는 압축이 안 된다」는 것은 값 하나를 볼 때의 이야기이고, 컬럼으로 보면 기획 데이터의 실수는 몇 개의 값이 반복됩니다.
+
+- **스칼라만** 인코딩합니다(종류 0). 고정 배열·가변 배열은 항상 RAW입니다. 가변 배열의 원소를 varint로 옮기면 6.4 KB를 더 줄일 수 있지만(전체의 1.8%), 인코딩에 종류 의존성을 들이는 값으로는 모자랍니다.
+- **uuid는 항상 RAW**입니다. 16바이트짜리 사전 항목은 반복이 아주 심하지 않으면 손해이고, 실측 데이터셋에 uuid 컬럼이 없습니다.
+- foreign 참조 인덱스는 i32이므로 i32 규칙을 그대로 따릅니다. `datetime`·`timespan`은 i64 원소이므로 사전이 걸릴 수 있고, 그때도 리더는 틱을 받아 자기 타입을 만듭니다.
+- 리더는 위 표에 없는 (원소, 인코딩) 조합을 만나면 — 예: string 컬럼에 DELTA, uuid 컬럼에 DICT — 필드 이름을 짚어 멈춥니다. 모르는 번호도 같습니다.
 
 ### 공통 원자
 
@@ -167,7 +171,7 @@ counter32 first                       (rowCount ≥ 1일 때)
 
 ```
 counter32 dictCount                   ≥ 0
-dictCount ×: string entry             첫 등장 순서
+dictCount ×: entry                    원소의 RAW 형태. 첫 등장 순서
 rowCount ×: counter32 index           0 ≤ index < dictCount
 ```
 
@@ -177,13 +181,40 @@ rowCount ×: counter32 index           0 ≤ index < dictCount
 
 ```
 counter32 dictCount
-dictCount ×: string entry
+dictCount ×: entry
 반복 ×:
   counter32 runLength                 ≥ 1
   counter32 index
 ```
 
 런 길이의 합이 정확히 rowCount여야 합니다.
+
+**7 — DICT_FRONT.** string 전용. 사전이 **바이트 오름차순으로 정렬**되고, 각 항목은 앞 항목과 공유하는 접두사 길이만 적고 나머지만 씁니다.
+
+```
+counter32 dictCount                   ≥ 0
+dictCount ×:                          바이트 오름차순
+  counter32 shared                    앞 항목과 공유하는 바이트 수. 첫 항목은 0
+  counter32 restLength
+  restLength 바이트                   UTF-8의 나머지
+rowCount ×: counter32 index
+```
+
+이게 있는 이유는 **기획 데이터의 문자열이 중복이 아니라 접두사를 공유**하기 때문입니다. `02_BLOCK_INT`·`02_CRI_DAMAGE_FLOAT`·`02_CRI_INT`, 또는 `N등급 근거리 0성급`·`N등급 근거리 10성급` — 서로 다른 값이라 사전은 전부 보관해야 하지만 앞부분이 계속 겹칩니다. 실측 데이터셋에서 문자열 바이트의 **62%**가 이것으로 사라집니다.
+
+`shared`는 앞 항목의 길이와 이 항목의 길이 중 작은 값을 넘을 수 없습니다. 넘으면 컬럼을 짚어 멈춥니다. 정렬은 **UTF-8 바이트열의 사전식 순서**입니다 — 로케일이나 문자 단위가 아니라 바이트이므로, 어느 언어에서 인코딩해도 같은 순서가 나옵니다.
+
+**8 — DICT_FRONT_RLE.** 사전은 7번과 같고, 인덱스 스트림이 RLE입니다.
+
+```
+counter32 dictCount
+dictCount ×: shared / restLength / 바이트
+반복 ×:
+  counter32 runLength                 ≥ 1
+  counter32 index
+```
+
+**사전 순서가 인코딩마다 다른 이유.** DICT·DICT_RLE는 첫 등장 순서, DICT_FRONT 계열은 바이트 오름차순입니다. 정렬은 접두사 공유를 위해서만 필요하고, 정렬하지 않는 쪽은 순회 한 번으로 사전을 만들 수 있습니다. 어느 쪽이든 **런 구조는 바뀌지 않습니다** — 어느 행끼리 값이 같은지는 사전의 번호 매김과 무관하므로, 같은 컬럼에 대해 RLE가 만드는 런의 개수는 순서와 상관없이 같습니다.
 
 ### 경계 사례
 

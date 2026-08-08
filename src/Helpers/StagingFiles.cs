@@ -20,6 +20,12 @@ public static class StagingFiles
     static readonly List<string> _sweepRoots = [];
 
     /// <summary>
+    /// Files a target named individually as its own, to be removed if this run does not
+    /// write them.
+    /// </summary>
+    static readonly List<string> _pruneCandidates = [];
+
+    /// <summary>
     /// What every generated file says about itself, in its first few lines.
     ///
     /// Matched case-insensitively because the targets differ - C# shouts it inside an
@@ -49,6 +55,7 @@ public static class StagingFiles
         // Nothing is swept either: a run that failed has no business deciding which of
         // the previous run's files are stale.
         _sweepRoots.Clear();
+        _pruneCandidates.Clear();
     }
 
     /// <summary>
@@ -73,6 +80,31 @@ public static class StagingFiles
 
         if (!_sweepRoots.Contains(full, StringComparer.OrdinalIgnoreCase))
             _sweepRoots.Add(full);
+    }
+
+    /// <summary>
+    /// Names a file this tool wrote on a previous run, to be removed if this run does not
+    /// write it again.
+    /// </summary>
+    /// <remarks>
+    /// For the exporters, whose output is data rather than source and so carries no header
+    /// to recognize it by. What stands in for the header is the manifest: it is this tool's
+    /// own ledger of what it put in that directory, so a file named from it is one we wrote
+    /// and a file absent from it is untouchable however it got there. That is a stronger
+    /// guarantee than the marker gives the code generators - a marker travels with a file
+    /// somebody copies, and a ledger entry does not.
+    ///
+    /// Which leaves one gap, worth naming: a file whose manifest entry is already gone -
+    /// because a rename rewrote the ledger before anything pruned - is not in the ledger
+    /// and so is never removed. Those are cleaned by hand once; every orphan made after
+    /// this exists is caught by the run that orphans it.
+    /// </remarks>
+    public static void RegisterPruneCandidate(string filename)
+    {
+        string full = Path.GetFullPath(filename);
+
+        if (!_pruneCandidates.Contains(full, StringComparer.OrdinalIgnoreCase))
+            _pruneCandidates.Add(full);
     }
 
     /// <summary>
@@ -159,6 +191,28 @@ public static class StagingFiles
     public static IReadOnlyList<string> Sweep(ISet<string> written)
     {
         var removed = new List<string>();
+
+        // The files a target named from its own ledger. No marker is consulted: being in
+        // the ledger is what says the file is ours, and nothing else in the directory can
+        // be reached from here at all.
+        foreach (var path in _pruneCandidates)
+        {
+            if (written.Contains(path) || !File.Exists(path))
+                continue;
+
+            try
+            {
+                File.Delete(path);
+                removed.Add(path);
+            }
+            catch (IOException)
+            {
+                // Something has it open. Leaving a stale file behind is untidy; failing
+                // a conversion that has already written everything correctly is worse.
+            }
+        }
+
+        _pruneCandidates.Clear();
 
         foreach (var root in _sweepRoots)
         {

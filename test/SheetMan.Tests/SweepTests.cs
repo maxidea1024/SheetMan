@@ -148,4 +148,54 @@ public class SweepTests
 
         File.Delete(stale);
     }
+
+    private static string BinaryDir => Path.Combine(RepoLayout.OutputDir(Scenario), "binary");
+
+    /// <summary>
+    /// An exported data file the run no longer writes is removed, and one this tool never
+    /// wrote is not.
+    ///
+    /// The exporters cannot use the marker the generators use: a `.scb` is bytes and a
+    /// `.json` starts with a bracket, so neither can say in its own head that this tool
+    /// wrote it. What stands in for it is the manifest - the ledger the exporter already
+    /// keeps of what it put in that directory - and being in the ledger is the permission.
+    ///
+    /// This is not hypothetical tidiness. A rescue project renamed its tables and left
+    /// sixty-seven `.scb` files behind in the old format; nothing read them, they were
+    /// committed, they would have shipped, and a person reading the folder concluded the
+    /// data had barely been compressed at all.
+    /// </summary>
+    [Fact]
+    public void An_exported_file_the_run_no_longer_writes_is_removed()
+    {
+        Convert();
+
+        // Named as a table file and listed in the ledger, exactly as a since-renamed table
+        // would be. Written straight into the manifest because that is the only thing that
+        // makes a file removable.
+        string stale = Path.Combine(BinaryDir, "RenamedAway.scb");
+        File.WriteAllBytes(stale, new byte[] { 0x66, 0x00, 0x00, 0x00, 0x00 });
+
+        string manifestPath = Path.Combine(BinaryDir, "manifest-binary.json");
+        string manifest = File.ReadAllText(manifestPath);
+
+        Assert.Contains("\"Items\": [", manifest);
+        File.WriteAllText(manifestPath, manifest.Replace("\"Items\": [",
+            "\"Items\": [{\"Name\": \"RenamedAway.scb\", \"Size\": 5, " +
+            "\"Hash\": \"0\", \"LastUpdatedDate\": \"2020-01-01T00:00:00\"},"));
+
+        // And a file that was never in the ledger, however much it looks like one.
+        string mine = Path.Combine(BinaryDir, "NotOurs.scb");
+        File.WriteAllBytes(mine, new byte[] { 0x66, 0x00, 0x00, 0x00, 0x00 });
+
+        Reconvert();
+
+        Assert.False(File.Exists(stale),
+            "An exported file the conversion no longer produces was left behind.");
+
+        Assert.True(File.Exists(mine),
+            "A file the manifest never listed was deleted by the exporter's sweep.");
+
+        File.Delete(mine);
+    }
 }

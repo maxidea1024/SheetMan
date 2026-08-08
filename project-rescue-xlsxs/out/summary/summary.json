@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
   "run": {
-    "generatedAt": "2026-08-08T14:38:31.1786219+09:00",
+    "generatedAt": "2026-08-08T15:09:56.6554915+09:00",
     "toolVersion": "0.0.0.0",
     "recipe": "recipe.jsonc",
     "requestedTargetSide": "cs",
     "commit": {
-      "hash": "476dc2ad325aecaa5be54026055ece31e988a476",
-      "shortHash": "476dc2ad325a",
+      "hash": "26b4da1081169c87b46f2728bc75f1d308a8cd2c",
+      "shortHash": "26b4da108116",
       "branch": "main",
       "authorName": null,
       "authorEmail": null,
-      "committedAt": "2026-08-08T10:19:12.0000000+09:00",
-      "subject": "Add column encodings to the format (v102): writer selection and the C# cursor",
+      "committedAt": "2026-08-08T14:49:45.0000000+09:00",
+      "subject": "Decode column encodings in all thirteen readers, and measure what they bought",
       "origin": "git",
       "dirty": true,
       "attributable": false
